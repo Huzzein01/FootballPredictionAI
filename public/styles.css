@@ -1009,79 +1009,234 @@ textarea:focus {
   font-size: 12px;
 }
 
-.played-card {
-  border-left-color: #64748b;
+.played-board {
+  grid-template-columns: repeat(auto-fit, minmax(min(420px, 100%), 1fr));
+  gap: 14px;
 }
 
-.played-card.played-correct {
-  border-color: #9bc9af;
+.played-grid-card {
+  display: grid;
+  gap: 12px;
+  min-width: 0;
+  border: 1px solid var(--line);
+  border-left: 5px solid #64748b;
+  border-radius: 8px;
+  background: var(--row);
+  padding: 14px;
+  box-shadow: var(--shadow);
+}
+
+.played-grid-card.played-correct {
+  border-color: color-mix(in srgb, var(--green) 38%, var(--line));
   border-left-color: var(--green);
-  background: var(--row);
 }
 
-.played-card.played-wrong {
-  border-color: #e6aaa4;
-  border-left-color: #b91c1c;
-  background: var(--row);
+.played-grid-card.played-wrong {
+  border-color: color-mix(in srgb, var(--red) 38%, var(--line));
+  border-left-color: var(--red);
 }
 
-.played-card.played-void {
-  border-color: #c7d2fe;
+.played-grid-card.played-void {
+  border-color: color-mix(in srgb, #6366f1 38%, var(--line));
   border-left-color: #6366f1;
-  background: var(--row);
+}
+
+.played-card-head {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 12px;
+}
+
+.played-grid-card .fixture-teams {
+  grid-template-columns: minmax(0, 1fr) 30px minmax(0, 1fr);
 }
 
 .played-result {
-  background: var(--blue-soft);
-  color: var(--navy);
+  flex: 0 0 auto;
+  max-width: 52%;
+  white-space: normal;
+  text-align: right;
 }
 
-.played-card.played-correct .played-result {
+.played-result.status-hit {
   background: var(--green-soft);
   color: var(--green);
 }
 
-.played-card.played-wrong .played-result {
+.played-result.status-miss {
   background: var(--red-soft);
-  color: #b91c1c;
+  color: var(--red);
+}
+
+.played-result.status-void {
+  background: var(--blue-soft);
+  color: var(--navy);
+}
+
+.played-scoreboard {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto minmax(0, 1fr);
+  gap: 10px;
+  align-items: center;
+  border: 1px solid var(--line);
+  border-radius: 8px;
+  background: var(--surface);
+  padding: 12px;
+}
+
+.played-scoreboard span {
+  min-width: 0;
+  overflow: hidden;
+  color: var(--muted);
+  font-size: 12px;
+  font-weight: 900;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.played-scoreboard span:last-child {
+  text-align: right;
+}
+
+.played-scoreboard strong {
+  border-radius: 8px;
+  background: var(--navy);
+  color: var(--bg);
+  font-size: 22px;
+  line-height: 1;
+  padding: 9px 12px;
+  white-space: nowrap;
+}
+
+.played-result-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 8px;
+}
+
+.played-result-grid div {
+  display: grid;
+  gap: 4px;
+  min-width: 0;
+  border: 1px solid var(--line);
+  border-radius: 8px;
+  background: var(--surface);
+  padding: 10px;
+}
+
+.played-result-grid span,
+.played-source span {
+  color: var(--muted);
+  font-size: 11px;
+  font-weight: 900;
+  text-transform: uppercase;
+}
+
+.played-result-grid strong {
+  min-width: 0;
+  overflow: hidden;
+  color: var(--ink);
+  font-size: 13px;
+  font-weight: 900;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.played-result-grid small,
+.played-pick-list li > span {
+  justify-self: start;
+  border-radius: 999px;
+  font-size: 11px;
+  font-weight: 900;
+  padding: 4px 7px;
+  text-transform: uppercase;
+}
+
+.played-result-grid .status-hit,
+.played-pick-list .status-hit > span {
+  background: var(--green-soft);
+  color: var(--green);
+}
+
+.played-result-grid .status-miss,
+.played-pick-list .status-miss > span {
+  background: var(--red-soft);
+  color: var(--red);
+}
+
+.played-result-grid .status-void,
+.played-pick-list .status-void > span {
+  background: var(--blue-soft);
+  color: var(--navy);
+}
+
+.played-source {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 8px;
+  border: 1px solid var(--line);
+  border-radius: 8px;
+  background: var(--surface);
+  padding: 9px 10px;
+  font-size: 12px;
+  font-weight: 900;
+}
+
+.played-grid-card .motivation-line {
+  grid-area: auto;
+  margin: 0;
 }
 
 .played-pick-list {
-  grid-column: 1 / -1;
   display: grid;
-  gap: 7px;
-  margin: 12px 0 0;
+  grid-template-columns: repeat(auto-fit, minmax(min(220px, 100%), 1fr));
+  gap: 8px;
+  margin: 0;
   padding: 0;
   list-style: none;
 }
 
 .played-pick-list li {
   display: grid;
-  grid-template-columns: 52px minmax(0, 1fr);
-  gap: 8px;
+  grid-template-columns: auto minmax(0, 1fr);
+  gap: 4px 8px;
   align-items: center;
+  min-width: 0;
   border: 1px solid var(--line);
-  border-radius: 7px;
+  border-radius: 8px;
   background: var(--surface);
-  padding: 8px;
-  font-size: 12px;
-  font-weight: 800;
+  padding: 9px;
 }
 
-.played-pick-list span {
-  border-radius: 999px;
-  background: var(--blue-soft);
-  color: var(--navy);
-  padding: 4px 6px;
-  text-align: center;
+.played-pick-list li.status-hit {
+  border-color: color-mix(in srgb, var(--green) 28%, var(--line));
+}
+
+.played-pick-list li.status-miss {
+  border-color: color-mix(in srgb, var(--red) 28%, var(--line));
+}
+
+.played-pick-list strong {
+  min-width: 0;
+  overflow: hidden;
+  color: var(--ink);
+  font-size: 12px;
+  font-weight: 900;
+  text-overflow: ellipsis;
+  white-space: nowrap;
 }
 
 .played-pick-list small {
-  display: block;
-  margin-top: 2px;
+  grid-column: 2;
+  min-width: 0;
+  overflow: hidden;
   color: var(--muted);
   font-size: 11px;
   font-weight: 700;
+  text-overflow: ellipsis;
+  white-space: nowrap;
 }
 
 .card-topline,

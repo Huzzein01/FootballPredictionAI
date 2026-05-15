@@ -407,6 +407,27 @@ function playedStatusText(prediction) {
   return prediction.played?.statusLabel || "Settled";
 }
 
+function playedOutcomeClass(value) {
+  if (value === true || value === "HIT") return "status-hit";
+  if (value === false || value === "MISS") return "status-miss";
+  return "status-void";
+}
+
+function playedOutcomeText(value) {
+  if (value === true) return "Hit";
+  if (value === false) return "Miss";
+  if (value === "HIT" || value === "MISS" || value === "VOID") return value;
+  return "Void";
+}
+
+function actualResultText(prediction) {
+  const result = prediction.played?.actualResult || prediction.actualResult;
+  if (result === "H") return `${displayTeam(prediction.homeTeam)} win`;
+  if (result === "A") return `${displayTeam(prediction.awayTeam)} win`;
+  if (result === "D") return "Draw";
+  return "Pending";
+}
+
 function renderPlayedBoard() {
   const selectedLeague = playedLeagueFilter.value;
   const filtered = selectedLeague === "All" ? playedPredictions : playedPredictions.filter((prediction) => prediction.league === selectedLeague);
@@ -430,42 +451,61 @@ function renderPlayedBoard() {
   playedBoard.innerHTML = filtered
     .map((prediction) => {
       const settled = prediction.played || {};
-      const picks = (settled.picks || []).slice(0, 4);
+      const picks = settled.picks || [];
+      const hasFinalGoals = Number.isFinite(Number(settled.homeGoals)) && Number.isFinite(Number(settled.awayGoals));
+      const finalScore = settled.actualScore || (hasFinalGoals ? `${settled.homeGoals}-${settled.awayGoals}` : "Pending");
+      const exactScoreText = settled.exactScoreCorrect === true ? "Exact" : settled.exactScoreCorrect === false ? "Miss" : "Pending";
       return `
-        <article class="fixture-card scoreboard-row played-card ${playedClass(prediction)}">
-          <div class="card-topline">
-            <span>${escapeHtml(prediction.date)}</span>
-            <span>${escapeHtml(prediction.league)}</span>
+        <article class="played-grid-card ${playedClass(prediction)}">
+          <div class="played-card-head">
+            <div class="card-topline">
+              <span>${escapeHtml(prediction.date)}</span>
+              <span>${escapeHtml(prediction.league)}</span>
+            </div>
+            <span class="pick-pill played-result ${playedOutcomeClass(settled.modelCorrect)}">${escapeHtml(playedStatusText(prediction))}</span>
           </div>
           ${fixtureTeams(prediction)}
-          <div class="callout">
-            <span class="pick-pill played-result">${escapeHtml(playedStatusText(prediction))}</span>
-            <strong>${settled.hits || 0}-${settled.misses || 0}</strong>
+
+          <div class="played-scoreboard" aria-label="Final score">
+            <span>${escapeHtml(displayTeam(prediction.homeTeam))}</span>
+            <strong>${escapeHtml(finalScore.replace("-", " - "))}</strong>
+            <span>${escapeHtml(displayTeam(prediction.awayTeam))}</span>
           </div>
-          <div class="score-line">
-            <span>Original pick</span>
-            <strong>${escapeHtml(pickText(prediction))}</strong>
-          </div>
-          <div class="score-line">
-            <span>Projected score</span>
-            <strong>${escapeHtml(prediction.projectedScore || "")}</strong>
-          </div>
-          <div class="score-line">
-            <span>Final score</span>
-            <strong>${escapeHtml(settled.actualScore || "Awaiting verification")}</strong>
-          </div>
-          <div class="score-line">
-            <span>Score grade</span>
-            <strong>${settled.exactScoreCorrect === true ? "Exact" : settled.exactScoreCorrect === false ? "Missed" : "Pending"}</strong>
+
+          <div class="played-result-grid">
+            <div>
+              <span>Model pick</span>
+              <strong>${escapeHtml(pickText(prediction))}</strong>
+              <small class="${playedOutcomeClass(settled.modelCorrect)}">${escapeHtml(playedOutcomeText(settled.modelCorrect))}</small>
+            </div>
+            <div>
+              <span>Final result</span>
+              <strong>${escapeHtml(actualResultText(prediction))}</strong>
+            </div>
+            <div>
+              <span>Projected score</span>
+              <strong>${escapeHtml(prediction.projectedScore || "n/a")}</strong>
+              <small class="${playedOutcomeClass(settled.exactScoreCorrect)}">${escapeHtml(exactScoreText)}</small>
+            </div>
+            <div>
+              <span>Parlay legs</span>
+              <strong>${settled.hits || 0} hit / ${settled.misses || 0} miss / ${settled.voids || 0} void</strong>
+            </div>
           </div>
           ${
             settled.sourceUrl
-              ? `<div class="odds-line"><span>Verified by</span><strong><a href="${escapeHtml(settled.sourceUrl)}" target="_blank" rel="noreferrer">${escapeHtml(settled.sourceName || "Source")}</a></strong></div>`
+              ? `<div class="played-source"><span>Verified by</span><a href="${escapeHtml(settled.sourceUrl)}" target="_blank" rel="noreferrer">${escapeHtml(settled.sourceName || "Source")}</a></div>`
               : ""
           }
           ${motivationLine(prediction)}
           <ul class="played-pick-list">
-            ${picks.map((pick) => `<li><span>${escapeHtml(pick.status)}</span>${escapeHtml(pick.pick)} <small>${escapeHtml(pick.market)}</small></li>`).join("")}
+            ${picks.length ? picks.map((pick) => `
+              <li class="${playedOutcomeClass(pick.status)}">
+                <span>${escapeHtml(playedOutcomeText(pick.status))}</span>
+                <strong>${escapeHtml(pick.pick)}</strong>
+                <small>${escapeHtml(pick.market)}</small>
+              </li>
+            `).join("") : `<li class="status-void"><span>n/a</span><strong>No parlay legs tracked for this fixture.</strong><small>Fixture ledger result</small></li>`}
           </ul>
         </article>
       `;
