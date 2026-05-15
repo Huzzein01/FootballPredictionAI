@@ -278,11 +278,16 @@ function matchResultLegs(fixtures) {
     .map((fixture) => {
       const drawPct = Number(fixture.probabilities?.drawPct || 0);
       const topPct = Math.max(Number(fixture.probabilities?.homeWinPct || 0), Number(fixture.probabilities?.awayWinPct || 0));
-      const isLiveDrawCandidate = drawPct >= 28 || (drawPct >= 25 && topPct - drawPct <= 17);
-      if (!isLiveDrawCandidate) return null;
       const closeGameScore = Number(fixture.calibration?.closeGameScore || 0);
       const h2hDrawRate = Number(fixture.calibration?.h2hDrawRate || 0);
-      const confidence = Math.max(25, Math.min(42, drawPct + closeGameScore * 4 + h2hDrawRate * 3));
+      const marketDraw = Number(fixture.calibration?.marketDraw || 0) * 100;
+      const isLiveDrawCandidate =
+        drawPct >= 24 ||
+        (drawPct >= 20 && topPct - drawPct <= 28) ||
+        (drawPct >= 18 && closeGameScore >= 0.72) ||
+        marketDraw >= 25;
+      if (!isLiveDrawCandidate) return null;
+      const confidence = Math.max(20, Math.min(42, drawPct + closeGameScore * 4 + h2hDrawRate * 3));
       return {
         type: "match",
         fixture: `${fixture.homeTeam} vs ${fixture.awayTeam}`,
@@ -392,19 +397,21 @@ function buildTicket({ index, requestedLegs, playerLegs, scoreLegs, resultLegs, 
   const ticketPlayerLegs = shuffleWithSeed(playerLegs, seed);
   const ticketScoreLegs = shuffleWithSeed(scoreLegs, seed + 31);
   const ticketResultLegs = shuffleWithSeed(resultLegs, seed + 61);
-  const ticketDrawLegs = shuffleWithSeed(
-    resultLegs.filter((leg) => leg.pick === "Draw").sort((a, b) => Number(b.drawRisk || b.confidence || 0) - Number(a.drawRisk || a.confidence || 0)),
-    seed + 83
-  );
   const offset = (index + refreshSeed) * Math.max(3, Math.floor(requestedLegs / 2));
 
   const selectedPlayerLegs = targetPlayer ? selectDiversePlayerLegs(ticketPlayerLegs, targetPlayer, used, offset) : [];
   const selectedScoreLegs = targetScore ? selectUnique(ticketScoreLegs, targetScore, used, index * 2 + refreshSeed) : [];
-  const targetDrawResults = teamOnly && targetResult > 0 && ticketDrawLegs.length ? Math.min(ticketDrawLegs.length, requestedLegs >= 10 ? 2 : 1) : 0;
-  const selectedDrawLegs = targetDrawResults ? selectUnique(ticketDrawLegs, targetDrawResults, used, index + refreshSeed) : [];
-  const nonDrawResultLegs = teamOnly ? ticketResultLegs.filter((leg) => leg.pick !== "Draw") : ticketResultLegs;
-  const selectedResultLegs = targetResult ? selectUnique(nonDrawResultLegs, Math.max(0, targetResult - selectedDrawLegs.length), used, index * 3 + refreshSeed) : [];
-  const legs = [...selectedPlayerLegs, ...selectedScoreLegs, ...selectedDrawLegs, ...selectedResultLegs];
+  const drawExposureRandom = seededRandom(seed + 89);
+  const resultSource =
+    teamOnly
+      ? ticketResultLegs.filter((leg) => {
+          if (leg.pick !== "Draw") return true;
+          const drawChance = Math.min(0.55, (requestedLegs >= 15 ? 0.18 : 0.1) + (Number(leg.drawRisk || 0) / 100) * 0.75);
+          return drawExposureRandom() < drawChance;
+        })
+      : ticketResultLegs;
+  const selectedResultLegs = targetResult ? selectUnique(resultSource.length ? resultSource : ticketResultLegs, targetResult, used, index * 3 + refreshSeed) : [];
+  const legs = [...selectedPlayerLegs, ...selectedScoreLegs, ...selectedResultLegs];
 
   const fallbackLists = playerOnly ? [ticketPlayerLegs] : teamOnly ? [ticketScoreLegs, ticketResultLegs] : [ticketPlayerLegs, ticketScoreLegs, ticketResultLegs];
   for (const fallback of fallbackLists) {

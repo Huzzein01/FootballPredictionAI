@@ -30,6 +30,8 @@ const parlayLedgerOutput = document.querySelector("#parlayLedgerOutput");
 const parlayLedgerStatus = document.querySelector("#parlayLedgerStatus");
 const parlayAccuracyStats = document.querySelector("#parlayAccuracyStats");
 const refreshParlayLedgerButton = document.querySelector("#refreshParlayLedgerButton");
+const pageTabs = [...document.querySelectorAll("[data-page-target]")];
+const pageSections = [...document.querySelectorAll("[data-page]")];
 
 let meta = null;
 let fixturePredictions = [];
@@ -139,6 +141,17 @@ function initTheme() {
   window.setInterval(() => {
     if ((localStorage.getItem("football-theme-mode") || "adaptive") === "adaptive") applyTheme("adaptive");
   }, 60000);
+}
+
+function showPage(page) {
+  const fallback = pageSections.some((section) => section.dataset.page === page) ? page : "predictions";
+  pageSections.forEach((section) => section.classList.toggle("is-active", section.dataset.page === fallback));
+  pageTabs.forEach((tab) => {
+    const active = tab.dataset.pageTarget === fallback;
+    tab.classList.toggle("is-active", active);
+    tab.setAttribute("aria-current", active ? "page" : "false");
+  });
+  history.replaceState(null, "", `#${fallback}`);
 }
 
 function formJson(formElement) {
@@ -877,6 +890,9 @@ parlayLegCount.addEventListener("change", () => refreshParlay({ forceNew: true }
 parlayTicketCount.addEventListener("change", () => refreshParlay({ forceNew: true }));
 parlayTypeSelect.addEventListener("change", () => refreshParlay({ forceNew: true }));
 refreshParlayLedgerButton.addEventListener("click", refreshParlayLedger);
+pageTabs.forEach((tab) => {
+  tab.addEventListener("click", () => showPage(tab.dataset.pageTarget));
+});
 parlayLedgerOutput.addEventListener("click", async (event) => {
   const button = event.target.closest("button[data-status]");
   if (!button) return;
@@ -901,6 +917,7 @@ parlayLedgerOutput.addEventListener("click", async (event) => {
 async function init() {
   try {
     initTheme();
+    showPage(location.hash.replace("#", "") || "predictions");
     meta = await api("/api/meta");
     renderModelMeta(meta, meta.trainingStatus);
     updateTeamList();

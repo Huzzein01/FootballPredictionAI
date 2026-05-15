@@ -31,8 +31,17 @@
       </div>
     </header>
 
+    <nav class="page-nav" aria-label="App sections">
+      <button class="page-tab is-active" type="button" data-page-target="predictions">Predictions</button>
+      <button class="page-tab" type="button" data-page-target="parlays">Parlays</button>
+      <button class="page-tab" type="button" data-page-target="parlay-ledger">Parlay Ledger</button>
+      <button class="page-tab" type="button" data-page-target="played">Played Matches</button>
+      <button class="page-tab" type="button" data-page-target="single">Single Predictor</button>
+      <button class="page-tab" type="button" data-page-target="fixture-ledger">Fixture Ledger</button>
+    </nav>
+
     <main class="dashboard">
-      <section class="panel board-panel" aria-labelledby="boardHeading">
+      <section class="panel board-panel page-section is-active" data-page="predictions" aria-labelledby="boardHeading">
         <div class="section-head board-head">
           <div>
             <h2 id="boardHeading">Remaining Fixtures</h2>
@@ -69,7 +78,7 @@
         <div id="fixtureBoard" class="fixture-board" aria-live="polite"></div>
       </section>
 
-      <section class="panel played-panel" aria-labelledby="playedHeading">
+      <section class="panel played-panel page-section" data-page="played" aria-labelledby="playedHeading">
         <div class="section-head board-head">
           <div>
             <h2 id="playedHeading">Matches Played</h2>
@@ -97,7 +106,7 @@
         <div id="playedBoard" class="fixture-board played-board" aria-live="polite"></div>
       </section>
 
-      <section class="panel parlay-panel" aria-labelledby="parlayHeading">
+      <section class="panel parlay-panel page-section" data-page="parlays" aria-labelledby="parlayHeading">
         <div class="section-head">
           <div>
             <h2 id="parlayHeading">Multi-Leg Parlay Builder</h2>
@@ -157,7 +166,7 @@
         <div id="parlayOutput" class="parlay-output" aria-live="polite"></div>
       </section>
 
-      <section class="panel parlay-ledger-panel" aria-labelledby="parlayLedgerHeading">
+      <section class="panel parlay-ledger-panel page-section" data-page="parlay-ledger" aria-labelledby="parlayLedgerHeading">
         <div class="section-head">
           <div>
             <h2 id="parlayLedgerHeading">Parlay Backtest Ledger</h2>
@@ -169,8 +178,8 @@
         <div id="parlayLedgerOutput" class="parlay-ledger-output" aria-live="polite"></div>
       </section>
 
-      <section class="panel single-panel" aria-labelledby="singleHeading">
-        <details>
+      <section class="panel single-panel page-section" data-page="single" aria-labelledby="singleHeading">
+        <details open>
           <summary id="singleHeading">Single Match Predictor</summary>
           <form id="predictForm" class="grid-form">
             <label>
@@ -225,7 +234,7 @@
         </details>
       </section>
 
-      <section class="ledger panel" aria-labelledby="ledgerHeading">
+      <section class="ledger panel page-section" data-page="fixture-ledger" aria-labelledby="ledgerHeading">
         <div class="section-head">
           <div>
             <h2 id="ledgerHeading">Backtest Ledger</h2>
