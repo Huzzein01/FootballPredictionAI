@@ -354,23 +354,26 @@ function selectDiversePlayerLegs(source, targetCount, used, offset = 0) {
   return selected;
 }
 
-function buildTicket({ index, requestedLegs, playerLegs, scoreLegs, resultLegs, fbref, refreshSeed = 0 }) {
+function buildTicket({ index, requestedLegs, playerLegs, scoreLegs, resultLegs, fbref, refreshSeed = 0, type = "mixed" }) {
   const used = new Set();
-  const targetPlayer = Math.max(2, Math.ceil(requestedLegs * 0.58));
-  const targetScore = Math.max(2, Math.floor(requestedLegs * 0.27));
-  const targetResult = Math.max(1, requestedLegs - targetPlayer - targetScore);
+  const playerOnly = type === "players";
+  const teamOnly = type === "teams";
+  const targetPlayer = playerOnly ? requestedLegs : teamOnly ? 0 : Math.max(2, Math.ceil(requestedLegs * 0.58));
+  const targetScore = playerOnly ? 0 : teamOnly ? Math.max(1, Math.floor(requestedLegs * 0.45)) : Math.max(2, Math.floor(requestedLegs * 0.27));
+  const targetResult = playerOnly ? 0 : Math.max(1, requestedLegs - targetPlayer - targetScore);
   const seed = refreshSeed + index * 97 + requestedLegs * 13;
   const ticketPlayerLegs = shuffleWithSeed(playerLegs, seed);
   const ticketScoreLegs = shuffleWithSeed(scoreLegs, seed + 31);
   const ticketResultLegs = shuffleWithSeed(resultLegs, seed + 61);
   const offset = (index + refreshSeed) * Math.max(3, Math.floor(requestedLegs / 2));
 
-  const selectedPlayerLegs = selectDiversePlayerLegs(ticketPlayerLegs, targetPlayer, used, offset);
-  const selectedScoreLegs = selectUnique(ticketScoreLegs, targetScore, used, index * 2 + refreshSeed);
-  const selectedResultLegs = selectUnique(ticketResultLegs, targetResult, used, index * 3 + refreshSeed);
+  const selectedPlayerLegs = targetPlayer ? selectDiversePlayerLegs(ticketPlayerLegs, targetPlayer, used, offset) : [];
+  const selectedScoreLegs = targetScore ? selectUnique(ticketScoreLegs, targetScore, used, index * 2 + refreshSeed) : [];
+  const selectedResultLegs = targetResult ? selectUnique(ticketResultLegs, targetResult, used, index * 3 + refreshSeed) : [];
   const legs = [...selectedPlayerLegs, ...selectedScoreLegs, ...selectedResultLegs];
 
-  for (const fallback of [ticketPlayerLegs, ticketScoreLegs, ticketResultLegs]) {
+  const fallbackLists = playerOnly ? [ticketPlayerLegs] : teamOnly ? [ticketScoreLegs, ticketResultLegs] : [ticketPlayerLegs, ticketScoreLegs, ticketResultLegs];
+  for (const fallback of fallbackLists) {
     if (legs.length >= requestedLegs) break;
     for (const leg of rotate(fallback, offset + legs.length)) {
       const key = legKey(leg);
@@ -384,9 +387,14 @@ function buildTicket({ index, requestedLegs, playerLegs, scoreLegs, resultLegs, 
   const finalLegs = legs.slice(0, requestedLegs);
   return {
     id: `generated_${index + 1}`,
-    name: fbref.hasPlayerStats
-      ? `Option ${index + 1}: Player Props + Team Model Parlay`
-      : `Option ${index + 1}: Team Model Parlay`,
+    name:
+      type === "players"
+        ? `Option ${index + 1}: Player Props Parlay`
+        : type === "teams"
+        ? `Option ${index + 1}: Team Picks Parlay`
+        : fbref.hasPlayerStats
+        ? `Option ${index + 1}: Player Props + Team Model Parlay`
+        : `Option ${index + 1}: Team Model Parlay`,
     legs: finalLegs,
     playerStatLegs: finalLegs.filter((leg) => leg.type === "player"),
     teamScoreLegs: finalLegs.filter((leg) => leg.type === "score"),
@@ -400,6 +408,7 @@ function buildParlays(options = {}) {
   const requestedLegs = Math.max(3, Math.min(20, Number(options.legs || 10)));
   const ticketCount = Math.max(1, Math.min(10, Number(options.tickets || 3)));
   const refreshSeed = Math.max(0, Number(options.refreshSeed || 0));
+  const type = ["mixed", "teams", "players"].includes(options.type) ? options.type : "mixed";
   const excludedFixtureKeys = playedFixtureKeys();
   const allFixtures = fixturePredictionBoard().filter((fixture) => league === "All" || fixture.league === league);
   const fixtures = allFixtures.filter((fixture) => !excludedFixtureKeys.has(fixtureSignatureFromFixture(fixture)));
@@ -421,12 +430,13 @@ function buildParlays(options = {}) {
       resultLegs: eligibleResultLegs,
       fbref,
       refreshSeed,
+      type,
     })
   ).filter((ticket) => ticket.legs.length);
 
   return {
     fbref,
-    filters: { league, requestedLegs, ticketCount, refreshSeed },
+    filters: { league, requestedLegs, ticketCount, type, refreshSeed },
     excludedFixtureCount: allFixtures.length - fixtures.length,
     availableFixtureCount: fixtures.length,
     playerCandidateCount: eligiblePlayerLegs.length,
@@ -442,7 +452,7 @@ function buildParlays(options = {}) {
         averageConfidence: 0,
       }),
       note: fbref.hasPlayerStats
-        ? `Player legs are ranked from imported player-season stats, projected team scoring, match-result lean, and live table motivation including title-race, European-place, relegation, and title-secured rotation risk. Team result and score legs use the local match model, including form, home/away edge, Elo, head-to-head, market odds when available, player-derived features, and live standings motivation. ${allFixtures.length - fixtures.length} played fixture${allFixtures.length - fixtures.length === 1 ? "" : "s"} excluded from new parlay generation.`
+        ? `Mode: ${type}. Player legs are ranked from imported player-season stats, projected team scoring, match-result lean, and live table motivation including title-race, European-place, relegation, and title-secured rotation risk. Team result and score legs use the local match model, including form, home/away edge, Elo, head-to-head, market odds when available, player-derived features, and live standings motivation. ${allFixtures.length - fixtures.length} played fixture${allFixtures.length - fixtures.length === 1 ? "" : "s"} excluded from new parlay generation.`
         : "No imported player-stat rows were found, so this ticket currently includes team-score legs only. Import FBref or Thunderbit CSVs to add player props.",
     },
   };

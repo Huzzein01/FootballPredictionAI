@@ -93,6 +93,21 @@ The app does not assume a team is motivated just because of its name or rank. It
 
 Manual motive overrides are separate from the points math. For example, Manchester United are treated as Champions League-secured rather than title-motivated, while Bruno Fernandes receives a record-chase motive because that incentive is player-specific and not visible from the table alone. Barcelona, Paris SG, and Bayern Munich have title-secured rotation risk layered on top of the calculated standings context.
 
+## Draw Calibration
+
+The prediction service now applies a draw-risk calibration after the model and motivation adjustment. This is designed for fixtures where a win/loss-only lean is too aggressive.
+
+The calibration raises draw probability when these signals point to a close match:
+
+- real public 1-X-2 market odds, especially tight home/away prices
+- similar points-per-game and recent form
+- similar Elo strength
+- head-to-head draw tendency and close H2H goal difference
+- similar table motivation, such as both clubs fighting for Champions League places
+- rotation or low-stakes risk for one or both teams
+
+This does not force a draw pick. It recalibrates the percentages so close fixtures show realistic draw risk. Example: Aston Villa vs Liverpool moved from a heavy Liverpool lean to a lower-confidence Liverpool lean with a much larger draw probability.
+
 Refresh public standings with:
 
 ```powershell
@@ -167,6 +182,8 @@ The web app supports:
 - Shared pick settlement across parlays when the same pick appears more than once
 - Excluding already-played fixtures from newly generated parlays
 - Motivation-aware score and player props using table stakes, home/away context, head-to-head context, recent form, and player-season stats
+- Date sorting and draw-risk sorting on the fixture board
+- Parlay mode selection: mixed player/team, team-only, or player-only
 
 Bulk fixture rows use this format:
 

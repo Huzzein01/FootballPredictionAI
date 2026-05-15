@@ -1,6 +1,6 @@
 const fs = require("fs");
 const path = require("path");
-const { buildCurrentFeatureVector } = require("./features");
+const { FEATURE_NAMES, buildCurrentFeatureVector } = require("./features");
 const { loadMatches } = require("./footballData");
 const { predictProba } = require("./model");
 
@@ -32,22 +32,31 @@ function normalizeProbabilities(probabilities) {
   return Object.fromEntries(Object.entries(probabilities).map(([label, value]) => [label, value / total]));
 }
 
+function clamp(value, min = 0, max = 1) {
+  return Math.max(min, Math.min(max, value));
+}
+
+function featureMap(features) {
+  return Object.fromEntries(FEATURE_NAMES.map((name, index) => [name, Number(features[index] || 0)]));
+}
+
+function pressureScore(motivation = {}) {
+  return (
+    Number(motivation.titleRaceScore || 0) +
+    Number(motivation.europeRaceScore || 0) * 0.7 +
+    Number(motivation.relegationBattleScore || 0) * 0.85 +
+    Math.max(0, Number(motivation.recordMotiveScore || 0)) * 0.35
+  );
+}
+
 function applyMotivationAdjustment(probabilities, standingContext) {
   const home = standingContext?.home || {};
   const away = standingContext?.away || {};
   const motivationDiff = Number(home.motivationScore || 0) - Number(away.motivationScore || 0);
   const homeRotationRisk = Number(home.securedTitle || 0) + Number(home.deadRubber || 0) * 0.5;
   const awayRotationRisk = Number(away.securedTitle || 0) + Number(away.deadRubber || 0) * 0.5;
-  const homePressure =
-    Number(home.titleRaceScore || 0) +
-    Number(home.europeRaceScore || 0) * 0.7 +
-    Number(home.relegationBattleScore || 0) * 0.85 +
-    Math.max(0, Number(home.recordMotiveScore || 0)) * 0.35;
-  const awayPressure =
-    Number(away.titleRaceScore || 0) +
-    Number(away.europeRaceScore || 0) * 0.7 +
-    Number(away.relegationBattleScore || 0) * 0.85 +
-    Math.max(0, Number(away.recordMotiveScore || 0)) * 0.35;
+  const homePressure = pressureScore(home);
+  const awayPressure = pressureScore(away);
   const homeShift = motivationDiff * 0.045 - homeRotationRisk * 0.055 + awayRotationRisk * 0.035 + (homePressure - awayPressure) * 0.025;
   const awayShift = -motivationDiff * 0.045 - awayRotationRisk * 0.055 + homeRotationRisk * 0.035 + (awayPressure - homePressure) * 0.025;
   const drawShift = Math.max(homeRotationRisk, awayRotationRisk) * 0.025;
@@ -57,6 +66,65 @@ function applyMotivationAdjustment(probabilities, standingContext) {
     D: Math.max(0.03, probabilities.D + drawShift),
     A: Math.max(0.03, probabilities.A + awayShift),
   });
+}
+
+function applyDrawCalibration(probabilities, standingContext, features, hasOdds) {
+  const f = featureMap(features);
+  const home = standingContext?.home || {};
+  const away = standingContext?.away || {};
+  const marketHome = Number(f.marketHomeProb || 0);
+  const marketDraw = Number(f.marketDrawProb || 0);
+  const marketAway = Number(f.marketAwayProb || 0);
+  const marketClose = hasOdds ? 1 - clamp(Math.abs(marketHome - marketAway) / 0.22) : 0.35;
+  const ppgClose = 1 - clamp(Math.abs(Number(f.ppgDiff || 0)) / 0.55);
+  const formClose = 1 - clamp((Math.abs(Number(f.homeLast5PPG || 0) - Number(f.awayLast5PPG || 0)) + Math.abs(Number(f.homeLast5GD || 0) - Number(f.awayLast5GD || 0)) * 0.55) / 1.5);
+  const eloClose = 1 - clamp(Math.abs(Number(f.eloDiff || 0)) / 210);
+  const h2hGames = Number(f.h2hMatches || 0);
+  const h2hDrawRate = h2hGames > 0 ? clamp(3 - (Number(f.homeH2HPPG || 0) + Number(f.awayH2HPPG || 0))) : 0;
+  const h2hClose = h2hGames > 0 ? 1 - clamp(Math.abs(Number(f.h2hGoalDiffPerGame || 0)) / 1.2) : 0.35;
+  const motivationParity = 1 - clamp(Math.abs(Number(home.motivationScore || 0) - Number(away.motivationScore || 0)) / 1.15);
+  const bothPressure = Math.min(pressureScore(home), pressureScore(away));
+  const rotationDrawRisk = Math.max(Number(home.securedTitle || 0), Number(away.securedTitle || 0)) * 0.025;
+  const closeGameScore =
+    marketClose * 0.28 +
+    ppgClose * 0.18 +
+    formClose * 0.18 +
+    eloClose * 0.14 +
+    h2hClose * 0.1 +
+    motivationParity * 0.12;
+  const h2hBoost = h2hDrawRate * 0.07;
+  const pressureBoost = bothPressure > 0.35 ? 0.025 : 0;
+  const marketAnchor = hasOdds ? marketDraw : probabilities.D;
+  const targetDraw = clamp(
+    Math.max(probabilities.D, marketAnchor * 0.72 + closeGameScore * 0.16 + h2hBoost + pressureBoost + rotationDrawRisk),
+    0.08,
+    0.39
+  );
+  const currentDraw = probabilities.D;
+  if (targetDraw <= currentDraw + 0.004) {
+    return { probabilities, diagnostics: { closeGameScore, h2hDrawRate, marketDraw, drawAdjustment: 0 } };
+  }
+  const nonDrawTotal = probabilities.H + probabilities.A || 1;
+  const remaining = 1 - targetDraw;
+  const calibrated = normalizeProbabilities({
+    H: Math.max(0.03, (probabilities.H / nonDrawTotal) * remaining),
+    D: targetDraw,
+    A: Math.max(0.03, (probabilities.A / nonDrawTotal) * remaining),
+  });
+  return {
+    probabilities: calibrated,
+    diagnostics: {
+      closeGameScore,
+      h2hDrawRate,
+      marketDraw,
+      marketClose,
+      ppgClose,
+      formClose,
+      eloClose,
+      motivationParity,
+      drawAdjustment: calibrated.D - currentDraw,
+    },
+  };
 }
 
 function hasUsableOdds(odds) {
@@ -89,7 +157,9 @@ function predictMatch(input) {
   const hasOdds = hasUsableOdds(odds);
   const vector = buildCurrentFeatureVector(input.league, input.homeTeam, input.awayTeam, odds, input.season || "2025-26");
   const modelProbabilities = predictProba(model, vector.features);
-  const probabilities = applyMotivationAdjustment(modelProbabilities, vector.standingContext);
+  const motivationProbabilities = applyMotivationAdjustment(modelProbabilities, vector.standingContext);
+  const drawCalibration = applyDrawCalibration(motivationProbabilities, vector.standingContext, vector.features, hasOdds);
+  const probabilities = drawCalibration.probabilities;
   const prediction = bestLabel(probabilities);
 
   return {
@@ -109,6 +179,7 @@ function predictMatch(input) {
     projectedScore: projectedScore(prediction, probabilities, hasOdds),
     featureVector: vector.features,
     standingContext: vector.standingContext,
+    calibration: drawCalibration.diagnostics,
     probabilities: {
       H: probabilities.H,
       D: probabilities.D,

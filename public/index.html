@@ -48,6 +48,16 @@
               <option value="All">All leagues</option>
             </select>
           </label>
+          <label>
+            Sort
+            <select id="boardSortSelect">
+              <option value="date-asc" selected>Date: earliest first</option>
+              <option value="date-desc">Date: latest first</option>
+              <option value="league-date">League, then date</option>
+              <option value="confidence-desc">Confidence: high first</option>
+              <option value="draw-risk-desc">Draw risk: high first</option>
+            </select>
+          </label>
           <div class="board-stats" aria-label="Fixture prediction summary">
             <span><strong id="boardTotal">0</strong> fixtures</span>
             <span><strong id="boardWithOdds">0</strong> with odds</span>
@@ -125,6 +135,14 @@
               <option value="3" selected>3 options</option>
               <option value="5">5 options</option>
               <option value="10">10 options</option>
+            </select>
+          </label>
+          <label>
+            Type
+            <select id="parlayTypeSelect">
+              <option value="mixed" selected>Player + team combo</option>
+              <option value="teams">Team picks only</option>
+              <option value="players">Player props only</option>
             </select>
           </label>
           <div class="board-stats" aria-label="FBref status">

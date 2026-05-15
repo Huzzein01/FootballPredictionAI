@@ -11,6 +11,7 @@ const fixtureBoard = document.querySelector("#fixtureBoard");
 const boardMessage = document.querySelector("#boardMessage");
 const boardStatus = document.querySelector("#boardStatus");
 const boardLeagueFilter = document.querySelector("#boardLeagueFilter");
+const boardSortSelect = document.querySelector("#boardSortSelect");
 const trackAllButton = document.querySelector("#trackAllButton");
 const playedBoard = document.querySelector("#playedBoard");
 const playedStatus = document.querySelector("#playedStatus");
@@ -20,6 +21,7 @@ const parlayStatus = document.querySelector("#parlayStatus");
 const parlayLeagueFilter = document.querySelector("#parlayLeagueFilter");
 const parlayLegCount = document.querySelector("#parlayLegCount");
 const parlayTicketCount = document.querySelector("#parlayTicketCount");
+const parlayTypeSelect = document.querySelector("#parlayTypeSelect");
 const refreshParlayButton = document.querySelector("#refreshParlayButton");
 const trackParlaysButton = document.querySelector("#trackParlaysButton");
 const parlayMessage = document.querySelector("#parlayMessage");
@@ -319,7 +321,10 @@ function setParlayMessage(message, kind = "info") {
 
 function renderBoard() {
   const selectedLeague = boardLeagueFilter.value;
-  const filtered = selectedLeague === "All" ? fixturePredictions : fixturePredictions.filter((prediction) => prediction.league === selectedLeague);
+  const filtered = sortFixturePredictions(
+    selectedLeague === "All" ? fixturePredictions : fixturePredictions.filter((prediction) => prediction.league === selectedLeague),
+    boardSortSelect.value
+  );
 
   document.querySelector("#boardTotal").textContent = fixturePredictions.length;
   document.querySelector("#boardWithOdds").textContent = fixturePredictions.filter((prediction) => prediction.hasOdds).length;
@@ -358,6 +363,24 @@ function renderBoard() {
       `
     )
     .join("");
+}
+
+function sortFixturePredictions(predictions, mode) {
+  const sorted = [...predictions];
+  const dateKey = (prediction) => `${prediction.date || "9999-99-99"} ${prediction.league || ""} ${prediction.homeTeam || ""}`;
+  if (mode === "date-desc") {
+    return sorted.sort((a, b) => dateKey(b).localeCompare(dateKey(a)));
+  }
+  if (mode === "league-date") {
+    return sorted.sort((a, b) => `${a.league} ${dateKey(a)}`.localeCompare(`${b.league} ${dateKey(b)}`));
+  }
+  if (mode === "confidence-desc") {
+    return sorted.sort((a, b) => Number(b.confidence || 0) - Number(a.confidence || 0));
+  }
+  if (mode === "draw-risk-desc") {
+    return sorted.sort((a, b) => Number(b.probabilities?.drawPct || 0) - Number(a.probabilities?.drawPct || 0));
+  }
+  return sorted.sort((a, b) => dateKey(a).localeCompare(dateKey(b)));
 }
 
 function playedClass(prediction) {
@@ -729,8 +752,9 @@ async function refreshParlay({ forceNew = false } = {}) {
   const league = encodeURIComponent(parlayLeagueFilter.value);
   const legs = encodeURIComponent(parlayLegCount.value);
   const tickets = encodeURIComponent(parlayTicketCount.value);
+  const type = encodeURIComponent(parlayTypeSelect.value);
   setParlayMessage(forceNew ? "Building a fresh parlay variation..." : "Building parlay from fixtures and imported player stats...", "info");
-  const data = await api(`/api/parlay?league=${league}&legs=${legs}&tickets=${tickets}&refreshSeed=${parlayRefreshSeed}`);
+  const data = await api(`/api/parlay?league=${league}&legs=${legs}&tickets=${tickets}&type=${type}&refreshSeed=${parlayRefreshSeed}`);
   renderParlay(data);
 }
 
@@ -797,6 +821,7 @@ ledgerBody.addEventListener("click", async (event) => {
 document.querySelector("#refreshButton").addEventListener("click", refreshLedger);
 leagueSelect.addEventListener("change", updateTeamList);
 boardLeagueFilter.addEventListener("change", renderBoard);
+boardSortSelect.addEventListener("change", renderBoard);
 playedLeagueFilter.addEventListener("change", renderPlayedBoard);
 refreshPlayedButton.addEventListener("click", refreshPlayedBoard);
 themeSelect.addEventListener("change", () => applyTheme(themeSelect.value));
@@ -850,6 +875,7 @@ trackParlaysButton.addEventListener("click", async () => {
 parlayLeagueFilter.addEventListener("change", () => refreshParlay({ forceNew: true }));
 parlayLegCount.addEventListener("change", () => refreshParlay({ forceNew: true }));
 parlayTicketCount.addEventListener("change", () => refreshParlay({ forceNew: true }));
+parlayTypeSelect.addEventListener("change", () => refreshParlay({ forceNew: true }));
 refreshParlayLedgerButton.addEventListener("click", refreshParlayLedger);
 parlayLedgerOutput.addEventListener("click", async (event) => {
   const button = event.target.closest("button[data-status]");
