@@ -154,6 +154,14 @@
               <option value="players">Player props only</option>
             </select>
           </label>
+          <label>
+            Sort
+            <select id="parlaySortSelect">
+              <option value="generated" selected>Generated order</option>
+              <option value="confidence-desc">Confidence: high first</option>
+              <option value="confidence-asc">Confidence: low first</option>
+            </select>
+          </label>
           <div class="board-stats" aria-label="FBref status">
             <span><strong id="fbrefRows">0</strong> FBref rows</span>
             <span><strong id="fbrefPlayers">0</strong> players</span>

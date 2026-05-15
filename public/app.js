@@ -22,6 +22,7 @@ const parlayLeagueFilter = document.querySelector("#parlayLeagueFilter");
 const parlayLegCount = document.querySelector("#parlayLegCount");
 const parlayTicketCount = document.querySelector("#parlayTicketCount");
 const parlayTypeSelect = document.querySelector("#parlayTypeSelect");
+const parlaySortSelect = document.querySelector("#parlaySortSelect");
 const refreshParlayButton = document.querySelector("#refreshParlayButton");
 const trackParlaysButton = document.querySelector("#trackParlaysButton");
 const parlayMessage = document.querySelector("#parlayMessage");
@@ -516,7 +517,22 @@ function renderParlay(data) {
     return;
   }
 
-  parlayOutput.innerHTML = parlays.map(renderParlayTicket).join("");
+  renderParlayTickets();
+}
+
+function sortedParlays() {
+  const parlays = [...currentParlays];
+  if (parlaySortSelect.value === "confidence-desc") {
+    return parlays.sort((a, b) => Number(b.averageConfidence || 0) - Number(a.averageConfidence || 0));
+  }
+  if (parlaySortSelect.value === "confidence-asc") {
+    return parlays.sort((a, b) => Number(a.averageConfidence || 0) - Number(b.averageConfidence || 0));
+  }
+  return parlays;
+}
+
+function renderParlayTickets() {
+  parlayOutput.innerHTML = sortedParlays().map(renderParlayTicket).join("");
 }
 
 function renderParlayTicket(parlay) {
@@ -889,6 +905,7 @@ parlayLeagueFilter.addEventListener("change", () => refreshParlay({ forceNew: tr
 parlayLegCount.addEventListener("change", () => refreshParlay({ forceNew: true }));
 parlayTicketCount.addEventListener("change", () => refreshParlay({ forceNew: true }));
 parlayTypeSelect.addEventListener("change", () => refreshParlay({ forceNew: true }));
+parlaySortSelect.addEventListener("change", renderParlayTickets);
 refreshParlayLedgerButton.addEventListener("click", refreshParlayLedger);
 pageTabs.forEach((tab) => {
   tab.addEventListener("click", () => showPage(tab.dataset.pageTarget));

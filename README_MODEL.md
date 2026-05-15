@@ -184,6 +184,7 @@ The web app supports:
 - Motivation-aware score and player props using table stakes, home/away context, head-to-head context, recent form, and player-season stats
 - Date sorting and draw-risk sorting on the fixture board
 - Parlay mode selection: mixed player/team, team-only, or player-only
+- Parlay sorting by generated order or average confidence
 - Team-only parlays include high draw-risk fixtures as eligible result picks, but draw legs are sampled rather than forced into every ticket
 - Multi-page navigation separates predictions, parlays, parlay backtesting, played matches, single-match prediction, and the fixture ledger
 
