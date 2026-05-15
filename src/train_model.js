@@ -1,6 +1,7 @@
 const fs = require("fs");
 const path = require("path");
 const { buildCurrentFeatureVector, buildTrainingRows, FEATURE_NAMES } = require("./features");
+const { normalizeTeamName } = require("./footballData");
 const { evaluate, trainSoftmax } = require("./model");
 
 const MODEL_DIR = path.join(process.cwd(), "model");
@@ -8,8 +9,50 @@ const MODEL_PATH = path.join(MODEL_DIR, "football_match_model.json");
 const TRAINING_PATH = path.join(MODEL_DIR, "training_rows.json");
 const TUNING_PATH = path.join(MODEL_DIR, "tuning_results.json");
 const BACKTEST_PATH = path.join(process.cwd(), "data", "backtests.json");
+const PARLAY_BACKTEST_PATH = path.join(process.cwd(), "data", "parlay_backtests.json");
+const PLAYED_RESULTS_PATH = path.join(process.cwd(), "data", "played_results.json");
 
-function feedbackTrainingRows() {
+function actualResultCode(homeGoals, awayGoals) {
+  const home = Number(homeGoals);
+  const away = Number(awayGoals);
+  if (!Number.isFinite(home) || !Number.isFinite(away)) return "";
+  if (home > away) return "H";
+  if (away > home) return "A";
+  return "D";
+}
+
+function featureFeedbackRow({ season = "feedback", league, date, homeTeam, awayTeam, label, odds = {}, sourceFile }) {
+  const normalizedHome = normalizeTeamName(homeTeam);
+  const normalizedAway = normalizeTeamName(awayTeam);
+  return {
+    season,
+    league,
+    date: date || "",
+    homeTeam: normalizedHome,
+    awayTeam: normalizedAway,
+    label,
+    features: buildCurrentFeatureVector(league, normalizedHome, normalizedAway, odds, "2025-26").features,
+    sourceFile,
+  };
+}
+
+function fixtureTeamsFromText(fixture) {
+  const [homeTeam, awayTeam] = String(fixture || "").split(/\s+vs\s+/i);
+  if (!homeTeam || !awayTeam) return null;
+  return { homeTeam: normalizeTeamName(homeTeam), awayTeam: normalizeTeamName(awayTeam) };
+}
+
+function labelFromMatchPick(leg) {
+  const teams = fixtureTeamsFromText(leg.fixture);
+  if (!teams) return "";
+  if (String(leg.pick || "").trim().toLowerCase() === "draw") return "D";
+  const pickedTeam = normalizeTeamName(String(leg.pick || "").replace(/\s+win$/i, "").trim());
+  if (pickedTeam === teams.homeTeam) return "H";
+  if (pickedTeam === teams.awayTeam) return "A";
+  return "";
+}
+
+function manualBacktestTrainingRows() {
   if (!fs.existsSync(BACKTEST_PATH)) return [];
   const store = JSON.parse(fs.readFileSync(BACKTEST_PATH, "utf8"));
 
@@ -31,6 +74,68 @@ function feedbackTrainingRows() {
         sourceFile: "backtest-feedback",
       };
     });
+}
+
+function playedResultTrainingRows() {
+  if (!fs.existsSync(PLAYED_RESULTS_PATH)) return [];
+  const store = JSON.parse(fs.readFileSync(PLAYED_RESULTS_PATH, "utf8").replace(/^\uFEFF/, ""));
+  return (store.results || [])
+    .map((entry) => ({
+      entry,
+      label: actualResultCode(entry.homeGoals, entry.awayGoals),
+    }))
+    .filter(({ entry, label }) => entry.league && entry.homeTeam && entry.awayTeam && ["H", "D", "A"].includes(label))
+    .map(({ entry, label }) =>
+      featureFeedbackRow({
+        league: entry.league,
+        date: entry.date,
+        homeTeam: entry.homeTeam,
+        awayTeam: entry.awayTeam,
+        label,
+        sourceFile: "verified-played-result-feedback",
+      })
+    );
+}
+
+function parlayBacktestTrainingRows() {
+  if (!fs.existsSync(PARLAY_BACKTEST_PATH)) return [];
+  const store = JSON.parse(fs.readFileSync(PARLAY_BACKTEST_PATH, "utf8"));
+  const rows = [];
+
+  for (const parlay of store.parlays || []) {
+    for (const leg of parlay.legs || []) {
+      if (leg.status !== "HIT") continue;
+      if (!["match", "score"].includes(leg.type)) continue;
+      const teams = fixtureTeamsFromText(leg.fixture);
+      if (!teams || !leg.league) continue;
+      const label =
+        leg.type === "score"
+          ? actualResultCode(leg.homeGoals, leg.awayGoals)
+          : labelFromMatchPick(leg);
+      if (!["H", "D", "A"].includes(label)) continue;
+      rows.push(
+        featureFeedbackRow({
+          league: leg.league,
+          date: leg.date || parlay.settledAt || "",
+          homeTeam: teams.homeTeam,
+          awayTeam: teams.awayTeam,
+          label,
+          sourceFile: "parlay-hit-feedback",
+        })
+      );
+    }
+  }
+
+  return rows;
+}
+
+function feedbackTrainingRows() {
+  const byFixture = new Map();
+  for (const row of [...parlayBacktestTrainingRows(), ...manualBacktestTrainingRows(), ...playedResultTrainingRows()]) {
+    const key = [row.date, row.league, row.homeTeam, row.awayTeam].join("|").toLowerCase();
+    byFixture.set(key, row);
+  }
+  return [...byFixture.values()];
 }
 
 function splitRows(rows) {

@@ -132,7 +132,7 @@ Current training policy:
 - Holdout test season: partial `2025-26`
 - Model type: softmax logistic regression
 - Features: club form, match-stat rolling averages, clean-sheet rate, last-five form, pre-match odds, player goal/assist/shot/SOT strength, live table motivation, secured qualification flags, and manual record-motive fields
-- Backtest feedback: settled match and parlay results are saved and queued for continuous retraining
+- Backtest feedback: settled match results, verified played scores, and hit team-result/team-score parlay legs are saved and queued for continuous retraining
 
 Latest retrain artifacts:
 
@@ -181,6 +181,7 @@ The web app supports:
 - Hit, miss, and void backtesting for parlay legs
 - Shared pick settlement across parlays when the same pick appears more than once
 - Excluding already-played fixtures from newly generated parlays
+- Server refresh persistence: tracked parlay leg results are stored in `data/parlay_backtests.json`, played match scores are stored in `data/played_results.json` or `data/backtests.json`, and those files are reread after restart. Any settled fixture from those stores is removed from new fixture predictions and generated parlays.
 - Motivation-aware score and player props using table stakes, home/away context, head-to-head context, recent form, and player-season stats
 - Date sorting and draw-risk sorting on the fixture board
 - Parlay mode selection: mixed player/team, team-only, or player-only

@@ -6,6 +6,8 @@ const { fixtureSignatureFromFixture, playedFixtureKeys } = require("./parlayBack
 
 const FBREF_JSON_PATH = path.join(process.cwd(), "data", "fbref", "processed", "fbref_player_stats.json");
 const FBREF_RAW_DIR = path.join(process.cwd(), "data", "fbref", "raw");
+const BACKTEST_PATH = path.join(process.cwd(), "data", "backtests.json");
+const PLAYED_RESULTS_PATH = path.join(process.cwd(), "data", "played_results.json");
 
 const PLAYER_NAME_CORRECTIONS = new Map([
   ["alejandro gamacho", "Alejandro Garnacho"],
@@ -58,6 +60,25 @@ function playerSource(player) {
 function cleanPlayerName(name) {
   const key = String(name || "").trim().toLowerCase();
   return PLAYER_NAME_CORRECTIONS.get(key) || String(name || "").trim();
+}
+
+function readJsonFile(filePath, fallback) {
+  if (!fs.existsSync(filePath)) return fallback;
+  return JSON.parse(fs.readFileSync(filePath, "utf8").replace(/^\uFEFF/, ""));
+}
+
+function settledFixtureKeys() {
+  const keys = new Set(playedFixtureKeys());
+  const backtests = readJsonFile(BACKTEST_PATH, { predictions: [] });
+  for (const prediction of backtests.predictions || []) {
+    if (prediction.status !== "SETTLED") continue;
+    keys.add(fixtureSignatureFromFixture(prediction));
+  }
+  const playedResults = readJsonFile(PLAYED_RESULTS_PATH, { results: [] });
+  for (const result of playedResults.results || []) {
+    keys.add(fixtureSignatureFromFixture(result));
+  }
+  return keys;
 }
 
 function teamMotivation(fixture, team) {
@@ -450,7 +471,7 @@ function buildParlays(options = {}) {
   const ticketCount = Math.max(1, Math.min(10, Number(options.tickets || 3)));
   const refreshSeed = Math.max(0, Number(options.refreshSeed || 0));
   const type = ["mixed", "teams", "players"].includes(options.type) ? options.type : "mixed";
-  const excludedFixtureKeys = playedFixtureKeys();
+  const excludedFixtureKeys = settledFixtureKeys();
   const allFixtures = fixturePredictionBoard().filter((fixture) => league === "All" || fixture.league === league);
   const fixtures = allFixtures.filter((fixture) => !excludedFixtureKeys.has(fixtureSignatureFromFixture(fixture)));
   const fbref = fbrefStatus();

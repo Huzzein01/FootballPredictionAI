@@ -922,9 +922,9 @@ parlayLedgerOutput.addEventListener("click", async (event) => {
     setParlayMessage(`Synced ${data.updated.affectedLegs} matching pick instances across ${data.updated.affectedParlays} parlay options.`, "info");
   }
   await refreshParlayLedger();
+  await refreshParlay();
   if (data.updated?.newlyMissedParlays > 0) {
     setParlayMessage(`Parlay missed. Retraining has started, and new parlay options were regenerated without ${data.updated.playedFixture?.fixture || "that played fixture"}.`, "info");
-    await refreshParlay();
   }
   await refreshFixtureBoard();
   await refreshPlayedBoard();

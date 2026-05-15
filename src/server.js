@@ -81,12 +81,21 @@ function storedPredictionMap() {
   return map;
 }
 
+function settledPredictionMap() {
+  return new Map(
+    listPredictions()
+      .filter((prediction) => prediction.status === "SETTLED")
+      .map((prediction) => [parlayBacktests.fixtureSignatureFromFixture(prediction), prediction])
+  );
+}
+
 function remainingFixturePredictions() {
   const playedKeys = parlayBacktests.playedFixtureKeys();
   const verifiedResults = verifiedPlayedResultMap();
+  const settledPredictions = settledPredictionMap();
   return fixturePredictionBoard().filter((prediction) => {
     const key = parlayBacktests.fixtureSignatureFromFixture(prediction);
-    return !playedKeys.has(key) && !verifiedResults.has(key);
+    return !playedKeys.has(key) && !verifiedResults.has(key) && !settledPredictions.has(key);
   });
 }
 
@@ -94,18 +103,28 @@ function playedFixturePredictions() {
   const summaries = new Map(parlayBacktests.playedFixtureSummaries().map((summaryItem) => [summaryItem.key, summaryItem]));
   const verifiedResults = verifiedPlayedResultMap();
   const storedPredictions = storedPredictionMap();
+  const settledPredictions = settledPredictionMap();
   return fixturePredictionBoard()
     .map((prediction) => {
       const key = parlayBacktests.fixtureSignatureFromFixture(prediction);
-      const originalPrediction = storedPredictions.get(key) || prediction;
+      const originalPrediction = settledPredictions.get(key) || storedPredictions.get(key) || prediction;
       const parlaySummary = summaries.get(key) || null;
       const verified = verifiedResults.get(key) || null;
-      if (!parlaySummary && !verified) return { prediction, played: null };
-      const homeGoals = verified ? Number(verified.homeGoals) : null;
-      const awayGoals = verified ? Number(verified.awayGoals) : null;
-      const actualResult = verified ? actualResultCode(homeGoals, awayGoals) : null;
-      const modelCorrect = verified ? originalPrediction.prediction === actualResult : parlaySummary.modelCorrect;
-      const exactScoreCorrect = verified ? String(originalPrediction.projectedScore || "").trim() === `${homeGoals}-${awayGoals}` : null;
+      const settled = settledPredictions.get(key) || null;
+      if (!parlaySummary && !verified && !settled) return { prediction, played: null };
+      const homeGoals = verified ? Number(verified.homeGoals) : settled ? Number(settled.homeGoals) : null;
+      const awayGoals = verified ? Number(verified.awayGoals) : settled ? Number(settled.awayGoals) : null;
+      const actualResult = verified ? actualResultCode(homeGoals, awayGoals) : settled ? settled.actualResult : null;
+      const modelCorrect = verified
+        ? originalPrediction.prediction === actualResult
+        : settled
+        ? settled.correct
+        : parlaySummary.modelCorrect;
+      const exactScoreCorrect = verified
+        ? String(originalPrediction.projectedScore || "").trim() === `${homeGoals}-${awayGoals}`
+        : settled
+        ? settled.scoreCorrect
+        : null;
       return {
         prediction: originalPrediction,
         played: {
@@ -128,9 +147,15 @@ function playedFixturePredictions() {
           modelCorrect,
           exactScoreCorrect,
           originalCreatedAt: originalPrediction.createdAt || "",
-          sourceName: verified?.sourceName || "",
+          sourceName: verified?.sourceName || (settled ? "Fixture backtest ledger" : ""),
           sourceUrl: verified?.sourceUrl || "",
           statusLabel: verified
+            ? modelCorrect
+              ? exactScoreCorrect
+                ? "Pick and score correct"
+                : "Pick correct, score missed"
+              : "Pick missed"
+            : settled
             ? modelCorrect
               ? exactScoreCorrect
                 ? "Pick and score correct"
@@ -246,8 +271,8 @@ async function handleApi(req, res, pathname) {
     const body = await readBody(req);
     const updated = parlayBacktests.updateLeg(parlayLegMatch[1], parlayLegMatch[2], body.status);
     if (!updated) return sendJson(res, 404, { error: "Parlay or leg not found" });
-    if (updated.newlyMissedParlays > 0) {
-      scheduleRetrain("parlay-missed-feedback");
+    if (["HIT", "MISS"].includes(String(body.status || "").toUpperCase())) {
+      scheduleRetrain(updated.newlyMissedParlays > 0 ? "parlay-missed-feedback" : "parlay-leg-feedback");
     }
     return sendJson(res, 200, { updated, summary: parlayBacktests.summary() });
   }
