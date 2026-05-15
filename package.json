@@ -1,0 +1,16 @@
+{
+  "scripts": {
+    "build:dataset": "node generate_football_dataset.js",
+    "fetch:fbref": "node scripts/fetch_fbref_player_stats.js",
+    "import:fbref": "node scripts/import_fbref_player_stats.js",
+    "import:screenshots": "node scripts/import_screenshot_player_stats.js",
+    "import:thunderbit": "node scripts/import_thunderbit_player_stats.js",
+    "update:league-context": "node scripts/update_league_context.js",
+    "train": "node src/train_model.js",
+    "predict": "node src/predict.js",
+    "start": "node src/server.js"
+  },
+  "dependencies": {
+    "xlsx": "^0.18.5"
+  }
+}

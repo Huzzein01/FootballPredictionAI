@@ -1,0 +1,239 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Football Prediction Board</title>
+    <link rel="stylesheet" href="/styles.css">
+  </head>
+  <body>
+    <header class="topbar">
+      <div>
+        <p class="eyebrow">Football Prediction AI</p>
+        <h1>Fixture Prediction Board</h1>
+        <p id="modelMeta" class="meta-line">Loading model status</p>
+      </div>
+      <div class="topbar-right">
+        <label class="theme-control">
+          Theme
+          <select id="themeSelect" aria-label="Theme mode">
+            <option value="adaptive">Adaptive</option>
+            <option value="dark">Dark</option>
+            <option value="light">Light</option>
+          </select>
+        </label>
+        <div class="summary" aria-label="Backtest summary">
+          <span><strong id="totalCount">0</strong> total</span>
+          <span><strong id="pendingCount">0</strong> pending</span>
+          <span><strong id="accuracyCount">0.0%</strong> pick accuracy</span>
+          <span><strong id="scoreAccuracyCount">0.0%</strong> score accuracy</span>
+        </div>
+      </div>
+    </header>
+
+    <main class="dashboard">
+      <section class="panel board-panel" aria-labelledby="boardHeading">
+        <div class="section-head board-head">
+          <div>
+            <h2 id="boardHeading">Remaining Fixtures</h2>
+            <p id="boardStatus" class="muted">Loading predictions</p>
+          </div>
+          <button id="trackAllButton" class="primary" type="button">Track All Predictions</button>
+        </div>
+
+        <div class="board-controls" aria-label="Fixture filters">
+          <label>
+            League
+            <select id="boardLeagueFilter">
+              <option value="All">All leagues</option>
+            </select>
+          </label>
+          <div class="board-stats" aria-label="Fixture prediction summary">
+            <span><strong id="boardTotal">0</strong> fixtures</span>
+            <span><strong id="boardWithOdds">0</strong> with odds</span>
+            <span><strong id="boardModelOnly">0</strong> model only</span>
+          </div>
+        </div>
+
+        <div id="boardMessage" class="board-message" aria-live="polite"></div>
+        <div id="fixtureBoard" class="fixture-board" aria-live="polite"></div>
+      </section>
+
+      <section class="panel played-panel" aria-labelledby="playedHeading">
+        <div class="section-head board-head">
+          <div>
+            <h2 id="playedHeading">Matches Played</h2>
+            <p id="playedStatus" class="muted">Loading settled fixture results</p>
+          </div>
+          <button id="refreshPlayedButton" type="button">Refresh Played</button>
+        </div>
+
+        <div class="board-controls" aria-label="Played fixture filters">
+          <label>
+            League
+            <select id="playedLeagueFilter">
+              <option value="All">All leagues</option>
+            </select>
+          </label>
+          <div class="board-stats" aria-label="Played fixture summary">
+            <span><strong id="playedTotal">0</strong> played</span>
+            <span><strong id="playedCorrect">0</strong> correct</span>
+            <span><strong id="playedWrong">0</strong> wrong</span>
+            <span><strong id="playedExact">0</strong> exact score</span>
+            <span><strong id="playedVoided">0</strong> voided</span>
+          </div>
+        </div>
+
+        <div id="playedBoard" class="fixture-board played-board" aria-live="polite"></div>
+      </section>
+
+      <section class="panel parlay-panel" aria-labelledby="parlayHeading">
+        <div class="section-head">
+          <div>
+            <h2 id="parlayHeading">Multi-Leg Parlay Builder</h2>
+            <p id="parlayStatus" class="muted">Loading FBref-backed player props</p>
+          </div>
+          <button id="refreshParlayButton" type="button">Refresh Parlay</button>
+          <button id="trackParlaysButton" class="primary" type="button">Track Generated Parlays</button>
+        </div>
+
+        <div class="parlay-controls" aria-label="Parlay controls">
+          <label>
+            League
+            <select id="parlayLeagueFilter">
+              <option value="All">All leagues</option>
+              <option value="EPL">EPL</option>
+              <option value="La Liga">La Liga</option>
+              <option value="Bundesliga">Bundesliga</option>
+              <option value="Ligue 1">Ligue 1</option>
+            </select>
+          </label>
+          <label>
+            Legs
+            <select id="parlayLegCount">
+              <option value="3">3 legs</option>
+              <option value="5">5 legs</option>
+              <option value="10" selected>10 legs</option>
+              <option value="15">15 legs</option>
+              <option value="20">20 legs</option>
+            </select>
+          </label>
+          <label>
+            Tickets
+            <select id="parlayTicketCount">
+              <option value="2">2 options</option>
+              <option value="3" selected>3 options</option>
+              <option value="5">5 options</option>
+              <option value="10">10 options</option>
+            </select>
+          </label>
+          <div class="board-stats" aria-label="FBref status">
+            <span><strong id="fbrefRows">0</strong> FBref rows</span>
+            <span><strong id="fbrefPlayers">0</strong> players</span>
+            <span><strong id="playerLegCount">0</strong> player legs</span>
+            <span><strong id="teamScoreLegCount">0</strong> score legs</span>
+          </div>
+        </div>
+
+        <div id="parlayMessage" class="board-message" aria-live="polite"></div>
+        <div id="parlayOutput" class="parlay-output" aria-live="polite"></div>
+      </section>
+
+      <section class="panel parlay-ledger-panel" aria-labelledby="parlayLedgerHeading">
+        <div class="section-head">
+          <div>
+            <h2 id="parlayLedgerHeading">Parlay Backtest Ledger</h2>
+            <p id="parlayLedgerStatus" class="muted">Mark each leg after real-life results are known</p>
+          </div>
+          <button id="refreshParlayLedgerButton" type="button">Refresh Parlays</button>
+        </div>
+        <div id="parlayAccuracyStats" class="accuracy-stats" aria-label="Parlay accuracy summary"></div>
+        <div id="parlayLedgerOutput" class="parlay-ledger-output" aria-live="polite"></div>
+      </section>
+
+      <section class="panel single-panel" aria-labelledby="singleHeading">
+        <details>
+          <summary id="singleHeading">Single Match Predictor</summary>
+          <form id="predictForm" class="grid-form">
+            <label>
+              League
+              <select name="league" id="leagueSelect">
+                <option value="EPL">EPL</option>
+                <option value="La Liga">La Liga</option>
+                <option value="Bundesliga">Bundesliga</option>
+                <option value="Ligue 1">Ligue 1</option>
+              </select>
+            </label>
+            <label>
+              Season
+              <select name="season">
+                <option value="2025-26">2025-26</option>
+                <option value="2024-25">2024-25</option>
+                <option value="2023-24">2023-24</option>
+              </select>
+            </label>
+            <label>
+              Fixture date
+              <input name="date" type="date">
+            </label>
+            <label>
+              Home team
+              <input name="homeTeam" list="teamList" value="Man United" required>
+            </label>
+            <label>
+              Away team
+              <input name="awayTeam" list="teamList" value="Chelsea" required>
+            </label>
+            <label>
+              Home odds
+              <input name="homeOdds" type="text" inputmode="decimal" placeholder="2.40">
+            </label>
+            <label>
+              Draw odds
+              <input name="drawOdds" type="text" inputmode="decimal" placeholder="3.50">
+            </label>
+            <label>
+              Away odds
+              <input name="awayOdds" type="text" inputmode="decimal" placeholder="2.90">
+            </label>
+            <label class="checkline">
+              <input name="save" type="checkbox" checked>
+              Save to backtest
+            </label>
+            <button class="primary" type="submit">Predict Match</button>
+          </form>
+          <datalist id="teamList"></datalist>
+          <div id="predictionOutput" class="prediction-output" aria-live="polite"></div>
+        </details>
+      </section>
+
+      <section class="ledger panel" aria-labelledby="ledgerHeading">
+        <div class="section-head">
+          <div>
+            <h2 id="ledgerHeading">Backtest Ledger</h2>
+            <p class="muted">Settle each fixture after the final score is known</p>
+          </div>
+          <button id="refreshButton" type="button">Refresh</button>
+        </div>
+        <div class="table-wrap">
+          <table>
+            <thead>
+              <tr>
+                <th>Date</th>
+                <th>Fixture</th>
+                <th>Pick</th>
+                <th>Score</th>
+                <th>Confidence</th>
+                <th>Result</th>
+                <th>Status</th>
+              </tr>
+            </thead>
+            <tbody id="ledgerBody"></tbody>
+          </table>
+        </div>
+      </section>
+    </main>
+
+    <script src="/app.js"></script>
+  </body>
+</html>
