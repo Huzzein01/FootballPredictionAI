@@ -35,12 +35,8 @@ const parlayMessage = document.querySelector("#parlayMessage");
 const parlayOutput = document.querySelector("#parlayOutput");
 const parlayLedgerOutput = document.querySelector("#parlayLedgerOutput");
 const parlayLedgerStatus = document.querySelector("#parlayLedgerStatus");
-const parlayLedgerDateFilter = document.querySelector("#parlayLedgerDateFilter");
-const clearParlayLedgerDateButton = document.querySelector("#clearParlayLedgerDateButton");
 const parlayAccuracyStats = document.querySelector("#parlayAccuracyStats");
 const refreshParlayLedgerButton = document.querySelector("#refreshParlayLedgerButton");
-const ledgerDateFilter = document.querySelector("#ledgerDateFilter");
-const clearLedgerDateButton = document.querySelector("#clearLedgerDateButton");
 const pageTabs = [...document.querySelectorAll("[data-page-target]")];
 const pageSections = [...document.querySelectorAll("[data-page]")];
 
@@ -696,13 +692,7 @@ function renderParlayLedger(data = trackedParlayData) {
   trackedParlayData = data;
   const parlays = data.parlays || [];
   const summary = data.summary || {};
-  const selectedDate = parlayLedgerDateFilter.value;
-  const visibleParlays = selectedDate
-    ? parlays
-        .map((parlay) => ({ ...parlay, visibleLegs: (parlay.legs || []).filter((leg) => leg.date === selectedDate) }))
-        .filter((parlay) => parlay.visibleLegs.length)
-    : parlays.map((parlay) => ({ ...parlay, visibleLegs: parlay.legs || [] }));
-  parlayLedgerStatus.textContent = `${visibleParlays.length} of ${summary.total || 0} tracked tickets shown${selectedDate ? ` on ${selectedDate}` : ""} | ${summary.pending || 0} pending | ${summary.voids || 0} void | ${summary.legVoids || 0} DNP/void legs`;
+  parlayLedgerStatus.textContent = `${summary.total || 0} tracked tickets | ${summary.pending || 0} pending | ${summary.voids || 0} void | ${summary.legVoids || 0} DNP/void legs`;
   parlayAccuracyStats.innerHTML = `
     <span>
       <strong>${percent(summary.ticketHitRate)}</strong>
@@ -726,24 +716,24 @@ function renderParlayLedger(data = trackedParlayData) {
     </span>
   `;
 
-  if (!visibleParlays.length) {
-    parlayLedgerOutput.innerHTML = `<div class="empty-state">${parlays.length ? "No tracked parlay legs match this date." : "No parlays tracked yet. Generate options above, then use Track this option or Track Generated Parlays. Hit/Miss buttons appear here once a ticket is tracked."}</div>`;
+  if (!parlays.length) {
+    parlayLedgerOutput.innerHTML = `<div class="empty-state">No parlays tracked yet. Generate options above, then use Track this option or Track Generated Parlays. Hit/Miss buttons appear here once a ticket is tracked.</div>`;
     return;
   }
 
-  parlayLedgerOutput.innerHTML = visibleParlays
+  parlayLedgerOutput.innerHTML = parlays
     .map(
       (parlay) => `
         <article class="tracked-parlay status-${parlay.status}">
           <div class="ticket-head">
             <div>
               <h3>${escapeHtml(parlay.name)}</h3>
-              <p class="muted">${parlay.visibleLegs.length}${selectedDate ? ` of ${parlay.legs.length}` : ""} legs | ${escapeHtml(parlay.status)} | created ${new Date(parlay.createdAt).toLocaleString()}</p>
+              <p class="muted">${parlay.legs.length} legs | ${escapeHtml(parlay.status)} | created ${new Date(parlay.createdAt).toLocaleString()}</p>
             </div>
             <span class="ticket-result">${escapeHtml(parlay.status)}</span>
           </div>
           <ol class="tracked-leg-list">
-            ${parlay.visibleLegs.map((leg, index) => renderTrackedLeg(parlay.id, leg, index + 1)).join("")}
+            ${parlay.legs.map((leg, index) => renderTrackedLeg(parlay.id, leg, index + 1)).join("")}
           </ol>
         </article>
       `
@@ -785,14 +775,12 @@ function scoreCorrect(item) {
 }
 
 function renderLedger(predictions = ledgerPredictions) {
-  const selectedDate = ledgerDateFilter.value;
-  const filtered = selectedDate ? predictions.filter((item) => item.date === selectedDate) : predictions;
-  if (!filtered.length) {
-    ledgerBody.innerHTML = `<tr><td colspan="7" class="muted">${predictions.length ? "No ledger predictions match this date." : "No predictions saved yet."}</td></tr>`;
+  if (!predictions.length) {
+    ledgerBody.innerHTML = `<tr><td colspan="7" class="muted">No predictions saved yet.</td></tr>`;
     return;
   }
 
-  ledgerBody.innerHTML = filtered
+  ledgerBody.innerHTML = predictions
     .map((item) => {
       const status =
         item.status === "SETTLED"
@@ -830,10 +818,8 @@ function renderLedger(predictions = ledgerPredictions) {
 }
 
 async function refreshLedger() {
-  const previousDate = ledgerDateFilter.value;
   const data = await api("/api/backtests");
   ledgerPredictions = data.predictions || [];
-  syncDateFilter(ledgerDateFilter, uniqueSortedDates(ledgerPredictions), previousDate);
   updateSummary(data.summary);
   renderLedger();
 }
@@ -886,11 +872,8 @@ async function refreshParlay({ forceNew = false } = {}) {
 }
 
 async function refreshParlayLedger() {
-  const previousDate = parlayLedgerDateFilter.value;
   const data = await api("/api/parlay-backtests");
   trackedParlayData = data;
-  const dates = uniqueSortedDates((data.parlays || []).flatMap((parlay) => parlay.legs || []));
-  syncDateFilter(parlayLedgerDateFilter, dates, previousDate);
   renderParlayLedger();
 }
 
@@ -1027,16 +1010,6 @@ parlayTicketCount.addEventListener("change", () => refreshParlay({ forceNew: tru
 parlayTypeSelect.addEventListener("change", () => refreshParlay({ forceNew: true }));
 parlaySortSelect.addEventListener("change", renderParlayTickets);
 refreshParlayLedgerButton.addEventListener("click", refreshParlayLedger);
-parlayLedgerDateFilter.addEventListener("change", () => renderParlayLedger());
-clearParlayLedgerDateButton.addEventListener("click", () => {
-  parlayLedgerDateFilter.value = "";
-  renderParlayLedger();
-});
-ledgerDateFilter.addEventListener("change", () => renderLedger());
-clearLedgerDateButton.addEventListener("click", () => {
-  ledgerDateFilter.value = "";
-  renderLedger();
-});
 pageTabs.forEach((tab) => {
   tab.addEventListener("click", () => showPage(tab.dataset.pageTarget));
 });
