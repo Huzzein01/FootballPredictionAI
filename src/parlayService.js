@@ -471,8 +471,13 @@ function buildParlays(options = {}) {
   const ticketCount = Math.max(1, Math.min(10, Number(options.tickets || 3)));
   const refreshSeed = Math.max(0, Number(options.refreshSeed || 0));
   const type = ["mixed", "teams", "players"].includes(options.type) ? options.type : "mixed";
+  const date = String(options.date || "").trim();
   const excludedFixtureKeys = settledFixtureKeys();
-  const allFixtures = fixturePredictionBoard().filter((fixture) => league === "All" || fixture.league === league);
+  const allFixtures = fixturePredictionBoard().filter((fixture) => {
+    const leagueMatches = league === "All" || fixture.league === league;
+    const dateMatches = !date || fixture.date === date;
+    return leagueMatches && dateMatches;
+  });
   const fixtures = allFixtures.filter((fixture) => !excludedFixtureKeys.has(fixtureSignatureFromFixture(fixture)));
   const fbref = fbrefStatus();
   const players = aggregatePlayers(loadFbrefRows());
@@ -498,7 +503,7 @@ function buildParlays(options = {}) {
 
   return {
     fbref,
-    filters: { league, requestedLegs, ticketCount, type, refreshSeed },
+    filters: { league, date, requestedLegs, ticketCount, type, refreshSeed },
     excludedFixtureCount: allFixtures.length - fixtures.length,
     availableFixtureCount: fixtures.length,
     playerCandidateCount: eligiblePlayerLegs.length,

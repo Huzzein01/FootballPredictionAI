@@ -18,9 +18,13 @@ const trackAllButton = document.querySelector("#trackAllButton");
 const playedBoard = document.querySelector("#playedBoard");
 const playedStatus = document.querySelector("#playedStatus");
 const playedLeagueFilter = document.querySelector("#playedLeagueFilter");
+const playedDateFilter = document.querySelector("#playedDateFilter");
+const clearPlayedDateButton = document.querySelector("#clearPlayedDateButton");
 const refreshPlayedButton = document.querySelector("#refreshPlayedButton");
 const parlayStatus = document.querySelector("#parlayStatus");
 const parlayLeagueFilter = document.querySelector("#parlayLeagueFilter");
+const parlayDateFilter = document.querySelector("#parlayDateFilter");
+const clearParlayDateButton = document.querySelector("#clearParlayDateButton");
 const parlayLegCount = document.querySelector("#parlayLegCount");
 const parlayTicketCount = document.querySelector("#parlayTicketCount");
 const parlayTypeSelect = document.querySelector("#parlayTypeSelect");
@@ -31,8 +35,12 @@ const parlayMessage = document.querySelector("#parlayMessage");
 const parlayOutput = document.querySelector("#parlayOutput");
 const parlayLedgerOutput = document.querySelector("#parlayLedgerOutput");
 const parlayLedgerStatus = document.querySelector("#parlayLedgerStatus");
+const parlayLedgerDateFilter = document.querySelector("#parlayLedgerDateFilter");
+const clearParlayLedgerDateButton = document.querySelector("#clearParlayLedgerDateButton");
 const parlayAccuracyStats = document.querySelector("#parlayAccuracyStats");
 const refreshParlayLedgerButton = document.querySelector("#refreshParlayLedgerButton");
+const ledgerDateFilter = document.querySelector("#ledgerDateFilter");
+const clearLedgerDateButton = document.querySelector("#clearLedgerDateButton");
 const pageTabs = [...document.querySelectorAll("[data-page-target]")];
 const pageSections = [...document.querySelectorAll("[data-page]")];
 
@@ -40,6 +48,8 @@ let meta = null;
 let fixturePredictions = [];
 let playedPredictions = [];
 let currentParlays = [];
+let trackedParlayData = { parlays: [], summary: {} };
+let ledgerPredictions = [];
 let parlayRefreshSeed = 0;
 
 const CENTRAL_TIME_ZONE = "America/Chicago";
@@ -168,6 +178,16 @@ function escapeHtml(value) {
     .replaceAll(">", "&gt;")
     .replaceAll("\"", "&quot;")
     .replaceAll("'", "&#039;");
+}
+
+function uniqueSortedDates(items, dateGetter = (item) => item.date) {
+  return [...new Set(items.map(dateGetter).filter(Boolean))].sort();
+}
+
+function syncDateFilter(input, dates, previousValue = input.value) {
+  input.min = dates[0] || "";
+  input.max = dates[dates.length - 1] || "";
+  input.value = previousValue && dates.includes(previousValue) ? previousValue : "";
 }
 
 function displayTeam(team) {
@@ -436,7 +456,12 @@ function actualResultText(prediction) {
 
 function renderPlayedBoard() {
   const selectedLeague = playedLeagueFilter.value;
-  const filtered = selectedLeague === "All" ? playedPredictions : playedPredictions.filter((prediction) => prediction.league === selectedLeague);
+  const selectedDate = playedDateFilter.value;
+  const filtered = playedPredictions.filter((prediction) => {
+    const leagueMatches = selectedLeague === "All" || prediction.league === selectedLeague;
+    const dateMatches = !selectedDate || prediction.date === selectedDate;
+    return leagueMatches && dateMatches;
+  });
   const correct = playedPredictions.filter((prediction) => prediction.played?.modelCorrect === true).length;
   const wrong = playedPredictions.filter((prediction) => prediction.played?.modelCorrect === false).length;
   const voided = playedPredictions.filter((prediction) => prediction.played?.modelCorrect === null).length;
@@ -447,7 +472,7 @@ function renderPlayedBoard() {
   document.querySelector("#playedWrong").textContent = wrong;
   document.querySelector("#playedExact").textContent = exact;
   document.querySelector("#playedVoided").textContent = voided;
-  playedStatus.textContent = `${filtered.length} played match${filtered.length === 1 ? "" : "es"} shown`;
+  playedStatus.textContent = `${filtered.length} played match${filtered.length === 1 ? "" : "es"} shown${selectedDate ? ` on ${selectedDate}` : ""}`;
 
   if (!filtered.length) {
     playedBoard.innerHTML = `<div class="empty-state">No played fixtures have been settled from parlays yet.</div>`;
@@ -547,13 +572,14 @@ function renderParlay(data) {
   const parlays = data.parlays?.length ? data.parlays : data.parlay?.legs?.length ? [data.parlay] : [];
   const legs = parlays.flatMap((parlay) => parlay.legs || []);
   currentParlays = parlays;
+  const selectedDate = parlayDateFilter.value;
 
   document.querySelector("#fbrefRows").textContent = fbref.processedRows || 0;
   document.querySelector("#fbrefPlayers").textContent = fbref.players || 0;
   document.querySelector("#playerLegCount").textContent = data.playerCandidateCount || 0;
   document.querySelector("#teamScoreLegCount").textContent = data.teamScoreCandidateCount || 0;
   parlayStatus.textContent = fbref.hasPlayerStats
-    ? `Using imported FBref stats from ${fbref.seasons.join(", ") || "local files"} | ${data.availableFixtureCount || 0} fixtures available | ${data.excludedFixtureCount || 0} played excluded`
+    ? `Using imported FBref stats from ${fbref.seasons.join(", ") || "local files"} | ${data.availableFixtureCount || 0} fixtures available${selectedDate ? ` on ${selectedDate}` : ""} | ${data.excludedFixtureCount || 0} played excluded`
     : "Waiting for imported FBref player stats";
 
   setParlayMessage(data.parlay?.note || "", fbref.hasPlayerStats ? "info" : "error");
@@ -666,10 +692,17 @@ function renderLegCard(leg) {
   `;
 }
 
-function renderParlayLedger(data) {
+function renderParlayLedger(data = trackedParlayData) {
+  trackedParlayData = data;
   const parlays = data.parlays || [];
   const summary = data.summary || {};
-  parlayLedgerStatus.textContent = `${summary.total || 0} tracked tickets | ${summary.pending || 0} pending | ${summary.voids || 0} void | ${summary.legVoids || 0} DNP/void legs`;
+  const selectedDate = parlayLedgerDateFilter.value;
+  const visibleParlays = selectedDate
+    ? parlays
+        .map((parlay) => ({ ...parlay, visibleLegs: (parlay.legs || []).filter((leg) => leg.date === selectedDate) }))
+        .filter((parlay) => parlay.visibleLegs.length)
+    : parlays.map((parlay) => ({ ...parlay, visibleLegs: parlay.legs || [] }));
+  parlayLedgerStatus.textContent = `${visibleParlays.length} of ${summary.total || 0} tracked tickets shown${selectedDate ? ` on ${selectedDate}` : ""} | ${summary.pending || 0} pending | ${summary.voids || 0} void | ${summary.legVoids || 0} DNP/void legs`;
   parlayAccuracyStats.innerHTML = `
     <span>
       <strong>${percent(summary.ticketHitRate)}</strong>
@@ -693,24 +726,24 @@ function renderParlayLedger(data) {
     </span>
   `;
 
-  if (!parlays.length) {
-    parlayLedgerOutput.innerHTML = `<div class="empty-state">No parlays tracked yet. Generate options above, then use Track this option or Track Generated Parlays. Hit/Miss buttons appear here once a ticket is tracked.</div>`;
+  if (!visibleParlays.length) {
+    parlayLedgerOutput.innerHTML = `<div class="empty-state">${parlays.length ? "No tracked parlay legs match this date." : "No parlays tracked yet. Generate options above, then use Track this option or Track Generated Parlays. Hit/Miss buttons appear here once a ticket is tracked."}</div>`;
     return;
   }
 
-  parlayLedgerOutput.innerHTML = parlays
+  parlayLedgerOutput.innerHTML = visibleParlays
     .map(
       (parlay) => `
         <article class="tracked-parlay status-${parlay.status}">
           <div class="ticket-head">
             <div>
               <h3>${escapeHtml(parlay.name)}</h3>
-              <p class="muted">${parlay.legs.length} legs | ${escapeHtml(parlay.status)} | created ${new Date(parlay.createdAt).toLocaleString()}</p>
+              <p class="muted">${parlay.visibleLegs.length}${selectedDate ? ` of ${parlay.legs.length}` : ""} legs | ${escapeHtml(parlay.status)} | created ${new Date(parlay.createdAt).toLocaleString()}</p>
             </div>
             <span class="ticket-result">${escapeHtml(parlay.status)}</span>
           </div>
           <ol class="tracked-leg-list">
-            ${parlay.legs.map((leg, index) => renderTrackedLeg(parlay.id, leg, index + 1)).join("")}
+            ${parlay.visibleLegs.map((leg, index) => renderTrackedLeg(parlay.id, leg, index + 1)).join("")}
           </ol>
         </article>
       `
@@ -751,13 +784,15 @@ function scoreCorrect(item) {
   return String(item.projectedScore || "").trim() === `${item.homeGoals}-${item.awayGoals}`;
 }
 
-function renderLedger(predictions) {
-  if (!predictions.length) {
-    ledgerBody.innerHTML = `<tr><td colspan="7" class="muted">No predictions saved yet.</td></tr>`;
+function renderLedger(predictions = ledgerPredictions) {
+  const selectedDate = ledgerDateFilter.value;
+  const filtered = selectedDate ? predictions.filter((item) => item.date === selectedDate) : predictions;
+  if (!filtered.length) {
+    ledgerBody.innerHTML = `<tr><td colspan="7" class="muted">${predictions.length ? "No ledger predictions match this date." : "No predictions saved yet."}</td></tr>`;
     return;
   }
 
-  ledgerBody.innerHTML = predictions
+  ledgerBody.innerHTML = filtered
     .map((item) => {
       const status =
         item.status === "SETTLED"
@@ -795,9 +830,12 @@ function renderLedger(predictions) {
 }
 
 async function refreshLedger() {
+  const previousDate = ledgerDateFilter.value;
   const data = await api("/api/backtests");
+  ledgerPredictions = data.predictions || [];
+  syncDateFilter(ledgerDateFilter, uniqueSortedDates(ledgerPredictions), previousDate);
   updateSummary(data.summary);
-  renderLedger(data.predictions);
+  renderLedger();
 }
 
 async function refreshFixtureBoard() {
@@ -815,17 +853,22 @@ async function refreshFixtureBoard() {
   boardDateFilter.min = dates[0] || "";
   boardDateFilter.max = dates[dates.length - 1] || "";
   boardDateFilter.value = previousDate && dates.includes(previousDate) ? previousDate : "";
+  syncDateFilter(parlayDateFilter, dates, parlayDateFilter.value);
 
   renderBoard();
   setBoardMessage("", "info");
 }
 
 async function refreshPlayedBoard() {
+  const previousLeague = playedLeagueFilter.value;
+  const previousDate = playedDateFilter.value;
   const data = await api("/api/played-fixtures");
   playedPredictions = data.predictions || [];
 
   const leagues = [...new Set(playedPredictions.map((prediction) => prediction.league))].sort();
   playedLeagueFilter.innerHTML = `<option value="All">All leagues</option>${leagues.map((league) => `<option value="${escapeHtml(league)}">${escapeHtml(league)}</option>`).join("")}`;
+  playedLeagueFilter.value = leagues.includes(previousLeague) ? previousLeague : "All";
+  syncDateFilter(playedDateFilter, uniqueSortedDates(playedPredictions), previousDate);
 
   renderPlayedBoard();
 }
@@ -836,14 +879,19 @@ async function refreshParlay({ forceNew = false } = {}) {
   const legs = encodeURIComponent(parlayLegCount.value);
   const tickets = encodeURIComponent(parlayTicketCount.value);
   const type = encodeURIComponent(parlayTypeSelect.value);
+  const date = encodeURIComponent(parlayDateFilter.value);
   setParlayMessage(forceNew ? "Building a fresh parlay variation..." : "Building parlay from fixtures and imported player stats...", "info");
-  const data = await api(`/api/parlay?league=${league}&legs=${legs}&tickets=${tickets}&type=${type}&refreshSeed=${parlayRefreshSeed}`);
+  const data = await api(`/api/parlay?league=${league}&legs=${legs}&tickets=${tickets}&type=${type}&date=${date}&refreshSeed=${parlayRefreshSeed}`);
   renderParlay(data);
 }
 
 async function refreshParlayLedger() {
+  const previousDate = parlayLedgerDateFilter.value;
   const data = await api("/api/parlay-backtests");
-  renderParlayLedger(data);
+  trackedParlayData = data;
+  const dates = uniqueSortedDates((data.parlays || []).flatMap((parlay) => parlay.legs || []));
+  syncDateFilter(parlayLedgerDateFilter, dates, previousDate);
+  renderParlayLedger();
 }
 
 form.addEventListener("submit", async (event) => {
@@ -874,7 +922,10 @@ trackAllButton.addEventListener("click", async () => {
   trackAllButton.textContent = "Tracking...";
   setBoardMessage("Saving fixture-board predictions to the backtest ledger...", "info");
   try {
-    const data = await api("/api/fixture-predictions/backtest", { method: "POST", body: JSON.stringify({}) });
+    const data = await api("/api/fixture-predictions/backtest", {
+      method: "POST",
+      body: JSON.stringify({ league: boardLeagueFilter.value, date: boardDateFilter.value }),
+    });
     updateSummary(data.summary);
     await refreshLedger();
     setBoardMessage(data.saved.length ? `Added ${data.saved.length} predictions to the ledger.` : "These fixture-board predictions are already being tracked.", "info");
@@ -911,6 +962,11 @@ clearBoardDateButton.addEventListener("click", () => {
 });
 boardSortSelect.addEventListener("change", renderBoard);
 playedLeagueFilter.addEventListener("change", renderPlayedBoard);
+playedDateFilter.addEventListener("change", renderPlayedBoard);
+clearPlayedDateButton.addEventListener("click", () => {
+  playedDateFilter.value = "";
+  renderPlayedBoard();
+});
 refreshPlayedButton.addEventListener("click", refreshPlayedBoard);
 themeSelect.addEventListener("change", () => applyTheme(themeSelect.value));
 refreshParlayButton.addEventListener("click", () => refreshParlay({ forceNew: true }));
@@ -961,11 +1017,26 @@ trackParlaysButton.addEventListener("click", async () => {
   }
 });
 parlayLeagueFilter.addEventListener("change", () => refreshParlay({ forceNew: true }));
+parlayDateFilter.addEventListener("change", () => refreshParlay({ forceNew: true }));
+clearParlayDateButton.addEventListener("click", () => {
+  parlayDateFilter.value = "";
+  refreshParlay({ forceNew: true });
+});
 parlayLegCount.addEventListener("change", () => refreshParlay({ forceNew: true }));
 parlayTicketCount.addEventListener("change", () => refreshParlay({ forceNew: true }));
 parlayTypeSelect.addEventListener("change", () => refreshParlay({ forceNew: true }));
 parlaySortSelect.addEventListener("change", renderParlayTickets);
 refreshParlayLedgerButton.addEventListener("click", refreshParlayLedger);
+parlayLedgerDateFilter.addEventListener("change", () => renderParlayLedger());
+clearParlayLedgerDateButton.addEventListener("click", () => {
+  parlayLedgerDateFilter.value = "";
+  renderParlayLedger();
+});
+ledgerDateFilter.addEventListener("change", () => renderLedger());
+clearLedgerDateButton.addEventListener("click", () => {
+  ledgerDateFilter.value = "";
+  renderLedger();
+});
 pageTabs.forEach((tab) => {
   tab.addEventListener("click", () => showPage(tab.dataset.pageTarget));
 });

@@ -227,6 +227,7 @@ async function handleApi(req, res, pathname) {
       legs: url.searchParams.get("legs") || 10,
       tickets: url.searchParams.get("tickets") || 3,
       type: url.searchParams.get("type") || "mixed",
+      date: url.searchParams.get("date") || "",
       refreshSeed: url.searchParams.get("refreshSeed") || 0,
     }));
   }
@@ -242,7 +243,15 @@ async function handleApi(req, res, pathname) {
   }
 
   if (req.method === "POST" && pathname === "/api/fixture-predictions/backtest") {
-    const saved = addPredictionsIfMissing(remainingFixturePredictions(), "fixture-board");
+    const body = await readBody(req);
+    const league = body.league || "All";
+    const date = String(body.date || "").trim();
+    const predictions = remainingFixturePredictions().filter((prediction) => {
+      const leagueMatches = league === "All" || prediction.league === league;
+      const dateMatches = !date || prediction.date === date;
+      return leagueMatches && dateMatches;
+    });
+    const saved = addPredictionsIfMissing(predictions, "fixture-board");
     return sendJson(res, 200, { saved, summary: summary() });
   }
 

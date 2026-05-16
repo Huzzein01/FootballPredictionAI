@@ -99,6 +99,11 @@
               <option value="All">All leagues</option>
             </select>
           </label>
+          <label>
+            Date
+            <input id="playedDateFilter" type="date" aria-label="Filter played matches by date">
+          </label>
+          <button id="clearPlayedDateButton" type="button">All Dates</button>
           <div class="board-stats" aria-label="Played fixture summary">
             <span><strong id="playedTotal">0</strong> played</span>
             <span><strong id="playedCorrect">0</strong> correct</span>
@@ -132,6 +137,11 @@
               <option value="Ligue 1">Ligue 1</option>
             </select>
           </label>
+          <label>
+            Date
+            <input id="parlayDateFilter" type="date" aria-label="Build parlays from a specific fixture date">
+          </label>
+          <button id="clearParlayDateButton" type="button">All Dates</button>
           <label>
             Legs
             <select id="parlayLegCount">
@@ -188,6 +198,13 @@
           <button id="refreshParlayLedgerButton" type="button">Refresh Parlays</button>
         </div>
         <div id="parlayAccuracyStats" class="accuracy-stats" aria-label="Parlay accuracy summary"></div>
+        <div class="board-controls" aria-label="Parlay ledger filters">
+          <label>
+            Date
+            <input id="parlayLedgerDateFilter" type="date" aria-label="Filter tracked parlays by leg date">
+          </label>
+          <button id="clearParlayLedgerDateButton" type="button">All Dates</button>
+        </div>
         <div id="parlayLedgerOutput" class="parlay-ledger-output" aria-live="polite"></div>
       </section>
 
@@ -254,6 +271,13 @@
             <p class="muted">Settle each fixture after the final score is known</p>
           </div>
           <button id="refreshButton" type="button">Refresh</button>
+        </div>
+        <div class="board-controls" aria-label="Fixture ledger filters">
+          <label>
+            Date
+            <input id="ledgerDateFilter" type="date" aria-label="Filter fixture ledger by date">
+          </label>
+          <button id="clearLedgerDateButton" type="button">All Dates</button>
         </div>
         <div class="table-wrap">
           <table>
