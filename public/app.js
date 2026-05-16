@@ -11,6 +11,8 @@ const fixtureBoard = document.querySelector("#fixtureBoard");
 const boardMessage = document.querySelector("#boardMessage");
 const boardStatus = document.querySelector("#boardStatus");
 const boardLeagueFilter = document.querySelector("#boardLeagueFilter");
+const boardDateFilter = document.querySelector("#boardDateFilter");
+const clearBoardDateButton = document.querySelector("#clearBoardDateButton");
 const boardSortSelect = document.querySelector("#boardSortSelect");
 const trackAllButton = document.querySelector("#trackAllButton");
 const playedBoard = document.querySelector("#playedBoard");
@@ -335,15 +337,19 @@ function setParlayMessage(message, kind = "info") {
 
 function renderBoard() {
   const selectedLeague = boardLeagueFilter.value;
-  const filtered = sortFixturePredictions(
-    selectedLeague === "All" ? fixturePredictions : fixturePredictions.filter((prediction) => prediction.league === selectedLeague),
-    boardSortSelect.value
-  );
+  const selectedDate = boardDateFilter.value;
+  const filteredBase = fixturePredictions.filter((prediction) => {
+    const leagueMatches = selectedLeague === "All" || prediction.league === selectedLeague;
+    const dateMatches = !selectedDate || prediction.date === selectedDate;
+    return leagueMatches && dateMatches;
+  });
+  const filtered = sortFixturePredictions(filteredBase, boardSortSelect.value);
 
   document.querySelector("#boardTotal").textContent = fixturePredictions.length;
   document.querySelector("#boardWithOdds").textContent = fixturePredictions.filter((prediction) => prediction.hasOdds).length;
   document.querySelector("#boardModelOnly").textContent = fixturePredictions.filter((prediction) => !prediction.hasOdds).length;
-  boardStatus.textContent = `${filtered.length} fixture${filtered.length === 1 ? "" : "s"} shown`;
+  const dateText = selectedDate ? ` on ${selectedDate}` : "";
+  boardStatus.textContent = `${filtered.length} fixture${filtered.length === 1 ? "" : "s"} shown${dateText}`;
 
   if (!filtered.length) {
     fixtureBoard.innerHTML = `<div class="empty-state">No fixtures match this filter.</div>`;
@@ -796,11 +802,19 @@ async function refreshLedger() {
 
 async function refreshFixtureBoard() {
   setBoardMessage("Loading fixture predictions...", "info");
+  const previousLeague = boardLeagueFilter.value;
+  const previousDate = boardDateFilter.value;
   const data = await api("/api/fixture-predictions");
   fixturePredictions = data.predictions;
 
   const leagues = [...new Set(fixturePredictions.map((prediction) => prediction.league))].sort();
   boardLeagueFilter.innerHTML = `<option value="All">All leagues</option>${leagues.map((league) => `<option value="${escapeHtml(league)}">${escapeHtml(league)}</option>`).join("")}`;
+  boardLeagueFilter.value = leagues.includes(previousLeague) ? previousLeague : "All";
+
+  const dates = fixturePredictions.map((prediction) => prediction.date).filter(Boolean).sort();
+  boardDateFilter.min = dates[0] || "";
+  boardDateFilter.max = dates[dates.length - 1] || "";
+  boardDateFilter.value = previousDate && dates.includes(previousDate) ? previousDate : "";
 
   renderBoard();
   setBoardMessage("", "info");
@@ -890,6 +904,11 @@ ledgerBody.addEventListener("click", async (event) => {
 document.querySelector("#refreshButton").addEventListener("click", refreshLedger);
 leagueSelect.addEventListener("change", updateTeamList);
 boardLeagueFilter.addEventListener("change", renderBoard);
+boardDateFilter.addEventListener("change", renderBoard);
+clearBoardDateButton.addEventListener("click", () => {
+  boardDateFilter.value = "";
+  renderBoard();
+});
 boardSortSelect.addEventListener("change", renderBoard);
 playedLeagueFilter.addEventListener("change", renderPlayedBoard);
 refreshPlayedButton.addEventListener("click", refreshPlayedBoard);

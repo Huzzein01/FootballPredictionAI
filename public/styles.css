@@ -325,8 +325,14 @@ textarea:focus {
   outline: none;
 }
 
-.board-controls select {
+.board-controls select,
+.board-controls input[type="date"] {
   min-width: 180px;
+}
+
+.board-controls button {
+  align-self: end;
+  white-space: nowrap;
 }
 
 .board-stats {
