@@ -194,7 +194,7 @@ function main() {
     trainedAt: new Date().toISOString(),
     dataCoverage: "2020-21 through 2024-25 train/tune; 2025-26 partial holdout test",
     trainingPolicy:
-      "Club form/stat model with current-season player goal, assist, shot, and shot-on-target strength features when imported from Thunderbit/FBref screenshots or CSVs. Training rows include pre-match table context for title-race pressure, European-place pressure, relegation pressure, secured-title rotation risk, and dead-rubber risk. Current predictions use refreshed public league-table context when available. Settled backtest match results are added to the training split as feedback rows. Missing player-stat fields default to zero by club/season.",
+      "Club form/stat model with current-season player goal, assist, shot, and shot-on-target strength features when imported from Thunderbit/FBref screenshots, CSVs, or manual player-profile match entries. Training rows include pre-match table context for title-race pressure, European-place pressure, relegation pressure, secured-title rotation risk, and dead-rubber risk. Current predictions use refreshed public league-table context when available. Settled backtest match results are added to the training split as feedback rows. Manual goalkeeper saves are stored for profile tracking and future goalkeeper-specific feature work, while existing match features use attacking and chance-volume player totals. Missing player-stat fields default to zero by club/season.",
     feedbackRows: feedbackRows.length,
     hyperparameters: {
       learningRate: best.learningRate,

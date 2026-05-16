@@ -16,7 +16,7 @@ The Excel dataset includes matchday shots, shots on target, corners, goals, and 
 
 So the model builds pre-match rolling features: points per game, goals for/against, shots, shots on target, corners, clean-sheet rate, last-five form, and available pre-match market odds using only information available before the fixture being predicted.
 
-Current-season player features are now used when they have been imported from Thunderbit CSVs or the FBref screenshot/OCR pipeline. Missing player fields default to `0`, so clubs without imported player rows still produce predictions.
+Current-season player features are now used when they have been imported from Thunderbit CSVs, the FBref screenshot/OCR pipeline, or the manual Player Profiles page. Missing player fields default to `0`, so clubs without imported player rows still produce predictions.
 
 ## Saved Project Data
 
@@ -25,6 +25,7 @@ The project keeps the training inputs and derived files inside this folder:
 - `data/fbref/ocr`: OCR TSV output generated from the FBref screenshots provided in chat.
 - `data/fbref/processed/fbref_player_stats.json`: normalized player-season rows used by model features and player prop parlays.
 - `data/fbref/processed/fbref_player_stats.csv`: spreadsheet-friendly copy of the same player data.
+- `data/player_profile_updates.json`: manual match-by-match player stat entries from the Player Profiles page. This file is created when the first profile entry is saved.
 - `data/screenshots_2025_26`: original screenshot files that were still available on local disk and copied into the project folder.
 - `data/team_motives_2025_26.json`: manual motive notes for non-table incentives, such as Bruno Fernandes chasing an assist record.
 - `data/live_league_context.json`: public standings snapshot used for points, qualification, title, European-place, and relegation calculations.
@@ -132,7 +133,7 @@ Current training policy:
 - Holdout test season: partial `2025-26`
 - Model type: softmax logistic regression
 - Features: club form, match-stat rolling averages, clean-sheet rate, last-five form, pre-match odds, player goal/assist/shot/SOT strength, live table motivation, secured qualification flags, and manual record-motive fields
-- Backtest feedback: settled match results, verified played scores, and hit team-result/team-score parlay legs are saved and queued for continuous retraining
+- Backtest feedback: settled match results, verified played scores, hit team-result/team-score parlay legs, and manual player-profile stat entries are saved and queued for continuous retraining
 
 Latest retrain artifacts:
 
@@ -183,6 +184,7 @@ The web app supports:
 - Excluding already-played fixtures from newly generated parlays
 - Server refresh persistence: tracked parlay leg results are stored in `data/parlay_backtests.json`, played match scores are stored in `data/played_results.json` or `data/backtests.json`, and those files are reread after restart. Any settled fixture from those stores is removed from new fixture predictions and generated parlays.
 - Motivation-aware score and player props using table stakes, home/away context, head-to-head context, recent form, and player-season stats
+- Player Profiles page for 15 tracked attackers, midfielders, and goalkeepers, with manual post-match input for shots, shots on target, goals, assists, minutes, starts, and goalkeeper saves
 - Date sorting and draw-risk sorting on the fixture board
 - Parlay mode selection: mixed player/team, team-only, or player-only
 - Parlay sorting by generated order or average confidence

@@ -37,6 +37,12 @@ const parlayLedgerOutput = document.querySelector("#parlayLedgerOutput");
 const parlayLedgerStatus = document.querySelector("#parlayLedgerStatus");
 const parlayAccuracyStats = document.querySelector("#parlayAccuracyStats");
 const refreshParlayLedgerButton = document.querySelector("#refreshParlayLedgerButton");
+const playerProfileStatus = document.querySelector("#playerProfileStatus");
+const refreshPlayerProfilesButton = document.querySelector("#refreshPlayerProfilesButton");
+const playerStatForm = document.querySelector("#playerStatForm");
+const playerProfileSelect = document.querySelector("#playerProfileSelect");
+const playerProfileMessage = document.querySelector("#playerProfileMessage");
+const playerProfileGrid = document.querySelector("#playerProfileGrid");
 const pageTabs = [...document.querySelectorAll("[data-page-target]")];
 const pageSections = [...document.querySelectorAll("[data-page]")];
 
@@ -46,6 +52,7 @@ let playedPredictions = [];
 let currentParlays = [];
 let trackedParlayData = { parlays: [], summary: {} };
 let ledgerPredictions = [];
+let playerProfileData = { profiles: [], profileCount: 0, entryCount: 0 };
 let parlayRefreshSeed = 0;
 
 const CENTRAL_TIME_ZONE = "America/Chicago";
@@ -349,6 +356,11 @@ function setBoardMessage(message, kind = "info") {
 function setParlayMessage(message, kind = "info") {
   parlayMessage.className = `board-message ${message ? "is-visible" : ""} ${kind}`;
   parlayMessage.textContent = message;
+}
+
+function setPlayerProfileMessage(message, kind = "info") {
+  playerProfileMessage.className = `board-message ${message ? "is-visible" : ""} ${kind}`;
+  playerProfileMessage.textContent = message;
 }
 
 function renderBoard() {
@@ -765,6 +777,78 @@ function renderTrackedLeg(parlayId, leg, index) {
   `;
 }
 
+function statNumber(value, decimals = 0) {
+  const n = Number(value || 0);
+  return Number.isFinite(n) ? n.toFixed(decimals) : (0).toFixed(decimals);
+}
+
+function renderPlayerProfiles() {
+  const profiles = playerProfileData.profiles || [];
+  playerProfileStatus.textContent = `${profiles.length} tracked players | ${playerProfileData.entryCount || 0} saved match stat entries`;
+  playerProfileSelect.innerHTML = profiles
+    .map((profile) => `<option value="${escapeHtml(profile.id)}">${escapeHtml(profile.player)} | ${escapeHtml(profile.team)} | ${escapeHtml(profile.role)}</option>`)
+    .join("");
+
+  if (!profiles.length) {
+    playerProfileGrid.innerHTML = `<div class="empty-state">No player profiles are configured yet.</div>`;
+    return;
+  }
+
+  playerProfileGrid.innerHTML = profiles
+    .map((profile) => {
+      const totals = profile.totals || {};
+      const latest = profile.latestEntries || [];
+      const isGoalkeeper = profile.role === "Goalkeeper";
+      return `
+        <article class="player-profile-card ${isGoalkeeper ? "goalkeeper-profile" : ""}">
+          <div class="profile-card-head">
+            <div>
+              <span class="role-pill">${escapeHtml(profile.role)}</span>
+              <h3>${escapeHtml(profile.player)}</h3>
+              <p class="muted">${escapeHtml(profile.team)} | ${escapeHtml(profile.league)} | ${escapeHtml(profile.position)}</p>
+            </div>
+            ${teamBadge(profile.team)}
+          </div>
+          <div class="profile-stat-grid">
+            <span><strong>${totals.appearances || 0}</strong> apps</span>
+            <span><strong>${Math.round(totals.minutes || 0)}</strong> min</span>
+            <span><strong>${totals.goals || 0}</strong> goals</span>
+            <span><strong>${totals.assists || 0}</strong> assists</span>
+            <span><strong>${totals.shots || 0}</strong> shots</span>
+            <span><strong>${totals.shotsOnTarget || 0}</strong> SOT</span>
+            ${
+              isGoalkeeper
+                ? `<span><strong>${totals.saves || 0}</strong> saves</span><span><strong>${statNumber(totals.savesPer90, 2)}</strong> saves/90</span>`
+                : `<span><strong>${statNumber(totals.shotsPer90, 2)}</strong> shots/90</span><span><strong>${statNumber(totals.shotsOnTargetPer90, 2)}</strong> SOT/90</span>`
+            }
+          </div>
+          <div class="profile-rate-line">
+            <span>${statNumber(totals.goalsPer90, 2)} goals/90</span>
+            <span>${statNumber(totals.assistsPer90, 2)} assists/90</span>
+          </div>
+          <ul class="profile-entry-list">
+            ${
+              latest.length
+                ? latest
+                    .map(
+                      (entry) => `
+                        <li>
+                          <strong>${escapeHtml(entry.date)}</strong>
+                          <span>${escapeHtml(entry.opponent || "Opponent n/a")}</span>
+                          <small>${entry.goals || 0} G | ${entry.assists || 0} A | ${entry.shots || 0} Sh | ${entry.shotsOnTarget || 0} SOT${isGoalkeeper ? ` | ${entry.saves || 0} Sv` : ""}</small>
+                        </li>
+                      `
+                    )
+                    .join("")
+                : `<li><strong>No entries yet</strong><span>Use the form to add this player after a match.</span></li>`
+            }
+          </ul>
+        </article>
+      `;
+    })
+    .join("");
+}
+
 function showMessage(message, kind = "error") {
   output.classList.add("is-visible");
   output.innerHTML = `<div class="${kind === "error" ? "error-box" : "info-box"}">${escapeHtml(message)}</div>`;
@@ -875,6 +959,13 @@ async function refreshParlayLedger() {
   const data = await api("/api/parlay-backtests");
   trackedParlayData = data;
   renderParlayLedger();
+}
+
+async function refreshPlayerProfiles() {
+  setPlayerProfileMessage("Loading player profiles...", "info");
+  playerProfileData = await api("/api/player-profiles");
+  renderPlayerProfiles();
+  setPlayerProfileMessage("", "info");
 }
 
 form.addEventListener("submit", async (event) => {
@@ -1010,6 +1101,36 @@ parlayTicketCount.addEventListener("change", () => refreshParlay({ forceNew: tru
 parlayTypeSelect.addEventListener("change", () => refreshParlay({ forceNew: true }));
 parlaySortSelect.addEventListener("change", renderParlayTickets);
 refreshParlayLedgerButton.addEventListener("click", refreshParlayLedger);
+refreshPlayerProfilesButton.addEventListener("click", refreshPlayerProfiles);
+playerStatForm.addEventListener("submit", async (event) => {
+  event.preventDefault();
+  const button = playerStatForm.querySelector("button[type='submit']");
+  const originalText = button.textContent;
+  button.disabled = true;
+  button.textContent = "Saving...";
+  try {
+    const body = formJson(playerStatForm);
+    body.started = Boolean(playerStatForm.elements.started.checked);
+    const data = await api(`/api/player-profiles/${encodeURIComponent(body.profileId)}/stats`, {
+      method: "POST",
+      body: JSON.stringify(body),
+    });
+    playerProfileData = data.profiles;
+    renderPlayerProfiles();
+    setPlayerProfileMessage("Player stat entry saved. Continuous training has been queued so future fixture predictions can use the updated profile.", "info");
+    await refreshTrainingStatus();
+    playerStatForm.reset();
+    playerStatForm.elements.minutes.value = "90";
+    ["shots", "shotsOnTarget", "goals", "assists", "saves"].forEach((name) => {
+      playerStatForm.elements[name].value = "0";
+    });
+  } catch (error) {
+    setPlayerProfileMessage(error.message, "error");
+  } finally {
+    button.disabled = false;
+    button.textContent = originalText;
+  }
+});
 pageTabs.forEach((tab) => {
   tab.addEventListener("click", () => showPage(tab.dataset.pageTarget));
 });
@@ -1045,6 +1166,7 @@ async function init() {
     await refreshPlayedBoard();
     await refreshParlay();
     await refreshParlayLedger();
+    await refreshPlayerProfiles();
     await refreshLedger();
   } catch (error) {
     document.querySelector("#modelMeta").textContent = "Unable to load model status";

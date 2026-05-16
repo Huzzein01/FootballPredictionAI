@@ -5,6 +5,8 @@ const { buildParlay, fbrefStatus } = require("./parlayService");
 const { fixturePredictionBoard, predictMatch, teamsByLeague } = require("./predictionService");
 const { addPrediction, addPredictionsIfMissing, deletePrediction, listPredictions, summary, updateResult } = require("./backtestStore");
 const { readTrainingStatus, scheduleRetrain } = require("./continuousTraining");
+const { addPlayerStatEntry, listPlayerProfiles } = require("./playerProfileStore");
+const { resetPlayerStatsCache } = require("./playerStats");
 const parlayBacktests = require("./parlayBacktestStore");
 
 const PORT = Number(process.env.PORT || 4173);
@@ -218,6 +220,19 @@ async function handleApi(req, res, pathname) {
 
   if (req.method === "GET" && pathname === "/api/fbref/status") {
     return sendJson(res, 200, fbrefStatus());
+  }
+
+  if (req.method === "GET" && pathname === "/api/player-profiles") {
+    return sendJson(res, 200, listPlayerProfiles());
+  }
+
+  const playerStatsMatch = pathname.match(/^\/api\/player-profiles\/([^/]+)\/stats$/);
+  if (req.method === "POST" && playerStatsMatch) {
+    const entry = addPlayerStatEntry(playerStatsMatch[1], await readBody(req));
+    if (!entry) return sendJson(res, 404, { error: "Player profile not found" });
+    resetPlayerStatsCache();
+    scheduleRetrain("manual-player-profile-stats");
+    return sendJson(res, 200, { entry, profiles: listPlayerProfiles(), trainingStatus: readTrainingStatus() });
   }
 
   if (req.method === "GET" && pathname === "/api/parlay") {

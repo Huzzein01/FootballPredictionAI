@@ -47,12 +47,15 @@ function firstValue(row, names) {
 }
 
 function loadPlayerRows() {
-  if (!fs.existsSync(PLAYER_STATS_JSON_PATH)) return [];
-  const data = JSON.parse(fs.readFileSync(PLAYER_STATS_JSON_PATH, "utf8"));
-  return Array.isArray(data.rows) ? data.rows : [];
+  const importedRows = fs.existsSync(PLAYER_STATS_JSON_PATH)
+    ? JSON.parse(fs.readFileSync(PLAYER_STATS_JSON_PATH, "utf8")).rows || []
+    : [];
+  const { manualPlayerRows } = require("./playerProfileStore");
+  return [...(Array.isArray(importedRows) ? importedRows : []), ...manualPlayerRows()];
 }
 
 function playerSourceLabel(row) {
+  if (String(row.ManualProfileSource).toLowerCase() === "true") return "Manual profile";
   return String(row.ThunderbitSource).toLowerCase() === "true" ? "Thunderbit/FBref" : "FBref";
 }
 
@@ -322,6 +325,10 @@ function teamFeatureIndex() {
   return teamFeatureIndexCache;
 }
 
+function resetPlayerStatsCache() {
+  teamFeatureIndexCache = null;
+}
+
 function teamPlayerFeatures(league, season, team) {
   const key = [season, league, normalizeTeamName(team)].join("||");
   return teamFeatureIndex().get(key) || emptyTeamPlayerFeatures();
@@ -368,5 +375,7 @@ module.exports = {
   buildTeamFeatureIndex,
   loadPlayerRows,
   matchPlayerFeatureRow,
+  normalizePlayerName,
+  resetPlayerStatsCache,
   teamPlayerFeatures,
 };

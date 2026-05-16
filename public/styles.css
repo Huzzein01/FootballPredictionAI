@@ -1247,6 +1247,172 @@ textarea:focus {
   white-space: nowrap;
 }
 
+.profile-layout {
+  display: grid;
+  gap: 14px;
+}
+
+.player-stat-form {
+  display: grid;
+  grid-template-columns: repeat(6, minmax(120px, 1fr));
+  gap: 12px;
+  border: 1px solid var(--line);
+  border-radius: 8px;
+  background: var(--surface);
+  padding: 14px;
+}
+
+.player-stat-form label {
+  display: grid;
+  gap: 6px;
+  min-width: 0;
+  color: var(--muted);
+  font-size: 12px;
+  font-weight: 900;
+}
+
+.player-stat-form label:first-child,
+.player-stat-form .profile-notes {
+  grid-column: span 2;
+}
+
+.player-stat-form .checkline {
+  grid-column: span 2;
+}
+
+.player-stat-form .primary {
+  align-self: end;
+  min-height: 40px;
+}
+
+.player-profile-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(min(330px, 100%), 1fr));
+  gap: 12px;
+}
+
+.player-profile-card {
+  display: grid;
+  gap: 12px;
+  min-width: 0;
+  border: 1px solid var(--line);
+  border-left: 5px solid var(--teal);
+  border-radius: 8px;
+  background: var(--row);
+  padding: 14px;
+  box-shadow: var(--shadow);
+}
+
+.player-profile-card.goalkeeper-profile {
+  border-left-color: var(--gold);
+}
+
+.profile-card-head {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 12px;
+}
+
+.profile-card-head h3 {
+  margin-top: 6px;
+  color: var(--ink);
+  font-size: 17px;
+  line-height: 1.2;
+}
+
+.role-pill {
+  display: inline-flex;
+  border-radius: 999px;
+  background: var(--blue-soft);
+  color: var(--teal);
+  font-size: 11px;
+  font-weight: 900;
+  padding: 5px 8px;
+  text-transform: uppercase;
+}
+
+.goalkeeper-profile .role-pill {
+  background: var(--gold-soft);
+  color: var(--gold);
+}
+
+.profile-stat-grid {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 8px;
+}
+
+.profile-stat-grid span {
+  min-width: 0;
+  border: 1px solid var(--line);
+  border-radius: 8px;
+  background: var(--surface);
+  padding: 9px;
+  color: var(--muted);
+  font-size: 11px;
+  font-weight: 800;
+}
+
+.profile-stat-grid strong {
+  display: block;
+  color: var(--ink);
+  font-size: 17px;
+}
+
+.profile-rate-line {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+.profile-rate-line span {
+  border-radius: 999px;
+  background: var(--green-soft);
+  color: var(--green);
+  font-size: 12px;
+  font-weight: 900;
+  padding: 6px 8px;
+}
+
+.profile-entry-list {
+  display: grid;
+  gap: 7px;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.profile-entry-list li {
+  display: grid;
+  grid-template-columns: auto minmax(0, 1fr);
+  gap: 3px 8px;
+  border: 1px solid var(--line);
+  border-radius: 8px;
+  background: var(--surface);
+  padding: 9px;
+}
+
+.profile-entry-list strong {
+  color: var(--ink);
+  font-size: 12px;
+}
+
+.profile-entry-list span,
+.profile-entry-list small {
+  min-width: 0;
+  overflow: hidden;
+  color: var(--muted);
+  font-size: 11px;
+  font-weight: 800;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.profile-entry-list small {
+  grid-column: 2;
+}
+
 .card-topline,
 .score-line,
 .odds-line,
@@ -1578,6 +1744,10 @@ th {
   .grid-form {
     grid-template-columns: repeat(2, minmax(130px, 1fr));
   }
+
+  .player-stat-form {
+    grid-template-columns: repeat(2, minmax(130px, 1fr));
+  }
 }
 
 @media (max-width: 600px) {
@@ -1594,6 +1764,7 @@ th {
   .fixture-board,
   .grid-form,
   .accuracy-stats,
+  .player-stat-form,
   .settle,
   .scoreboard-row,
   .parlay-leg-row,
@@ -1607,8 +1778,15 @@ th {
   }
 
   .checkline,
-  .grid-form .primary {
+  .grid-form .primary,
+  .player-stat-form label:first-child,
+  .player-stat-form .profile-notes,
+  .player-stat-form .checkline {
     grid-column: auto;
+  }
+
+  .profile-stat-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
   }
 
   .prob-row {

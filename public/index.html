@@ -34,6 +34,7 @@
     <nav class="page-nav" aria-label="App sections">
       <button class="page-tab is-active" type="button" data-page-target="predictions">Predictions</button>
       <button class="page-tab" type="button" data-page-target="parlays">Parlays</button>
+      <button class="page-tab" type="button" data-page-target="player-profiles">Player Profiles</button>
       <button class="page-tab" type="button" data-page-target="parlay-ledger">Parlay Ledger</button>
       <button class="page-tab" type="button" data-page-target="played">Played Matches</button>
       <button class="page-tab" type="button" data-page-target="single">Single Predictor</button>
@@ -199,6 +200,78 @@
         </div>
         <div id="parlayAccuracyStats" class="accuracy-stats" aria-label="Parlay accuracy summary"></div>
         <div id="parlayLedgerOutput" class="parlay-ledger-output" aria-live="polite"></div>
+      </section>
+
+      <section class="panel player-profile-panel page-section" data-page="player-profiles" aria-labelledby="playerProfilesHeading">
+        <div class="section-head">
+          <div>
+            <h2 id="playerProfilesHeading">Player Profile Training</h2>
+            <p id="playerProfileStatus" class="muted">Track match-by-match player stats for continuous model training</p>
+          </div>
+          <button id="refreshPlayerProfilesButton" type="button">Refresh Profiles</button>
+        </div>
+
+        <div class="profile-layout">
+          <form id="playerStatForm" class="player-stat-form">
+            <label>
+              Player
+              <select id="playerProfileSelect" name="profileId" required></select>
+            </label>
+            <label>
+              Date
+              <input name="date" type="date" required>
+            </label>
+            <label>
+              Opponent
+              <input name="opponent" type="text" placeholder="Opponent">
+            </label>
+            <label>
+              Venue
+              <select name="venue">
+                <option value="">Unknown</option>
+                <option value="Home">Home</option>
+                <option value="Away">Away</option>
+                <option value="Neutral">Neutral</option>
+              </select>
+            </label>
+            <label>
+              Minutes
+              <input name="minutes" type="number" min="0" max="130" step="1" value="90">
+            </label>
+            <label>
+              Shots
+              <input name="shots" type="number" min="0" step="1" value="0">
+            </label>
+            <label>
+              Shots on target
+              <input name="shotsOnTarget" type="number" min="0" step="1" value="0">
+            </label>
+            <label>
+              Goals
+              <input name="goals" type="number" min="0" step="1" value="0">
+            </label>
+            <label>
+              Assists
+              <input name="assists" type="number" min="0" step="1" value="0">
+            </label>
+            <label>
+              Saves
+              <input name="saves" type="number" min="0" step="1" value="0">
+            </label>
+            <label class="checkline">
+              <input name="started" type="checkbox">
+              Started match
+            </label>
+            <label class="profile-notes">
+              Notes
+              <input name="notes" type="text" placeholder="Rotation, injury return, role change">
+            </label>
+            <button class="primary" type="submit">Save Player Stats</button>
+          </form>
+
+          <div id="playerProfileMessage" class="board-message" aria-live="polite"></div>
+          <div id="playerProfileGrid" class="player-profile-grid" aria-live="polite"></div>
+        </div>
       </section>
 
       <section class="panel single-panel page-section" data-page="single" aria-labelledby="singleHeading">
