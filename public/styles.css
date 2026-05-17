@@ -1884,3 +1884,553 @@ th {
     text-align: left;
   }
 }
+
+/* Investor-ready visual refresh */
+:root {
+  --bg: #f2f5f8;
+  --panel: #ffffff;
+  --surface: #eef3f7;
+  --row: #ffffff;
+  --row-hover: #f6f9fc;
+  --ink: #0b1725;
+  --muted: #66758a;
+  --line: #d7e1eb;
+  --navy: #0b1725;
+  --green: #0f8f6d;
+  --teal: #245fd6;
+  --gold: #b77912;
+  --red: #c23a3a;
+  --blue-soft: #e9f1ff;
+  --green-soft: #e7f7f1;
+  --gold-soft: #fff5dc;
+  --red-soft: #fff0f0;
+  --accent: #0f8f6d;
+  --header: #0b1118;
+  --header-2: #151f2b;
+  --badge-bg: #ffffff;
+  --badge-ring: rgba(11, 23, 37, 0.11);
+  --shadow: 0 14px 34px rgba(22, 34, 50, 0.09);
+  --shadow-soft: 0 8px 22px rgba(22, 34, 50, 0.07);
+}
+
+:root[data-theme="dark"] {
+  --bg: #0c1117;
+  --panel: #141b24;
+  --surface: #101720;
+  --row: #18222e;
+  --row-hover: #1d2936;
+  --ink: #eef5fb;
+  --muted: #9aa9ba;
+  --line: #293747;
+  --navy: #f6f9fc;
+  --green: #39d89f;
+  --teal: #6ca8ff;
+  --gold: #f1b84b;
+  --red: #ff7b7b;
+  --blue-soft: #14263c;
+  --green-soft: #102d26;
+  --gold-soft: #312510;
+  --red-soft: #33191d;
+  --header: #070b10;
+  --header-2: #101721;
+  --badge-bg: #f8fafc;
+  --badge-ring: rgba(255, 255, 255, 0.14);
+  --shadow: 0 18px 44px rgba(0, 0, 0, 0.35);
+  --shadow-soft: 0 10px 24px rgba(0, 0, 0, 0.28);
+}
+
+body {
+  background:
+    linear-gradient(180deg, color-mix(in srgb, var(--surface) 52%, transparent) 0, transparent 360px),
+    var(--bg);
+  font-family: Inter, "Segoe UI", Arial, sans-serif;
+}
+
+.topbar {
+  display: grid;
+  grid-template-columns: minmax(280px, 1fr) auto;
+  align-items: center;
+  gap: 28px;
+  padding: 24px clamp(20px, 4vw, 44px);
+  border-bottom: 1px solid color-mix(in srgb, var(--green) 36%, var(--line));
+  background:
+    linear-gradient(135deg, color-mix(in srgb, var(--header) 94%, #0f8f6d 6%), var(--header-2));
+  box-shadow: var(--shadow-soft);
+}
+
+.eyebrow {
+  color: #8ee8c7;
+  font-size: 11px;
+  font-weight: 900;
+  letter-spacing: 0.08em;
+}
+
+h1 {
+  margin-top: 6px;
+  font-size: clamp(28px, 3vw, 40px);
+  line-height: 1;
+  letter-spacing: 0;
+}
+
+.meta-line {
+  max-width: 760px;
+  margin-top: 10px;
+  color: #c9d7e5;
+  font-size: 13px;
+  line-height: 1.45;
+}
+
+.topbar-right {
+  display: grid;
+  grid-template-columns: 140px minmax(280px, 1fr);
+  align-items: end;
+  gap: 16px;
+}
+
+.theme-control {
+  min-width: 0;
+  color: #aebdca;
+  letter-spacing: 0.04em;
+}
+
+.theme-control select {
+  min-height: 42px;
+  border-color: rgba(255, 255, 255, 0.15);
+  background: rgba(255, 255, 255, 0.07);
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.05);
+}
+
+.summary {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(96px, 1fr));
+  gap: 10px;
+}
+
+.summary span,
+.board-stats span,
+.accuracy-stats span {
+  border-color: color-mix(in srgb, var(--line) 86%, var(--teal));
+  border-radius: 8px;
+  background: color-mix(in srgb, var(--surface) 86%, var(--panel));
+  box-shadow: inset 0 1px 0 color-mix(in srgb, #ffffff 7%, transparent);
+}
+
+.summary span {
+  min-width: 0;
+  padding: 10px 12px;
+  color: #dce8f4;
+  background: rgba(255, 255, 255, 0.07);
+}
+
+.summary strong {
+  margin-bottom: 2px;
+  font-size: 22px;
+  line-height: 1;
+}
+
+.page-nav {
+  top: 0;
+  gap: 6px;
+  padding: 12px clamp(16px, 4vw, 44px);
+  background: color-mix(in srgb, var(--panel) 88%, transparent);
+  backdrop-filter: blur(14px);
+}
+
+.page-tab {
+  border-radius: 8px;
+  padding: 10px 14px;
+  color: var(--muted);
+  background: transparent;
+}
+
+.page-tab.is-active {
+  border-color: color-mix(in srgb, var(--teal) 55%, var(--line));
+  background: color-mix(in srgb, var(--blue-soft) 78%, var(--panel));
+  color: var(--navy);
+}
+
+.dashboard {
+  max-width: 1480px;
+  gap: 18px;
+  padding: 18px clamp(16px, 3vw, 34px) 40px;
+}
+
+.panel {
+  border-color: color-mix(in srgb, var(--line) 88%, var(--teal));
+  border-radius: 8px;
+  background: color-mix(in srgb, var(--panel) 96%, var(--surface));
+  box-shadow: var(--shadow);
+  padding: clamp(16px, 2vw, 22px);
+}
+
+.section-head {
+  align-items: start;
+  gap: 12px;
+  margin-bottom: 16px;
+}
+
+.parlay-panel .section-head {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto auto;
+}
+
+h2 {
+  font-size: 21px;
+  line-height: 1.1;
+}
+
+h3 {
+  min-height: 0;
+}
+
+.muted {
+  color: var(--muted);
+  line-height: 1.4;
+}
+
+button,
+input,
+select,
+textarea {
+  border-radius: 8px;
+}
+
+button {
+  min-height: 40px;
+  border-color: color-mix(in srgb, var(--line) 86%, var(--teal));
+  background: color-mix(in srgb, var(--row) 92%, var(--surface));
+  color: var(--navy);
+  box-shadow: 0 1px 0 color-mix(in srgb, #ffffff 8%, transparent);
+}
+
+button:hover {
+  border-color: color-mix(in srgb, var(--teal) 62%, var(--line));
+  background: color-mix(in srgb, var(--blue-soft) 70%, var(--row));
+}
+
+.primary,
+.track-ticket-button {
+  border-color: color-mix(in srgb, var(--green) 82%, #ffffff);
+  background: linear-gradient(180deg, color-mix(in srgb, var(--green) 88%, #ffffff), color-mix(in srgb, var(--green) 78%, #06110d));
+  color: #ffffff;
+}
+
+.primary:hover,
+.track-ticket-button:hover {
+  background: linear-gradient(180deg, color-mix(in srgb, var(--green) 94%, #ffffff), color-mix(in srgb, var(--green) 82%, #06110d));
+}
+
+input,
+select,
+textarea {
+  min-height: 42px;
+  border-color: var(--line);
+  background: color-mix(in srgb, var(--row) 92%, var(--surface));
+}
+
+.board-controls,
+.parlay-controls {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+  align-items: end;
+  gap: 12px;
+  margin-bottom: 16px;
+}
+
+.parlay-controls {
+  grid-template-columns:
+    minmax(150px, 1fr)
+    minmax(150px, 1fr)
+    minmax(120px, 0.8fr)
+    minmax(140px, 1fr)
+    minmax(140px, 1fr)
+    minmax(190px, 1.45fr)
+    minmax(160px, 1.2fr);
+}
+
+.board-controls label,
+.parlay-controls label,
+.grid-form label {
+  min-width: 0;
+  color: var(--muted);
+  font-size: 11px;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+}
+
+.board-controls select,
+.board-controls input[type="date"],
+.parlay-controls input[type="date"] {
+  min-width: 0;
+}
+
+.board-controls button,
+.parlay-controls button {
+  min-width: 104px;
+}
+
+.board-stats,
+.parlay-controls .board-stats {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(130px, 1fr));
+  gap: 10px;
+  justify-content: stretch;
+}
+
+.parlay-controls .board-stats {
+  grid-column: 1 / -1;
+}
+
+.board-stats span {
+  min-width: 0;
+  padding: 12px;
+}
+
+.board-stats strong,
+.accuracy-stats strong {
+  color: var(--navy);
+  font-size: 24px;
+  line-height: 1;
+}
+
+.board-message {
+  border: 1px solid transparent;
+  border-radius: 8px;
+  padding: 12px 14px;
+  line-height: 1.45;
+}
+
+.board-message.info {
+  border-color: color-mix(in srgb, var(--teal) 25%, var(--line));
+  background: color-mix(in srgb, var(--blue-soft) 78%, var(--panel));
+  color: var(--teal);
+}
+
+.parlay-output {
+  gap: 18px;
+}
+
+.parlay-ticket,
+.tracked-parlay {
+  border-color: color-mix(in srgb, var(--line) 88%, var(--teal));
+  border-radius: 8px;
+  background: color-mix(in srgb, var(--surface) 74%, var(--panel));
+  padding: 18px;
+  box-shadow: var(--shadow-soft);
+}
+
+.ticket-head {
+  align-items: start;
+  margin-bottom: 14px;
+}
+
+.ticket-head h3 {
+  margin: 0 0 8px;
+  font-size: 22px;
+  line-height: 1.15;
+}
+
+.ticket-actions {
+  min-width: 150px;
+}
+
+.ticket-stats {
+  display: grid;
+  grid-template-columns: repeat(3, auto);
+  gap: 6px;
+}
+
+.ticket-stats span,
+.ticket-result,
+.pick-pill,
+.leg-status {
+  border-radius: 8px;
+}
+
+.ticket-stats span,
+.ticket-result {
+  background: color-mix(in srgb, var(--blue-soft) 82%, var(--panel));
+  color: var(--teal);
+}
+
+.parlay-leg-list,
+.tracked-leg-list {
+  gap: 10px;
+}
+
+.parlay-leg-row,
+.tracked-leg-row {
+  grid-template-columns: 40px minmax(0, 1fr) minmax(112px, auto);
+  gap: 12px;
+  border-color: color-mix(in srgb, var(--line) 86%, var(--teal));
+  border-left-width: 4px;
+  border-radius: 8px;
+  background: color-mix(in srgb, var(--row) 94%, var(--surface));
+  padding: 12px 14px;
+}
+
+.leg-number {
+  width: 30px;
+  height: 30px;
+  background: color-mix(in srgb, var(--blue-soft) 82%, var(--panel));
+  color: var(--teal);
+}
+
+.parlay-leg-row strong,
+.tracked-leg-row strong {
+  color: var(--ink);
+  font-size: 14px;
+}
+
+.parlay-leg-row p,
+.tracked-leg-row p,
+.fbref-line {
+  color: var(--muted);
+}
+
+.leg-row-meta {
+  align-content: center;
+  justify-items: end;
+}
+
+.leg-row-meta strong {
+  color: var(--navy);
+  font-size: 18px;
+}
+
+.leg-meta,
+.callout,
+.score-line.compact,
+.scoreboard-row .score-line,
+.motivation-line {
+  border: 1px solid var(--line);
+  background: color-mix(in srgb, var(--surface) 82%, var(--panel));
+}
+
+.fixture-card,
+.played-grid-card,
+.player-profile-card,
+.leg-card {
+  border-color: color-mix(in srgb, var(--line) 88%, var(--teal));
+  background: color-mix(in srgb, var(--row) 96%, var(--surface));
+  box-shadow: var(--shadow-soft);
+}
+
+.scoreboard-row {
+  grid-template-columns: 132px minmax(280px, 1fr) minmax(180px, 0.6fr) minmax(230px, 0.75fr);
+}
+
+.team-badge {
+  box-shadow: inset 0 0 0 2px color-mix(in srgb, var(--team-color) 16%, transparent), 0 2px 8px rgba(0, 0, 0, 0.08);
+}
+
+.prob-track {
+  height: 8px;
+}
+
+.player-stat-form,
+.grid-form {
+  border-color: color-mix(in srgb, var(--line) 88%, var(--teal));
+  background: color-mix(in srgb, var(--surface) 76%, var(--panel));
+}
+
+.player-profile-grid,
+.played-board {
+  gap: 14px;
+}
+
+.player-profile-card {
+  padding: 16px;
+}
+
+.profile-stat-grid span,
+.profile-entry-list li,
+.played-result-grid div,
+.played-pick-list li {
+  border-color: color-mix(in srgb, var(--line) 90%, var(--teal));
+  background: color-mix(in srgb, var(--surface) 84%, var(--panel));
+}
+
+.profile-rate-line span {
+  border-radius: 8px;
+}
+
+.table-wrap {
+  border: 1px solid var(--line);
+  border-radius: 8px;
+}
+
+table {
+  background: var(--row);
+}
+
+th {
+  background: color-mix(in srgb, var(--surface) 86%, var(--panel));
+}
+
+@media (max-width: 1180px) {
+  .topbar {
+    grid-template-columns: 1fr;
+  }
+
+  .topbar-right {
+    grid-template-columns: 160px 1fr;
+  }
+
+  .parlay-controls {
+    grid-template-columns: repeat(3, minmax(150px, 1fr));
+  }
+}
+
+@media (max-width: 920px) {
+  .topbar-right,
+  .parlay-panel .section-head {
+    grid-template-columns: 1fr;
+  }
+
+  .summary {
+    grid-template-columns: repeat(2, minmax(130px, 1fr));
+  }
+
+  .section-head,
+  .board-controls,
+  .parlay-controls {
+    display: grid;
+    grid-template-columns: 1fr;
+  }
+
+  .scoreboard-row {
+    grid-template-columns: 1fr;
+    grid-template-areas:
+      "meta"
+      "teams"
+      "callout"
+      "score"
+      "odds"
+      "motivation"
+      "probs";
+  }
+}
+
+@media (max-width: 600px) {
+  .topbar {
+    padding: 20px 14px;
+  }
+
+  .summary,
+  .board-stats,
+  .parlay-controls .board-stats,
+  .ticket-stats {
+    grid-template-columns: 1fr 1fr;
+  }
+
+  .parlay-leg-row,
+  .tracked-leg-row {
+    grid-template-columns: 34px minmax(0, 1fr);
+  }
+
+  .leg-row-meta {
+    grid-column: 2;
+    justify-items: start;
+  }
+}
