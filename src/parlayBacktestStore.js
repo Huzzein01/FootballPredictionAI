@@ -65,6 +65,7 @@ function decorateParlay(parlay, source = "generated-parlay") {
     createdAt: new Date().toISOString(),
     source,
     name: parlay.name || "Generated Parlay",
+    riskMode: parlay.riskMode || "safe",
     averageConfidence: parlay.averageConfidence || 0,
     requestedLegs: legs.length,
     status: ticketStatus(legs),

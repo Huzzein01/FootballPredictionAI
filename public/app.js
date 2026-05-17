@@ -28,6 +28,7 @@ const clearParlayDateButton = document.querySelector("#clearParlayDateButton");
 const parlayLegCount = document.querySelector("#parlayLegCount");
 const parlayTicketCount = document.querySelector("#parlayTicketCount");
 const parlayTypeSelect = document.querySelector("#parlayTypeSelect");
+const parlayRiskToggle = document.querySelector("#parlayRiskToggle");
 const parlaySortSelect = document.querySelector("#parlaySortSelect");
 const refreshParlayButton = document.querySelector("#refreshParlayButton");
 const trackParlaysButton = document.querySelector("#trackParlaysButton");
@@ -702,6 +703,7 @@ function renderPrediction(prediction) {
 
 function renderParlay(data) {
   const fbref = data.fbref || {};
+  const riskMode = data.filters?.riskMode || (parlayRiskToggle.checked ? "risky" : "safe");
   const parlays = data.parlays?.length ? data.parlays : data.parlay?.legs?.length ? [data.parlay] : [];
   const legs = parlays.flatMap((parlay) => parlay.legs || []);
   currentParlays = parlays;
@@ -712,7 +714,7 @@ function renderParlay(data) {
   document.querySelector("#playerLegCount").textContent = data.playerCandidateCount || 0;
   document.querySelector("#teamScoreLegCount").textContent = data.teamScoreCandidateCount || 0;
   parlayStatus.textContent = fbref.hasPlayerStats
-    ? `Using imported FBref stats from ${fbref.seasons.join(", ") || "local files"} | ${data.availableFixtureCount || 0} fixtures available${selectedDate ? ` on ${selectedDate}` : ""} | ${data.excludedFixtureCount || 0} played excluded`
+    ? `${riskMode === "risky" ? "Risk mode" : "Safe mode"} | Using imported FBref stats from ${fbref.seasons.join(", ") || "local files"} | ${data.availableFixtureCount || 0} fixtures available${selectedDate ? ` on ${selectedDate}` : ""} | ${data.excludedFixtureCount || 0} played excluded${riskMode === "risky" ? ` | ${data.riskyPlayerCandidateCount || 0} risky player legs` : ""}`
     : "Waiting for imported FBref player stats";
 
   setParlayMessage(data.parlay?.note || "", fbref.hasPlayerStats ? "info" : "error");
@@ -742,6 +744,7 @@ function renderParlayTickets() {
 
 function renderParlayTicket(parlay) {
   const legs = parlay.legs || [];
+  const riskCount = legs.filter((leg) => leg.riskMode).length;
   return `
     <article class="parlay-ticket">
       <div class="ticket-head">
@@ -754,6 +757,7 @@ function renderParlayTicket(parlay) {
             <span>${(parlay.playerStatLegs || []).length} player</span>
             <span>${(parlay.teamScoreLegs || []).length} score</span>
             <span>${(parlay.matchResultLegs || []).length} result</span>
+            ${riskCount ? `<span>${riskCount} risk</span>` : ""}
           </div>
           <button class="track-ticket-button" type="button" data-track-ticket="${escapeHtml(parlay.id)}">Track this option</button>
         </div>
@@ -791,6 +795,7 @@ function renderLegListItem(leg, index) {
       <span class="leg-number">${index}</span>
       <div>
         <strong>${escapeHtml(leg.pick)}</strong>
+        ${leg.riskMode ? `<span class="risk-leg-badge">Risk mode</span>` : ""}
         ${fixtureMiniLine(leg.fixture)}
         <p class="fbref-line">${escapeHtml(detail)}</p>
       </div>
@@ -865,7 +870,7 @@ function renderParlayLedger(data = trackedParlayData) {
           <div class="ticket-head">
             <div>
               <h3>${escapeHtml(parlay.name)}</h3>
-              <p class="muted">${parlay.legs.length} legs | ${escapeHtml(parlay.status)} | created ${new Date(parlay.createdAt).toLocaleString()}</p>
+              <p class="muted">${parlay.legs.length} legs | ${escapeHtml(parlay.status)} | ${escapeHtml(parlay.riskMode === "risky" ? "Risk mode" : "Safe mode")} | created ${new Date(parlay.createdAt).toLocaleString()}</p>
             </div>
             <span class="ticket-result">${escapeHtml(parlay.status)}</span>
           </div>
@@ -888,6 +893,7 @@ function renderTrackedLeg(parlayId, leg, index) {
       <span class="leg-number">${index}</span>
       <div>
         <strong>${escapeHtml(leg.pick)}</strong>
+        ${leg.riskMode ? `<span class="risk-leg-badge">Risk mode</span>` : ""}
         ${fixtureMiniLine(leg.fixture)}
         <p class="fbref-line">${escapeHtml(detail)}</p>
       </div>
@@ -1081,9 +1087,10 @@ async function refreshParlay({ forceNew = false } = {}) {
   const legs = encodeURIComponent(parlayLegCount.value);
   const tickets = encodeURIComponent(parlayTicketCount.value);
   const type = encodeURIComponent(parlayTypeSelect.value);
+  const riskMode = encodeURIComponent(parlayRiskToggle.checked ? "risky" : "safe");
   const date = encodeURIComponent(parlayDateFilter.value);
   setParlayMessage(forceNew ? "Building a fresh parlay variation..." : "Building parlay from fixtures and imported player stats...", "info");
-  const data = await api(`/api/parlay?league=${league}&legs=${legs}&tickets=${tickets}&type=${type}&date=${date}&refreshSeed=${parlayRefreshSeed}`);
+  const data = await api(`/api/parlay?league=${league}&legs=${legs}&tickets=${tickets}&type=${type}&riskMode=${riskMode}&date=${date}&refreshSeed=${parlayRefreshSeed}`);
   renderParlay(data);
 }
 
@@ -1231,6 +1238,7 @@ clearParlayDateButton.addEventListener("click", () => {
 parlayLegCount.addEventListener("change", () => refreshParlay({ forceNew: true }));
 parlayTicketCount.addEventListener("change", () => refreshParlay({ forceNew: true }));
 parlayTypeSelect.addEventListener("change", () => refreshParlay({ forceNew: true }));
+parlayRiskToggle.addEventListener("change", () => refreshParlay({ forceNew: true }));
 parlaySortSelect.addEventListener("change", renderParlayTickets);
 refreshParlayLedgerButton.addEventListener("click", refreshParlayLedger);
 refreshPlayerProfilesButton.addEventListener("click", refreshPlayerProfiles);

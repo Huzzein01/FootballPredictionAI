@@ -242,6 +242,7 @@ async function handleApi(req, res, pathname) {
       legs: url.searchParams.get("legs") || 10,
       tickets: url.searchParams.get("tickets") || 3,
       type: url.searchParams.get("type") || "mixed",
+      riskMode: url.searchParams.get("riskMode") || "safe",
       date: url.searchParams.get("date") || "",
       refreshSeed: url.searchParams.get("refreshSeed") || 0,
     }));

@@ -11,8 +11,20 @@ const PLAYED_RESULTS_PATH = path.join(process.cwd(), "data", "played_results.jso
 
 const PLAYER_NAME_CORRECTIONS = new Map([
   ["alejandro gamacho", "Alejandro Garnacho"],
+  ["alisson hbisxe", "Alisson"],
+  ["flip teraensen seen", "Filip Jorgensen"],
+  ["fuucas chevalier mera", "Lucas Chevalier"],
+  ["guslicimo vicario hita", "Guglielmo Vicario"],
+  ["jantonin kinsky mya cze", "Antonin Kinsky"],
+  ["jonasurbig -rmblger", "Jonas Urbig"],
   ["ude bellingham", "Jude Bellingham"],
   ["jude bellinghan", "Jude Bellingham"],
+  ["lwojciech szczesny yg pol", "Wojciech Szczesny"],
+  ["manuelneuer mmblger", "Manuel Neuer"],
+  ["matvei safonov gg rus", "Matvei Safonov"],
+  ["oan garcia tese", "Joan Garcia"],
+  ["robert sanchez heqesp", "Robert Sanchez"],
+  ["juan musso selarg", "Juan Musso"],
 ]);
 
 function pct(value) {
@@ -132,13 +144,33 @@ function adjustedConfidence(base, fixture, team, marketType, min, max) {
   return Math.max(min, Math.min(max, base + motivationConfidenceAdjustment(fixture, team, marketType)));
 }
 
+function poissonAtLeast(lambda, threshold) {
+  const rate = Math.max(0, Number(lambda) || 0);
+  let cumulative = 0;
+  for (let k = 0; k < threshold; k += 1) {
+    cumulative += (Math.exp(-rate) * rate ** k) / factorial(k);
+  }
+  return Math.max(0, Math.min(1, 1 - cumulative));
+}
+
+function factorial(value) {
+  let result = 1;
+  for (let index = 2; index <= value; index += 1) result *= index;
+  return result;
+}
+
 function latestTeamPlayers(players, league, team) {
   const matches = players.filter((player) => player.league === league && player.squad === team);
   const latest = Math.max(0, ...matches.map((player) => seasonRank(player.season)));
   return matches.filter((player) => seasonRank(player.season) === latest);
 }
 
-function playerPropCandidates(players, fixture) {
+function riskSourceSuffix(source, metric, threshold) {
+  return `${source}; risk mode: threshold is close to the player's average (${metric}), not a random long-shot`;
+}
+
+function playerPropCandidates(players, fixture, riskMode = "safe") {
+  const isRiskyMode = riskMode === "risky";
   const teams = [fixture.homeTeam, fixture.awayTeam];
   const candidates = [];
 
@@ -147,6 +179,7 @@ function playerPropCandidates(players, fixture) {
       const playerName = cleanPlayerName(player.player);
       if (player.hasShotStats && player.shotsPer90 >= 2) {
         const baseConfidence = Math.min(86, 52 + player.shotsPer90 * 8);
+        const metric = `${player.shotsPer90.toFixed(2)} shots/90`;
         candidates.push({
           type: "player",
           fixture: `${fixture.homeTeam} vs ${fixture.awayTeam}`,
@@ -157,14 +190,35 @@ function playerPropCandidates(players, fixture) {
           market: "1+ shot",
           pick: `${playerName} 1+ shot`,
           confidence: adjustedConfidence(baseConfidence, fixture, team, "player", 35, 88),
-          fbrefMetric: `${player.shotsPer90.toFixed(2)} shots/90`,
+          fbrefMetric: metric,
           fbrefSeason: player.season,
           source: motivationSourceSuffix(fixture, team, playerSource(player)),
         });
+
+        if (isRiskyMode && player.shotsPer90 >= 2.35) {
+          const chance = poissonAtLeast(player.shotsPer90, 2);
+          const riskBaseConfidence = 38 + chance * 42;
+          candidates.push({
+            type: "player",
+            fixture: `${fixture.homeTeam} vs ${fixture.awayTeam}`,
+            date: fixture.date,
+            league: fixture.league,
+            team,
+            player: playerName,
+            market: "2+ shots",
+            pick: `${playerName} 2+ shots`,
+            confidence: adjustedConfidence(riskBaseConfidence, fixture, team, "player", 38, 76),
+            fbrefMetric: metric,
+            fbrefSeason: player.season,
+            source: riskSourceSuffix(motivationSourceSuffix(fixture, team, playerSource(player)), metric, "2+ shots"),
+            riskMode: true,
+          });
+        }
       }
 
       if (player.hasShotStats && player.shotsOnTargetPer90 >= 0.7) {
         const baseConfidence = Math.min(82, 50 + player.shotsOnTargetPer90 * 18);
+        const metric = `${player.shotsOnTargetPer90.toFixed(2)} shots on target/90`;
         candidates.push({
           type: "player",
           fixture: `${fixture.homeTeam} vs ${fixture.awayTeam}`,
@@ -175,10 +229,30 @@ function playerPropCandidates(players, fixture) {
           market: "1+ shot on target",
           pick: `${playerName} 1+ shot on target`,
           confidence: adjustedConfidence(baseConfidence, fixture, team, "player", 35, 84),
-          fbrefMetric: `${player.shotsOnTargetPer90.toFixed(2)} shots on target/90`,
+          fbrefMetric: metric,
           fbrefSeason: player.season,
           source: motivationSourceSuffix(fixture, team, playerSource(player)),
         });
+
+        if (isRiskyMode && player.shotsOnTargetPer90 >= 1.1) {
+          const chance = poissonAtLeast(player.shotsOnTargetPer90, 2);
+          const riskBaseConfidence = 34 + chance * 54;
+          candidates.push({
+            type: "player",
+            fixture: `${fixture.homeTeam} vs ${fixture.awayTeam}`,
+            date: fixture.date,
+            league: fixture.league,
+            team,
+            player: playerName,
+            market: "2+ shots on target",
+            pick: `${playerName} 2+ shots on target`,
+            confidence: adjustedConfidence(riskBaseConfidence, fixture, team, "player", 32, 66),
+            fbrefMetric: metric,
+            fbrefSeason: player.season,
+            source: riskSourceSuffix(motivationSourceSuffix(fixture, team, playerSource(player)), metric, "2+ shots on target"),
+            riskMode: true,
+          });
+        }
       }
 
       if (player.goalsPer90 >= 0.3) {
@@ -233,6 +307,45 @@ function playerPropCandidates(players, fixture) {
           fbrefSeason: player.season,
           source: motivationSourceSuffix(fixture, team, playerSource(player)),
         });
+      }
+
+      if (isRiskyMode && player.hasGoalkeepingStats && player.savesPer90 >= 0.8 && player.savesPer90 <= 6 && player.nineties >= 3) {
+        const oneSaveMetric = `${player.savesPer90.toFixed(2)} saves/90`;
+        const oneSaveChance = poissonAtLeast(player.savesPer90, 1);
+        candidates.push({
+          type: "player",
+          fixture: `${fixture.homeTeam} vs ${fixture.awayTeam}`,
+          date: fixture.date,
+          league: fixture.league,
+          team,
+          player: playerName,
+          market: "1+ save",
+          pick: `${playerName} 1+ save`,
+          confidence: adjustedConfidence(40 + oneSaveChance * 35, fixture, team, "player", 35, 74),
+          fbrefMetric: oneSaveMetric,
+          fbrefSeason: player.season,
+          source: riskSourceSuffix(motivationSourceSuffix(fixture, team, playerSource(player)), oneSaveMetric, "1+ save"),
+          riskMode: true,
+        });
+
+        if (player.savesPer90 >= 1.55) {
+          const twoSaveChance = poissonAtLeast(player.savesPer90, 2);
+          candidates.push({
+            type: "player",
+            fixture: `${fixture.homeTeam} vs ${fixture.awayTeam}`,
+            date: fixture.date,
+            league: fixture.league,
+            team,
+            player: playerName,
+            market: "2+ saves",
+            pick: `${playerName} 2+ saves`,
+            confidence: adjustedConfidence(36 + twoSaveChance * 42, fixture, team, "player", 32, 68),
+            fbrefMetric: oneSaveMetric,
+            fbrefSeason: player.season,
+            source: riskSourceSuffix(motivationSourceSuffix(fixture, team, playerSource(player)), oneSaveMetric, "2+ saves"),
+            riskMode: true,
+          });
+        }
       }
     }
   }
@@ -407,20 +520,40 @@ function selectDiversePlayerLegs(source, targetCount, used, offset = 0) {
   return selected;
 }
 
-function buildTicket({ index, requestedLegs, playerLegs, scoreLegs, resultLegs, fbref, refreshSeed = 0, type = "mixed" }) {
+function buildTicket({ index, requestedLegs, playerLegs, scoreLegs, resultLegs, fbref, refreshSeed = 0, type = "mixed", riskMode = "safe" }) {
   const used = new Set();
   const playerOnly = type === "players";
   const teamOnly = type === "teams";
-  const targetPlayer = playerOnly ? requestedLegs : teamOnly ? 0 : Math.max(2, Math.ceil(requestedLegs * 0.58));
-  const targetScore = playerOnly ? 0 : teamOnly ? Math.max(1, Math.floor(requestedLegs * 0.45)) : Math.max(2, Math.floor(requestedLegs * 0.27));
+  const isRiskyMode = riskMode === "risky";
+  const targetPlayer = playerOnly ? requestedLegs : teamOnly ? 0 : Math.max(2, Math.ceil(requestedLegs * (isRiskyMode ? 0.68 : 0.58)));
+  const targetScore = playerOnly ? 0 : teamOnly ? Math.max(1, Math.floor(requestedLegs * 0.45)) : Math.max(1, Math.floor(requestedLegs * (isRiskyMode ? 0.2 : 0.27)));
   const targetResult = playerOnly ? 0 : Math.max(1, requestedLegs - targetPlayer - targetScore);
   const seed = refreshSeed + index * 97 + requestedLegs * 13;
-  const ticketPlayerLegs = shuffleWithSeed(playerLegs, seed);
+  const ticketPlayerLegs = isRiskyMode
+    ? [
+        ...shuffleWithSeed(playerLegs.filter((leg) => leg.riskMode), seed),
+        ...shuffleWithSeed(playerLegs.filter((leg) => !leg.riskMode), seed + 17),
+      ]
+    : shuffleWithSeed(playerLegs, seed);
   const ticketScoreLegs = shuffleWithSeed(scoreLegs, seed + 31);
   const ticketResultLegs = shuffleWithSeed(resultLegs, seed + 61);
   const offset = (index + refreshSeed) * Math.max(3, Math.floor(requestedLegs / 2));
 
-  const selectedPlayerLegs = targetPlayer ? selectDiversePlayerLegs(ticketPlayerLegs, targetPlayer, used, offset) : [];
+  let selectedPlayerLegs = targetPlayer ? selectDiversePlayerLegs(ticketPlayerLegs, targetPlayer, used, offset) : [];
+  if (isRiskyMode && targetPlayer) {
+    const riskQuota = Math.min(targetPlayer, Math.max(1, Math.ceil(targetPlayer * 0.55)));
+    for (const riskLeg of ticketPlayerLegs.filter((leg) => leg.riskMode)) {
+      const currentRiskCount = selectedPlayerLegs.filter((leg) => leg.riskMode).length;
+      if (currentRiskCount >= riskQuota) break;
+      const riskKey = legKey(riskLeg);
+      if (used.has(riskKey)) continue;
+      const replaceIndex = selectedPlayerLegs.findLastIndex((leg) => !leg.riskMode);
+      if (replaceIndex === -1) break;
+      used.delete(legKey(selectedPlayerLegs[replaceIndex]));
+      selectedPlayerLegs[replaceIndex] = riskLeg;
+      used.add(riskKey);
+    }
+  }
   const selectedScoreLegs = targetScore ? selectUnique(ticketScoreLegs, targetScore, used, index * 2 + refreshSeed) : [];
   const drawExposureRandom = seededRandom(seed + 89);
   const resultSource =
@@ -449,14 +582,15 @@ function buildTicket({ index, requestedLegs, playerLegs, scoreLegs, resultLegs, 
   const finalLegs = legs.slice(0, requestedLegs);
   return {
     id: `generated_${index + 1}`,
+    riskMode,
     name:
       type === "players"
-        ? `Option ${index + 1}: Player Props Parlay`
+        ? `Option ${index + 1}: ${isRiskyMode ? "Risk Mode " : ""}Player Props Parlay`
         : type === "teams"
-        ? `Option ${index + 1}: Team Picks Parlay`
+        ? `Option ${index + 1}: ${isRiskyMode ? "Risk Mode " : ""}Team Picks Parlay`
         : fbref.hasPlayerStats
-        ? `Option ${index + 1}: Player Props + Team Model Parlay`
-        : `Option ${index + 1}: Team Model Parlay`,
+        ? `Option ${index + 1}: ${isRiskyMode ? "Risk Mode " : ""}Player Props + Team Model Parlay`
+        : `Option ${index + 1}: ${isRiskyMode ? "Risk Mode " : ""}Team Model Parlay`,
     legs: finalLegs,
     playerStatLegs: finalLegs.filter((leg) => leg.type === "player"),
     teamScoreLegs: finalLegs.filter((leg) => leg.type === "score"),
@@ -471,6 +605,7 @@ function buildParlays(options = {}) {
   const ticketCount = Math.max(1, Math.min(10, Number(options.tickets || 3)));
   const refreshSeed = Math.max(0, Number(options.refreshSeed || 0));
   const type = ["mixed", "teams", "players"].includes(options.type) ? options.type : "mixed";
+  const riskMode = options.riskMode === "risky" ? "risky" : "safe";
   const date = String(options.date || "").trim();
   const excludedFixtureKeys = settledFixtureKeys();
   const allFixtures = fixturePredictionBoard().filter((fixture) => {
@@ -481,11 +616,13 @@ function buildParlays(options = {}) {
   const fixtures = allFixtures.filter((fixture) => !excludedFixtureKeys.has(fixtureSignatureFromFixture(fixture)));
   const fbref = fbrefStatus();
   const players = aggregatePlayers(loadFbrefRows());
-  const playerLegs = fixtures.flatMap((fixture) => playerPropCandidates(players, fixture));
+  const playerLegs = fixtures.flatMap((fixture) => playerPropCandidates(players, fixture, riskMode));
   const scoreLegs = teamScoreLegs(fixtures);
   const resultLegs = matchResultLegs(fixtures);
   const excludedLegFixtures = new Set([...excludedFixtureKeys]);
-  const eligiblePlayerLegs = playerLegs.filter((leg) => !excludedLegFixtures.has([leg.date || "", leg.fixture || ""].join("|").toLowerCase()));
+  const eligiblePlayerLegs = playerLegs
+    .filter((leg) => !excludedLegFixtures.has([leg.date || "", leg.fixture || ""].join("|").toLowerCase()))
+    .sort((a, b) => (riskMode === "risky" ? Number(Boolean(b.riskMode)) - Number(Boolean(a.riskMode)) : 0) || Number(b.confidence || 0) - Number(a.confidence || 0));
   const eligibleScoreLegs = scoreLegs.filter((leg) => !excludedLegFixtures.has([leg.date || "", leg.fixture || ""].join("|").toLowerCase()));
   const eligibleResultLegs = resultLegs.filter((leg) => !excludedLegFixtures.has([leg.date || "", leg.fixture || ""].join("|").toLowerCase()));
   const parlays = Array.from({ length: ticketCount }, (_, index) =>
@@ -498,15 +635,17 @@ function buildParlays(options = {}) {
       fbref,
       refreshSeed,
       type,
+      riskMode,
     })
   ).filter((ticket) => ticket.legs.length);
 
   return {
     fbref,
-    filters: { league, date, requestedLegs, ticketCount, type, refreshSeed },
+    filters: { league, date, requestedLegs, ticketCount, type, refreshSeed, riskMode },
     excludedFixtureCount: allFixtures.length - fixtures.length,
     availableFixtureCount: fixtures.length,
     playerCandidateCount: eligiblePlayerLegs.length,
+    riskyPlayerCandidateCount: eligiblePlayerLegs.filter((leg) => leg.riskMode).length,
     teamScoreCandidateCount: eligibleScoreLegs.length,
     parlays,
     parlay: {
@@ -519,7 +658,11 @@ function buildParlays(options = {}) {
         averageConfidence: 0,
       }),
       note: fbref.hasPlayerStats
-        ? `Mode: ${type}. Player legs are ranked from imported player-season stats, projected team scoring, match-result lean, and live table motivation including title-race, European-place, relegation, and title-secured rotation risk. Team result and score legs use the local match model, including form, home/away edge, Elo, head-to-head, market odds when available, player-derived features, and live standings motivation. ${allFixtures.length - fixtures.length} played fixture${allFixtures.length - fixtures.length === 1 ? "" : "s"} excluded from new parlay generation.`
+        ? `Mode: ${type}; risk profile: ${riskMode}. ${
+            riskMode === "risky"
+              ? "Risk mode prefers stat-supported alt lines such as 2+ shots, 2+ shots on target, and goalkeeper save props when the player's per-90 average is close enough to the threshold."
+              : "Safe mode keeps the existing conservative thresholds and confidence ordering."
+          } Player legs are ranked from imported player-season stats, projected team scoring, match-result lean, and live table motivation including title-race, European-place, relegation, and title-secured rotation risk. Team result and score legs use the local match model, including form, home/away edge, Elo, head-to-head, market odds when available, player-derived features, and live standings motivation. ${allFixtures.length - fixtures.length} played fixture${allFixtures.length - fixtures.length === 1 ? "" : "s"} excluded from new parlay generation.`
         : "No imported player-stat rows were found, so this ticket currently includes team-score legs only. Import FBref or Thunderbit CSVs to add player props.",
     },
   };
