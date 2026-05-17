@@ -1302,12 +1302,27 @@ textarea:focus {
   background: var(--row);
   padding: 14px;
   box-shadow: var(--shadow);
+  cursor: pointer;
 }
 
 .player-profile-card.is-selected-profile {
   border-color: color-mix(in srgb, var(--gold) 56%, var(--line));
   border-left-color: var(--gold);
   box-shadow: 0 0 0 3px color-mix(in srgb, var(--gold) 18%, transparent), var(--shadow);
+}
+
+.player-profile-card:focus-visible {
+  outline: 3px solid color-mix(in srgb, var(--gold) 72%, #ffffff);
+  outline-offset: 3px;
+}
+
+.player-profile-card:hover {
+  border-color: color-mix(in srgb, var(--teal) 56%, var(--line));
+  transform: translateY(-1px);
+}
+
+.player-profile-card a {
+  cursor: pointer;
 }
 
 .player-profile-card.goalkeeper-profile {

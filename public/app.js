@@ -835,7 +835,7 @@ function renderPlayerProfiles() {
       const isGoalkeeper = profile.role === "Goalkeeper";
       const isSelected = profile.id === playerProfileSelect.value;
       return `
-        <article class="player-profile-card ${isGoalkeeper ? "goalkeeper-profile" : ""} ${isSelected ? "is-selected-profile" : ""}" data-profile-id="${escapeHtml(profile.id)}">
+        <article class="player-profile-card ${isGoalkeeper ? "goalkeeper-profile" : ""} ${isSelected ? "is-selected-profile" : ""}" data-profile-id="${escapeHtml(profile.id)}" role="button" tabindex="0" aria-pressed="${isSelected ? "true" : "false"}" aria-label="Select ${escapeHtml(profile.player)} for player profile training">
           ${isSelected ? `<span class="selected-profile-star" role="img" aria-label="Selected player profile" title="Selected player profile">★</span>` : ""}
           <div class="profile-card-head">
             ${playerPhoto(profile)}
@@ -1142,6 +1142,23 @@ parlaySortSelect.addEventListener("change", renderParlayTickets);
 refreshParlayLedgerButton.addEventListener("click", refreshParlayLedger);
 refreshPlayerProfilesButton.addEventListener("click", refreshPlayerProfiles);
 playerProfileSelect.addEventListener("change", renderPlayerProfiles);
+playerProfileGrid.addEventListener("click", (event) => {
+  if (event.target.closest("a, button, input, select, textarea")) return;
+  const card = event.target.closest(".player-profile-card[data-profile-id]");
+  if (!card) return;
+  playerProfileSelect.value = card.dataset.profileId;
+  renderPlayerProfiles();
+  playerStatForm.scrollIntoView({ behavior: "smooth", block: "start" });
+});
+playerProfileGrid.addEventListener("keydown", (event) => {
+  if (!["Enter", " "].includes(event.key)) return;
+  const card = event.target.closest(".player-profile-card[data-profile-id]");
+  if (!card) return;
+  event.preventDefault();
+  playerProfileSelect.value = card.dataset.profileId;
+  renderPlayerProfiles();
+  playerProfileSelect.focus({ preventScroll: true });
+});
 playerStatForm.addEventListener("submit", async (event) => {
   event.preventDefault();
   const button = playerStatForm.querySelector("button[type='submit']");
