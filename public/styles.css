@@ -1292,6 +1292,7 @@ textarea:focus {
 }
 
 .player-profile-card {
+  position: relative;
   display: grid;
   gap: 12px;
   min-width: 0;
@@ -1303,8 +1304,34 @@ textarea:focus {
   box-shadow: var(--shadow);
 }
 
+.player-profile-card.is-selected-profile {
+  border-color: color-mix(in srgb, var(--gold) 56%, var(--line));
+  border-left-color: var(--gold);
+  box-shadow: 0 0 0 3px color-mix(in srgb, var(--gold) 18%, transparent), var(--shadow);
+}
+
 .player-profile-card.goalkeeper-profile {
   border-left-color: var(--gold);
+}
+
+.selected-profile-star {
+  position: absolute;
+  top: 10px;
+  right: 54px;
+  z-index: 4;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 28px;
+  height: 28px;
+  border: 1px solid color-mix(in srgb, var(--gold) 50%, var(--line));
+  border-radius: 999px;
+  background: var(--gold-soft);
+  color: var(--gold);
+  font-size: 18px;
+  font-weight: 900;
+  line-height: 1;
+  pointer-events: none;
 }
 
 .profile-card-head {

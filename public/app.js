@@ -816,10 +816,12 @@ function statNumber(value, decimals = 0) {
 
 function renderPlayerProfiles() {
   const profiles = playerProfileData.profiles || [];
+  const selectedProfileId = playerProfileSelect.value || profiles[0]?.id || "";
   playerProfileStatus.textContent = `${profiles.length} tracked players | ${playerProfileData.entryCount || 0} saved match stat entries`;
   playerProfileSelect.innerHTML = profiles
     .map((profile) => `<option value="${escapeHtml(profile.id)}">${escapeHtml(profile.player)} | ${escapeHtml(profile.team)} | ${escapeHtml(profile.role)}</option>`)
     .join("");
+  if (selectedProfileId) playerProfileSelect.value = selectedProfileId;
 
   if (!profiles.length) {
     playerProfileGrid.innerHTML = `<div class="empty-state">No player profiles are configured yet.</div>`;
@@ -831,8 +833,10 @@ function renderPlayerProfiles() {
       const totals = profile.totals || {};
       const latest = profile.latestEntries || [];
       const isGoalkeeper = profile.role === "Goalkeeper";
+      const isSelected = profile.id === playerProfileSelect.value;
       return `
-        <article class="player-profile-card ${isGoalkeeper ? "goalkeeper-profile" : ""}">
+        <article class="player-profile-card ${isGoalkeeper ? "goalkeeper-profile" : ""} ${isSelected ? "is-selected-profile" : ""}" data-profile-id="${escapeHtml(profile.id)}">
+          ${isSelected ? `<span class="selected-profile-star" role="img" aria-label="Selected player profile" title="Selected player profile">★</span>` : ""}
           <div class="profile-card-head">
             ${playerPhoto(profile)}
             <div>
@@ -1137,6 +1141,7 @@ parlayTypeSelect.addEventListener("change", () => refreshParlay({ forceNew: true
 parlaySortSelect.addEventListener("change", renderParlayTickets);
 refreshParlayLedgerButton.addEventListener("click", refreshParlayLedger);
 refreshPlayerProfilesButton.addEventListener("click", refreshPlayerProfiles);
+playerProfileSelect.addEventListener("change", renderPlayerProfiles);
 playerStatForm.addEventListener("submit", async (event) => {
   event.preventDefault();
   const button = playerStatForm.querySelector("button[type='submit']");
@@ -1155,6 +1160,7 @@ playerStatForm.addEventListener("submit", async (event) => {
     setPlayerProfileMessage("Player stat entry saved. Continuous training has been queued so future fixture predictions can use the updated profile.", "info");
     await refreshTrainingStatus();
     playerStatForm.reset();
+    playerProfileSelect.value = body.profileId;
     playerStatForm.elements.minutes.value = "90";
     ["shots", "shotsOnTarget", "goals", "assists", "saves"].forEach((name) => {
       playerStatForm.elements[name].value = "0";
