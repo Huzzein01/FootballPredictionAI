@@ -226,6 +226,38 @@ function teamBadge(team) {
   return `<span class="team-badge${logo ? "" : " is-fallback"}" style="--team-color:${escapeHtml(color)}">${image}<span>${escapeHtml(initials)}</span></span>`;
 }
 
+function playerInitials(player) {
+  return String(player || "")
+    .split(/\s+/)
+    .filter(Boolean)
+    .slice(0, 2)
+    .map((part) => part[0])
+    .join("")
+    .toUpperCase();
+}
+
+function playerPhoto(profile) {
+  const initials = playerInitials(profile.player);
+  if (!profile.photoUrl) {
+    return `<span class="player-photo is-fallback" aria-hidden="true"><span>${escapeHtml(initials)}</span></span>`;
+  }
+  return `
+    <span class="player-photo">
+      <img src="${escapeHtml(profile.photoUrl)}" alt="${escapeHtml(profile.player)} profile photograph" loading="lazy" referrerpolicy="no-referrer" onerror="this.parentElement.classList.add('is-fallback'); this.remove();">
+      <span>${escapeHtml(initials)}</span>
+    </span>
+  `;
+}
+
+function photoSourceMarkup(profile) {
+  if (!profile.photoSourceName) return "";
+  const label = escapeHtml(profile.photoSourceName);
+  if (profile.photoSourceUrl) {
+    return `<a href="${escapeHtml(profile.photoSourceUrl)}" target="_blank" rel="noreferrer">${label}</a>`;
+  }
+  return label;
+}
+
 function teamLine(team) {
   return `<span class="team-line">${teamBadge(team)}<span class="team-name">${escapeHtml(displayTeam(team))}</span></span>`;
 }
@@ -802,10 +834,12 @@ function renderPlayerProfiles() {
       return `
         <article class="player-profile-card ${isGoalkeeper ? "goalkeeper-profile" : ""}">
           <div class="profile-card-head">
+            ${playerPhoto(profile)}
             <div>
               <span class="role-pill">${escapeHtml(profile.role)}</span>
               <h3>${escapeHtml(profile.player)}</h3>
               <p class="muted">${escapeHtml(profile.team)} | ${escapeHtml(profile.league)} | ${escapeHtml(profile.position)}</p>
+              <p class="profile-source">Photo source: ${photoSourceMarkup(profile) || "Not set"}</p>
             </div>
             ${teamBadge(profile.team)}
           </div>
