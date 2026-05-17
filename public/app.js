@@ -197,6 +197,75 @@ function displayTeam(team) {
   return TEAM_DISPLAY_NAMES[team] || team;
 }
 
+function teamMatchKey(team) {
+  const key = displayTeam(team)
+    .toLowerCase()
+    .replace(/&/g, "and")
+    .replace(/[^a-z0-9]+/g, " ")
+    .trim();
+  const aliases = {
+    "ath madrid": "atletico madrid",
+    "athletic club": "ath bilbao",
+    "manchester city": "man city",
+    "manchester united": "man united",
+    "nottingham forest": "nottm forest",
+    "nott m forest": "nottm forest",
+    "paris saint germain": "paris sg",
+    "real oviedo": "oviedo",
+    "tottenham hotspur": "tottenham",
+  };
+  return aliases[key] || key;
+}
+
+function sameTeam(left, right) {
+  return teamMatchKey(left) === teamMatchKey(right);
+}
+
+function fixtureSignature(fixture) {
+  return [fixture.date || "", fixture.league || "", fixture.homeTeam || "", fixture.awayTeam || ""]
+    .map((part) => String(part).toLowerCase())
+    .join("|");
+}
+
+function trainingFixtures() {
+  const seen = new Set();
+  return [...fixturePredictions, ...playedPredictions].filter((fixture) => {
+    const signature = fixtureSignature(fixture);
+    if (seen.has(signature)) return false;
+    seen.add(signature);
+    return fixture.date && fixture.homeTeam && fixture.awayTeam;
+  });
+}
+
+function findTrainingFixture(profile, date) {
+  if (!profile || !date) return null;
+  return trainingFixtures()
+    .filter((fixture) => fixture.date === date && (sameTeam(fixture.homeTeam, profile.team) || sameTeam(fixture.awayTeam, profile.team)))
+    .sort((a, b) => Number(b.league === profile.league) - Number(a.league === profile.league))[0] || null;
+}
+
+function autofillTrainingFixture({ showMessage = true } = {}) {
+  const profile = (playerProfileData.profiles || []).find((item) => item.id === playerProfileSelect.value);
+  const date = playerStatForm.elements.date?.value || "";
+  if (!profile || !date) return;
+
+  const fixture = findTrainingFixture(profile, date);
+  if (!fixture) {
+    playerStatForm.elements.opponent.value = "";
+    playerStatForm.elements.venue.value = "";
+    if (showMessage) setPlayerProfileMessage(`No ${displayTeam(profile.team)} fixture found for ${date}. Opponent and venue are still editable.`, "info");
+    return;
+  }
+
+  const isHome = sameTeam(fixture.homeTeam, profile.team);
+  const opponent = isHome ? fixture.awayTeam : fixture.homeTeam;
+  playerStatForm.elements.opponent.value = displayTeam(opponent);
+  playerStatForm.elements.venue.value = isHome ? "Home" : "Away";
+  if (showMessage) {
+    setPlayerProfileMessage(`Matched ${displayTeam(profile.team)} ${isHome ? "vs" : "at"} ${displayTeam(opponent)} on ${date}. Opponent and venue filled from fixtures.`, "info");
+  }
+}
+
 function teamInitials(team) {
   return displayTeam(team)
     .replaceAll("'", "")
@@ -1141,13 +1210,18 @@ parlayTypeSelect.addEventListener("change", () => refreshParlay({ forceNew: true
 parlaySortSelect.addEventListener("change", renderParlayTickets);
 refreshParlayLedgerButton.addEventListener("click", refreshParlayLedger);
 refreshPlayerProfilesButton.addEventListener("click", refreshPlayerProfiles);
-playerProfileSelect.addEventListener("change", renderPlayerProfiles);
+playerProfileSelect.addEventListener("change", () => {
+  renderPlayerProfiles();
+  autofillTrainingFixture();
+});
+playerStatForm.elements.date.addEventListener("change", () => autofillTrainingFixture());
 playerProfileGrid.addEventListener("click", (event) => {
   if (event.target.closest("a, button, input, select, textarea")) return;
   const card = event.target.closest(".player-profile-card[data-profile-id]");
   if (!card) return;
   playerProfileSelect.value = card.dataset.profileId;
   renderPlayerProfiles();
+  autofillTrainingFixture();
   playerStatForm.scrollIntoView({ behavior: "smooth", block: "start" });
 });
 playerProfileGrid.addEventListener("keydown", (event) => {
@@ -1157,6 +1231,7 @@ playerProfileGrid.addEventListener("keydown", (event) => {
   event.preventDefault();
   playerProfileSelect.value = card.dataset.profileId;
   renderPlayerProfiles();
+  autofillTrainingFixture();
   playerProfileSelect.focus({ preventScroll: true });
 });
 playerStatForm.addEventListener("submit", async (event) => {
