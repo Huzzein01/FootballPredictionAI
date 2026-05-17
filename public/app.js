@@ -449,6 +449,29 @@ function motivationLine(prediction) {
   return text ? `<div class="motivation-line">${escapeHtml(text)}</div>` : "";
 }
 
+function judgmentMarkup(prediction) {
+  const judgment = prediction.judgment;
+  if (!judgment) return motivationLine(prediction);
+  const factors = (judgment.factors || []).filter(Boolean);
+  const source = judgment.sourceUrl
+    ? `<a href="${escapeHtml(judgment.sourceUrl)}" target="_blank" rel="noreferrer">${escapeHtml(judgment.tableSource || "Standings source")}</a>`
+    : escapeHtml(judgment.tableSource || "Standings source");
+  return `
+    <div class="judgment-card">
+      <div class="judgment-card-head">
+        <strong>Prediction judgment</strong>
+        <span>${source}</span>
+      </div>
+      <p>${escapeHtml(judgment.summary || motivationText(prediction) || "")}</p>
+      ${
+        factors.length
+          ? `<ul>${factors.map((factor) => `<li>${escapeHtml(factor)}</li>`).join("")}</ul>`
+          : ""
+      }
+    </div>
+  `;
+}
+
 function setBoardMessage(message, kind = "info") {
   boardMessage.className = `board-message ${message ? "is-visible" : ""} ${kind}`;
   boardMessage.textContent = message;
@@ -673,6 +696,7 @@ function renderPrediction(prediction) {
       <strong>${escapeHtml(prediction.projectedScore || "")}</strong>
     </div>
     <div class="prob-bars">${probabilityRows(prediction)}</div>
+    ${judgmentMarkup(prediction)}
   `;
 }
 

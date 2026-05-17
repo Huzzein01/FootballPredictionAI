@@ -1682,6 +1682,45 @@ summary {
   padding: 9px 10px;
 }
 
+.judgment-card {
+  display: grid;
+  gap: 10px;
+  border: 1px solid var(--line);
+  border-radius: 8px;
+  background: color-mix(in srgb, var(--surface) 84%, var(--panel));
+  padding: 12px;
+}
+
+.judgment-card-head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 10px;
+  color: var(--ink);
+  font-size: 13px;
+}
+
+.judgment-card-head span,
+.judgment-card p,
+.judgment-card li {
+  color: var(--muted);
+  font-size: 12px;
+  line-height: 1.45;
+}
+
+.judgment-card p {
+  margin: 0;
+  color: var(--ink);
+  font-weight: 800;
+}
+
+.judgment-card ul {
+  display: grid;
+  gap: 6px;
+  margin: 0;
+  padding-left: 18px;
+}
+
 .error-box,
 .info-box {
   border-radius: 7px;

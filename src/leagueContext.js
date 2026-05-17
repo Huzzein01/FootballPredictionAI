@@ -299,8 +299,18 @@ function standingFeaturesFromStatsTable(league, table, homeTeam, awayTeam) {
 }
 
 function currentStandingFeatures(league, fallbackTable, homeTeam, awayTeam) {
-  const liveStandings = liveStandingsForLeague(league);
-  if (liveStandings) return { ...standingFeaturesFromStandings(league, liveStandings, homeTeam, awayTeam), source: "public-standings" };
+  const liveContext = loadLiveLeagueContext();
+  const leagueContext = liveContext?.leagues?.[league];
+  const liveStandings = Array.isArray(leagueContext?.standings) && leagueContext.standings.length ? leagueContext.standings : null;
+  if (liveStandings) {
+    return {
+      ...standingFeaturesFromStandings(league, liveStandings, homeTeam, awayTeam),
+      source: "public-standings",
+      sourceName: leagueContext.source || "Public standings",
+      sourceUrl: leagueContext.sourceUrl || "",
+      updatedAt: liveContext.updatedAt || "",
+    };
+  }
   return { ...standingFeaturesFromStatsTable(league, fallbackTable, homeTeam, awayTeam), source: "local-season-table" };
 }
 
