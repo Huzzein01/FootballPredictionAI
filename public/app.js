@@ -840,6 +840,7 @@ function renderPlayerProfiles() {
               <h3>${escapeHtml(profile.player)}</h3>
               <p class="muted">${escapeHtml(profile.team)} | ${escapeHtml(profile.league)} | ${escapeHtml(profile.position)}</p>
               <p class="profile-source">Photo source: ${photoSourceMarkup(profile) || "Not set"}</p>
+              <p class="profile-source">Stats source: ${escapeHtml(profile.importedBaseline?.source || "Manual entries only")}</p>
             </div>
             ${teamBadge(profile.team)}
           </div>
@@ -874,7 +875,7 @@ function renderPlayerProfiles() {
                       `
                     )
                     .join("")
-                : `<li><strong>No entries yet</strong><span>Use the form to add this player after a match.</span></li>`
+                : `<li><strong>Imported baseline active</strong><span>Add today's match stats here after kickoff/full time.</span><small>${statNumber(profile.manualTotals?.appearances, 0)} manual entries added</small></li>`
             }
           </ul>
         </article>

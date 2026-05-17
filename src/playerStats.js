@@ -50,12 +50,13 @@ function loadPlayerRows() {
   const importedRows = fs.existsSync(PLAYER_STATS_JSON_PATH)
     ? JSON.parse(fs.readFileSync(PLAYER_STATS_JSON_PATH, "utf8")).rows || []
     : [];
-  const { manualPlayerRows } = require("./playerProfileStore");
-  return [...(Array.isArray(importedRows) ? importedRows : []), ...manualPlayerRows()];
+  const { manualPlayerRows, supplementalProfileRows } = require("./playerProfileStore");
+  return [...(Array.isArray(importedRows) ? importedRows : []), ...supplementalProfileRows(), ...manualPlayerRows()];
 }
 
 function playerSourceLabel(row) {
   if (String(row.ManualProfileSource).toLowerCase() === "true") return "Manual profile";
+  if (String(row.PublicProfileSource).toLowerCase() === "true") return "Public profile";
   return String(row.ThunderbitSource).toLowerCase() === "true" ? "Thunderbit/FBref" : "FBref";
 }
 
@@ -66,6 +67,7 @@ function normalizePlayerName(name) {
     "lsrvanmbeumo": "Bryan Mbeumo",
     "svan mbeumo -milcmr": "Bryan Mbeumo",
     "lbeniaminsesko": "Benjamin Sesko",
+    "lseniaminsesko": "Benjamin Sesko",
     "benjamin å eå¡ko": "Benjamin Sesko",
     "evling haaland": "Erling Haaland",
     "leciing haaland": "Erling Haaland",
@@ -158,6 +160,7 @@ function normalizePlayerName(name) {
     "rodrvao": "Rodrygo",
     "mare cucurella": "Marc Cucurella",
     "mare guiu": "Marc Guiu",
+    "pedi": "Pedri",
     "soko gvardiol": "Josko Gvardiol",
     "ademols lookmsn": "Ademola Lookman",
     "dominik szoboszisi": "Dominik Szoboszlai",
@@ -184,6 +187,9 @@ function normalizePlayerName(name) {
     "vitinha": "Vitinha",
     "wilson odebert": "Wilson Odobert",
     "savio": "Savio",
+    "sennelammens": "Senne Lammens",
+    "tan oblak": "Jan Oblak",
+    "tan oblak wimsvn": "Jan Oblak",
   };
   return aliases[key] || text.replace(/^[lJ](?=[A-ZÀ-Þ])/u, "");
 }
@@ -211,13 +217,18 @@ function aggregatePlayers(rows = loadPlayerRows()) {
         player: normalizePlayerName(row.Player),
         position: firstValue(row, ["Pos"]),
         age: firstValue(row, ["Age"]),
+        appearances: 0,
+        starts: 0,
+        minutes: 0,
         nineties: 0,
         goals: 0,
         assists: 0,
         shots: 0,
         shotsOnTarget: 0,
+        saves: 0,
         hasAssistStats: false,
         hasShotStats: false,
+        hasGoalkeepingStats: false,
         hasPreciseNineties: false,
         sourceTypes: new Set(),
         sourceLabels: new Set(),
@@ -227,6 +238,9 @@ function aggregatePlayers(rows = loadPlayerRows()) {
     const player = grouped.get(key);
     player.sourceTypes.add(row.statType);
     player.sourceLabels.add(playerSourceLabel(row));
+    player.appearances = Math.max(player.appearances, num(firstValue(row, ["MP", "Matches"])));
+    player.starts = Math.max(player.starts, num(firstValue(row, ["Starts"])));
+    player.minutes = Math.max(player.minutes, num(firstValue(row, ["Min", "Minutes"])));
 
     if (row.statType === "standard") {
       const assistValue = firstValue(row, ["Ast", "Assists"]);
@@ -261,17 +275,37 @@ function aggregatePlayers(rows = loadPlayerRows()) {
       player.shotsOnTarget = Math.max(player.shotsOnTarget, num(firstValue(row, ["SoT", "Standard_SoT"])));
       player.hasShotStats = true;
     }
+
+    if (row.statType === "goalkeeping") {
+      const ninetiesValue = num(firstValue(row, ["90s", "MP"]));
+      const hasPreciseNineties = firstValue(row, ["Min"]) !== "" || String(row.ScreenshotSource).toLowerCase() === "true";
+      if (hasPreciseNineties) {
+        player.nineties = player.hasPreciseNineties ? Math.max(player.nineties, ninetiesValue) : ninetiesValue;
+        player.hasPreciseNineties = true;
+      } else if (!player.hasPreciseNineties) {
+        player.nineties = Math.max(player.nineties, ninetiesValue);
+      }
+      player.saves = Math.max(player.saves, num(firstValue(row, ["Saves", "Save"])));
+      player.hasGoalkeepingStats = true;
+    }
   }
 
   return [...grouped.values()]
     .map((player) => ({
       ...player,
+      appearances: player.appearances || Math.round(player.nineties),
+      starts: player.starts || 0,
+      minutes:
+        player.minutes && player.minutes >= player.nineties * 60
+          ? player.minutes
+          : Math.round(player.nineties * 90),
       sourceTypes: [...player.sourceTypes].filter(Boolean).sort(),
       sourceLabels: [...player.sourceLabels].filter(Boolean).sort(),
       goalsPer90: player.nineties ? player.goals / player.nineties : 0,
       assistsPer90: player.nineties ? player.assists / player.nineties : 0,
       shotsPer90: player.nineties ? player.shots / player.nineties : 0,
       shotsOnTargetPer90: player.nineties ? player.shotsOnTarget / player.nineties : 0,
+      savesPer90: player.nineties ? player.saves / player.nineties : 0,
       goalAssistPer90: player.nineties ? (player.goals + player.assists) / player.nineties : 0,
     }))
     .filter((player) => player.nineties >= 3);

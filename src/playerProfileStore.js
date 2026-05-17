@@ -3,6 +3,7 @@ const path = require("path");
 const { normalizeTeamName } = require("./footballData");
 
 const PLAYER_PROFILE_STATS_PATH = path.join(process.cwd(), "data", "player_profile_updates.json");
+const IMPORTED_PLAYER_STATS_PATH = path.join(process.cwd(), "data", "fbref", "processed", "fbref_player_stats.json");
 
 const PLAYER_PROFILES = [
   {
@@ -238,6 +239,17 @@ const PLAYER_PROFILES = [
   },
 ];
 
+const SUPPLEMENTAL_PROFILE_ROWS = [
+  { season: "2025-26", league: "La Liga", Squad: "Barcelona", Player: "Lamine Yamal", Pos: "MF,FW", statType: "standard", MP: 28, Starts: 25, Min: 2218, "90s": 24.6, Gls: 16, Ast: 11, PublicProfileSource: "true" },
+  { season: "2025-26", league: "EPL", Squad: "Man United", Player: "Bruno Fernandes", Pos: "MF", statType: "standard", MP: 32, Starts: 32, Min: 2799, "90s": 31.1, Gls: 8, Ast: 19, PublicProfileSource: "true" },
+  { season: "2025-26", league: "La Liga", Squad: "Barcelona", Player: "Pedri", Pos: "MF", statType: "standard", MP: 26, Starts: 21, Min: 1901, "90s": 21.1, Gls: 2, Ast: 8, PublicProfileSource: "true" },
+  { season: "2025-26", league: "La Liga", Squad: "Barcelona", Player: "Fermin Lopez", Pos: "MF", statType: "standard", MP: 28, Starts: 19, Min: 1662, "90s": 18.5, Gls: 6, Ast: 9, PublicProfileSource: "true" },
+  { season: "2025-26", league: "La Liga", Squad: "Barcelona", Player: "Raphinha", Pos: "FW", statType: "standard", MP: 21, Starts: 15, Min: 1326, "90s": 14.7, Gls: 11, Ast: 3, PublicProfileSource: "true" },
+  { season: "2025-26", league: "EPL", Squad: "Arsenal", Player: "David Raya", Pos: "GK", statType: "goalkeeping", MP: 36, Starts: 36, Min: 3240, "90s": 36, Saves: 60, PublicProfileSource: "true" },
+  { season: "2025-26", league: "EPL", Squad: "Man City", Player: "Gianluigi Donnarumma", Pos: "GK", statType: "goalkeeping", MP: 32, Starts: 32, Min: 2880, "90s": 32, Saves: 74, PublicProfileSource: "true" },
+  { season: "2025-26", league: "EPL", Squad: "Man United", Player: "Senne Lammens", Pos: "GK", statType: "goalkeeping", MP: 29, Starts: 29, Min: 2610, "90s": 29, Saves: 71, PublicProfileSource: "true" },
+];
+
 function numeric(value) {
   const n = Number(value);
   return Number.isFinite(n) && n >= 0 ? n : 0;
@@ -264,6 +276,38 @@ function profileById(profileId) {
   return PLAYER_PROFILES.find((profile) => profile.id === profileId);
 }
 
+function emptyTotals() {
+  return { appearances: 0, starts: 0, minutes: 0, shots: 0, shotsOnTarget: 0, goals: 0, assists: 0, saves: 0 };
+}
+
+function totalsWithRates(totals) {
+  const nineties = totals.minutes ? totals.minutes / 90 : totals.appearances;
+  return {
+    ...totals,
+    nineties,
+    goalsPer90: nineties ? totals.goals / nineties : 0,
+    assistsPer90: nineties ? totals.assists / nineties : 0,
+    shotsPer90: nineties ? totals.shots / nineties : 0,
+    shotsOnTargetPer90: nineties ? totals.shotsOnTarget / nineties : 0,
+    savesPer90: nineties ? totals.saves / nineties : 0,
+  };
+}
+
+function combineTotals(...totalsList) {
+  const totals = totalsList.reduce((sum, totals) => {
+    sum.appearances += numeric(totals?.appearances);
+    sum.starts += numeric(totals?.starts);
+    sum.minutes += numeric(totals?.minutes);
+    sum.shots += integer(totals?.shots);
+    sum.shotsOnTarget += integer(totals?.shotsOnTarget);
+    sum.goals += integer(totals?.goals);
+    sum.assists += integer(totals?.assists);
+    sum.saves += integer(totals?.saves);
+    return sum;
+  }, emptyTotals());
+  return totalsWithRates(totals);
+}
+
 function totalsForEntries(entries) {
   const totals = entries.reduce(
     (sum, entry) => {
@@ -277,24 +321,68 @@ function totalsForEntries(entries) {
       sum.saves += integer(entry.saves);
       return sum;
     },
-    { appearances: 0, starts: 0, minutes: 0, shots: 0, shotsOnTarget: 0, goals: 0, assists: 0, saves: 0 }
+    emptyTotals()
   );
-  const nineties = totals.minutes ? totals.minutes / 90 : totals.appearances;
-  return {
-    ...totals,
-    nineties,
-    goalsPer90: nineties ? totals.goals / nineties : 0,
-    assistsPer90: nineties ? totals.assists / nineties : 0,
-    shotsPer90: nineties ? totals.shots / nineties : 0,
-    shotsOnTargetPer90: nineties ? totals.shotsOnTarget / nineties : 0,
-    savesPer90: nineties ? totals.saves / nineties : 0,
-  };
+  return totalsWithRates(totals);
 }
 
 function entriesForProfile(store, profileId) {
   return store.entries
     .filter((entry) => entry.profileId === profileId)
     .sort((a, b) => String(b.date || "").localeCompare(String(a.date || "")));
+}
+
+function readImportedRows() {
+  if (!fs.existsSync(IMPORTED_PLAYER_STATS_PATH)) return [];
+  const data = JSON.parse(fs.readFileSync(IMPORTED_PLAYER_STATS_PATH, "utf8").replace(/^\uFEFF/, ""));
+  return Array.isArray(data.rows) ? data.rows : [];
+}
+
+function supplementalProfileRows() {
+  return SUPPLEMENTAL_PROFILE_ROWS.map((row) => ({ ...row }));
+}
+
+function importedBaselineForProfile(profile) {
+  const { aggregatePlayers, normalizePlayerName } = require("./playerStats");
+  const profilePlayer = normalizePlayerName(profile.player);
+  const profileTeam = normalizeTeamName(profile.team);
+  const importedPlayer = aggregatePlayers([...readImportedRows(), ...supplementalProfileRows()]).find(
+    (player) =>
+      player.season === "2025-26" &&
+      player.league === profile.league &&
+      player.squad === profileTeam &&
+      normalizePlayerName(player.player) === profilePlayer
+  );
+
+  if (!importedPlayer) {
+    return {
+      totals: totalsWithRates(emptyTotals()),
+      source: "No imported screenshot baseline yet",
+      sourceTypes: [],
+      sourceLabels: [],
+      hasBaseline: false,
+    };
+  }
+
+  const totals = totalsWithRates({
+    appearances: importedPlayer.appearances,
+    starts: importedPlayer.starts,
+    minutes: importedPlayer.minutes,
+    goals: importedPlayer.goals,
+    assists: importedPlayer.assists,
+    shots: importedPlayer.shots,
+    shotsOnTarget: importedPlayer.shotsOnTarget,
+    saves: importedPlayer.saves,
+  });
+  const sourceTypes = importedPlayer.sourceTypes || [];
+  const sourceLabels = importedPlayer.sourceLabels || [];
+  return {
+    totals,
+    source: `${sourceLabels.join("+") || "FBref"} ${sourceTypes.join("+") || "stats"} baseline`,
+    sourceTypes,
+    sourceLabels,
+    hasBaseline: true,
+  };
 }
 
 function listPlayerProfiles() {
@@ -305,10 +393,14 @@ function listPlayerProfiles() {
     entryCount: store.entries.length,
     profiles: PLAYER_PROFILES.map((profile) => {
       const entries = entriesForProfile(store, profile.id);
+      const manualTotals = totalsForEntries(entries);
+      const importedBaseline = importedBaselineForProfile(profile);
       return {
         ...profile,
         team: normalizeTeamName(profile.team),
-        totals: totalsForEntries(entries),
+        totals: combineTotals(importedBaseline.totals, manualTotals),
+        importedBaseline,
+        manualTotals,
         latestEntries: entries.slice(0, 5),
       };
     }),
@@ -395,4 +487,5 @@ module.exports = {
   addPlayerStatEntry,
   listPlayerProfiles,
   manualPlayerRows,
+  supplementalProfileRows,
 };
