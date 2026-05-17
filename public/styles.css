@@ -2146,7 +2146,7 @@ textarea {
 .board-controls,
 .parlay-controls {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+  grid-template-columns: minmax(180px, 1fr) minmax(180px, 1fr) minmax(120px, 0.8fr) minmax(220px, 1.25fr);
   align-items: end;
   gap: 12px;
   margin-bottom: 16px;
@@ -2194,6 +2194,11 @@ textarea {
 
 .parlay-controls .board-stats {
   grid-column: 1 / -1;
+}
+
+.board-controls .board-stats {
+  grid-column: 1 / -1;
+  grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
 }
 
 .board-stats span {
@@ -2424,6 +2429,15 @@ th {
       "odds"
       "motivation"
       "probs";
+  }
+
+  .scoreboard-row .prob-bars {
+    grid-template-columns: 1fr;
+    width: 100%;
+  }
+
+  .scoreboard-row .prob-row {
+    grid-template-columns: minmax(0, 1fr);
   }
 }
 
