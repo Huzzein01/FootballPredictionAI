@@ -270,6 +270,72 @@ const PLAYER_PROFILES = [
     photoSourceName: "Wikipedia / Wikimedia Commons",
     photoSourceUrl: "https://en.wikipedia.org/wiki/Khvicha_Kvaratskhelia",
   },
+  {
+    id: "viktor-gyokeres",
+    player: "Viktor Gyokeres",
+    team: "Arsenal",
+    league: "EPL",
+    role: "Attacker",
+    position: "FW",
+    photoUrl: "https://upload.wikimedia.org/wikipedia/commons/c/ce/Viktor_Gy%C3%B6keres_2018.jpg",
+    photoSourceName: "Wikipedia / Wikimedia Commons",
+    photoSourceUrl: "https://en.wikipedia.org/wiki/Viktor_Gy%C3%B6keres",
+  },
+  {
+    id: "ademola-lookman",
+    player: "Ademola Lookman",
+    team: "Atletico Madrid",
+    league: "La Liga",
+    role: "Attacker",
+    position: "FW,MF",
+    photoUrl: "https://upload.wikimedia.org/wikipedia/commons/b/b7/Ademola_Lookman_%282019%29_%28cropped%29.jpg",
+    photoSourceName: "Wikipedia / Wikimedia Commons",
+    photoSourceUrl: "https://en.wikipedia.org/wiki/Ademola_Lookman",
+  },
+  {
+    id: "phil-foden",
+    player: "Phil Foden",
+    team: "Man City",
+    league: "EPL",
+    role: "Midfielder",
+    position: "MF,FW",
+    photoUrl: "https://upload.wikimedia.org/wikipedia/commons/5/53/2023-10-04_Fu%C3%9Fball%2C_M%C3%A4nner%2C_UEFA_Champions_League%2C_RB_Leipzig_-_Manchester_City_FC_1DX_2613%2C_Phil_Foden.jpg",
+    photoSourceName: "Wikipedia / Wikimedia Commons",
+    photoSourceUrl: "https://en.wikipedia.org/wiki/Phil_Foden",
+  },
+  {
+    id: "achraf-hakimi",
+    player: "Achraf Hakimi",
+    team: "Paris SG",
+    league: "Ligue 1",
+    role: "Defender",
+    position: "DF,MF",
+    photoUrl: "https://upload.wikimedia.org/wikipedia/commons/7/77/Achraf_Hakimi_%28cropped%29.jpg",
+    photoSourceName: "Wikipedia / Wikimedia Commons",
+    photoSourceUrl: "https://en.wikipedia.org/wiki/Achraf_Hakimi",
+  },
+  {
+    id: "cristiano-ronaldo",
+    player: "Cristiano Ronaldo",
+    team: "Al-Nassr",
+    league: "Saudi Pro League",
+    role: "Attacker",
+    position: "FW",
+    photoUrl: "https://upload.wikimedia.org/wikipedia/commons/9/9c/President_Donald_Trump_meets_with_Cristiano_Ronaldo_in_the_Oval_Office_%2854933344262%29_%28cropped_and_rotated%29.jpg",
+    photoSourceName: "Wikipedia / Wikimedia Commons",
+    photoSourceUrl: "https://en.wikipedia.org/wiki/Cristiano_Ronaldo",
+  },
+  {
+    id: "lionel-messi",
+    player: "Lionel Messi",
+    team: "Inter Miami",
+    league: "MLS",
+    role: "Attacker",
+    position: "FW,MF",
+    photoUrl: "https://upload.wikimedia.org/wikipedia/commons/6/6b/Lionel_Messi_White_House_2026_%283x4_cropped%29.jpg",
+    photoSourceName: "Wikipedia / Wikimedia Commons",
+    photoSourceUrl: "https://en.wikipedia.org/wiki/Lionel_Messi",
+  },
 ];
 
 const SUPPLEMENTAL_PROFILE_ROWS = [
@@ -281,7 +347,44 @@ const SUPPLEMENTAL_PROFILE_ROWS = [
   { season: "2025-26", league: "EPL", Squad: "Arsenal", Player: "David Raya", Pos: "GK", statType: "goalkeeping", MP: 36, Starts: 36, Min: 3240, "90s": 36, Saves: 60, PublicProfileSource: "true" },
   { season: "2025-26", league: "EPL", Squad: "Man City", Player: "Gianluigi Donnarumma", Pos: "GK", statType: "goalkeeping", MP: 32, Starts: 32, Min: 2880, "90s": 32, Saves: 74, PublicProfileSource: "true" },
   { season: "2025-26", league: "EPL", Squad: "Man United", Player: "Senne Lammens", Pos: "GK", statType: "goalkeeping", MP: 29, Starts: 29, Min: 2610, "90s": 29, Saves: 71, PublicProfileSource: "true" },
+  { season: "2025-26", league: "La Liga", Squad: "Atletico Madrid", Player: "Ademola Lookman", Pos: "FW,MF", statType: "standard", MP: 8, Starts: 6, Min: 495, "90s": 5.5, Gls: 3, Ast: 1, PublicProfileSource: "true" },
+  { season: "2025-26", league: "Saudi Pro League", Squad: "Al-Nassr", Player: "Cristiano Ronaldo", Pos: "FW", statType: "standard", MP: 29, Starts: 29, Min: 2527, "90s": 28.1, Gls: 26, Ast: 2, PublicProfileSource: "true" },
+  { season: "2025-26", league: "Saudi Pro League", Squad: "Al-Nassr", Player: "Cristiano Ronaldo", Pos: "FW", statType: "shooting", MP: 29, Starts: 29, Min: 2527, "90s": 28.1, Gls: 26, Sh: 171, SoT: 65, PublicProfileSource: "true" },
+  { season: "2025-26", league: "MLS", Squad: "Inter Miami", Player: "Lionel Messi", Pos: "FW,MF", statType: "standard", MP: 10, Starts: 10, Min: 900, "90s": 10, Gls: 8, Ast: 2, PublicProfileSource: "true" },
 ];
+
+const INTERNATIONAL_PROFILE_BASELINES = {
+  "erling-haaland": { team: "Norway", appearances: 49, goals: 55, updatedAt: "2026-03-31" },
+  "kylian-mbappe": { team: "France", appearances: 96, goals: 56, updatedAt: "2026-03-29" },
+  "vinicius-junior": { team: "Brazil", appearances: 47, goals: 8, updatedAt: "2026-04-01" },
+  "lamine-yamal": { team: "Spain", appearances: 25, goals: 6, updatedAt: "2026-03-31" },
+  "dominik-szoboszlai": { team: "Hungary", appearances: 63, goals: 17, updatedAt: "2026-03-31" },
+  "harry-kane": { team: "England", appearances: 112, goals: 78, updatedAt: "2025-11-16" },
+  "bukayo-saka": { team: "England", appearances: 48, goals: 14, updatedAt: "2025-11-17" },
+  "bruno-fernandes": { team: "Portugal", appearances: 87, goals: 28, updatedAt: "2026-04-01" },
+  "jude-bellingham": { team: "England", appearances: 46, goals: 6, updatedAt: "2025-11-17" },
+  pedri: { team: "Spain", appearances: 40, goals: 5, updatedAt: "2026-03-31" },
+  "jamal-musiala": { team: "Germany", appearances: 40, goals: 8, updatedAt: "2025-03-24" },
+  "cole-palmer": { team: "England", appearances: 14, goals: 2, updatedAt: "2026-03-31" },
+  "david-raya": { team: "Spain", appearances: 12, goals: 0, updatedAt: "2026-03-31" },
+  "gianluigi-donnarumma": { team: "Italy", appearances: 81, goals: 0, updatedAt: "2026-03-31" },
+  "jan-oblak": { team: "Slovenia", appearances: 82, goals: 0, updatedAt: "2025-11-16" },
+  "benjamin-sesko": { team: "Slovenia", appearances: 45, goals: 16, updatedAt: "2025-10-14" },
+  "senne-lammens": { team: "Belgium", appearances: 2, goals: 0, updatedAt: "2026-03-28" },
+  "matheus-cunha": { team: "Brazil", appearances: 21, goals: 1, updatedAt: "2026-05-03" },
+  raphinha: { team: "Brazil", appearances: 37, goals: 11, updatedAt: "2026-03-27" },
+  "fermin-lopez": { team: "Spain", appearances: 7, goals: 0, updatedAt: "2026-03-31" },
+  "michael-olise": { team: "France", appearances: 15, goals: 4, updatedAt: "2026-03-30" },
+  "ousmane-dembele": { team: "France", appearances: 58, goals: 7, updatedAt: "2026-03-26" },
+  "desire-doue": { team: "France", appearances: 6, goals: 2, updatedAt: "2026-03-29" },
+  "khvicha-kvaratskhelia": { team: "Georgia", appearances: 49, goals: 22, updatedAt: "2026-03-29" },
+  "viktor-gyokeres": { team: "Sweden", appearances: 32, goals: 19, updatedAt: "2026-03-31" },
+  "ademola-lookman": { team: "Nigeria", appearances: 43, goals: 11, updatedAt: "2026-03-31" },
+  "phil-foden": { team: "England", appearances: 49, goals: 4, updatedAt: "2026-03-31" },
+  "achraf-hakimi": { team: "Morocco", appearances: 95, goals: 11, updatedAt: "2026-03-31" },
+  "cristiano-ronaldo": { team: "Portugal", appearances: 226, goals: 143, updatedAt: "2025-11-13" },
+  "lionel-messi": { team: "Argentina", appearances: 198, goals: 116, updatedAt: "2026-04-01" },
+};
 
 function numeric(value) {
   const n = Number(value);
@@ -359,9 +462,9 @@ function totalsForEntries(entries) {
   return totalsWithRates(totals);
 }
 
-function entriesForProfile(store, profileId) {
+function entriesForProfile(store, profileId, context = "club") {
   return store.entries
-    .filter((entry) => entry.profileId === profileId)
+    .filter((entry) => entry.profileId === profileId && (entry.context || "club") === context)
     .sort((a, b) => String(b.date || "").localeCompare(String(a.date || "")));
 }
 
@@ -418,6 +521,33 @@ function importedBaselineForProfile(profile) {
   };
 }
 
+function internationalBaselineForProfile(profile) {
+  const baseline = INTERNATIONAL_PROFILE_BASELINES[profile.id] || {};
+  const totals = totalsWithRates({
+    appearances: baseline.appearances || 0,
+    starts: 0,
+    minutes: 0,
+    goals: baseline.goals || 0,
+    assists: baseline.assists || 0,
+    shots: 0,
+    shotsOnTarget: 0,
+    saves: 0,
+  });
+  return {
+    team: baseline.team || "",
+    league: "International",
+    competitionScope: "Senior national team",
+    totals,
+    source: baseline.team
+      ? `Wikipedia senior international caps/goals baseline, updated ${baseline.updatedAt || "unknown date"}. Shots, SOT, assists, saves, and minutes need match-level World Cup/Euros/friendly data.`
+      : "No senior international baseline yet",
+    sourceTypes: baseline.team ? ["caps-goals"] : [],
+    sourceLabels: baseline.team ? ["Wikipedia"] : [],
+    hasBaseline: Boolean(baseline.team),
+    updatedAt: baseline.updatedAt || "",
+  };
+}
+
 function listPlayerProfiles() {
   const store = readStore();
   return {
@@ -425,9 +555,12 @@ function listPlayerProfiles() {
     profileCount: PLAYER_PROFILES.length,
     entryCount: store.entries.length,
     profiles: PLAYER_PROFILES.map((profile) => {
-      const entries = entriesForProfile(store, profile.id);
+      const entries = entriesForProfile(store, profile.id, "club");
+      const internationalEntries = entriesForProfile(store, profile.id, "international");
       const manualTotals = totalsForEntries(entries);
+      const internationalManualTotals = totalsForEntries(internationalEntries);
       const importedBaseline = importedBaselineForProfile(profile);
+      const internationalBaseline = internationalBaselineForProfile(profile);
       return {
         ...profile,
         team: normalizeTeamName(profile.team),
@@ -435,6 +568,16 @@ function listPlayerProfiles() {
         importedBaseline,
         manualTotals,
         latestEntries: entries.slice(0, 5),
+        internationalProfile: {
+          team: internationalBaseline.team,
+          league: internationalBaseline.league,
+          role: profile.role,
+          position: profile.position,
+          totals: combineTotals(internationalBaseline.totals, internationalManualTotals),
+          importedBaseline: internationalBaseline,
+          manualTotals: internationalManualTotals,
+          latestEntries: internationalEntries.slice(0, 5),
+        },
       };
     }),
   };
@@ -447,9 +590,10 @@ function addPlayerStatEntry(profileId, body = {}) {
   const entry = {
     id: `player_stat_${Date.now()}_${Math.random().toString(16).slice(2, 8)}`,
     profileId: profile.id,
+    context: body.context === "international" ? "international" : "club",
     player: profile.player,
-    team: normalizeTeamName(profile.team),
-    league: profile.league,
+    team: body.context === "international" ? INTERNATIONAL_PROFILE_BASELINES[profile.id]?.team || "" : normalizeTeamName(profile.team),
+    league: body.context === "international" ? "International" : profile.league,
     role: profile.role,
     season: body.season || "2025-26",
     date: body.date || new Date().toISOString().slice(0, 10),
@@ -474,7 +618,7 @@ function manualPlayerRows() {
   const store = readStore();
   const rows = [];
   for (const profile of PLAYER_PROFILES) {
-    const entries = entriesForProfile(store, profile.id);
+    const entries = entriesForProfile(store, profile.id, "club");
     if (!entries.length) continue;
     const totals = totalsForEntries(entries);
     const base = {

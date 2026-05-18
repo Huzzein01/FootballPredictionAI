@@ -5,6 +5,7 @@ const form = document.querySelector("#predictForm");
 const output = document.querySelector("#predictionOutput");
 const ledgerBody = document.querySelector("#ledgerBody");
 const teamList = document.querySelector("#teamList");
+const appContextToggle = document.querySelector("#appContextToggle");
 const leagueSelect = document.querySelector("#leagueSelect");
 const themeSelect = document.querySelector("#themeSelect");
 const fixtureBoard = document.querySelector("#fixtureBoard");
@@ -109,6 +110,24 @@ const TEAM_LOGOS = {
   "Tottenham Hotspur": "https://a.espncdn.com/i/teamlogos/soccer/500/367.png",
   "Valencia": "https://a.espncdn.com/i/teamlogos/soccer/500/94.png",
   "Villarreal": "https://a.espncdn.com/i/teamlogos/soccer/500/102.png",
+  "Al-Nassr": "https://a.espncdn.com/i/teamlogos/soccer/500/817.png",
+  "Inter Miami": "https://a.espncdn.com/i/teamlogos/soccer/500/20232.png",
+  "Argentina": "https://flagcdn.com/w160/ar.png",
+  "Belgium": "https://flagcdn.com/w160/be.png",
+  "Brazil": "https://flagcdn.com/w160/br.png",
+  "England": "https://flagcdn.com/w160/gb-eng.png",
+  "France": "https://flagcdn.com/w160/fr.png",
+  "Georgia": "https://flagcdn.com/w160/ge.png",
+  "Germany": "https://flagcdn.com/w160/de.png",
+  "Hungary": "https://flagcdn.com/w160/hu.png",
+  "Italy": "https://flagcdn.com/w160/it.png",
+  "Morocco": "https://flagcdn.com/w160/ma.png",
+  "Nigeria": "https://flagcdn.com/w160/ng.png",
+  "Norway": "https://flagcdn.com/w160/no.png",
+  "Portugal": "https://flagcdn.com/w160/pt.png",
+  "Slovenia": "https://flagcdn.com/w160/si.png",
+  "Spain": "https://flagcdn.com/w160/es.png",
+  "Sweden": "https://flagcdn.com/w160/se.png",
 };
 
 const TEAM_COLORS = {
@@ -124,6 +143,24 @@ const TEAM_COLORS = {
   "Paris SG": "#004170",
   "Real Madrid": "#febe10",
   "Tottenham": "#132257",
+  "Al-Nassr": "#f7c600",
+  "Inter Miami": "#f7b5cd",
+  "Argentina": "#75aadb",
+  "Belgium": "#fae042",
+  "Brazil": "#009c3b",
+  "England": "#cf142b",
+  "France": "#0055a4",
+  "Georgia": "#ff0000",
+  "Germany": "#dd0000",
+  "Hungary": "#477050",
+  "Italy": "#008c45",
+  "Morocco": "#c1272d",
+  "Nigeria": "#008751",
+  "Norway": "#ba0c2f",
+  "Portugal": "#006600",
+  "Slovenia": "#005da4",
+  "Spain": "#aa151b",
+  "Sweden": "#006aa7",
 };
 
 function centralHour() {
@@ -158,6 +195,45 @@ function initTheme() {
   window.setInterval(() => {
     if ((localStorage.getItem("football-theme-mode") || "adaptive") === "adaptive") applyTheme("adaptive");
   }, 60000);
+}
+
+function currentProfileContext() {
+  return appContextToggle?.checked ? "international" : "club";
+}
+
+function initContextMode() {
+  if (!appContextToggle) return;
+  appContextToggle.checked = localStorage.getItem("football-context-mode") === "international";
+}
+
+function activeProfileView(profile) {
+  if (currentProfileContext() !== "international") {
+    return {
+      context: "club",
+      team: profile.team,
+      league: profile.league,
+      totals: profile.totals || {},
+      importedBaseline: profile.importedBaseline,
+      manualTotals: profile.manualTotals,
+      latestEntries: profile.latestEntries || [],
+      emptyEntryText: "Imported baseline active",
+      emptyEntrySubtext: "Add today's match stats here after kickoff/full time.",
+    };
+  }
+  const international = profile.internationalProfile || {};
+  return {
+    context: "international",
+    team: international.team || "National team not set",
+    league: international.league || "International",
+    totals: international.totals || {},
+    importedBaseline: international.importedBaseline,
+    manualTotals: international.manualTotals,
+    latestEntries: international.latestEntries || [],
+    emptyEntryText: international.importedBaseline?.hasBaseline ? "International baseline active" : "No senior international baseline",
+    emptyEntrySubtext: international.importedBaseline?.hasBaseline
+      ? "Add World Cup, Euros, qualifier, or friendly match stats here as you collect them."
+      : "If this player has no senior caps yet, keep this at zero until match data is available.",
+  };
 }
 
 function showPage(page) {
@@ -249,6 +325,12 @@ function autofillTrainingFixture({ showMessage = true } = {}) {
   const profile = (playerProfileData.profiles || []).find((item) => item.id === playerProfileSelect.value);
   const date = playerStatForm.elements.date?.value || "";
   if (!profile || !date) return;
+  if (currentProfileContext() === "international") {
+    playerStatForm.elements.opponent.value = "";
+    playerStatForm.elements.venue.value = "";
+    if (showMessage) setPlayerProfileMessage("International mode is ready for World Cup, Euros, qualifier, or friendly data. Opponent and venue remain manual until international fixtures are imported.", "info");
+    return;
+  }
 
   const fixture = findTrainingFixture(profile, date);
   if (!fixture) {
@@ -915,10 +997,14 @@ function statNumber(value, decimals = 0) {
 
 function renderPlayerProfiles() {
   const profiles = playerProfileData.profiles || [];
+  const profileContext = currentProfileContext();
   const selectedProfileId = playerProfileSelect.value || profiles[0]?.id || "";
-  playerProfileStatus.textContent = `${profiles.length} tracked players | ${playerProfileData.entryCount || 0} saved match stat entries`;
+  playerProfileStatus.textContent = `${profileContext === "international" ? "International" : "Club"} profiles | ${profiles.length} tracked players | ${playerProfileData.entryCount || 0} saved match stat entries`;
   playerProfileSelect.innerHTML = profiles
-    .map((profile) => `<option value="${escapeHtml(profile.id)}">${escapeHtml(profile.player)} | ${escapeHtml(profile.team)} | ${escapeHtml(profile.role)}</option>`)
+    .map((profile) => {
+      const view = activeProfileView(profile);
+      return `<option value="${escapeHtml(profile.id)}">${escapeHtml(profile.player)} | ${escapeHtml(view.team)} | ${escapeHtml(profile.role)}</option>`;
+    })
     .join("");
   if (selectedProfileId) playerProfileSelect.value = selectedProfileId;
 
@@ -929,8 +1015,9 @@ function renderPlayerProfiles() {
 
   playerProfileGrid.innerHTML = profiles
     .map((profile) => {
-      const totals = profile.totals || {};
-      const latest = profile.latestEntries || [];
+      const view = activeProfileView(profile);
+      const totals = view.totals || {};
+      const latest = view.latestEntries || [];
       const isGoalkeeper = profile.role === "Goalkeeper";
       const isSelected = profile.id === playerProfileSelect.value;
       return `
@@ -941,11 +1028,11 @@ function renderPlayerProfiles() {
             <div>
               <span class="role-pill">${escapeHtml(profile.role)}</span>
               <h3>${escapeHtml(profile.player)}</h3>
-              <p class="muted">${escapeHtml(profile.team)} | ${escapeHtml(profile.league)} | ${escapeHtml(profile.position)}</p>
+              <p class="muted">${escapeHtml(view.team)} | ${escapeHtml(view.league)} | ${escapeHtml(profile.position)}</p>
               <p class="profile-source">Photo source: ${photoSourceMarkup(profile) || "Not set"}</p>
-              <p class="profile-source">Stats source: ${escapeHtml(profile.importedBaseline?.source || "Manual entries only")}</p>
+              <p class="profile-source">Stats source: ${escapeHtml(view.importedBaseline?.source || "Manual entries only")}</p>
             </div>
-            ${teamBadge(profile.team)}
+            ${teamBadge(view.team)}
           </div>
           <div class="profile-stat-grid">
             <span><strong>${totals.appearances || 0}</strong> apps</span>
@@ -978,7 +1065,7 @@ function renderPlayerProfiles() {
                       `
                     )
                     .join("")
-                : `<li><strong>Imported baseline active</strong><span>Add today's match stats here after kickoff/full time.</span><small>${statNumber(profile.manualTotals?.appearances, 0)} manual entries added</small></li>`
+                : `<li><strong>${escapeHtml(view.emptyEntryText)}</strong><span>${escapeHtml(view.emptyEntrySubtext)}</span><small>${statNumber(view.manualTotals?.appearances, 0)} manual entries added</small></li>`
             }
           </ul>
         </article>
@@ -1266,6 +1353,11 @@ playerProfileGrid.addEventListener("keydown", (event) => {
   autofillTrainingFixture();
   playerProfileSelect.focus({ preventScroll: true });
 });
+appContextToggle.addEventListener("change", () => {
+  localStorage.setItem("football-context-mode", currentProfileContext());
+  renderPlayerProfiles();
+  autofillTrainingFixture();
+});
 playerStatForm.addEventListener("submit", async (event) => {
   event.preventDefault();
   const button = playerStatForm.querySelector("button[type='submit']");
@@ -1274,6 +1366,7 @@ playerStatForm.addEventListener("submit", async (event) => {
   button.textContent = "Saving...";
   try {
     const body = formJson(playerStatForm);
+    body.context = currentProfileContext();
     body.started = Boolean(playerStatForm.elements.started.checked);
     const data = await api(`/api/player-profiles/${encodeURIComponent(body.profileId)}/stats`, {
       method: "POST",
@@ -1323,6 +1416,7 @@ parlayLedgerOutput.addEventListener("click", async (event) => {
 async function init() {
   try {
     initTheme();
+    initContextMode();
     showPage(location.hash.replace("#", "") || "predictions");
     meta = await api("/api/meta");
     renderModelMeta(meta, meta.trainingStatus);

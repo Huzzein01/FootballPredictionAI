@@ -163,6 +163,7 @@ function normalizePlayerName(name) {
     "pedi": "Pedri",
     "soko gvardiol": "Josko Gvardiol",
     "ademols lookmsn": "Ademola Lookman",
+    "jademola lookman": "Ademola Lookman",
     "dominik szoboszisi": "Dominik Szoboszlai",
     "dominik szobosziai": "Dominik Szoboszlai",
     "gabriel martineli": "Gabriel Martinelli",
