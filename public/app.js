@@ -39,6 +39,10 @@ const parlayLedgerOutput = document.querySelector("#parlayLedgerOutput");
 const parlayLedgerStatus = document.querySelector("#parlayLedgerStatus");
 const parlayAccuracyStats = document.querySelector("#parlayAccuracyStats");
 const refreshParlayLedgerButton = document.querySelector("#refreshParlayLedgerButton");
+const worldCupGroupsStatus = document.querySelector("#worldCupGroupsStatus");
+const worldCupGroupsOutput = document.querySelector("#worldCupGroupsOutput");
+const internationalFixturesStatus = document.querySelector("#internationalFixturesStatus");
+const internationalFixturesOutput = document.querySelector("#internationalFixturesOutput");
 const playerProfileStatus = document.querySelector("#playerProfileStatus");
 const refreshPlayerProfilesButton = document.querySelector("#refreshPlayerProfilesButton");
 const playerStatForm = document.querySelector("#playerStatForm");
@@ -128,6 +132,58 @@ const TEAM_LOGOS = {
   "Slovenia": "https://flagcdn.com/w160/si.png",
   "Spain": "https://flagcdn.com/w160/es.png",
   "Sweden": "https://flagcdn.com/w160/se.png",
+  "USA": "https://flagcdn.com/w160/us.png",
+  "Australia": "https://flagcdn.com/w160/au.png",
+  "Paraguay": "https://flagcdn.com/w160/py.png",
+  "Mexico": "https://flagcdn.com/w160/mx.png",
+  "South Africa": "https://flagcdn.com/w160/za.png",
+  "Korea Republic": "https://flagcdn.com/w160/kr.png",
+  "Canada": "https://flagcdn.com/w160/ca.png",
+  "Qatar": "https://flagcdn.com/w160/qa.png",
+  "Switzerland": "https://flagcdn.com/w160/ch.png",
+  "Haiti": "https://flagcdn.com/w160/ht.png",
+  "Scotland": "https://flagcdn.com/w160/gb-sct.png",
+  "Curacao": "https://flagcdn.com/w160/cw.png",
+  "Ivory Coast": "https://flagcdn.com/w160/ci.png",
+  "Ecuador": "https://flagcdn.com/w160/ec.png",
+  "Netherlands": "https://flagcdn.com/w160/nl.png",
+  "Japan": "https://flagcdn.com/w160/jp.png",
+  "Tunisia": "https://flagcdn.com/w160/tn.png",
+  "Egypt": "https://flagcdn.com/w160/eg.png",
+  "IR Iran": "https://flagcdn.com/w160/ir.png",
+  "New Zealand": "https://flagcdn.com/w160/nz.png",
+  "Cabo Verde": "https://flagcdn.com/w160/cv.png",
+  "Saudi Arabia": "https://flagcdn.com/w160/sa.png",
+  "Uruguay": "https://flagcdn.com/w160/uy.png",
+  "Senegal": "https://flagcdn.com/w160/sn.png",
+  "Algeria": "https://flagcdn.com/w160/dz.png",
+  "Austria": "https://flagcdn.com/w160/at.png",
+  "Jordan": "https://flagcdn.com/w160/jo.png",
+  "Colombia": "https://flagcdn.com/w160/co.png",
+  "Uzbekistan": "https://flagcdn.com/w160/uz.png",
+  "Croatia": "https://flagcdn.com/w160/hr.png",
+  "Ghana": "https://flagcdn.com/w160/gh.png",
+  "Panama": "https://flagcdn.com/w160/pa.png",
+  "Denmark": "https://flagcdn.com/w160/dk.png",
+  "North Macedonia": "https://flagcdn.com/w160/mk.png",
+  "Czechia": "https://flagcdn.com/w160/cz.png",
+  "Republic of Ireland": "https://flagcdn.com/w160/ie.png",
+  "Wales": "https://flagcdn.com/w160/gb-wls.png",
+  "Bosnia-Herzegovina": "https://flagcdn.com/w160/ba.png",
+  "Northern Ireland": "https://flagcdn.com/w160/gb-nir.png",
+  "Slovakia": "https://flagcdn.com/w160/sk.png",
+  "Kosovo": "https://flagcdn.com/w160/xk.png",
+  "Turkiye": "https://flagcdn.com/w160/tr.png",
+  "Romania": "https://flagcdn.com/w160/ro.png",
+  "Ukraine": "https://flagcdn.com/w160/ua.png",
+  "Poland": "https://flagcdn.com/w160/pl.png",
+  "Albania": "https://flagcdn.com/w160/al.png",
+  "Bolivia": "https://flagcdn.com/w160/bo.png",
+  "Suriname": "https://flagcdn.com/w160/sr.png",
+  "Iraq": "https://flagcdn.com/w160/iq.png",
+  "New Caledonia": "https://flagcdn.com/w160/nc.png",
+  "Jamaica": "https://flagcdn.com/w160/jm.png",
+  "DR Congo": "https://flagcdn.com/w160/cd.png",
 };
 
 const TEAM_COLORS = {
@@ -161,7 +217,63 @@ const TEAM_COLORS = {
   "Slovenia": "#005da4",
   "Spain": "#aa151b",
   "Sweden": "#006aa7",
+  "USA": "#3c3b6e",
+  "Australia": "#00008b",
+  "Paraguay": "#d52b1e",
+  "Mexico": "#006847",
+  "South Africa": "#007a4d",
+  "Korea Republic": "#c60c30",
+  "Canada": "#d80621",
+  "Qatar": "#8a1538",
+  "Switzerland": "#ff0000",
+  "Haiti": "#00209f",
+  "Scotland": "#005eb8",
+  "Curacao": "#002b7f",
+  "Ivory Coast": "#f77f00",
+  "Ecuador": "#ffdd00",
+  "Netherlands": "#f36c21",
+  "Japan": "#bc002d",
+  "Tunisia": "#e70013",
+  "Egypt": "#ce1126",
+  "IR Iran": "#239f40",
+  "New Zealand": "#00247d",
+  "Cabo Verde": "#003893",
+  "Saudi Arabia": "#006c35",
+  "Uruguay": "#0038a8",
+  "Senegal": "#00853f",
+  "Algeria": "#006233",
+  "Austria": "#ed2939",
+  "Jordan": "#007a3d",
+  "Colombia": "#fcd116",
+  "Uzbekistan": "#0099b5",
+  "Croatia": "#171796",
+  "Ghana": "#006b3f",
+  "Panama": "#005293",
 };
+
+const INTERNATIONAL_SUMMARY = { total: 0, pending: 0, pickAccuracy: 0, scoreAccuracy: 0 };
+
+const WORLD_CUP_GROUPS = [
+  { group: "A", teams: ["Mexico", "South Africa", "Korea Republic", "UEFA Playoff D"], playoff: "Denmark, North Macedonia, Czechia, Republic of Ireland" },
+  { group: "B", teams: ["Canada", "UEFA Playoff A", "Qatar", "Switzerland"], playoff: "Wales, Bosnia-Herzegovina, Italy, Northern Ireland" },
+  { group: "C", teams: ["Brazil", "Morocco", "Haiti", "Scotland"] },
+  { group: "D", teams: ["USA", "Paraguay", "Australia", "UEFA Playoff C"], playoff: "Slovakia, Kosovo, Turkiye, Romania" },
+  { group: "E", teams: ["Germany", "Curacao", "Ivory Coast", "Ecuador"] },
+  { group: "F", teams: ["Netherlands", "Japan", "UEFA Playoff B", "Tunisia"], playoff: "Ukraine, Sweden, Poland, Albania" },
+  { group: "G", teams: ["Belgium", "Egypt", "IR Iran", "New Zealand"] },
+  { group: "H", teams: ["Spain", "Cabo Verde", "Saudi Arabia", "Uruguay"] },
+  { group: "I", teams: ["France", "Senegal", "FIFA Playoff 2", "Norway"], playoff: "Bolivia, Suriname, Iraq" },
+  { group: "J", teams: ["Argentina", "Algeria", "Austria", "Jordan"] },
+  { group: "K", teams: ["Portugal", "FIFA Playoff 1", "Uzbekistan", "Colombia"], playoff: "New Caledonia, Jamaica, DR Congo" },
+  { group: "L", teams: ["England", "Croatia", "Ghana", "Panama"] },
+];
+
+const WORLD_CUP_GROUPS_SOURCE = {
+  name: "U.S. Soccer, 2026 FIFA World Cup Groups",
+  url: "https://www.ussoccer.com/stories/2025/12/usmnt-draws-paraguay-australia-uefa-playoff-group-d-2026-fifa-world-cup",
+};
+
+const CLUB_PARLAY_LEAGUES = ["All", "EPL", "La Liga", "Bundesliga", "Ligue 1"];
 
 function centralHour() {
   try {
@@ -197,8 +309,16 @@ function initTheme() {
   }, 60000);
 }
 
-function currentProfileContext() {
+function currentAppContext() {
   return appContextToggle?.checked ? "international" : "club";
+}
+
+function isInternationalMode() {
+  return currentAppContext() === "international";
+}
+
+function currentProfileContext() {
+  return currentAppContext();
 }
 
 function initContextMode() {
@@ -236,6 +356,217 @@ function activeProfileView(profile) {
   };
 }
 
+function internationalEmptyState(title, detail) {
+  return `
+    <div class="empty-state international-empty">
+      <strong>${escapeHtml(title)}</strong>
+      <span>${escapeHtml(detail)}</span>
+    </div>
+  `;
+}
+
+function resetInternationalSummary() {
+  updateSummary(INTERNATIONAL_SUMMARY);
+}
+
+function renderInternationalModelMeta() {
+  document.querySelector("#modelMeta").textContent =
+    "International mode | Waiting for World Cup, Euros, fixture, odds, and backtest imports | Backtest accuracy 0.0%";
+}
+
+function renderInternationalFixtureBoard() {
+  fixturePredictions = [];
+  boardLeagueFilter.innerHTML = `<option value="International">International</option>`;
+  boardLeagueFilter.value = "International";
+  boardDateFilter.value = "";
+  boardDateFilter.min = "";
+  boardDateFilter.max = "";
+  document.querySelector("#boardTotal").textContent = "0";
+  document.querySelector("#boardWithOdds").textContent = "0";
+  document.querySelector("#boardModelOnly").textContent = "0";
+  boardStatus.textContent = "Waiting for international fixture, odds, and model data";
+  setBoardMessage("", "info");
+  trackAllButton.disabled = true;
+  fixtureBoard.innerHTML = internationalEmptyState(
+    "Waiting for more international data",
+    "World Cup predictions will appear here after the international fixture and odds feed is imported."
+  );
+}
+
+function renderInternationalPlayedBoard() {
+  playedPredictions = [];
+  playedLeagueFilter.innerHTML = `<option value="International">International</option>`;
+  playedLeagueFilter.value = "International";
+  playedDateFilter.value = "";
+  playedDateFilter.min = "";
+  playedDateFilter.max = "";
+  document.querySelector("#playedTotal").textContent = "0";
+  document.querySelector("#playedCorrect").textContent = "0";
+  document.querySelector("#playedWrong").textContent = "0";
+  document.querySelector("#playedExact").textContent = "0";
+  document.querySelector("#playedVoided").textContent = "0";
+  playedStatus.textContent = "No international matches have been imported as played";
+  playedBoard.innerHTML = internationalEmptyState(
+    "No international played matches yet",
+    "Played matches and settled results will stay empty until World Cup, Euros, or friendly results are imported."
+  );
+}
+
+function renderInternationalParlay() {
+  currentParlays = [];
+  parlayLeagueFilter.innerHTML = `<option value="International">International</option>`;
+  parlayLeagueFilter.value = "International";
+  parlayDateFilter.value = "";
+  parlayDateFilter.min = "";
+  parlayDateFilter.max = "";
+  document.querySelector("#fbrefRows").textContent = "0";
+  document.querySelector("#fbrefPlayers").textContent = "0";
+  document.querySelector("#playerLegCount").textContent = "0";
+  document.querySelector("#teamScoreLegCount").textContent = "0";
+  parlayStatus.textContent = "International parlays are waiting for fixture, odds, and player-stat imports";
+  setParlayMessage("", "info");
+  trackParlaysButton.disabled = true;
+  parlayOutput.innerHTML = internationalEmptyState(
+    "Waiting for more international data",
+    "Safe and risk parlays will generate here after the international fixture slate and player-stat baselines are connected."
+  );
+}
+
+function restoreClubControls() {
+  const previousParlayLeague = CLUB_PARLAY_LEAGUES.includes(parlayLeagueFilter.value) ? parlayLeagueFilter.value : "All";
+  parlayLeagueFilter.innerHTML = CLUB_PARLAY_LEAGUES.map((league) => `<option value="${escapeHtml(league)}">${escapeHtml(league === "All" ? "All leagues" : league)}</option>`).join("");
+  parlayLeagueFilter.value = previousParlayLeague;
+  if (leagueSelect.value === "International") {
+    leagueSelect.value = "EPL";
+  }
+  if (form.elements.season.value === "2022 World Cup") {
+    form.elements.season.value = "2025-26";
+  }
+  if (form.elements.homeTeam.value === "Argentina" && form.elements.awayTeam.value === "France") {
+    form.elements.homeTeam.value = "Man United";
+    form.elements.awayTeam.value = "Chelsea";
+    form.elements.date.value = "";
+    output.classList.remove("is-visible");
+    output.innerHTML = "";
+  }
+}
+
+function renderInternationalParlayLedger() {
+  trackedParlayData = { parlays: [], summary: {} };
+  parlayLedgerStatus.textContent = "0 tracked international tickets | 0 pending | 0 void | 0 DNP/void legs";
+  parlayAccuracyStats.innerHTML = `
+    <span><strong>0.0%</strong> parlay accuracy <small>0 hit / 0 miss</small></span>
+    <span><strong>0.0%</strong> player stats accuracy <small>0 hit / 0 miss / 0 void</small></span>
+    <span><strong>0.0%</strong> all-leg accuracy <small>0 total legs</small></span>
+    <span><strong>0</strong> player props pending <small>0 settled player legs</small></span>
+  `;
+  parlayLedgerOutput.innerHTML = internationalEmptyState(
+    "No international parlay backtests yet",
+    "International tickets will be tracked separately from club parlays once generated."
+  );
+}
+
+function renderInternationalLedger() {
+  ledgerPredictions = [];
+  ledgerBody.innerHTML = `<tr><td colspan="7" class="muted">No international predictions saved yet. This ledger is independent from club backtests.</td></tr>`;
+}
+
+function setInternationalSingleDemo() {
+  if (!form) return;
+  form.elements.league.value = "International";
+  form.elements.season.value = "2022 World Cup";
+  form.elements.date.value = "2022-12-18";
+  form.elements.homeTeam.value = "Argentina";
+  form.elements.awayTeam.value = "France";
+  form.elements.homeOdds.value = "";
+  form.elements.drawOdds.value = "";
+  form.elements.awayOdds.value = "";
+  form.elements.save.checked = false;
+  output.classList.add("is-visible");
+  output.innerHTML = `
+    <div class="pick-line">
+      <div>
+        <strong>Argentina vs France</strong>
+        <p class="muted">International demo | 2022 World Cup Final | December 18, 2022</p>
+      </div>
+      <span class="pick-pill tag-D">Demo only</span>
+    </div>
+    <div class="info-box">
+      International single-match mode is separated from the club model. Use this Argentina vs France demo until World Cup, Euros, odds, table, and backtest data are imported.
+    </div>
+  `;
+  updateTeamList();
+}
+
+function renderWorldCupGroups() {
+  if (!worldCupGroupsOutput) return;
+  worldCupGroupsStatus.innerHTML = `2026 groups loaded from <a href="${escapeHtml(WORLD_CUP_GROUPS_SOURCE.url)}" target="_blank" rel="noreferrer">${escapeHtml(WORLD_CUP_GROUPS_SOURCE.name)}</a>`;
+  worldCupGroupsOutput.innerHTML = WORLD_CUP_GROUPS.map((group) => `
+    <article class="world-cup-group-card">
+      <div class="group-card-head">
+        <span>Group ${escapeHtml(group.group)}</span>
+        ${group.playoff ? `<small>Includes playoff placeholder</small>` : `<small>Confirmed teams</small>`}
+      </div>
+      <ul>
+        ${group.teams.map((team) => `
+          <li>
+            ${teamBadge(team)}
+            <span>${escapeHtml(team)}</span>
+          </li>
+        `).join("")}
+      </ul>
+      ${group.playoff ? `<p class="muted">Placeholder pool: ${escapeHtml(group.playoff)}</p>` : ""}
+    </article>
+  `).join("");
+}
+
+function renderInternationalFixturesPage() {
+  if (!internationalFixturesOutput) return;
+  internationalFixturesStatus.textContent = "Waiting for imported fixture, venue, odds, and kickoff-time data";
+  internationalFixturesOutput.innerHTML = internationalEmptyState(
+    "Fixture feed not connected yet",
+    "The international fixture page is ready, but predictions and parlays remain blank until a verified World Cup or Euros fixture feed is imported into the model."
+  );
+}
+
+function renderInternationalContext() {
+  resetInternationalSummary();
+  renderInternationalModelMeta();
+  renderInternationalFixtureBoard();
+  renderInternationalPlayedBoard();
+  renderInternationalParlay();
+  renderInternationalParlayLedger();
+  renderInternationalLedger();
+  renderWorldCupGroups();
+  renderInternationalFixturesPage();
+  renderPlayerProfiles();
+  setInternationalSingleDemo();
+}
+
+async function renderClubContext() {
+  restoreClubControls();
+  trackAllButton.disabled = false;
+  trackParlaysButton.disabled = false;
+  if (meta) renderModelMeta(meta, meta.trainingStatus || {});
+  updateTeamList();
+  await refreshFixtureBoard();
+  await refreshPlayedBoard();
+  await refreshParlay();
+  await refreshParlayLedger();
+  await refreshPlayerProfiles();
+  await refreshLedger();
+}
+
+async function applyAppContext() {
+  localStorage.setItem("football-context-mode", currentAppContext());
+  if (isInternationalMode()) {
+    renderInternationalContext();
+  } else {
+    await renderClubContext();
+  }
+  autofillTrainingFixture({ showMessage: false });
+}
+
 function showPage(page) {
   const fallback = pageSections.some((section) => section.dataset.page === page) ? page : "predictions";
   pageSections.forEach((section) => section.classList.toggle("is-active", section.dataset.page === fallback));
@@ -245,6 +576,11 @@ function showPage(page) {
     tab.setAttribute("aria-current", active ? "page" : "false");
   });
   history.replaceState(null, "", `#${fallback}`);
+  if (isInternationalMode()) {
+    renderWorldCupGroups();
+    renderInternationalFixturesPage();
+    if (fallback === "single") setInternationalSingleDemo();
+  }
 }
 
 function formJson(formElement) {
@@ -463,6 +799,10 @@ function percent(value) {
 }
 
 function renderModelMeta(modelMeta, trainingStatus = {}) {
+  if (isInternationalMode()) {
+    renderInternationalModelMeta();
+    return;
+  }
   const test = modelMeta?.metrics?.test;
   const accuracy = test ? `Holdout accuracy ${(test.accuracy * 100).toFixed(1)}%` : "Holdout accuracy unavailable";
   const feedback = Number(modelMeta?.feedbackRows || 0);
@@ -571,6 +911,10 @@ function setPlayerProfileMessage(message, kind = "info") {
 }
 
 function renderBoard() {
+  if (isInternationalMode()) {
+    renderInternationalFixtureBoard();
+    return;
+  }
   const selectedLeague = boardLeagueFilter.value;
   const selectedDate = boardDateFilter.value;
   const filteredBase = fixturePredictions.filter((prediction) => {
@@ -670,6 +1014,10 @@ function actualResultText(prediction) {
 }
 
 function renderPlayedBoard() {
+  if (isInternationalMode()) {
+    renderInternationalPlayedBoard();
+    return;
+  }
   const selectedLeague = playedLeagueFilter.value;
   const selectedDate = playedDateFilter.value;
   const filtered = playedPredictions.filter((prediction) => {
@@ -760,6 +1108,11 @@ function renderPlayedBoard() {
 }
 
 function updateTeamList() {
+  if (isInternationalMode()) {
+    const teams = WORLD_CUP_GROUPS.flatMap((group) => group.teams).filter((team) => !team.includes("Playoff"));
+    teamList.innerHTML = teams.map((team) => `<option value="${escapeHtml(team)}"></option>`).join("");
+    return;
+  }
   const teams = meta?.teamsByLeague?.[leagueSelect.value] || [];
   teamList.innerHTML = teams.map((team) => `<option value="${escapeHtml(team)}"></option>`).join("");
 }
@@ -1127,6 +1480,11 @@ function renderLedger(predictions = ledgerPredictions) {
 }
 
 async function refreshLedger() {
+  if (isInternationalMode()) {
+    renderInternationalLedger();
+    resetInternationalSummary();
+    return;
+  }
   const data = await api("/api/backtests");
   ledgerPredictions = data.predictions || [];
   updateSummary(data.summary);
@@ -1134,6 +1492,11 @@ async function refreshLedger() {
 }
 
 async function refreshFixtureBoard() {
+  if (isInternationalMode()) {
+    renderInternationalFixtureBoard();
+    resetInternationalSummary();
+    return;
+  }
   setBoardMessage("Loading fixture predictions...", "info");
   const previousLeague = boardLeagueFilter.value;
   const previousDate = boardDateFilter.value;
@@ -1155,6 +1518,10 @@ async function refreshFixtureBoard() {
 }
 
 async function refreshPlayedBoard() {
+  if (isInternationalMode()) {
+    renderInternationalPlayedBoard();
+    return;
+  }
   const previousLeague = playedLeagueFilter.value;
   const previousDate = playedDateFilter.value;
   const data = await api("/api/played-fixtures");
@@ -1169,6 +1536,10 @@ async function refreshPlayedBoard() {
 }
 
 async function refreshParlay({ forceNew = false } = {}) {
+  if (isInternationalMode()) {
+    renderInternationalParlay();
+    return;
+  }
   if (forceNew) parlayRefreshSeed += 1;
   const league = encodeURIComponent(parlayLeagueFilter.value);
   const legs = encodeURIComponent(parlayLegCount.value);
@@ -1182,6 +1553,10 @@ async function refreshParlay({ forceNew = false } = {}) {
 }
 
 async function refreshParlayLedger() {
+  if (isInternationalMode()) {
+    renderInternationalParlayLedger();
+    return;
+  }
   const data = await api("/api/parlay-backtests");
   trackedParlayData = data;
   renderParlayLedger();
@@ -1196,6 +1571,10 @@ async function refreshPlayerProfiles() {
 
 form.addEventListener("submit", async (event) => {
   event.preventDefault();
+  if (isInternationalMode()) {
+    setInternationalSingleDemo();
+    return;
+  }
   const button = form.querySelector("button[type='submit']");
   const originalText = button.textContent;
   button.disabled = true;
@@ -1354,9 +1733,7 @@ playerProfileGrid.addEventListener("keydown", (event) => {
   playerProfileSelect.focus({ preventScroll: true });
 });
 appContextToggle.addEventListener("change", () => {
-  localStorage.setItem("football-context-mode", currentProfileContext());
-  renderPlayerProfiles();
-  autofillTrainingFixture();
+  applyAppContext();
 });
 playerStatForm.addEventListener("submit", async (event) => {
   event.preventDefault();
@@ -1421,12 +1798,16 @@ async function init() {
     meta = await api("/api/meta");
     renderModelMeta(meta, meta.trainingStatus);
     updateTeamList();
-    await refreshFixtureBoard();
-    await refreshPlayedBoard();
-    await refreshParlay();
-    await refreshParlayLedger();
     await refreshPlayerProfiles();
-    await refreshLedger();
+    if (isInternationalMode()) {
+      renderInternationalContext();
+    } else {
+      await refreshFixtureBoard();
+      await refreshPlayedBoard();
+      await refreshParlay();
+      await refreshParlayLedger();
+      await refreshLedger();
+    }
   } catch (error) {
     document.querySelector("#modelMeta").textContent = "Unable to load model status";
     setBoardMessage(error.name === "AbortError" ? "The app could not reach the local prediction server." : error.message, "error");
