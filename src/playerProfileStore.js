@@ -521,17 +521,43 @@ function importedBaselineForProfile(profile) {
   };
 }
 
+function estimatedInternationalVolume(profile, baseline, clubTotals = emptyTotals()) {
+  const appearances = numeric(baseline.appearances);
+  const goals = integer(baseline.goals);
+  const isGoalkeeper = profile.role === "Goalkeeper";
+  const isDefender = profile.role === "Defender";
+  const clubNineties = numeric(clubTotals.nineties);
+  const clubAssistsPer90 = clubNineties ? numeric(clubTotals.assists) / clubNineties : 0;
+  const clubShotsPer90 = clubNineties ? numeric(clubTotals.shots) / clubNineties : 0;
+  const clubSotPer90 = clubNineties ? numeric(clubTotals.shotsOnTarget) / clubNineties : 0;
+  const clubSavesPer90 = clubNineties ? numeric(clubTotals.saves) / clubNineties : 0;
+  const goalRate = appearances ? goals / appearances : 0;
+  const fallbackShotsPerCap = isGoalkeeper ? 0 : isDefender ? Math.max(0.35, goalRate * 3.2) : Math.max(1.2, goalRate * 4.6);
+  const shotsPerCap = clubShotsPer90 > 0 ? clubShotsPer90 : fallbackShotsPerCap;
+  const sotPerCap = clubSotPer90 > 0 ? clubSotPer90 : shotsPerCap * (isDefender ? 0.32 : 0.42);
+  const assistsPerCap = isGoalkeeper ? 0 : Math.max(clubAssistsPer90, Math.max(0.03, goalRate * 0.42));
+
+  return {
+    assists: baseline.assists !== undefined ? integer(baseline.assists) : Math.round(assistsPerCap * appearances),
+    shots: baseline.shots !== undefined ? integer(baseline.shots) : Math.round(shotsPerCap * appearances),
+    shotsOnTarget: baseline.shotsOnTarget !== undefined ? integer(baseline.shotsOnTarget) : Math.max(goals, Math.round(sotPerCap * appearances)),
+    saves: baseline.saves !== undefined ? integer(baseline.saves) : isGoalkeeper ? Math.round(Math.max(clubSavesPer90, 1.2) * appearances) : 0,
+  };
+}
+
 function internationalBaselineForProfile(profile) {
   const baseline = INTERNATIONAL_PROFILE_BASELINES[profile.id] || {};
+  const clubBaseline = importedBaselineForProfile(profile);
+  const volume = estimatedInternationalVolume(profile, baseline, clubBaseline.totals);
   const totals = totalsWithRates({
     appearances: baseline.appearances || 0,
     starts: 0,
     minutes: 0,
     goals: baseline.goals || 0,
-    assists: baseline.assists || 0,
-    shots: 0,
-    shotsOnTarget: 0,
-    saves: 0,
+    assists: volume.assists,
+    shots: volume.shots,
+    shotsOnTarget: volume.shotsOnTarget,
+    saves: volume.saves,
   });
   return {
     team: baseline.team || "",
@@ -539,7 +565,7 @@ function internationalBaselineForProfile(profile) {
     competitionScope: "Senior national team",
     totals,
     source: baseline.team
-      ? `Wikipedia senior international caps/goals baseline, updated ${baseline.updatedAt || "unknown date"}. Shots, SOT, assists, saves, and minutes need match-level World Cup/Euros/friendly data.`
+      ? `Wikipedia senior international caps/goals baseline, updated ${baseline.updatedAt || "unknown date"}. Assists, shots, SOT, saves, and per-90 volume are provisional estimates from the player's latest club/profile rates until match-level World Cup/Euros/friendly logs are imported.`
       : "No senior international baseline yet",
     sourceTypes: baseline.team ? ["caps-goals"] : [],
     sourceLabels: baseline.team ? ["Wikipedia"] : [],
