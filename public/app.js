@@ -59,6 +59,7 @@ let currentParlays = [];
 let trackedParlayData = { parlays: [], summary: {} };
 let ledgerPredictions = [];
 let playerProfileData = { profiles: [], profileCount: 0, entryCount: 0 };
+let internationalStatusData = null;
 let parlayRefreshSeed = 0;
 
 const CENTRAL_TIME_ZONE = "America/Chicago";
@@ -370,8 +371,10 @@ function resetInternationalSummary() {
 }
 
 function renderInternationalModelMeta() {
+  const rows = internationalStatusData?.playerRows || 0;
+  const seasons = internationalStatusData?.seasons?.join(", ") || "World Cup data";
   document.querySelector("#modelMeta").textContent =
-    "International mode | Waiting for World Cup, Euros, fixture, odds, and backtest imports | Backtest accuracy 0.0%";
+    `International mode | ${rows} imported player-stat rows from ${seasons} | Waiting for fixture, odds, and backtest imports | Backtest accuracy 0.0%`;
 }
 
 function renderInternationalFixtureBoard() {
@@ -419,11 +422,13 @@ function renderInternationalParlay() {
   parlayDateFilter.value = "";
   parlayDateFilter.min = "";
   parlayDateFilter.max = "";
-  document.querySelector("#fbrefRows").textContent = "0";
-  document.querySelector("#fbrefPlayers").textContent = "0";
+  document.querySelector("#fbrefRows").textContent = internationalStatusData?.playerRows || "0";
+  document.querySelector("#fbrefPlayers").textContent = internationalStatusData?.players || "0";
   document.querySelector("#playerLegCount").textContent = "0";
   document.querySelector("#teamScoreLegCount").textContent = "0";
-  parlayStatus.textContent = "International parlays are waiting for fixture, odds, and player-stat imports";
+  parlayStatus.textContent = internationalStatusData?.hasWorldCupStats
+    ? `International player stats imported from ${internationalStatusData.seasons.join(", ")}; waiting for fixture and odds imports`
+    : "International parlays are waiting for fixture, odds, and player-stat imports";
   setParlayMessage("", "info");
   trackParlaysButton.disabled = true;
   parlayOutput.innerHTML = internationalEmptyState(
@@ -522,11 +527,21 @@ function renderWorldCupGroups() {
 
 function renderInternationalFixturesPage() {
   if (!internationalFixturesOutput) return;
-  internationalFixturesStatus.textContent = "Waiting for imported fixture, venue, odds, and kickoff-time data";
+  internationalFixturesStatus.textContent = internationalStatusData?.hasWorldCupStats
+    ? `${internationalStatusData.playerRows} player rows and ${internationalStatusData.squadRows} squad rows imported; waiting for fixture, venue, odds, and kickoff-time data`
+    : "Waiting for imported fixture, venue, odds, and kickoff-time data";
   internationalFixturesOutput.innerHTML = internationalEmptyState(
     "Fixture feed not connected yet",
     "The international fixture page is ready, but predictions and parlays remain blank until a verified World Cup or Euros fixture feed is imported into the model."
   );
+}
+
+async function refreshInternationalStatus() {
+  try {
+    internationalStatusData = await api("/api/international/status");
+  } catch {
+    internationalStatusData = null;
+  }
 }
 
 function renderInternationalContext() {
@@ -560,6 +575,7 @@ async function renderClubContext() {
 async function applyAppContext() {
   localStorage.setItem("football-context-mode", currentAppContext());
   if (isInternationalMode()) {
+    await refreshInternationalStatus();
     renderInternationalContext();
   } else {
     await renderClubContext();
@@ -1800,6 +1816,7 @@ async function init() {
     updateTeamList();
     await refreshPlayerProfiles();
     if (isInternationalMode()) {
+      await refreshInternationalStatus();
       renderInternationalContext();
     } else {
       await refreshFixtureBoard();

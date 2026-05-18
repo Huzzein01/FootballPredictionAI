@@ -4,6 +4,7 @@ const { normalizeTeamName } = require("./footballData");
 
 const PLAYER_PROFILE_STATS_PATH = path.join(process.cwd(), "data", "player_profile_updates.json");
 const IMPORTED_PLAYER_STATS_PATH = path.join(process.cwd(), "data", "fbref", "processed", "fbref_player_stats.json");
+const WORLD_CUP_PLAYER_STATS_PATH = path.join(process.cwd(), "data", "international", "processed", "world_cup_player_stats.json");
 
 const PLAYER_PROFILES = [
   {
@@ -474,6 +475,12 @@ function readImportedRows() {
   return Array.isArray(data.rows) ? data.rows : [];
 }
 
+function readWorldCupRows() {
+  if (!fs.existsSync(WORLD_CUP_PLAYER_STATS_PATH)) return [];
+  const data = JSON.parse(fs.readFileSync(WORLD_CUP_PLAYER_STATS_PATH, "utf8").replace(/^\uFEFF/, ""));
+  return Array.isArray(data.rows) ? data.rows : [];
+}
+
 function supplementalProfileRows() {
   return SUPPLEMENTAL_PROFILE_ROWS.map((row) => ({ ...row }));
 }
@@ -545,8 +552,69 @@ function estimatedInternationalVolume(profile, baseline, clubTotals = emptyTotal
   };
 }
 
+function profileNameKey(name) {
+  return String(name || "")
+    .normalize("NFD")
+    .replace(/[\u0300-\u036f]/g, "")
+    .toLowerCase()
+    .replace(/[^a-z0-9]+/g, " ")
+    .trim()
+    .replace(/\bmbappe\b/g, "mbappe")
+    .replace(/\bvinicius junior\b/g, "vinicius junior");
+}
+
+function worldCupBaselineForProfile(profile, nationalTeam) {
+  if (!nationalTeam) return null;
+  const targetPlayer = profileNameKey(profile.player);
+  const targetTeam = normalizeTeamName(nationalTeam);
+  const rows = readWorldCupRows().filter(
+    (row) =>
+      row.league === "International" &&
+      normalizeTeamName(row.Squad) === targetTeam &&
+      profileNameKey(row.Player) === targetPlayer
+  );
+  if (!rows.length) return null;
+
+  const totals = totalsWithRates(
+    rows.reduce(
+      (sum, row) => {
+        sum.appearances += numeric(row.MP);
+        sum.starts += numeric(row.Starts);
+        sum.minutes += numeric(row.Min) || numeric(row["90s"]) * 90;
+        sum.goals += integer(row.Gls);
+        sum.assists += integer(row.Ast);
+        sum.saves += integer(row.Saves);
+        return sum;
+      },
+      emptyTotals()
+    )
+  );
+  return {
+    totals,
+    source: `FBref World Cup standard stats imported from 2018/2022 screenshots (${rows.map((row) => row.season).sort().join(", ")}). Shots, SOT, and saves stay at zero until World Cup shooting/goalkeeping screenshots are imported.`,
+    sourceTypes: ["world-cup-standard"],
+    sourceLabels: ["FBref screenshots"],
+    hasBaseline: true,
+    seasons: rows.map((row) => row.season).sort(),
+  };
+}
+
 function internationalBaselineForProfile(profile) {
   const baseline = INTERNATIONAL_PROFILE_BASELINES[profile.id] || {};
+  const worldCupBaseline = worldCupBaselineForProfile(profile, baseline.team);
+  if (worldCupBaseline) {
+    return {
+      team: baseline.team || "",
+      league: "International",
+      competitionScope: "FIFA World Cup 2018/2022",
+      totals: worldCupBaseline.totals,
+      source: worldCupBaseline.source,
+      sourceTypes: worldCupBaseline.sourceTypes,
+      sourceLabels: worldCupBaseline.sourceLabels,
+      hasBaseline: true,
+      updatedAt: "2026-05-18",
+    };
+  }
   const clubBaseline = importedBaselineForProfile(profile);
   const volume = estimatedInternationalVolume(profile, baseline, clubBaseline.totals);
   const totals = totalsWithRates({

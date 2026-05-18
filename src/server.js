@@ -6,6 +6,7 @@ const { fixturePredictionBoard, predictMatch, teamsByLeague } = require("./predi
 const { addPrediction, addPredictionsIfMissing, deletePrediction, listPredictions, summary, updateResult } = require("./backtestStore");
 const { readTrainingStatus, scheduleRetrain } = require("./continuousTraining");
 const { addPlayerStatEntry, listPlayerProfiles } = require("./playerProfileStore");
+const { internationalStatus } = require("./internationalData");
 const { resetPlayerStatsCache } = require("./playerStats");
 const parlayBacktests = require("./parlayBacktestStore");
 
@@ -224,6 +225,10 @@ async function handleApi(req, res, pathname) {
 
   if (req.method === "GET" && pathname === "/api/player-profiles") {
     return sendJson(res, 200, listPlayerProfiles());
+  }
+
+  if (req.method === "GET" && pathname === "/api/international/status") {
+    return sendJson(res, 200, internationalStatus());
   }
 
   const playerStatsMatch = pathname.match(/^\/api\/player-profiles\/([^/]+)\/stats$/);

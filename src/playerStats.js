@@ -3,6 +3,7 @@ const path = require("path");
 const { normalizeTeamName } = require("./footballData");
 
 const PLAYER_STATS_JSON_PATH = path.join(process.cwd(), "data", "fbref", "processed", "fbref_player_stats.json");
+const WORLD_CUP_PLAYER_STATS_JSON_PATH = path.join(process.cwd(), "data", "international", "processed", "world_cup_player_stats.json");
 
 const PLAYER_FEATURE_NAMES = [
   "homePlayerGoalsTotal",
@@ -50,8 +51,11 @@ function loadPlayerRows() {
   const importedRows = fs.existsSync(PLAYER_STATS_JSON_PATH)
     ? JSON.parse(fs.readFileSync(PLAYER_STATS_JSON_PATH, "utf8")).rows || []
     : [];
+  const worldCupRows = fs.existsSync(WORLD_CUP_PLAYER_STATS_JSON_PATH)
+    ? JSON.parse(fs.readFileSync(WORLD_CUP_PLAYER_STATS_JSON_PATH, "utf8")).rows || []
+    : [];
   const { manualPlayerRows, supplementalProfileRows } = require("./playerProfileStore");
-  return [...(Array.isArray(importedRows) ? importedRows : []), ...supplementalProfileRows(), ...manualPlayerRows()];
+  return [...(Array.isArray(importedRows) ? importedRows : []), ...(Array.isArray(worldCupRows) ? worldCupRows : []), ...supplementalProfileRows(), ...manualPlayerRows()];
 }
 
 function playerSourceLabel(row) {
@@ -407,6 +411,7 @@ function matchPlayerFeatureRow(league, season, homeTeam, awayTeam) {
 module.exports = {
   PLAYER_FEATURE_NAMES,
   PLAYER_STATS_JSON_PATH,
+  WORLD_CUP_PLAYER_STATS_JSON_PATH,
   aggregatePlayers,
   buildTeamFeatureIndex,
   loadPlayerRows,
