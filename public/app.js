@@ -30,6 +30,7 @@ const parlayLegCount = document.querySelector("#parlayLegCount");
 const parlayTicketCount = document.querySelector("#parlayTicketCount");
 const parlayTypeSelect = document.querySelector("#parlayTypeSelect");
 const parlayRiskToggle = document.querySelector("#parlayRiskToggle");
+const parlayLayoutToggle = document.querySelector("#parlayLayoutToggle");
 const parlaySortSelect = document.querySelector("#parlaySortSelect");
 const refreshParlayButton = document.querySelector("#refreshParlayButton");
 const trackParlaysButton = document.querySelector("#trackParlaysButton");
@@ -63,6 +64,7 @@ let internationalStatusData = null;
 let parlayRefreshSeed = 0;
 
 const CENTRAL_TIME_ZONE = "America/Chicago";
+const INTERNATIONAL_ONLY_PAGES = new Set(["world-cup-groups", "international-fixtures"]);
 
 const TEAM_DISPLAY_NAMES = {
   "Ath Bilbao": "Athletic Club",
@@ -425,6 +427,8 @@ function renderInternationalParlay() {
   document.querySelector("#fbrefRows").textContent = internationalStatusData?.playerRows || "0";
   document.querySelector("#fbrefPlayers").textContent = internationalStatusData?.players || "0";
   document.querySelector("#playerLegCount").textContent = "0";
+  document.querySelector("#propLegCount").textContent = "0";
+  document.querySelector("#cornerLegCount").textContent = "0";
   document.querySelector("#teamScoreLegCount").textContent = "0";
   parlayStatus.textContent = internationalStatusData?.hasWorldCupStats
     ? `International player stats imported from ${internationalStatusData.seasons.join(", ")}; waiting for fixture and odds imports`
@@ -574,17 +578,33 @@ async function renderClubContext() {
 
 async function applyAppContext() {
   localStorage.setItem("football-context-mode", currentAppContext());
+  updateContextNavigation();
   if (isInternationalMode()) {
     await refreshInternationalStatus();
     renderInternationalContext();
   } else {
     await renderClubContext();
   }
+  updateContextNavigation();
   autofillTrainingFixture({ showMessage: false });
 }
 
+function updateContextNavigation() {
+  const international = isInternationalMode();
+  pageTabs.forEach((tab) => {
+    const internationalOnly = INTERNATIONAL_ONLY_PAGES.has(tab.dataset.pageTarget);
+    tab.hidden = internationalOnly && !international;
+    tab.setAttribute("aria-hidden", internationalOnly && !international ? "true" : "false");
+  });
+  const activeSection = pageSections.find((section) => section.classList.contains("is-active"));
+  if (!international && INTERNATIONAL_ONLY_PAGES.has(activeSection?.dataset.page)) {
+    showPage("predictions");
+  }
+}
+
 function showPage(page) {
-  const fallback = pageSections.some((section) => section.dataset.page === page) ? page : "predictions";
+  const requested = !isInternationalMode() && INTERNATIONAL_ONLY_PAGES.has(page) ? "predictions" : page;
+  const fallback = pageSections.some((section) => section.dataset.page === requested) ? requested : "predictions";
   pageSections.forEach((section) => section.classList.toggle("is-active", section.dataset.page === fallback));
   pageTabs.forEach((tab) => {
     const active = tab.dataset.pageTarget === fallback;
@@ -1163,9 +1183,12 @@ function renderParlay(data) {
   document.querySelector("#fbrefRows").textContent = fbref.processedRows || 0;
   document.querySelector("#fbrefPlayers").textContent = fbref.players || 0;
   document.querySelector("#playerLegCount").textContent = data.playerCandidateCount || 0;
+  document.querySelector("#propLegCount").textContent = data.propCandidateCount || 0;
+  document.querySelector("#cornerLegCount").textContent = data.cornerCandidateCount || 0;
   document.querySelector("#teamScoreLegCount").textContent = data.teamScoreCandidateCount || 0;
+  const generationMode = data.filters?.generationMode || (parlayLayoutToggle.checked ? "fixture-grid" : "multi");
   parlayStatus.textContent = fbref.hasPlayerStats
-    ? `${riskMode === "risky" ? "Risk mode" : "Safe mode"} | Using imported FBref stats from ${fbref.seasons.join(", ") || "local files"} | ${data.availableFixtureCount || 0} fixtures available${selectedDate ? ` on ${selectedDate}` : ""} | ${data.excludedFixtureCount || 0} played excluded${riskMode === "risky" ? ` | ${data.riskyPlayerCandidateCount || 0} risky player legs` : ""}`
+    ? `${riskMode === "risky" ? "Risk mode" : "Safe mode"} | ${generationMode === "fixture-grid" ? "Fixture grid" : "Multi-ticket"} | Using imported FBref stats from ${fbref.seasons.join(", ") || "local files"} | ${data.availableFixtureCount || 0} fixtures available${selectedDate ? ` on ${selectedDate}` : ""} | ${data.excludedFixtureCount || 0} played excluded${riskMode === "risky" ? ` | ${data.riskyPlayerCandidateCount || 0} risky player legs` : ""}`
     : "Waiting for imported FBref player stats";
 
   setParlayMessage(data.parlay?.note || "", fbref.hasPlayerStats ? "info" : "error");
@@ -1197,7 +1220,7 @@ function renderParlayTicket(parlay) {
   const legs = parlay.legs || [];
   const riskCount = legs.filter((leg) => leg.riskMode).length;
   return `
-    <article class="parlay-ticket">
+    <article class="parlay-ticket ${parlay.mode === "fixture-grid" ? "fixture-grid-ticket" : ""}">
       <div class="ticket-head">
         <div>
           <h3>${escapeHtml(parlay.name)}</h3>
@@ -1206,6 +1229,7 @@ function renderParlayTicket(parlay) {
         <div class="ticket-actions">
           <div class="ticket-stats">
             <span>${(parlay.playerStatLegs || []).length} player</span>
+            <span>${(parlay.propLegs || []).length} BTTS/corner</span>
             <span>${(parlay.teamScoreLegs || []).length} score</span>
             <span>${(parlay.matchResultLegs || []).length} result</span>
             ${riskCount ? `<span>${riskCount} risk</span>` : ""}
@@ -1240,6 +1264,10 @@ function renderLegListItem(leg, index) {
   const detail =
     leg.type === "player"
       ? `${leg.fbrefMetric} | ${leg.fbrefSeason} | ${leg.source}`
+      : leg.type === "corner"
+      ? `${leg.fbrefMetric || "corner model"} | ${leg.source || ""}`
+      : leg.type === "btts"
+      ? `${leg.projectedScore ? `Projected score ${leg.projectedScore} | ` : ""}${leg.source || ""}`
       : `Projected score ${leg.projectedScore || "N/A"} | ${leg.source || ""}`;
   return `
     <li class="parlay-leg-row ${leg.type}-leg">
@@ -1259,10 +1287,14 @@ function renderLegListItem(leg, index) {
 }
 
 function renderLegCard(leg) {
-  const typeClass = leg.type === "player" ? "player-leg" : leg.type === "score" ? "score-leg" : "match-leg";
+  const typeClass = leg.type === "player" ? "player-leg" : leg.type === "score" ? "score-leg" : leg.type === "corner" ? "corner-leg" : leg.type === "btts" ? "btts-leg" : "match-leg";
   const detail =
     leg.type === "player"
       ? `FBref: ${leg.fbrefMetric} | ${leg.fbrefSeason} | ${leg.source}`
+      : leg.type === "corner"
+      ? `Corner model: ${leg.fbrefMetric || "team corner average"} | ${leg.source || ""}`
+      : leg.type === "btts"
+      ? `BTTS model: projected score ${leg.projectedScore || "N/A"} | ${leg.source || ""}`
       : `Model: projected score ${leg.projectedScore || "N/A"} | ${leg.source || ""}`;
   return `
     <article class="leg-card ${typeClass}">
@@ -1562,9 +1594,10 @@ async function refreshParlay({ forceNew = false } = {}) {
   const tickets = encodeURIComponent(parlayTicketCount.value);
   const type = encodeURIComponent(parlayTypeSelect.value);
   const riskMode = encodeURIComponent(parlayRiskToggle.checked ? "risky" : "safe");
+  const generationMode = encodeURIComponent(parlayLayoutToggle.checked ? "fixture-grid" : "multi");
   const date = encodeURIComponent(parlayDateFilter.value);
   setParlayMessage(forceNew ? "Building a fresh parlay variation..." : "Building parlay from fixtures and imported player stats...", "info");
-  const data = await api(`/api/parlay?league=${league}&legs=${legs}&tickets=${tickets}&type=${type}&riskMode=${riskMode}&date=${date}&refreshSeed=${parlayRefreshSeed}`);
+  const data = await api(`/api/parlay?league=${league}&legs=${legs}&tickets=${tickets}&type=${type}&riskMode=${riskMode}&generationMode=${generationMode}&date=${date}&refreshSeed=${parlayRefreshSeed}`);
   renderParlay(data);
 }
 
@@ -1721,6 +1754,7 @@ parlayLegCount.addEventListener("change", () => refreshParlay({ forceNew: true }
 parlayTicketCount.addEventListener("change", () => refreshParlay({ forceNew: true }));
 parlayTypeSelect.addEventListener("change", () => refreshParlay({ forceNew: true }));
 parlayRiskToggle.addEventListener("change", () => refreshParlay({ forceNew: true }));
+parlayLayoutToggle.addEventListener("change", () => refreshParlay({ forceNew: true }));
 parlaySortSelect.addEventListener("change", renderParlayTickets);
 refreshParlayLedgerButton.addEventListener("click", refreshParlayLedger);
 refreshPlayerProfilesButton.addEventListener("click", refreshPlayerProfiles);
@@ -1810,6 +1844,7 @@ async function init() {
   try {
     initTheme();
     initContextMode();
+    updateContextNavigation();
     showPage(location.hash.replace("#", "") || "predictions");
     meta = await api("/api/meta");
     renderModelMeta(meta, meta.trainingStatus);

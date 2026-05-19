@@ -1,6 +1,7 @@
 const fs = require("fs");
 const path = require("path");
 const { fixturePredictionBoard } = require("./predictionService");
+const { FEATURE_NAMES } = require("./features");
 const { aggregatePlayers, loadPlayerRows } = require("./playerStats");
 const { fixtureSignatureFromFixture, playedFixtureKeys } = require("./parlayBacktestStore");
 
@@ -67,6 +68,17 @@ function playerSource(player) {
   const label = player.sourceLabels?.length ? player.sourceLabels.join("+") : "FBref";
   const statType = player.sourceTypes?.length ? player.sourceTypes.join("+") : "standard";
   return `${label} ${statType}`;
+}
+
+function featureValue(fixture, name) {
+  const index = FEATURE_NAMES.indexOf(name);
+  return index >= 0 ? Number(fixture.featureVector?.[index] || 0) : 0;
+}
+
+function fixtureLeanScore(fixture) {
+  const topPct = Math.max(Number(fixture.probabilities?.homeWinPct || 0), Number(fixture.probabilities?.awayWinPct || 0));
+  const drawPct = Number(fixture.probabilities?.drawPct || 0);
+  return topPct - drawPct;
 }
 
 function cleanPlayerName(name) {
@@ -442,6 +454,96 @@ function matchResultLegs(fixtures) {
   return [...winnerLegs, ...drawLegs].sort((a, b) => b.confidence - a.confidence);
 }
 
+function bttsLegs(fixtures) {
+  return fixtures
+    .map((fixture) => {
+      const score = parseProjectedScore(fixture.projectedScore);
+      const homeGF = featureValue(fixture, "homeGFPerGame");
+      const awayGF = featureValue(fixture, "awayGFPerGame");
+      const homeGA = featureValue(fixture, "homeGAPerGame");
+      const awayGA = featureValue(fixture, "awayGAPerGame");
+      const homeClean = featureValue(fixture, "homeCleanSheetRate");
+      const awayClean = featureValue(fixture, "awayCleanSheetRate");
+      const projectedYes = score ? score.homeGoals > 0 && score.awayGoals > 0 : false;
+      const attackingSignal = (homeGF + awayGF + homeGA + awayGA) / 4;
+      const cleanSheetSignal = (homeClean + awayClean) / 2;
+      const yesScore = (projectedYes ? 0.42 : 0.1) + Math.min(0.38, attackingSignal * 0.18) - cleanSheetSignal * 0.16;
+      const yes = yesScore >= 0.47;
+      return {
+        type: "btts",
+        fixture: `${fixture.homeTeam} vs ${fixture.awayTeam}`,
+        date: fixture.date,
+        league: fixture.league,
+        homeTeam: fixture.homeTeam,
+        awayTeam: fixture.awayTeam,
+        market: "both teams to score",
+        pick: yes ? "Both teams to score: Yes" : "Both teams to score: No",
+        confidence: yes
+          ? Math.max(44, Math.min(74, 46 + yesScore * 42 + fixtureLeanScore(fixture) * 0.08))
+          : Math.max(42, Math.min(72, 62 - yesScore * 34 + cleanSheetSignal * 12)),
+        projectedScore: fixture.projectedScore,
+        source: `Projected score ${fixture.projectedScore || "N/A"}; scoring profile GF ${homeGF.toFixed(2)}-${awayGF.toFixed(2)}, GA ${homeGA.toFixed(2)}-${awayGA.toFixed(2)}, clean-sheet rate ${homeClean.toFixed(2)}-${awayClean.toFixed(2)}`,
+      };
+    })
+    .sort((a, b) => b.confidence - a.confidence);
+}
+
+function cornerLegs(fixtures, riskMode = "safe") {
+  const risky = riskMode === "risky";
+  return fixtures
+    .flatMap((fixture) => {
+      const homeCorners = featureValue(fixture, "homeCornersPerGame");
+      const awayCorners = featureValue(fixture, "awayCornersPerGame");
+      const totalCorners = homeCorners + awayCorners;
+      if (!totalCorners) return [];
+      const totalLine = risky ? Math.max(7.5, Math.round(totalCorners * 2) / 2 - 0.5) : Math.max(6.5, Math.floor(totalCorners - 1.2) + 0.5);
+      const homeLine = Math.max(2.5, Math.floor(homeCorners - (risky ? 0.4 : 0.9)) + 0.5);
+      const awayLine = Math.max(2.5, Math.floor(awayCorners - (risky ? 0.4 : 0.9)) + 0.5);
+      const source = `Corner model from season match data: ${fixture.homeTeam} ${homeCorners.toFixed(2)} corners/game, ${fixture.awayTeam} ${awayCorners.toFixed(2)} corners/game, combined ${totalCorners.toFixed(2)}.`;
+      return [
+        {
+          type: "corner",
+          fixture: `${fixture.homeTeam} vs ${fixture.awayTeam}`,
+          date: fixture.date,
+          league: fixture.league,
+          team: fixture.homeTeam,
+          market: "team corners",
+          pick: `${fixture.homeTeam} over ${homeLine.toFixed(1)} corners`,
+          confidence: Math.max(40, Math.min(risky ? 68 : 78, 50 + Math.max(0, homeCorners - homeLine) * 13)),
+          fbrefMetric: `${homeCorners.toFixed(2)} corners/game`,
+          source,
+          riskMode: risky && homeLine >= homeCorners - 0.5,
+        },
+        {
+          type: "corner",
+          fixture: `${fixture.homeTeam} vs ${fixture.awayTeam}`,
+          date: fixture.date,
+          league: fixture.league,
+          team: fixture.awayTeam,
+          market: "team corners",
+          pick: `${fixture.awayTeam} over ${awayLine.toFixed(1)} corners`,
+          confidence: Math.max(40, Math.min(risky ? 68 : 78, 50 + Math.max(0, awayCorners - awayLine) * 13)),
+          fbrefMetric: `${awayCorners.toFixed(2)} corners/game`,
+          source,
+          riskMode: risky && awayLine >= awayCorners - 0.5,
+        },
+        {
+          type: "corner",
+          fixture: `${fixture.homeTeam} vs ${fixture.awayTeam}`,
+          date: fixture.date,
+          league: fixture.league,
+          market: "total corners",
+          pick: `Over ${totalLine.toFixed(1)} total corners`,
+          confidence: Math.max(42, Math.min(risky ? 70 : 80, 52 + Math.max(0, totalCorners - totalLine) * 9)),
+          fbrefMetric: `${totalCorners.toFixed(2)} combined corners/game`,
+          source,
+          riskMode: risky && totalLine >= totalCorners - 0.6,
+        },
+      ].filter((leg) => Number(leg.confidence || 0) >= 42);
+    })
+    .sort((a, b) => b.confidence - a.confidence);
+}
+
 function rotate(list, offset) {
   if (!list.length) return [];
   const start = offset % list.length;
@@ -520,14 +622,15 @@ function selectDiversePlayerLegs(source, targetCount, used, offset = 0) {
   return selected;
 }
 
-function buildTicket({ index, requestedLegs, playerLegs, scoreLegs, resultLegs, fbref, refreshSeed = 0, type = "mixed", riskMode = "safe" }) {
+function buildTicket({ index, requestedLegs, playerLegs, scoreLegs, resultLegs, propLegs = [], fbref, refreshSeed = 0, type = "mixed", riskMode = "safe" }) {
   const used = new Set();
   const playerOnly = type === "players";
   const teamOnly = type === "teams";
   const isRiskyMode = riskMode === "risky";
-  const targetPlayer = playerOnly ? requestedLegs : teamOnly ? 0 : Math.max(2, Math.ceil(requestedLegs * (isRiskyMode ? 0.68 : 0.58)));
-  const targetScore = playerOnly ? 0 : teamOnly ? Math.max(1, Math.floor(requestedLegs * 0.45)) : Math.max(1, Math.floor(requestedLegs * (isRiskyMode ? 0.2 : 0.27)));
-  const targetResult = playerOnly ? 0 : Math.max(1, requestedLegs - targetPlayer - targetScore);
+  const targetProps = playerOnly ? 0 : Math.max(requestedLegs >= 5 ? 2 : 1, Math.floor(requestedLegs * (isRiskyMode ? 0.22 : 0.18)));
+  const targetScore = playerOnly ? 0 : teamOnly ? Math.max(1, Math.floor(requestedLegs * 0.36)) : Math.max(1, Math.floor(requestedLegs * (isRiskyMode ? 0.16 : 0.22)));
+  const targetResult = playerOnly ? 0 : 1;
+  const targetPlayer = playerOnly ? requestedLegs : teamOnly ? 0 : Math.max(1, requestedLegs - targetProps - targetScore - targetResult);
   const seed = refreshSeed + index * 97 + requestedLegs * 13;
   const ticketPlayerLegs = isRiskyMode
     ? [
@@ -535,6 +638,7 @@ function buildTicket({ index, requestedLegs, playerLegs, scoreLegs, resultLegs, 
         ...shuffleWithSeed(playerLegs.filter((leg) => !leg.riskMode), seed + 17),
       ]
     : shuffleWithSeed(playerLegs, seed);
+  const ticketPropLegs = shuffleWithSeed(propLegs, seed + 23);
   const ticketScoreLegs = shuffleWithSeed(scoreLegs, seed + 31);
   const ticketResultLegs = shuffleWithSeed(resultLegs, seed + 61);
   const offset = (index + refreshSeed) * Math.max(3, Math.floor(requestedLegs / 2));
@@ -554,6 +658,18 @@ function buildTicket({ index, requestedLegs, playerLegs, scoreLegs, resultLegs, 
       used.add(riskKey);
     }
   }
+  let selectedPropLegs = targetProps ? selectUnique(ticketPropLegs, targetProps, used, index + refreshSeed) : [];
+  if (targetProps >= 2) {
+    for (const type of ["btts", "corner"]) {
+      if (selectedPropLegs.some((leg) => leg.type === type)) continue;
+      const replacement = ticketPropLegs.find((leg) => leg.type === type && !used.has(legKey(leg)));
+      const replaceIndex = selectedPropLegs.findIndex((leg) => leg.type !== type);
+      if (!replacement || replaceIndex === -1) continue;
+      used.delete(legKey(selectedPropLegs[replaceIndex]));
+      selectedPropLegs[replaceIndex] = replacement;
+      used.add(legKey(replacement));
+    }
+  }
   const selectedScoreLegs = targetScore ? selectUnique(ticketScoreLegs, targetScore, used, index * 2 + refreshSeed) : [];
   const drawExposureRandom = seededRandom(seed + 89);
   const resultSource =
@@ -565,9 +681,9 @@ function buildTicket({ index, requestedLegs, playerLegs, scoreLegs, resultLegs, 
         })
       : ticketResultLegs;
   const selectedResultLegs = targetResult ? selectUnique(resultSource.length ? resultSource : ticketResultLegs, targetResult, used, index * 3 + refreshSeed) : [];
-  const legs = [...selectedPlayerLegs, ...selectedScoreLegs, ...selectedResultLegs];
+  const legs = [...selectedPlayerLegs, ...selectedPropLegs, ...selectedScoreLegs, ...selectedResultLegs];
 
-  const fallbackLists = playerOnly ? [ticketPlayerLegs] : teamOnly ? [ticketScoreLegs, ticketResultLegs] : [ticketPlayerLegs, ticketScoreLegs, ticketResultLegs];
+  const fallbackLists = playerOnly ? [ticketPlayerLegs] : teamOnly ? [ticketPropLegs, ticketScoreLegs, ticketResultLegs] : [ticketPlayerLegs, ticketPropLegs, ticketScoreLegs, ticketResultLegs];
   for (const fallback of fallbackLists) {
     if (legs.length >= requestedLegs) break;
     for (const leg of rotate(fallback, offset + legs.length)) {
@@ -595,8 +711,66 @@ function buildTicket({ index, requestedLegs, playerLegs, scoreLegs, resultLegs, 
     playerStatLegs: finalLegs.filter((leg) => leg.type === "player"),
     teamScoreLegs: finalLegs.filter((leg) => leg.type === "score"),
     matchResultLegs: finalLegs.filter((leg) => leg.type === "match"),
+    propLegs: finalLegs.filter((leg) => ["btts", "corner"].includes(leg.type)),
     averageConfidence: finalLegs.length ? pct(finalLegs.reduce((sum, leg) => sum + leg.confidence, 0) / finalLegs.length / 100) : 0,
   };
+}
+
+function buildFixtureGridTickets({ fixtures, requestedLegs, playerLegs, scoreLegs, resultLegs, propLegs, riskMode = "safe" }) {
+  return fixtures.slice(0, 6).map((fixture, index) => {
+    const fixtureName = `${fixture.homeTeam} vs ${fixture.awayTeam}`;
+    const byConfidence = (list) => list.filter((leg) => leg.fixture === fixtureName).sort((a, b) => Number(b.confidence || 0) - Number(a.confidence || 0));
+    const fixtureProps = byConfidence(propLegs);
+    const fixtureBtts = fixtureProps.filter((leg) => leg.type === "btts");
+    const fixtureCorners = fixtureProps.filter((leg) => leg.type === "corner");
+    const fixturePlayers = byConfidence(playerLegs);
+    const fixtureResults = byConfidence(resultLegs);
+    const fixtureScores = byConfidence(scoreLegs);
+    const propTarget = Math.min(fixtureProps.length, Math.max(2, Math.floor(requestedLegs * 0.35)));
+    const playerTarget = Math.min(fixturePlayers.length, Math.max(1, Math.floor(requestedLegs * 0.45)));
+    const used = new Set();
+    const selected = [];
+    const addLegs = (list, target) => {
+      for (const leg of list) {
+        if (selected.length >= requestedLegs || selected.filter((item) => list.includes(item)).length >= target) break;
+        const key = legKey(leg);
+        if (used.has(key)) continue;
+        selected.push(leg);
+        used.add(key);
+      }
+    };
+    addLegs(fixtureBtts, Math.min(1, fixtureBtts.length));
+    addLegs(fixtureCorners, Math.min(Math.max(1, propTarget - 1), fixtureCorners.length));
+    addLegs(fixtureProps, propTarget);
+    addLegs(fixturePlayers, playerTarget);
+    addLegs(fixtureResults, Math.min(1, fixtureResults.length));
+    addLegs(fixtureScores, Math.min(1, fixtureScores.length));
+    const fixtureLegs = selected.concat(
+      [...fixtureProps, ...fixturePlayers, ...fixtureResults, ...fixtureScores]
+        .filter((leg) => !used.has(legKey(leg)))
+        .slice(0, Math.max(0, requestedLegs - selected.length))
+    )
+      .sort((a, b) => {
+        const typeWeight = { btts: 4, corner: 3, player: 2, match: 1, score: 0 };
+        return Number(b.confidence || 0) - Number(a.confidence || 0) || (typeWeight[b.type] || 0) - (typeWeight[a.type] || 0);
+      })
+      .slice(0, requestedLegs);
+    return {
+      id: `fixture_grid_${index + 1}`,
+      riskMode,
+      mode: "fixture-grid",
+      fixture: fixtureName,
+      date: fixture.date,
+      league: fixture.league,
+      name: `Fixture Grid ${index + 1}: ${fixtureName}`,
+      legs: fixtureLegs,
+      playerStatLegs: fixtureLegs.filter((leg) => leg.type === "player"),
+      teamScoreLegs: fixtureLegs.filter((leg) => leg.type === "score"),
+      matchResultLegs: fixtureLegs.filter((leg) => leg.type === "match"),
+      propLegs: fixtureLegs.filter((leg) => ["btts", "corner"].includes(leg.type)),
+      averageConfidence: fixtureLegs.length ? pct(fixtureLegs.reduce((sum, leg) => sum + leg.confidence, 0) / fixtureLegs.length / 100) : 0,
+    };
+  }).filter((ticket) => ticket.legs.length);
 }
 
 function buildParlays(options = {}) {
@@ -606,6 +780,7 @@ function buildParlays(options = {}) {
   const refreshSeed = Math.max(0, Number(options.refreshSeed || 0));
   const type = ["mixed", "teams", "players"].includes(options.type) ? options.type : "mixed";
   const riskMode = options.riskMode === "risky" ? "risky" : "safe";
+  const generationMode = options.generationMode === "fixture-grid" ? "fixture-grid" : "multi";
   const date = String(options.date || "").trim();
   const excludedFixtureKeys = settledFixtureKeys();
   const allFixtures = fixturePredictionBoard().filter((fixture) => {
@@ -619,34 +794,51 @@ function buildParlays(options = {}) {
   const playerLegs = fixtures.flatMap((fixture) => playerPropCandidates(players, fixture, riskMode));
   const scoreLegs = teamScoreLegs(fixtures);
   const resultLegs = matchResultLegs(fixtures);
+  const propLegs = [...bttsLegs(fixtures), ...cornerLegs(fixtures, riskMode)];
   const excludedLegFixtures = new Set([...excludedFixtureKeys]);
   const eligiblePlayerLegs = playerLegs
     .filter((leg) => !excludedLegFixtures.has([leg.date || "", leg.fixture || ""].join("|").toLowerCase()))
     .sort((a, b) => (riskMode === "risky" ? Number(Boolean(b.riskMode)) - Number(Boolean(a.riskMode)) : 0) || Number(b.confidence || 0) - Number(a.confidence || 0));
   const eligibleScoreLegs = scoreLegs.filter((leg) => !excludedLegFixtures.has([leg.date || "", leg.fixture || ""].join("|").toLowerCase()));
   const eligibleResultLegs = resultLegs.filter((leg) => !excludedLegFixtures.has([leg.date || "", leg.fixture || ""].join("|").toLowerCase()));
-  const parlays = Array.from({ length: ticketCount }, (_, index) =>
-    buildTicket({
-      index,
-      requestedLegs,
-      playerLegs: eligiblePlayerLegs,
-      scoreLegs: eligibleScoreLegs,
-      resultLegs: eligibleResultLegs,
-      fbref,
-      refreshSeed,
-      type,
-      riskMode,
-    })
-  ).filter((ticket) => ticket.legs.length);
+  const eligiblePropLegs = propLegs.filter((leg) => !excludedLegFixtures.has([leg.date || "", leg.fixture || ""].join("|").toLowerCase()));
+  const parlays =
+    generationMode === "fixture-grid"
+      ? buildFixtureGridTickets({
+          fixtures,
+          requestedLegs,
+          playerLegs: eligiblePlayerLegs,
+          scoreLegs: eligibleScoreLegs,
+          resultLegs: eligibleResultLegs,
+          propLegs: eligiblePropLegs,
+          riskMode,
+        })
+      : Array.from({ length: ticketCount }, (_, index) =>
+          buildTicket({
+            index,
+            requestedLegs,
+            playerLegs: eligiblePlayerLegs,
+            scoreLegs: eligibleScoreLegs,
+            resultLegs: eligibleResultLegs,
+            propLegs: eligiblePropLegs,
+            fbref,
+            refreshSeed,
+            type,
+            riskMode,
+          })
+        ).filter((ticket) => ticket.legs.length);
 
   return {
     fbref,
-    filters: { league, date, requestedLegs, ticketCount, type, refreshSeed, riskMode },
+    filters: { league, date, requestedLegs, ticketCount, type, refreshSeed, riskMode, generationMode },
     excludedFixtureCount: allFixtures.length - fixtures.length,
     availableFixtureCount: fixtures.length,
     playerCandidateCount: eligiblePlayerLegs.length,
     riskyPlayerCandidateCount: eligiblePlayerLegs.filter((leg) => leg.riskMode).length,
     teamScoreCandidateCount: eligibleScoreLegs.length,
+    propCandidateCount: eligiblePropLegs.length,
+    bttsCandidateCount: eligiblePropLegs.filter((leg) => leg.type === "btts").length,
+    cornerCandidateCount: eligiblePropLegs.filter((leg) => leg.type === "corner").length,
     parlays,
     parlay: {
       ...(parlays[0] || {
@@ -661,8 +853,8 @@ function buildParlays(options = {}) {
         ? `Mode: ${type}; risk profile: ${riskMode}. ${
             riskMode === "risky"
               ? "Risk mode prefers stat-supported alt lines such as 2+ shots, 2+ shots on target, and goalkeeper save props when the player's per-90 average is close enough to the threshold."
-              : "Safe mode keeps the existing conservative thresholds and confidence ordering."
-          } Player legs are ranked from imported player-season stats, projected team scoring, match-result lean, and live table motivation including title-race, European-place, relegation, and title-secured rotation risk. Team result and score legs use the local match model, including form, home/away edge, Elo, head-to-head, market odds when available, player-derived features, and live standings motivation. ${allFixtures.length - fixtures.length} played fixture${allFixtures.length - fixtures.length === 1 ? "" : "s"} excluded from new parlay generation.`
+            : "Safe mode keeps the existing conservative thresholds and confidence ordering."
+          } ${generationMode === "fixture-grid" ? "Fixture grid mode groups the best supported props by match across up to six fixtures." : "Multi-ticket mode keeps the broader mixed parlay builder."} Player legs are ranked from imported player-season stats, projected team scoring, match-result lean, and live table motivation including title-race, European-place, relegation, and title-secured rotation risk. BTTS legs use projected score, scoring profile, defensive concession, and clean-sheet signals. Corner legs use team corner averages from the fixture feature set. Team result and score legs use the local match model, including form, home/away edge, Elo, head-to-head, market odds when available, player-derived features, and live standings motivation. ${allFixtures.length - fixtures.length} played fixture${allFixtures.length - fixtures.length === 1 ? "" : "s"} excluded from new parlay generation.`
         : "No imported player-stat rows were found, so this ticket currently includes team-score legs only. Import FBref or Thunderbit CSVs to add player props.",
     },
   };

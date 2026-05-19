@@ -309,12 +309,23 @@ button:disabled {
   display: flex;
   align-items: center;
   justify-content: flex-start;
-  gap: 10px;
+  flex-wrap: wrap;
+  gap: 12px;
   margin: 12px 0 16px;
   color: var(--muted);
   font-size: 12px;
   font-weight: 900;
   text-transform: uppercase;
+}
+
+.toggle-cluster {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  border: 1px solid var(--line);
+  border-radius: 999px;
+  background: color-mix(in srgb, var(--surface) 82%, var(--panel));
+  padding: 8px 12px;
 }
 
 .mode-switch {
@@ -340,6 +351,7 @@ button:disabled {
   border-radius: 999px;
   background: color-mix(in srgb, var(--surface) 86%, var(--panel));
   transition: background 0.18s ease, border-color 0.18s ease;
+  pointer-events: none;
 }
 
 .mode-switch-thumb {
@@ -352,6 +364,7 @@ button:disabled {
   background: var(--teal);
   box-shadow: var(--shadow);
   transition: transform 0.18s ease, background 0.18s ease;
+  pointer-events: none;
 }
 
 .mode-switch input:checked + .mode-switch-track {
@@ -471,6 +484,10 @@ textarea:focus {
   padding: 16px;
 }
 
+.fixture-grid-ticket {
+  border-color: color-mix(in srgb, var(--blue) 38%, var(--line));
+}
+
 .ticket-head {
   display: flex;
   justify-content: space-between;
@@ -548,6 +565,16 @@ textarea:focus {
 .parlay-leg-row.match-leg,
 .tracked-leg-row.match-leg {
   border-left-color: var(--gold);
+}
+
+.parlay-leg-row.btts-leg,
+.tracked-leg-row.btts-leg {
+  border-left-color: var(--blue);
+}
+
+.parlay-leg-row.corner-leg,
+.tracked-leg-row.corner-leg {
+  border-left-color: var(--accent);
 }
 
 .leg-number {
@@ -827,6 +854,14 @@ textarea:focus {
 
 .leg-card.match-leg {
   border-left-color: var(--gold);
+}
+
+.leg-card.btts-leg {
+  border-left-color: var(--blue);
+}
+
+.leg-card.corner-leg {
+  border-left-color: var(--accent);
 }
 
 .leg-card h4 {
@@ -2423,6 +2458,11 @@ textarea {
   background: color-mix(in srgb, var(--surface) 74%, var(--panel));
   padding: 18px;
   box-shadow: var(--shadow-soft);
+}
+
+.fixture-grid-ticket {
+  border-color: color-mix(in srgb, var(--blue) 40%, var(--line));
+  background: color-mix(in srgb, var(--surface) 70%, var(--blue-soft));
 }
 
 .ticket-head {

@@ -138,12 +138,22 @@
         </div>
 
         <div class="risk-mode-bar" aria-label="Parlay risk mode">
-          <span>Safe mode</span>
-          <label class="mode-switch">
-            <input id="parlayRiskToggle" type="checkbox" aria-label="Toggle risky parlay mode">
-            <span class="mode-switch-track"><span class="mode-switch-thumb"></span></span>
-          </label>
-          <span>Risk mode</span>
+          <div class="toggle-cluster" aria-label="Parlay risk mode">
+            <span>Safe mode</span>
+            <label class="mode-switch">
+              <input id="parlayRiskToggle" type="checkbox" aria-label="Toggle risky parlay mode">
+              <span class="mode-switch-track"><span class="mode-switch-thumb"></span></span>
+            </label>
+            <span>Risk mode</span>
+          </div>
+          <div class="toggle-cluster" aria-label="Parlay generation mode">
+            <span>Multi-ticket</span>
+            <label class="mode-switch">
+              <input id="parlayLayoutToggle" type="checkbox" aria-label="Toggle fixture grid parlay mode">
+              <span class="mode-switch-track"><span class="mode-switch-thumb"></span></span>
+            </label>
+            <span>Fixture grid</span>
+          </div>
         </div>
 
         <div class="parlay-controls" aria-label="Parlay controls">
@@ -201,6 +211,8 @@
             <span><strong id="fbrefRows">0</strong> FBref rows</span>
             <span><strong id="fbrefPlayers">0</strong> players</span>
             <span><strong id="playerLegCount">0</strong> player legs</span>
+            <span><strong id="propLegCount">0</strong> BTTS/corner legs</span>
+            <span><strong id="cornerLegCount">0</strong> corner legs</span>
             <span><strong id="teamScoreLegCount">0</strong> score legs</span>
           </div>
         </div>
