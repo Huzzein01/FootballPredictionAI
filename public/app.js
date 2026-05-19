@@ -50,6 +50,10 @@ const playerStatForm = document.querySelector("#playerStatForm");
 const playerProfileSelect = document.querySelector("#playerProfileSelect");
 const playerProfileMessage = document.querySelector("#playerProfileMessage");
 const playerProfileGrid = document.querySelector("#playerProfileGrid");
+const pageSelect = document.querySelector("#pageSelect");
+const leagueTablesStatus = document.querySelector("#leagueTablesStatus");
+const refreshLeagueTablesButton = document.querySelector("#refreshLeagueTablesButton");
+const leagueTablesOutput = document.querySelector("#leagueTablesOutput");
 const pageTabs = [...document.querySelectorAll("[data-page-target]")];
 const pageSections = [...document.querySelectorAll("[data-page]")];
 
@@ -61,6 +65,7 @@ let trackedParlayData = { parlays: [], summary: {} };
 let ledgerPredictions = [];
 let playerProfileData = { profiles: [], profileCount: 0, entryCount: 0 };
 let internationalStatusData = null;
+let leagueTableData = null;
 let parlayRefreshSeed = 0;
 let editingPlayerStatEntry = null;
 
@@ -541,6 +546,109 @@ function renderInternationalFixturesPage() {
   );
 }
 
+function renderInternationalLeagueTables() {
+  if (!leagueTablesOutput) return;
+  leagueTablesStatus.textContent = "Waiting for international group and fixture table data";
+  leagueTablesOutput.innerHTML = internationalEmptyState(
+    "International tables waiting for match data",
+    "World Cup and Euros group tables will appear here once fixtures and results are imported for international mode."
+  );
+}
+
+function leagueTableStatusLabel(entry, league) {
+  const totalGames = Number(league.totalGames || 38);
+  const gamesLeft = Math.max(0, totalGames - Number(entry.played || 0));
+  const leader = league.standings?.[0];
+  const second = league.standings?.[1];
+  const secondGamesLeft = second ? Math.max(0, totalGames - Number(second.played || 0)) : 0;
+  if (entry.rank === 1 && second && Number(entry.points || 0) > Number(second.points || 0) + secondGamesLeft * 3) return "Title secured";
+  if (entry.rank === 1 && gamesLeft > 0) return "Leader";
+  if (entry.rank <= 4) return "Champions League";
+  if (entry.rank <= 7) return "Europe race";
+  if (gamesLeft <= 1 && entry.rank >= (league.standings?.length || 0) - 2) return "Relegation zone";
+  if (leader && entry.team === leader.team) return "Leader";
+  return "Mid table";
+}
+
+function renderLeagueTables() {
+  if (!leagueTablesOutput) return;
+  if (isInternationalMode()) {
+    renderInternationalLeagueTables();
+    return;
+  }
+  const leagues = leagueTableData?.leagues || {};
+  const leagueEntries = Object.entries(leagues);
+  if (!leagueEntries.length) {
+    leagueTablesStatus.textContent = "Waiting for league table data";
+    leagueTablesOutput.innerHTML = `<div class="empty-state">No league table data available yet.</div>`;
+    return;
+  }
+  const refreshed = leagueTableData.refreshed?.length ? ` | refreshed ${leagueTableData.refreshed.join(", ")}` : "";
+  leagueTablesStatus.textContent = `Live tables updated ${new Date(leagueTableData.generatedAt || leagueTableData.updatedAt || Date.now()).toLocaleString()}${refreshed}`;
+  leagueTablesOutput.innerHTML = leagueEntries
+    .map(([leagueName, league]) => `
+      <article class="league-table-card">
+        <div class="league-table-head">
+          <div>
+            <h3>${escapeHtml(league.name || leagueName)}</h3>
+            <p class="muted">${escapeHtml(league.source || "Local table")} | ${league.trackedResultsApplied || 0} ledger result${Number(league.trackedResultsApplied || 0) === 1 ? "" : "s"} layered</p>
+          </div>
+          ${league.sourceUrl ? `<a href="${escapeHtml(league.sourceUrl)}" target="_blank" rel="noreferrer">Source</a>` : ""}
+        </div>
+        <div class="league-table-notes">
+          ${(league.notes || []).map((note) => `<span>${escapeHtml(note)}</span>`).join("")}
+        </div>
+        <div class="league-table-scroll">
+          <table class="league-table">
+            <thead>
+              <tr>
+                <th>#</th>
+                <th>Team</th>
+                <th>MP</th>
+                <th>W</th>
+                <th>D</th>
+                <th>L</th>
+                <th>GF</th>
+                <th>GA</th>
+                <th>GD</th>
+                <th>Pts</th>
+                <th>Status</th>
+              </tr>
+            </thead>
+            <tbody>
+              ${(league.standings || []).map((entry) => `
+                <tr>
+                  <td>${entry.rank}</td>
+                  <td><strong>${escapeHtml(displayTeam(entry.team))}</strong>${entry.ledgerDelta?.played ? `<small>+${entry.ledgerDelta.played} ledger match</small>` : ""}</td>
+                  <td>${entry.played}</td>
+                  <td>${entry.wins}</td>
+                  <td>${entry.draws}</td>
+                  <td>${entry.losses}</td>
+                  <td>${entry.goalsFor}</td>
+                  <td>${entry.goalsAgainst}</td>
+                  <td>${entry.goalDifference}</td>
+                  <td><strong>${entry.points}</strong></td>
+                  <td><span class="table-status">${escapeHtml(leagueTableStatusLabel(entry, league))}</span></td>
+                </tr>
+              `).join("")}
+            </tbody>
+          </table>
+        </div>
+      </article>
+    `)
+    .join("");
+}
+
+async function refreshLeagueTables() {
+  if (isInternationalMode()) {
+    renderInternationalLeagueTables();
+    return;
+  }
+  leagueTablesStatus.textContent = "Refreshing public tables and fixture-ledger deltas...";
+  leagueTableData = await api("/api/league-tables");
+  renderLeagueTables();
+}
+
 async function refreshInternationalStatus() {
   try {
     internationalStatusData = await api("/api/international/status");
@@ -557,6 +665,7 @@ function renderInternationalContext() {
   renderInternationalParlay();
   renderInternationalParlayLedger();
   renderInternationalLedger();
+  renderInternationalLeagueTables();
   renderWorldCupGroups();
   renderInternationalFixturesPage();
   renderPlayerProfiles();
@@ -574,6 +683,7 @@ async function renderClubContext() {
   await refreshParlay();
   await refreshParlayLedger();
   await refreshPlayerProfiles();
+  await refreshLeagueTables();
   await refreshLedger();
 }
 
@@ -597,6 +707,13 @@ function updateContextNavigation() {
     tab.hidden = internationalOnly && !international;
     tab.setAttribute("aria-hidden", internationalOnly && !international ? "true" : "false");
   });
+  if (pageSelect) {
+    [...pageSelect.options].forEach((option) => {
+      const internationalOnly = INTERNATIONAL_ONLY_PAGES.has(option.value);
+      option.hidden = internationalOnly && !international;
+      option.disabled = internationalOnly && !international;
+    });
+  }
   const activeSection = pageSections.find((section) => section.classList.contains("is-active"));
   if (!international && INTERNATIONAL_ONLY_PAGES.has(activeSection?.dataset.page)) {
     showPage("predictions");
@@ -612,10 +729,12 @@ function showPage(page) {
     tab.classList.toggle("is-active", active);
     tab.setAttribute("aria-current", active ? "page" : "false");
   });
+  if (pageSelect) pageSelect.value = fallback;
   history.replaceState(null, "", `#${fallback}`);
   if (isInternationalMode()) {
     renderWorldCupGroups();
     renderInternationalFixturesPage();
+    if (fallback === "league-tables") renderInternationalLeagueTables();
     if (fallback === "single") setInternationalSingleDemo();
   }
 }
@@ -1718,6 +1837,9 @@ ledgerBody.addEventListener("click", async (event) => {
     body: JSON.stringify({ homeGoals, awayGoals }),
   });
   await refreshLedger();
+  await refreshLeagueTables();
+  await refreshFixtureBoard();
+  await refreshPlayedBoard();
   await refreshTrainingStatus();
 });
 
@@ -1799,6 +1921,8 @@ parlayLayoutToggle.addEventListener("change", () => refreshParlay({ forceNew: tr
 parlaySortSelect.addEventListener("change", renderParlayTickets);
 refreshParlayLedgerButton.addEventListener("click", refreshParlayLedger);
 refreshPlayerProfilesButton.addEventListener("click", refreshPlayerProfiles);
+refreshLeagueTablesButton?.addEventListener("click", refreshLeagueTables);
+pageSelect?.addEventListener("change", () => showPage(pageSelect.value));
 playerProfileSelect.addEventListener("change", () => {
   setPlayerFormMode(null);
   renderPlayerProfiles();
@@ -1894,6 +2018,7 @@ parlayLedgerOutput.addEventListener("click", async (event) => {
   if (data.updated?.newlyMissedParlays > 0) {
     setParlayMessage(`Parlay missed. Retraining has started, and new parlay options were regenerated without ${data.updated.playedFixture?.fixture || "that played fixture"}.`, "info");
   }
+  await refreshLeagueTables();
   await refreshFixtureBoard();
   await refreshPlayedBoard();
   await refreshTrainingStatus();
@@ -1917,6 +2042,7 @@ async function init() {
       await refreshPlayedBoard();
       await refreshParlay();
       await refreshParlayLedger();
+      await refreshLeagueTables();
       await refreshLedger();
     }
   } catch (error) {

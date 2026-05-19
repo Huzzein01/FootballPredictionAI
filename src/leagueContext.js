@@ -1,6 +1,7 @@
 const fs = require("fs");
 const path = require("path");
 const { normalizeTeamName } = require("./footballData");
+const { effectiveTables } = require("./leagueTableService");
 const { recordProfileTotals } = require("./playerProfileStore");
 
 const LIVE_CONTEXT_PATH = path.join(process.cwd(), "data", "live_league_context.json");
@@ -80,8 +81,7 @@ function loadLiveLeagueContext() {
 }
 
 function liveStandingsForLeague(league) {
-  const context = loadLiveLeagueContext();
-  const table = context?.leagues?.[league]?.standings;
+  const table = effectiveTables(loadLiveLeagueContext()).leagues?.[league]?.standings;
   return Array.isArray(table) && table.length ? table : null;
 }
 
@@ -345,7 +345,8 @@ function standingFeaturesFromStatsTable(league, table, homeTeam, awayTeam) {
 
 function currentStandingFeatures(league, fallbackTable, homeTeam, awayTeam) {
   const liveContext = loadLiveLeagueContext();
-  const leagueContext = liveContext?.leagues?.[league];
+  const effective = effectiveTables(liveContext);
+  const leagueContext = effective?.leagues?.[league];
   const liveStandings = Array.isArray(leagueContext?.standings) && leagueContext.standings.length ? leagueContext.standings : null;
   if (liveStandings) {
     return {
@@ -353,7 +354,7 @@ function currentStandingFeatures(league, fallbackTable, homeTeam, awayTeam) {
       source: "public-standings",
       sourceName: leagueContext.source || "Public standings",
       sourceUrl: leagueContext.sourceUrl || "",
-      updatedAt: liveContext.updatedAt || "",
+      updatedAt: effective.generatedAt || liveContext.updatedAt || "",
     };
   }
   return { ...standingFeaturesFromStatsTable(league, fallbackTable, homeTeam, awayTeam), source: "local-season-table" };

@@ -7,6 +7,7 @@ const { addPrediction, addPredictionsIfMissing, deletePrediction, listPrediction
 const { readTrainingStatus, scheduleRetrain } = require("./continuousTraining");
 const { addPlayerStatEntry, listPlayerProfiles, updatePlayerStatEntry } = require("./playerProfileStore");
 const { internationalStatus } = require("./internationalData");
+const { effectiveTables, refreshLiveLeagueContext } = require("./leagueTableService");
 const { resetPlayerStatsCache } = require("./playerStats");
 const { refreshMissingOdds } = require("./oddsRepairService");
 const parlayBacktests = require("./parlayBacktestStore");
@@ -196,6 +197,7 @@ async function handleApi(req, res, pathname) {
 
   if (req.method === "GET" && pathname === "/api/fixture-predictions") {
     await refreshMissingOdds();
+    await refreshLiveLeagueContext();
     const predictions = remainingFixturePredictions();
     const playedCount = playedFixturePredictions().length;
     return sendJson(res, 200, {
@@ -210,6 +212,7 @@ async function handleApi(req, res, pathname) {
   }
 
   if (req.method === "GET" && pathname === "/api/played-fixtures") {
+    await refreshLiveLeagueContext();
     const predictions = playedFixturePredictions();
     const correct = predictions.filter((prediction) => prediction.played?.modelCorrect === true).length;
     const wrong = predictions.filter((prediction) => prediction.played?.modelCorrect === false).length;
@@ -223,6 +226,11 @@ async function handleApi(req, res, pathname) {
 
   if (req.method === "GET" && pathname === "/api/fbref/status") {
     return sendJson(res, 200, fbrefStatus());
+  }
+
+  if (req.method === "GET" && pathname === "/api/league-tables") {
+    const { context, refreshed } = await refreshLiveLeagueContext();
+    return sendJson(res, 200, { ...effectiveTables(context), refreshed });
   }
 
   if (req.method === "GET" && pathname === "/api/player-profiles") {
@@ -253,6 +261,7 @@ async function handleApi(req, res, pathname) {
 
   if (req.method === "GET" && pathname === "/api/parlay") {
     await refreshMissingOdds();
+    await refreshLiveLeagueContext();
     const url = new URL(req.url, `http://${req.headers.host}`);
     return sendJson(res, 200, buildParlay({
       league: url.searchParams.get("league") || "All",
@@ -300,6 +309,7 @@ async function handleApi(req, res, pathname) {
   if (req.method === "PATCH" && resultMatch) {
     const updated = updateResult(resultMatch[1], await readBody(req));
     if (!updated) return sendJson(res, 404, { error: "Prediction not found" });
+    await refreshLiveLeagueContext();
     scheduleRetrain("match-backtest-result");
     return sendJson(res, 200, { updated, summary: summary() });
   }

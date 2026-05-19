@@ -13,6 +13,21 @@
         <h1>Football Prediction AI</h1>
         <p id="modelMeta" class="meta-line">Loading model status</p>
       </div>
+      <label class="mobile-page-menu">
+        Section
+        <select id="pageSelect" aria-label="Choose app section">
+          <option value="predictions">Predictions</option>
+          <option value="parlays">Parlays</option>
+          <option value="player-profiles">Player Profiles</option>
+          <option value="parlay-ledger">Parlay Ledger</option>
+          <option value="played">Played Matches</option>
+          <option value="single">Single Predictor</option>
+          <option value="fixture-ledger">Fixture Ledger</option>
+          <option value="league-tables">League Tables</option>
+          <option value="world-cup-groups">World Cup Groups</option>
+          <option value="international-fixtures">International Fixtures</option>
+        </select>
+      </label>
       <div class="topbar-right">
         <div class="context-mode-control" aria-label="Prediction context">
           <span>Club</span>
@@ -20,7 +35,7 @@
             <input id="appContextToggle" type="checkbox" aria-label="Toggle international context">
             <span class="mode-switch-track"><span class="mode-switch-thumb"></span></span>
           </label>
-          <span>International</span>
+          <span class="context-label-international"><span class="context-full">International</span><span class="context-short">Intl</span></span>
         </div>
         <label class="theme-control">
           Theme
@@ -47,6 +62,7 @@
       <button class="page-tab" type="button" data-page-target="played">Played Matches</button>
       <button class="page-tab" type="button" data-page-target="single">Single Predictor</button>
       <button class="page-tab" type="button" data-page-target="fixture-ledger">Fixture Ledger</button>
+      <button class="page-tab" type="button" data-page-target="league-tables">League Tables</button>
       <button class="page-tab" type="button" data-page-target="world-cup-groups">World Cup Groups</button>
       <button class="page-tab" type="button" data-page-target="international-fixtures">International Fixtures</button>
     </nav>
@@ -387,6 +403,17 @@
             <tbody id="ledgerBody"></tbody>
           </table>
         </div>
+      </section>
+
+      <section class="panel league-table-panel page-section" data-page="league-tables" aria-labelledby="leagueTablesHeading">
+        <div class="section-head">
+          <div>
+            <h2 id="leagueTablesHeading">League Tables</h2>
+            <p id="leagueTablesStatus" class="muted">Loading live table context</p>
+          </div>
+          <button id="refreshLeagueTablesButton" type="button">Refresh Tables</button>
+        </div>
+        <div id="leagueTablesOutput" class="league-tables-output" aria-live="polite"></div>
       </section>
 
       <section class="panel groups-panel page-section" data-page="world-cup-groups" aria-labelledby="worldCupGroupsHeading">
