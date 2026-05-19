@@ -62,6 +62,7 @@ let ledgerPredictions = [];
 let playerProfileData = { profiles: [], profileCount: 0, entryCount: 0 };
 let internationalStatusData = null;
 let parlayRefreshSeed = 0;
+let editingPlayerStatEntry = null;
 
 const CENTRAL_TIME_ZONE = "America/Chicago";
 const INTERNATIONAL_ONLY_PAGES = new Set(["world-cup-groups", "international-fixtures"]);
@@ -946,6 +947,61 @@ function setPlayerProfileMessage(message, kind = "info") {
   playerProfileMessage.textContent = message;
 }
 
+function playerTrainingEntrySummary(entry, isGoalkeeper) {
+  const opponent = entry.opponent ? ` vs ${entry.opponent}` : "";
+  const venue = entry.venue ? ` (${entry.venue})` : "";
+  const saveHint = isGoalkeeper ? "Goalkeeper entry" : "Match entry";
+  return `${entry.date || "Date n/a"}${opponent}${venue} - ${saveHint}`;
+}
+
+function profileTrainingEntryMarkup(profile, view, isGoalkeeper) {
+  const latest = (view.latestEntries || [])[0];
+  if (!latest) {
+    return `
+      <li class="profile-training-empty">
+        <strong>${escapeHtml(view.emptyEntryText)}</strong>
+        <span>${escapeHtml(view.emptyEntrySubtext)}</span>
+      </li>
+    `;
+  }
+  return `
+    <li class="profile-training-latest">
+      <div>
+        <strong>Latest trained match</strong>
+        <span>${escapeHtml(playerTrainingEntrySummary(latest, isGoalkeeper))}</span>
+      </div>
+      <button class="profile-entry-edit-button" type="button" data-profile-id="${escapeHtml(profile.id)}" data-entry-id="${escapeHtml(latest.id)}">Edit</button>
+    </li>
+  `;
+}
+
+function setPlayerFormMode(entry = null) {
+  editingPlayerStatEntry = entry;
+  const button = playerStatForm.querySelector('button[type="submit"]');
+  if (!button) return;
+  button.textContent = entry ? "Update Player Stats" : "Save Player Stats";
+}
+
+function fillPlayerStatFormFromEntry(profile, entry) {
+  if (!profile || !entry) return;
+  playerProfileSelect.value = profile.id;
+  playerStatForm.elements.date.value = entry.date || "";
+  playerStatForm.elements.opponent.value = entry.opponent || "";
+  playerStatForm.elements.venue.value = entry.venue || "";
+  playerStatForm.elements.minutes.value = Number(entry.minutes || 0);
+  playerStatForm.elements.shots.value = Number(entry.shots || 0);
+  playerStatForm.elements.shotsOnTarget.value = Number(entry.shotsOnTarget || 0);
+  playerStatForm.elements.goals.value = Number(entry.goals || 0);
+  playerStatForm.elements.assists.value = Number(entry.assists || 0);
+  playerStatForm.elements.saves.value = Number(entry.saves || 0);
+  playerStatForm.elements.started.checked = Boolean(entry.started);
+  playerStatForm.elements.notes.value = entry.notes || "";
+  setPlayerFormMode({ ...entry, profileId: profile.id });
+  renderPlayerProfiles();
+  playerStatForm.scrollIntoView({ behavior: "smooth", block: "start" });
+  setPlayerProfileMessage(`Editing latest trained match for ${profile.player}. Update the fields and save to correct the training entry.`, "info");
+}
+
 function renderBoard() {
   if (isInternationalMode()) {
     renderInternationalFixtureBoard();
@@ -1418,7 +1474,6 @@ function renderPlayerProfiles() {
     .map((profile) => {
       const view = activeProfileView(profile);
       const totals = view.totals || {};
-      const latest = view.latestEntries || [];
       const isGoalkeeper = profile.role === "Goalkeeper";
       const isSelected = profile.id === playerProfileSelect.value;
       return `
@@ -1453,21 +1508,7 @@ function renderPlayerProfiles() {
             <span>${statNumber(totals.assistsPer90, 2)} assists/90</span>
           </div>
           <ul class="profile-entry-list">
-            ${
-              latest.length
-                ? latest
-                    .map(
-                      (entry) => `
-                        <li>
-                          <strong>${escapeHtml(entry.date)}</strong>
-                          <span>${escapeHtml(entry.opponent || "Opponent n/a")}</span>
-                          <small>${entry.goals || 0} G | ${entry.assists || 0} A | ${entry.shots || 0} Sh | ${entry.shotsOnTarget || 0} SOT${isGoalkeeper ? ` | ${entry.saves || 0} Sv` : ""}</small>
-                        </li>
-                      `
-                    )
-                    .join("")
-                : `<li><strong>${escapeHtml(view.emptyEntryText)}</strong><span>${escapeHtml(view.emptyEntrySubtext)}</span><small>${statNumber(view.manualTotals?.appearances, 0)} manual entries added</small></li>`
-            }
+            ${profileTrainingEntryMarkup(profile, view, isGoalkeeper)}
           </ul>
         </article>
       `;
@@ -1759,14 +1800,26 @@ parlaySortSelect.addEventListener("change", renderParlayTickets);
 refreshParlayLedgerButton.addEventListener("click", refreshParlayLedger);
 refreshPlayerProfilesButton.addEventListener("click", refreshPlayerProfiles);
 playerProfileSelect.addEventListener("change", () => {
+  setPlayerFormMode(null);
   renderPlayerProfiles();
   autofillTrainingFixture();
 });
-playerStatForm.elements.date.addEventListener("change", () => autofillTrainingFixture());
+playerStatForm.elements.date.addEventListener("change", () => {
+  if (!editingPlayerStatEntry) autofillTrainingFixture();
+});
 playerProfileGrid.addEventListener("click", (event) => {
+  const editButton = event.target.closest(".profile-entry-edit-button[data-profile-id][data-entry-id]");
+  if (editButton) {
+    const profile = (playerProfileData.profiles || []).find((item) => item.id === editButton.dataset.profileId);
+    const view = profile ? activeProfileView(profile) : null;
+    const entry = (view?.latestEntries || []).find((item) => item.id === editButton.dataset.entryId);
+    if (profile && entry) fillPlayerStatFormFromEntry(profile, entry);
+    return;
+  }
   if (event.target.closest("a, button, input, select, textarea")) return;
   const card = event.target.closest(".player-profile-card[data-profile-id]");
   if (!card) return;
+  setPlayerFormMode(null);
   playerProfileSelect.value = card.dataset.profileId;
   renderPlayerProfiles();
   autofillTrainingFixture();
@@ -1777,6 +1830,7 @@ playerProfileGrid.addEventListener("keydown", (event) => {
   const card = event.target.closest(".player-profile-card[data-profile-id]");
   if (!card) return;
   event.preventDefault();
+  setPlayerFormMode(null);
   playerProfileSelect.value = card.dataset.profileId;
   renderPlayerProfiles();
   autofillTrainingFixture();
@@ -1790,18 +1844,23 @@ playerStatForm.addEventListener("submit", async (event) => {
   const button = playerStatForm.querySelector("button[type='submit']");
   const originalText = button.textContent;
   button.disabled = true;
-  button.textContent = "Saving...";
+  button.textContent = editingPlayerStatEntry ? "Updating..." : "Saving...";
   try {
     const body = formJson(playerStatForm);
     body.context = currentProfileContext();
     body.started = Boolean(playerStatForm.elements.started.checked);
-    const data = await api(`/api/player-profiles/${encodeURIComponent(body.profileId)}/stats`, {
-      method: "POST",
+    const isEditing = Boolean(editingPlayerStatEntry?.id);
+    const endpoint = isEditing
+      ? `/api/player-profiles/${encodeURIComponent(editingPlayerStatEntry.profileId)}/stats/${encodeURIComponent(editingPlayerStatEntry.id)}`
+      : `/api/player-profiles/${encodeURIComponent(body.profileId)}/stats`;
+    const data = await api(endpoint, {
+      method: isEditing ? "PUT" : "POST",
       body: JSON.stringify(body),
     });
     playerProfileData = data.profiles;
+    setPlayerFormMode(null);
     renderPlayerProfiles();
-    setPlayerProfileMessage("Player stat entry saved. Continuous training has been queued so future fixture predictions can use the updated profile.", "info");
+    setPlayerProfileMessage(isEditing ? "Player stat entry updated. Continuous training has been queued with the corrected profile data." : "Player stat entry saved. Continuous training has been queued so future fixture predictions can use the updated profile.", "info");
     await refreshTrainingStatus();
     playerStatForm.reset();
     playerProfileSelect.value = body.profileId;

@@ -711,7 +711,15 @@ function addPlayerStatEntry(profileId, body = {}) {
   const profile = profileById(profileId);
   if (!profile) return null;
   const store = readStore();
-  const entry = {
+  const entry = playerStatEntryFromBody(profile, body);
+  store.entries.push(entry);
+  writeStore(store);
+  return entry;
+}
+
+function playerStatEntryFromBody(profile, body = {}, existing = {}) {
+  return {
+    ...existing,
     id: `player_stat_${Date.now()}_${Math.random().toString(16).slice(2, 8)}`,
     profileId: profile.id,
     context: body.context === "international" ? "international" : "club",
@@ -731,11 +739,24 @@ function addPlayerStatEntry(profileId, body = {}) {
     assists: integer(body.assists),
     saves: profile.role === "Goalkeeper" ? integer(body.saves) : 0,
     notes: String(body.notes || "").trim(),
-    createdAt: new Date().toISOString(),
+    createdAt: existing.createdAt || new Date().toISOString(),
+    updatedAt: existing.id ? new Date().toISOString() : existing.updatedAt,
   };
-  store.entries.push(entry);
+}
+
+function updatePlayerStatEntry(profileId, entryId, body = {}) {
+  const profile = profileById(profileId);
+  if (!profile) return null;
+  const store = readStore();
+  const index = store.entries.findIndex((entry) => entry.id === entryId && entry.profileId === profile.id);
+  if (index === -1) return null;
+  const updated = {
+    ...playerStatEntryFromBody(profile, body, store.entries[index]),
+    id: store.entries[index].id,
+  };
+  store.entries[index] = updated;
   writeStore(store);
-  return entry;
+  return updated;
 }
 
 function manualPlayerRows() {
@@ -790,4 +811,5 @@ module.exports = {
   manualPlayerRows,
   recordProfileTotals,
   supplementalProfileRows,
+  updatePlayerStatEntry,
 };

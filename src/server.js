@@ -5,7 +5,7 @@ const { buildParlay, fbrefStatus } = require("./parlayService");
 const { fixturePredictionBoard, predictMatch, teamsByLeague } = require("./predictionService");
 const { addPrediction, addPredictionsIfMissing, deletePrediction, listPredictions, summary, updateResult } = require("./backtestStore");
 const { readTrainingStatus, scheduleRetrain } = require("./continuousTraining");
-const { addPlayerStatEntry, listPlayerProfiles } = require("./playerProfileStore");
+const { addPlayerStatEntry, listPlayerProfiles, updatePlayerStatEntry } = require("./playerProfileStore");
 const { internationalStatus } = require("./internationalData");
 const { resetPlayerStatsCache } = require("./playerStats");
 const { refreshMissingOdds } = require("./oddsRepairService");
@@ -239,6 +239,15 @@ async function handleApi(req, res, pathname) {
     if (!entry) return sendJson(res, 404, { error: "Player profile not found" });
     resetPlayerStatsCache();
     scheduleRetrain("manual-player-profile-stats");
+    return sendJson(res, 200, { entry, profiles: listPlayerProfiles(), trainingStatus: readTrainingStatus() });
+  }
+
+  const playerStatsEditMatch = pathname.match(/^\/api\/player-profiles\/([^/]+)\/stats\/([^/]+)$/);
+  if (req.method === "PUT" && playerStatsEditMatch) {
+    const entry = updatePlayerStatEntry(playerStatsEditMatch[1], playerStatsEditMatch[2], await readBody(req));
+    if (!entry) return sendJson(res, 404, { error: "Player stat entry not found" });
+    resetPlayerStatsCache();
+    scheduleRetrain("manual-player-profile-stats-edited");
     return sendJson(res, 200, { entry, profiles: listPlayerProfiles(), trainingStatus: readTrainingStatus() });
   }
 
