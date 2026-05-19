@@ -2324,8 +2324,8 @@ body {
 
 .topbar {
   display: grid;
-  grid-template-columns: minmax(280px, 1fr) auto;
-  align-items: center;
+  grid-template-columns: minmax(280px, 1fr) minmax(540px, 760px);
+  align-items: start;
   gap: 28px;
   padding: 24px clamp(20px, 4vw, 44px);
   border-bottom: 1px solid color-mix(in srgb, var(--green) 36%, var(--line));
@@ -2358,9 +2358,27 @@ h1 {
 
 .topbar-right {
   display: grid;
-  grid-template-columns: minmax(170px, auto) 132px 132px minmax(280px, 1fr);
+  grid-template-columns: minmax(180px, 1fr) minmax(132px, 160px) minmax(150px, 170px);
+  grid-template-areas:
+    "context theme season"
+    "summary summary summary";
   align-items: end;
-  gap: 16px;
+  gap: 10px 16px;
+  justify-self: end;
+  width: 100%;
+  max-width: 760px;
+}
+
+.topbar-right .context-mode-control {
+  grid-area: context;
+}
+
+.topbar-right .theme-control {
+  grid-area: theme;
+}
+
+.topbar-right .season-control {
+  grid-area: season;
 }
 
 .theme-control,
@@ -2372,6 +2390,8 @@ h1 {
 
 .theme-control select,
 .season-control select {
+  width: 100%;
+  min-width: 0;
   min-height: 42px;
   border-color: rgba(255, 255, 255, 0.15);
   background: rgba(255, 255, 255, 0.07);
@@ -2379,9 +2399,11 @@ h1 {
 }
 
 .summary {
+  grid-area: summary;
   display: grid;
   grid-template-columns: repeat(4, minmax(96px, 1fr));
   gap: 10px;
+  width: 100%;
 }
 
 .summary span,
@@ -2776,7 +2798,8 @@ th {
   }
 
   .topbar-right {
-    grid-template-columns: minmax(170px, auto) 132px 132px minmax(260px, 1fr);
+    justify-self: stretch;
+    max-width: none;
   }
 
   .parlay-controls {
@@ -2788,6 +2811,11 @@ th {
   .topbar-right,
   .parlay-panel .section-head {
     grid-template-columns: 1fr;
+    grid-template-areas:
+      "context"
+      "theme"
+      "season"
+      "summary";
   }
 
   .summary {
@@ -3485,11 +3513,16 @@ th {
 
   .topbar-right {
     grid-template-columns: minmax(260px, 1fr) minmax(130px, 160px);
+    grid-template-areas:
+      "context theme"
+      "season season"
+      "summary summary";
     align-items: stretch;
   }
 
   .context-mode-control,
-  .theme-control {
+  .theme-control,
+  .season-control {
     grid-column: auto;
   }
 
@@ -3546,7 +3579,18 @@ th {
 
   .topbar-right {
     grid-template-columns: 1fr;
+    grid-template-areas:
+      "context"
+      "theme"
+      "season"
+      "summary";
     gap: 8px;
+  }
+
+  .context-mode-control,
+  .theme-control,
+  .season-control {
+    grid-column: auto;
   }
 
   .theme-control,

@@ -17,6 +17,10 @@ const LEAGUE_RULES = {
 const SEASON_META = {
   "2025-26": { espnSeason: "2025", available: true, current: true, label: "2025-26" },
   "2024-25": { espnSeason: "2024", available: true, current: false, label: "2024-25 archive" },
+  "2023-24": { espnSeason: "2023", available: true, current: false, label: "2023-24 archive" },
+  "2022-23": { espnSeason: "2022", available: true, current: false, label: "2022-23 archive" },
+  "2021-22": { espnSeason: "2021", available: true, current: false, label: "2021-22 archive" },
+  "2020-21": { espnSeason: "2020", available: true, current: false, label: "2020-21 archive" },
   "2026-27": { espnSeason: "2026", available: false, current: false, label: "2026-27" },
 };
 

@@ -79,6 +79,10 @@ const CLUB_SEASONS = [
   { value: "2025-26", label: "2025-26" },
   { value: "2026-27", label: "2026-27" },
   { value: "2024-25", label: "2024-25" },
+  { value: "2023-24", label: "2023-24" },
+  { value: "2022-23", label: "2022-23" },
+  { value: "2021-22", label: "2021-22" },
+  { value: "2020-21", label: "2020-21" },
 ];
 const INTERNATIONAL_SEASONS = [
   { value: "2026 World Cup", label: "2026 World Cup" },
