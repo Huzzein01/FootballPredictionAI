@@ -1,6 +1,317 @@
 {
   "predictions": [
     {
+      "id": "pred_1779043776511_f354d4",
+      "createdAt": "2026-05-17T18:49:36.511Z",
+      "source": "manual",
+      "status": "SETTLED",
+      "actualResult": "H",
+      "homeGoals": "3",
+      "awayGoals": "1",
+      "settledAt": "2026-05-17T21:24:05.027Z",
+      "correct": true,
+      "scoreCorrect": false,
+      "league": "Ligue 1",
+      "season": "2025-26",
+      "date": "",
+      "homeTeam": "Marseille",
+      "awayTeam": "Rennes",
+      "odds": {
+        "homeOdds": "1.91",
+        "drawOdds": "4.25",
+        "awayOdds": "3.80"
+      },
+      "oddsSource": "",
+      "oddsSourceUrl": "",
+      "oddsSnapshotAt": "",
+      "oddsStatus": "Public odds found",
+      "hasOdds": true,
+      "prediction": "H",
+      "confidence": 51.1,
+      "projectedScore": "2-1",
+      "featureVector": [
+        31,
+        31,
+        1.7096774193548387,
+        1.8064516129032258,
+        0.5161290322580645,
+        0.5161290322580645,
+        1.903225806451613,
+        1.7419354838709677,
+        1.3225806451612903,
+        1.3548387096774193,
+        14.935483870967742,
+        14,
+        5.580645161290323,
+        4.935483870967742,
+        5.290322580645161,
+        5.806451612903226,
+        0.25806451612903225,
+        0.3225806451612903,
+        0.8,
+        2.6,
+        -0.4,
+        1.2,
+        -0.09677419354838701,
+        0.19354838709677424,
+        0.935483870967742,
+        0.645161290322581,
+        -0.516129032258065,
+        -0.06451612903225806,
+        1613.244446720465,
+        1618.1567946401954,
+        -4.912347919730337,
+        0.5856211264811106,
+        11,
+        1.7272727272727273,
+        1.1818181818181819,
+        0.2727272727272727,
+        6,
+        0,
+        56,
+        0,
+        1,
+        0,
+        0,
+        0,
+        0.75,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0.5249999999999999,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0.5122837068404943,
+        0.23022632472125742,
+        0.2574899684382484,
+        0.28205738211923687,
+        0.02726364371699097
+      ],
+      "standingContext": {
+        "features": [
+          6,
+          0,
+          56,
+          0,
+          1,
+          0,
+          0,
+          0,
+          0.75,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0.5249999999999999
+        ],
+        "home": {
+          "rank": 6,
+          "points": 56,
+          "gamesLeft": 1,
+          "maxPoints": 59,
+          "titleRaceScore": 0,
+          "europeRaceScore": 0.75,
+          "relegationBattleScore": 0,
+          "securedTitle": 0,
+          "securedChampionsLeague": 0,
+          "securedEurope": 0,
+          "recordMotiveScore": 0,
+          "manualNote": "",
+          "playerMotives": [],
+          "deadRubber": 0,
+          "motivationScore": 0.5249999999999999,
+          "note": "European-place pressure"
+        },
+        "away": {
+          "rank": 0,
+          "points": 0,
+          "gamesLeft": 0,
+          "titleRaceScore": 0,
+          "europeRaceScore": 0,
+          "relegationBattleScore": 0,
+          "securedTitle": 0,
+          "securedChampionsLeague": 0,
+          "recordMotiveScore": 0,
+          "manualNote": "",
+          "deadRubber": 0,
+          "motivationScore": 0,
+          "note": "No table context available"
+        },
+        "source": "public-standings",
+        "sourceName": "ESPN public standings API",
+        "sourceUrl": "https://site.web.api.espn.com/apis/v2/sports/soccer/fra.1/standings?region=us&lang=en&contentorigin=espn&season=2025",
+        "updatedAt": "2026-05-15T06:18:50.523Z"
+      },
+      "calibration": {
+        "closeGameScore": 0.42754366571172214,
+        "h2hDrawRate": 0.09090909090909083,
+        "marketDraw": 0.23022632472125742,
+        "drawAdjustment": 0
+      },
+      "judgment": {
+        "summary": "Marseille win is the pick at 51.1% after the odds were moderated by table stakes, motivation, form, Elo, head-to-head/player features, and draw-risk calibration.",
+        "tableSource": "ESPN public standings API",
+        "sourceUrl": "https://site.web.api.espn.com/apis/v2/sports/soccer/fra.1/standings?region=us&lang=en&contentorigin=espn&season=2025",
+        "updatedAt": "2026-05-15T06:18:50.523Z",
+        "marketProbabilities": {
+          "H": 51.2,
+          "D": 23,
+          "A": 25.7
+        },
+        "contextProbabilities": {
+          "H": 44.1,
+          "D": 30.2,
+          "A": 25.7
+        },
+        "finalProbabilities": {
+          "H": 51.1,
+          "D": 26.6,
+          "A": 22.2
+        },
+        "factors": [
+          "Market signal: H 51.2%, D 23%, A 25.7% from the provided odds.",
+          "ESPN public standings API: Marseille: 6th, 56 pts, European-place pressure; Rennes: unranked, 0 pts, No table context available.",
+          "Context signal: H 44.1%, D 30.2%, A 25.7% after table position, current form, Elo, player features, and motivation are considered.",
+          "Model signal before final judgment: H 50%, D 25.4%, A 24.7%.",
+          "Drivers: PPG diff -0.10, Elo diff -5, last-5 PPG 0.80-2.60, motivation diff 0.52.",
+          "Draw risk was kept near the model baseline because the matchup did not trigger a strong draw-risk flag."
+        ]
+      },
+      "probabilities": {
+        "H": 0.5114738586887158,
+        "D": 0.2662970561871836,
+        "A": 0.22222908512410067,
+        "modelH": 0.49950915766533,
+        "modelD": 0.2536059436024286,
+        "modelA": 0.24688489873224145,
+        "homeWinPct": 51.1,
+        "drawPct": 26.6,
+        "awayWinPct": 22.2
+      },
+      "model": {
+        "type": "softmax-logistic-regression",
+        "trainedAt": "2026-05-17T16:18:27.701Z",
+        "dataCoverage": "2020-21 through 2024-25 train/tune; 2025-26 partial holdout test",
+        "metrics": {
+          "train": {
+            "rows": 5717,
+            "accuracy": 0.5378695119818087,
+            "logLoss": 0.9696048505896228,
+            "confusion": {
+              "H": {
+                "H": 2003,
+                "D": 15,
+                "A": 464
+              },
+              "D": {
+                "H": 881,
+                "D": 13,
+                "A": 542
+              },
+              "A": {
+                "H": 727,
+                "D": 13,
+                "A": 1059
+              }
+            }
+          },
+          "validation": {
+            "rows": 1372,
+            "accuracy": 0.5502915451895044,
+            "logLoss": 0.9617784409456962,
+            "confusion": {
+              "H": {
+                "H": 486,
+                "D": 3,
+                "A": 96
+              },
+              "D": {
+                "H": 214,
+                "D": 5,
+                "A": 110
+              },
+              "A": {
+                "H": 190,
+                "D": 4,
+                "A": 264
+              }
+            }
+          },
+          "test": {
+            "rows": 1225,
+            "accuracy": 0.5355102040816326,
+            "logLoss": 0.9769417960599788,
+            "confusion": {
+              "H": {
+                "H": 468,
+                "D": 4,
+                "A": 84
+              },
+              "D": {
+                "H": 200,
+                "D": 1,
+                "A": 109
+              },
+              "A": {
+                "H": 170,
+                "D": 2,
+                "A": 187
+              }
+            }
+          }
+        },
+        "hyperparameters": {
+          "learningRate": 0.05,
+          "l2": 0.003,
+          "epochs": 550,
+          "classWeights": {
+            "D": 1.25
+          },
+          "marketBlend": 0.75
+        }
+      }
+    },
+    {
       "id": "pred_1778697334624_817a8d",
       "createdAt": "2026-05-13T18:35:34.624Z",
       "source": "fixture-board",
@@ -349,12 +660,12 @@
       "id": "pred_1778697334624_14e14b",
       "createdAt": "2026-05-13T18:35:34.624Z",
       "source": "fixture-board",
-      "status": "PENDING",
-      "actualResult": "",
-      "homeGoals": "",
-      "awayGoals": "",
-      "settledAt": "",
-      "correct": null,
+      "status": "SETTLED",
+      "actualResult": "H",
+      "homeGoals": "1",
+      "awayGoals": "0",
+      "settledAt": "2026-05-19T06:19:22.461Z",
+      "correct": true,
       "league": "EPL",
       "season": "2025-26",
       "date": "2026-05-18",
@@ -458,18 +769,19 @@
           "classWeights": {},
           "marketBlend": 0.75
         }
-      }
+      },
+      "scoreCorrect": false
     },
     {
       "id": "pred_1778697334624_4ca4c7",
       "createdAt": "2026-05-13T18:35:34.624Z",
       "source": "fixture-board",
-      "status": "PENDING",
-      "actualResult": "",
-      "homeGoals": "",
-      "awayGoals": "",
-      "settledAt": "",
-      "correct": null,
+      "status": "SETTLED",
+      "actualResult": "H",
+      "homeGoals": "1",
+      "awayGoals": "0",
+      "settledAt": "2026-05-17T19:07:40.148Z",
+      "correct": true,
       "league": "La Liga",
       "season": "2025-26",
       "date": "2026-05-17",
@@ -573,7 +885,8 @@
           "classWeights": {},
           "marketBlend": 0.75
         }
-      }
+      },
+      "scoreCorrect": false
     },
     {
       "id": "pred_1778697334624_ff43c3",
@@ -1270,12 +1583,12 @@
       "id": "pred_1778696439609_12cfc9",
       "createdAt": "2026-05-13T18:20:39.609Z",
       "source": "fixture-board",
-      "status": "PENDING",
-      "actualResult": "",
-      "homeGoals": "",
-      "awayGoals": "",
-      "settledAt": "",
-      "correct": null,
+      "status": "SETTLED",
+      "actualResult": "H",
+      "homeGoals": "2",
+      "awayGoals": "1",
+      "settledAt": "2026-05-19T21:26:54.636Z",
+      "correct": true,
       "league": "EPL",
       "season": "2025-26",
       "date": "2026-05-19",
@@ -1379,18 +1692,19 @@
           "classWeights": {},
           "marketBlend": 0.75
         }
-      }
+      },
+      "scoreCorrect": true
     },
     {
       "id": "pred_1778696439609_d96627",
       "createdAt": "2026-05-13T18:20:39.609Z",
       "source": "fixture-board",
-      "status": "PENDING",
-      "actualResult": "",
-      "homeGoals": "",
-      "awayGoals": "",
-      "settledAt": "",
-      "correct": null,
+      "status": "SETTLED",
+      "actualResult": "D",
+      "homeGoals": "1",
+      "awayGoals": "1",
+      "settledAt": "2026-05-19T21:26:48.217Z",
+      "correct": false,
       "league": "EPL",
       "season": "2025-26",
       "date": "2026-05-19",
@@ -1494,18 +1808,19 @@
           "classWeights": {},
           "marketBlend": 0.75
         }
-      }
+      },
+      "scoreCorrect": false
     },
     {
       "id": "pred_1778696439609_138911",
       "createdAt": "2026-05-13T18:20:39.609Z",
       "source": "fixture-board",
-      "status": "PENDING",
-      "actualResult": "",
-      "homeGoals": "",
-      "awayGoals": "",
-      "settledAt": "",
-      "correct": null,
+      "status": "SETTLED",
+      "actualResult": "H",
+      "homeGoals": "2",
+      "awayGoals": "1",
+      "settledAt": "2026-05-17T21:22:51.408Z",
+      "correct": false,
       "league": "Ligue 1",
       "season": "2025-26",
       "date": "2026-05-17",
@@ -1609,18 +1924,19 @@
           "classWeights": {},
           "marketBlend": 0.75
         }
-      }
+      },
+      "scoreCorrect": false
     },
     {
       "id": "pred_1778696439609_280acc",
       "createdAt": "2026-05-13T18:20:39.609Z",
       "source": "fixture-board",
-      "status": "PENDING",
-      "actualResult": "",
-      "homeGoals": "",
-      "awayGoals": "",
-      "settledAt": "",
-      "correct": null,
+      "status": "SETTLED",
+      "actualResult": "A",
+      "homeGoals": "0",
+      "awayGoals": "1",
+      "settledAt": "2026-05-17T19:03:03.123Z",
+      "correct": true,
       "league": "La Liga",
       "season": "2025-26",
       "date": "2026-05-17",
@@ -1724,18 +2040,19 @@
           "classWeights": {},
           "marketBlend": 0.75
         }
-      }
+      },
+      "scoreCorrect": false
     },
     {
       "id": "pred_1778696439609_ca920c",
       "createdAt": "2026-05-13T18:20:39.609Z",
       "source": "fixture-board",
-      "status": "PENDING",
-      "actualResult": "",
-      "homeGoals": "",
-      "awayGoals": "",
-      "settledAt": "",
-      "correct": null,
+      "status": "SETTLED",
+      "actualResult": "H",
+      "homeGoals": "3",
+      "awayGoals": "1",
+      "settledAt": "2026-05-17T21:23:07.304Z",
+      "correct": true,
       "league": "La Liga",
       "season": "2025-26",
       "date": "2026-05-17",
@@ -1839,18 +2156,19 @@
           "classWeights": {},
           "marketBlend": 0.75
         }
-      }
+      },
+      "scoreCorrect": false
     },
     {
       "id": "pred_1778696439609_ec5cf8",
       "createdAt": "2026-05-13T18:20:39.609Z",
       "source": "fixture-board",
-      "status": "PENDING",
-      "actualResult": "",
-      "homeGoals": "",
-      "awayGoals": "",
-      "settledAt": "",
-      "correct": null,
+      "status": "SETTLED",
+      "actualResult": "H",
+      "homeGoals": "3",
+      "awayGoals": "2",
+      "settledAt": "2026-05-17T15:03:29.749Z",
+      "correct": true,
       "league": "EPL",
       "season": "2025-26",
       "date": "2026-05-17",
@@ -1954,7 +2272,8 @@
           "classWeights": {},
           "marketBlend": 0.75
         }
-      }
+      },
+      "scoreCorrect": false
     },
     {
       "id": "pred_1778696439609_51e195",
