@@ -1,5 +1,6 @@
 const fs = require("fs");
 const path = require("path");
+const { listPredictions } = require("./backtestStore");
 
 const PLAYER_STATS_PATH = path.join(process.cwd(), "data", "international", "processed", "world_cup_player_stats.json");
 const SQUAD_STATS_PATH = path.join(process.cwd(), "data", "international", "processed", "world_cup_squad_stats.json");
@@ -180,25 +181,85 @@ function internationalFixturePredictions() {
   return readFixtureData().fixtures.map(predictInternationalFixture);
 }
 
+function emptyGroupRow(team) {
+  return {
+    team,
+    played: 0,
+    wins: 0,
+    draws: 0,
+    losses: 0,
+    goalsFor: 0,
+    goalsAgainst: 0,
+    goalDifference: 0,
+    points: 0,
+    status: "Waiting for matchday 1",
+  };
+}
+
+function applyGroupResult(table, result) {
+  const home = table.get(result.homeTeam);
+  const away = table.get(result.awayTeam);
+  const homeGoals = Number(result.homeGoals);
+  const awayGoals = Number(result.awayGoals);
+  if (!home || !away || !Number.isFinite(homeGoals) || !Number.isFinite(awayGoals)) return false;
+  home.played += 1;
+  away.played += 1;
+  home.goalsFor += homeGoals;
+  home.goalsAgainst += awayGoals;
+  away.goalsFor += awayGoals;
+  away.goalsAgainst += homeGoals;
+  if (homeGoals > awayGoals) {
+    home.wins += 1;
+    away.losses += 1;
+    home.points += 3;
+  } else if (awayGoals > homeGoals) {
+    away.wins += 1;
+    home.losses += 1;
+    away.points += 3;
+  } else {
+    home.draws += 1;
+    away.draws += 1;
+    home.points += 1;
+    away.points += 1;
+  }
+  home.goalDifference = home.goalsFor - home.goalsAgainst;
+  away.goalDifference = away.goalsFor - away.goalsAgainst;
+  home.status = home.played ? "Group stage active" : home.status;
+  away.status = away.played ? "Group stage active" : away.status;
+  return true;
+}
+
+function settledInternationalResults() {
+  return listPredictions()
+    .filter((entry) => entry.source === "international-fixture-board")
+    .filter((entry) => entry.status === "SETTLED")
+    .filter((entry) => Number.isFinite(Number(entry.homeGoals)) && Number.isFinite(Number(entry.awayGoals)));
+}
+
 function internationalGroupTables() {
   const fixtureData = readFixtureData();
-  return Object.entries(fixtureData.groups || {}).map(([group, teams]) => ({
-    group,
-    fixtures: fixtureData.fixtures.filter((fixture) => fixture.groupLetter === group),
-    standings: teams.map((team, index) => ({
-      rank: index + 1,
-      team,
-      played: 0,
-      wins: 0,
-      draws: 0,
-      losses: 0,
-      goalsFor: 0,
-      goalsAgainst: 0,
-      goalDifference: 0,
-      points: 0,
-      status: "Waiting for matchday 1",
-    })),
-  }));
+  const results = settledInternationalResults();
+  return Object.entries(fixtureData.groups || {}).map(([group, teams]) => {
+    const fixtures = fixtureData.fixtures.filter((fixture) => fixture.groupLetter === group);
+    const table = new Map(teams.map((team) => [team, emptyGroupRow(team)]));
+    let appliedResults = 0;
+    for (const result of results.filter((entry) => fixtures.some((fixture) => fixture.date === entry.date && fixture.homeTeam === entry.homeTeam && fixture.awayTeam === entry.awayTeam))) {
+      if (applyGroupResult(table, result)) appliedResults += 1;
+    }
+    const standings = [...table.values()]
+      .sort((a, b) => {
+        if (b.points !== a.points) return b.points - a.points;
+        if (b.goalDifference !== a.goalDifference) return b.goalDifference - a.goalDifference;
+        if (b.goalsFor !== a.goalsFor) return b.goalsFor - a.goalsFor;
+        return a.team.localeCompare(b.team);
+      })
+      .map((entry, index) => ({
+        ...entry,
+        rank: index + 1,
+        status: entry.played ? (index < 2 ? "Advancing position" : "Group stage active") : entry.status,
+      }));
+    return { group, fixtures, standings, appliedResults };
+  });
 }
 
 function internationalStatus() {

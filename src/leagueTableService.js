@@ -14,6 +14,16 @@ const LEAGUE_RULES = {
   "Ligue 1": { totalGames: 34, sourceCode: "fra.1", name: "Ligue 1" },
 };
 
+const SEASON_META = {
+  "2025-26": { espnSeason: "2025", available: true, current: true, label: "2025-26" },
+  "2024-25": { espnSeason: "2024", available: true, current: false, label: "2024-25 archive" },
+  "2026-27": { espnSeason: "2026", available: false, current: false, label: "2026-27" },
+};
+
+function seasonMeta(season = "2025-26") {
+  return SEASON_META[season] || SEASON_META["2025-26"];
+}
+
 function numeric(value) {
   const n = Number(value);
   return Number.isFinite(n) ? n : 0;
@@ -23,10 +33,10 @@ function statMap(entry) {
   return Object.fromEntries((entry.stats || []).map((stat) => [stat.name, stat.value]));
 }
 
-function standingsUrl(league) {
+function standingsUrl(league, season = "2025-26") {
   const code = LEAGUE_RULES[league]?.sourceCode;
   if (!code) return "";
-  return `https://site.web.api.espn.com/apis/v2/sports/soccer/${code}/standings?region=us&lang=en&contentorigin=espn&season=2025`;
+  return `https://site.web.api.espn.com/apis/v2/sports/soccer/${code}/standings?region=us&lang=en&contentorigin=espn&season=${seasonMeta(season).espnSeason}`;
 }
 
 function parseEspnStandings(league, payload) {
@@ -52,8 +62,8 @@ function parseEspnStandings(league, payload) {
     .filter((entry) => entry.team);
 }
 
-async function fetchLeagueStandings(league) {
-  const sourceUrl = standingsUrl(league);
+async function fetchLeagueStandings(league, season = "2025-26") {
+  const sourceUrl = standingsUrl(league, season);
   if (!sourceUrl) return null;
   const response = await fetch(sourceUrl, { headers: { "user-agent": USER_AGENT } });
   if (!response.ok) return null;
@@ -64,6 +74,7 @@ async function fetchLeagueStandings(league) {
     name: LEAGUE_RULES[league].name,
     source: "ESPN public standings API",
     sourceUrl,
+    season,
     standings,
     notes: tableNotes(league, standings),
   };
@@ -113,6 +124,50 @@ async function refreshLiveLeagueContext() {
   const nextContext = refreshed.length && tableSignature(context) !== tableSignature(existing) ? context : existing;
   if (nextContext === context) writeLiveLeagueContext(context);
   return { context: nextContext, refreshed };
+}
+
+async function archivedLeagueTables(season = "2025-26") {
+  const meta = seasonMeta(season);
+  if (!meta.available) {
+    return {
+      updatedAt: "",
+      generatedAt: new Date().toISOString(),
+      season,
+      unavailable: true,
+      message: `${season} league data is not available yet. Import the new season fixtures and tables once they are released.`,
+      leagues: {},
+      refreshed: [],
+    };
+  }
+  if (meta.current) {
+    const { context, refreshed } = await refreshLiveLeagueContext();
+    return { ...effectiveTables(context), season, refreshed };
+  }
+  const leagues = {};
+  const refreshed = [];
+  for (const league of Object.keys(LEAGUE_RULES)) {
+    try {
+      const data = await fetchLeagueStandings(league, season);
+      if (!data) continue;
+      leagues[league] = {
+        ...data,
+        standings: rankTable(league, new Map(data.standings.map((entry) => [normalizeTeamName(entry.team), { ...entry, ledgerDelta: { played: 0, points: 0, goalsFor: 0, goalsAgainst: 0 } }]))),
+        totalGames: LEAGUE_RULES[league]?.totalGames || 38,
+        trackedResultsApplied: 0,
+      };
+      refreshed.push(league);
+    } catch {
+      // Keep archive response partial if one league feed is unavailable.
+    }
+  }
+  return {
+    updatedAt: new Date().toISOString(),
+    generatedAt: new Date().toISOString(),
+    season,
+    sourcePolicy: "Archived club tables are loaded from public ESPN season standings and are not layered with current fixture-ledger results.",
+    leagues,
+    refreshed,
+  };
 }
 
 function loadVerifiedPlayedResults() {
@@ -274,6 +329,7 @@ function effectiveTables(context = loadLiveLeagueContext()) {
 }
 
 module.exports = {
+  archivedLeagueTables,
   effectiveTables,
   refreshLiveLeagueContext,
 };

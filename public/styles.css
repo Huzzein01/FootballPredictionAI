@@ -113,7 +113,8 @@ h1 {
   gap: 14px;
 }
 
-.theme-control {
+.theme-control,
+.season-control {
   display: grid;
   gap: 5px;
   min-width: 132px;
@@ -137,14 +138,16 @@ h1 {
   text-transform: uppercase;
 }
 
-.theme-control select {
+.theme-control select,
+.season-control select {
   border-color: rgba(255, 255, 255, 0.16);
   background: rgba(255, 255, 255, 0.08);
   color: #fff;
   color-scheme: dark;
 }
 
-.theme-control option {
+.theme-control option,
+.season-control option {
   color: #111827;
 }
 
@@ -2355,18 +2358,20 @@ h1 {
 
 .topbar-right {
   display: grid;
-  grid-template-columns: minmax(170px, auto) 140px minmax(280px, 1fr);
+  grid-template-columns: minmax(170px, auto) 132px 132px minmax(280px, 1fr);
   align-items: end;
   gap: 16px;
 }
 
-.theme-control {
+.theme-control,
+.season-control {
   min-width: 0;
   color: #aebdca;
   letter-spacing: 0.04em;
 }
 
-.theme-control select {
+.theme-control select,
+.season-control select {
   min-height: 42px;
   border-color: rgba(255, 255, 255, 0.15);
   background: rgba(255, 255, 255, 0.07);
@@ -2771,7 +2776,7 @@ th {
   }
 
   .topbar-right {
-    grid-template-columns: minmax(170px, auto) 140px 1fr;
+    grid-template-columns: minmax(170px, auto) 132px 132px minmax(260px, 1fr);
   }
 
   .parlay-controls {
@@ -2869,6 +2874,7 @@ th {
   }
 
   .theme-control,
+  .season-control,
   .context-mode-control {
     grid-column: 1 / -1;
   }
@@ -3092,7 +3098,8 @@ th {
   }
 
   .context-mode-control,
-  .theme-control {
+  .theme-control,
+  .season-control {
     min-width: 0;
     border: 1px solid rgba(255, 255, 255, 0.14);
     border-radius: 8px;
@@ -3122,7 +3129,8 @@ th {
     justify-self: center;
   }
 
-  .theme-control {
+  .theme-control,
+  .season-control {
     grid-template-columns: auto minmax(0, 1fr);
     align-items: center;
   }

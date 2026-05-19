@@ -8,6 +8,7 @@ const teamList = document.querySelector("#teamList");
 const appContextToggle = document.querySelector("#appContextToggle");
 const leagueSelect = document.querySelector("#leagueSelect");
 const themeSelect = document.querySelector("#themeSelect");
+const seasonSelect = document.querySelector("#seasonSelect");
 const fixtureBoard = document.querySelector("#fixtureBoard");
 const boardMessage = document.querySelector("#boardMessage");
 const boardStatus = document.querySelector("#boardStatus");
@@ -51,6 +52,7 @@ const playerProfileSelect = document.querySelector("#playerProfileSelect");
 const playerProfileMessage = document.querySelector("#playerProfileMessage");
 const playerProfileGrid = document.querySelector("#playerProfileGrid");
 const pageSelect = document.querySelector("#pageSelect");
+const leagueTablesHeading = document.querySelector("#leagueTablesHeading");
 const leagueTablesStatus = document.querySelector("#leagueTablesStatus");
 const refreshLeagueTablesButton = document.querySelector("#refreshLeagueTablesButton");
 const leagueTablesOutput = document.querySelector("#leagueTablesOutput");
@@ -73,6 +75,16 @@ let editingPlayerStatEntry = null;
 
 const CENTRAL_TIME_ZONE = "America/Chicago";
 const INTERNATIONAL_ONLY_PAGES = new Set(["world-cup-groups", "international-fixtures"]);
+const CLUB_SEASONS = [
+  { value: "2025-26", label: "2025-26" },
+  { value: "2026-27", label: "2026-27" },
+  { value: "2024-25", label: "2024-25" },
+];
+const INTERNATIONAL_SEASONS = [
+  { value: "2026 World Cup", label: "2026 World Cup" },
+  { value: "2022 World Cup", label: "2022 World Cup" },
+  { value: "2018 World Cup", label: "2018 World Cup" },
+];
 
 const TEAM_DISPLAY_NAMES = {
   "Ath Bilbao": "Athletic Club",
@@ -332,9 +344,59 @@ function currentProfileContext() {
   return currentAppContext();
 }
 
+function selectedSeason() {
+  return seasonSelect?.value || (isInternationalMode() ? "2026 World Cup" : "2025-26");
+}
+
+function isCurrentClubSeason() {
+  return !isInternationalMode() && selectedSeason() === "2025-26";
+}
+
+function hasCurrentInternationalFixtures() {
+  return isInternationalMode() && selectedSeason() === "2026 World Cup";
+}
+
+function seasonUnavailableMessage() {
+  return isInternationalMode()
+    ? `${selectedSeason()} fixture and group-table data is not imported yet. Keep the historical stats as training context until a verified fixture feed is added.`
+    : `${selectedSeason()} fixture data is not available yet. Import the season fixtures and tables when they are released.`;
+}
+
+function updateSeasonOptions() {
+  if (!seasonSelect) return;
+  const key = isInternationalMode() ? "football-international-season" : "football-club-season";
+  const options = isInternationalMode() ? INTERNATIONAL_SEASONS : CLUB_SEASONS;
+  const saved = localStorage.getItem(key);
+  const previous = options.some((option) => option.value === saved) ? saved : options[0].value;
+  seasonSelect.innerHTML = options.map((option) => `<option value="${escapeHtml(option.value)}">${escapeHtml(option.label)}</option>`).join("");
+  seasonSelect.value = previous;
+}
+
+function persistSelectedSeason() {
+  if (!seasonSelect) return;
+  localStorage.setItem(isInternationalMode() ? "football-international-season" : "football-club-season", selectedSeason());
+}
+
+function updateContextLabels() {
+  const tableLabel = isInternationalMode() ? "Group Stage Tables" : "League Tables";
+  if (leagueTablesHeading) leagueTablesHeading.textContent = tableLabel;
+  pageTabs
+    .filter((tab) => tab.dataset.pageTarget === "league-tables")
+    .forEach((tab) => {
+      tab.textContent = isInternationalMode() ? "Group Tables" : "League Tables";
+    });
+  if (pageSelect) {
+    [...pageSelect.options].forEach((option) => {
+      if (option.value === "league-tables") option.textContent = isInternationalMode() ? "Group Tables" : "League Tables";
+    });
+  }
+}
+
 function initContextMode() {
   if (!appContextToggle) return;
   appContextToggle.checked = localStorage.getItem("football-context-mode") === "international";
+  updateSeasonOptions();
+  updateContextLabels();
 }
 
 function activeProfileView(profile) {
@@ -377,10 +439,11 @@ function internationalEmptyState(title, detail) {
 }
 
 function resetInternationalSummary() {
+  const fixtureCount = hasCurrentInternationalFixtures() ? internationalStatusData?.fixtureCount || fixturePredictions.length || 0 : 0;
   updateSummary({
     ...INTERNATIONAL_SUMMARY,
-    total: internationalStatusData?.fixtureCount || fixturePredictions.length || 0,
-    pending: internationalStatusData?.fixtureCount || fixturePredictions.length || 0,
+    total: fixtureCount,
+    pending: fixtureCount,
   });
 }
 
@@ -389,11 +452,20 @@ function renderInternationalModelMeta() {
   const seasons = internationalStatusData?.seasons?.join(", ") || "World Cup data";
   const fixtures = internationalStatusData?.fixtureCount || 0;
   document.querySelector("#modelMeta").textContent =
-    `International mode | ${rows} imported player-stat rows from ${seasons} | ${fixtures} World Cup 2026 fixtures loaded | Backtest accuracy 0.0%`;
+    `International mode | ${selectedSeason()} | ${rows} imported player-stat rows from ${seasons} | ${fixtures} World Cup 2026 fixtures loaded | Backtest accuracy 0.0%`;
 }
 
 function renderInternationalFixtureBoard() {
-  trackAllButton.disabled = true;
+  trackAllButton.disabled = !hasCurrentInternationalFixtures() || !fixturePredictions.length;
+  if (!hasCurrentInternationalFixtures()) {
+    fixturePredictions = [];
+    document.querySelector("#boardTotal").textContent = "0";
+    document.querySelector("#boardWithOdds").textContent = "0";
+    document.querySelector("#boardModelOnly").textContent = "0";
+    boardStatus.textContent = `${selectedSeason()} fixtures not available`;
+    fixtureBoard.innerHTML = internationalEmptyState("Information not available", seasonUnavailableMessage());
+    return;
+  }
   if (!fixturePredictions.length) {
     document.querySelector("#boardTotal").textContent = "0";
     document.querySelector("#boardWithOdds").textContent = "0";
@@ -440,6 +512,13 @@ function renderInternationalParlay() {
   document.querySelector("#propLegCount").textContent = "0";
   document.querySelector("#cornerLegCount").textContent = "0";
   document.querySelector("#teamScoreLegCount").textContent = "0";
+  if (!hasCurrentInternationalFixtures()) {
+    parlayStatus.textContent = `${selectedSeason()} parlay generation is waiting for fixtures, odds, and player-prop baselines`;
+    setParlayMessage("", "info");
+    trackParlaysButton.disabled = true;
+    parlayOutput.innerHTML = internationalEmptyState("Information not available", seasonUnavailableMessage());
+    return;
+  }
   parlayStatus.textContent = internationalStatusData?.hasWorldCupFixtures
     ? `${internationalStatusData.fixtureCount} World Cup fixtures loaded; parlay generation is waiting for odds and player-prop calibration`
     : "International parlays are waiting for fixture, odds, and player-stat imports";
@@ -519,6 +598,11 @@ function setInternationalSingleDemo() {
 
 function renderWorldCupGroups() {
   if (!worldCupGroupsOutput) return;
+  if (!hasCurrentInternationalFixtures()) {
+    worldCupGroupsStatus.textContent = `${selectedSeason()} groups are not connected yet`;
+    worldCupGroupsOutput.innerHTML = internationalEmptyState("Information not available", seasonUnavailableMessage());
+    return;
+  }
   const groups = internationalFixtureData?.groups
     ? Object.entries(internationalFixtureData.groups).map(([group, teams]) => ({ group, teams }))
     : WORLD_CUP_GROUPS;
@@ -545,6 +629,11 @@ function renderWorldCupGroups() {
 
 function renderInternationalFixturesPage() {
   if (!internationalFixturesOutput) return;
+  if (!hasCurrentInternationalFixtures()) {
+    internationalFixturesStatus.textContent = `${selectedSeason()} fixture feed not connected yet`;
+    internationalFixturesOutput.innerHTML = internationalEmptyState("Information not available", seasonUnavailableMessage());
+    return;
+  }
   const fixtures = internationalFixtureData?.fixtures || [];
   const source = internationalFixtureData?.source;
   if (!fixtures.length) {
@@ -578,6 +667,11 @@ function renderInternationalFixturesPage() {
 
 function renderInternationalLeagueTables() {
   if (!leagueTablesOutput) return;
+  if (!hasCurrentInternationalFixtures()) {
+    leagueTablesStatus.textContent = `${selectedSeason()} group tables not available`;
+    leagueTablesOutput.innerHTML = internationalEmptyState("Information not available", seasonUnavailableMessage());
+    return;
+  }
   const groups = internationalGroupTableData?.groups || [];
   if (!groups.length) {
     leagueTablesStatus.textContent = "Waiting for international group and fixture table data";
@@ -587,14 +681,15 @@ function renderInternationalLeagueTables() {
     );
     return;
   }
-  leagueTablesStatus.textContent = `${groups.length} World Cup 2026 groups initialized | all teams start on 0 points`;
+  const applied = groups.reduce((sum, group) => sum + Number(group.appliedResults || 0), 0);
+  leagueTablesStatus.textContent = `${groups.length} World Cup 2026 groups | ${applied} settled group result${applied === 1 ? "" : "s"} applied`;
   leagueTablesOutput.innerHTML = groups
     .map((group) => `
       <article class="league-table-card">
         <div class="league-table-head">
           <div>
             <h3>Group ${escapeHtml(group.group)}</h3>
-            <p class="muted">${group.fixtures.length} scheduled fixtures | waiting for played results</p>
+            <p class="muted">${group.fixtures.length} scheduled fixtures | ${group.appliedResults || 0} settled result${Number(group.appliedResults || 0) === 1 ? "" : "s"} applied</p>
           </div>
         </div>
         <div class="league-table-scroll">
@@ -647,6 +742,11 @@ function renderLeagueTables() {
     renderInternationalLeagueTables();
     return;
   }
+  if (leagueTableData?.unavailable) {
+    leagueTablesStatus.textContent = `${leagueTableData.season || selectedSeason()} tables not available`;
+    leagueTablesOutput.innerHTML = internationalEmptyState("Information not available", leagueTableData.message || seasonUnavailableMessage());
+    return;
+  }
   const leagues = leagueTableData?.leagues || {};
   const leagueEntries = Object.entries(leagues);
   if (!leagueEntries.length) {
@@ -655,7 +755,7 @@ function renderLeagueTables() {
     return;
   }
   const refreshed = leagueTableData.refreshed?.length ? ` | refreshed ${leagueTableData.refreshed.join(", ")}` : "";
-  leagueTablesStatus.textContent = `Live tables updated ${new Date(leagueTableData.generatedAt || leagueTableData.updatedAt || Date.now()).toLocaleString()}${refreshed}`;
+  leagueTablesStatus.textContent = `${leagueTableData.season || selectedSeason()} tables updated ${new Date(leagueTableData.generatedAt || leagueTableData.updatedAt || Date.now()).toLocaleString()}${refreshed}`;
   leagueTablesOutput.innerHTML = leagueEntries
     .map(([leagueName, league]) => `
       <article class="league-table-card">
@@ -712,11 +812,18 @@ function renderLeagueTables() {
 
 async function refreshLeagueTables() {
   if (isInternationalMode()) {
+    if (!hasCurrentInternationalFixtures()) {
+      internationalGroupTableData = { groups: [] };
+      renderInternationalLeagueTables();
+      return;
+    }
+    leagueTablesStatus.textContent = "Refreshing World Cup group tables from settled international results...";
+    internationalGroupTableData = await api("/api/international/group-tables");
     renderInternationalLeagueTables();
     return;
   }
   leagueTablesStatus.textContent = "Refreshing public tables and fixture-ledger deltas...";
-  leagueTableData = await api("/api/league-tables");
+  leagueTableData = await api(`/api/league-tables?season=${encodeURIComponent(selectedSeason())}`);
   renderLeagueTables();
 }
 
@@ -729,6 +836,20 @@ async function refreshInternationalStatus() {
 }
 
 async function refreshInternationalFixtureBoard() {
+  if (!hasCurrentInternationalFixtures()) {
+    fixturePredictions = [];
+    internationalFixtureData = null;
+    internationalGroupTableData = { groups: [] };
+    boardLeagueFilter.innerHTML = `<option value="All">All groups</option>`;
+    boardLeagueFilter.value = "All";
+    syncDateFilter(boardDateFilter, [], "");
+    syncDateFilter(parlayDateFilter, [], "");
+    renderInternationalFixtureBoard();
+    renderInternationalFixturesPage();
+    renderWorldCupGroups();
+    setBoardMessage("", "info");
+    return;
+  }
   setBoardMessage("Loading World Cup 2026 fixtures...", "info");
   const previousLeague = boardLeagueFilter.value;
   const previousDate = boardDateFilter.value;
@@ -758,8 +879,8 @@ async function renderInternationalContext() {
   renderInternationalPlayedBoard();
   renderInternationalParlay();
   renderInternationalParlayLedger();
-  renderInternationalLedger();
-  renderInternationalLeagueTables();
+  await refreshLedger();
+  await refreshLeagueTables();
   renderWorldCupGroups();
   renderInternationalFixturesPage();
   renderPlayerProfiles();
@@ -783,6 +904,8 @@ async function renderClubContext() {
 
 async function applyAppContext() {
   localStorage.setItem("football-context-mode", currentAppContext());
+  updateSeasonOptions();
+  updateContextLabels();
   updateContextNavigation();
   if (isInternationalMode()) {
     await refreshInternationalStatus();
@@ -796,6 +919,7 @@ async function applyAppContext() {
 
 function updateContextNavigation() {
   const international = isInternationalMode();
+  updateContextLabels();
   pageTabs.forEach((tab) => {
     const internationalOnly = INTERNATIONAL_ONLY_PAGES.has(tab.dataset.pageTarget);
     tab.hidden = internationalOnly && !international;
@@ -1799,8 +1923,30 @@ function renderLedger(predictions = ledgerPredictions) {
 
 async function refreshLedger() {
   if (isInternationalMode()) {
-    renderInternationalLedger();
-    resetInternationalSummary();
+    if (!hasCurrentInternationalFixtures()) {
+      ledgerPredictions = [];
+      resetInternationalSummary();
+      ledgerBody.innerHTML = `<tr><td colspan="7" class="muted">${escapeHtml(seasonUnavailableMessage())}</td></tr>`;
+      return;
+    }
+    const data = await api("/api/backtests");
+    ledgerPredictions = (data.predictions || []).filter((entry) => entry.source === "international-fixture-board");
+    const settled = ledgerPredictions.filter((entry) => entry.status === "SETTLED");
+    const correct = settled.filter((entry) => entry.correct).length;
+    const exact = settled.filter(scoreCorrect).length;
+    updateSummary({
+      total: ledgerPredictions.length,
+      pending: ledgerPredictions.filter((entry) => entry.status !== "SETTLED").length,
+      pickAccuracy: settled.length ? correct / settled.length : 0,
+      scoreAccuracy: settled.length ? exact / settled.length : 0,
+    });
+    renderLedger(ledgerPredictions);
+    return;
+  }
+  if (!isCurrentClubSeason()) {
+    ledgerPredictions = [];
+    updateSummary({ total: 0, pending: 0, pickAccuracy: 0, scoreAccuracy: 0 });
+    ledgerBody.innerHTML = `<tr><td colspan="7" class="muted">${escapeHtml(seasonUnavailableMessage())}</td></tr>`;
     return;
   }
   const data = await api("/api/backtests");
@@ -1815,7 +1961,23 @@ async function refreshFixtureBoard() {
     resetInternationalSummary();
     return;
   }
+  if (!isCurrentClubSeason()) {
+    fixturePredictions = [];
+    trackAllButton.disabled = true;
+    boardLeagueFilter.innerHTML = `<option value="All">All leagues</option>`;
+    boardLeagueFilter.value = "All";
+    syncDateFilter(boardDateFilter, [], "");
+    syncDateFilter(parlayDateFilter, [], "");
+    document.querySelector("#boardTotal").textContent = "0";
+    document.querySelector("#boardWithOdds").textContent = "0";
+    document.querySelector("#boardModelOnly").textContent = "0";
+    boardStatus.textContent = `${selectedSeason()} fixtures not available`;
+    fixtureBoard.innerHTML = internationalEmptyState("Information not available", seasonUnavailableMessage());
+    setBoardMessage("", "info");
+    return;
+  }
   setBoardMessage("Loading fixture predictions...", "info");
+  trackAllButton.disabled = false;
   const previousLeague = boardLeagueFilter.value;
   const previousDate = boardDateFilter.value;
   const data = await api("/api/fixture-predictions");
@@ -1840,6 +2002,20 @@ async function refreshPlayedBoard() {
     renderInternationalPlayedBoard();
     return;
   }
+  if (!isCurrentClubSeason()) {
+    playedPredictions = [];
+    playedLeagueFilter.innerHTML = `<option value="All">All leagues</option>`;
+    playedLeagueFilter.value = "All";
+    syncDateFilter(playedDateFilter, [], "");
+    document.querySelector("#playedTotal").textContent = "0";
+    document.querySelector("#playedCorrect").textContent = "0";
+    document.querySelector("#playedWrong").textContent = "0";
+    document.querySelector("#playedExact").textContent = "0";
+    document.querySelector("#playedVoided").textContent = "0";
+    playedStatus.textContent = `${selectedSeason()} played fixtures not available`;
+    playedBoard.innerHTML = internationalEmptyState("Information not available", seasonUnavailableMessage());
+    return;
+  }
   const previousLeague = playedLeagueFilter.value;
   const previousDate = playedDateFilter.value;
   const data = await api("/api/played-fixtures");
@@ -1858,6 +2034,14 @@ async function refreshParlay({ forceNew = false } = {}) {
     renderInternationalParlay();
     return;
   }
+  if (!isCurrentClubSeason()) {
+    currentParlays = [];
+    parlayStatus.textContent = `${selectedSeason()} parlay generation is waiting for fixture imports`;
+    setParlayMessage("", "info");
+    trackParlaysButton.disabled = true;
+    parlayOutput.innerHTML = internationalEmptyState("Information not available", seasonUnavailableMessage());
+    return;
+  }
   if (forceNew) parlayRefreshSeed += 1;
   const league = encodeURIComponent(parlayLeagueFilter.value);
   const legs = encodeURIComponent(parlayLegCount.value);
@@ -1874,6 +2058,13 @@ async function refreshParlay({ forceNew = false } = {}) {
 async function refreshParlayLedger() {
   if (isInternationalMode()) {
     renderInternationalParlayLedger();
+    return;
+  }
+  if (!isCurrentClubSeason()) {
+    trackedParlayData = { parlays: [], summary: {} };
+    parlayLedgerStatus.textContent = `${selectedSeason()} parlay ledger not available`;
+    parlayAccuracyStats.innerHTML = "";
+    parlayLedgerOutput.innerHTML = internationalEmptyState("Information not available", seasonUnavailableMessage());
     return;
   }
   const data = await api("/api/parlay-backtests");
@@ -1922,7 +2113,7 @@ trackAllButton.addEventListener("click", async () => {
   try {
     const data = await api("/api/fixture-predictions/backtest", {
       method: "POST",
-      body: JSON.stringify({ league: boardLeagueFilter.value, date: boardDateFilter.value }),
+      body: JSON.stringify({ league: boardLeagueFilter.value, date: boardDateFilter.value, context: currentAppContext() }),
     });
     updateSummary(data.summary);
     await refreshLedger();
@@ -1930,7 +2121,7 @@ trackAllButton.addEventListener("click", async () => {
   } catch (error) {
     setBoardMessage(error.name === "AbortError" ? "Saving predictions timed out." : error.message, "error");
   } finally {
-    trackAllButton.disabled = false;
+    trackAllButton.disabled = isInternationalMode() ? !hasCurrentInternationalFixtures() || !fixturePredictions.length : !isCurrentClubSeason();
     trackAllButton.textContent = originalText;
   }
 });
@@ -1970,6 +2161,15 @@ clearPlayedDateButton.addEventListener("click", () => {
 });
 refreshPlayedButton.addEventListener("click", refreshPlayedBoard);
 themeSelect.addEventListener("change", () => applyTheme(themeSelect.value));
+seasonSelect?.addEventListener("change", async () => {
+  persistSelectedSeason();
+  updateContextLabels();
+  if (isInternationalMode()) {
+    await renderInternationalContext();
+  } else {
+    await renderClubContext();
+  }
+});
 refreshParlayButton.addEventListener("click", () => refreshParlay({ forceNew: true }));
 parlayOutput.addEventListener("click", async (event) => {
   const button = event.target.closest("button[data-track-ticket]");
@@ -2138,6 +2338,8 @@ async function init() {
   try {
     initTheme();
     initContextMode();
+    updateSeasonOptions();
+    updateContextLabels();
     updateContextNavigation();
     showPage(location.hash.replace("#", "") || "predictions");
     meta = await api("/api/meta");

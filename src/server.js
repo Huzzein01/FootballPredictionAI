@@ -7,7 +7,7 @@ const { addPrediction, addPredictionsIfMissing, deletePrediction, listPrediction
 const { readTrainingStatus, scheduleRetrain } = require("./continuousTraining");
 const { addPlayerStatEntry, listPlayerProfiles, updatePlayerStatEntry } = require("./playerProfileStore");
 const { internationalFixturePredictions, internationalGroupTables, internationalStatus, readFixtureData } = require("./internationalData");
-const { effectiveTables, refreshLiveLeagueContext } = require("./leagueTableService");
+const { archivedLeagueTables, refreshLiveLeagueContext } = require("./leagueTableService");
 const { resetPlayerStatsCache } = require("./playerStats");
 const { refreshMissingOdds } = require("./oddsRepairService");
 const parlayBacktests = require("./parlayBacktestStore");
@@ -229,8 +229,8 @@ async function handleApi(req, res, pathname) {
   }
 
   if (req.method === "GET" && pathname === "/api/league-tables") {
-    const { context, refreshed } = await refreshLiveLeagueContext();
-    return sendJson(res, 200, { ...effectiveTables(context), refreshed });
+    const url = new URL(req.url, `http://${req.headers.host}`);
+    return sendJson(res, 200, await archivedLeagueTables(url.searchParams.get("season") || "2025-26"));
   }
 
   if (req.method === "GET" && pathname === "/api/player-profiles") {
@@ -314,12 +314,13 @@ async function handleApi(req, res, pathname) {
     const body = await readBody(req);
     const league = body.league || "All";
     const date = String(body.date || "").trim();
-    const predictions = remainingFixturePredictions().filter((prediction) => {
+    const predictionSource = body.context === "international" ? internationalFixturePredictions() : remainingFixturePredictions();
+    const predictions = predictionSource.filter((prediction) => {
       const leagueMatches = league === "All" || prediction.league === league;
       const dateMatches = !date || prediction.date === date;
       return leagueMatches && dateMatches;
     });
-    const saved = addPredictionsIfMissing(predictions, "fixture-board");
+    const saved = addPredictionsIfMissing(predictions, body.context === "international" ? "international-fixture-board" : "fixture-board");
     return sendJson(res, 200, { saved, summary: summary() });
   }
 
