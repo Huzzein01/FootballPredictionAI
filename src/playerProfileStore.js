@@ -485,6 +485,36 @@ function supplementalProfileRows() {
   return SUPPLEMENTAL_PROFILE_ROWS.map((row) => ({ ...row }));
 }
 
+function recordProfileTotals(profileId, context = "club") {
+  const profile = profileById(profileId);
+  if (!profile) return totalsWithRates(emptyTotals());
+  const store = readStore();
+  const profileTeam = normalizeTeamName(profile.team);
+  const baselineTotals = totalsWithRates(
+    SUPPLEMENTAL_PROFILE_ROWS.filter(
+      (row) =>
+        row.season === "2025-26" &&
+        row.league === profile.league &&
+        normalizeTeamName(row.Squad) === profileTeam &&
+        String(row.Player || "").trim().toLowerCase() === String(profile.player || "").trim().toLowerCase()
+    ).reduce(
+      (sum, row) => {
+        sum.appearances = Math.max(sum.appearances, numeric(row.MP));
+        sum.starts = Math.max(sum.starts, numeric(row.Starts));
+        sum.minutes = Math.max(sum.minutes, numeric(row.Min));
+        sum.goals = Math.max(sum.goals, integer(row.Gls));
+        sum.assists = Math.max(sum.assists, integer(row.Ast));
+        sum.shots = Math.max(sum.shots, integer(row.Sh));
+        sum.shotsOnTarget = Math.max(sum.shotsOnTarget, integer(row.SoT));
+        sum.saves = Math.max(sum.saves, integer(row.Saves));
+        return sum;
+      },
+      emptyTotals()
+    )
+  );
+  return combineTotals(baselineTotals, totalsForEntries(entriesForProfile(store, profileId, context)));
+}
+
 function importedBaselineForProfile(profile) {
   const { aggregatePlayers, normalizePlayerName } = require("./playerStats");
   const profilePlayer = normalizePlayerName(profile.player);
@@ -758,5 +788,6 @@ module.exports = {
   addPlayerStatEntry,
   listPlayerProfiles,
   manualPlayerRows,
+  recordProfileTotals,
   supplementalProfileRows,
 };

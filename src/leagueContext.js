@@ -1,6 +1,7 @@
 const fs = require("fs");
 const path = require("path");
 const { normalizeTeamName } = require("./footballData");
+const { recordProfileTotals } = require("./playerProfileStore");
 
 const LIVE_CONTEXT_PATH = path.join(process.cwd(), "data", "live_league_context.json");
 const TEAM_MOTIVES_PATH = path.join(process.cwd(), "data", "team_motives_2025_26.json");
@@ -96,7 +97,51 @@ function loadTeamMotives() {
 
 function manualMotiveForTeam(team) {
   const motives = loadTeamMotives();
-  return motives.teams?.[normalizeTeamName(team)] || {};
+  return dynamicManualMotive(normalizeTeamName(team), motives.teams?.[normalizeTeamName(team)] || {});
+}
+
+function dynamicManualMotive(team, manual) {
+  if (team !== "Man United") return manual;
+  const motives = Array.isArray(manual.playerMotives) ? manual.playerMotives : [];
+  const brunoMotive = motives.find((motive) => motive.profileId === "bruno-fernandes" || motive.player === "Bruno Fernandes");
+  if (!brunoMotive) return manual;
+
+  const totals = recordProfileTotals("bruno-fernandes");
+  const assists = Number(totals.assists || 0);
+  const recordValue = Number(brunoMotive.recordValue || 20);
+  const breakValue = Number(brunoMotive.breakValue || recordValue + 1);
+  if (assists >= breakValue) {
+    return {
+      ...manual,
+      recordMotiveScore: 0,
+      note: `Champions League qualification is secured; Bruno Fernandes has broken the assist record with ${assists} assists, so the record-chase motive is no longer active.`,
+      playerMotives: motives.map((motive) =>
+        motive === brunoMotive
+          ? { ...motive, active: false, currentValue: assists, note: `Record already broken at ${assists} assists; do not apply player-record motive.` }
+          : motive
+      ),
+    };
+  }
+  if (assists >= recordValue) {
+    return {
+      ...manual,
+      recordMotiveScore: Math.max(Number(manual.recordMotiveScore || 0), 0.45),
+      note: `Champions League qualification is secured; Bruno Fernandes has matched the assist record with ${assists} assists and needs 1 more to break it.`,
+      playerMotives: motives.map((motive) =>
+        motive === brunoMotive
+          ? { ...motive, active: true, currentValue: assists, note: `Assist record matched at ${assists}; one more assist breaks the record.` }
+          : motive
+      ),
+    };
+  }
+  return {
+    ...manual,
+    playerMotives: motives.map((motive) =>
+      motive === brunoMotive
+        ? { ...motive, active: true, currentValue: assists, note: `Assist-record chase: ${assists}/${recordValue} assists before the record is matched.` }
+        : motive
+    ),
+  };
 }
 
 function clamp01(value) {

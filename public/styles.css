@@ -2703,3 +2703,173 @@ th {
     justify-items: start;
   }
 }
+
+@media (max-width: 760px) {
+  html,
+  body {
+    overflow-x: hidden;
+  }
+
+  .topbar {
+    grid-template-columns: 1fr;
+    gap: 14px;
+    padding: 14px;
+  }
+
+  h1 {
+    font-size: 24px;
+    line-height: 1.08;
+  }
+
+  .meta-line {
+    font-size: 12px;
+  }
+
+  .topbar-right,
+  .summary {
+    grid-template-columns: 1fr 1fr;
+    width: 100%;
+  }
+
+  .theme-control,
+  .context-mode-control {
+    grid-column: 1 / -1;
+  }
+
+  .page-nav {
+    gap: 6px;
+    padding: 8px 10px;
+    scroll-snap-type: x proximity;
+  }
+
+  .page-tab {
+    flex: 0 0 auto;
+    scroll-snap-align: start;
+    padding: 9px 11px;
+    white-space: nowrap;
+  }
+
+  .dashboard {
+    gap: 12px;
+    padding: 10px 10px 28px;
+  }
+
+  .panel {
+    padding: 12px;
+  }
+
+  .section-head,
+  .parlay-panel .section-head,
+  .board-controls,
+  .parlay-controls,
+  .grid-form,
+  .player-stat-form {
+    grid-template-columns: 1fr;
+  }
+
+  .section-head button,
+  .board-controls button,
+  .parlay-controls button,
+  .grid-form button,
+  .player-stat-form button {
+    width: 100%;
+  }
+
+  .board-stats,
+  .board-controls .board-stats,
+  .parlay-controls .board-stats,
+  .accuracy-stats,
+  .ticket-stats,
+  .profile-stat-grid {
+    grid-template-columns: 1fr 1fr;
+  }
+
+  .scoreboard-row,
+  .parlay-leg-row,
+  .tracked-leg-row {
+    grid-template-columns: 1fr;
+  }
+
+  .fixture-teams {
+    grid-template-columns: 1fr;
+  }
+
+  .team-line,
+  .team-line:last-child,
+  .scoreboard-row .odds-line,
+  .scoreboard-row .score-line {
+    justify-content: flex-start;
+  }
+
+  .versus {
+    padding-left: 0;
+  }
+
+  .scoreboard-row .prob-bars,
+  .scoreboard-row .prob-row {
+    grid-template-columns: 1fr;
+  }
+
+  .ticket-head {
+    display: grid;
+    grid-template-columns: 1fr;
+  }
+
+  .ticket-actions {
+    justify-items: stretch;
+    min-width: 0;
+  }
+
+  .leg-row-meta {
+    justify-items: start;
+  }
+
+  .player-profile-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .profile-card-head {
+    display: grid;
+    grid-template-columns: 92px minmax(0, 1fr);
+    align-items: start;
+  }
+
+  .player-photo {
+    flex-basis: 82px;
+    width: 82px;
+    height: 102px;
+  }
+}
+
+@media (max-width: 430px) {
+  .topbar-right,
+  .summary,
+  .board-stats,
+  .board-controls .board-stats,
+  .parlay-controls .board-stats,
+  .accuracy-stats,
+  .ticket-stats,
+  .profile-stat-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .toggle-cluster,
+  .risk-mode-bar {
+    width: 100%;
+  }
+
+  .toggle-cluster {
+    justify-content: space-between;
+  }
+
+  .profile-card-head {
+    grid-template-columns: 1fr;
+  }
+
+  .player-photo {
+    flex-basis: auto;
+    width: 100%;
+    max-width: 132px;
+    height: 148px;
+  }
+}

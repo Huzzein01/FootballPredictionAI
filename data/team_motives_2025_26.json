@@ -5,12 +5,16 @@
   "teams": {
     "Man United": {
       "recordMotiveScore": 0.45,
-      "note": "Champions League qualification is effectively secured; softer motivation remains through Bruno Fernandes chasing the single-season assist record.",
+      "note": "Champions League qualification is effectively secured; Bruno Fernandes' assist-record motive is updated dynamically from manual player-profile training entries.",
       "playerMotives": [
         {
           "player": "Bruno Fernandes",
+          "profileId": "bruno-fernandes",
+          "stat": "assists",
+          "recordValue": 20,
+          "breakValue": 21,
           "marketBoosts": ["assist", "score or assist", "shot"],
-          "note": "Assist-record chase based on imported player stats/screenshots showing a high assist total."
+          "note": "Assist-record chase is calculated from profile baseline plus manual match entries."
         }
       ]
     },

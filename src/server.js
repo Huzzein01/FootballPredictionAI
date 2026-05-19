@@ -8,6 +8,7 @@ const { readTrainingStatus, scheduleRetrain } = require("./continuousTraining");
 const { addPlayerStatEntry, listPlayerProfiles } = require("./playerProfileStore");
 const { internationalStatus } = require("./internationalData");
 const { resetPlayerStatsCache } = require("./playerStats");
+const { refreshMissingOdds } = require("./oddsRepairService");
 const parlayBacktests = require("./parlayBacktestStore");
 
 const PORT = Number(process.env.PORT || 4173);
@@ -194,6 +195,7 @@ async function handleApi(req, res, pathname) {
   }
 
   if (req.method === "GET" && pathname === "/api/fixture-predictions") {
+    await refreshMissingOdds();
     const predictions = remainingFixturePredictions();
     const playedCount = playedFixturePredictions().length;
     return sendJson(res, 200, {
@@ -241,6 +243,7 @@ async function handleApi(req, res, pathname) {
   }
 
   if (req.method === "GET" && pathname === "/api/parlay") {
+    await refreshMissingOdds();
     const url = new URL(req.url, `http://${req.headers.host}`);
     return sendJson(res, 200, buildParlay({
       league: url.searchParams.get("league") || "All",
