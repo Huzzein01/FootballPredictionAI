@@ -6,7 +6,7 @@ const { fixturePredictionBoard, predictMatch, teamsByLeague } = require("./predi
 const { addPrediction, addPredictionsIfMissing, deletePrediction, listPredictions, summary, updateResult } = require("./backtestStore");
 const { readTrainingStatus, scheduleRetrain } = require("./continuousTraining");
 const { addPlayerStatEntry, listPlayerProfiles, updatePlayerStatEntry } = require("./playerProfileStore");
-const { internationalStatus } = require("./internationalData");
+const { internationalFixturePredictions, internationalGroupTables, internationalStatus, readFixtureData } = require("./internationalData");
 const { effectiveTables, refreshLiveLeagueContext } = require("./leagueTableService");
 const { resetPlayerStatsCache } = require("./playerStats");
 const { refreshMissingOdds } = require("./oddsRepairService");
@@ -239,6 +239,31 @@ async function handleApi(req, res, pathname) {
 
   if (req.method === "GET" && pathname === "/api/international/status") {
     return sendJson(res, 200, internationalStatus());
+  }
+
+  if (req.method === "GET" && pathname === "/api/international/fixtures") {
+    const fixtureData = readFixtureData();
+    return sendJson(res, 200, fixtureData);
+  }
+
+  if (req.method === "GET" && pathname === "/api/international/fixture-predictions") {
+    const predictions = internationalFixturePredictions();
+    return sendJson(res, 200, {
+      predictions,
+      summary: {
+        total: predictions.length,
+        played: 0,
+        withOdds: predictions.filter((prediction) => prediction.hasOdds).length,
+        modelOnly: predictions.filter((prediction) => !prediction.hasOdds).length,
+      },
+    });
+  }
+
+  if (req.method === "GET" && pathname === "/api/international/group-tables") {
+    return sendJson(res, 200, {
+      groups: internationalGroupTables(),
+      source: readFixtureData().source || null,
+    });
   }
 
   const playerStatsMatch = pathname.match(/^\/api\/player-profiles\/([^/]+)\/stats$/);
