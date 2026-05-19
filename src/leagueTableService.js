@@ -79,6 +79,14 @@ function writeLiveLeagueContext(context) {
   fs.writeFileSync(LIVE_CONTEXT_PATH, JSON.stringify(context, null, 2));
 }
 
+function tableSignature(context) {
+  return JSON.stringify({
+    season: context.season || "2025-26",
+    policy: context.policy || "",
+    leagues: context.leagues || {},
+  });
+}
+
 async function refreshLiveLeagueContext() {
   const existing = loadLiveLeagueContext();
   const leagues = { ...(existing.leagues || {}) };
@@ -93,16 +101,18 @@ async function refreshLiveLeagueContext() {
       // Keep the last usable table if the public feed is unavailable.
     }
   }
+  const policy =
+    "Live standings are refreshed from public tables, then fixture-ledger results settled after the public snapshot are layered on top for current motivation and title-race judgment.";
   const context = {
     ...existing,
     updatedAt: new Date().toISOString(),
     season: "2025-26",
-    policy:
-      "Live standings are refreshed from public tables, then fixture-ledger results settled after the public snapshot are layered on top for current motivation and title-race judgment.",
+    policy,
     leagues,
   };
-  if (refreshed.length) writeLiveLeagueContext(context);
-  return { context: refreshed.length ? context : existing, refreshed };
+  const nextContext = refreshed.length && tableSignature(context) !== tableSignature(existing) ? context : existing;
+  if (nextContext === context) writeLiveLeagueContext(context);
+  return { context: nextContext, refreshed };
 }
 
 function loadVerifiedPlayedResults() {
