@@ -572,6 +572,96 @@ function legKey(leg) {
   return [leg.type, leg.fixture, leg.player || "", leg.market, leg.pick].join("||").toLowerCase();
 }
 
+function fixtureTeams(leg) {
+  if (leg.homeTeam && leg.awayTeam) return { homeTeam: leg.homeTeam, awayTeam: leg.awayTeam };
+  const [homeTeam, awayTeam] = String(leg.fixture || "").split(" vs ");
+  return { homeTeam, awayTeam };
+}
+
+function outcomeFromGoals(homeGoals, awayGoals) {
+  if (homeGoals > awayGoals) return "H";
+  if (awayGoals > homeGoals) return "A";
+  return "D";
+}
+
+function legCompatibilityProfile(leg) {
+  const { homeTeam, awayTeam } = fixtureTeams(leg);
+  const score = leg.type === "score" ? { homeGoals: leg.homeGoals, awayGoals: leg.awayGoals } : parseProjectedScore(leg.projectedScore);
+  const profile = {
+    fixture: leg.fixture,
+    exactScore: null,
+    outcome: null,
+    btts: null,
+    zeroGoalTeams: new Set(),
+    requiresTeamGoal: null,
+  };
+
+  if (leg.type === "score" && Number.isFinite(Number(score?.homeGoals)) && Number.isFinite(Number(score?.awayGoals))) {
+    const homeGoals = Number(score.homeGoals);
+    const awayGoals = Number(score.awayGoals);
+    profile.exactScore = `${homeGoals}-${awayGoals}`;
+    profile.outcome = outcomeFromGoals(homeGoals, awayGoals);
+    profile.btts = homeGoals > 0 && awayGoals > 0;
+    if (homeGoals === 0 && homeTeam) profile.zeroGoalTeams.add(homeTeam);
+    if (awayGoals === 0 && awayTeam) profile.zeroGoalTeams.add(awayTeam);
+  }
+
+  if (leg.type === "match") {
+    if (leg.pick === "Draw") profile.outcome = "D";
+    else if (homeTeam && leg.pick === `${homeTeam} win`) profile.outcome = "H";
+    else if (awayTeam && leg.pick === `${awayTeam} win`) profile.outcome = "A";
+  }
+
+  if (leg.type === "btts") {
+    if (String(leg.pick).includes("Yes")) profile.btts = true;
+    if (String(leg.pick).includes("No")) profile.btts = false;
+  }
+
+  if (leg.type === "player" && ["anytime goal", "assist", "score or assist"].includes(leg.market)) {
+    profile.requiresTeamGoal = leg.team || null;
+  }
+
+  return profile;
+}
+
+function legsAreCompatible(a, b) {
+  if (!a || !b || a.fixture !== b.fixture) return true;
+  const left = legCompatibilityProfile(a);
+  const right = legCompatibilityProfile(b);
+
+  if (left.exactScore && right.exactScore && left.exactScore !== right.exactScore) return false;
+  if (left.outcome && right.outcome && left.outcome !== right.outcome) return false;
+  if (left.btts !== null && right.btts !== null && left.btts !== right.btts) return false;
+  if (left.requiresTeamGoal && right.zeroGoalTeams.has(left.requiresTeamGoal)) return false;
+  if (right.requiresTeamGoal && left.zeroGoalTeams.has(right.requiresTeamGoal)) return false;
+  return true;
+}
+
+function addCompatibleLeg(selected, used, leg) {
+  const key = legKey(leg);
+  if (used.has(key)) return false;
+  if (!selected.every((existing) => legsAreCompatible(existing, leg))) return false;
+  selected.push(leg);
+  used.add(key);
+  return true;
+}
+
+function reconcileCompatibleLegs(candidates, fallbackLists, requestedLegs, offset = 0) {
+  const selected = [];
+  const used = new Set();
+  for (const leg of candidates) {
+    if (selected.length >= requestedLegs) break;
+    addCompatibleLeg(selected, used, leg);
+  }
+  for (const fallback of fallbackLists) {
+    if (selected.length >= requestedLegs) break;
+    for (const leg of rotate(fallback, offset + selected.length)) {
+      if (addCompatibleLeg(selected, used, leg) && selected.length >= requestedLegs) break;
+    }
+  }
+  return selected.slice(0, requestedLegs);
+}
+
 function selectUnique(source, targetCount, used, offset = 0) {
   const selected = [];
   for (const leg of rotate(source, offset)) {
@@ -684,18 +774,7 @@ function buildTicket({ index, requestedLegs, playerLegs, scoreLegs, resultLegs, 
   const legs = [...selectedPlayerLegs, ...selectedPropLegs, ...selectedScoreLegs, ...selectedResultLegs];
 
   const fallbackLists = playerOnly ? [ticketPlayerLegs] : teamOnly ? [ticketPropLegs, ticketScoreLegs, ticketResultLegs] : [ticketPlayerLegs, ticketPropLegs, ticketScoreLegs, ticketResultLegs];
-  for (const fallback of fallbackLists) {
-    if (legs.length >= requestedLegs) break;
-    for (const leg of rotate(fallback, offset + legs.length)) {
-      const key = legKey(leg);
-      if (used.has(key)) continue;
-      legs.push(leg);
-      used.add(key);
-      if (legs.length >= requestedLegs) break;
-    }
-  }
-
-  const finalLegs = legs.slice(0, requestedLegs);
+  const finalLegs = reconcileCompatibleLegs(legs, fallbackLists, requestedLegs, offset);
   return {
     id: `generated_${index + 1}`,
     riskMode,
@@ -733,10 +812,7 @@ function buildFixtureGridTickets({ fixtures, requestedLegs, playerLegs, scoreLeg
     const addLegs = (list, target) => {
       for (const leg of list) {
         if (selected.length >= requestedLegs || selected.filter((item) => list.includes(item)).length >= target) break;
-        const key = legKey(leg);
-        if (used.has(key)) continue;
-        selected.push(leg);
-        used.add(key);
+        addCompatibleLeg(selected, used, leg);
       }
     };
     addLegs(fixtureBtts, Math.min(1, fixtureBtts.length));
@@ -745,11 +821,11 @@ function buildFixtureGridTickets({ fixtures, requestedLegs, playerLegs, scoreLeg
     addLegs(fixturePlayers, playerTarget);
     addLegs(fixtureResults, Math.min(1, fixtureResults.length));
     addLegs(fixtureScores, Math.min(1, fixtureScores.length));
-    const fixtureLegs = selected.concat(
-      [...fixtureProps, ...fixturePlayers, ...fixtureResults, ...fixtureScores]
-        .filter((leg) => !used.has(legKey(leg)))
-        .slice(0, Math.max(0, requestedLegs - selected.length))
-    )
+    for (const leg of [...fixtureProps, ...fixturePlayers, ...fixtureResults, ...fixtureScores]) {
+      if (selected.length >= requestedLegs) break;
+      addCompatibleLeg(selected, used, leg);
+    }
+    const fixtureLegs = selected
       .sort((a, b) => {
         const typeWeight = { btts: 4, corner: 3, player: 2, match: 1, score: 0 };
         return Number(b.confidence || 0) - Number(a.confidence || 0) || (typeWeight[b.type] || 0) - (typeWeight[a.type] || 0);
