@@ -337,6 +337,17 @@ const PLAYER_PROFILES = [
     photoSourceName: "Wikipedia / Wikimedia Commons",
     photoSourceUrl: "https://en.wikipedia.org/wiki/Lionel_Messi",
   },
+  {
+    id: "marcus-thuram",
+    player: "Marcus Thuram",
+    team: "Inter Milan",
+    league: "Serie A",
+    role: "Attacker",
+    position: "FW",
+    photoUrl: "https://upload.wikimedia.org/wikipedia/commons/6/69/Marcus_Thuram_in_2023.jpg",
+    photoSourceName: "Wikipedia / Wikimedia Commons",
+    photoSourceUrl: "https://en.wikipedia.org/wiki/Marcus_Thuram",
+  },
 ];
 
 const SUPPLEMENTAL_PROFILE_ROWS = [
@@ -352,6 +363,7 @@ const SUPPLEMENTAL_PROFILE_ROWS = [
   { season: "2025-26", league: "Saudi Pro League", Squad: "Al-Nassr", Player: "Cristiano Ronaldo", Pos: "FW", statType: "standard", MP: 29, Starts: 29, Min: 2527, "90s": 28.1, Gls: 26, Ast: 2, PublicProfileSource: "true" },
   { season: "2025-26", league: "Saudi Pro League", Squad: "Al-Nassr", Player: "Cristiano Ronaldo", Pos: "FW", statType: "shooting", MP: 29, Starts: 29, Min: 2527, "90s": 28.1, Gls: 26, Sh: 171, SoT: 65, PublicProfileSource: "true" },
   { season: "2025-26", league: "MLS", Squad: "Inter Miami", Player: "Lionel Messi", Pos: "FW,MF", statType: "standard", MP: 10, Starts: 10, Min: 900, "90s": 10, Gls: 8, Ast: 2, PublicProfileSource: "true" },
+  { season: "2025-26", league: "Serie A", Squad: "Inter Milan", Player: "Marcus Thuram", Pos: "FW", statType: "standard", MP: 131, Starts: 104, Min: 9360, "90s": 104, Gls: 50, Ast: 0, PublicProfileSource: "true" },
 ];
 
 const INTERNATIONAL_PROFILE_BASELINES = {
@@ -385,6 +397,7 @@ const INTERNATIONAL_PROFILE_BASELINES = {
   "achraf-hakimi": { team: "Morocco", appearances: 95, goals: 11, updatedAt: "2026-03-31" },
   "cristiano-ronaldo": { team: "Portugal", appearances: 226, goals: 143, updatedAt: "2025-11-13" },
   "lionel-messi": { team: "Argentina", appearances: 198, goals: 116, updatedAt: "2026-04-01" },
+  "marcus-thuram": { team: "France", appearances: 31, goals: 2, updatedAt: "2026-03-31" },
 };
 
 function numeric(value) {

@@ -1765,6 +1765,66 @@ textarea:focus {
   white-space: nowrap;
 }
 
+.futures-output {
+  display: grid;
+  gap: 14px;
+}
+
+.futures-policy {
+  margin: 0;
+  border: 1px solid var(--line);
+  border-radius: 8px;
+  background: var(--surface);
+  padding: 10px 12px;
+  color: var(--muted);
+  font-size: 13px;
+  font-weight: 800;
+}
+
+.futures-section {
+  display: grid;
+  gap: 12px;
+  border: 1px solid var(--line);
+  border-radius: 8px;
+  background: var(--card);
+  padding: 14px;
+  box-shadow: var(--shadow);
+}
+
+.futures-pick-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+  gap: 12px;
+}
+
+.futures-pick-card {
+  display: grid;
+  gap: 8px;
+  border: 1px solid var(--line);
+  border-left: 4px solid var(--green);
+  border-radius: 8px;
+  background: var(--surface);
+  padding: 12px;
+}
+
+.futures-pick-card h4 {
+  margin: 0;
+  color: var(--ink);
+  font-size: 16px;
+}
+
+.futures-pick-card strong {
+  color: var(--green);
+  font-size: 24px;
+}
+
+.futures-pick-card p {
+  margin: 0;
+  color: var(--muted);
+  font-size: 12px;
+  line-height: 1.45;
+}
+
 .card-topline,
 .score-line,
 .odds-line,
@@ -2522,6 +2582,28 @@ h1 {
   align-items: start;
   gap: 12px;
   margin-bottom: 16px;
+}
+
+.section-actions {
+  display: flex;
+  align-items: end;
+  gap: 10px;
+  flex-wrap: wrap;
+}
+
+.section-actions label {
+  display: grid;
+  gap: 6px;
+  min-width: 150px;
+  color: var(--muted);
+  font-size: 11px;
+  font-weight: 900;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+}
+
+.section-actions select {
+  min-height: 40px;
 }
 
 .parlay-panel .section-head {

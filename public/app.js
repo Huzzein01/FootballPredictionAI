@@ -61,7 +61,12 @@ const pageSelect = document.querySelector("#pageSelect");
 const leagueTablesHeading = document.querySelector("#leagueTablesHeading");
 const leagueTablesStatus = document.querySelector("#leagueTablesStatus");
 const refreshLeagueTablesButton = document.querySelector("#refreshLeagueTablesButton");
+const leagueTableLeagueFilter = document.querySelector("#leagueTableLeagueFilter");
 const leagueTablesOutput = document.querySelector("#leagueTablesOutput");
+const futuresStatus = document.querySelector("#futuresStatus");
+const futuresLeagueFilter = document.querySelector("#futuresLeagueFilter");
+const refreshFuturesButton = document.querySelector("#refreshFuturesButton");
+const futuresOutput = document.querySelector("#futuresOutput");
 const pageTabs = [...document.querySelectorAll("[data-page-target]")];
 const pageSections = [...document.querySelectorAll("[data-page]")];
 
@@ -77,6 +82,7 @@ let internationalStatusData = null;
 let internationalFixtureData = null;
 let internationalGroupTableData = null;
 let leagueTableData = null;
+let futuresData = null;
 let parlayRefreshSeed = 0;
 let editingPlayerStatEntry = null;
 let editingTeamStatEntry = null;
@@ -102,6 +108,7 @@ const TEAM_DISPLAY_NAMES = {
   "Ath Bilbao": "Athletic Club",
   "Ath Madrid": "Atletico Madrid",
   "FC Koln": "FC Koln",
+  "Inter Milan": "Inter Milan",
   "Man City": "Man City",
   "Man United": "Man United",
   "Nott'm Forest": "Nottingham Forest",
@@ -129,6 +136,8 @@ const TEAM_LOGOS = {
   "Crystal Palace": "https://a.espncdn.com/i/teamlogos/soccer/500/384.png",
   "FC Koln": "https://a.espncdn.com/i/teamlogos/soccer/500/122.png",
   "Girona": "https://a.espncdn.com/i/teamlogos/soccer/500/9812.png",
+  "Inter Milan": "https://a.espncdn.com/i/teamlogos/soccer/500/110.png",
+  "Internazionale": "https://a.espncdn.com/i/teamlogos/soccer/500/110.png",
   "Lens": "https://a.espncdn.com/i/teamlogos/soccer/500/175.png",
   "Liverpool": "https://a.espncdn.com/i/teamlogos/soccer/500/364.png",
   "Man City": "https://a.espncdn.com/i/teamlogos/soccer/500/382.png",
@@ -228,6 +237,7 @@ const TEAM_COLORS = {
   "Barcelona": "#a50044",
   "Bayern Munich": "#dc052d",
   "Chelsea": "#034694",
+  "Inter Milan": "#0057b8",
   "Liverpool": "#c8102e",
   "Man City": "#6cabdd",
   "Man United": "#da291c",
@@ -308,7 +318,7 @@ const WORLD_CUP_GROUPS_SOURCE = {
   url: "https://www.ussoccer.com/stories/2025/12/usmnt-draws-paraguay-australia-uefa-playoff-group-d-2026-fifa-world-cup",
 };
 
-const CLUB_PARLAY_LEAGUES = ["All", "EPL", "La Liga", "Bundesliga", "Ligue 1"];
+const CLUB_PARLAY_LEAGUES = ["All", "EPL", "La Liga", "Bundesliga", "Ligue 1", "Serie A"];
 
 function centralHour() {
   try {
@@ -392,6 +402,8 @@ function persistSelectedSeason() {
 function updateContextLabels() {
   const tableLabel = isInternationalMode() ? "Group Stage Tables" : "League Tables";
   if (leagueTablesHeading) leagueTablesHeading.textContent = tableLabel;
+  if (leagueTableLeagueFilter) leagueTableLeagueFilter.closest("label").hidden = isInternationalMode();
+  if (futuresLeagueFilter) futuresLeagueFilter.closest("label").hidden = isInternationalMode();
   pageTabs
     .filter((tab) => tab.dataset.pageTarget === "league-tables")
     .forEach((tab) => {
@@ -760,10 +772,11 @@ function renderLeagueTables() {
     return;
   }
   const leagues = leagueTableData?.leagues || {};
-  const leagueEntries = Object.entries(leagues);
+  const selectedLeague = leagueTableLeagueFilter?.value || "All";
+  const leagueEntries = Object.entries(leagues).filter(([leagueName]) => selectedLeague === "All" || leagueName === selectedLeague);
   if (!leagueEntries.length) {
-    leagueTablesStatus.textContent = "Waiting for league table data";
-    leagueTablesOutput.innerHTML = `<div class="empty-state">No league table data available yet.</div>`;
+    leagueTablesStatus.textContent = selectedLeague === "All" ? "Waiting for league table data" : `No ${selectedLeague} table data available`;
+    leagueTablesOutput.innerHTML = `<div class="empty-state">No league table data available for this filter yet.</div>`;
     return;
   }
   const refreshed = leagueTableData.refreshed?.length ? ` | refreshed ${leagueTableData.refreshed.join(", ")}` : "";
@@ -841,6 +854,67 @@ async function refreshLeagueTables() {
   renderTeamProfiles();
 }
 
+function renderFutures() {
+  if (!futuresOutput || !futuresStatus) return;
+  const data = futuresData || {};
+  if (data.unavailable) {
+    futuresStatus.textContent = `${data.season || selectedSeason()} futures not available`;
+    futuresOutput.innerHTML = internationalEmptyState("Information not available", data.message || seasonUnavailableMessage());
+    return;
+  }
+  const sections = data.sections || [];
+  if (!sections.length) {
+    futuresStatus.textContent = "Waiting for futures data";
+    futuresOutput.innerHTML = `<div class="empty-state">No futures prediction data is available yet.</div>`;
+    return;
+  }
+  futuresStatus.textContent = `${data.context === "international" ? "International" : "Club"} futures | ${data.season || selectedSeason()} | generated ${new Date(data.generatedAt || Date.now()).toLocaleString()}`;
+  futuresOutput.innerHTML = `
+    ${data.sourcePolicy ? `<p class="futures-policy">${escapeHtml(data.sourcePolicy)}</p>` : ""}
+    ${sections
+      .map(
+        (section) => `
+          <article class="futures-section">
+            <div class="league-table-head">
+              <div>
+                <h3>${escapeHtml(section.title)}</h3>
+                <p class="muted">${escapeHtml(section.subtitle || "")}</p>
+              </div>
+            </div>
+            <div class="futures-pick-grid">
+              ${(section.picks || [])
+                .map(
+                  (pick) => `
+                    <div class="futures-pick-card">
+                      <div class="card-topline">
+                        <span>${escapeHtml(pick.market || "Futures lean")}</span>
+                        <span>#${escapeHtml(pick.rank || "")}</span>
+                      </div>
+                      <h4>${escapeHtml(pick.label || "")}</h4>
+                      <strong>${statNumber(pick.confidence, 1)}%</strong>
+                      <p>${escapeHtml(pick.detail || "")}</p>
+                      ${pick.note ? `<p class="fbref-line">${escapeHtml(pick.note)}</p>` : ""}
+                      ${pick.source?.url ? `<a href="${escapeHtml(pick.source.url)}" target="_blank" rel="noreferrer">${escapeHtml(pick.source.name || "Source")}</a>` : `<span class="profile-source">${escapeHtml(pick.source?.name || "")}</span>`}
+                    </div>
+                  `
+                )
+                .join("")}
+            </div>
+          </article>
+        `
+      )
+      .join("")}
+  `;
+}
+
+async function refreshFutures() {
+  if (!futuresOutput || !futuresStatus) return;
+  futuresStatus.textContent = isInternationalMode() ? "Refreshing international futures..." : "Refreshing club futures from public tables and profile baselines...";
+  const league = isInternationalMode() ? "International" : futuresLeagueFilter?.value || "All";
+  futuresData = await api(`/api/futures?context=${encodeURIComponent(currentAppContext())}&season=${encodeURIComponent(selectedSeason())}&league=${encodeURIComponent(league)}`);
+  renderFutures();
+}
+
 async function refreshInternationalStatus() {
   try {
     internationalStatusData = await api("/api/international/status");
@@ -895,6 +969,7 @@ async function renderInternationalContext() {
   renderInternationalParlayLedger();
   await refreshLedger();
   await refreshLeagueTables();
+  await refreshFutures();
   renderWorldCupGroups();
   renderInternationalFixturesPage();
   renderPlayerProfiles();
@@ -916,6 +991,7 @@ async function renderClubContext() {
   await refreshLeagueTables();
   await refreshTeamProfiles();
   await refreshLedger();
+  await refreshFutures();
 }
 
 async function applyAppContext() {
@@ -2440,6 +2516,9 @@ refreshParlayLedgerButton.addEventListener("click", refreshParlayLedger);
 refreshPlayerProfilesButton.addEventListener("click", refreshPlayerProfiles);
 refreshTeamProfilesButton?.addEventListener("click", refreshTeamProfiles);
 refreshLeagueTablesButton?.addEventListener("click", refreshLeagueTables);
+leagueTableLeagueFilter?.addEventListener("change", renderLeagueTables);
+refreshFuturesButton?.addEventListener("click", refreshFutures);
+futuresLeagueFilter?.addEventListener("change", refreshFutures);
 pageSelect?.addEventListener("change", () => showPage(pageSelect.value));
 playerProfileSelect.addEventListener("change", () => {
   setPlayerFormMode(null);

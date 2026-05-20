@@ -16,6 +16,7 @@ const TEAM_PROFILES = [
   { id: "real-madrid", team: "Real Madrid", displayName: "Real Madrid", league: "La Liga" },
   { id: "barcelona", team: "Barcelona", displayName: "Barcelona", league: "La Liga" },
   { id: "bayern-munich", team: "Bayern Munich", displayName: "Bayern Munich", league: "Bundesliga" },
+  { id: "inter-milan", team: "Inter Milan", displayName: "Inter Milan", league: "Serie A" },
 ];
 
 function defaultStore() {

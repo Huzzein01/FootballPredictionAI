@@ -12,6 +12,7 @@ const LEAGUE_RULES = {
   "La Liga": { totalGames: 38, championsLeagueLine: 4, europeLine: 5, continentalLine: 7, relegationCount: 3 },
   Bundesliga: { totalGames: 34, championsLeagueLine: 4, europeLine: 5, continentalLine: 7, relegationCount: 3 },
   "Ligue 1": { totalGames: 34, championsLeagueLine: 4, europeLine: 5, continentalLine: 6, relegationCount: 3 },
+  "Serie A": { totalGames: 38, championsLeagueLine: 4, europeLine: 5, continentalLine: 7, relegationCount: 3 },
 };
 
 const MOTIVATION_FEATURE_NAMES = [

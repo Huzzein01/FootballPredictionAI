@@ -9,6 +9,7 @@ const { addPlayerStatEntry, listPlayerProfiles, updatePlayerStatEntry } = requir
 const { addTeamStatEntry, listTeamProfiles, updateTeamStatEntry } = require("./teamProfileStore");
 const { internationalFixturePredictions, internationalGroupTables, internationalStatus, readFixtureData } = require("./internationalData");
 const { archivedLeagueTables, refreshLiveLeagueContext } = require("./leagueTableService");
+const { futuresPredictions } = require("./futuresService");
 const { resetPlayerStatsCache } = require("./playerStats");
 const { refreshMissingOdds } = require("./oddsRepairService");
 const parlayBacktests = require("./parlayBacktestStore");
@@ -232,6 +233,19 @@ async function handleApi(req, res, pathname) {
   if (req.method === "GET" && pathname === "/api/league-tables") {
     const url = new URL(req.url, `http://${req.headers.host}`);
     return sendJson(res, 200, await archivedLeagueTables(url.searchParams.get("season") || "2025-26"));
+  }
+
+  if (req.method === "GET" && pathname === "/api/futures") {
+    const url = new URL(req.url, `http://${req.headers.host}`);
+    return sendJson(
+      res,
+      200,
+      await futuresPredictions({
+        context: url.searchParams.get("context") || "club",
+        season: url.searchParams.get("season") || "",
+        league: url.searchParams.get("league") || "All",
+      })
+    );
   }
 
   if (req.method === "GET" && pathname === "/api/player-profiles") {

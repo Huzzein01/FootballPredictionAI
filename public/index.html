@@ -20,6 +20,7 @@
           <option value="parlays">Parlays</option>
           <option value="player-profiles">Player Profiles</option>
           <option value="team-profiles">Team Profiles</option>
+          <option value="futures">Futures</option>
           <option value="parlay-ledger">Parlay Ledger</option>
           <option value="played">Played Matches</option>
           <option value="single">Single Predictor</option>
@@ -72,6 +73,7 @@
       <button class="page-tab" type="button" data-page-target="parlays">Parlays</button>
       <button class="page-tab" type="button" data-page-target="player-profiles">Player Profiles</button>
       <button class="page-tab" type="button" data-page-target="team-profiles">Team Profiles</button>
+      <button class="page-tab" type="button" data-page-target="futures">Futures</button>
       <button class="page-tab" type="button" data-page-target="parlay-ledger">Parlay Ledger</button>
       <button class="page-tab" type="button" data-page-target="played">Played Matches</button>
       <button class="page-tab" type="button" data-page-target="single">Single Predictor</button>
@@ -459,6 +461,30 @@
         </div>
       </section>
 
+      <section class="panel futures-panel page-section" data-page="futures" aria-labelledby="futuresHeading">
+        <div class="section-head">
+          <div>
+            <h2 id="futuresHeading">Futures Predictions</h2>
+            <p id="futuresStatus" class="muted">Loading season and tournament futures</p>
+          </div>
+          <div class="section-actions">
+            <label>
+              League
+              <select id="futuresLeagueFilter" aria-label="Filter futures league">
+                <option value="All">All leagues</option>
+                <option value="EPL">EPL</option>
+                <option value="La Liga">La Liga</option>
+                <option value="Bundesliga">Bundesliga</option>
+                <option value="Ligue 1">Ligue 1</option>
+                <option value="Serie A">Serie A</option>
+              </select>
+            </label>
+            <button id="refreshFuturesButton" type="button">Refresh Futures</button>
+          </div>
+        </div>
+        <div id="futuresOutput" class="futures-output" aria-live="polite"></div>
+      </section>
+
       <section class="panel single-panel page-section" data-page="single" aria-labelledby="singleHeading">
         <details open>
           <summary id="singleHeading">Single Match Predictor</summary>
@@ -470,6 +496,7 @@
                 <option value="La Liga">La Liga</option>
                 <option value="Bundesliga">Bundesliga</option>
                 <option value="Ligue 1">Ligue 1</option>
+                <option value="Serie A">Serie A</option>
                 <option value="International">International</option>
               </select>
             </label>
@@ -549,7 +576,20 @@
             <h2 id="leagueTablesHeading">League Tables</h2>
             <p id="leagueTablesStatus" class="muted">Loading live table context</p>
           </div>
-          <button id="refreshLeagueTablesButton" type="button">Refresh Tables</button>
+          <div class="section-actions">
+            <label>
+              League
+              <select id="leagueTableLeagueFilter" aria-label="Filter league tables">
+                <option value="All">All leagues</option>
+                <option value="EPL">EPL</option>
+                <option value="La Liga">La Liga</option>
+                <option value="Bundesliga">Bundesliga</option>
+                <option value="Ligue 1">Ligue 1</option>
+                <option value="Serie A">Serie A</option>
+              </select>
+            </label>
+            <button id="refreshLeagueTablesButton" type="button">Refresh Tables</button>
+          </div>
         </div>
         <div id="leagueTablesOutput" class="league-tables-output" aria-live="polite"></div>
       </section>

@@ -12,6 +12,7 @@ const LEAGUE_RULES = {
   "La Liga": { totalGames: 38, sourceCode: "esp.1", name: "La Liga" },
   Bundesliga: { totalGames: 34, sourceCode: "ger.1", name: "Bundesliga" },
   "Ligue 1": { totalGames: 34, sourceCode: "fra.1", name: "Ligue 1" },
+  "Serie A": { totalGames: 38, sourceCode: "ita.1", name: "Italian Serie A" },
 };
 
 const SEASON_META = {
