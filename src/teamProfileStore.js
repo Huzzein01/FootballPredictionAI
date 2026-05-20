@@ -1,6 +1,6 @@
 const fs = require("fs");
 const path = require("path");
-const { normalizeTeamName } = require("./footballData");
+const { loadMatches, normalizeTeamName } = require("./footballData");
 
 const TEAM_PROFILE_STATS_PATH = path.join(process.cwd(), "data", "team_profile_updates.json");
 
@@ -177,19 +177,177 @@ function totalsForEntries(entries) {
   };
 }
 
-function listTeamProfiles(season = "") {
+function totalsWithRates(totals = emptyTotals()) {
+  const matches = totals.matches || 1;
+  return {
+    ...emptyTotals(),
+    ...totals,
+    pointsPerGame: numeric(totals.points) / matches,
+    goalsForPerGame: numeric(totals.goalsFor) / matches,
+    goalsAgainstPerGame: numeric(totals.goalsAgainst) / matches,
+    xgForPerGame: numeric(totals.expectedGoalsFor) / matches,
+    xgAgainstPerGame: numeric(totals.expectedGoalsAgainst) / matches,
+    shotsForPerGame: numeric(totals.shotsFor) / matches,
+    shotsAgainstPerGame: numeric(totals.shotsAgainst) / matches,
+    sotForPerGame: numeric(totals.shotsOnTargetFor) / matches,
+    sotAgainstPerGame: numeric(totals.shotsOnTargetAgainst) / matches,
+    shotOnTargetRatio: numeric(totals.shotsFor) ? numeric(totals.shotsOnTargetFor) / numeric(totals.shotsFor) : 0,
+    cornersForPerGame: numeric(totals.cornersFor) / matches,
+    cornersAgainstPerGame: numeric(totals.cornersAgainst) / matches,
+    cleanSheetRate: numeric(totals.cleanSheets) / matches,
+  };
+}
+
+function combineTotals(base = emptyTotals(), manual = emptyTotals()) {
+  return totalsWithRates({
+    matches: numeric(base.matches) + numeric(manual.matches),
+    wins: numeric(base.wins) + numeric(manual.wins),
+    draws: numeric(base.draws) + numeric(manual.draws),
+    losses: numeric(base.losses) + numeric(manual.losses),
+    goalsFor: numeric(base.goalsFor) + numeric(manual.goalsFor),
+    goalsAgainst: numeric(base.goalsAgainst) + numeric(manual.goalsAgainst),
+    expectedGoalsFor: numeric(base.expectedGoalsFor) + numeric(manual.expectedGoalsFor),
+    expectedGoalsAgainst: numeric(base.expectedGoalsAgainst) + numeric(manual.expectedGoalsAgainst),
+    shotsFor: numeric(base.shotsFor) + numeric(manual.shotsFor),
+    shotsAgainst: numeric(base.shotsAgainst) + numeric(manual.shotsAgainst),
+    shotsOnTargetFor: numeric(base.shotsOnTargetFor) + numeric(manual.shotsOnTargetFor),
+    shotsOnTargetAgainst: numeric(base.shotsOnTargetAgainst) + numeric(manual.shotsOnTargetAgainst),
+    cornersFor: numeric(base.cornersFor) + numeric(manual.cornersFor),
+    cornersAgainst: numeric(base.cornersAgainst) + numeric(manual.cornersAgainst),
+    setPieceGoalsFor: numeric(base.setPieceGoalsFor) + numeric(manual.setPieceGoalsFor),
+    setPieceGoalsAgainst: numeric(base.setPieceGoalsAgainst) + numeric(manual.setPieceGoalsAgainst),
+    cleanSheets: numeric(base.cleanSheets) + numeric(manual.cleanSheets),
+    points: numeric(base.points) + numeric(manual.points),
+  });
+}
+
+function isCompletedMatch(row) {
+  return row?.FTR && row.FTHG !== "" && row.FTAG !== "";
+}
+
+function applyMatchBaseline(totals, row, profileTeam) {
+  const isHome = normalizeTeamName(row.HomeTeam) === profileTeam;
+  const isAway = normalizeTeamName(row.AwayTeam) === profileTeam;
+  if (!isHome && !isAway) return;
+  const goalsFor = integer(isHome ? row.FTHG : row.FTAG);
+  const goalsAgainst = integer(isHome ? row.FTAG : row.FTHG);
+  const result = normalizeResult("", goalsFor, goalsAgainst);
+  totals.matches += 1;
+  totals.wins += result === "W" ? 1 : 0;
+  totals.draws += result === "D" ? 1 : 0;
+  totals.losses += result === "L" ? 1 : 0;
+  totals.goalsFor += goalsFor;
+  totals.goalsAgainst += goalsAgainst;
+  totals.shotsFor += integer(isHome ? row.HS : row.AS);
+  totals.shotsAgainst += integer(isHome ? row.AS : row.HS);
+  totals.shotsOnTargetFor += integer(isHome ? row.HST : row.AST);
+  totals.shotsOnTargetAgainst += integer(isHome ? row.AST : row.HST);
+  totals.cornersFor += integer(isHome ? row.HC : row.AC);
+  totals.cornersAgainst += integer(isHome ? row.AC : row.HC);
+  totals.cleanSheets += goalsAgainst === 0 ? 1 : 0;
+  totals.points += resultPoints(result, goalsFor, goalsAgainst);
+}
+
+function csvBaselineForProfile(profile, season) {
+  const profileTeam = normalizeTeamName(profile.team);
+  const totals = emptyTotals();
+  for (const row of loadMatches()) {
+    if (row.Season !== season || row.League !== profile.league || !isCompletedMatch(row)) continue;
+    applyMatchBaseline(totals, row, profileTeam);
+  }
+  return totalsWithRates(totals);
+}
+
+function tableBaselineForProfile(profile, tableData) {
+  const league = tableData?.leagues?.[profile.league];
+  const row = (league?.standings || []).find((entry) => normalizeTeamName(entry.team) === normalizeTeamName(profile.team));
+  if (!row) return totalsWithRates(emptyTotals());
+  return totalsWithRates({
+    matches: numeric(row.played),
+    wins: numeric(row.wins),
+    draws: numeric(row.draws),
+    losses: numeric(row.losses),
+    goalsFor: numeric(row.goalsFor),
+    goalsAgainst: numeric(row.goalsAgainst),
+    points: numeric(row.points),
+  });
+}
+
+function scaleVolume(value, fromMatches, toMatches) {
+  if (!fromMatches || !toMatches || toMatches <= fromMatches) return numeric(value);
+  return Math.round((numeric(value) / fromMatches) * toMatches);
+}
+
+function mergeCsvVolumeWithTable(csvTotals, tableTotals) {
+  const fromMatches = numeric(csvTotals.matches);
+  const toMatches = numeric(tableTotals.matches);
+  return totalsWithRates({
+    ...tableTotals,
+    expectedGoalsFor: scaleVolume(csvTotals.expectedGoalsFor, fromMatches, toMatches),
+    expectedGoalsAgainst: scaleVolume(csvTotals.expectedGoalsAgainst, fromMatches, toMatches),
+    shotsFor: scaleVolume(csvTotals.shotsFor, fromMatches, toMatches),
+    shotsAgainst: scaleVolume(csvTotals.shotsAgainst, fromMatches, toMatches),
+    shotsOnTargetFor: scaleVolume(csvTotals.shotsOnTargetFor, fromMatches, toMatches),
+    shotsOnTargetAgainst: scaleVolume(csvTotals.shotsOnTargetAgainst, fromMatches, toMatches),
+    cornersFor: scaleVolume(csvTotals.cornersFor, fromMatches, toMatches),
+    cornersAgainst: scaleVolume(csvTotals.cornersAgainst, fromMatches, toMatches),
+    cleanSheets: scaleVolume(csvTotals.cleanSheets, fromMatches, toMatches),
+  });
+}
+
+function importedBaselineForProfile(profile, season, tableData = null) {
+  const csvTotals = csvBaselineForProfile(profile, season);
+  const tableTotals = tableBaselineForProfile(profile, tableData);
+  if (csvTotals.matches && tableTotals.matches > csvTotals.matches) {
+    return {
+      totals: mergeCsvVolumeWithTable(csvTotals, tableTotals),
+      source: `${tableData?.leagues?.[profile.league]?.source || "Public league table"} + Football-data match CSV baseline`,
+      detail: "Standings totals use the fresher public table. Shots, SOT, corners, and clean sheets are rate-adjusted from imported match rows when the public table is ahead.",
+      hasBaseline: true,
+    };
+  }
+  if (csvTotals.matches) {
+    return {
+      totals: csvTotals,
+      source: "Football-data match CSV baseline",
+      detail: "Includes played matches, goals, shots, shots on target, corners, points, and clean sheets from imported match rows.",
+      hasBaseline: true,
+    };
+  }
+  if (tableTotals.matches) {
+    return {
+      totals: tableTotals,
+      source: tableData?.leagues?.[profile.league]?.source || "Public league table baseline",
+      detail: "Includes public standings totals. Shots, SOT, corners, xG, and set pieces need match CSV or manual entries.",
+      hasBaseline: true,
+    };
+  }
+  return {
+    totals: totalsWithRates(emptyTotals()),
+    source: "No imported baseline for this season yet",
+    detail: "Import match data or add manual team-profile entries for this season.",
+    hasBaseline: false,
+  };
+}
+
+function listTeamProfiles(season = "", tableData = null) {
   const store = readStore();
+  const profileSeason = season || "2025-26";
   return {
     updatedAt: store.updatedAt,
-    season,
+    season: profileSeason,
     profileCount: TEAM_PROFILES.length,
     entryCount: store.entries.length,
     profiles: TEAM_PROFILES.map((profile) => {
-      const entries = entriesForProfile(store, profile.id, season);
+      const entries = entriesForProfile(store, profile.id, profileSeason);
+      const manualTotals = totalsForEntries(entries);
+      const importedBaseline = importedBaselineForProfile(profile, profileSeason, tableData);
       return {
         ...profile,
         team: normalizeTeamName(profile.team),
-        totals: totalsForEntries(entries),
+        totals: combineTotals(importedBaseline.totals, manualTotals),
+        importedBaseline,
+        manualTotals,
         latestEntries: entries.slice(0, 5),
       };
     }),

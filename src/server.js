@@ -254,7 +254,8 @@ async function handleApi(req, res, pathname) {
 
   if (req.method === "GET" && pathname === "/api/team-profiles") {
     const url = new URL(req.url, `http://${req.headers.host}`);
-    return sendJson(res, 200, listTeamProfiles(url.searchParams.get("season") || ""));
+    const season = url.searchParams.get("season") || "2025-26";
+    return sendJson(res, 200, listTeamProfiles(season, await archivedLeagueTables(season)));
   }
 
   if (req.method === "GET" && pathname === "/api/international/status") {
@@ -309,7 +310,7 @@ async function handleApi(req, res, pathname) {
     const entry = addTeamStatEntry(teamStatsMatch[1], await readBody(req));
     if (!entry) return sendJson(res, 404, { error: "Team profile not found" });
     scheduleRetrain("manual-team-profile-stats");
-    return sendJson(res, 200, { entry, profiles: listTeamProfiles(entry.season), trainingStatus: readTrainingStatus() });
+    return sendJson(res, 200, { entry, profiles: listTeamProfiles(entry.season, await archivedLeagueTables(entry.season)), trainingStatus: readTrainingStatus() });
   }
 
   const teamStatsEditMatch = pathname.match(/^\/api\/team-profiles\/([^/]+)\/stats\/([^/]+)$/);
@@ -317,7 +318,7 @@ async function handleApi(req, res, pathname) {
     const entry = updateTeamStatEntry(teamStatsEditMatch[1], teamStatsEditMatch[2], await readBody(req));
     if (!entry) return sendJson(res, 404, { error: "Team stat entry not found" });
     scheduleRetrain("manual-team-profile-stats-edited");
-    return sendJson(res, 200, { entry, profiles: listTeamProfiles(entry.season), trainingStatus: readTrainingStatus() });
+    return sendJson(res, 200, { entry, profiles: listTeamProfiles(entry.season, await archivedLeagueTables(entry.season)), trainingStatus: readTrainingStatus() });
   }
 
   if (req.method === "GET" && pathname === "/api/parlay") {

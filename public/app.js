@@ -2076,13 +2076,14 @@ function renderTeamProfiles() {
     teamProfileSelect.innerHTML = "";
     teamProfileGrid.innerHTML = internationalEmptyState(
       "Club team profiles only",
-      "Switch to club mode to train Man United, Man City, Chelsea, Arsenal, Tottenham, Liverpool, PSG, Atletico Madrid, Real Madrid, Barcelona, and Bayern Munich."
+      "Switch to club mode to train Man United, Man City, Chelsea, Arsenal, Tottenham, Liverpool, PSG, Atletico Madrid, Real Madrid, Barcelona, Bayern Munich, and Inter Milan."
     );
     return;
   }
   const profiles = teamProfileData.profiles || [];
   const selectedProfileId = teamProfileSelect.value || profiles[0]?.id || "";
-  teamProfileStatus.textContent = `${selectedSeason()} club team profiles | ${profiles.length} tracked teams | ${teamProfileData.entryCount || 0} saved team stat entries`;
+  const baselineCount = profiles.filter((profile) => profile.importedBaseline?.hasBaseline).length;
+  teamProfileStatus.textContent = `${selectedSeason()} club team profiles | ${profiles.length} tracked teams | ${baselineCount} imported season baselines | ${teamProfileData.entryCount || 0} saved team stat entries`;
   teamProfileSelect.innerHTML = profiles
     .map((profile) => `<option value="${escapeHtml(profile.id)}">${escapeHtml(profile.displayName || displayTeam(profile.team))} | ${escapeHtml(profile.league)}</option>`)
     .join("");
@@ -2107,6 +2108,7 @@ function renderTeamProfiles() {
               <span class="role-pill">Team</span>
               <h3>${escapeHtml(profile.displayName || displayTeam(profile.team))}</h3>
               <p class="muted">${escapeHtml(profile.league)} | ${escapeHtml(selectedSeason())}</p>
+              <p class="profile-source">Stats source: ${escapeHtml(profile.importedBaseline?.source || "Manual entries only")}</p>
               <p class="profile-source">Linked table: ${tableEntry ? `#${tableEntry.rank} | ${tableEntry.points} pts | ${leagueTableStatusLabel(tableEntry, leagueTableData?.leagues?.[profile.league] || {})}` : "table row not available for this season"}</p>
             </div>
             ${teamBadge(profile.team)}

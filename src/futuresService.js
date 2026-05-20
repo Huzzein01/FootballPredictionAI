@@ -107,7 +107,7 @@ function scorerPicksForLeague(leagueName, profiles) {
 async function clubFutures({ season = "2025-26", league = "All" } = {}) {
   const tableData = await archivedLeagueTables(season);
   const playerProfiles = listPlayerProfiles().profiles || [];
-  const teamProfiles = listTeamProfiles(season).profiles || [];
+  const teamProfiles = listTeamProfiles(season, tableData).profiles || [];
   if (tableData.unavailable) {
     return {
       context: "club",
