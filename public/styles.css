@@ -1367,7 +1367,8 @@ textarea:focus {
   gap: 14px;
 }
 
-.player-stat-form {
+.player-stat-form,
+.team-stat-form {
   display: grid;
   grid-template-columns: repeat(6, minmax(120px, 1fr));
   gap: 12px;
@@ -1377,7 +1378,8 @@ textarea:focus {
   padding: 14px;
 }
 
-.player-stat-form label {
+.player-stat-form label,
+.team-stat-form label {
   display: grid;
   gap: 6px;
   min-width: 0;
@@ -1387,15 +1389,19 @@ textarea:focus {
 }
 
 .player-stat-form label:first-child,
-.player-stat-form .profile-notes {
+.player-stat-form .profile-notes,
+.team-stat-form label:first-child,
+.team-stat-form .profile-notes {
   grid-column: span 2;
 }
 
-.player-stat-form .checkline {
+.player-stat-form .checkline,
+.team-stat-form .checkline {
   grid-column: span 2;
 }
 
-.player-stat-form .primary {
+.player-stat-form .primary,
+.team-stat-form .primary {
   align-self: end;
   min-height: 40px;
 }
@@ -1640,6 +1646,50 @@ textarea:focus {
 
 .profile-training-empty {
   grid-template-columns: minmax(0, 1fr);
+}
+
+.team-profile-card {
+  border-left-color: var(--green);
+}
+
+.team-form-strip {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 7px;
+  min-height: 28px;
+  align-items: center;
+}
+
+.form-chip {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 30px;
+  height: 28px;
+  border: 1px solid var(--line);
+  border-radius: 999px;
+  background: var(--surface);
+  font-size: 12px;
+  font-weight: 950;
+}
+
+.form-W {
+  background: #071b14;
+  color: var(--green);
+}
+
+.form-D {
+  background: #221806;
+  color: #ffc857;
+}
+
+.form-L {
+  background: #220b10;
+  color: var(--red);
+}
+
+.team-stat-grid {
+  grid-template-columns: repeat(4, minmax(0, 1fr));
 }
 
 .league-tables-output {
@@ -2199,7 +2249,8 @@ th {
     grid-template-columns: repeat(2, minmax(130px, 1fr));
   }
 
-  .player-stat-form {
+  .player-stat-form,
+  .team-stat-form {
     grid-template-columns: repeat(2, minmax(130px, 1fr));
   }
 }
@@ -2219,6 +2270,7 @@ th {
   .grid-form,
   .accuracy-stats,
   .player-stat-form,
+  .team-stat-form,
   .settle,
   .scoreboard-row,
   .parlay-leg-row,
@@ -2235,7 +2287,10 @@ th {
   .grid-form .primary,
   .player-stat-form label:first-child,
   .player-stat-form .profile-notes,
-  .player-stat-form .checkline {
+  .player-stat-form .checkline,
+  .team-stat-form label:first-child,
+  .team-stat-form .profile-notes,
+  .team-stat-form .checkline {
     grid-column: auto;
   }
 
@@ -2753,6 +2808,7 @@ textarea {
 }
 
 .player-stat-form,
+.team-stat-form,
 .grid-form {
   border-color: color-mix(in srgb, var(--line) 88%, var(--teal));
   background: color-mix(in srgb, var(--surface) 76%, var(--panel));
@@ -2934,7 +2990,8 @@ th {
   .board-controls,
   .parlay-controls,
   .grid-form,
-  .player-stat-form {
+  .player-stat-form,
+  .team-stat-form {
     grid-template-columns: 1fr;
   }
 
@@ -2942,7 +2999,8 @@ th {
   .board-controls button,
   .parlay-controls button,
   .grid-form button,
-  .player-stat-form button {
+  .player-stat-form button,
+  .team-stat-form button {
     width: 100%;
   }
 
@@ -3238,7 +3296,8 @@ th {
   .board-controls,
   .parlay-controls,
   .grid-form,
-  .player-stat-form {
+  .player-stat-form,
+  .team-stat-form {
     display: grid;
     grid-template-columns: repeat(2, minmax(0, 1fr));
     gap: 9px;
@@ -3252,7 +3311,8 @@ th {
   .board-controls label,
   .parlay-controls label,
   .grid-form label,
-  .player-stat-form label {
+  .player-stat-form label,
+  .team-stat-form label {
     min-width: 0;
   }
 
@@ -3263,7 +3323,9 @@ th {
   .grid-form select,
   .grid-form input,
   .player-stat-form select,
-  .player-stat-form input {
+  .player-stat-form input,
+  .team-stat-form select,
+  .team-stat-form input {
     width: 100%;
     min-width: 0;
   }
@@ -3271,7 +3333,8 @@ th {
   .board-controls button,
   .parlay-controls button,
   .grid-form button,
-  .player-stat-form button {
+  .player-stat-form button,
+  .team-stat-form button {
     width: 100%;
   }
 
@@ -3690,7 +3753,8 @@ th {
   .board-controls,
   .parlay-controls,
   .grid-form,
-  .player-stat-form {
+  .player-stat-form,
+  .team-stat-form {
     grid-template-columns: repeat(2, minmax(0, 1fr));
     padding: 9px;
   }
@@ -3698,7 +3762,8 @@ th {
   .board-controls label:nth-of-type(3),
   .parlay-controls label:nth-of-type(3),
   .grid-form label,
-  .player-stat-form label {
+  .player-stat-form label,
+  .team-stat-form label {
     grid-column: 1 / -1;
   }
 
@@ -3783,7 +3848,8 @@ th {
   .board-controls,
   .parlay-controls,
   .grid-form,
-  .player-stat-form {
+  .player-stat-form,
+  .team-stat-form {
     grid-template-columns: 1fr;
   }
 

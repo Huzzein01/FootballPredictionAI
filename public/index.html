@@ -19,6 +19,7 @@
           <option value="predictions">Predictions</option>
           <option value="parlays">Parlays</option>
           <option value="player-profiles">Player Profiles</option>
+          <option value="team-profiles">Team Profiles</option>
           <option value="parlay-ledger">Parlay Ledger</option>
           <option value="played">Played Matches</option>
           <option value="single">Single Predictor</option>
@@ -70,6 +71,7 @@
       <button class="page-tab is-active" type="button" data-page-target="predictions">Predictions</button>
       <button class="page-tab" type="button" data-page-target="parlays">Parlays</button>
       <button class="page-tab" type="button" data-page-target="player-profiles">Player Profiles</button>
+      <button class="page-tab" type="button" data-page-target="team-profiles">Team Profiles</button>
       <button class="page-tab" type="button" data-page-target="parlay-ledger">Parlay Ledger</button>
       <button class="page-tab" type="button" data-page-target="played">Played Matches</button>
       <button class="page-tab" type="button" data-page-target="single">Single Predictor</button>
@@ -330,6 +332,130 @@
 
           <div id="playerProfileMessage" class="board-message" aria-live="polite"></div>
           <div id="playerProfileGrid" class="player-profile-grid" aria-live="polite"></div>
+        </div>
+      </section>
+
+      <section class="panel team-profile-panel page-section" data-page="team-profiles" aria-labelledby="teamProfilesHeading">
+        <div class="section-head">
+          <div>
+            <h2 id="teamProfilesHeading">Team Profile Training</h2>
+            <p id="teamProfileStatus" class="muted">Track team form, xG, shots, corners, set pieces, and motivation for model training</p>
+          </div>
+          <button id="refreshTeamProfilesButton" type="button">Refresh Teams</button>
+        </div>
+
+        <div class="profile-layout">
+          <form id="teamStatForm" class="team-stat-form">
+            <label>
+              Team
+              <select id="teamProfileSelect" name="profileId" required></select>
+            </label>
+            <label>
+              Date
+              <input name="date" type="date" required>
+            </label>
+            <label>
+              Opponent
+              <input name="opponent" type="text" placeholder="Opponent">
+            </label>
+            <label>
+              Venue
+              <select name="venue">
+                <option value="">Unknown</option>
+                <option value="Home">Home</option>
+                <option value="Away">Away</option>
+                <option value="Neutral">Neutral</option>
+              </select>
+            </label>
+            <label>
+              Result
+              <select name="result">
+                <option value="W">W</option>
+                <option value="D">D</option>
+                <option value="L">L</option>
+              </select>
+            </label>
+            <label>
+              Goals for
+              <input name="goalsFor" type="number" min="0" step="1" value="0">
+            </label>
+            <label>
+              Goals against
+              <input name="goalsAgainst" type="number" min="0" step="1" value="0">
+            </label>
+            <label>
+              xG
+              <input name="expectedGoalsFor" type="number" min="0" step="0.01" value="0">
+            </label>
+            <label>
+              xGA
+              <input name="expectedGoalsAgainst" type="number" min="0" step="0.01" value="0">
+            </label>
+            <label>
+              Shots for
+              <input name="shotsFor" type="number" min="0" step="1" value="0">
+            </label>
+            <label>
+              Shots against
+              <input name="shotsAgainst" type="number" min="0" step="1" value="0">
+            </label>
+            <label>
+              SOT for
+              <input name="shotsOnTargetFor" type="number" min="0" step="1" value="0">
+            </label>
+            <label>
+              SOT against
+              <input name="shotsOnTargetAgainst" type="number" min="0" step="1" value="0">
+            </label>
+            <label>
+              SGA
+              <input name="sga" type="number" min="0" step="0.01" value="0">
+            </label>
+            <label>
+              Corners for
+              <input name="cornersFor" type="number" min="0" step="1" value="0">
+            </label>
+            <label>
+              Corners against
+              <input name="cornersAgainst" type="number" min="0" step="1" value="0">
+            </label>
+            <label>
+              Set-piece GF
+              <input name="setPieceGoalsFor" type="number" min="0" step="1" value="0">
+            </label>
+            <label>
+              Set-piece GA
+              <input name="setPieceGoalsAgainst" type="number" min="0" step="1" value="0">
+            </label>
+            <label>
+              Possession %
+              <input name="possession" type="number" min="0" max="100" step="0.1" value="0">
+            </label>
+            <label>
+              Rest days
+              <input name="restDays" type="number" min="0" step="1" value="0">
+            </label>
+            <label class="checkline">
+              <input name="cleanSheet" type="checkbox">
+              Clean sheet
+            </label>
+            <label class="profile-notes">
+              Absences
+              <input name="absences" type="text" placeholder="Injuries, suspensions, rotation">
+            </label>
+            <label class="profile-notes">
+              Motivation
+              <input name="motivation" type="text" placeholder="Title, Europe, relegation, derby, rotation">
+            </label>
+            <label class="profile-notes">
+              Notes
+              <input name="notes" type="text" placeholder="Pressing, set pieces, tactical change">
+            </label>
+            <button class="primary" type="submit">Save Team Stats</button>
+          </form>
+
+          <div id="teamProfileMessage" class="board-message" aria-live="polite"></div>
+          <div id="teamProfileGrid" class="player-profile-grid team-profile-grid" aria-live="polite"></div>
         </div>
       </section>
 

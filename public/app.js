@@ -51,6 +51,12 @@ const playerStatForm = document.querySelector("#playerStatForm");
 const playerProfileSelect = document.querySelector("#playerProfileSelect");
 const playerProfileMessage = document.querySelector("#playerProfileMessage");
 const playerProfileGrid = document.querySelector("#playerProfileGrid");
+const teamProfileStatus = document.querySelector("#teamProfileStatus");
+const refreshTeamProfilesButton = document.querySelector("#refreshTeamProfilesButton");
+const teamStatForm = document.querySelector("#teamStatForm");
+const teamProfileSelect = document.querySelector("#teamProfileSelect");
+const teamProfileMessage = document.querySelector("#teamProfileMessage");
+const teamProfileGrid = document.querySelector("#teamProfileGrid");
 const pageSelect = document.querySelector("#pageSelect");
 const leagueTablesHeading = document.querySelector("#leagueTablesHeading");
 const leagueTablesStatus = document.querySelector("#leagueTablesStatus");
@@ -66,12 +72,14 @@ let currentParlays = [];
 let trackedParlayData = { parlays: [], summary: {} };
 let ledgerPredictions = [];
 let playerProfileData = { profiles: [], profileCount: 0, entryCount: 0 };
+let teamProfileData = { profiles: [], profileCount: 0, entryCount: 0 };
 let internationalStatusData = null;
 let internationalFixtureData = null;
 let internationalGroupTableData = null;
 let leagueTableData = null;
 let parlayRefreshSeed = 0;
 let editingPlayerStatEntry = null;
+let editingTeamStatEntry = null;
 
 const CENTRAL_TIME_ZONE = "America/Chicago";
 const INTERNATIONAL_ONLY_PAGES = new Set(["world-cup-groups", "international-fixtures"]);
@@ -824,11 +832,13 @@ async function refreshLeagueTables() {
     leagueTablesStatus.textContent = "Refreshing World Cup group tables from settled international results...";
     internationalGroupTableData = await api("/api/international/group-tables");
     renderInternationalLeagueTables();
+    renderTeamProfiles();
     return;
   }
   leagueTablesStatus.textContent = "Refreshing public tables and fixture-ledger deltas...";
   leagueTableData = await api(`/api/league-tables?season=${encodeURIComponent(selectedSeason())}`);
   renderLeagueTables();
+  renderTeamProfiles();
 }
 
 async function refreshInternationalStatus() {
@@ -888,6 +898,7 @@ async function renderInternationalContext() {
   renderWorldCupGroups();
   renderInternationalFixturesPage();
   renderPlayerProfiles();
+  renderTeamProfiles();
   setInternationalSingleDemo();
 }
 
@@ -903,6 +914,7 @@ async function renderClubContext() {
   await refreshParlayLedger();
   await refreshPlayerProfiles();
   await refreshLeagueTables();
+  await refreshTeamProfiles();
   await refreshLedger();
 }
 
@@ -1308,6 +1320,12 @@ function setPlayerProfileMessage(message, kind = "info") {
   playerProfileMessage.textContent = message;
 }
 
+function setTeamProfileMessage(message, kind = "info") {
+  if (!teamProfileMessage) return;
+  teamProfileMessage.className = `board-message ${message ? "is-visible" : ""} ${kind}`;
+  teamProfileMessage.textContent = message;
+}
+
 function playerTrainingEntrySummary(entry, isGoalkeeper) {
   const opponent = entry.opponent ? ` vs ${entry.opponent}` : "";
   const venue = entry.venue ? ` (${entry.venue})` : "";
@@ -1361,6 +1379,77 @@ function fillPlayerStatFormFromEntry(profile, entry) {
   renderPlayerProfiles();
   playerStatForm.scrollIntoView({ behavior: "smooth", block: "start" });
   setPlayerProfileMessage(`Editing latest trained match for ${profile.player}. Update the fields and save to correct the training entry.`, "info");
+}
+
+function teamTrainingEntrySummary(entry) {
+  const opponent = entry.opponent ? ` vs ${displayTeam(entry.opponent)}` : "";
+  const venue = entry.venue ? ` (${entry.venue})` : "";
+  const score = `${entry.goalsFor ?? 0}-${entry.goalsAgainst ?? 0}`;
+  return `${entry.date || "Date n/a"}${opponent}${venue} - ${entry.result || "N/A"} ${score}`;
+}
+
+function setTeamFormMode(entry = null) {
+  editingTeamStatEntry = entry;
+  const button = teamStatForm?.querySelector('button[type="submit"]');
+  if (!button) return;
+  button.textContent = entry ? "Update Team Stats" : "Save Team Stats";
+}
+
+function fillTeamStatFormFromEntry(profile, entry) {
+  if (!profile || !entry || !teamStatForm) return;
+  teamProfileSelect.value = profile.id;
+  [
+    "date",
+    "opponent",
+    "venue",
+    "result",
+    "goalsFor",
+    "goalsAgainst",
+    "expectedGoalsFor",
+    "expectedGoalsAgainst",
+    "shotsFor",
+    "shotsAgainst",
+    "shotsOnTargetFor",
+    "shotsOnTargetAgainst",
+    "sga",
+    "cornersFor",
+    "cornersAgainst",
+    "setPieceGoalsFor",
+    "setPieceGoalsAgainst",
+    "possession",
+    "restDays",
+    "absences",
+    "motivation",
+    "notes",
+  ].forEach((name) => {
+    if (teamStatForm.elements[name]) teamStatForm.elements[name].value = entry[name] ?? "";
+  });
+  teamStatForm.elements.cleanSheet.checked = Boolean(entry.cleanSheet);
+  setTeamFormMode({ ...entry, profileId: profile.id });
+  renderTeamProfiles();
+  teamStatForm.scrollIntoView({ behavior: "smooth", block: "start" });
+  setTeamProfileMessage(`Editing latest trained match for ${profile.displayName || displayTeam(profile.team)}. Update the fields and save to correct the team profile entry.`, "info");
+}
+
+function autofillTeamTrainingFixture({ showMessage = true } = {}) {
+  if (!teamStatForm || editingTeamStatEntry) return;
+  const profile = (teamProfileData.profiles || []).find((item) => item.id === teamProfileSelect.value);
+  const date = teamStatForm.elements.date?.value || "";
+  if (!profile || !date) return;
+  const fixture = findTrainingFixture(profile, date);
+  if (!fixture) {
+    teamStatForm.elements.opponent.value = "";
+    teamStatForm.elements.venue.value = "";
+    if (showMessage) setTeamProfileMessage(`No ${displayTeam(profile.team)} fixture found on ${date}. Enter opponent and venue manually.`, "info");
+    return;
+  }
+  const isHome = sameTeam(fixture.homeTeam, profile.team);
+  const opponent = isHome ? fixture.awayTeam : fixture.homeTeam;
+  teamStatForm.elements.opponent.value = displayTeam(opponent);
+  teamStatForm.elements.venue.value = isHome ? "Home" : "Away";
+  if (showMessage) {
+    setTeamProfileMessage(`Matched ${displayTeam(profile.team)} ${isHome ? "vs" : "at"} ${displayTeam(opponent)} on ${date}. Opponent and venue filled from fixtures.`, "info");
+  }
 }
 
 function renderBoard() {
@@ -1873,6 +1962,105 @@ function renderPlayerProfiles() {
     .join("");
 }
 
+function formChip(result) {
+  const value = ["W", "D", "L"].includes(result) ? result : "D";
+  return `<span class="form-chip form-${value}">${escapeHtml(value)}</span>`;
+}
+
+function teamTableEntry(profile) {
+  const league = leagueTableData?.leagues?.[profile.league];
+  return (league?.standings || []).find((entry) => sameTeam(entry.team, profile.team)) || null;
+}
+
+function teamProfileEntryMarkup(profile) {
+  const latest = (profile.latestEntries || [])[0];
+  if (!latest) {
+    return `
+      <li class="profile-training-empty">
+        <strong>No manual team entries yet</strong>
+        <span>Add the latest match or rolling team snapshot to calibrate form, corners, xG, and motivation.</span>
+      </li>
+    `;
+  }
+  return `
+    <li class="profile-training-latest">
+      <div>
+        <strong>Latest trained match</strong>
+        <span>${escapeHtml(teamTrainingEntrySummary(latest))}</span>
+      </div>
+      <button class="profile-entry-edit-button" type="button" data-team-profile-id="${escapeHtml(profile.id)}" data-entry-id="${escapeHtml(latest.id)}">Edit</button>
+    </li>
+  `;
+}
+
+function renderTeamProfiles() {
+  if (!teamProfileGrid || !teamProfileSelect) return;
+  if (isInternationalMode()) {
+    teamProfileStatus.textContent = "Team profiles are currently configured for club teams";
+    teamProfileSelect.innerHTML = "";
+    teamProfileGrid.innerHTML = internationalEmptyState(
+      "Club team profiles only",
+      "Switch to club mode to train Man United, Man City, Chelsea, Arsenal, Tottenham, Liverpool, PSG, Atletico Madrid, Real Madrid, Barcelona, and Bayern Munich."
+    );
+    return;
+  }
+  const profiles = teamProfileData.profiles || [];
+  const selectedProfileId = teamProfileSelect.value || profiles[0]?.id || "";
+  teamProfileStatus.textContent = `${selectedSeason()} club team profiles | ${profiles.length} tracked teams | ${teamProfileData.entryCount || 0} saved team stat entries`;
+  teamProfileSelect.innerHTML = profiles
+    .map((profile) => `<option value="${escapeHtml(profile.id)}">${escapeHtml(profile.displayName || displayTeam(profile.team))} | ${escapeHtml(profile.league)}</option>`)
+    .join("");
+  if (selectedProfileId) teamProfileSelect.value = selectedProfileId;
+
+  if (!profiles.length) {
+    teamProfileGrid.innerHTML = `<div class="empty-state">No team profiles are configured yet.</div>`;
+    return;
+  }
+
+  teamProfileGrid.innerHTML = profiles
+    .map((profile) => {
+      const totals = profile.totals || {};
+      const tableEntry = teamTableEntry(profile);
+      const isSelected = profile.id === teamProfileSelect.value;
+      const lastFive = (profile.latestEntries || []).slice(0, 5);
+      return `
+        <article class="player-profile-card team-profile-card ${isSelected ? "is-selected-profile" : ""}" data-team-profile-id="${escapeHtml(profile.id)}" role="button" tabindex="0" aria-pressed="${isSelected ? "true" : "false"}" aria-label="Select ${escapeHtml(profile.displayName || displayTeam(profile.team))} for team profile training">
+          ${isSelected ? `<span class="selected-profile-star" role="img" aria-label="Selected team profile" title="Selected team profile">★</span>` : ""}
+          <div class="profile-card-head">
+            <div>
+              <span class="role-pill">Team</span>
+              <h3>${escapeHtml(profile.displayName || displayTeam(profile.team))}</h3>
+              <p class="muted">${escapeHtml(profile.league)} | ${escapeHtml(selectedSeason())}</p>
+              <p class="profile-source">Linked table: ${tableEntry ? `#${tableEntry.rank} | ${tableEntry.points} pts | ${leagueTableStatusLabel(tableEntry, leagueTableData?.leagues?.[profile.league] || {})}` : "table row not available for this season"}</p>
+            </div>
+            ${teamBadge(profile.team)}
+          </div>
+          <div class="team-form-strip">
+            ${lastFive.length ? lastFive.map((entry) => formChip(entry.result)).join("") : `<span class="muted">Last five waiting for entries</span>`}
+          </div>
+          <div class="profile-stat-grid team-stat-grid">
+            <span><strong>${totals.matches || 0}</strong> matches</span>
+            <span><strong>${statNumber(totals.pointsPerGame, 2)}</strong> PPG</span>
+            <span><strong>${statNumber(totals.xgForPerGame, 2)}</strong> xG</span>
+            <span><strong>${statNumber(totals.xgAgainstPerGame, 2)}</strong> xGA</span>
+            <span><strong>${statNumber(totals.shotsForPerGame, 1)}</strong> shots</span>
+            <span><strong>${statNumber(totals.sotForPerGame, 1)}</strong> SOT</span>
+            <span><strong>${statNumber(totals.shotOnTargetRatio * 100, 1)}%</strong> SOT ratio</span>
+            <span><strong>${statNumber(totals.cornersForPerGame, 1)}</strong> corners</span>
+            <span><strong>${statNumber(totals.cornersAgainstPerGame, 1)}</strong> corners against</span>
+            <span><strong>${totals.setPieceGoalsFor || 0}</strong> set-piece GF</span>
+            <span><strong>${totals.setPieceGoalsAgainst || 0}</strong> set-piece GA</span>
+            <span><strong>${statNumber(totals.cleanSheetRate * 100, 1)}%</strong> clean sheets</span>
+          </div>
+          <ul class="profile-entry-list">
+            ${teamProfileEntryMarkup(profile)}
+          </ul>
+        </article>
+      `;
+    })
+    .join("");
+}
+
 function showMessage(message, kind = "error") {
   output.classList.add("is-visible");
   output.innerHTML = `<div class="${kind === "error" ? "error-box" : "info-box"}">${escapeHtml(message)}</div>`;
@@ -2083,6 +2271,21 @@ async function refreshPlayerProfiles() {
   setPlayerProfileMessage("", "info");
 }
 
+async function refreshTeamProfiles() {
+  if (!teamProfileGrid) return;
+  setTeamProfileMessage("Loading team profiles...", "info");
+  if (!isInternationalMode() && !leagueTableData) {
+    try {
+      leagueTableData = await api(`/api/league-tables?season=${encodeURIComponent(selectedSeason())}`);
+    } catch {
+      leagueTableData = null;
+    }
+  }
+  teamProfileData = await api(`/api/team-profiles?season=${encodeURIComponent(selectedSeason())}`);
+  renderTeamProfiles();
+  setTeamProfileMessage("", "info");
+}
+
 form.addEventListener("submit", async (event) => {
   event.preventDefault();
   if (isInternationalMode()) {
@@ -2235,6 +2438,7 @@ parlayLayoutToggle.addEventListener("change", () => refreshParlay({ forceNew: tr
 parlaySortSelect.addEventListener("change", renderParlayTickets);
 refreshParlayLedgerButton.addEventListener("click", refreshParlayLedger);
 refreshPlayerProfilesButton.addEventListener("click", refreshPlayerProfiles);
+refreshTeamProfilesButton?.addEventListener("click", refreshTeamProfiles);
 refreshLeagueTablesButton?.addEventListener("click", refreshLeagueTables);
 pageSelect?.addEventListener("change", () => showPage(pageSelect.value));
 playerProfileSelect.addEventListener("change", () => {
@@ -2274,6 +2478,40 @@ playerProfileGrid.addEventListener("keydown", (event) => {
   autofillTrainingFixture();
   playerProfileSelect.focus({ preventScroll: true });
 });
+teamProfileSelect?.addEventListener("change", () => {
+  setTeamFormMode(null);
+  renderTeamProfiles();
+  autofillTeamTrainingFixture();
+});
+teamStatForm?.elements.date?.addEventListener("change", () => {
+  autofillTeamTrainingFixture();
+});
+teamProfileGrid?.addEventListener("click", (event) => {
+  const editButton = event.target.closest(".profile-entry-edit-button[data-team-profile-id][data-entry-id]");
+  if (editButton) {
+    const profile = (teamProfileData.profiles || []).find((item) => item.id === editButton.dataset.teamProfileId);
+    const entry = (profile?.latestEntries || []).find((item) => item.id === editButton.dataset.entryId);
+    if (profile && entry) fillTeamStatFormFromEntry(profile, entry);
+    return;
+  }
+  if (event.target.closest("a, button, input, select, textarea")) return;
+  const card = event.target.closest(".team-profile-card[data-team-profile-id]");
+  if (!card) return;
+  setTeamFormMode(null);
+  teamProfileSelect.value = card.dataset.teamProfileId;
+  renderTeamProfiles();
+  teamStatForm.scrollIntoView({ behavior: "smooth", block: "start" });
+});
+teamProfileGrid?.addEventListener("keydown", (event) => {
+  if (!["Enter", " "].includes(event.key)) return;
+  const card = event.target.closest(".team-profile-card[data-team-profile-id]");
+  if (!card) return;
+  event.preventDefault();
+  setTeamFormMode(null);
+  teamProfileSelect.value = card.dataset.teamProfileId;
+  renderTeamProfiles();
+  teamProfileSelect.focus({ preventScroll: true });
+});
 appContextToggle.addEventListener("change", () => {
   applyAppContext();
 });
@@ -2308,6 +2546,58 @@ playerStatForm.addEventListener("submit", async (event) => {
     });
   } catch (error) {
     setPlayerProfileMessage(error.message, "error");
+  } finally {
+    button.disabled = false;
+    button.textContent = originalText;
+  }
+});
+teamStatForm?.addEventListener("submit", async (event) => {
+  event.preventDefault();
+  const button = teamStatForm.querySelector("button[type='submit']");
+  const originalText = button.textContent;
+  button.disabled = true;
+  button.textContent = editingTeamStatEntry ? "Updating..." : "Saving...";
+  try {
+    const body = formJson(teamStatForm);
+    body.season = selectedSeason();
+    body.cleanSheet = Boolean(teamStatForm.elements.cleanSheet.checked);
+    const isEditing = Boolean(editingTeamStatEntry?.id);
+    const endpoint = isEditing
+      ? `/api/team-profiles/${encodeURIComponent(editingTeamStatEntry.profileId)}/stats/${encodeURIComponent(editingTeamStatEntry.id)}`
+      : `/api/team-profiles/${encodeURIComponent(body.profileId)}/stats`;
+    const data = await api(endpoint, {
+      method: isEditing ? "PUT" : "POST",
+      body: JSON.stringify(body),
+    });
+    teamProfileData = data.profiles;
+    setTeamFormMode(null);
+    renderTeamProfiles();
+    setTeamProfileMessage(isEditing ? "Team stat entry updated. Current prediction features will use the corrected team profile data." : "Team stat entry saved. Current prediction features will layer this team profile data into future judgments.", "info");
+    await refreshTrainingStatus();
+    teamStatForm.reset();
+    teamProfileSelect.value = body.profileId;
+    [
+      "goalsFor",
+      "goalsAgainst",
+      "expectedGoalsFor",
+      "expectedGoalsAgainst",
+      "shotsFor",
+      "shotsAgainst",
+      "shotsOnTargetFor",
+      "shotsOnTargetAgainst",
+      "sga",
+      "cornersFor",
+      "cornersAgainst",
+      "setPieceGoalsFor",
+      "setPieceGoalsAgainst",
+      "possession",
+      "restDays",
+    ].forEach((name) => {
+      teamStatForm.elements[name].value = "0";
+    });
+    teamStatForm.elements.result.value = "W";
+  } catch (error) {
+    setTeamProfileMessage(error.message, "error");
   } finally {
     button.disabled = false;
     button.textContent = originalText;
@@ -2350,6 +2640,7 @@ async function init() {
     renderModelMeta(meta, meta.trainingStatus);
     updateTeamList();
     await refreshPlayerProfiles();
+    await refreshTeamProfiles();
     if (isInternationalMode()) {
       await refreshInternationalStatus();
       await renderInternationalContext();

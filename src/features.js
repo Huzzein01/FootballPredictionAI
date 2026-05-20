@@ -1,6 +1,7 @@
 const { loadMatches, normalizeTeamName, num } = require("./footballData");
 const { MOTIVATION_FEATURE_NAMES, currentStandingFeatures, standingFeaturesFromStatsTable } = require("./leagueContext");
 const { PLAYER_FEATURE_NAMES, matchPlayerFeatureRow } = require("./playerStats");
+const { manualTeamStatEntries } = require("./teamProfileStore");
 
 const FEATURE_NAMES = [
   "homeGames",
@@ -238,6 +239,24 @@ function updateStats(stats, gf, ga, shots, sot, corners, fouls, yellows, reds) {
   stats.form.push({ points, gf, ga });
 }
 
+function applyManualTeamStats(table, league, season) {
+  for (const entry of manualTeamStatEntries(league, season)) {
+    const team = normalizeTeamName(entry.team);
+    if (!table.has(team)) table.set(team, emptyStats(team));
+    updateStats(
+      table.get(team),
+      num(entry.goalsFor),
+      num(entry.goalsAgainst),
+      num(entry.shotsFor),
+      num(entry.shotsOnTargetFor),
+      num(entry.cornersFor),
+      0,
+      0,
+      0
+    );
+  }
+}
+
 function buildTrainingRows() {
   const matches = loadMatches();
   const byLeagueSeason = new Map();
@@ -316,6 +335,7 @@ function buildCurrentFeatureVector(league, homeTeamInput, awayTeamInput, odds = 
     updateElo(eloTable, match.HomeTeam, match.AwayTeam, num(match.FTHG), num(match.FTAG));
     updateH2H(h2hMap, match.HomeTeam, match.AwayTeam, num(match.FTHG), num(match.FTAG));
   }
+  applyManualTeamStats(table, league, season);
 
   const standingContext = currentStandingFeatures(league, table, homeTeam, awayTeam);
 
