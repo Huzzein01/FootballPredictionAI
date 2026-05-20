@@ -173,6 +173,17 @@ const PLAYER_PROFILES = [
     photoSourceUrl: "https://en.wikipedia.org/wiki/Jan_Oblak",
   },
   {
+    id: "thibaut-courtois",
+    player: "Thibaut Courtois",
+    team: "Real Madrid",
+    league: "La Liga",
+    role: "Goalkeeper",
+    position: "GK",
+    photoUrl: "https://upload.wikimedia.org/wikipedia/commons/c/c4/Courtois_2018_%28cropped%29.jpg",
+    photoSourceName: "Wikipedia / Wikimedia Commons",
+    photoSourceUrl: "https://en.wikipedia.org/wiki/Thibaut_Courtois",
+  },
+  {
     id: "benjamin-sesko",
     player: "Benjamin Sesko",
     team: "Man United",
@@ -348,6 +359,17 @@ const PLAYER_PROFILES = [
     photoSourceName: "Wikipedia / Wikimedia Commons",
     photoSourceUrl: "https://en.wikipedia.org/wiki/Marcus_Thuram",
   },
+  {
+    id: "neymar-jr",
+    player: "Neymar Jr.",
+    team: "Santos",
+    league: "Brasileirao Serie A",
+    role: "Attacker",
+    position: "MF,FW",
+    photoUrl: "https://upload.wikimedia.org/wikipedia/commons/b/bb/Neymar_Jr._with_Al_Hilal%2C_3_October_2023_-_03_%28cropped%29.jpg",
+    photoSourceName: "Wikipedia / Wikimedia Commons",
+    photoSourceUrl: "https://en.wikipedia.org/wiki/Neymar",
+  },
 ];
 
 const SUPPLEMENTAL_PROFILE_ROWS = [
@@ -359,11 +381,15 @@ const SUPPLEMENTAL_PROFILE_ROWS = [
   { season: "2025-26", league: "EPL", Squad: "Arsenal", Player: "David Raya", Pos: "GK", statType: "goalkeeping", MP: 36, Starts: 36, Min: 3240, "90s": 36, Saves: 60, PublicProfileSource: "true" },
   { season: "2025-26", league: "EPL", Squad: "Man City", Player: "Gianluigi Donnarumma", Pos: "GK", statType: "goalkeeping", MP: 32, Starts: 32, Min: 2880, "90s": 32, Saves: 74, PublicProfileSource: "true" },
   { season: "2025-26", league: "EPL", Squad: "Man United", Player: "Senne Lammens", Pos: "GK", statType: "goalkeeping", MP: 29, Starts: 29, Min: 2610, "90s": 29, Saves: 71, PublicProfileSource: "true" },
+  { season: "2025-26", league: "La Liga", Squad: "Real Madrid", Player: "Thibaut Courtois", Pos: "GK", statType: "goalkeeping", MP: 31, Starts: 31, Min: 2790, "90s": 31, Saves: 70, PublicProfileSource: "true" },
   { season: "2025-26", league: "La Liga", Squad: "Atletico Madrid", Player: "Ademola Lookman", Pos: "FW,MF", statType: "standard", MP: 8, Starts: 6, Min: 495, "90s": 5.5, Gls: 3, Ast: 1, PublicProfileSource: "true" },
   { season: "2025-26", league: "Saudi Pro League", Squad: "Al-Nassr", Player: "Cristiano Ronaldo", Pos: "FW", statType: "standard", MP: 29, Starts: 29, Min: 2527, "90s": 28.1, Gls: 26, Ast: 2, PublicProfileSource: "true" },
   { season: "2025-26", league: "Saudi Pro League", Squad: "Al-Nassr", Player: "Cristiano Ronaldo", Pos: "FW", statType: "shooting", MP: 29, Starts: 29, Min: 2527, "90s": 28.1, Gls: 26, Sh: 171, SoT: 65, PublicProfileSource: "true" },
   { season: "2025-26", league: "MLS", Squad: "Inter Miami", Player: "Lionel Messi", Pos: "FW,MF", statType: "standard", MP: 10, Starts: 10, Min: 900, "90s": 10, Gls: 8, Ast: 2, PublicProfileSource: "true" },
-  { season: "2025-26", league: "Serie A", Squad: "Inter Milan", Player: "Marcus Thuram", Pos: "FW", statType: "standard", MP: 131, Starts: 104, Min: 9360, "90s": 104, Gls: 50, Ast: 0, PublicProfileSource: "true" },
+  { season: "2025-26", league: "Serie A", Squad: "Inter Milan", Player: "Marcus Thuram", Pos: "FW", statType: "standard", MP: 29, Starts: 29, Min: 1937, "90s": 21.26, Gls: 13, Ast: 6, PublicProfileSource: "true" },
+  { season: "2025-26", league: "Serie A", Squad: "Inter Milan", Player: "Marcus Thuram", Pos: "FW", statType: "shooting", MP: 29, Starts: 29, Min: 1937, "90s": 21.26, Gls: 13, Sh: 74, SoT: 29, PublicProfileSource: "true" },
+  { season: "2025-26", league: "Brasileirao Serie A", Squad: "Santos", Player: "Neymar Jr.", Pos: "MF,FW", statType: "standard", MP: 8, Starts: 8, Min: 686, "90s": 7.6, Gls: 4, Ast: 2, PublicProfileSource: "true" },
+  { season: "2025-26", league: "Brasileirao Serie A", Squad: "Santos", Player: "Neymar Jr.", Pos: "MF,FW", statType: "shooting", MP: 8, Starts: 8, Min: 686, "90s": 7.6, Gls: 4, Sh: 21, SoT: 7, PublicProfileSource: "true" },
 ];
 
 const INTERNATIONAL_PROFILE_BASELINES = {
@@ -382,6 +408,7 @@ const INTERNATIONAL_PROFILE_BASELINES = {
   "david-raya": { team: "Spain", appearances: 12, goals: 0, updatedAt: "2026-03-31" },
   "gianluigi-donnarumma": { team: "Italy", appearances: 81, goals: 0, updatedAt: "2026-03-31" },
   "jan-oblak": { team: "Slovenia", appearances: 82, goals: 0, updatedAt: "2025-11-16" },
+  "thibaut-courtois": { team: "Belgium", appearances: 102, goals: 0, updatedAt: "2026-03-31" },
   "benjamin-sesko": { team: "Slovenia", appearances: 45, goals: 16, updatedAt: "2025-10-14" },
   "senne-lammens": { team: "Belgium", appearances: 2, goals: 0, updatedAt: "2026-03-28" },
   "matheus-cunha": { team: "Brazil", appearances: 21, goals: 1, updatedAt: "2026-05-03" },
@@ -398,6 +425,7 @@ const INTERNATIONAL_PROFILE_BASELINES = {
   "cristiano-ronaldo": { team: "Portugal", appearances: 226, goals: 143, updatedAt: "2025-11-13" },
   "lionel-messi": { team: "Argentina", appearances: 198, goals: 116, updatedAt: "2026-04-01" },
   "marcus-thuram": { team: "France", appearances: 31, goals: 2, updatedAt: "2026-03-31" },
+  "neymar-jr": { team: "Brazil", appearances: 128, goals: 79, updatedAt: "2026-03-31" },
 };
 
 function numeric(value) {

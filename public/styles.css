@@ -1628,8 +1628,8 @@ textarea:focus {
 }
 
 .profile-training-latest {
-  grid-template-columns: minmax(0, 1fr) auto;
-  align-items: center;
+  grid-template-columns: minmax(0, 1fr);
+  align-items: start;
 }
 
 .profile-training-latest div {
@@ -1639,9 +1639,17 @@ textarea:focus {
 }
 
 .profile-entry-edit-button {
+  justify-self: start;
   min-width: 64px;
   padding: 7px 10px;
   font-size: 12px;
+}
+
+.profile-training-latest span {
+  overflow: visible;
+  line-height: 1.35;
+  text-overflow: clip;
+  white-space: normal;
 }
 
 .profile-training-empty {

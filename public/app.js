@@ -2009,6 +2009,7 @@ function renderPlayerProfiles() {
               <p class="muted">${escapeHtml(view.team)} | ${escapeHtml(view.league)} | ${escapeHtml(profile.position)}</p>
               <p class="profile-source">Photo source: ${photoSourceMarkup(profile) || "Not set"}</p>
               <p class="profile-source">Stats source: ${escapeHtml(view.importedBaseline?.source || "Manual entries only")}</p>
+              ${view.importedBaseline?.detail ? `<p class="profile-source">Profile note: ${escapeHtml(view.importedBaseline.detail)}</p>` : ""}
             </div>
             ${teamBadge(view.team)}
           </div>
