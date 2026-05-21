@@ -1805,6 +1805,10 @@ textarea:focus {
   gap: 10px;
 }
 
+.futures-pick-grid.is-list {
+  grid-template-columns: 1fr;
+}
+
 .futures-pick-card {
   display: grid;
   gap: 7px;
@@ -1813,6 +1817,29 @@ textarea:focus {
   border-radius: 8px;
   background: var(--surface);
   padding: 11px;
+}
+
+.futures-pick-grid.is-list .futures-pick-card {
+  grid-template-columns: minmax(130px, 0.8fr) minmax(70px, 0.25fr) minmax(220px, 1.4fr);
+  align-items: center;
+}
+
+.futures-pick-grid.is-list .card-topline {
+  justify-content: flex-start;
+}
+
+.futures-pick-grid.is-list .futures-pick-card h4,
+.futures-pick-grid.is-list .futures-pick-card strong,
+.futures-pick-grid.is-list .futures-pick-card p,
+.futures-pick-grid.is-list .futures-pick-card a,
+.futures-pick-grid.is-list .futures-pick-card .profile-source {
+  margin: 0;
+}
+
+.futures-pick-grid.is-list .futures-pick-card p.fbref-line,
+.futures-pick-grid.is-list .futures-pick-card a,
+.futures-pick-grid.is-list .futures-pick-card .profile-source {
+  grid-column: 3;
 }
 
 .futures-pick-card h4 {
@@ -2044,6 +2071,16 @@ summary {
 @media (max-width: 720px) {
   .futures-pick-grid {
     grid-template-columns: 1fr;
+  }
+
+  .futures-pick-grid.is-list .futures-pick-card {
+    grid-template-columns: 1fr;
+  }
+
+  .futures-pick-grid.is-list .futures-pick-card p.fbref-line,
+  .futures-pick-grid.is-list .futures-pick-card a,
+  .futures-pick-grid.is-list .futures-pick-card .profile-source {
+    grid-column: auto;
   }
 
   .futures-pick-card {

@@ -1,3 +1,5 @@
+const fs = require("fs");
+const path = require("path");
 const { archivedLeagueTables } = require("./leagueTableService");
 const { readFixtureData, internationalGroupTables } = require("./internationalData");
 const { listPlayerProfiles } = require("./playerProfileStore");
@@ -6,6 +8,13 @@ const { loadMatches, normalizeTeamName } = require("./footballData");
 
 const CLUB_LEAGUES = ["EPL", "La Liga", "Bundesliga", "Ligue 1", "Serie A"];
 const HISTORICAL_SEASONS = ["2020-21", "2021-22", "2022-23", "2023-24", "2024-25", "2025-26"];
+const UEFA_DATA_ROOT = "C:\\Users\\adebi\\Downloads\\champions-league-master\\champions-league-master";
+const UEFA_SEASONS = ["2021-22", "2022-23", "2023-24", "2024-25", "2025-26"];
+const UEFA_COMPETITION_FILES = {
+  "Champions League": ["cl.txt", "clq.txt"],
+  "Europa League": ["el.txt", "elq.txt"],
+  "Conference League": ["conf.txt", "confq.txt"],
+};
 const NEXT_SEASON_RULES = {
   EPL: { relegatedCount: 3, promotedCount: 3, secondTierCode: "eng.2", secondTierName: "Championship" },
   "La Liga": { relegatedCount: 3, promotedCount: 3, secondTierCode: "esp.2", secondTierName: "LaLiga 2" },
@@ -146,11 +155,24 @@ const TEAM_ASSIST_CANDIDATES = {
   Brentford: "Mikkel Damsgaard",
   Tottenham: "James Maddison",
   "Newcastle United": "Anthony Gordon",
+  Bournemouth: "Marcus Tavernier",
   Barcelona: "Lamine Yamal",
   "Real Madrid": "Jude Bellingham",
+  "Celta Vigo": "Iago Aspas",
+  Getafe: "Luis Milla",
+  "Rayo Vallecano": "Alvaro Garcia",
   "Bayern Munich": "Michael Olise",
+  "TSG Hoffenheim": "Andrej Kramaric",
+  "Bayer Leverkusen": "Florian Wirtz",
+  "SC Freiburg": "Vincenzo Grifo",
   "Paris SG": "Ousmane Dembele",
+  Marseille: "Pierre-Emerick Aubameyang",
+  Lyon: "Rayan Cherki",
+  "Stade Rennais": "Ludovic Blas",
   "Inter Milan": "Marcus Thuram",
+  Juventus: "Kenan Yildiz",
+  Como: "Nico Paz",
+  Atalanta: "Ademola Lookman",
 };
 
 const CHAMPIONS_LEAGUE_QUALIFIED = [
@@ -207,6 +229,116 @@ const EUROPE_PROFILE_RANGES = {
     "Ligue 1": [6],
     "Serie A": [7],
   },
+};
+
+const EUROPEAN_PLAYER_CANDIDATES = {
+  "Champions League": {
+    goals: [
+      { player: "Erling Haaland", team: "Man City", prior: "recent Champions League Golden Boot-level scorer" },
+      { player: "Kylian Mbappe", team: "Real Madrid", prior: "elite knockout-stage scorer profile" },
+      { player: "Harry Kane", team: "Bayern Munich", prior: "high-volume domestic and European finisher" },
+      { player: "Viktor Gyokeres", team: "Arsenal", prior: "high-volume striker profile" },
+      { player: "Ousmane Dembele", team: "Paris SG", prior: "PSG attacking focal point" },
+      { player: "Raphinha", team: "Barcelona", prior: "wing scorer and creator profile" },
+      { player: "Vinicius Junior", team: "Real Madrid", prior: "Madrid knockout scorer profile" },
+      { player: "Marcus Thuram", team: "Inter Milan", prior: "Inter striker profile" },
+      { player: "Michael Olise", team: "Bayern Munich", prior: "Bayern creator/scorer profile" },
+      { player: "Khvicha Kvaratskhelia", team: "Paris SG", prior: "wide forward shot-creation profile" },
+    ],
+    assists: [
+      { player: "Lamine Yamal", team: "Barcelona", prior: "elite chance creation and crossing profile" },
+      { player: "Raphinha", team: "Barcelona", prior: "set-piece and open-play creator" },
+      { player: "Michael Olise", team: "Bayern Munich", prior: "high assist and final-ball profile" },
+      { player: "Ousmane Dembele", team: "Paris SG", prior: "dribble creation and final pass profile" },
+      { player: "Bruno Fernandes", team: "Man United", prior: "set-piece and key-pass volume profile" },
+      { player: "Dominik Szoboszlai", team: "Liverpool", prior: "set-piece and chance-creation profile" },
+      { player: "Jude Bellingham", team: "Real Madrid", prior: "advanced midfield creator profile" },
+      { player: "Khvicha Kvaratskhelia", team: "Paris SG", prior: "wide creator profile" },
+    ],
+  },
+  "Europa League": {
+    goals: [
+      { player: "Cole Palmer", team: "Chelsea", prior: "penalty and open-play scorer profile" },
+      { player: "Antony", team: "Betis", prior: "wide forward focal point profile" },
+      { player: "Benjamin Sesko", team: "Man United", prior: "central striker profile if Europa allocation holds" },
+      { player: "Jonathan David", team: "Lille", prior: "Ligue 1 volume scorer profile" },
+      { player: "Julian Alvarez", team: "Ath Madrid", prior: "pressing striker and penalty-box profile" },
+      { player: "Folarin Balogun", team: "AS Monaco", prior: "central striker profile" },
+      { player: "Rafael Leao", team: "AC Milan", prior: "transition scorer profile" },
+      { player: "Dominic Solanke", team: "Tottenham", prior: "central striker profile" },
+    ],
+    assists: [
+      { player: "Cole Palmer", team: "Chelsea", prior: "set-piece and penalty-area chance creation" },
+      { player: "Bruno Fernandes", team: "Man United", prior: "set-piece and chance-volume profile" },
+      { player: "Antoine Griezmann", team: "Ath Madrid", prior: "creative forward profile" },
+      { player: "James Maddison", team: "Tottenham", prior: "set-piece and central creation profile" },
+      { player: "Florian Wirtz", team: "Bayer Leverkusen", prior: "elite creator profile if allocation holds" },
+      { player: "Rafael Leao", team: "AC Milan", prior: "wide creator profile" },
+    ],
+  },
+  "Conference League": {
+    goals: [
+      { player: "Igor Thiago", team: "Brentford", prior: "central striker profile" },
+      { player: "Ademola Lookman", team: "Atalanta", prior: "European knockout scorer profile" },
+      { player: "Jean-Philippe Mateta", team: "Crystal Palace", prior: "central striker profile" },
+      { player: "Kaoru Mitoma", team: "Brighton", prior: "wide forward profile" },
+      { player: "Deniz Undav", team: "VfB Stuttgart", prior: "Bundesliga striker profile" },
+    ],
+    assists: [
+      { player: "Mikkel Damsgaard", team: "Brentford", prior: "creative midfield profile" },
+      { player: "Ademola Lookman", team: "Atalanta", prior: "wide forward creator profile" },
+      { player: "Kaoru Mitoma", team: "Brighton", prior: "dribble creation profile" },
+      { player: "Vincenzo Grifo", team: "SC Freiburg", prior: "set-piece profile" },
+      { player: "Riccardo Orsolini", team: "Bologna", prior: "wide creator/scorer profile" },
+    ],
+  },
+};
+
+const UEFA_TEAM_ALIASES = {
+  "1. FC Heidenheim 1846": "1. FC Heidenheim 1846",
+  "1899 Hoffenheim": "TSG Hoffenheim",
+  "AC Milan": "AC Milan",
+  "AFC Ajax": "Ajax",
+  "Arsenal FC": "Arsenal",
+  "AS Monaco FC": "AS Monaco",
+  "AS Roma": "AS Roma",
+  "Aston Villa FC": "Aston Villa",
+  "Atalanta BC": "Atalanta",
+  "Athletic Club": "Ath Bilbao",
+  "Bayer 04 Leverkusen": "Bayer Leverkusen",
+  "Borussia Dortmund": "Borussia Dortmund",
+  "Chelsea FC": "Chelsea",
+  "Club AtlÃ©tico de Madrid": "Ath Madrid",
+  "Club Atlético de Madrid": "Ath Madrid",
+  "FC Barcelona": "Barcelona",
+  "FC Bayern MÃ¼nchen": "Bayern Munich",
+  "FC Bayern München": "Bayern Munich",
+  "FC Internazionale Milano": "Inter Milan",
+  "FC Porto": "Porto",
+  "FC Red Bull Salzburg": "RB Salzburg",
+  "FC St. Gallen": "St. Gallen",
+  "FenerbahÃ§e": "Fenerbahce",
+  "Fenerbahçe": "Fenerbahce",
+  "Feyenoord Rotterdam": "Feyenoord",
+  "FK Shakhtar Donetsk": "Shakhtar Donetsk",
+  "Galatasaray": "Galatasaray",
+  "Juventus FC": "Juventus",
+  "Lazio Roma": "Lazio",
+  "Liverpool FC": "Liverpool",
+  "Manchester City FC": "Man City",
+  "Manchester United": "Man United",
+  "Olympique Lyonnais": "Lyon",
+  "Olympique de Marseille": "Marseille",
+  "Paris Saint-Germain FC": "Paris SG",
+  "PSV": "PSV Eindhoven",
+  "RB Leipzig": "RB Leipzig",
+  "Real Betis": "Betis",
+  "Real Madrid CF": "Real Madrid",
+  "Real Sociedad": "Real Sociedad",
+  "Sport Lisboa e Benfica": "Benfica",
+  "Sporting Clube de Portugal": "Sporting CP",
+  "Tottenham Hotspur": "Tottenham",
+  "VfB Stuttgart": "VfB Stuttgart",
 };
 
 const INTERNATIONAL_RATINGS = {
@@ -670,7 +802,7 @@ function topMarketWatchlist(league, trends, profiles, metric) {
 }
 
 function leagueWinnerPicksFromTrends(league, tableName, trends) {
-  return trends.slice(0, 5).map((trend, index, list) => ({
+  return trends.slice(0, 4).map((trend, index, list) => ({
     rank: index + 1,
     market: index === 0 ? "Projected 2026-27 league winner" : "Title challenger",
     label: trend.team,
@@ -700,43 +832,290 @@ function promotedTeamBaselinePicks(league, trends) {
     }));
 }
 
-function championsLeagueProfileSections(allLeagueTrends) {
-  const trendLookup = new Map();
+function trendLookup(allLeagueTrends = []) {
+  const lookup = new Map();
   for (const trend of allLeagueTrends.flat()) {
-    trendLookup.set(normalizeTeamName(trend.team), trend);
+    lookup.set(`${trend.league}|${normalizeTeamName(trend.team)}`, trend);
+    lookup.set(normalizeTeamName(trend.team), trend);
   }
-  const picks = CHAMPIONS_LEAGUE_QUALIFIED.map((team) => {
-    const trend = trendLookup.get(normalizeTeamName(team.team));
-    const rating = trend ? trend.rating : 48;
-    return {
-      ...team,
-      rating,
-      trend,
-    };
-  })
-    .sort((a, b) => b.rating - a.rating || a.team.localeCompare(b.team))
+  return lookup;
+}
+
+function profileLookup(profiles = []) {
+  return new Map(profiles.map((profile) => [String(profile.player || "").toLowerCase(), profile]));
+}
+
+let uefaHistoryCache = null;
+
+function compactTeamKey(value) {
+  return String(value || "")
+    .trim()
+    .normalize("NFD")
+    .replace(/[\u0300-\u036f]/g, "")
+    .toLowerCase();
+}
+
+const UEFA_COMPACT_TEAM_ALIASES = Object.fromEntries(
+  Object.entries({
+    ...UEFA_TEAM_ALIASES,
+    "1. FC Heidenheim 1846": "1. FC Heidenheim 1846",
+    "1899 Hoffenheim": "TSG Hoffenheim",
+    "BSC Young Boys": "Young Boys",
+    "Club Atlético de Madrid": "Ath Madrid",
+    "FC Bayern München": "Bayern Munich",
+    "Fenerbahçe": "Fenerbahce",
+    "Lille OSC": "Lille",
+    "Manchester United FC": "Man United",
+    "Slavia Praha": "Slavia Prague",
+  }).map(([key, value]) => [compactTeamKey(key), value])
+);
+
+function normalizeUefaTeamName(value) {
+  const cleaned = String(value || "")
+    .replace(/\s+\([A-Z]{2,3}\)\s*$/i, "")
+    .replace(/\s+/g, " ")
+    .trim();
+  const key = compactTeamKey(cleaned);
+  return UEFA_TEAM_ALIASES[cleaned] || UEFA_COMPACT_TEAM_ALIASES[key] || normalizeTeamName(cleaned);
+}
+
+function parseUefaMatchLine(line) {
+  const match = String(line || "").match(/^\s*(?:\d{1,2}\.\d{2}\s+)?(.+?)\s+v\s+(.+?)\s+(\d+)-(\d+)(?:\s|\(|$)/);
+  if (!match) return null;
+  const home = normalizeUefaTeamName(match[1]);
+  const away = normalizeUefaTeamName(match[2]);
+  if (!home || !away || home === away) return null;
+  return {
+    home,
+    away,
+    homeGoals: numeric(match[3]),
+    awayGoals: numeric(match[4]),
+  };
+}
+
+function emptyUefaStats(team, competition) {
+  return {
+    team,
+    competition,
+    matches: 0,
+    wins: 0,
+    draws: 0,
+    losses: 0,
+    goalsFor: 0,
+    goalsAgainst: 0,
+    points: 0,
+    weightedScore: 0,
+    weightSum: 0,
+    seasons: new Set(),
+    mainMatches: 0,
+    qualifierMatches: 0,
+  };
+}
+
+function updateUefaStats(stats, season, goalsFor, goalsAgainst, weight, isQualifier) {
+  const points = goalsFor > goalsAgainst ? 3 : goalsFor === goalsAgainst ? 1 : 0;
+  stats.matches += 1;
+  stats.wins += points === 3 ? 1 : 0;
+  stats.draws += points === 1 ? 1 : 0;
+  stats.losses += points === 0 ? 1 : 0;
+  stats.goalsFor += goalsFor;
+  stats.goalsAgainst += goalsAgainst;
+  stats.points += points;
+  stats.weightSum += weight;
+  stats.weightedScore += (points * 8 + goalsFor * 1.7 - goalsAgainst * 1.1 + (goalsFor - goalsAgainst) * 2.2) * weight;
+  stats.seasons.add(season);
+  if (isQualifier) stats.qualifierMatches += 1;
+  else stats.mainMatches += 1;
+}
+
+function finalizeUefaStats(stats) {
+  const ppg = stats.matches ? stats.points / stats.matches : 0;
+  const goalsForPerMatch = stats.matches ? stats.goalsFor / stats.matches : 0;
+  const goalsAgainstPerMatch = stats.matches ? stats.goalsAgainst / stats.matches : 0;
+  const gdPerMatch = goalsForPerMatch - goalsAgainstPerMatch;
+  const recentScore = stats.weightSum ? stats.weightedScore / stats.weightSum : 0;
+  const rating = 42 + ppg * 7.5 + gdPerMatch * 5.5 + goalsForPerMatch * 1.8 + Math.min(9, stats.mainMatches * 0.12) + stats.seasons.size * 1.2 + recentScore * 0.32;
+  return {
+    ...stats,
+    seasons: [...stats.seasons],
+    ppg: round(ppg, 2),
+    goalsForPerMatch: round(goalsForPerMatch, 2),
+    goalsAgainstPerMatch: round(goalsAgainstPerMatch, 2),
+    goalDifference: stats.goalsFor - stats.goalsAgainst,
+    rating: round(Math.max(38, Math.min(88, rating)), 2),
+  };
+}
+
+function loadUefaCompetitionHistory() {
+  if (uefaHistoryCache) return uefaHistoryCache;
+  const history = {};
+  for (const competition of Object.keys(UEFA_COMPETITION_FILES)) {
+    const table = new Map();
+    for (const [seasonIndex, season] of UEFA_SEASONS.entries()) {
+      for (const file of UEFA_COMPETITION_FILES[competition] || []) {
+        const filePath = path.join(UEFA_DATA_ROOT, season, file);
+        if (!fs.existsSync(filePath)) continue;
+        const isQualifier = file.includes("q.");
+        const seasonWeight = 1 + seasonIndex * 0.28;
+        const stageWeight = isQualifier ? 0.45 : 1;
+        const text = fs.readFileSync(filePath, "utf8");
+        for (const line of text.split(/\r?\n/)) {
+          const match = parseUefaMatchLine(line);
+          if (!match) continue;
+          for (const team of [match.home, match.away]) {
+            if (!table.has(team)) table.set(team, emptyUefaStats(team, competition));
+          }
+          const weight = seasonWeight * stageWeight;
+          updateUefaStats(table.get(match.home), season, match.homeGoals, match.awayGoals, weight, isQualifier);
+          updateUefaStats(table.get(match.away), season, match.awayGoals, match.homeGoals, weight, isQualifier);
+        }
+      }
+    }
+    history[competition] = new Map([...table.entries()].map(([team, stats]) => [team, finalizeUefaStats(stats)]));
+  }
+  uefaHistoryCache = history;
+  return history;
+}
+
+function uefaStatsForTeam(competition, team) {
+  return loadUefaCompetitionHistory()[competition]?.get(normalizeUefaTeamName(team)) || null;
+}
+
+function europeanWinnerPicks(competition, teams) {
+  return teams.slice(0, 8).map((candidate, index, list) => ({
+    rank: index + 1,
+    market: `${competition} winner prediction`,
+    label: candidate.team,
+    detail: `${candidate.league}: ${competition} rating ${round(candidate.rating, 1)}${candidate.trend ? `, ${candidate.trend.ppg} domestic weighted PPG` : ""}${candidate.uefaStats ? `; imported UEFA record ${candidate.uefaStats.wins}W-${candidate.uefaStats.draws}D-${candidate.uefaStats.losses}L, ${candidate.uefaStats.goalsFor}-${candidate.uefaStats.goalsAgainst} goals` : ""}.`,
+    confidence: confidenceFromRank(index, list.length, 48, competition === "Champions League" ? 69 : 64),
+    note: "Pre-draw futures projection using domestic trend strength, imported UEFA result history, recent European profile, and squad/player baselines.",
+    source: { name: `${competition} qualification tracker plus imported UEFA result files`, url: competition === "Champions League" ? FUTURES_SOURCES.championsLeague.url : "" },
+  }));
+}
+
+function europeanProfilePicks(competition, teams) {
+  return teams.map((candidate, index, list) => ({
+    rank: index + 1,
+    market: `${competition} qualification profile`,
+    label: candidate.team,
+    detail: `${candidate.league}: ${candidate.status || `domestic rank band #${candidate.rank || "n/a"}`}${candidate.trend ? `, 2026-27 trend rating ${candidate.trend.rating}` : ""}.`,
+    confidence: confidenceFromRank(index, list.length, 42, 60),
+    note: "Qualification/profile baseline with imported UEFA history layered in. Fixture draw is not required for futures, but will improve confidence once imported.",
+    source: { name: "Qualification/profile tracker and imported UEFA result files", url: competition === "Champions League" ? FUTURES_SOURCES.championsLeague.url : "" },
+  }));
+}
+
+function europeanPlayerWatchlist(competition, teams, profiles, metric) {
+  const teamSet = new Set(teams.map((team) => normalizeTeamName(team.team)));
+  const teamRatings = new Map(teams.map((team) => [normalizeTeamName(team.team), numeric(team.rating)]));
+  const profilesByPlayer = profileLookup(profiles);
+  const configured = EUROPEAN_PLAYER_CANDIDATES[competition]?.[metric] || [];
+  const profileCandidates = [];
+  for (const league of CLUB_LEAGUES) {
+    for (const candidate of playerProfileCandidates(league, profiles, metric)) {
+      if (!teamSet.has(normalizeTeamName(candidate.team))) continue;
+      profileCandidates.push({
+        player: candidate.player,
+        team: normalizeTeamName(candidate.team),
+        prior: "tracked player-profile baseline",
+        value: candidate.value,
+        rate: candidate.rate,
+      });
+    }
+  }
+  const fallbackCandidates = teams.flatMap((team) => {
+    const normalizedTeam = normalizeTeamName(team.team);
+    const scorer = TEAM_SCORER_CANDIDATES[team.league]?.[normalizedTeam]?.[0];
+    const assister = TEAM_ASSIST_CANDIDATES[normalizedTeam];
+    const player = metric === "assists" ? assister : scorer;
+    if (!player) return [];
+    return [{
+      player,
+      team: normalizedTeam,
+      prior: metric === "assists" ? "projected team creator baseline" : "projected team scoring focal point",
+      value: 0,
+      rate: 0,
+    }];
+  });
+  const candidates = [...configured, ...profileCandidates, ...fallbackCandidates]
+    .filter((candidate) => !teamSet.size || teamSet.has(normalizeTeamName(candidate.team)))
+    .map((candidate) => {
+      const profile = profilesByPlayer.get(String(candidate.player || "").toLowerCase());
+      const totals = profile?.totals || {};
+      const value = numeric(candidate.value ?? totals[metric]);
+      const rate = numeric(candidate.rate ?? totals[metric === "assists" ? "assistsPer90" : "goalsPer90"]);
+      const teamRating = teamRatings.get(normalizeTeamName(candidate.team)) || 45;
+      return {
+        ...candidate,
+        value,
+        rate,
+        rating: teamRating * 0.42 + value * 2.2 + rate * 11,
+        sourceName: profile ? "Tracked player profile and European futures baseline" : "European futures candidate baseline",
+      };
+    });
+  const seen = new Set();
+  return candidates
+    .sort((a, b) => b.rating - a.rating || a.player.localeCompare(b.player))
+    .filter((candidate) => {
+      const key = `${candidate.player}|${candidate.team}`.toLowerCase();
+      if (seen.has(key)) return false;
+      seen.add(key);
+      return true;
+    })
+    .slice(0, 10)
     .map((candidate, index, list) => ({
       rank: index + 1,
-      market: candidate.status,
-      label: candidate.team,
-      detail: `${candidate.league}: Champions League profile rating ${round(candidate.rating, 1)}${candidate.trend ? `, ${candidate.trend.ppg} domestic weighted PPG` : ""}.`,
-      confidence: confidenceFromRank(index, list.length, 45, 68),
-      note: `Qualified-team baseline as of 2026-05-21. Fixture draw, transfers, squad lists, odds, and European form should be layered in once available.`,
-      source: FUTURES_SOURCES.championsLeague,
+      market: metric === "assists" ? `${competition} top assist prediction` : `${competition} top scorer prediction`,
+      label: candidate.player,
+      detail: `${candidate.team}: ${candidate.value ? `${candidate.value} ${metric}` : "candidate watchlist"}${candidate.rate ? `, ${round(candidate.rate, 2)} per 90` : ""}; ${candidate.prior || "European futures profile"}.`,
+      confidence: confidenceFromRank(index, list.length, 43, metric === "assists" ? 63 : 66),
+      note: "Fixtures are not required for this futures market. Team European strength now uses imported UEFA result files; draw difficulty, minutes, injuries, penalties, and squad lists will sharpen this later.",
+      source: { name: candidate.sourceName, url: "" },
     }));
+}
+
+function europeanCompetitionSection(competition, teamRows, allLeagueTrends, profiles) {
+  const lookup = trendLookup(allLeagueTrends);
+  const teams = teamRows
+    .map((team) => {
+      const normalized = normalizeTeamName(team.team);
+      const trend = lookup.get(`${team.league}|${normalized}`) || lookup.get(normalized);
+      const uefaStats = uefaStatsForTeam(competition, normalized);
+      const baseRating = numeric(team.rating) || trend?.rating || Math.max(40, 70 - numeric(team.rank || 8) * 2.2);
+      const rating = uefaStats
+        ? baseRating * 0.72 + uefaStats.rating * 0.34 + Math.min(5, uefaStats.mainMatches * 0.05)
+        : baseRating;
+      return {
+        ...team,
+        team: normalized,
+        trend,
+        uefaStats,
+        rating: round(rating, 2),
+      };
+    })
+    .sort((a, b) => b.rating - a.rating || numeric(a.rank) - numeric(b.rank) || a.team.localeCompare(b.team));
   return {
-    id: "champions-league-profile",
-    title: "Champions League Profile",
-    subtitle: `${picks.length} qualified/projected teams tracked so far. Fixtures are not imported yet, so this is a team-strength profile, not a match board.`,
-    picks,
+    id: `${competition.toLowerCase().replace(/[^a-z0-9]+/g, "-")}-futures`,
+    title: `${competition} Futures`,
+    subtitle: `${teams.length} teams in the current ${competition} futures pool. Winner, scorer, and assist markets are pre-draw predictions.`,
+    picks: [
+      ...europeanWinnerPicks(competition, teams),
+      ...europeanPlayerWatchlist(competition, teams, profiles, "goals"),
+      ...europeanPlayerWatchlist(competition, teams, profiles, "assists"),
+      ...europeanProfilePicks(competition, teams),
+    ],
   };
+}
+
+function championsLeagueProfileSections(allLeagueTrends) {
+  return europeanCompetitionSection("Champions League", CHAMPIONS_LEAGUE_QUALIFIED, allLeagueTrends, listPlayerProfiles().profiles || []);
 }
 
 async function projectedEuropeanProfileSection(competition, allLeagueTrends = []) {
   const ranges = EUROPE_PROFILE_RANGES[competition];
   const trendLookup = new Map();
   for (const trend of allLeagueTrends.flat()) trendLookup.set(`${trend.league}|${normalizeTeamName(trend.team)}`, trend);
-  const picks = [];
+  const teams = [];
   for (const league of CLUB_LEAGUES) {
     const table = await currentTopLeagueTable(league);
     for (const rank of ranges?.[league] || []) {
@@ -744,31 +1123,17 @@ async function projectedEuropeanProfileSection(competition, allLeagueTrends = []
       if (!row) continue;
       const team = normalizeTeamName(row.team);
       const trend = trendLookup.get(`${league}|${team}`);
-      picks.push({
+      teams.push({
         team,
         league,
         rank,
+        status: `${competition} projected qualifier`,
         rating: trend?.rating || Math.max(40, 70 - rank * 3),
         trend,
       });
     }
   }
-  return {
-    id: `${competition.toLowerCase().replace(/[^a-z0-9]+/g, "-")}-profile`,
-    title: `${competition} Profile`,
-    subtitle: `${picks.length} projected teams from current domestic table bands. Cup winners and UEFA access-list changes can still alter this.`,
-    picks: picks
-      .sort((a, b) => b.rating - a.rating || a.rank - b.rank || a.team.localeCompare(b.team))
-      .map((candidate, index, list) => ({
-        rank: index + 1,
-        market: `${competition} projected qualifier`,
-        label: candidate.team,
-        detail: `${candidate.league}: domestic rank band #${candidate.rank}${candidate.trend ? `, 2026-27 trend rating ${candidate.trend.rating}` : ""}.`,
-        confidence: confidenceFromRank(index, list.length, 42, 62),
-        note: "Projected European profile only. Re-train this once official UEFA access lists, cup winners, and qualifying rounds are locked.",
-        source: FUTURES_SOURCES.performanceSpots,
-      })),
-  };
+  return europeanCompetitionSection(competition, teams, allLeagueTrends, listPlayerProfiles().profiles || []);
 }
 
 async function nextSeasonClubFutures({ league = "All" } = {}) {

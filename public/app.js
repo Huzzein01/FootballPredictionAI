@@ -875,7 +875,7 @@ function renderFutures() {
   const marketMatches = (pick) => {
     const text = `${pick.market || ""} ${pick.label || ""}`.toLowerCase();
     if (market === "winners") return text.includes("winner") || text.includes("challenger");
-    if (market === "scorers") return text.includes("league top scorer") || text.includes("world cup top scorer");
+    if (market === "scorers") return text.includes("top scorer");
     if (market === "assists") return text.includes("assist");
     if (market === "team-scorers") return text.includes("team top scorer");
     if (market === "europe") return text.includes("champions league") || text.includes("europa") || text.includes("conference") || text.includes("league phase") || text.includes("qualifier");
@@ -893,8 +893,9 @@ function renderFutures() {
   futuresOutput.innerHTML = `
     ${data.sourcePolicy ? `<p class="futures-policy">${escapeHtml(data.sourcePolicy)}</p>` : ""}
     ${filteredSections
-      .map(
-        (section) => `
+      .map((section) => {
+        const listLayout = section.picks.every((pick) => /top scorer|top assist|team top scorer/i.test(pick.market || ""));
+        return `
           <article class="futures-section">
             <div class="league-table-head">
               <div>
@@ -902,7 +903,7 @@ function renderFutures() {
                 <p class="muted">${escapeHtml(section.subtitle || "")} ${section.picks.length ? `| ${section.picks.length} visible pick${section.picks.length === 1 ? "" : "s"}` : ""}</p>
               </div>
             </div>
-            <div class="futures-pick-grid">
+            <div class="futures-pick-grid ${listLayout ? "is-list" : ""}">
               ${(section.picks || [])
                 .map(
                   (pick) => `
@@ -922,8 +923,8 @@ function renderFutures() {
                 .join("")}
             </div>
           </article>
-        `
-      )
+        `;
+      })
       .join("")}
   `;
 }
