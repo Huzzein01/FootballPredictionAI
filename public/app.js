@@ -7,6 +7,7 @@ const ledgerBody = document.querySelector("#ledgerBody");
 const teamList = document.querySelector("#teamList");
 const appContextToggle = document.querySelector("#appContextToggle");
 const leagueSelect = document.querySelector("#leagueSelect");
+const singleCompetitionSelect = document.querySelector("#singleCompetitionSelect");
 const themeSelect = document.querySelector("#themeSelect");
 const seasonSelect = document.querySelector("#seasonSelect");
 const fixtureBoard = document.querySelector("#fixtureBoard");
@@ -115,8 +116,15 @@ const TEAM_DISPLAY_NAMES = {
   "Nott'm Forest": "Nottingham Forest",
   "Oviedo": "Real Oviedo",
   "Paris SG": "Paris SG",
+  "Real Sociedad": "Real Sociedad",
+  "Sociedad": "Real Sociedad",
+  "Metz": "Metz",
+  "Mets": "Metz",
+  "Sheffield United": "Sheffield United",
   "Tottenham": "Tottenham",
   "USA": "United States",
+  "Wolverhampton Wanderers": "Wolves",
+  "Wolves": "Wolves",
 };
 
 const TEAM_LOGOS = {
@@ -154,12 +162,19 @@ const TEAM_LOGOS = {
   "Paris Saint-Germain": "https://a.espncdn.com/i/teamlogos/soccer/500/160.png",
   "Real Madrid": "https://a.espncdn.com/i/teamlogos/soccer/500/86.png",
   "Real Oviedo": "https://a.espncdn.com/i/teamlogos/soccer/500/92.png",
+  "Real Sociedad": "https://a.espncdn.com/i/teamlogos/soccer/500/89.png",
+  "Sociedad": "https://a.espncdn.com/i/teamlogos/soccer/500/89.png",
   "Sevilla": "https://a.espncdn.com/i/teamlogos/soccer/500/243.png",
+  "Sheffield United": "https://a.espncdn.com/i/teamlogos/soccer/500/398.png",
   "Sunderland": "https://a.espncdn.com/i/teamlogos/soccer/500/366.png",
   "Tottenham": "https://a.espncdn.com/i/teamlogos/soccer/500/367.png",
   "Tottenham Hotspur": "https://a.espncdn.com/i/teamlogos/soccer/500/367.png",
   "Valencia": "https://a.espncdn.com/i/teamlogos/soccer/500/94.png",
   "Villarreal": "https://a.espncdn.com/i/teamlogos/soccer/500/102.png",
+  "Wolverhampton Wanderers": "https://a.espncdn.com/i/teamlogos/soccer/500/380.png",
+  "Wolves": "https://a.espncdn.com/i/teamlogos/soccer/500/380.png",
+  "Metz": "https://a.espncdn.com/i/teamlogos/soccer/500/177.png",
+  "Mets": "https://a.espncdn.com/i/teamlogos/soccer/500/177.png",
   "Al-Nassr": "https://a.espncdn.com/i/teamlogos/soccer/500/817.png",
   "Inter Miami": "https://a.espncdn.com/i/teamlogos/soccer/500/20232.png",
   "Argentina": "https://flagcdn.com/w160/ar.png",
@@ -248,6 +263,11 @@ const TEAM_COLORS = {
   "Tottenham": "#132257",
   "Al-Nassr": "#f7c600",
   "Inter Miami": "#f7b5cd",
+  "Real Sociedad": "#0067b1",
+  "Sheffield United": "#ee2737",
+  "Wolves": "#fdb913",
+  "Wolverhampton Wanderers": "#fdb913",
+  "Metz": "#7a0019",
   "Argentina": "#75aadb",
   "Belgium": "#fae042",
   "Brazil": "#009c3b",
@@ -409,6 +429,8 @@ function updateContextLabels() {
   if (futuresMarketFilter) futuresMarketFilter.closest("label").hidden = isInternationalMode();
   if (parlayLeagueFilter) parlayLeagueFilter.closest("label").hidden = isInternationalMode();
   if (playedLeagueFilter) playedLeagueFilter.closest("label").hidden = isInternationalMode();
+  if (leagueSelect) leagueSelect.closest("label").hidden = isInternationalMode();
+  if (singleCompetitionSelect) singleCompetitionSelect.closest("label").hidden = !isInternationalMode();
   pageTabs
     .filter((tab) => tab.dataset.pageTarget === "league-tables")
     .forEach((tab) => {
@@ -558,19 +580,55 @@ function restoreClubControls() {
   const previousParlayLeague = CLUB_PARLAY_LEAGUES.includes(parlayLeagueFilter.value) ? parlayLeagueFilter.value : "All";
   parlayLeagueFilter.innerHTML = CLUB_PARLAY_LEAGUES.map((league) => `<option value="${escapeHtml(league)}">${escapeHtml(league === "All" ? "All leagues" : league)}</option>`).join("");
   parlayLeagueFilter.value = previousParlayLeague;
-  if (leagueSelect.value === "International") {
+  const wasInternationalSingle =
+    leagueSelect.value === "International" ||
+    /World Cup|Euro|Africa Cup|Copa America|Asian Cup|Gold Cup/i.test(form.elements.season.value || "") ||
+    ["Mexico", "South Africa", "Argentina", "France"].includes(form.elements.homeTeam.value) ||
+    ["Mexico", "South Africa", "Argentina", "France"].includes(form.elements.awayTeam.value);
+  if (wasInternationalSingle) {
     leagueSelect.value = "EPL";
-  }
-  if (form.elements.season.value === "2022 World Cup") {
-    form.elements.season.value = "2025-26";
-  }
-  if (form.elements.homeTeam.value === "Argentina" && form.elements.awayTeam.value === "France") {
+    form.elements.season.value = CLUB_SEASONS.some((season) => season.value === selectedSeason()) ? selectedSeason() : "2025-26";
     form.elements.homeTeam.value = "Man United";
     form.elements.awayTeam.value = "Chelsea";
     form.elements.date.value = "";
+    form.elements.homeOdds.value = "";
+    form.elements.drawOdds.value = "";
+    form.elements.awayOdds.value = "";
+    form.elements.save.checked = true;
     output.classList.remove("is-visible");
     output.innerHTML = "";
   }
+}
+
+function ensureSelectOption(select, value, label = value) {
+  if (!select || [...select.options].some((option) => option.value === value)) return;
+  select.append(new Option(label, value));
+}
+
+function renderInternationalSingleUnavailable(competition) {
+  form.elements.league.value = "International";
+  form.elements.season.value = selectedSeason();
+  form.elements.date.value = "";
+  form.elements.homeTeam.value = "TBD";
+  form.elements.awayTeam.value = "TBD";
+  form.elements.homeOdds.value = "2.40";
+  form.elements.drawOdds.value = "3.50";
+  form.elements.awayOdds.value = "2.90";
+  form.elements.save.checked = false;
+  output.classList.add("is-visible");
+  output.innerHTML = `
+    <div class="pick-line">
+      <div>
+        <strong>${escapeHtml(competition)}</strong>
+        <p class="muted">International mode | ${escapeHtml(selectedSeason())}</p>
+      </div>
+      <span class="pick-pill tag-D">Fixture feed pending</span>
+    </div>
+    <div class="info-box">
+      ${escapeHtml(competition)} is selectable now, but this model only has a connected World Cup fixture feed at the moment. Once fixtures are imported, this form will use the same international-only prediction flow.
+    </div>
+  `;
+  updateTeamList();
 }
 
 function renderInternationalParlayLedger() {
@@ -595,6 +653,14 @@ function renderInternationalLedger() {
 
 function setInternationalSingleDemo() {
   if (!form) return;
+  if (singleCompetitionSelect && singleCompetitionSelect.value !== "World Cup") {
+    renderInternationalSingleUnavailable(singleCompetitionSelect.value);
+    return;
+  }
+  if (selectedSeason() !== "2026 World Cup") {
+    renderInternationalSingleUnavailable(selectedSeason());
+    return;
+  }
   const firstFixture = (internationalFixtureData?.fixtures || [])[0] || {
     date: "2026-06-11",
     homeTeam: "Mexico",
@@ -602,8 +668,10 @@ function setInternationalSingleDemo() {
     group: "Group A",
     venue: "Estadio Azteca",
   };
+  if (singleCompetitionSelect) singleCompetitionSelect.value = "World Cup";
+  ensureSelectOption(form.elements.season, selectedSeason());
   form.elements.league.value = "International";
-  form.elements.season.value = "2026 World Cup";
+  form.elements.season.value = selectedSeason();
   form.elements.date.value = firstFixture.date || "";
   form.elements.homeTeam.value = firstFixture.homeTeam || "Mexico";
   form.elements.awayTeam.value = firstFixture.awayTeam || "South Africa";
@@ -1653,6 +1721,29 @@ function actualResultText(prediction) {
   return "Pending";
 }
 
+function isHistoricalResult(prediction) {
+  return prediction.played?.statusLabel === "Historical result" || prediction.played?.sourceName === "Imported historical match CSV";
+}
+
+function renderHistoricalPlayedCard(prediction) {
+  const settled = prediction.played || {};
+  const hasFinalGoals = Number.isFinite(Number(settled.homeGoals)) && Number.isFinite(Number(settled.awayGoals));
+  const finalScore = settled.actualScore || (hasFinalGoals ? `${settled.homeGoals}-${settled.awayGoals}` : "n/a");
+  return `
+    <article class="historical-played-card" aria-label="${escapeHtml(displayTeam(prediction.homeTeam))} ${escapeHtml(finalScore)} ${escapeHtml(displayTeam(prediction.awayTeam))}">
+      <div class="historical-played-meta">
+        <span>${escapeHtml(prediction.date || "")}</span>
+        <span>${escapeHtml(prediction.league || "")}</span>
+      </div>
+      <div class="historical-played-score">
+        ${fixtureTeamLine(prediction.homeTeam, prediction.homeFlagUrl)}
+        <strong>${escapeHtml(finalScore.replace("-", " - "))}</strong>
+        ${fixtureTeamLine(prediction.awayTeam, prediction.awayFlagUrl)}
+      </div>
+    </article>
+  `;
+}
+
 function renderPlayedBoard() {
   if (isInternationalMode()) {
     renderInternationalPlayedBoard();
@@ -1665,10 +1756,11 @@ function renderPlayedBoard() {
     const dateMatches = !selectedDate || prediction.date === selectedDate;
     return leagueMatches && dateMatches;
   });
-  const correct = playedPredictions.filter((prediction) => prediction.played?.modelCorrect === true).length;
-  const wrong = playedPredictions.filter((prediction) => prediction.played?.modelCorrect === false).length;
-  const voided = playedPredictions.filter((prediction) => prediction.played?.modelCorrect === null).length;
-  const exact = playedPredictions.filter((prediction) => prediction.played?.exactScoreCorrect === true).length;
+  const backtestedRows = playedPredictions.filter((prediction) => !isHistoricalResult(prediction));
+  const correct = backtestedRows.filter((prediction) => prediction.played?.modelCorrect === true).length;
+  const wrong = backtestedRows.filter((prediction) => prediction.played?.modelCorrect === false).length;
+  const voided = backtestedRows.filter((prediction) => prediction.played?.modelCorrect === null).length;
+  const exact = backtestedRows.filter((prediction) => prediction.played?.exactScoreCorrect === true).length;
 
   document.querySelector("#playedTotal").textContent = playedPredictions.length;
   document.querySelector("#playedCorrect").textContent = correct;
@@ -1684,6 +1776,7 @@ function renderPlayedBoard() {
 
   playedBoard.innerHTML = filtered
     .map((prediction) => {
+      if (isHistoricalResult(prediction)) return renderHistoricalPlayedCard(prediction);
       const settled = prediction.played || {};
       const picks = settled.picks || [];
       const hasFinalGoals = Number.isFinite(Number(settled.homeGoals)) && Number.isFinite(Number(settled.awayGoals));
@@ -2468,6 +2561,10 @@ ledgerBody.addEventListener("click", async (event) => {
 
 document.querySelector("#refreshButton").addEventListener("click", refreshLedger);
 leagueSelect.addEventListener("change", updateTeamList);
+singleCompetitionSelect?.addEventListener("change", () => {
+  if (!isInternationalMode()) return;
+  setInternationalSingleDemo();
+});
 boardLeagueFilter.addEventListener("change", renderBoard);
 boardDateFilter.addEventListener("change", renderBoard);
 clearBoardDateButton.addEventListener("click", () => {

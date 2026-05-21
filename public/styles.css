@@ -1164,6 +1164,49 @@ textarea:focus {
   border-left-color: #6366f1;
 }
 
+.historical-played-card {
+  display: grid;
+  gap: 10px;
+  min-width: 0;
+  border: 1px solid color-mix(in srgb, var(--line) 88%, var(--teal));
+  border-left: 4px solid var(--teal);
+  border-radius: 8px;
+  background: color-mix(in srgb, var(--row) 96%, var(--surface));
+  padding: 12px;
+  box-shadow: var(--shadow-soft);
+}
+
+.historical-played-meta {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 7px;
+  color: var(--muted);
+  font-size: 11px;
+  font-weight: 900;
+  text-transform: uppercase;
+}
+
+.historical-played-score {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto minmax(0, 1fr);
+  gap: 10px;
+  align-items: center;
+}
+
+.historical-played-score .team-line:last-child {
+  justify-content: flex-end;
+}
+
+.historical-played-score strong {
+  border-radius: 8px;
+  background: var(--navy);
+  color: var(--bg);
+  font-size: 18px;
+  line-height: 1;
+  padding: 8px 10px;
+  white-space: nowrap;
+}
+
 .played-card-head {
   display: flex;
   align-items: flex-start;
@@ -3161,6 +3204,15 @@ th {
 
   .fixture-teams {
     grid-template-columns: 1fr;
+  }
+
+  .historical-played-score {
+    grid-template-columns: 1fr;
+    justify-items: start;
+  }
+
+  .historical-played-score .team-line:last-child {
+    justify-content: flex-start;
   }
 
   .team-line,

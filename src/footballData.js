@@ -37,6 +37,8 @@ const TEAM_ALIASES = {
   "man city": "Man City",
   chelsea: "Chelsea",
   "real madrid": "Real Madrid",
+  "real sociedad": "Real Sociedad",
+  sociedad: "Real Sociedad",
   "fc barcelona": "Barcelona",
   barcelona: "Barcelona",
   "bayern munich": "Bayern Munich",
@@ -64,8 +66,11 @@ const TEAM_ALIASES = {
   "nottingham forest": "Nott'm Forest",
   "nott'm forest": "Nott'm Forest",
   sunderland: "Sunderland",
+  "sheffield united": "Sheffield United",
   "tottenham hotspur": "Tottenham",
   tottenham: "Tottenham",
+  "wolverhampton wanderers": "Wolves",
+  wolves: "Wolves",
   "athletic club": "Ath Bilbao",
   "ath bilbao": "Ath Bilbao",
   "real betis": "Betis",
@@ -79,6 +84,8 @@ const TEAM_ALIASES = {
   "fc koln": "FC Koln",
   lens: "Lens",
   "paris fc": "Paris FC",
+  metz: "Metz",
+  mets: "Metz",
 };
 
 function parseCsv(text) {
