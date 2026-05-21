@@ -388,6 +388,76 @@ function confidenceFromRank(index, total, floor = 54, ceiling = 76) {
   return round(ceiling - (index / Math.max(1, total - 1)) * (ceiling - floor), 1);
 }
 
+function leagueMatchCount(league) {
+  return league === "Bundesliga" ? 34 : 38;
+}
+
+function clamp(value, min, max) {
+  return Math.max(min, Math.min(max, numeric(value)));
+}
+
+function marketShares(candidates, floor = 1.5) {
+  const weights = candidates.map((candidate, index) => Math.max(0.5, numeric(candidate.rating) - index * 0.35));
+  const total = weights.reduce((sum, value) => sum + value, 0) || 1;
+  const raw = weights.map((weight) => (weight / total) * 100);
+  const floored = raw.map((value) => Math.max(floor, Math.floor(value * 10) / 10));
+  let delta = round(100 - floored.reduce((sum, value) => sum + value, 0), 1);
+  const order = raw
+    .map((value, index) => ({ index, remainder: value * 10 - Math.floor(value * 10) }))
+    .sort((a, b) => b.remainder - a.remainder || a.index - b.index);
+  let cursor = 0;
+  while (Math.abs(delta) >= 0.1 && order.length) {
+    const target = order[cursor % order.length].index;
+    if (delta > 0) {
+      floored[target] = round(floored[target] + 0.1, 1);
+      delta = round(delta - 0.1, 1);
+    } else if (floored[target] > floor) {
+      floored[target] = round(floored[target] - 0.1, 1);
+      delta = round(delta + 0.1, 1);
+    }
+    cursor += 1;
+    if (cursor > 500) break;
+  }
+  return floored;
+}
+
+function projectedPlayerOutput(candidate, metric, league, teamTrend) {
+  const matches = leagueMatchCount(league);
+  const teamGoals = teamTrend?.goalsForPerMatch
+    ? numeric(teamTrend.goalsForPerMatch) * matches
+    : Math.max(42, numeric(teamTrend?.latestGoalsFor) || 58);
+  const role90s = candidate.rate
+    ? clamp(candidate.value / Math.max(0.1, candidate.rate), 16, metric === "assists" ? 31 : 33)
+    : metric === "assists" ? 25 : 28;
+  const roleShare = metric === "assists" ? 0.18 : 0.28;
+  const rateProjection = numeric(candidate.rate) * role90s;
+  const teamProjection = teamGoals * roleShare;
+  const ratingLift = Math.max(0, numeric(candidate.rating) - 25) * (metric === "assists" ? 0.035 : 0.045);
+  const projection = rateProjection * 0.58 + teamProjection * 0.34 + ratingLift;
+  const minimum = metric === "assists" ? 5 : 8;
+  const maximum = metric === "assists" ? 22 : 36;
+  return Math.round(clamp(projection, minimum, maximum));
+}
+
+function projectedEuropeanOutput(candidate, metric, team) {
+  const uefa = team?.uefaStats;
+  const expectedMatches = team?.rating >= 105 ? 11 : team?.rating >= 92 ? 9 : 7;
+  const teamGoals = uefa?.goalsForPerMatch
+    ? numeric(uefa.goalsForPerMatch) * expectedMatches
+    : Math.max(10, numeric(team?.trend?.goalsForPerMatch) * expectedMatches || 14);
+  const role90s = candidate.rate
+    ? clamp(candidate.value / Math.max(0.1, candidate.rate), 5, metric === "assists" ? 10 : 11)
+    : metric === "assists" ? 7 : 8;
+  const roleShare = metric === "assists" ? 0.2 : 0.34;
+  const rateProjection = numeric(candidate.rate) * role90s;
+  const teamProjection = teamGoals * roleShare;
+  const ratingLift = Math.max(0, numeric(team?.rating) - 70) * (metric === "assists" ? 0.025 : 0.03);
+  const projection = rateProjection * 0.54 + teamProjection * 0.38 + ratingLift;
+  const minimum = metric === "assists" ? 3 : 4;
+  const maximum = metric === "assists" ? 13 : 18;
+  return Math.round(clamp(projection, minimum, maximum));
+}
+
 function pickSource(league) {
   return {
     name: "ESPN public standings API",
@@ -742,21 +812,24 @@ function teamScorerWatchlist(league, trends, profiles) {
     const team = normalizeTeamName(trend.team);
     const profileCandidate = profileByTeam.get(team);
     const names = profileCandidate ? [profileCandidate.player] : TEAM_SCORER_CANDIDATES[league]?.[team] || ["Primary striker/penalty taker"];
+    const projectionCandidate = profileCandidate || { player: names[0], team, value: 0, rate: 0, rating: numeric(trend.rating) };
+    const projectedTeamGoals = Math.round(clamp(numeric(trend.goalsForPerMatch) * leagueMatchCount(league), 28, 96));
     return {
       rank: index + 1,
       market: "Team top scorer candidate",
       label: `${trend.team}: ${names.join(" / ")}`,
-      detail: `${trend.team} trend: ${round(trend.goalsForPerMatch, 2)} goals per match, latest season ${trend.latestGoalsFor} goals. Candidate should be rechecked after summer transfers.`,
+      detail: `${trend.team}: projected ${projectedTeamGoals} team goals in ${league} 2026-27; primary scorer projection ${projectedPlayerOutput(projectionCandidate, "goals", league, trend)} goals.`,
       confidence: confidenceFromRank(index, trends.length, 42, 61),
       note: profileCandidate
-        ? "Candidate selected from the tracked player-profile scoring baseline."
-        : "Candidate is a pre-season watchlist placeholder until squad, transfer, and scorer feed data are imported.",
+        ? "Candidate selected from the tracked player-profile scoring baseline and converted into a forward-season projection."
+        : "Candidate is a pre-season projection placeholder until squad, transfer, and scorer feed data are imported.",
       source: { name: profileCandidate ? "Player profile baselines" : "Historical team scoring trend plus candidate watchlist", url: "" },
     };
   });
 }
 
 function topMarketWatchlist(league, trends, profiles, metric) {
+  const trendsByTeam = new Map(trends.map((trend) => [normalizeTeamName(trend.team), trend]));
   const profileCandidates = playerProfileCandidates(league, profiles, metric).map((candidate) => ({
     ...candidate,
     rating: candidate.value * 2 + candidate.rate * 9,
@@ -781,7 +854,7 @@ function topMarketWatchlist(league, trends, profiles, metric) {
     })
     .filter(Boolean);
   const seen = new Set();
-  return [...profileCandidates, ...fallbackCandidates]
+  const candidates = [...profileCandidates, ...fallbackCandidates]
     .sort((a, b) => b.rating - a.rating || a.player.localeCompare(b.player))
     .filter((candidate) => {
       const key = `${candidate.player}|${candidate.team}`.toLowerCase();
@@ -789,14 +862,18 @@ function topMarketWatchlist(league, trends, profiles, metric) {
       seen.add(key);
       return true;
     })
-    .slice(0, 8)
+    .slice(0, 8);
+  const shares = marketShares(candidates);
+  return candidates
     .map((candidate, index, list) => ({
       rank: index + 1,
-      market: metric === "assists" ? "Top assist watchlist" : "League top scorer watchlist",
+      market: metric === "assists" ? "Projected top assist market" : "Projected league top scorer market",
       label: candidate.player,
-      detail: `${candidate.team}: ${candidate.value ? `${candidate.value} ${metric}` : "candidate watchlist"}${candidate.rate ? `, ${round(candidate.rate, 2)} per 90` : ""}.`,
-      confidence: confidenceFromRank(index, list.length, 46, metric === "assists" ? 64 : 67),
-      note: metric === "assists" ? "Assist market needs summer squads and minutes updates for better accuracy." : "Scorer market is trend-based until the new season fixture and roster feeds arrive.",
+      detail: `${candidate.team}: projected ${projectedPlayerOutput(candidate, metric, league, trendsByTeam.get(normalizeTeamName(candidate.team)))} ${metric} for ${league} 2026-27${candidate.rate ? ` from a ${round(candidate.rate, 2)} per-90 baseline` : " from team scoring trend and role baseline"}.`,
+      confidence: shares[index],
+      note: metric === "assists"
+        ? `Market share is normalized to 100% across these ${list.length} assist candidates. Recalculate after transfers, minutes, set pieces, and fixture difficulty are imported.`
+        : `Market share is normalized to 100% across these ${list.length} scorer candidates. Recalculate after transfers, penalties, minutes, and fixture difficulty are imported.`,
       source: { name: candidate.sourceName, url: "" },
     }));
 }
@@ -1008,6 +1085,7 @@ function europeanProfilePicks(competition, teams) {
 function europeanPlayerWatchlist(competition, teams, profiles, metric) {
   const teamSet = new Set(teams.map((team) => normalizeTeamName(team.team)));
   const teamRatings = new Map(teams.map((team) => [normalizeTeamName(team.team), numeric(team.rating)]));
+  const teamsByName = new Map(teams.map((team) => [normalizeTeamName(team.team), team]));
   const profilesByPlayer = profileLookup(profiles);
   const configured = EUROPEAN_PLAYER_CANDIDATES[competition]?.[metric] || [];
   const profileCandidates = [];
@@ -1037,7 +1115,7 @@ function europeanPlayerWatchlist(competition, teams, profiles, metric) {
       rate: 0,
     }];
   });
-  const candidates = [...configured, ...profileCandidates, ...fallbackCandidates]
+  const rawCandidates = [...configured, ...profileCandidates, ...fallbackCandidates]
     .filter((candidate) => !teamSet.size || teamSet.has(normalizeTeamName(candidate.team)))
     .map((candidate) => {
       const profile = profilesByPlayer.get(String(candidate.player || "").toLowerCase());
@@ -1054,7 +1132,7 @@ function europeanPlayerWatchlist(competition, teams, profiles, metric) {
       };
     });
   const seen = new Set();
-  return candidates
+  const candidates = rawCandidates
     .sort((a, b) => b.rating - a.rating || a.player.localeCompare(b.player))
     .filter((candidate) => {
       const key = `${candidate.player}|${candidate.team}`.toLowerCase();
@@ -1062,14 +1140,16 @@ function europeanPlayerWatchlist(competition, teams, profiles, metric) {
       seen.add(key);
       return true;
     })
-    .slice(0, 10)
+    .slice(0, 10);
+  const shares = marketShares(candidates);
+  return candidates
     .map((candidate, index, list) => ({
       rank: index + 1,
       market: metric === "assists" ? `${competition} top assist prediction` : `${competition} top scorer prediction`,
       label: candidate.player,
-      detail: `${candidate.team}: ${candidate.value ? `${candidate.value} ${metric}` : "candidate watchlist"}${candidate.rate ? `, ${round(candidate.rate, 2)} per 90` : ""}; ${candidate.prior || "European futures profile"}.`,
-      confidence: confidenceFromRank(index, list.length, 43, metric === "assists" ? 63 : 66),
-      note: "Fixtures are not required for this futures market. Team European strength now uses imported UEFA result files; draw difficulty, minutes, injuries, penalties, and squad lists will sharpen this later.",
+      detail: `${candidate.team}: projected ${projectedEuropeanOutput(candidate, metric, teamsByName.get(normalizeTeamName(candidate.team)))} ${metric} in ${competition} 2026-27${candidate.rate ? ` from a ${round(candidate.rate, 2)} per-90 baseline` : " from team European strength and role baseline"}; ${candidate.prior || "European futures profile"}.`,
+      confidence: shares[index],
+      note: `Market share is normalized to 100% across these ${list.length} ${metric === "assists" ? "assist" : "scorer"} candidates. Team European strength uses imported UEFA result files; draw difficulty, minutes, injuries, penalties, and squad lists will sharpen this later.`,
       source: { name: candidate.sourceName, url: "" },
     }));
 }
