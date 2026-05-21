@@ -255,7 +255,9 @@ async function handleApi(req, res, pathname) {
   if (req.method === "GET" && pathname === "/api/team-profiles") {
     const url = new URL(req.url, `http://${req.headers.host}`);
     const season = url.searchParams.get("season") || "2025-26";
-    return sendJson(res, 200, listTeamProfiles(season, await archivedLeagueTables(season)));
+    const context = url.searchParams.get("context") === "international" ? "international" : "club";
+    const tableData = context === "international" ? null : await archivedLeagueTables(season);
+    return sendJson(res, 200, listTeamProfiles(season, tableData, context));
   }
 
   if (req.method === "GET" && pathname === "/api/international/status") {
@@ -310,7 +312,8 @@ async function handleApi(req, res, pathname) {
     const entry = addTeamStatEntry(teamStatsMatch[1], await readBody(req));
     if (!entry) return sendJson(res, 404, { error: "Team profile not found" });
     scheduleRetrain("manual-team-profile-stats");
-    return sendJson(res, 200, { entry, profiles: listTeamProfiles(entry.season, await archivedLeagueTables(entry.season)), trainingStatus: readTrainingStatus() });
+    const tableData = entry.context === "international" ? null : await archivedLeagueTables(entry.season);
+    return sendJson(res, 200, { entry, profiles: listTeamProfiles(entry.season, tableData, entry.context || "club"), trainingStatus: readTrainingStatus() });
   }
 
   const teamStatsEditMatch = pathname.match(/^\/api\/team-profiles\/([^/]+)\/stats\/([^/]+)$/);
@@ -318,7 +321,8 @@ async function handleApi(req, res, pathname) {
     const entry = updateTeamStatEntry(teamStatsEditMatch[1], teamStatsEditMatch[2], await readBody(req));
     if (!entry) return sendJson(res, 404, { error: "Team stat entry not found" });
     scheduleRetrain("manual-team-profile-stats-edited");
-    return sendJson(res, 200, { entry, profiles: listTeamProfiles(entry.season, await archivedLeagueTables(entry.season)), trainingStatus: readTrainingStatus() });
+    const tableData = entry.context === "international" ? null : await archivedLeagueTables(entry.season);
+    return sendJson(res, 200, { entry, profiles: listTeamProfiles(entry.season, tableData, entry.context || "club"), trainingStatus: readTrainingStatus() });
   }
 
   if (req.method === "GET" && pathname === "/api/parlay") {

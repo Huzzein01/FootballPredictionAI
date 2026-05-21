@@ -19,6 +19,65 @@ const TEAM_PROFILES = [
   { id: "inter-milan", team: "Inter Milan", displayName: "Inter Milan", league: "Serie A" },
 ];
 
+const INTERNATIONAL_TEAM_PROFILES = [
+  { id: "intl-france", team: "France", displayName: "France", league: "International", context: "international" },
+  { id: "intl-portugal", team: "Portugal", displayName: "Portugal", league: "International", context: "international" },
+  { id: "intl-brazil", team: "Brazil", displayName: "Brazil", league: "International", context: "international" },
+  { id: "intl-england", team: "England", displayName: "England", league: "International", context: "international" },
+  { id: "intl-argentina", team: "Argentina", displayName: "Argentina", league: "International", context: "international" },
+  { id: "intl-germany", team: "Germany", displayName: "Germany", league: "International", context: "international" },
+  { id: "intl-spain", team: "Spain", displayName: "Spain", league: "International", context: "international" },
+  { id: "intl-belgium", team: "Belgium", displayName: "Belgium", league: "International", context: "international" },
+  { id: "intl-usa", team: "USA", displayName: "United States", league: "International", context: "international" },
+  { id: "intl-uruguay", team: "Uruguay", displayName: "Uruguay", league: "International", context: "international" },
+  { id: "intl-colombia", team: "Colombia", displayName: "Colombia", league: "International", context: "international" },
+  { id: "intl-morocco", team: "Morocco", displayName: "Morocco", league: "International", context: "international" },
+  { id: "intl-netherlands", team: "Netherlands", displayName: "Netherlands", league: "International", context: "international" },
+  { id: "intl-sweden", team: "Sweden", displayName: "Sweden", league: "International", context: "international" },
+  { id: "intl-egypt", team: "Egypt", displayName: "Egypt", league: "International", context: "international" },
+  { id: "intl-croatia", team: "Croatia", displayName: "Croatia", league: "International", context: "international" },
+  { id: "intl-norway", team: "Norway", displayName: "Norway", league: "International", context: "international" },
+  { id: "intl-senegal", team: "Senegal", displayName: "Senegal", league: "International", context: "international" },
+  { id: "intl-ghana", team: "Ghana", displayName: "Ghana", league: "International", context: "international" },
+];
+
+const INTERNATIONAL_BASELINES = {
+  "2022 World Cup": {
+    Argentina: { matches: 7, goalsFor: 15, goalsAgainst: 8, assists: 8 },
+    Belgium: { matches: 3, goalsFor: 1, goalsAgainst: 2, assists: 1 },
+    Brazil: { matches: 5, goalsFor: 8, goalsAgainst: 3, assists: 6 },
+    Croatia: { matches: 7, goalsFor: 8, goalsAgainst: 7, assists: 8 },
+    England: { matches: 5, goalsFor: 13, goalsAgainst: 4, assists: 11 },
+    France: { matches: 7, goalsFor: 16, goalsAgainst: 8, assists: 12 },
+    Germany: { matches: 3, goalsFor: 6, goalsAgainst: 5, assists: 5 },
+    Ghana: { matches: 3, goalsFor: 5, goalsAgainst: 7, assists: 2 },
+    Morocco: { matches: 7, goalsFor: 6, goalsAgainst: 5, assists: 4 },
+    Netherlands: { matches: 5, goalsFor: 10, goalsAgainst: 4, assists: 8 },
+    Portugal: { matches: 5, goalsFor: 12, goalsAgainst: 6, assists: 10 },
+    Senegal: { matches: 4, goalsFor: 5, goalsAgainst: 7, assists: 2 },
+    Spain: { matches: 4, goalsFor: 9, goalsAgainst: 3, assists: 5 },
+    USA: { matches: 4, goalsFor: 3, goalsAgainst: 4, assists: 3 },
+    Uruguay: { matches: 3, goalsFor: 2, goalsAgainst: 2, assists: 1 },
+  },
+  "2018 World Cup": {
+    Argentina: { matches: 4, goalsFor: 6, goalsAgainst: 9, assists: 6 },
+    Belgium: { matches: 7, goalsFor: 15, goalsAgainst: 6, assists: 12 },
+    Brazil: { matches: 5, goalsFor: 8, goalsAgainst: 3, assists: 7 },
+    Colombia: { matches: 4, goalsFor: 6, goalsAgainst: 3, assists: 5 },
+    Croatia: { matches: 7, goalsFor: 13, goalsAgainst: 6, assists: 8 },
+    Egypt: { matches: 3, goalsFor: 2, goalsAgainst: 6, assists: 1 },
+    England: { matches: 7, goalsFor: 12, goalsAgainst: 8, assists: 6 },
+    France: { matches: 7, goalsFor: 12, goalsAgainst: 6, assists: 6 },
+    Germany: { matches: 3, goalsFor: 2, goalsAgainst: 4, assists: 2 },
+    Morocco: { matches: 3, goalsFor: 2, goalsAgainst: 4, assists: 1 },
+    Portugal: { matches: 4, goalsFor: 6, goalsAgainst: 6, assists: 4 },
+    Senegal: { matches: 3, goalsFor: 3, goalsAgainst: 4, assists: 2 },
+    Spain: { matches: 4, goalsFor: 6, goalsAgainst: 6, assists: 3 },
+    Sweden: { matches: 5, goalsFor: 5, goalsAgainst: 4, assists: 3 },
+    Uruguay: { matches: 5, goalsFor: 6, goalsAgainst: 3, assists: 4 },
+  },
+};
+
 function defaultStore() {
   return { updatedAt: "", entries: [] };
 }
@@ -39,7 +98,11 @@ function writeStore(store) {
 }
 
 function profileById(profileId) {
-  return TEAM_PROFILES.find((profile) => profile.id === profileId);
+  return [...TEAM_PROFILES, ...INTERNATIONAL_TEAM_PROFILES].find((profile) => profile.id === profileId);
+}
+
+function profilesForContext(context = "club") {
+  return context === "international" ? INTERNATIONAL_TEAM_PROFILES : TEAM_PROFILES;
 }
 
 function numeric(value) {
@@ -78,6 +141,7 @@ function teamEntryFromBody(profile, body = {}, existing = {}) {
     team: normalizeTeamName(profile.team),
     displayName: profile.displayName,
     league: profile.league,
+    context: profile.context === "international" || body.context === "international" ? "international" : "club",
     season: body.season || "2025-26",
     date: body.date || new Date().toISOString().slice(0, 10),
     opponent: normalizeTeamName(String(body.opponent || "").trim()),
@@ -111,6 +175,47 @@ function entriesForProfile(store, profileId, season = "") {
   return store.entries
     .filter((entry) => entry.profileId === profileId && (!season || entry.season === season))
     .sort((a, b) => String(b.date || "").localeCompare(String(a.date || "")) || String(b.createdAt || "").localeCompare(String(a.createdAt || "")));
+}
+
+function goalsToExpectedGoals(goals) {
+  return Math.round(numeric(goals) * 100) / 100;
+}
+
+function internationalBaselineRows(team, season) {
+  const teamKey = normalizeTeamName(team);
+  if (INTERNATIONAL_BASELINES[season]?.[teamKey]) return [INTERNATIONAL_BASELINES[season][teamKey]];
+  if (season !== "2026 World Cup") return [];
+  return ["2018 World Cup", "2022 World Cup"]
+    .map((worldCupSeason) => INTERNATIONAL_BASELINES[worldCupSeason]?.[teamKey])
+    .filter(Boolean);
+}
+
+function internationalBaselineForProfile(profile, season) {
+  const rows = internationalBaselineRows(profile.team, season);
+  if (!rows.length) {
+    return {
+      totals: totalsWithRates(emptyTotals()),
+      source: "No imported international baseline for this team yet",
+      detail: "Add World Cup, Euros, qualifier, or friendly team-profile entries as data becomes available.",
+      hasBaseline: false,
+    };
+  }
+  const totals = rows.reduce((acc, row) => {
+    acc.matches += numeric(row.matches);
+    acc.goalsFor += numeric(row.goalsFor);
+    acc.goalsAgainst += numeric(row.goalsAgainst);
+    acc.expectedGoalsFor += goalsToExpectedGoals(row.goalsFor);
+    acc.expectedGoalsAgainst += goalsToExpectedGoals(row.goalsAgainst);
+    acc.cleanSheets += numeric(row.goalsAgainst) === 0 ? numeric(row.matches) : 0;
+    return acc;
+  }, emptyTotals());
+  const sourceSeason = season === "2026 World Cup" ? "2018 and 2022 World Cup" : season;
+  return {
+    totals: totalsWithRates(totals),
+    source: `${sourceSeason} squad standard stats screenshot baseline`,
+    detail: "Uses the World Cup standard-stat rows you provided as the pre-tournament baseline. xG/xGA are temporary goal-volume proxies until xG, shots, SOT, corner, and set-piece feeds are imported or manually trained.",
+    hasBaseline: true,
+  };
 }
 
 function emptyTotals() {
@@ -296,6 +401,7 @@ function mergeCsvVolumeWithTable(csvTotals, tableTotals) {
 }
 
 function importedBaselineForProfile(profile, season, tableData = null) {
+  if (profile.context === "international") return internationalBaselineForProfile(profile, season);
   const csvTotals = csvBaselineForProfile(profile, season);
   const tableTotals = tableBaselineForProfile(profile, tableData);
   if (csvTotals.matches && tableTotals.matches > csvTotals.matches) {
@@ -330,15 +436,17 @@ function importedBaselineForProfile(profile, season, tableData = null) {
   };
 }
 
-function listTeamProfiles(season = "", tableData = null) {
+function listTeamProfiles(season = "", tableData = null, context = "club") {
   const store = readStore();
   const profileSeason = season || "2025-26";
+  const profiles = profilesForContext(context);
   return {
     updatedAt: store.updatedAt,
     season: profileSeason,
-    profileCount: TEAM_PROFILES.length,
-    entryCount: store.entries.length,
-    profiles: TEAM_PROFILES.map((profile) => {
+    context,
+    profileCount: profiles.length,
+    entryCount: store.entries.filter((entry) => (entry.context || "club") === context).length,
+    profiles: profiles.map((profile) => {
       const entries = entriesForProfile(store, profile.id, profileSeason);
       const manualTotals = totalsForEntries(entries);
       const importedBaseline = importedBaselineForProfile(profile, profileSeason, tableData);
@@ -379,7 +487,7 @@ function updateTeamStatEntry(profileId, entryId, body = {}) {
 function manualTeamStatEntries(league, season = "2025-26") {
   const store = readStore();
   return store.entries
-    .filter((entry) => entry.league === league && entry.season === season)
+    .filter((entry) => (entry.context || "club") === "club" && entry.league === league && entry.season === season)
     .map((entry) => ({
       ...entry,
       team: normalizeTeamName(entry.team),
@@ -388,6 +496,7 @@ function manualTeamStatEntries(league, season = "2025-26") {
 }
 
 module.exports = {
+  INTERNATIONAL_TEAM_PROFILES,
   TEAM_PROFILE_STATS_PATH,
   TEAM_PROFILES,
   addTeamStatEntry,

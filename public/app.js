@@ -115,6 +115,7 @@ const TEAM_DISPLAY_NAMES = {
   "Oviedo": "Real Oviedo",
   "Paris SG": "Paris SG",
   "Tottenham": "Tottenham",
+  "USA": "United States",
 };
 
 const TEAM_LOGOS = {
@@ -970,10 +971,10 @@ async function renderInternationalContext() {
   await refreshLedger();
   await refreshLeagueTables();
   await refreshFutures();
+  await refreshTeamProfiles();
   renderWorldCupGroups();
   renderInternationalFixturesPage();
   renderPlayerProfiles();
-  renderTeamProfiles();
   setInternationalSingleDemo();
 }
 
@@ -2049,6 +2050,26 @@ function teamTableEntry(profile) {
   return (league?.standings || []).find((entry) => sameTeam(entry.team, profile.team)) || null;
 }
 
+function internationalGroupTableEntry(profile) {
+  for (const group of internationalGroupTableData?.groups || []) {
+    const entry = (group.standings || []).find((row) => sameTeam(row.team, profile.team));
+    if (entry) return { group: group.group, entry };
+  }
+  return null;
+}
+
+function teamProfileLinkedTableText(profile) {
+  if (isInternationalMode()) {
+    const groupRow = internationalGroupTableEntry(profile);
+    if (!groupRow) return "group row not available yet";
+    const { group, entry } = groupRow;
+    return `Group ${group} | #${entry.rank} | ${entry.points} pts | ${entry.status}`;
+  }
+  const tableEntry = teamTableEntry(profile);
+  if (!tableEntry) return "table row not available for this season";
+  return `#${tableEntry.rank} | ${tableEntry.points} pts | ${leagueTableStatusLabel(tableEntry, leagueTableData?.leagues?.[profile.league] || {})}`;
+}
+
 function teamProfileEntryMarkup(profile) {
   const latest = (profile.latestEntries || [])[0];
   if (!latest) {
@@ -2072,19 +2093,11 @@ function teamProfileEntryMarkup(profile) {
 
 function renderTeamProfiles() {
   if (!teamProfileGrid || !teamProfileSelect) return;
-  if (isInternationalMode()) {
-    teamProfileStatus.textContent = "Team profiles are currently configured for club teams";
-    teamProfileSelect.innerHTML = "";
-    teamProfileGrid.innerHTML = internationalEmptyState(
-      "Club team profiles only",
-      "Switch to club mode to train Man United, Man City, Chelsea, Arsenal, Tottenham, Liverpool, PSG, Atletico Madrid, Real Madrid, Barcelona, Bayern Munich, and Inter Milan."
-    );
-    return;
-  }
   const profiles = teamProfileData.profiles || [];
-  const selectedProfileId = teamProfileSelect.value || profiles[0]?.id || "";
+  const selectedProfileId = profiles.some((profile) => profile.id === teamProfileSelect.value) ? teamProfileSelect.value : profiles[0]?.id || "";
   const baselineCount = profiles.filter((profile) => profile.importedBaseline?.hasBaseline).length;
-  teamProfileStatus.textContent = `${selectedSeason()} club team profiles | ${profiles.length} tracked teams | ${baselineCount} imported season baselines | ${teamProfileData.entryCount || 0} saved team stat entries`;
+  const contextLabel = isInternationalMode() ? "international team profiles" : "club team profiles";
+  teamProfileStatus.textContent = `${selectedSeason()} ${contextLabel} | ${profiles.length} tracked teams | ${baselineCount} imported season baselines | ${teamProfileData.entryCount || 0} saved team stat entries`;
   teamProfileSelect.innerHTML = profiles
     .map((profile) => `<option value="${escapeHtml(profile.id)}">${escapeHtml(profile.displayName || displayTeam(profile.team))} | ${escapeHtml(profile.league)}</option>`)
     .join("");
@@ -2098,19 +2111,18 @@ function renderTeamProfiles() {
   teamProfileGrid.innerHTML = profiles
     .map((profile) => {
       const totals = profile.totals || {};
-      const tableEntry = teamTableEntry(profile);
       const isSelected = profile.id === teamProfileSelect.value;
       const lastFive = (profile.latestEntries || []).slice(0, 5);
       return `
         <article class="player-profile-card team-profile-card ${isSelected ? "is-selected-profile" : ""}" data-team-profile-id="${escapeHtml(profile.id)}" role="button" tabindex="0" aria-pressed="${isSelected ? "true" : "false"}" aria-label="Select ${escapeHtml(profile.displayName || displayTeam(profile.team))} for team profile training">
-          ${isSelected ? `<span class="selected-profile-star" role="img" aria-label="Selected team profile" title="Selected team profile">★</span>` : ""}
+          ${isSelected ? `<span class="selected-profile-star" role="img" aria-label="Selected team profile" title="Selected team profile">&#9733;</span>` : ""}
           <div class="profile-card-head">
             <div>
               <span class="role-pill">Team</span>
               <h3>${escapeHtml(profile.displayName || displayTeam(profile.team))}</h3>
               <p class="muted">${escapeHtml(profile.league)} | ${escapeHtml(selectedSeason())}</p>
               <p class="profile-source">Stats source: ${escapeHtml(profile.importedBaseline?.source || "Manual entries only")}</p>
-              <p class="profile-source">Linked table: ${tableEntry ? `#${tableEntry.rank} | ${tableEntry.points} pts | ${leagueTableStatusLabel(tableEntry, leagueTableData?.leagues?.[profile.league] || {})}` : "table row not available for this season"}</p>
+              <p class="profile-source">Linked table: ${escapeHtml(teamProfileLinkedTableText(profile))}</p>
             </div>
             ${teamBadge(profile.team)}
           </div>
@@ -2360,7 +2372,7 @@ async function refreshTeamProfiles() {
       leagueTableData = null;
     }
   }
-  teamProfileData = await api(`/api/team-profiles?season=${encodeURIComponent(selectedSeason())}`);
+  teamProfileData = await api(`/api/team-profiles?season=${encodeURIComponent(selectedSeason())}&context=${encodeURIComponent(currentAppContext())}`);
   renderTeamProfiles();
   setTeamProfileMessage("", "info");
 }
@@ -2642,6 +2654,7 @@ teamStatForm?.addEventListener("submit", async (event) => {
   try {
     const body = formJson(teamStatForm);
     body.season = selectedSeason();
+    body.context = currentAppContext();
     body.cleanSheet = Boolean(teamStatForm.elements.cleanSheet.checked);
     const isEditing = Boolean(editingTeamStatEntry?.id);
     const endpoint = isEditing
