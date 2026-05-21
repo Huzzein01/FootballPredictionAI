@@ -1678,7 +1678,7 @@ function renderPlayedBoard() {
   playedStatus.textContent = `${filtered.length} played match${filtered.length === 1 ? "" : "es"} shown${selectedDate ? ` on ${selectedDate}` : ""}`;
 
   if (!filtered.length) {
-    playedBoard.innerHTML = `<div class="empty-state">No played fixtures have been settled from parlays yet.</div>`;
+    playedBoard.innerHTML = `<div class="empty-state">No played fixtures found for the selected season/date filters.</div>`;
     return;
   }
 
@@ -2310,23 +2310,9 @@ async function refreshPlayedBoard() {
     renderInternationalPlayedBoard();
     return;
   }
-  if (!isCurrentClubSeason()) {
-    playedPredictions = [];
-    playedLeagueFilter.innerHTML = `<option value="All">All leagues</option>`;
-    playedLeagueFilter.value = "All";
-    syncDateFilter(playedDateFilter, [], "");
-    document.querySelector("#playedTotal").textContent = "0";
-    document.querySelector("#playedCorrect").textContent = "0";
-    document.querySelector("#playedWrong").textContent = "0";
-    document.querySelector("#playedExact").textContent = "0";
-    document.querySelector("#playedVoided").textContent = "0";
-    playedStatus.textContent = `${selectedSeason()} played fixtures not available`;
-    playedBoard.innerHTML = internationalEmptyState("Information not available", seasonUnavailableMessage());
-    return;
-  }
   const previousLeague = playedLeagueFilter.value;
   const previousDate = playedDateFilter.value;
-  const data = await api("/api/played-fixtures");
+  const data = await api(`/api/played-fixtures?context=club&season=${encodeURIComponent(selectedSeason())}`);
   playedPredictions = data.predictions || [];
 
   const leagues = [...new Set(playedPredictions.map((prediction) => prediction.league))].sort();

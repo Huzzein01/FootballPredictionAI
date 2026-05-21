@@ -11,12 +11,27 @@ const { internationalFixturePredictions, internationalGroupTables, international
 const { archivedLeagueTables, refreshLiveLeagueContext } = require("./leagueTableService");
 const { futuresPredictions } = require("./futuresService");
 const { resetPlayerStatsCache } = require("./playerStats");
+const { loadMatches, normalizeTeamName } = require("./footballData");
 const { refreshMissingOdds } = require("./oddsRepairService");
 const parlayBacktests = require("./parlayBacktestStore");
 
 const PORT = Number(process.env.PORT || 4173);
 const PUBLIC_DIR = path.join(process.cwd(), "public");
 const PLAYED_RESULTS_PATH = path.join(process.cwd(), "data", "played_results.json");
+const FOCUSED_CLUB_TEAMS = new Set([
+  "Man United",
+  "Man City",
+  "Chelsea",
+  "Arsenal",
+  "Tottenham",
+  "Liverpool",
+  "Paris SG",
+  "Ath Madrid",
+  "Real Madrid",
+  "Barcelona",
+  "Bayern Munich",
+  "Inter Milan",
+]);
 
 function sendJson(res, status, data) {
   res.writeHead(status, { "Content-Type": "application/json" });
@@ -176,6 +191,53 @@ function playedFixturePredictions() {
     .map((item) => ({ ...item.prediction, played: item.played }));
 }
 
+function historicalPlayedFixtures(season = "2025-26") {
+  return loadMatches()
+    .filter((row) => row.Season === season)
+    .filter((row) => row.FTHG !== "" && row.FTAG !== "")
+    .filter((row) => FOCUSED_CLUB_TEAMS.has(normalizeTeamName(row.HomeTeam)) || FOCUSED_CLUB_TEAMS.has(normalizeTeamName(row.AwayTeam)))
+    .map((row) => {
+      const homeTeam = normalizeTeamName(row.HomeTeam);
+      const awayTeam = normalizeTeamName(row.AwayTeam);
+      const homeGoals = Number(row.FTHG);
+      const awayGoals = Number(row.FTAG);
+      const actualResult = actualResultCode(homeGoals, awayGoals);
+      return {
+        league: row.League,
+        season: row.Season,
+        date: row.DateISO,
+        homeTeam,
+        awayTeam,
+        prediction: actualResult,
+        confidence: 100,
+        projectedScore: "",
+        probabilities: { homeWinPct: 0, drawPct: 0, awayWinPct: 0 },
+        played: {
+          key: `${row.DateISO}|${homeTeam}|${awayTeam}`.toLowerCase(),
+          date: row.DateISO,
+          fixture: `${homeTeam} vs ${awayTeam}`,
+          league: row.League,
+          hits: 0,
+          misses: 0,
+          voids: 0,
+          settledLegs: 0,
+          picks: [],
+          markets: [],
+          actualResult,
+          actualScore: `${homeGoals}-${awayGoals}`,
+          homeGoals,
+          awayGoals,
+          modelCorrect: null,
+          exactScoreCorrect: null,
+          sourceName: "Imported historical match CSV",
+          sourceUrl: "",
+          statusLabel: "Historical result",
+        },
+      };
+    })
+    .sort((a, b) => `${b.date} ${b.homeTeam}`.localeCompare(`${a.date} ${a.homeTeam}`));
+}
+
 async function handleApi(req, res, pathname) {
   if (req.method === "GET" && pathname === "/api/meta") {
     const model = JSON.parse(fs.readFileSync(path.join(process.cwd(), "model", "football_match_model.json"), "utf8"));
@@ -214,8 +276,20 @@ async function handleApi(req, res, pathname) {
   }
 
   if (req.method === "GET" && pathname === "/api/played-fixtures") {
-    await refreshLiveLeagueContext();
-    const predictions = playedFixturePredictions();
+    const url = new URL(req.url, `http://${req.headers.host}`);
+    const season = url.searchParams.get("season") || "2025-26";
+    const context = url.searchParams.get("context") === "international" ? "international" : "club";
+    if (context === "international") {
+      return sendJson(res, 200, {
+        predictions: [],
+        summary: { total: 0, correct: 0, wrong: 0, voided: 0, exactScores: 0 },
+      });
+    }
+    let predictions = historicalPlayedFixtures(season);
+    if (!predictions.length && season === "2025-26") {
+      await refreshLiveLeagueContext();
+      predictions = playedFixturePredictions();
+    }
     const correct = predictions.filter((prediction) => prediction.played?.modelCorrect === true).length;
     const wrong = predictions.filter((prediction) => prediction.played?.modelCorrect === false).length;
     const voided = predictions.filter((prediction) => prediction.played?.modelCorrect === null).length;

@@ -866,6 +866,7 @@ function teamScorerWatchlist(league, trends, profiles) {
     const existing = profileByTeam.get(key);
     if (!existing || candidate.value > existing.value || candidate.rate > existing.rate) profileByTeam.set(key, candidate);
   }
+  const shares = marketShares(trends, 1);
   return trends.map((trend, index) => {
     const team = normalizeTeamName(trend.team);
     const profileCandidate = profileByTeam.get(team);
@@ -877,7 +878,7 @@ function teamScorerWatchlist(league, trends, profiles) {
       market: "Team top scorer candidate",
       label: `${trend.team}: ${names.join(" / ")}`,
       detail: `${trend.team}: projected ${projectedTeamGoals} team goals in ${league} 2026-27; primary scorer projection ${projectedPlayerOutput(projectionCandidate, "goals", league, trend)} goals.`,
-      confidence: confidenceFromRank(index, trends.length, 42, 61),
+      confidence: shares[index],
       note: profileCandidate
         ? "Candidate selected from the tracked player-profile scoring baseline and converted into a forward-season projection."
         : "Candidate is a pre-season projection placeholder until squad, transfer, and scorer feed data are imported.",
@@ -937,17 +938,19 @@ function topMarketWatchlist(league, trends, profiles, metric) {
 }
 
 function leagueWinnerPicksFromTrends(league, tableName, trends) {
-  return trends.slice(0, 4).map((trend, index, list) => ({
+  const candidates = trends.slice(0, 4);
+  const shares = marketShares(candidates, 4);
+  return candidates.map((trend, index, list) => ({
     rank: index + 1,
     market: index === 0 ? "Projected 2026-27 league winner" : "Title challenger",
     label: trend.team,
     detail: trend.promoted
       ? `${tableName || league}: promoted side baseline, ${trend.secondTierSummary || "second-tier profile imported"}.`
       : `${tableName || league}: trend rating ${trend.rating}, ${trend.ppg} weighted PPG, ${trend.titles} title baseline(s), ${trend.topFour} top-four baseline(s) since 2020-21.`,
-    confidence: confidenceFromRank(index, list.length, 54, 72),
+    confidence: shares[index],
     note: trend.promoted
       ? "Promoted-team projection uses the past two second-tier seasons and should be rechecked once top-flight odds and fixture difficulty are imported."
-      : "Compiled from 2020-21 through 2025-26 tables/results. Refresh this after transfers, fixtures, odds, injuries, and preseason minutes are imported.",
+      : `Winner market share is normalized to 100% across these ${list.length} teams. Refresh this after transfers, fixtures, odds, injuries, and preseason minutes are imported.`,
     source: { name: trend.promoted ? "Second-tier promotion table baseline" : "2020-21 through 2025-26 league-table and result compilation", url: "" },
   }));
 }
@@ -1117,13 +1120,15 @@ function uefaStatsForTeam(competition, team) {
 }
 
 function europeanWinnerPicks(competition, teams) {
-  return teams.slice(0, 8).map((candidate, index, list) => ({
+  const candidates = teams.slice(0, 8);
+  const shares = marketShares(candidates, 3);
+  return candidates.map((candidate, index, list) => ({
     rank: index + 1,
     market: `${competition} winner prediction`,
     label: candidate.team,
     detail: `${candidate.league}: ${competition} rating ${round(candidate.rating, 1)}${candidate.trend ? `, ${candidate.trend.ppg} domestic weighted PPG` : ""}${candidate.uefaStats ? `; imported UEFA record ${candidate.uefaStats.wins}W-${candidate.uefaStats.draws}D-${candidate.uefaStats.losses}L, ${candidate.uefaStats.goalsFor}-${candidate.uefaStats.goalsAgainst} goals` : ""}.`,
-    confidence: confidenceFromRank(index, list.length, 48, competition === "Champions League" ? 69 : 64),
-    note: "Pre-draw futures projection using domestic trend strength, imported UEFA result history, recent European profile, and squad/player baselines.",
+    confidence: shares[index],
+    note: `Winner market share is normalized to 100% across these ${list.length} teams. Pre-draw projection uses domestic trend strength, imported UEFA result history, recent European profile, and squad/player baselines.`,
     source: { name: `${competition} qualification tracker plus imported UEFA result files`, url: competition === "Champions League" ? FUTURES_SOURCES.championsLeague.url : "" },
   }));
 }
