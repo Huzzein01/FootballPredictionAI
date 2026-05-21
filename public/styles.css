@@ -1643,13 +1643,16 @@ textarea:focus {
   min-width: 64px;
   padding: 7px 10px;
   font-size: 12px;
+  max-width: 100%;
 }
 
 .profile-training-latest span {
+  display: block;
   overflow: visible;
   line-height: 1.35;
   text-overflow: clip;
   white-space: normal;
+  overflow-wrap: anywhere;
 }
 
 .profile-training-empty {

@@ -407,6 +407,8 @@ function updateContextLabels() {
   if (leagueTableLeagueFilter) leagueTableLeagueFilter.closest("label").hidden = isInternationalMode();
   if (futuresLeagueFilter) futuresLeagueFilter.closest("label").hidden = isInternationalMode();
   if (futuresMarketFilter) futuresMarketFilter.closest("label").hidden = isInternationalMode();
+  if (parlayLeagueFilter) parlayLeagueFilter.closest("label").hidden = isInternationalMode();
+  if (playedLeagueFilter) playedLeagueFilter.closest("label").hidden = isInternationalMode();
   pageTabs
     .filter((tab) => tab.dataset.pageTarget === "league-tables")
     .forEach((tab) => {
@@ -546,15 +548,10 @@ function renderInternationalParlay() {
     parlayOutput.innerHTML = internationalEmptyState("Information not available", seasonUnavailableMessage());
     return;
   }
-  parlayStatus.textContent = internationalStatusData?.hasWorldCupFixtures
-    ? `${internationalStatusData.fixtureCount} World Cup fixtures loaded; parlay generation is waiting for odds and player-prop calibration`
-    : "International parlays are waiting for fixture, odds, and player-stat imports";
-  setParlayMessage("", "info");
-  trackParlaysButton.disabled = true;
-  parlayOutput.innerHTML = internationalEmptyState(
-    "Waiting for more international data",
-    "Safe and risk parlays will generate here after World Cup odds and player-prop baselines are connected."
-  );
+  parlayStatus.textContent = `${internationalStatusData?.fixtureCount || 0} World Cup fixtures loaded; building model-only international parlays`;
+  setParlayMessage("Building World Cup parlays from imported fixtures and 2018/2022 player baselines...", "info");
+  trackParlaysButton.disabled = false;
+  parlayOutput.innerHTML = `<div class="empty-state">Building World Cup parlay options...</div>`;
 }
 
 function restoreClubControls() {
@@ -598,26 +595,33 @@ function renderInternationalLedger() {
 
 function setInternationalSingleDemo() {
   if (!form) return;
+  const firstFixture = (internationalFixtureData?.fixtures || [])[0] || {
+    date: "2026-06-11",
+    homeTeam: "Mexico",
+    awayTeam: "South Africa",
+    group: "Group A",
+    venue: "Estadio Azteca",
+  };
   form.elements.league.value = "International";
-  form.elements.season.value = "2022 World Cup";
-  form.elements.date.value = "2022-12-18";
-  form.elements.homeTeam.value = "Argentina";
-  form.elements.awayTeam.value = "France";
-  form.elements.homeOdds.value = "";
-  form.elements.drawOdds.value = "";
-  form.elements.awayOdds.value = "";
+  form.elements.season.value = "2026 World Cup";
+  form.elements.date.value = firstFixture.date || "";
+  form.elements.homeTeam.value = firstFixture.homeTeam || "Mexico";
+  form.elements.awayTeam.value = firstFixture.awayTeam || "South Africa";
+  form.elements.homeOdds.value = "2.40";
+  form.elements.drawOdds.value = "3.50";
+  form.elements.awayOdds.value = "2.90";
   form.elements.save.checked = false;
   output.classList.add("is-visible");
   output.innerHTML = `
     <div class="pick-line">
       <div>
-        <strong>Argentina vs France</strong>
-        <p class="muted">International demo | 2022 World Cup Final | December 18, 2022</p>
+        <strong>${escapeHtml(firstFixture.homeTeam || "Mexico")} vs ${escapeHtml(firstFixture.awayTeam || "South Africa")}</strong>
+        <p class="muted">International mode | 2026 World Cup opener | ${escapeHtml(firstFixture.date || "2026-06-11")}</p>
       </div>
-      <span class="pick-pill tag-D">Demo only</span>
+      <span class="pick-pill tag-H">World Cup fixture</span>
     </div>
     <div class="info-box">
-      International single-match mode is separated from the club model. Use this Argentina vs France demo until World Cup, Euros, odds, table, and backtest data are imported.
+      The first imported World Cup fixture is loaded as the international single-match default. Odds are placeholders and can be edited once public market lines are available.
     </div>
   `;
   updateTeamList();
@@ -987,7 +991,7 @@ async function renderInternationalContext() {
   await refreshInternationalFixtureBoard();
   resetInternationalSummary();
   renderInternationalPlayedBoard();
-  renderInternationalParlay();
+  await refreshParlay();
   renderInternationalParlayLedger();
   await refreshLedger();
   await refreshLeagueTables();
@@ -1426,7 +1430,7 @@ function setTeamProfileMessage(message, kind = "info") {
 
 function playerTrainingEntrySummary(entry, isGoalkeeper) {
   const opponent = entry.opponent ? ` vs ${entry.opponent}` : "";
-  const venue = entry.venue ? ` (${entry.venue})` : "";
+  const venue = entry.venue ? ` | ${entry.venue}` : "";
   const saveHint = isGoalkeeper ? "Goalkeeper entry" : "Match entry";
   return `${entry.date || "Date n/a"}${opponent}${venue} - ${saveHint}`;
 }
@@ -2335,7 +2339,20 @@ async function refreshPlayedBoard() {
 
 async function refreshParlay({ forceNew = false } = {}) {
   if (isInternationalMode()) {
-    renderInternationalParlay();
+    if (!hasCurrentInternationalFixtures()) {
+      renderInternationalParlay();
+      return;
+    }
+    if (forceNew) parlayRefreshSeed += 1;
+    const legs = encodeURIComponent(parlayLegCount.value);
+    const tickets = encodeURIComponent(parlayTicketCount.value);
+    const type = encodeURIComponent(parlayTypeSelect.value);
+    const riskMode = encodeURIComponent(parlayRiskToggle.checked ? "risky" : "safe");
+    const generationMode = encodeURIComponent(parlayLayoutToggle.checked ? "fixture-grid" : "multi");
+    const date = encodeURIComponent(parlayDateFilter.value);
+    setParlayMessage(forceNew ? "Building a fresh World Cup parlay variation..." : "Building World Cup parlays from fixtures and imported player baselines...", "info");
+    const data = await api(`/api/parlay?context=international&league=International&legs=${legs}&tickets=${tickets}&type=${type}&riskMode=${riskMode}&generationMode=${generationMode}&date=${date}&refreshSeed=${parlayRefreshSeed}`);
+    renderParlay(data);
     return;
   }
   if (!isCurrentClubSeason()) {
@@ -2355,7 +2372,7 @@ async function refreshParlay({ forceNew = false } = {}) {
   const generationMode = encodeURIComponent(parlayLayoutToggle.checked ? "fixture-grid" : "multi");
   const date = encodeURIComponent(parlayDateFilter.value);
   setParlayMessage(forceNew ? "Building a fresh parlay variation..." : "Building parlay from fixtures and imported player stats...", "info");
-  const data = await api(`/api/parlay?league=${league}&legs=${legs}&tickets=${tickets}&type=${type}&riskMode=${riskMode}&generationMode=${generationMode}&date=${date}&refreshSeed=${parlayRefreshSeed}`);
+  const data = await api(`/api/parlay?context=club&league=${league}&legs=${legs}&tickets=${tickets}&type=${type}&riskMode=${riskMode}&generationMode=${generationMode}&date=${date}&refreshSeed=${parlayRefreshSeed}`);
   renderParlay(data);
 }
 

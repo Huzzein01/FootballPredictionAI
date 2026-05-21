@@ -326,10 +326,14 @@ async function handleApi(req, res, pathname) {
   }
 
   if (req.method === "GET" && pathname === "/api/parlay") {
-    await refreshMissingOdds();
-    await refreshLiveLeagueContext();
     const url = new URL(req.url, `http://${req.headers.host}`);
+    const context = url.searchParams.get("context") === "international" ? "international" : "club";
+    if (context !== "international") {
+      await refreshMissingOdds();
+      await refreshLiveLeagueContext();
+    }
     return sendJson(res, 200, buildParlay({
+      context,
       league: url.searchParams.get("league") || "All",
       legs: url.searchParams.get("legs") || 10,
       tickets: url.searchParams.get("tickets") || 3,

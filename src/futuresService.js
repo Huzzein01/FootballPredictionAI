@@ -5,6 +5,7 @@ const { readFixtureData, internationalGroupTables } = require("./internationalDa
 const { listPlayerProfiles } = require("./playerProfileStore");
 const { listTeamProfiles } = require("./teamProfileStore");
 const { loadMatches, normalizeTeamName } = require("./footballData");
+const { aggregatePlayers, loadPlayerRows } = require("./playerStats");
 
 const CLUB_LEAGUES = ["EPL", "La Liga", "Bundesliga", "Ligue 1", "Serie A"];
 const HISTORICAL_SEASONS = ["2020-21", "2021-22", "2022-23", "2023-24", "2024-25", "2025-26"];
@@ -373,6 +374,42 @@ const INTERNATIONAL_RATINGS = {
   "Saudi Arabia": 71,
 };
 
+const INTERNATIONAL_PRIORITY_PLAYERS = new Set([
+  "Lionel Messi",
+  "Kylian Mbappe",
+  "Harry Kane",
+  "Cristiano Ronaldo",
+  "Neymar",
+  "Vinicius Junior",
+  "Bukayo Saka",
+  "Jude Bellingham",
+  "Phil Foden",
+  "Bruno Fernandes",
+  "Ousmane Dembele",
+  "Raphinha",
+  "Lamine Yamal",
+  "Antoine Griezmann",
+  "Julian Alvarez",
+  "Lautaro Martinez",
+  "Christian Pulisic",
+  "Memphis",
+  "Son Heung-min",
+  "Goncalo Ramos",
+  "Olivier Giroud",
+  "Kai Havertz",
+  "Romelu Lukaku",
+  "Robert Lewandowski",
+  "Luis Suarez",
+  "Achraf Hakimi",
+  "Hakim Ziyech",
+  "Luka Modric",
+  "Ivan Perisic",
+  "Federico Valverde",
+  "Kevin De Bruyne",
+  "Jamal Musiala",
+  "Michael Olise",
+]);
+
 function numeric(value) {
   const n = Number(value);
   return Number.isFinite(n) ? n : 0;
@@ -399,26 +436,28 @@ function clamp(value, min, max) {
 function marketShares(candidates, floor = 1.5) {
   const weights = candidates.map((candidate, index) => Math.max(0.5, numeric(candidate.rating) - index * 0.35));
   const total = weights.reduce((sum, value) => sum + value, 0) || 1;
-  const raw = weights.map((weight) => (weight / total) * 100);
-  const floored = raw.map((value) => Math.max(floor, Math.floor(value * 10) / 10));
-  let delta = round(100 - floored.reduce((sum, value) => sum + value, 0), 1);
-  const order = raw
+  const safeFloor = candidates.length * floor >= 100 ? 0 : floor;
+  const remaining = Math.max(0, 100 - safeFloor * candidates.length);
+  const shares = weights.map((weight) => safeFloor + (weight / total) * remaining);
+  const rounded = shares.map((value) => Math.floor(value * 10) / 10);
+  let delta = round(100 - rounded.reduce((sum, value) => sum + value, 0), 1);
+  const order = shares
     .map((value, index) => ({ index, remainder: value * 10 - Math.floor(value * 10) }))
     .sort((a, b) => b.remainder - a.remainder || a.index - b.index);
   let cursor = 0;
   while (Math.abs(delta) >= 0.1 && order.length) {
     const target = order[cursor % order.length].index;
     if (delta > 0) {
-      floored[target] = round(floored[target] + 0.1, 1);
+      rounded[target] = round(rounded[target] + 0.1, 1);
       delta = round(delta - 0.1, 1);
-    } else if (floored[target] > floor) {
-      floored[target] = round(floored[target] - 0.1, 1);
+    } else if (rounded[target] > safeFloor) {
+      rounded[target] = round(rounded[target] - 0.1, 1);
       delta = round(delta + 0.1, 1);
     }
     cursor += 1;
     if (cursor > 500) break;
   }
-  return floored;
+  return rounded;
 }
 
 function projectedPlayerOutput(candidate, metric, league, teamTrend) {
@@ -456,6 +495,23 @@ function projectedEuropeanOutput(candidate, metric, team) {
   const minimum = metric === "assists" ? 3 : 4;
   const maximum = metric === "assists" ? 13 : 18;
   return Math.round(clamp(projection, minimum, maximum));
+}
+
+function projectedWorldCupOutput(candidate, metric) {
+  const rating = INTERNATIONAL_RATINGS[candidate.team] || 68;
+  const expectedMatches = rating >= 88 ? 6.4 : rating >= 82 ? 5.2 : rating >= 76 ? 4.1 : 3.2;
+  const rate = metric === "assists" ? numeric(candidate.assistsPer90) : numeric(candidate.goalsPer90);
+  const baseline = rate * expectedMatches;
+  const prior = metric === "assists" ? numeric(candidate.assists) * 0.12 : numeric(candidate.goals) * 0.13;
+  const teamLift = Math.max(0, rating - 72) * (metric === "assists" ? 0.025 : 0.035);
+  return Math.round(clamp(baseline * 0.68 + prior + teamLift, metric === "assists" ? 2 : 3, metric === "assists" ? 9 : 12));
+}
+
+function saneInternationalPlayer(candidate) {
+  return numeric(candidate.goals) <= 20 &&
+    numeric(candidate.assists) <= 15 &&
+    numeric(candidate.goalsPer90) <= 3 &&
+    numeric(candidate.assistsPer90) <= 3;
 }
 
 function pickSource(league) {
@@ -517,7 +573,7 @@ function tablePickFromLeague(leagueName, league, season) {
 }
 
 function scorerPicksForLeague(leagueName, profiles) {
-  return profiles
+  const candidates = profiles
     .filter((profile) => profile.league === leagueName)
     .map((profile) => {
       const totals = profile.totals || {};
@@ -531,13 +587,15 @@ function scorerPicksForLeague(leagueName, profiles) {
     })
     .filter((candidate) => candidate.goals > 0 || candidate.goalsPer90 > 0)
     .sort((a, b) => b.goals - a.goals || b.goalsPer90 - a.goalsPer90)
-    .slice(0, 5)
+    .slice(0, 10);
+  const shares = marketShares(candidates, 2);
+  return candidates
     .map((candidate, index, list) => ({
       rank: index + 1,
       label: candidate.player,
-      detail: `${candidate.team}: ${candidate.goals} goals, ${round(candidate.goalsPer90, 2)} goals/90, ${candidate.assists} assists in the tracked profile baseline.`,
-      confidence: confidenceFromRank(index, list.length, 50, 68),
-      note: "Player-profile baseline plus manual training entries. Improve this market with match-by-match minutes, shots, and SOT updates.",
+      detail: `${candidate.team}: projected ${projectedPlayerOutput({ ...candidate, value: candidate.goals, rate: candidate.goalsPer90, rating: candidate.goals * 2 + candidate.goalsPer90 * 9 }, "goals", leagueName, null)} goals for the next comparable league season from a ${round(candidate.goalsPer90, 2)} goals/90 baseline.`,
+      confidence: shares[index],
+      note: `Market share is normalized to 100% across these ${list.length} scorer candidates. Improve this market with match-by-match minutes, shots, SOT, transfers, and fixture difficulty.`,
       source: { name: "Player profile baselines and manual training", url: "" },
     }));
 }
@@ -1314,29 +1372,56 @@ async function clubFutures({ season = "2025-26", league = "All" } = {}) {
 function internationalWinnerPicks() {
   const fixtureData = readFixtureData();
   const teams = fixtureData.teams?.length ? fixtureData.teams : Object.values(fixtureData.groups || {}).flat();
-  return [...new Set(teams)]
+  const candidates = [...new Set(teams)]
     .map((team) => ({
       team,
       rating: INTERNATIONAL_RATINGS[team] || 68,
       group: Object.entries(fixtureData.groups || {}).find(([, groupTeams]) => groupTeams.includes(team))?.[0] || "",
     }))
     .sort((a, b) => b.rating - a.rating || a.team.localeCompare(b.team))
-    .slice(0, 8)
+    .slice(0, 8);
+  const shares = marketShares(candidates, 4);
+  return candidates
     .map((candidate, index, list) => ({
       rank: index + 1,
       market: "World Cup winner watchlist",
       label: candidate.team,
       detail: `${candidate.group ? `Group ${candidate.group}; ` : ""}international baseline rating ${candidate.rating}.`,
-      confidence: confidenceFromRank(index, list.length, 52, 70),
-      note: "Early futures lean before final squads, injuries, odds, and group-stage results are layered in.",
+      confidence: shares[index],
+      note: `Winner market share is normalized to 100% across these ${list.length} teams. Re-rank after final squads, injuries, odds, and group-stage results are layered in.`,
       source: { name: "World Cup 2026 fixture feed and model ratings", url: fixtureData.source?.url || "" },
     }));
 }
 
-function internationalScorerPicks() {
-  const profiles = listPlayerProfiles().profiles || [];
+function internationalPlayerFutures(metric = "goals") {
   const fixtureTeams = new Set(readFixtureData().teams || []);
-  return profiles
+  const seenPlayers = new Set();
+  const importedCandidates = aggregatePlayers(loadPlayerRows())
+    .filter((player) => player.league === "International")
+    .filter((player) => !fixtureTeams.size || fixtureTeams.has(player.squad))
+    .map((player) => ({
+      player: player.player,
+      team: player.squad,
+      goals: numeric(player.goals),
+      assists: numeric(player.assists),
+      goalsPer90: numeric(player.goalsPer90),
+      assistsPer90: numeric(player.assistsPer90),
+      shotsPer90: numeric(player.shotsPer90),
+      rating:
+        (INTERNATIONAL_RATINGS[player.squad] || 68) * 0.34 +
+        (metric === "assists" ? numeric(player.assists) * 4.5 + numeric(player.assistsPer90) * 16 : numeric(player.goals) * 4.2 + numeric(player.goalsPer90) * 18),
+    }))
+    .filter(saneInternationalPlayer)
+    .filter((candidate) => INTERNATIONAL_PRIORITY_PLAYERS.has(candidate.player))
+    .filter((candidate) => metric === "assists" ? candidate.assists > 0 || candidate.assistsPer90 > 0 : candidate.goals > 0 || candidate.goalsPer90 > 0)
+    .sort((a, b) => b.rating - a.rating || a.player.localeCompare(b.player))
+    .filter((candidate) => {
+      const key = `${candidate.player}|${candidate.team}`;
+      if (seenPlayers.has(key)) return false;
+      seenPlayers.add(key);
+      return true;
+    });
+  const fallbackCandidates = (listPlayerProfiles().profiles || [])
     .map((profile) => {
       const international = profile.internationalProfile || {};
       const totals = international.totals || {};
@@ -1344,20 +1429,32 @@ function internationalScorerPicks() {
         player: profile.player,
         team: international.team,
         goals: numeric(totals.goals),
+        assists: numeric(totals.assists),
         goalsPer90: numeric(totals.goalsPer90),
+        assistsPer90: numeric(totals.assistsPer90),
         shotsPer90: numeric(totals.shotsPer90),
+        rating:
+          (INTERNATIONAL_RATINGS[international.team] || 68) * 0.3 +
+          (metric === "assists" ? numeric(totals.assists) * 3.5 + numeric(totals.assistsPer90) * 12 : numeric(totals.goals) * 3.5 + numeric(totals.goalsPer90) * 14),
       };
     })
-    .filter((candidate) => candidate.team && (!fixtureTeams.size || fixtureTeams.has(candidate.team)) && (candidate.goals > 0 || candidate.goalsPer90 > 0))
-    .sort((a, b) => b.goals - a.goals || b.goalsPer90 - a.goalsPer90)
-    .slice(0, 8)
+    .filter((candidate) => candidate.team && (!fixtureTeams.size || fixtureTeams.has(candidate.team)))
+    .filter(saneInternationalPlayer)
+    .filter((candidate) => INTERNATIONAL_PRIORITY_PLAYERS.has(candidate.player));
+  const candidates = [...importedCandidates, ...fallbackCandidates]
+    .filter((candidate) => metric === "assists" ? candidate.assists > 0 || candidate.assistsPer90 > 0 || importedCandidates.length < 10 : candidate.goals > 0 || candidate.goalsPer90 > 0 || importedCandidates.length < 10)
+    .sort((a, b) => b.rating - a.rating || a.player.localeCompare(b.player))
+    .filter((candidate, index, list) => list.findIndex((item) => `${item.player}|${item.team}` === `${candidate.player}|${candidate.team}`) === index)
+    .slice(0, 10);
+  const shares = marketShares(candidates, 2);
+  return candidates
     .map((candidate, index, list) => ({
       rank: index + 1,
-      market: "World Cup top scorer watchlist",
+      market: metric === "assists" ? "World Cup top assist watchlist" : "World Cup top scorer watchlist",
       label: candidate.player,
-      detail: `${candidate.team}: ${candidate.goals} international/World Cup baseline goals, ${round(candidate.goalsPer90, 2)} goals/90, ${round(candidate.shotsPer90, 2)} shots/90.`,
-      confidence: confidenceFromRank(index, list.length, 50, 69),
-      note: "Uses the international player-profile baseline plus prior World Cup data where available.",
+      detail: `${candidate.team}: projected ${projectedWorldCupOutput(candidate, metric)} ${metric === "assists" ? "assists" : "goals"} for World Cup 2026 from ${metric === "assists" ? `${candidate.assists} assists, ${round(candidate.assistsPer90, 2)} assists/90` : `${candidate.goals} goals, ${round(candidate.goalsPer90, 2)} goals/90`} in imported 2018/2022 World Cup rows.`,
+      confidence: shares[index],
+      note: `Market share is normalized to 100% across these ${list.length} ${metric === "assists" ? "assist" : "scorer"} candidates. Final squads, minutes, penalties, injuries, and odds should move the shares once imported.`,
       source: { name: "International player profiles and imported World Cup screenshots", url: "" },
     }));
 }
@@ -1385,7 +1482,13 @@ async function internationalFutures({ season = "2026 World Cup" } = {}) {
               id: "world-cup-top-scorer",
               title: "World Cup Top Scorer Futures",
               subtitle: "Based on tracked international player profiles and prior World Cup training rows.",
-              picks: internationalScorerPicks(),
+              picks: internationalPlayerFutures("goals"),
+            },
+            {
+              id: "world-cup-top-assist",
+              title: "World Cup Top Assist Futures",
+              subtitle: "Based on tracked international player profiles and prior World Cup training rows.",
+              picks: internationalPlayerFutures("assists"),
             },
           ]
         : [],

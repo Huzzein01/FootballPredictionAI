@@ -1,6 +1,7 @@
 const fs = require("fs");
 const path = require("path");
 const { fixturePredictionBoard } = require("./predictionService");
+const { internationalFixturePredictions, internationalStatus } = require("./internationalData");
 const { FEATURE_NAMES } = require("./features");
 const { aggregatePlayers, loadPlayerRows } = require("./playerStats");
 const { fixtureSignatureFromFixture, playedFixtureKeys } = require("./parlayBacktestStore");
@@ -26,6 +27,42 @@ const PLAYER_NAME_CORRECTIONS = new Map([
   ["oan garcia tese", "Joan Garcia"],
   ["robert sanchez heqesp", "Robert Sanchez"],
   ["juan musso selarg", "Juan Musso"],
+]);
+
+const INTERNATIONAL_PRIORITY_PLAYERS = new Set([
+  "Lionel Messi",
+  "Kylian Mbappe",
+  "Harry Kane",
+  "Cristiano Ronaldo",
+  "Neymar",
+  "Vinicius Junior",
+  "Bukayo Saka",
+  "Jude Bellingham",
+  "Phil Foden",
+  "Bruno Fernandes",
+  "Ousmane Dembele",
+  "Raphinha",
+  "Lamine Yamal",
+  "Antoine Griezmann",
+  "Julian Alvarez",
+  "Lautaro Martinez",
+  "Christian Pulisic",
+  "Memphis",
+  "Son Heung-min",
+  "Goncalo Ramos",
+  "Olivier Giroud",
+  "Kai Havertz",
+  "Romelu Lukaku",
+  "Robert Lewandowski",
+  "Luis Suarez",
+  "Achraf Hakimi",
+  "Hakim Ziyech",
+  "Luka Modric",
+  "Ivan Perisic",
+  "Federico Valverde",
+  "Kevin De Bruyne",
+  "Jamal Musiala",
+  "Michael Olise",
 ]);
 
 function pct(value) {
@@ -175,6 +212,55 @@ function latestTeamPlayers(players, league, team) {
   const matches = players.filter((player) => player.league === league && player.squad === team);
   const latest = Math.max(0, ...matches.map((player) => seasonRank(player.season)));
   return matches.filter((player) => seasonRank(player.season) === latest);
+}
+
+function internationalTeamPlayers(players, team) {
+  const grouped = new Map();
+  for (const player of players.filter((item) => item.league === "International" && item.squad === team)) {
+    const existing = grouped.get(player.player) || {
+      ...player,
+      appearances: 0,
+      starts: 0,
+      minutes: 0,
+      nineties: 0,
+      goals: 0,
+      assists: 0,
+      shots: 0,
+      shotsOnTarget: 0,
+      saves: 0,
+      sourceTypes: new Set(),
+      sourceLabels: new Set(),
+    };
+    existing.appearances += Number(player.appearances || 0);
+    existing.starts += Number(player.starts || 0);
+    existing.minutes += Number(player.minutes || 0);
+    existing.nineties += Number(player.nineties || 0);
+    existing.goals += Number(player.goals || 0);
+    existing.assists += Number(player.assists || 0);
+    existing.shots += Number(player.shots || 0);
+    existing.shotsOnTarget += Number(player.shotsOnTarget || 0);
+    existing.saves += Number(player.saves || 0);
+    for (const type of player.sourceTypes || []) existing.sourceTypes.add(type);
+    for (const label of player.sourceLabels || []) existing.sourceLabels.add(label);
+    existing.season = "2018/2022 World Cup";
+    grouped.set(player.player, existing);
+  }
+  return [...grouped.values()].map((player) => ({
+    ...player,
+    sourceTypes: [...player.sourceTypes],
+    sourceLabels: [...player.sourceLabels],
+    goalsPer90: player.nineties ? player.goals / player.nineties : 0,
+    assistsPer90: player.nineties ? player.assists / player.nineties : 0,
+    shotsPer90: player.nineties ? player.shots / player.nineties : 0,
+    shotsOnTargetPer90: player.nineties ? player.shotsOnTarget / player.nineties : 0,
+    goalAssistPer90: player.nineties ? (player.goals + player.assists) / player.nineties : 0,
+  })).filter((player) =>
+    INTERNATIONAL_PRIORITY_PLAYERS.has(cleanPlayerName(player.player)) &&
+    player.goals <= 20 &&
+    player.assists <= 15 &&
+    player.goalsPer90 <= 3 &&
+    player.assistsPer90 <= 3
+  );
 }
 
 function riskSourceSuffix(source, metric, threshold) {
@@ -362,6 +448,58 @@ function playerPropCandidates(players, fixture, riskMode = "safe") {
     }
   }
 
+  return candidates.sort((a, b) => b.confidence - a.confidence);
+}
+
+function internationalPlayerPropCandidates(players, fixture, riskMode = "safe") {
+  const isRiskyMode = riskMode === "risky";
+  const candidates = [];
+  for (const team of [fixture.homeTeam, fixture.awayTeam]) {
+    const teamGoalProjection = projectedTeamGoals(fixture, team);
+    const teamPlayers = internationalTeamPlayers(players, team)
+      .filter((player) => player.goals > 0 || player.assists > 0 || player.goalAssistPer90 >= 0.25)
+      .sort((a, b) => b.goals + b.assists - (a.goals + a.assists) || b.goalAssistPer90 - a.goalAssistPer90)
+      .slice(0, 5);
+    for (const player of teamPlayers) {
+      const playerName = cleanPlayerName(player.player);
+      const scoringChance = poissonAtLeast(Math.max(0.12, player.goalsPer90 * Math.max(0.65, teamGoalProjection)), 1);
+      if (player.goals > 0 || player.goalsPer90 >= 0.25) {
+        candidates.push({
+          type: "player",
+          fixture: `${fixture.homeTeam} vs ${fixture.awayTeam}`,
+          date: fixture.date,
+          league: fixture.league,
+          team,
+          player: playerName,
+          market: "anytime scorer",
+          pick: `${playerName} anytime scorer`,
+          confidence: Math.max(34, Math.min(isRiskyMode ? 72 : 64, 34 + scoringChance * 42 + teamGoalProjection * 2)),
+          fbrefMetric: `${player.goals} goals, ${player.goalsPer90.toFixed(2)} goals/90 in imported 2018/2022 World Cup rows`,
+          fbrefSeason: "World Cup 2018/2022",
+          source: "International model: imported World Cup player rows + 2026 fixture rating projection",
+          riskMode: isRiskyMode && scoringChance < 0.42,
+        });
+      }
+      const assistChance = poissonAtLeast(Math.max(0.08, player.assistsPer90 * Math.max(0.75, teamGoalProjection)), 1);
+      if (player.assists > 0 || player.assistsPer90 >= 0.2) {
+        candidates.push({
+          type: "player",
+          fixture: `${fixture.homeTeam} vs ${fixture.awayTeam}`,
+          date: fixture.date,
+          league: fixture.league,
+          team,
+          player: playerName,
+          market: "assist",
+          pick: `${playerName} to assist`,
+          confidence: Math.max(30, Math.min(isRiskyMode ? 66 : 58, 30 + assistChance * 38 + teamGoalProjection * 1.5)),
+          fbrefMetric: `${player.assists} assists, ${player.assistsPer90.toFixed(2)} assists/90 in imported 2018/2022 World Cup rows`,
+          fbrefSeason: "World Cup 2018/2022",
+          source: "International model: imported World Cup player rows + 2026 fixture rating projection",
+          riskMode: isRiskyMode,
+        });
+      }
+    }
+  }
   return candidates.sort((a, b) => b.confidence - a.confidence);
 }
 
@@ -849,7 +987,86 @@ function buildFixtureGridTickets({ fixtures, requestedLegs, playerLegs, scoreLeg
   }).filter((ticket) => ticket.legs.length);
 }
 
+function buildInternationalParlays(options = {}) {
+  const requestedLegs = Math.max(3, Math.min(20, Number(options.legs || 10)));
+  const ticketCount = Math.max(1, Math.min(10, Number(options.tickets || 3)));
+  const refreshSeed = Math.max(0, Number(options.refreshSeed || 0));
+  const type = ["mixed", "teams", "players"].includes(options.type) ? options.type : "mixed";
+  const riskMode = options.riskMode === "risky" ? "risky" : "safe";
+  const generationMode = options.generationMode === "fixture-grid" ? "fixture-grid" : "multi";
+  const date = String(options.date || "").trim();
+  const allFixtures = internationalFixturePredictions().filter((fixture) => !date || fixture.date === date);
+  const fixtures = allFixtures;
+  const players = aggregatePlayers(loadFbrefRows());
+  const fbref = {
+    ...fbrefStatus(),
+    processedRows: internationalStatus().playerRows,
+    players: internationalStatus().players,
+    seasons: ["2018 World Cup", "2022 World Cup"],
+    hasPlayerStats: internationalStatus().playerRows > 0,
+  };
+  const playerLegs = fixtures.flatMap((fixture) => internationalPlayerPropCandidates(players, fixture, riskMode));
+  const scoreLegs = teamScoreLegs(fixtures);
+  const resultLegs = matchResultLegs(fixtures);
+  const propLegs = bttsLegs(fixtures);
+  const eligiblePlayerLegs = playerLegs.sort((a, b) => (riskMode === "risky" ? Number(Boolean(b.riskMode)) - Number(Boolean(a.riskMode)) : 0) || Number(b.confidence || 0) - Number(a.confidence || 0));
+  const eligibleScoreLegs = scoreLegs;
+  const eligibleResultLegs = resultLegs;
+  const eligiblePropLegs = propLegs;
+  const parlays =
+    generationMode === "fixture-grid"
+      ? buildFixtureGridTickets({
+          fixtures,
+          requestedLegs,
+          playerLegs: eligiblePlayerLegs,
+          scoreLegs: eligibleScoreLegs,
+          resultLegs: eligibleResultLegs,
+          propLegs: eligiblePropLegs,
+          riskMode,
+        })
+      : Array.from({ length: ticketCount }, (_, index) =>
+          buildTicket({
+            index,
+            requestedLegs,
+            playerLegs: eligiblePlayerLegs,
+            scoreLegs: eligibleScoreLegs,
+            resultLegs: eligibleResultLegs,
+            propLegs: eligiblePropLegs,
+            fbref,
+            refreshSeed,
+            type,
+            riskMode,
+          })
+        ).filter((ticket) => ticket.legs.length);
+
+  return {
+    fbref,
+    filters: { league: "International", date, requestedLegs, ticketCount, type, refreshSeed, riskMode, generationMode, context: "international" },
+    excludedFixtureCount: 0,
+    availableFixtureCount: fixtures.length,
+    playerCandidateCount: eligiblePlayerLegs.length,
+    riskyPlayerCandidateCount: eligiblePlayerLegs.filter((leg) => leg.riskMode).length,
+    teamScoreCandidateCount: eligibleScoreLegs.length,
+    propCandidateCount: eligiblePropLegs.length,
+    bttsCandidateCount: eligiblePropLegs.filter((leg) => leg.type === "btts").length,
+    cornerCandidateCount: 0,
+    parlays,
+    parlay: {
+      ...(parlays[0] || {
+        name: "World Cup Model Parlay Waiting For Fixtures",
+        legs: [],
+        playerStatLegs: [],
+        teamScoreLegs: [],
+        matchResultLegs: [],
+        averageConfidence: 0,
+      }),
+      note: `International ${riskMode} mode uses 72 imported World Cup group-stage fixtures, model-only team ratings, and 2018/2022 World Cup player rows. Odds are not required for this baseline; once public odds, final squads, injuries, and player-prop lines are imported, the model should re-rank every ticket. ${generationMode === "fixture-grid" ? "Fixture grid mode groups props by individual World Cup matches." : "Multi-ticket mode builds broader World Cup parlays across the fixture pool."}`,
+    },
+  };
+}
+
 function buildParlays(options = {}) {
+  if (options.context === "international") return buildInternationalParlays(options);
   const league = options.league || "All";
   const requestedLegs = Math.max(3, Math.min(20, Number(options.legs || 10)));
   const ticketCount = Math.max(1, Math.min(10, Number(options.tickets || 3)));
