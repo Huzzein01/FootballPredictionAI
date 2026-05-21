@@ -1801,18 +1801,18 @@ textarea:focus {
 
 .futures-pick-grid {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
-  gap: 12px;
+  grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+  gap: 10px;
 }
 
 .futures-pick-card {
   display: grid;
-  gap: 8px;
+  gap: 7px;
   border: 1px solid var(--line);
-  border-left: 4px solid var(--green);
+  border-left: 3px solid var(--green);
   border-radius: 8px;
   background: var(--surface);
-  padding: 12px;
+  padding: 11px;
 }
 
 .futures-pick-card h4 {
@@ -1823,7 +1823,7 @@ textarea:focus {
 
 .futures-pick-card strong {
   color: var(--green);
-  font-size: 24px;
+  font-size: 20px;
 }
 
 .futures-pick-card p {
@@ -2039,6 +2039,16 @@ summary {
   margin: 0;
   color: var(--ink);
   font-weight: 800;
+}
+
+@media (max-width: 720px) {
+  .futures-pick-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .futures-pick-card {
+    padding: 10px;
+  }
 }
 
 .judgment-card ul {

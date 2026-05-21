@@ -6,29 +6,39 @@ const { loadMatches, normalizeTeamName } = require("./footballData");
 
 const CLUB_LEAGUES = ["EPL", "La Liga", "Bundesliga", "Ligue 1", "Serie A"];
 const HISTORICAL_SEASONS = ["2020-21", "2021-22", "2022-23", "2023-24", "2024-25", "2025-26"];
+const NEXT_SEASON_RULES = {
+  EPL: { relegatedCount: 3, promotedCount: 3, secondTierCode: "eng.2", secondTierName: "Championship" },
+  "La Liga": { relegatedCount: 3, promotedCount: 3, secondTierCode: "esp.2", secondTierName: "LaLiga 2" },
+  Bundesliga: { relegatedCount: 2, promotedCount: 2, secondTierCode: "ger.2", secondTierName: "2. Bundesliga" },
+  "Ligue 1": { relegatedCount: 2, promotedCount: 2, secondTierCode: "fra.2", secondTierName: "Ligue 2" },
+  "Serie A": { relegatedCount: 3, promotedCount: 3, secondTierCode: "ita.2", secondTierName: "Serie B" },
+};
 
 const TEAM_SCORER_CANDIDATES = {
   EPL: {
-    Arsenal: ["Bukayo Saka", "Viktor Gyokeres"],
+    Arsenal: ["Viktor Gyokeres", "Bukayo Saka"],
     "Man City": ["Erling Haaland", "Phil Foden"],
     "Man United": ["Benjamin Sesko", "Matheus Cunha", "Bruno Fernandes"],
     "Aston Villa": ["Ollie Watkins"],
-    Liverpool: ["Darwin Nunez", "Dominik Szoboszlai"],
+    Liverpool: ["Alexander Isak", "Dominik Szoboszlai"],
     Bournemouth: ["Evanilson"],
-    Brighton: ["Joao Pedro"],
+    Brighton: ["Kaoru Mitoma", "Danny Welbeck"],
     Chelsea: ["Cole Palmer"],
-    Brentford: ["Bryan Mbeumo"],
+    Brentford: ["Igor Thiago", "Kevin Schade"],
     Sunderland: ["Wilson Isidor"],
-    "Newcastle United": ["Alexander Isak"],
+    "Newcastle United": ["Anthony Gordon", "Harvey Barnes"],
     Everton: ["Beto"],
     Fulham: ["Raul Jimenez"],
     "Leeds United": ["Joel Piroe"],
     "Crystal Palace": ["Jean-Philippe Mateta"],
     "Nott'm Forest": ["Chris Wood"],
-    Tottenham: ["Son Heung-min"],
+    Tottenham: ["Dominic Solanke", "Brennan Johnson"],
     "West Ham United": ["Jarrod Bowen"],
     Burnley: ["Lyle Foster"],
     "Wolverhampton Wanderers": ["Jorgen Strand Larsen"],
+    "Coventry City": ["Haji Wright"],
+    "Ipswich Town": ["George Hirst"],
+    Millwall: ["Mihailo Ivanovic"],
   },
   "La Liga": {
     Barcelona: ["Raphinha", "Lamine Yamal", "Fermin Lopez"],
@@ -51,6 +61,9 @@ const TEAM_SCORER_CANDIDATES = {
     Girona: ["Cristhian Stuani"],
     Mallorca: ["Vedat Muriqi"],
     Oviedo: ["Santi Cazorla"],
+    "Racing Santander": ["Andres Martin"],
+    "Deportivo La Coruña": ["Lucas Perez"],
+    "Almería": ["Luis Suarez"],
   },
   Bundesliga: {
     "Bayern Munich": ["Harry Kane", "Michael Olise", "Jamal Musiala"],
@@ -71,6 +84,8 @@ const TEAM_SCORER_CANDIDATES = {
     "VfL Wolfsburg": ["Jonas Wind"],
     "1. FC Heidenheim 1846": ["Marvin Pieringer"],
     "St. Pauli": ["Oladapo Afolayan"],
+    "Schalke 04": ["Kenan Karaman"],
+    "SV 07 Elversberg": ["Fisnik Asllani"],
   },
   "Ligue 1": {
     "Paris SG": ["Ousmane Dembele", "Desire Doue", "Khvicha Kvaratskhelia"],
@@ -91,6 +106,8 @@ const TEAM_SCORER_CANDIDATES = {
     Nice: ["Terem Moffi"],
     Nantes: ["Mostafa Mohamed"],
     Metz: ["Georges Mikautadze"],
+    Troyes: ["Rafiki Said"],
+    "Le Mans": ["Antoine Rabillard"],
   },
   "Serie A": {
     "Inter Milan": ["Marcus Thuram", "Lautaro Martinez"],
@@ -113,6 +130,9 @@ const TEAM_SCORER_CANDIDATES = {
     Cremonese: ["Massimo Coda"],
     "Hellas Verona": ["Casper Tengstedt"],
     Pisa: ["Stefano Moreo"],
+    Venezia: ["Joel Pohjanpalo"],
+    Frosinone: ["Gennaro Borrelli"],
+    Monza: ["Dany Mota"],
   },
 };
 
@@ -122,6 +142,10 @@ const TEAM_ASSIST_CANDIDATES = {
   "Man United": "Bruno Fernandes",
   Liverpool: "Dominik Szoboszlai",
   Chelsea: "Cole Palmer",
+  Brighton: "Kaoru Mitoma",
+  Brentford: "Mikkel Damsgaard",
+  Tottenham: "James Maddison",
+  "Newcastle United": "Anthony Gordon",
   Barcelona: "Lamine Yamal",
   "Real Madrid": "Jude Bellingham",
   "Bayern Munich": "Michael Olise",
@@ -165,6 +189,23 @@ const FUTURES_SOURCES = {
   performanceSpots: {
     name: "UEFA European Performance Spot tracker",
     url: "https://www.uefa.com/uefachampionsleague/news/02a2-1fdbe9a25733-8d37ff5f9226-1000--202627-uefa-champions-league-which-teams-are-in-the-european-performance-spots-as-it-stands/",
+  },
+};
+
+const EUROPE_PROFILE_RANGES = {
+  "Europa League": {
+    EPL: [6, 7],
+    "La Liga": [6, 7],
+    Bundesliga: [5, 6],
+    "Ligue 1": [4, 5],
+    "Serie A": [5, 6],
+  },
+  "Conference League": {
+    EPL: [8],
+    "La Liga": [8],
+    Bundesliga: [7],
+    "Ligue 1": [6],
+    "Serie A": [7],
   },
 };
 
@@ -219,6 +260,38 @@ function pickSource(league) {
   return {
     name: "ESPN public standings API",
     url: league?.sourceUrl || "https://www.espn.com/soccer/standings",
+  };
+}
+
+function statMap(entry) {
+  return Object.fromEntries((entry.stats || []).map((stat) => [stat.name, stat.value]));
+}
+
+async function fetchEspnStandingsByCode(sourceCode, season = "2025") {
+  const url = `https://site.web.api.espn.com/apis/v2/sports/soccer/${sourceCode}/standings?region=us&lang=en&contentorigin=espn&season=${season}`;
+  const response = await fetch(url, { headers: { "user-agent": "Mozilla/5.0 FootballPredictionAI futures-refresh" } });
+  if (!response.ok) return { standings: [], sourceUrl: url };
+  const payload = await response.json();
+  const entries = payload?.children?.[0]?.standings?.entries || payload?.standings?.entries || [];
+  return {
+    sourceUrl: url,
+    standings: entries
+      .map((entry, index) => {
+        const stats = statMap(entry);
+        return {
+          rank: numeric(stats.rank) || index + 1,
+          team: normalizeTeamName(entry.team?.displayName || entry.team?.name || entry.team?.shortDisplayName || ""),
+          played: numeric(stats.gamesPlayed),
+          wins: numeric(stats.wins),
+          draws: numeric(stats.ties),
+          losses: numeric(stats.losses),
+          points: numeric(stats.points),
+          goalsFor: numeric(stats.pointsFor),
+          goalsAgainst: numeric(stats.pointsAgainst),
+          goalDifference: numeric(stats.pointDifferential),
+        };
+      })
+      .filter((entry) => entry.team),
   };
 }
 
@@ -377,9 +450,104 @@ async function historicalTablesForLeague(league) {
   return tables;
 }
 
+async function currentTopLeagueTable(league) {
+  const data = await archivedLeagueTables("2025-26");
+  return data.leagues?.[league]?.standings || localSeasonTable(league, "2025-26");
+}
+
+async function secondTierTablesForLeague(league) {
+  const rule = NEXT_SEASON_RULES[league];
+  if (!rule) return { "2024-25": [], "2025-26": [], sourceUrl: "" };
+  const [previous, current] = await Promise.all([
+    fetchEspnStandingsByCode(rule.secondTierCode, "2024"),
+    fetchEspnStandingsByCode(rule.secondTierCode, "2025"),
+  ]);
+  return {
+    "2024-25": previous.standings,
+    "2025-26": current.standings,
+    sourceUrl: current.sourceUrl || previous.sourceUrl || "",
+  };
+}
+
+function promotedTrendFromSecondTier(league, team, secondTables, promotionRank) {
+  const rows = ["2024-25", "2025-26"]
+    .map((season) => ({ season, row: (secondTables[season] || []).find((entry) => normalizeTeamName(entry.team) === team) }))
+    .filter((item) => item.row);
+  const trend = emptyTeamTrend(team, league);
+  for (const [index, item] of rows.entries()) {
+    const weight = 1 + index * 0.35;
+    const row = item.row;
+    const ppg = numeric(row.played) ? numeric(row.points) / numeric(row.played) : 0;
+    const gf = numeric(row.played) ? numeric(row.goalsFor) / numeric(row.played) : 0;
+    const ga = numeric(row.played) ? numeric(row.goalsAgainst) / numeric(row.played) : 0;
+    const gd = numeric(row.played) ? numeric(row.goalDifference) / numeric(row.played) : 0;
+    trend.seasons += 1;
+    trend.weightSum += weight;
+    trend.weightedPpg += ppg * weight;
+    trend.weightedGf += gf * weight;
+    trend.weightedGa += ga * weight;
+    trend.weightedGd += gd * weight;
+    trend.weightedScore += (ppg * 34 + gd * 8 + gf * 4 - ga * 5 + Math.max(0, 4 - promotionRank) * 1.5 - 18) * weight;
+    if (item.season === "2025-26") {
+      trend.latestRank = numeric(row.rank);
+      trend.latestPoints = numeric(row.points);
+      trend.latestGoalsFor = numeric(row.goalsFor);
+    }
+  }
+  if (!rows.length) {
+    trend.weightSum = 1;
+    trend.weightedScore = 28;
+  }
+  const divisor = trend.weightSum || 1;
+  return {
+    ...trend,
+    promoted: true,
+    promotionRank,
+    secondTierSummary: rows
+      .map((item) => `${item.season}: #${item.row.rank}, ${item.row.points} pts, ${item.row.goalsFor}-${item.row.goalsAgainst} goals`)
+      .join("; "),
+    rating: round(trend.weightedScore / divisor, 2),
+    ppg: round(trend.weightedPpg / divisor, 2),
+    goalsForPerMatch: round(trend.weightedGf / divisor, 2),
+    goalsAgainstPerMatch: round(trend.weightedGa / divisor, 2),
+    gdPerMatch: round(trend.weightedGd / divisor, 2),
+  };
+}
+
+async function nextSeasonComposition(league) {
+  const rule = NEXT_SEASON_RULES[league];
+  const topTable = await currentTopLeagueTable(league);
+  const secondTables = await secondTierTablesForLeague(league);
+  if (!rule || !topTable.length) {
+    return {
+      teams: topTable.map((entry) => normalizeTeamName(entry.team)),
+      relegated: [],
+      promoted: [],
+      secondTables,
+    };
+  }
+  const relegated = topTable.slice(-rule.relegatedCount).map((entry) => normalizeTeamName(entry.team));
+  const promoted = (secondTables["2025-26"] || [])
+    .slice(0, rule.promotedCount)
+    .map((entry, index) => ({
+      team: normalizeTeamName(entry.team),
+      rank: index + 1,
+      row: entry,
+      secondTierName: rule.secondTierName,
+    }));
+  const teams = [
+    ...topTable
+      .map((entry) => normalizeTeamName(entry.team))
+      .filter((team) => !relegated.includes(team)),
+    ...promoted.map((entry) => entry.team),
+  ];
+  return { teams, relegated, promoted, secondTables };
+}
+
 async function leagueTrends(league) {
   const tables = await historicalTablesForLeague(league);
-  const currentTeams = (tables["2025-26"] || []).map((row) => row.team);
+  const composition = await nextSeasonComposition(league);
+  const currentTeams = composition.teams.length ? composition.teams : (tables["2025-26"] || []).map((row) => row.team);
   const trends = new Map(currentTeams.map((team) => [team, emptyTeamTrend(team, league)]));
   for (const [seasonIndex, season] of HISTORICAL_SEASONS.entries()) {
     for (const row of tables[season] || []) {
@@ -388,8 +556,12 @@ async function leagueTrends(league) {
       updateTrend(trends.get(team), row, seasonIndex);
     }
   }
+  for (const promoted of composition.promoted || []) {
+    trends.set(promoted.team, promotedTrendFromSecondTier(league, promoted.team, composition.secondTables, promoted.rank));
+  }
   return [...trends.values()]
     .map((trend) => {
+      if (trend.promoted) return trend;
       const divisor = trend.weightSum || trend.seasons || 1;
       return {
         ...trend,
@@ -405,17 +577,25 @@ async function leagueTrends(league) {
 
 function playerProfileCandidates(league, profiles, metric = "goals") {
   const rateKey = metric === "assists" ? "assistsPer90" : "goalsPer90";
+  const staleCandidates = new Set([
+    "Brentford|Bryan Mbeumo",
+    "Brighton|Joao Pedro",
+    "Tottenham|Son Heung-min",
+    "Liverpool|Darwin Nunez",
+    "Newcastle United|Alexander Isak",
+  ].map((item) => item.toLowerCase()));
   return profiles
     .filter((profile) => profile.league === league)
     .map((profile) => {
       const totals = profile.totals || {};
       return {
         player: profile.player,
-        team: profile.team,
+        team: normalizeTeamName(profile.team),
         value: numeric(totals[metric]),
         rate: numeric(totals[rateKey]),
       };
     })
+    .filter((candidate) => !staleCandidates.has(`${candidate.team}|${candidate.player}`.toLowerCase()))
     .filter((candidate) => candidate.value > 0 || candidate.rate > 0);
 }
 
@@ -494,11 +674,30 @@ function leagueWinnerPicksFromTrends(league, tableName, trends) {
     rank: index + 1,
     market: index === 0 ? "Projected 2026-27 league winner" : "Title challenger",
     label: trend.team,
-    detail: `${tableName || league}: trend rating ${trend.rating}, ${trend.ppg} weighted PPG, ${trend.titles} title baseline(s), ${trend.topFour} top-four baseline(s) since 2020-21.`,
+    detail: trend.promoted
+      ? `${tableName || league}: promoted side baseline, ${trend.secondTierSummary || "second-tier profile imported"}.`
+      : `${tableName || league}: trend rating ${trend.rating}, ${trend.ppg} weighted PPG, ${trend.titles} title baseline(s), ${trend.topFour} top-four baseline(s) since 2020-21.`,
     confidence: confidenceFromRank(index, list.length, 54, 72),
-    note: "Compiled from 2020-21 through 2025-26 tables/results. Refresh this after transfers, fixtures, odds, injuries, and preseason minutes are imported.",
-    source: { name: "2020-21 through 2025-26 league-table and result compilation", url: "" },
+    note: trend.promoted
+      ? "Promoted-team projection uses the past two second-tier seasons and should be rechecked once top-flight odds and fixture difficulty are imported."
+      : "Compiled from 2020-21 through 2025-26 tables/results. Refresh this after transfers, fixtures, odds, injuries, and preseason minutes are imported.",
+    source: { name: trend.promoted ? "Second-tier promotion table baseline" : "2020-21 through 2025-26 league-table and result compilation", url: "" },
   }));
+}
+
+function promotedTeamBaselinePicks(league, trends) {
+  return trends
+    .filter((trend) => trend.promoted)
+    .sort((a, b) => a.promotionRank - b.promotionRank)
+    .map((trend, index, list) => ({
+      rank: index + 1,
+      market: "Promoted team baseline",
+      label: trend.team,
+      detail: `${league}: promotion rank #${trend.promotionRank}. ${trend.secondTierSummary || "Second-tier table profile imported."}`,
+      confidence: confidenceFromRank(index, list.length, 44, 58),
+      note: "This replaces relegated top-flight teams in the 2026-27 futures board. Re-score once fixtures, transfer windows, and top-flight odds are imported.",
+      source: { name: "Past two second-tier seasons and 2025-26 promotion table", url: "" },
+    }));
 }
 
 function championsLeagueProfileSections(allLeagueTrends) {
@@ -533,15 +732,55 @@ function championsLeagueProfileSections(allLeagueTrends) {
   };
 }
 
+async function projectedEuropeanProfileSection(competition, allLeagueTrends = []) {
+  const ranges = EUROPE_PROFILE_RANGES[competition];
+  const trendLookup = new Map();
+  for (const trend of allLeagueTrends.flat()) trendLookup.set(`${trend.league}|${normalizeTeamName(trend.team)}`, trend);
+  const picks = [];
+  for (const league of CLUB_LEAGUES) {
+    const table = await currentTopLeagueTable(league);
+    for (const rank of ranges?.[league] || []) {
+      const row = table[rank - 1];
+      if (!row) continue;
+      const team = normalizeTeamName(row.team);
+      const trend = trendLookup.get(`${league}|${team}`);
+      picks.push({
+        team,
+        league,
+        rank,
+        rating: trend?.rating || Math.max(40, 70 - rank * 3),
+        trend,
+      });
+    }
+  }
+  return {
+    id: `${competition.toLowerCase().replace(/[^a-z0-9]+/g, "-")}-profile`,
+    title: `${competition} Profile`,
+    subtitle: `${picks.length} projected teams from current domestic table bands. Cup winners and UEFA access-list changes can still alter this.`,
+    picks: picks
+      .sort((a, b) => b.rating - a.rating || a.rank - b.rank || a.team.localeCompare(b.team))
+      .map((candidate, index, list) => ({
+        rank: index + 1,
+        market: `${competition} projected qualifier`,
+        label: candidate.team,
+        detail: `${candidate.league}: domestic rank band #${candidate.rank}${candidate.trend ? `, 2026-27 trend rating ${candidate.trend.rating}` : ""}.`,
+        confidence: confidenceFromRank(index, list.length, 42, 62),
+        note: "Projected European profile only. Re-train this once official UEFA access lists, cup winners, and qualifying rounds are locked.",
+        source: FUTURES_SOURCES.performanceSpots,
+      })),
+  };
+}
+
 async function nextSeasonClubFutures({ league = "All" } = {}) {
   const playerProfiles = listPlayerProfiles().profiles || [];
-  const leagueNames = league && league !== "All" && league !== "Champions League" ? [league] : CLUB_LEAGUES;
+  const europeanProfileOnly = ["Champions League", "Europa League", "Conference League"].includes(league);
+  const leagueNames = league && league !== "All" && !europeanProfileOnly ? [league] : CLUB_LEAGUES;
   const trendPairs = [];
   for (const leagueName of leagueNames) {
     trendPairs.push([leagueName, await leagueTrends(leagueName)]);
   }
   const sections = [];
-  if (league !== "Champions League") {
+  if (!europeanProfileOnly) {
     for (const [leagueName, trends] of trendPairs) {
       sections.push({
         id: `${leagueName}-2026-27-futures`,
@@ -549,6 +788,7 @@ async function nextSeasonClubFutures({ league = "All" } = {}) {
         subtitle: `${HISTORICAL_SEASONS[0]} through ${HISTORICAL_SEASONS[HISTORICAL_SEASONS.length - 1]} compiled baseline, before new fixtures and summer transfer adjustments.`,
         picks: [
           ...leagueWinnerPicksFromTrends(leagueName, leagueName, trends),
+          ...promotedTeamBaselinePicks(leagueName, trends),
           ...topMarketWatchlist(leagueName, trends, playerProfiles, "goals"),
           ...topMarketWatchlist(leagueName, trends, playerProfiles, "assists"),
           ...teamScorerWatchlist(leagueName, trends, playerProfiles),
@@ -559,6 +799,13 @@ async function nextSeasonClubFutures({ league = "All" } = {}) {
   if (league === "All" || league === "Champions League") {
     const allTrends = league === "Champions League" ? await Promise.all(CLUB_LEAGUES.map((leagueName) => leagueTrends(leagueName))) : trendPairs.map(([, trends]) => trends);
     sections.unshift(championsLeagueProfileSections(allTrends));
+  }
+  if (league === "All" || league === "Europa League" || league === "Conference League") {
+    const allTrends = league === "All" ? trendPairs.map(([, trends]) => trends) : await Promise.all(CLUB_LEAGUES.map((leagueName) => leagueTrends(leagueName)));
+    const profiles = league === "All"
+      ? [await projectedEuropeanProfileSection("Europa League", allTrends), await projectedEuropeanProfileSection("Conference League", allTrends)]
+      : [await projectedEuropeanProfileSection(league, allTrends)];
+    sections.splice(league === "All" ? 1 : 0, 0, ...profiles);
   }
   return {
     context: "club",

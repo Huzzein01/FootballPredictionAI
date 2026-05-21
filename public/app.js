@@ -65,6 +65,7 @@ const leagueTableLeagueFilter = document.querySelector("#leagueTableLeagueFilter
 const leagueTablesOutput = document.querySelector("#leagueTablesOutput");
 const futuresStatus = document.querySelector("#futuresStatus");
 const futuresLeagueFilter = document.querySelector("#futuresLeagueFilter");
+const futuresMarketFilter = document.querySelector("#futuresMarketFilter");
 const refreshFuturesButton = document.querySelector("#refreshFuturesButton");
 const futuresOutput = document.querySelector("#futuresOutput");
 const pageTabs = [...document.querySelectorAll("[data-page-target]")];
@@ -405,6 +406,7 @@ function updateContextLabels() {
   if (leagueTablesHeading) leagueTablesHeading.textContent = tableLabel;
   if (leagueTableLeagueFilter) leagueTableLeagueFilter.closest("label").hidden = isInternationalMode();
   if (futuresLeagueFilter) futuresLeagueFilter.closest("label").hidden = isInternationalMode();
+  if (futuresMarketFilter) futuresMarketFilter.closest("label").hidden = isInternationalMode();
   pageTabs
     .filter((tab) => tab.dataset.pageTarget === "league-tables")
     .forEach((tab) => {
@@ -869,17 +871,35 @@ function renderFutures() {
     futuresOutput.innerHTML = `<div class="empty-state">No futures prediction data is available yet.</div>`;
     return;
   }
+  const market = futuresMarketFilter?.value || "All";
+  const marketMatches = (pick) => {
+    const text = `${pick.market || ""} ${pick.label || ""}`.toLowerCase();
+    if (market === "winners") return text.includes("winner") || text.includes("challenger");
+    if (market === "scorers") return text.includes("league top scorer") || text.includes("world cup top scorer");
+    if (market === "assists") return text.includes("assist");
+    if (market === "team-scorers") return text.includes("team top scorer");
+    if (market === "europe") return text.includes("champions league") || text.includes("europa") || text.includes("conference") || text.includes("league phase") || text.includes("qualifier");
+    return true;
+  };
+  const filteredSections = sections
+    .map((section) => ({ ...section, picks: (section.picks || []).filter(marketMatches) }))
+    .filter((section) => section.picks.length);
+  if (!filteredSections.length) {
+    futuresStatus.textContent = `${data.context === "international" ? "International" : "Club"} futures | ${data.season || selectedSeason()} | no ${market} market picks`;
+    futuresOutput.innerHTML = `<div class="empty-state">No futures picks match this market filter.</div>`;
+    return;
+  }
   futuresStatus.textContent = `${data.context === "international" ? "International" : "Club"} futures | ${data.season || selectedSeason()} | generated ${new Date(data.generatedAt || Date.now()).toLocaleString()}`;
   futuresOutput.innerHTML = `
     ${data.sourcePolicy ? `<p class="futures-policy">${escapeHtml(data.sourcePolicy)}</p>` : ""}
-    ${sections
+    ${filteredSections
       .map(
         (section) => `
           <article class="futures-section">
             <div class="league-table-head">
               <div>
                 <h3>${escapeHtml(section.title)}</h3>
-                <p class="muted">${escapeHtml(section.subtitle || "")}</p>
+                <p class="muted">${escapeHtml(section.subtitle || "")} ${section.picks.length ? `| ${section.picks.length} visible pick${section.picks.length === 1 ? "" : "s"}` : ""}</p>
               </div>
             </div>
             <div class="futures-pick-grid">
@@ -2534,6 +2554,7 @@ refreshLeagueTablesButton?.addEventListener("click", refreshLeagueTables);
 leagueTableLeagueFilter?.addEventListener("change", renderLeagueTables);
 refreshFuturesButton?.addEventListener("click", refreshFutures);
 futuresLeagueFilter?.addEventListener("change", refreshFutures);
+futuresMarketFilter?.addEventListener("change", renderFutures);
 pageSelect?.addEventListener("change", () => showPage(pageSelect.value));
 playerProfileSelect.addEventListener("change", () => {
   setPlayerFormMode(null);
