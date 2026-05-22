@@ -178,6 +178,7 @@ const TEAM_DISPLAY_NAMES = {
   "Lorient": "Lorient",
   "Lyon": "Lyon",
   "M'gladbach": "Borussia Monchengladbach",
+  "Borussia Mönchengladbach": "Borussia Monchengladbach",
   "Mainz": "Mainz",
   "Marseille": "Marseille",
   "Monaco": "AS Monaco",
@@ -224,6 +225,18 @@ const TEAM_DISPLAY_NAMES = {
   "West Ham United": "West Ham United",
   "Wolverhampton Wanderers": "Wolves",
   "Wolves": "Wolves",
+  "Bosnia and Herzegovina": "Bosnia-Herzegovina",
+  "Congo DR": "DR Congo",
+  "Cote d'Ivoire": "Ivory Coast",
+  "Curaçao": "Curacao",
+  "CuraÃ§ao": "Curacao",
+  "CuraÃƒÂ§ao": "Curacao",
+  "Côte d'Ivoire": "Ivory Coast",
+  "CÃ´te d'Ivoire": "Ivory Coast",
+  "CÃƒÂ´te d'Ivoire": "Ivory Coast",
+  "Türkiye": "Turkiye",
+  "TÃ¼rkiye": "Turkiye",
+  "TÃƒÂ¼rkiye": "Turkiye",
 };
 
 const TEAM_LOGOS = {
@@ -374,6 +387,7 @@ const TEAM_LOGOS = {
   "Lyon": "https://a.espncdn.com/i/teamlogos/soccer/500/167.png",
   "M'gladbach": "https://a.espncdn.com/i/teamlogos/soccer/500/268.png",
   "Borussia Monchengladbach": "https://a.espncdn.com/i/teamlogos/soccer/500/268.png",
+  "Borussia Mönchengladbach": "https://a.espncdn.com/i/teamlogos/soccer/500/268.png",
   "Mainz": "https://a.espncdn.com/i/teamlogos/soccer/500/2950.png",
   "Marseille": "https://a.espncdn.com/i/teamlogos/soccer/500/176.png",
   "Monaco": "https://a.espncdn.com/i/teamlogos/soccer/500/174.png",
@@ -464,10 +478,14 @@ const TEAM_LOGOS = {
   "Republic of Ireland": "https://flagcdn.com/w160/ie.png",
   "Wales": "https://flagcdn.com/w160/gb-wls.png",
   "Bosnia-Herzegovina": "https://flagcdn.com/w160/ba.png",
+  "Bosnia and Herzegovina": "https://flagcdn.com/w160/ba.png",
   "Northern Ireland": "https://flagcdn.com/w160/gb-nir.png",
   "Slovakia": "https://flagcdn.com/w160/sk.png",
   "Kosovo": "https://flagcdn.com/w160/xk.png",
   "Turkiye": "https://flagcdn.com/w160/tr.png",
+  "Türkiye": "https://flagcdn.com/w160/tr.png",
+  "TÃ¼rkiye": "https://flagcdn.com/w160/tr.png",
+  "TÃƒÂ¼rkiye": "https://flagcdn.com/w160/tr.png",
   "Romania": "https://flagcdn.com/w160/ro.png",
   "Ukraine": "https://flagcdn.com/w160/ua.png",
   "Poland": "https://flagcdn.com/w160/pl.png",
@@ -478,6 +496,20 @@ const TEAM_LOGOS = {
   "New Caledonia": "https://flagcdn.com/w160/nc.png",
   "Jamaica": "https://flagcdn.com/w160/jm.png",
   "DR Congo": "https://flagcdn.com/w160/cd.png",
+  "Congo DR": "https://flagcdn.com/w160/cd.png",
+  "Costa Rica": "https://flagcdn.com/w160/cr.png",
+  "Cameroon": "https://flagcdn.com/w160/cm.png",
+  "Serbia": "https://flagcdn.com/w160/rs.png",
+  "Russia": "https://flagcdn.com/w160/ru.png",
+  "Peru": "https://flagcdn.com/w160/pe.png",
+  "Iceland": "https://flagcdn.com/w160/is.png",
+  "Curaçao": "https://flagcdn.com/w160/cw.png",
+  "CuraÃ§ao": "https://flagcdn.com/w160/cw.png",
+  "CuraÃƒÂ§ao": "https://flagcdn.com/w160/cw.png",
+  "Cote d'Ivoire": "https://flagcdn.com/w160/ci.png",
+  "Côte d'Ivoire": "https://flagcdn.com/w160/ci.png",
+  "CÃ´te d'Ivoire": "https://flagcdn.com/w160/ci.png",
+  "CÃƒÂ´te d'Ivoire": "https://flagcdn.com/w160/ci.png",
 };
 
 const TEAM_COLORS = {
@@ -536,6 +568,8 @@ const TEAM_COLORS = {
   "Osasuna": "#d71920",
   "Union Berlin": "#ed1c24",
   "West Ham United": "#7a263a",
+  "Borussia Monchengladbach": "#004b93",
+  "Borussia Mönchengladbach": "#004b93",
   "Argentina": "#75aadb",
   "Belgium": "#fae042",
   "Brazil": "#009c3b",
@@ -584,6 +618,14 @@ const TEAM_COLORS = {
   "Croatia": "#171796",
   "Ghana": "#006b3f",
   "Panama": "#005293",
+  "Costa Rica": "#002b7f",
+  "Cameroon": "#007a5e",
+  "Serbia": "#c6363c",
+  "Russia": "#0039a6",
+  "Peru": "#d91023",
+  "Iceland": "#02529c",
+  "Turkiye": "#e30a17",
+  "Türkiye": "#e30a17",
 };
 
 const INTERNATIONAL_SUMMARY = { total: 0, pending: 0, pickAccuracy: 0, scoreAccuracy: 0 };
@@ -1152,7 +1194,7 @@ function renderInternationalLeagueTables() {
               ${group.standings.map(([team, points], index) => `
                 <tr>
                   <td>${index + 1}</td>
-                  <td><strong>${escapeHtml(displayTeam(team))}</strong></td>
+                  <td>${tableTeamCell(team)}</td>
                   <td><strong>${points}</strong></td>
                   <td><span class="table-status">${index < 2 ? "Advanced" : "Eliminated"}</span></td>
                 </tr>
@@ -1198,7 +1240,7 @@ function renderInternationalLeagueTables() {
               ${group.standings.map((entry) => `
                 <tr>
                   <td>${entry.rank}</td>
-                  <td><strong>${escapeHtml(displayTeam(entry.team))}</strong></td>
+                  <td>${tableTeamCell(entry.team)}</td>
                   <td>${entry.played}</td>
                   <td>${entry.wins}</td>
                   <td>${entry.draws}</td>
@@ -1288,7 +1330,7 @@ function renderLeagueTables() {
               ${(league.standings || []).map((entry) => `
                 <tr>
                   <td>${entry.rank}</td>
-                  <td><strong>${escapeHtml(displayTeam(entry.team))}</strong>${entry.ledgerDelta?.played ? `<small>+${entry.ledgerDelta.played} ledger match</small>` : ""}</td>
+                  <td>${tableTeamCell(entry.team, entry.ledgerDelta?.played ? `<small>+${entry.ledgerDelta.played} ledger match</small>` : "")}</td>
                   <td>${entry.played}</td>
                   <td>${entry.wins}</td>
                   <td>${entry.draws}</td>
@@ -1674,6 +1716,18 @@ function fixtureTeamLine(team, flagUrl = "") {
     ? `<span class="team-badge">${image}<span>${escapeHtml(teamInitials(team))}</span></span>`
     : teamBadge(team);
   return `<span class="team-line">${badge}<span class="team-name">${escapeHtml(displayTeam(team))}</span></span>`;
+}
+
+function tableTeamCell(team, meta = "") {
+  return `
+    <span class="table-team-cell">
+      ${teamBadge(team)}
+      <span class="table-team-text">
+        <strong>${escapeHtml(displayTeam(team))}</strong>
+        ${meta}
+      </span>
+    </span>
+  `;
 }
 
 function formatKickoff(value) {
