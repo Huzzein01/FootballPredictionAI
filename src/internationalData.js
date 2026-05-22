@@ -1,6 +1,7 @@
 const fs = require("fs");
 const path = require("path");
 const { listPredictions } = require("./backtestStore");
+const { oddsForInternationalFixture } = require("./oddsApiService");
 
 const PLAYER_STATS_PATH = path.join(process.cwd(), "data", "international", "processed", "world_cup_player_stats.json");
 const SQUAD_STATS_PATH = path.join(process.cwd(), "data", "international", "processed", "world_cup_squad_stats.json");
@@ -112,6 +113,7 @@ function projectedScore(diff, pick) {
 }
 
 function predictInternationalFixture(fixture) {
+  const liveOdds = oddsForInternationalFixture(fixture);
   const homeRating = ratingFor(fixture.homeTeam);
   const awayRating = ratingFor(fixture.awayTeam);
   const diff = homeRating - awayRating + hostBoost(fixture);
@@ -140,10 +142,11 @@ function predictInternationalFixture(fixture) {
     city: fixture.city,
     kickoffUtc: fixture.kickoffUtc,
     kickoffLocal: fixture.kickoffLocal,
-    odds: { homeOdds: "", drawOdds: "", awayOdds: "" },
-    oddsSource: "Model only",
-    oddsStatus: "Waiting for public odds",
-    hasOdds: false,
+    odds: liveOdds?.odds || { homeOdds: "", drawOdds: "", awayOdds: "" },
+    oddsSource: liveOdds?.oddsSource || "Model only",
+    oddsStatus: liveOdds?.oddsStatus || "Waiting for public odds",
+    oddsSourceUrl: liveOdds?.oddsSourceUrl || "",
+    hasOdds: Boolean(liveOdds?.odds),
     prediction,
     confidence,
     projectedScore: projectedScore(diff, prediction),

@@ -24,7 +24,10 @@ Use ESPN's public soccer JSON endpoints for low-friction standings, fixtures, sc
   - Useful for public bookmaker odds, including soccer `h2h` and outright markets where supported.
   - Docs expose sports discovery, odds, scores, events, historical odds, and event-odds endpoints.
   - Good fit for missing-odds repair because the model can query by sport key and date window.
-  - Limitation: requires an API key and quota planning.
+  - Current integration: `src/oddsApiService.js` reads `ODDS_API_KEY` or `THE_ODDS_API_KEY`, queries `h2h` decimal odds, writes `data/live_odds_snapshot.json`, updates club fixture odds in `data/remaining_fixtures_2025_26_with_odds.csv`, and exposes World Cup odds to international predictions when the provider has those markets.
+  - Manual refresh endpoint: `POST /api/odds/refresh`.
+  - Default cache: 30 minutes via `ODDS_API_CACHE_MINUTES`, with `ODDS_API_REGIONS=us` by default to preserve free-tier quota.
+  - Limitation: requires an API key and quota planning; without a key the integration returns a disabled snapshot instead of failing the app.
 
 - API-Football / API-Sports
   - Useful for fixtures, standings, lineups, team/player stats, odds, injuries, and historical coverage.

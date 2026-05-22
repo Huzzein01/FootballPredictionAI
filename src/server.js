@@ -14,6 +14,7 @@ const { resetPlayerStatsCache } = require("./playerStats");
 const { loadMatches, normalizeTeamName } = require("./footballData");
 const { refreshMissingOdds } = require("./oddsRepairService");
 const { refreshEspnFixtures } = require("./espnFixtureService");
+const { refreshTheOddsApi } = require("./oddsApiService");
 const parlayBacktests = require("./parlayBacktestStore");
 
 const PORT = Number(process.env.PORT || 4173);
@@ -262,6 +263,7 @@ async function handleApi(req, res, pathname) {
 
   if (req.method === "GET" && pathname === "/api/fixture-predictions") {
     await refreshEspnFixtures();
+    await refreshTheOddsApi({ includeClub: true, includeInternational: false });
     await refreshMissingOdds();
     await refreshLiveLeagueContext();
     const predictions = remainingFixturePredictions();
@@ -311,6 +313,11 @@ async function handleApi(req, res, pathname) {
     return sendJson(res, 200, snapshot);
   }
 
+  if (req.method === "POST" && pathname === "/api/odds/refresh") {
+    const snapshot = await refreshTheOddsApi({ force: true, includeClub: true, includeInternational: true, daysForward: 420 });
+    return sendJson(res, 200, snapshot);
+  }
+
   if (req.method === "GET" && pathname === "/api/league-tables") {
     const url = new URL(req.url, `http://${req.headers.host}`);
     return sendJson(res, 200, await archivedLeagueTables(url.searchParams.get("season") || "2025-26"));
@@ -351,6 +358,7 @@ async function handleApi(req, res, pathname) {
   }
 
   if (req.method === "GET" && pathname === "/api/international/fixture-predictions") {
+    await refreshTheOddsApi({ includeClub: false, includeInternational: true, daysForward: 420 });
     const predictions = internationalFixturePredictions();
     return sendJson(res, 200, {
       predictions,
@@ -410,8 +418,11 @@ async function handleApi(req, res, pathname) {
     const url = new URL(req.url, `http://${req.headers.host}`);
     const context = url.searchParams.get("context") === "international" ? "international" : "club";
     if (context !== "international") {
+      await refreshTheOddsApi({ includeClub: true, includeInternational: false });
       await refreshMissingOdds();
       await refreshLiveLeagueContext();
+    } else {
+      await refreshTheOddsApi({ includeClub: false, includeInternational: true, daysForward: 420 });
     }
     return sendJson(res, 200, buildParlay({
       context,
