@@ -17,6 +17,8 @@ const TEAM_PROFILES = [
   { id: "barcelona", team: "Barcelona", displayName: "Barcelona", league: "La Liga" },
   { id: "bayern-munich", team: "Bayern Munich", displayName: "Bayern Munich", league: "Bundesliga" },
   { id: "inter-milan", team: "Inter Milan", displayName: "Inter Milan", league: "Serie A" },
+  { id: "juventus", team: "Juventus", displayName: "Juventus", league: "Serie A" },
+  { id: "napoli", team: "Napoli", displayName: "Napoli", league: "Serie A" },
 ];
 
 const INTERNATIONAL_TEAM_PROFILES = [

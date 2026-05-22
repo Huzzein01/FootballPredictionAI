@@ -1120,15 +1120,16 @@ function uefaStatsForTeam(competition, team) {
 }
 
 function europeanWinnerPicks(competition, teams) {
-  const candidates = teams.slice(0, 8);
+  const candidates = teams.slice(0, 4);
   const shares = marketShares(candidates, 3);
+  const outcomes = ["Winner", "Runner-up", "Semi-finalist", "Semi-finalist"];
   return candidates.map((candidate, index, list) => ({
     rank: index + 1,
-    market: `${competition} winner prediction`,
+    market: `${competition} ${outcomes[index]} prediction`,
     label: candidate.team,
-    detail: `${candidate.league}: ${competition} rating ${round(candidate.rating, 1)}${candidate.trend ? `, ${candidate.trend.ppg} domestic weighted PPG` : ""}${candidate.uefaStats ? `; imported UEFA record ${candidate.uefaStats.wins}W-${candidate.uefaStats.draws}D-${candidate.uefaStats.losses}L, ${candidate.uefaStats.goalsFor}-${candidate.uefaStats.goalsAgainst} goals` : ""}.`,
+    detail: `${outcomes[index]} projection. ${candidate.league}: ${competition} rating ${round(candidate.rating, 1)}${candidate.trend ? `, ${candidate.trend.ppg} domestic weighted PPG` : ""}${candidate.uefaStats ? `; imported UEFA record ${candidate.uefaStats.wins}W-${candidate.uefaStats.draws}D-${candidate.uefaStats.losses}L, ${candidate.uefaStats.goalsFor}-${candidate.uefaStats.goalsAgainst} goals` : ""}.`,
     confidence: shares[index],
-    note: `Winner market share is normalized to 100% across these ${list.length} teams. Pre-draw projection uses domestic trend strength, imported UEFA result history, recent European profile, and squad/player baselines.`,
+    note: `Knockout-outcome share is normalized to 100% across the predicted final four. Pre-draw projection uses domestic trend strength, imported UEFA result history, recent European profile, and squad/player baselines.`,
     source: { name: `${competition} qualification tracker plus imported UEFA result files`, url: competition === "Champions League" ? FUTURES_SOURCES.championsLeague.url : "" },
   }));
 }
@@ -1245,7 +1246,7 @@ function europeanCompetitionSection(competition, teamRows, allLeagueTrends, prof
       ...europeanWinnerPicks(competition, teams),
       ...europeanPlayerWatchlist(competition, teams, profiles, "goals"),
       ...europeanPlayerWatchlist(competition, teams, profiles, "assists"),
-      ...europeanProfilePicks(competition, teams),
+      ...(competition === "Champions League" ? [] : europeanProfilePicks(competition, teams)),
     ],
   };
 }
@@ -1464,15 +1465,87 @@ function internationalPlayerFutures(metric = "goals") {
     }));
 }
 
+function historicalWorldCupResultPicks(season) {
+  const champions = { "2022 World Cup": "Argentina", "2018 World Cup": "France" };
+  const runnersUp = { "2022 World Cup": "France", "2018 World Cup": "Croatia" };
+  const semifinalists = { "2022 World Cup": ["Croatia", "Morocco"], "2018 World Cup": ["Belgium", "England"] };
+  const teams = [champions[season], runnersUp[season], ...(semifinalists[season] || [])].filter(Boolean);
+  const shares = marketShares(teams.map((team, index) => ({ team, rating: 100 - index * 8 })), 3);
+  const markets = ["Winner", "Runner-up", "Semi-finalist", "Semi-finalist"];
+  return teams.map((team, index) => ({
+    rank: index + 1,
+    market: `World Cup ${markets[index]} archive`,
+    label: team,
+    detail: `${team} finished as ${markets[index].toLowerCase()} in the ${season}.`,
+    confidence: shares[index],
+    note: "Archive outcome share is distributed across the final four so completed World Cup seasons display in the same ranked market format as current futures.",
+    source: { name: "Imported World Cup history baseline", url: "" },
+  }));
+}
+
+function historicalWorldCupPlayerPicks(season, metric = "goals") {
+  const rows = loadPlayerRows()
+    .filter((row) => row.season === season && row.league === "International")
+    .map((row) => ({
+      player: row.Player,
+      team: row.Squad,
+      value: numeric(metric === "assists" ? row.Ast : row.Gls),
+      minutes: numeric(row.Min),
+    }))
+    .filter((row) => row.player && row.team && row.value > 0)
+    .sort((a, b) => b.value - a.value || b.minutes - a.minutes || a.player.localeCompare(b.player))
+    .slice(0, 10);
+  const shares = marketShares(rows.map((row, index) => ({ rating: row.value * 10 + Math.max(0, 10 - index) })), 1);
+  return rows.map((row, index, list) => ({
+    rank: index + 1,
+    market: metric === "assists" ? "World Cup top assist archive" : "World Cup top scorer archive",
+    label: row.player,
+    detail: `${row.team}: ${row.value} ${metric === "assists" ? "assists" : "goals"} in ${season}.`,
+    confidence: shares[index],
+    note: `Archive share is normalized to 100% across these ${list.length} players for comparison with predictive futures markets.`,
+    source: { name: "Imported World Cup player standard stats", url: "" },
+  }));
+}
+
 async function internationalFutures({ season = "2026 World Cup" } = {}) {
   const groups = internationalGroupTables();
+  if (season !== "2026 World Cup") {
+    return {
+      context: "international",
+      season,
+      league: "International",
+      generatedAt: new Date().toISOString(),
+      unavailable: false,
+      sourcePolicy: "Historical World Cup seasons show archive outcomes and imported top scorer/assist tables rather than future projections.",
+      sections: [
+        {
+          id: "world-cup-archive-outcome",
+          title: `${season} World Cup Outcome`,
+          subtitle: "Completed tournament final-four outcome.",
+          picks: historicalWorldCupResultPicks(season),
+        },
+        {
+          id: "world-cup-archive-scorers",
+          title: `${season} Top Scorers`,
+          subtitle: "Imported World Cup player standard stats.",
+          picks: historicalWorldCupPlayerPicks(season, "goals"),
+        },
+        {
+          id: "world-cup-archive-assists",
+          title: `${season} Top Assists`,
+          subtitle: "Imported World Cup player standard stats.",
+          picks: historicalWorldCupPlayerPicks(season, "assists"),
+        },
+      ],
+    };
+  }
   return {
     context: "international",
     season,
     league: "International",
     generatedAt: new Date().toISOString(),
-    unavailable: season !== "2026 World Cup",
-    message: season !== "2026 World Cup" ? `${season} futures are archive-only until fixtures and squads are imported.` : "",
+    unavailable: false,
+    message: "",
     sourcePolicy: "International futures use World Cup fixtures, group-table state, model ratings, and player-profile international baselines.",
     sections:
       season === "2026 World Cup"

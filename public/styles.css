@@ -2026,6 +2026,15 @@ a {
   gap: 14px;
 }
 
+.single-panel summary {
+  list-style: none;
+  pointer-events: none;
+}
+
+.single-panel summary::-webkit-details-marker {
+  display: none;
+}
+
 summary {
   cursor: pointer;
   color: var(--navy);
@@ -2305,6 +2314,51 @@ th {
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
   gap: 14px;
+}
+
+.world-cup-knockout {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(min(260px, 100%), 1fr));
+  gap: 14px;
+  width: 100%;
+}
+
+.knockout-round {
+  display: grid;
+  gap: 10px;
+  align-content: start;
+}
+
+.knockout-round h3 {
+  margin: 0;
+  color: var(--ink);
+  font-size: 16px;
+}
+
+.knockout-match {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto minmax(0, 1fr);
+  gap: 8px;
+  align-items: center;
+  border: 1px solid var(--line);
+  border-radius: 8px;
+  background: var(--row);
+  padding: 10px;
+}
+
+.knockout-match strong {
+  border-radius: 8px;
+  background: var(--navy);
+  color: var(--bg);
+  padding: 7px 9px;
+  white-space: nowrap;
+}
+
+.knockout-match small {
+  grid-column: 1 / -1;
+  color: var(--muted);
+  font-size: 11px;
+  font-weight: 800;
 }
 
 .international-fixture-card {

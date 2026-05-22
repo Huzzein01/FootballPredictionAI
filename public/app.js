@@ -120,9 +120,90 @@ const TEAM_DISPLAY_NAMES = {
   "Sociedad": "Real Sociedad",
   "Metz": "Metz",
   "Mets": "Metz",
+  "Juventus": "Juventus",
+  "Napoli": "Napoli",
+  "Ajaccio": "AC Ajaccio",
+  "Almeria": "Almeria",
+  "Angers": "Angers",
+  "Augsburg": "FC Augsburg",
+  "Auxerre": "AJ Auxerre",
+  "Bielefeld": "Arminia Bielefeld",
+  "Bochum": "VfL Bochum",
+  "Bordeaux": "Bordeaux",
+  "Brest": "Brest",
+  "Cadiz": "Cadiz",
+  "Celta": "Celta Vigo",
+  "Clermont": "Clermont Foot",
+  "Dijon": "Dijon FCO",
+  "Dortmund": "Borussia Dortmund",
+  "Eibar": "Eibar",
+  "Ein Frankfurt": "Eintracht Frankfurt",
+  "Elche": "Elche",
+  "Espanol": "Espanyol",
+  "Freiburg": "SC Freiburg",
+  "Getafe": "Getafe",
+  "Greuther Furth": "Greuther Furth",
+  "Hamburg": "Hamburg SV",
+  "Hertha": "Hertha Berlin",
+  "Hoffenheim": "TSG Hoffenheim",
+  "Holstein Kiel": "Holstein Kiel",
+  "Huesca": "Huesca",
+  "Ipswich": "Ipswich Town",
+  "Las Palmas": "Las Palmas",
+  "Le Havre": "Le Havre AC",
+  "Leeds": "Leeds United",
+  "Leganes": "Leganes",
+  "Leicester": "Leicester City",
+  "Levante": "Levante",
+  "Leverkusen": "Bayer Leverkusen",
+  "Lille": "Lille",
+  "Lorient": "Lorient",
+  "Lyon": "Lyon",
+  "M'gladbach": "Borussia Monchengladbach",
+  "Mainz": "Mainz",
+  "Marseille": "Marseille",
+  "Monaco": "AS Monaco",
+  "Nantes": "Nantes",
+  "Nice": "Nice",
+  "Nimes": "Nimes",
+  "Norwich": "Norwich City",
+  "RB Leipzig": "RB Leipzig",
+  "Reims": "Stade de Reims",
+  "Rennes": "Stade Rennais",
+  "Schalke 04": "Schalke 04",
+  "Southampton": "Southampton",
+  "St Etienne": "Saint-Etienne",
+  "St Pauli": "St. Pauli",
+  "Strasbourg": "Strasbourg",
+  "Stuttgart": "VfB Stuttgart",
+  "Toulouse": "Toulouse",
+  "Troyes": "Troyes",
+  "Valladolid": "Real Valladolid",
+  "Vallecano": "Rayo Vallecano",
+  "Watford": "Watford",
+  "Werder Bremen": "Werder Bremen",
+  "West Brom": "West Brom",
+  "Wolfsburg": "VfL Wolfsburg",
+  "Alaves": "Alaves",
+  "Alavés": "Alaves",
+  "AlavÃ©s": "Alaves",
+  "Darmstadt": "Darmstadt",
+  "Everton": "Everton",
+  "Fulham": "Fulham",
+  "Granada": "Granada",
+  "Heidenheim": "Heidenheim",
+  "Luton": "Luton Town",
+  "Mallorca": "Mallorca",
+  "Montpellier": "Montpellier",
+  "Newcastle": "Newcastle United",
+  "Newcastle United": "Newcastle United",
+  "Osasuna": "Osasuna",
   "Sheffield United": "Sheffield United",
   "Tottenham": "Tottenham",
+  "Union Berlin": "Union Berlin",
   "USA": "United States",
+  "West Ham": "West Ham United",
+  "West Ham United": "West Ham United",
   "Wolverhampton Wanderers": "Wolves",
   "Wolves": "Wolves",
 };
@@ -164,17 +245,133 @@ const TEAM_LOGOS = {
   "Real Oviedo": "https://a.espncdn.com/i/teamlogos/soccer/500/92.png",
   "Real Sociedad": "https://a.espncdn.com/i/teamlogos/soccer/500/89.png",
   "Sociedad": "https://a.espncdn.com/i/teamlogos/soccer/500/89.png",
+  "Cadiz": "https://a.espncdn.com/i/teamlogos/soccer/500/3842.png",
+  "Alavés": "https://a.espncdn.com/i/teamlogos/soccer/500/96.png",
+  "AlavÃ©s": "https://a.espncdn.com/i/teamlogos/soccer/500/96.png",
+  "Darmstadt": "https://a.espncdn.com/i/teamlogos/soccer/500/3812.png",
+  "SV Darmstadt 98": "https://a.espncdn.com/i/teamlogos/soccer/500/3812.png",
+  "Everton": "https://a.espncdn.com/i/teamlogos/soccer/500/368.png",
+  "Fulham": "https://a.espncdn.com/i/teamlogos/soccer/500/370.png",
+  "Granada": "https://a.espncdn.com/i/teamlogos/soccer/500/3747.png",
+  "Heidenheim": "https://a.espncdn.com/i/teamlogos/soccer/500/6418.png",
+  "1. FC Heidenheim": "https://a.espncdn.com/i/teamlogos/soccer/500/6418.png",
+  "1. FC Heidenheim 1846": "https://a.espncdn.com/i/teamlogos/soccer/500/6418.png",
+  "Luton": "https://a.espncdn.com/i/teamlogos/soccer/500/301.png",
+  "Luton Town": "https://a.espncdn.com/i/teamlogos/soccer/500/301.png",
+  "Mallorca": "https://a.espncdn.com/i/teamlogos/soccer/500/84.png",
+  "Montpellier": "https://a.espncdn.com/i/teamlogos/soccer/500/274.png",
+  "Newcastle": "https://a.espncdn.com/i/teamlogos/soccer/500/361.png",
+  "Newcastle United": "https://a.espncdn.com/i/teamlogos/soccer/500/361.png",
+  "Osasuna": "https://a.espncdn.com/i/teamlogos/soccer/500/97.png",
   "Sevilla": "https://a.espncdn.com/i/teamlogos/soccer/500/243.png",
   "Sheffield United": "https://a.espncdn.com/i/teamlogos/soccer/500/398.png",
   "Sunderland": "https://a.espncdn.com/i/teamlogos/soccer/500/366.png",
   "Tottenham": "https://a.espncdn.com/i/teamlogos/soccer/500/367.png",
   "Tottenham Hotspur": "https://a.espncdn.com/i/teamlogos/soccer/500/367.png",
+  "Union Berlin": "https://a.espncdn.com/i/teamlogos/soccer/500/598.png",
+  "1. FC Union Berlin": "https://a.espncdn.com/i/teamlogos/soccer/500/598.png",
   "Valencia": "https://a.espncdn.com/i/teamlogos/soccer/500/94.png",
   "Villarreal": "https://a.espncdn.com/i/teamlogos/soccer/500/102.png",
+  "West Ham": "https://a.espncdn.com/i/teamlogos/soccer/500/371.png",
+  "West Ham United": "https://a.espncdn.com/i/teamlogos/soccer/500/371.png",
   "Wolverhampton Wanderers": "https://a.espncdn.com/i/teamlogos/soccer/500/380.png",
   "Wolves": "https://a.espncdn.com/i/teamlogos/soccer/500/380.png",
   "Metz": "https://a.espncdn.com/i/teamlogos/soccer/500/177.png",
   "Mets": "https://a.espncdn.com/i/teamlogos/soccer/500/177.png",
+  "Juventus": "https://a.espncdn.com/i/teamlogos/soccer/500/111.png",
+  "Napoli": "https://a.espncdn.com/i/teamlogos/soccer/500/114.png",
+  "Ajaccio": "https://a.espncdn.com/i/teamlogos/soccer/500/2503.png",
+  "AC Ajaccio": "https://a.espncdn.com/i/teamlogos/soccer/500/2503.png",
+  "Almeria": "https://a.espncdn.com/i/teamlogos/soccer/500/6832.png",
+  "Angers": "https://a.espncdn.com/i/teamlogos/soccer/500/7868.png",
+  "Augsburg": "https://a.espncdn.com/i/teamlogos/soccer/500/3841.png",
+  "FC Augsburg": "https://a.espncdn.com/i/teamlogos/soccer/500/3841.png",
+  "Auxerre": "https://a.espncdn.com/i/teamlogos/soccer/500/172.png",
+  "AJ Auxerre": "https://a.espncdn.com/i/teamlogos/soccer/500/172.png",
+  "Bielefeld": "https://a.espncdn.com/i/teamlogos/soccer/500/2506.png",
+  "Arminia Bielefeld": "https://a.espncdn.com/i/teamlogos/soccer/500/2506.png",
+  "Bochum": "https://a.espncdn.com/i/teamlogos/soccer/500/121.png",
+  "VfL Bochum": "https://a.espncdn.com/i/teamlogos/soccer/500/121.png",
+  "Bordeaux": "https://a.espncdn.com/i/teamlogos/soccer/500/159.png",
+  "Brest": "https://a.espncdn.com/i/teamlogos/soccer/500/6997.png",
+  "Celta": "https://a.espncdn.com/i/teamlogos/soccer/500/85.png",
+  "Celta Vigo": "https://a.espncdn.com/i/teamlogos/soccer/500/85.png",
+  "Clermont": "https://a.espncdn.com/i/teamlogos/soccer/500/3171.png",
+  "Clermont Foot": "https://a.espncdn.com/i/teamlogos/soccer/500/3171.png",
+  "Dijon": "https://a.espncdn.com/i/teamlogos/soccer/500/3170.png",
+  "Dijon FCO": "https://a.espncdn.com/i/teamlogos/soccer/500/3170.png",
+  "Dortmund": "https://a.espncdn.com/i/teamlogos/soccer/500/124.png",
+  "Borussia Dortmund": "https://a.espncdn.com/i/teamlogos/soccer/500/124.png",
+  "Eibar": "https://a.espncdn.com/i/teamlogos/soccer/500/3752.png",
+  "Ein Frankfurt": "https://a.espncdn.com/i/teamlogos/soccer/500/125.png",
+  "Eintracht Frankfurt": "https://a.espncdn.com/i/teamlogos/soccer/500/125.png",
+  "Elche": "https://a.espncdn.com/i/teamlogos/soccer/500/3751.png",
+  "Espanol": "https://a.espncdn.com/i/teamlogos/soccer/500/88.png",
+  "Espanyol": "https://a.espncdn.com/i/teamlogos/soccer/500/88.png",
+  "Freiburg": "https://a.espncdn.com/i/teamlogos/soccer/500/126.png",
+  "SC Freiburg": "https://a.espncdn.com/i/teamlogos/soccer/500/126.png",
+  "Getafe": "https://a.espncdn.com/i/teamlogos/soccer/500/2922.png",
+  "Greuther Furth": "https://a.espncdn.com/i/teamlogos/soccer/500/3070.png",
+  "Hamburg": "https://a.espncdn.com/i/teamlogos/soccer/500/127.png",
+  "Hamburg SV": "https://a.espncdn.com/i/teamlogos/soccer/500/127.png",
+  "Hertha": "https://a.espncdn.com/i/teamlogos/soccer/500/129.png",
+  "Hertha Berlin": "https://a.espncdn.com/i/teamlogos/soccer/500/129.png",
+  "Hoffenheim": "https://a.espncdn.com/i/teamlogos/soccer/500/7911.png",
+  "TSG Hoffenheim": "https://a.espncdn.com/i/teamlogos/soccer/500/7911.png",
+  "Holstein Kiel": "https://a.espncdn.com/i/teamlogos/soccer/500/7884.png",
+  "Huesca": "https://a.espncdn.com/i/teamlogos/soccer/500/5413.png",
+  "Ipswich": "https://a.espncdn.com/i/teamlogos/soccer/500/373.png",
+  "Ipswich Town": "https://a.espncdn.com/i/teamlogos/soccer/500/373.png",
+  "Las Palmas": "https://a.espncdn.com/i/teamlogos/soccer/500/98.png",
+  "Le Havre": "https://a.espncdn.com/i/teamlogos/soccer/500/3236.png",
+  "Le Havre AC": "https://a.espncdn.com/i/teamlogos/soccer/500/3236.png",
+  "Leeds": "https://a.espncdn.com/i/teamlogos/soccer/500/357.png",
+  "Leeds United": "https://a.espncdn.com/i/teamlogos/soccer/500/357.png",
+  "Leganes": "https://a.espncdn.com/i/teamlogos/soccer/500/17534.png",
+  "Leicester": "https://a.espncdn.com/i/teamlogos/soccer/500/375.png",
+  "Leicester City": "https://a.espncdn.com/i/teamlogos/soccer/500/375.png",
+  "Levante": "https://a.espncdn.com/i/teamlogos/soccer/500/1538.png",
+  "Leverkusen": "https://a.espncdn.com/i/teamlogos/soccer/500/131.png",
+  "Bayer Leverkusen": "https://a.espncdn.com/i/teamlogos/soccer/500/131.png",
+  "Lille": "https://a.espncdn.com/i/teamlogos/soccer/500/166.png",
+  "Lorient": "https://a.espncdn.com/i/teamlogos/soccer/500/273.png",
+  "Lyon": "https://a.espncdn.com/i/teamlogos/soccer/500/167.png",
+  "M'gladbach": "https://a.espncdn.com/i/teamlogos/soccer/500/268.png",
+  "Borussia Monchengladbach": "https://a.espncdn.com/i/teamlogos/soccer/500/268.png",
+  "Mainz": "https://a.espncdn.com/i/teamlogos/soccer/500/2950.png",
+  "Marseille": "https://a.espncdn.com/i/teamlogos/soccer/500/176.png",
+  "Monaco": "https://a.espncdn.com/i/teamlogos/soccer/500/174.png",
+  "AS Monaco": "https://a.espncdn.com/i/teamlogos/soccer/500/174.png",
+  "Nantes": "https://a.espncdn.com/i/teamlogos/soccer/500/165.png",
+  "Nice": "https://a.espncdn.com/i/teamlogos/soccer/500/2502.png",
+  "Nimes": "https://a.espncdn.com/i/teamlogos/soccer/500/7730.png",
+  "Norwich": "https://a.espncdn.com/i/teamlogos/soccer/500/381.png",
+  "Norwich City": "https://a.espncdn.com/i/teamlogos/soccer/500/381.png",
+  "RB Leipzig": "https://a.espncdn.com/i/teamlogos/soccer/500/11420.png",
+  "Reims": "https://a.espncdn.com/i/teamlogos/soccer/500/3243.png",
+  "Stade de Reims": "https://a.espncdn.com/i/teamlogos/soccer/500/3243.png",
+  "Rennes": "https://a.espncdn.com/i/teamlogos/soccer/500/169.png",
+  "Stade Rennais": "https://a.espncdn.com/i/teamlogos/soccer/500/169.png",
+  "Schalke 04": "https://a.espncdn.com/i/teamlogos/soccer/500/133.png",
+  "Southampton": "https://a.espncdn.com/i/teamlogos/soccer/500/376.png",
+  "St Etienne": "https://a.espncdn.com/i/teamlogos/soccer/500/178.png",
+  "Saint-Etienne": "https://a.espncdn.com/i/teamlogos/soccer/500/178.png",
+  "St Pauli": "https://a.espncdn.com/i/teamlogos/soccer/500/270.png",
+  "St. Pauli": "https://a.espncdn.com/i/teamlogos/soccer/500/270.png",
+  "Strasbourg": "https://a.espncdn.com/i/teamlogos/soccer/500/180.png",
+  "Stuttgart": "https://a.espncdn.com/i/teamlogos/soccer/500/134.png",
+  "VfB Stuttgart": "https://a.espncdn.com/i/teamlogos/soccer/500/134.png",
+  "Toulouse": "https://a.espncdn.com/i/teamlogos/soccer/500/179.png",
+  "Troyes": "https://a.espncdn.com/i/teamlogos/soccer/500/170.png",
+  "Valladolid": "https://a.espncdn.com/i/teamlogos/soccer/500/95.png",
+  "Real Valladolid": "https://a.espncdn.com/i/teamlogos/soccer/500/95.png",
+  "Vallecano": "https://a.espncdn.com/i/teamlogos/soccer/500/101.png",
+  "Rayo Vallecano": "https://a.espncdn.com/i/teamlogos/soccer/500/101.png",
+  "Watford": "https://a.espncdn.com/i/teamlogos/soccer/500/395.png",
+  "Werder Bremen": "https://a.espncdn.com/i/teamlogos/soccer/500/137.png",
+  "West Brom": "https://a.espncdn.com/i/teamlogos/soccer/500/383.png",
+  "Wolfsburg": "https://a.espncdn.com/i/teamlogos/soccer/500/138.png",
+  "VfL Wolfsburg": "https://a.espncdn.com/i/teamlogos/soccer/500/138.png",
   "Al-Nassr": "https://a.espncdn.com/i/teamlogos/soccer/500/817.png",
   "Inter Miami": "https://a.espncdn.com/i/teamlogos/soccer/500/20232.png",
   "Argentina": "https://flagcdn.com/w160/ar.png",
@@ -268,6 +465,24 @@ const TEAM_COLORS = {
   "Wolves": "#fdb913",
   "Wolverhampton Wanderers": "#fdb913",
   "Metz": "#7a0019",
+  "Juventus": "#111111",
+  "Napoli": "#12a0d7",
+  "Cadiz": "#f4d100",
+  "Alaves": "#005baa",
+  "Alavés": "#005baa",
+  "Darmstadt": "#003b79",
+  "Everton": "#003399",
+  "Fulham": "#cc0000",
+  "Granada": "#d71920",
+  "Heidenheim": "#e30613",
+  "Luton": "#f78f1e",
+  "Luton Town": "#f78f1e",
+  "Mallorca": "#e30613",
+  "Montpellier": "#f58220",
+  "Newcastle United": "#111111",
+  "Osasuna": "#d71920",
+  "Union Berlin": "#ed1c24",
+  "West Ham United": "#7a263a",
   "Argentina": "#75aadb",
   "Belgium": "#fae042",
   "Brazil": "#009c3b",
@@ -338,6 +553,47 @@ const WORLD_CUP_GROUPS = [
 const WORLD_CUP_GROUPS_SOURCE = {
   name: "U.S. Soccer, 2026 FIFA World Cup Groups",
   url: "https://www.ussoccer.com/stories/2025/12/usmnt-draws-paraguay-australia-uefa-playoff-group-d-2026-fifa-world-cup",
+};
+
+const HISTORICAL_WORLD_CUPS = {
+  "2022 World Cup": {
+    champion: "Argentina",
+    groups: [
+      { group: "A", teams: ["Netherlands", "Senegal", "Ecuador", "Qatar"], standings: [["Netherlands", 7], ["Senegal", 6], ["Ecuador", 4], ["Qatar", 0]] },
+      { group: "B", teams: ["England", "USA", "IR Iran", "Wales"], standings: [["England", 7], ["USA", 5], ["IR Iran", 3], ["Wales", 1]] },
+      { group: "C", teams: ["Argentina", "Poland", "Mexico", "Saudi Arabia"], standings: [["Argentina", 6], ["Poland", 4], ["Mexico", 4], ["Saudi Arabia", 3]] },
+      { group: "D", teams: ["France", "Australia", "Tunisia", "Denmark"], standings: [["France", 6], ["Australia", 6], ["Tunisia", 4], ["Denmark", 1]] },
+      { group: "E", teams: ["Japan", "Spain", "Germany", "Costa Rica"], standings: [["Japan", 6], ["Spain", 4], ["Germany", 4], ["Costa Rica", 3]] },
+      { group: "F", teams: ["Morocco", "Croatia", "Belgium", "Canada"], standings: [["Morocco", 7], ["Croatia", 5], ["Belgium", 4], ["Canada", 0]] },
+      { group: "G", teams: ["Brazil", "Switzerland", "Cameroon", "Serbia"], standings: [["Brazil", 6], ["Switzerland", 6], ["Cameroon", 4], ["Serbia", 1]] },
+      { group: "H", teams: ["Portugal", "Korea Republic", "Uruguay", "Ghana"], standings: [["Portugal", 6], ["Korea Republic", 4], ["Uruguay", 4], ["Ghana", 3]] },
+    ],
+    knockout: [
+      { round: "Final", matches: [["Argentina", "France", "3-3", "Argentina won on penalties"]] },
+      { round: "Semi-finals", matches: [["Argentina", "Croatia", "3-0", ""], ["France", "Morocco", "2-0", ""]] },
+      { round: "Quarter-finals", matches: [["Croatia", "Brazil", "1-1", "Croatia won on penalties"], ["Argentina", "Netherlands", "2-2", "Argentina won on penalties"], ["Morocco", "Portugal", "1-0", ""], ["France", "England", "2-1", ""]] },
+      { round: "Round of 16", matches: [["Netherlands", "USA", "3-1", ""], ["Argentina", "Australia", "2-1", ""], ["France", "Poland", "3-1", ""], ["England", "Senegal", "3-0", ""], ["Japan", "Croatia", "1-1", "Croatia won on penalties"], ["Brazil", "Korea Republic", "4-1", ""], ["Morocco", "Spain", "0-0", "Morocco won on penalties"], ["Portugal", "Switzerland", "6-1", ""]] },
+    ],
+  },
+  "2018 World Cup": {
+    champion: "France",
+    groups: [
+      { group: "A", teams: ["Uruguay", "Russia", "Saudi Arabia", "Egypt"], standings: [["Uruguay", 9], ["Russia", 6], ["Saudi Arabia", 3], ["Egypt", 0]] },
+      { group: "B", teams: ["Spain", "Portugal", "IR Iran", "Morocco"], standings: [["Spain", 5], ["Portugal", 5], ["IR Iran", 4], ["Morocco", 1]] },
+      { group: "C", teams: ["France", "Denmark", "Peru", "Australia"], standings: [["France", 7], ["Denmark", 5], ["Peru", 3], ["Australia", 1]] },
+      { group: "D", teams: ["Croatia", "Argentina", "Nigeria", "Iceland"], standings: [["Croatia", 9], ["Argentina", 4], ["Nigeria", 3], ["Iceland", 1]] },
+      { group: "E", teams: ["Brazil", "Switzerland", "Serbia", "Costa Rica"], standings: [["Brazil", 7], ["Switzerland", 5], ["Serbia", 3], ["Costa Rica", 1]] },
+      { group: "F", teams: ["Sweden", "Mexico", "Korea Republic", "Germany"], standings: [["Sweden", 6], ["Mexico", 6], ["Korea Republic", 3], ["Germany", 3]] },
+      { group: "G", teams: ["Belgium", "England", "Tunisia", "Panama"], standings: [["Belgium", 9], ["England", 6], ["Tunisia", 3], ["Panama", 0]] },
+      { group: "H", teams: ["Colombia", "Japan", "Senegal", "Poland"], standings: [["Colombia", 6], ["Japan", 4], ["Senegal", 4], ["Poland", 3]] },
+    ],
+    knockout: [
+      { round: "Final", matches: [["France", "Croatia", "4-2", ""]] },
+      { round: "Semi-finals", matches: [["France", "Belgium", "1-0", ""], ["Croatia", "England", "2-1", "after extra time"]] },
+      { round: "Quarter-finals", matches: [["France", "Uruguay", "2-0", ""], ["Belgium", "Brazil", "2-1", ""], ["Croatia", "Russia", "2-2", "Croatia won on penalties"], ["England", "Sweden", "2-0", ""]] },
+      { round: "Round of 16", matches: [["France", "Argentina", "4-3", ""], ["Uruguay", "Portugal", "2-1", ""], ["Russia", "Spain", "1-1", "Russia won on penalties"], ["Croatia", "Denmark", "1-1", "Croatia won on penalties"], ["Brazil", "Mexico", "2-0", ""], ["Belgium", "Japan", "3-2", ""], ["Sweden", "Switzerland", "1-0", ""], ["England", "Colombia", "1-1", "England won on penalties"]] },
+    ],
+  },
 };
 
 const CLUB_PARLAY_LEAGUES = ["All", "EPL", "La Liga", "Bundesliga", "Ligue 1", "Serie A"];
@@ -426,11 +682,19 @@ function updateContextLabels() {
   if (leagueTablesHeading) leagueTablesHeading.textContent = tableLabel;
   if (leagueTableLeagueFilter) leagueTableLeagueFilter.closest("label").hidden = isInternationalMode();
   if (futuresLeagueFilter) futuresLeagueFilter.closest("label").hidden = isInternationalMode();
-  if (futuresMarketFilter) futuresMarketFilter.closest("label").hidden = isInternationalMode();
+  if (futuresMarketFilter) futuresMarketFilter.closest("label").hidden = false;
   if (parlayLeagueFilter) parlayLeagueFilter.closest("label").hidden = isInternationalMode();
   if (playedLeagueFilter) playedLeagueFilter.closest("label").hidden = isInternationalMode();
-  if (leagueSelect) leagueSelect.closest("label").hidden = isInternationalMode();
-  if (singleCompetitionSelect) singleCompetitionSelect.closest("label").hidden = !isInternationalMode();
+  if (leagueSelect) {
+    const leagueField = leagueSelect.closest("label");
+    leagueField.hidden = isInternationalMode();
+    leagueField.style.display = isInternationalMode() ? "none" : "";
+  }
+  if (singleCompetitionSelect) {
+    const competitionField = singleCompetitionSelect.closest("label");
+    competitionField.hidden = !isInternationalMode();
+    competitionField.style.display = isInternationalMode() ? "" : "none";
+  }
   pageTabs
     .filter((tab) => tab.dataset.pageTarget === "league-tables")
     .forEach((tab) => {
@@ -532,6 +796,34 @@ function renderInternationalFixtureBoard() {
 }
 
 function renderInternationalPlayedBoard() {
+  const historical = HISTORICAL_WORLD_CUPS[selectedSeason()];
+  if (historical) {
+    const matchCount = historical.knockout.reduce((sum, round) => sum + round.matches.length, 0);
+    document.querySelector("#playedTotal").textContent = matchCount;
+    document.querySelector("#playedCorrect").textContent = "0";
+    document.querySelector("#playedWrong").textContent = "0";
+    document.querySelector("#playedExact").textContent = "0";
+    document.querySelector("#playedVoided").textContent = "0";
+    playedStatus.textContent = `${selectedSeason()} knockout results | Champion: ${historical.champion}`;
+    playedBoard.innerHTML = `
+      <div class="world-cup-knockout">
+        ${historical.knockout.map((round) => `
+          <section class="knockout-round">
+            <h3>${escapeHtml(round.round)}</h3>
+            ${round.matches.map(([home, away, score, note]) => `
+              <article class="knockout-match">
+                ${fixtureTeamLine(home)}
+                <strong>${escapeHtml(score)}</strong>
+                ${fixtureTeamLine(away)}
+                ${note ? `<small>${escapeHtml(note)}</small>` : ""}
+              </article>
+            `).join("")}
+          </section>
+        `).join("")}
+      </div>
+    `;
+    return;
+  }
   playedPredictions = [];
   playedLeagueFilter.innerHTML = `<option value="International">International</option>`;
   playedLeagueFilter.value = "International";
@@ -697,6 +989,27 @@ function setInternationalSingleDemo() {
 
 function renderWorldCupGroups() {
   if (!worldCupGroupsOutput) return;
+  const historical = HISTORICAL_WORLD_CUPS[selectedSeason()];
+  if (historical) {
+    worldCupGroupsStatus.textContent = `${selectedSeason()} initial groups | Champion: ${historical.champion}`;
+    worldCupGroupsOutput.innerHTML = historical.groups.map((group) => `
+      <article class="world-cup-group-card">
+        <div class="group-card-head">
+          <span>Group ${escapeHtml(group.group)}</span>
+          <small>Historical draw</small>
+        </div>
+        <ul>
+          ${group.teams.map((team) => `
+            <li>
+              ${teamBadge(team)}
+              <span>${escapeHtml(displayTeam(team))}</span>
+            </li>
+          `).join("")}
+        </ul>
+      </article>
+    `).join("");
+    return;
+  }
   if (!hasCurrentInternationalFixtures()) {
     worldCupGroupsStatus.textContent = `${selectedSeason()} groups are not connected yet`;
     worldCupGroupsOutput.innerHTML = internationalEmptyState("Information not available", seasonUnavailableMessage());
@@ -766,6 +1079,38 @@ function renderInternationalFixturesPage() {
 
 function renderInternationalLeagueTables() {
   if (!leagueTablesOutput) return;
+  const historical = HISTORICAL_WORLD_CUPS[selectedSeason()];
+  if (historical) {
+    leagueTablesStatus.textContent = `${selectedSeason()} final group tables | Champion: ${historical.champion}`;
+    leagueTablesOutput.innerHTML = historical.groups.map((group) => `
+      <article class="league-table-card">
+        <div class="league-table-head">
+          <div>
+            <h3>Group ${escapeHtml(group.group)}</h3>
+            <p class="muted">Historical final group-stage table</p>
+          </div>
+        </div>
+        <div class="league-table-scroll">
+          <table class="league-table">
+            <thead>
+              <tr><th>#</th><th>Team</th><th>Pts</th><th>Status</th></tr>
+            </thead>
+            <tbody>
+              ${group.standings.map(([team, points], index) => `
+                <tr>
+                  <td>${index + 1}</td>
+                  <td><strong>${escapeHtml(displayTeam(team))}</strong></td>
+                  <td><strong>${points}</strong></td>
+                  <td><span class="table-status">${index < 2 ? "Advanced" : "Eliminated"}</span></td>
+                </tr>
+              `).join("")}
+            </tbody>
+          </table>
+        </div>
+      </article>
+    `).join("");
+    return;
+  }
   if (!hasCurrentInternationalFixtures()) {
     leagueTablesStatus.textContent = `${selectedSeason()} group tables not available`;
     leagueTablesOutput.innerHTML = internationalEmptyState("Information not available", seasonUnavailableMessage());
@@ -943,15 +1288,15 @@ function renderFutures() {
     futuresOutput.innerHTML = `<div class="empty-state">No futures prediction data is available yet.</div>`;
     return;
   }
-  const market = futuresMarketFilter?.value || "All";
+  const market = futuresMarketFilter?.value || "winners";
   const marketMatches = (pick) => {
     const text = `${pick.market || ""} ${pick.label || ""}`.toLowerCase();
-    if (market === "winners") return text.includes("winner") || text.includes("challenger");
+    if (market === "winners") return text.includes("winner") || text.includes("runner-up") || text.includes("semi-finalist") || text.includes("challenger");
     if (market === "scorers") return text.includes("top scorer");
     if (market === "assists") return text.includes("assist");
     if (market === "team-scorers") return text.includes("team top scorer");
     if (market === "europe") return text.includes("champions league") || text.includes("europa") || text.includes("conference") || text.includes("league phase") || text.includes("qualifier");
-    return true;
+    return false;
   };
   const filteredSections = sections
     .map((section) => ({ ...section, picks: (section.picks || []).filter(marketMatches) }))

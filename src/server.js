@@ -13,6 +13,7 @@ const { futuresPredictions } = require("./futuresService");
 const { resetPlayerStatsCache } = require("./playerStats");
 const { loadMatches, normalizeTeamName } = require("./footballData");
 const { refreshMissingOdds } = require("./oddsRepairService");
+const { refreshEspnFixtures } = require("./espnFixtureService");
 const parlayBacktests = require("./parlayBacktestStore");
 
 const PORT = Number(process.env.PORT || 4173);
@@ -260,6 +261,7 @@ async function handleApi(req, res, pathname) {
   }
 
   if (req.method === "GET" && pathname === "/api/fixture-predictions") {
+    await refreshEspnFixtures();
     await refreshMissingOdds();
     await refreshLiveLeagueContext();
     const predictions = remainingFixturePredictions();
@@ -302,6 +304,11 @@ async function handleApi(req, res, pathname) {
 
   if (req.method === "GET" && pathname === "/api/fbref/status") {
     return sendJson(res, 200, fbrefStatus());
+  }
+
+  if (req.method === "POST" && pathname === "/api/fixtures/espn-refresh") {
+    const snapshot = await refreshEspnFixtures({ daysBack: 7, daysForward: 120 });
+    return sendJson(res, 200, snapshot);
   }
 
   if (req.method === "GET" && pathname === "/api/league-tables") {
