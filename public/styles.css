@@ -541,6 +541,76 @@ textarea:focus {
   border-color: #5eead4;
 }
 
+.select-ticket-button,
+.select-leg-button,
+.ghost-button {
+  border-color: color-mix(in srgb, var(--blue) 64%, var(--line));
+  background: color-mix(in srgb, var(--blue-soft) 72%, var(--row));
+  color: var(--teal);
+}
+
+.select-ticket-button:hover,
+.select-leg-button:hover,
+.ghost-button:hover {
+  border-color: color-mix(in srgb, var(--teal) 70%, var(--line));
+  background: color-mix(in srgb, var(--blue-soft) 86%, var(--row));
+}
+
+.compact-button {
+  min-height: 30px;
+  padding: 5px 8px;
+  font-size: 11px;
+  font-weight: 900;
+}
+
+.slip-summary-grid {
+  display: grid;
+  grid-template-columns: minmax(150px, 1.1fr) repeat(5, minmax(130px, 1fr));
+  gap: 10px;
+  margin-bottom: 14px;
+}
+
+.slip-summary-grid label,
+.slip-summary-grid span {
+  display: grid;
+  gap: 6px;
+  min-width: 0;
+  border: 1px solid var(--line);
+  border-radius: 8px;
+  background: var(--surface);
+  padding: 12px;
+  color: var(--muted);
+  font-size: 11px;
+  font-weight: 900;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+}
+
+.slip-summary-grid input {
+  width: 100%;
+}
+
+.slip-summary-grid strong {
+  color: var(--navy);
+  font-size: 22px;
+  line-height: 1;
+  letter-spacing: 0;
+  text-transform: none;
+}
+
+.parlay-slip-output {
+  display: grid;
+  gap: 14px;
+}
+
+.parlay-slip-card {
+  border: 1px solid color-mix(in srgb, var(--line) 88%, var(--teal));
+  border-radius: 8px;
+  background: color-mix(in srgb, var(--surface) 74%, var(--panel));
+  padding: 18px;
+  box-shadow: var(--shadow-soft);
+}
+
 .parlay-leg-list,
 .tracked-leg-list {
   display: grid;
@@ -627,6 +697,11 @@ textarea:focus {
 .leg-row-meta strong {
   color: var(--navy);
   font-size: 16px;
+}
+
+.leg-row-meta small {
+  color: var(--muted);
+  font-size: 10px;
 }
 
 .parlay-ledger-output {
@@ -2151,6 +2226,10 @@ summary {
 }
 
 @media (max-width: 720px) {
+  .slip-summary-grid {
+    grid-template-columns: 1fr;
+  }
+
   .futures-pick-grid {
     grid-template-columns: 1fr;
   }
@@ -3125,6 +3204,10 @@ th {
   .parlay-controls {
     grid-template-columns: repeat(3, minmax(150px, 1fr));
   }
+
+  .slip-summary-grid {
+    grid-template-columns: repeat(3, minmax(150px, 1fr));
+  }
 }
 
 @media (max-width: 920px) {
@@ -3271,6 +3354,7 @@ th {
   .board-stats,
   .board-controls .board-stats,
   .parlay-controls .board-stats,
+  .slip-summary-grid,
   .accuracy-stats,
   .ticket-stats,
   .profile-stat-grid {

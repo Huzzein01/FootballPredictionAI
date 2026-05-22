@@ -38,6 +38,12 @@ const refreshParlayButton = document.querySelector("#refreshParlayButton");
 const trackParlaysButton = document.querySelector("#trackParlaysButton");
 const parlayMessage = document.querySelector("#parlayMessage");
 const parlayOutput = document.querySelector("#parlayOutput");
+const parlaySlipStatus = document.querySelector("#parlaySlipStatus");
+const parlaySlipOutput = document.querySelector("#parlaySlipOutput");
+const parlaySlipMessage = document.querySelector("#parlaySlipMessage");
+const parlayStakeInput = document.querySelector("#parlayStakeInput");
+const clearParlaySlipButton = document.querySelector("#clearParlaySlipButton");
+const trackParlaySlipButton = document.querySelector("#trackParlaySlipButton");
 const parlayLedgerOutput = document.querySelector("#parlayLedgerOutput");
 const parlayLedgerStatus = document.querySelector("#parlayLedgerStatus");
 const parlayAccuracyStats = document.querySelector("#parlayAccuracyStats");
@@ -76,6 +82,7 @@ let meta = null;
 let fixturePredictions = [];
 let playedPredictions = [];
 let currentParlays = [];
+let selectedParlaySlip = { name: "Custom Parlay Slip", sourceParlayId: "", legs: [], context: "club", riskMode: "safe" };
 let trackedParlayData = { parlays: [], summary: {} };
 let ledgerPredictions = [];
 let playerProfileData = { profiles: [], profileCount: 0, entryCount: 0 };
@@ -91,6 +98,7 @@ let editingTeamStatEntry = null;
 
 const CENTRAL_TIME_ZONE = "America/Chicago";
 const INTERNATIONAL_ONLY_PAGES = new Set(["world-cup-groups", "international-fixtures"]);
+const PARLAY_SLIP_STORAGE_KEY = "football-selected-parlay-slip";
 const CLUB_SEASONS = [
   { value: "2025-26", label: "2025-26" },
   { value: "2026-27", label: "2026-27" },
@@ -1937,6 +1945,189 @@ function setParlayMessage(message, kind = "info") {
   parlayMessage.textContent = message;
 }
 
+function setParlaySlipMessage(message, kind = "info") {
+  if (!parlaySlipMessage) return;
+  parlaySlipMessage.className = `board-message ${message ? "is-visible" : ""} ${kind}`;
+  parlaySlipMessage.textContent = message;
+}
+
+function formatMoney(value) {
+  return new Intl.NumberFormat(undefined, { style: "currency", currency: "USD" }).format(Number(value || 0));
+}
+
+function formatDecimalOdds(value) {
+  const odds = Number(value);
+  return Number.isFinite(odds) && odds > 1 ? odds.toFixed(2) : "N/A";
+}
+
+function legSignature(leg) {
+  return [leg.type || "", leg.date || "", leg.fixture || "", leg.player || "", leg.market || "", leg.pick || ""].join("||").toLowerCase();
+}
+
+function slipEffectiveLegCount(legs) {
+  const groupedFixtures = new Set();
+  let standalone = 0;
+  for (const leg of legs || []) {
+    const fixture = String(leg.fixture || "").trim().toLowerCase();
+    if (fixture && ["match", "score"].includes(leg.type)) {
+      groupedFixtures.add(fixture);
+    } else if (!fixture) {
+      standalone += 1;
+    }
+  }
+  for (const leg of legs || []) {
+    const fixture = String(leg.fixture || "").trim().toLowerCase();
+    if (!fixture || groupedFixtures.has(fixture)) continue;
+    standalone += 1;
+  }
+  return groupedFixtures.size + standalone;
+}
+
+function combinedDecimalOdds(legs) {
+  return (legs || []).reduce((product, leg) => product * Math.max(1, Number(leg.decimalOdds || 1)), 1);
+}
+
+function slipStake() {
+  return Math.max(0, Number(parlayStakeInput?.value || 0));
+}
+
+function parlaySlipForTracking() {
+  return {
+    name: selectedParlaySlip.name || "Potential Parlay Slip",
+    riskMode: selectedParlaySlip.riskMode || (parlayRiskToggle?.checked ? "risky" : "safe"),
+    averageConfidence: selectedParlaySlip.legs.length
+      ? selectedParlaySlip.legs.reduce((sum, leg) => sum + Number(leg.confidence || 0), 0) / selectedParlaySlip.legs.length
+      : 0,
+    legs: selectedParlaySlip.legs,
+    stake: slipStake(),
+    decimalOdds: Number(combinedDecimalOdds(selectedParlaySlip.legs).toFixed(2)),
+    potentialReturn: Number((slipStake() * combinedDecimalOdds(selectedParlaySlip.legs)).toFixed(2)),
+    source: "parlay-slip",
+  };
+}
+
+function saveParlaySlip() {
+  try {
+    localStorage.setItem(PARLAY_SLIP_STORAGE_KEY, JSON.stringify(selectedParlaySlip));
+  } catch {
+    /* localStorage can fail in private browsing; the in-memory slip still works. */
+  }
+}
+
+function loadParlaySlip() {
+  try {
+    const saved = JSON.parse(localStorage.getItem(PARLAY_SLIP_STORAGE_KEY) || "null");
+    if (saved && Array.isArray(saved.legs)) selectedParlaySlip = saved;
+  } catch {
+    selectedParlaySlip = { name: "Custom Parlay Slip", sourceParlayId: "", legs: [], context: currentAppContext(), riskMode: "safe" };
+  }
+}
+
+function addLegToParlaySlip(leg, { replace = false, sourceParlay = null } = {}) {
+  const pricedLeg = {
+    ...leg,
+    decimalOdds: Number(leg.decimalOdds || 0) > 1 ? Number(leg.decimalOdds) : Math.max(1.01, 100 / Math.max(8, Number(leg.confidence || 50))),
+    oddsType: leg.oddsType || "model-estimate",
+    oddsSource: leg.oddsSource || "Model-estimated fair price",
+    oddsStatus: leg.oddsStatus || "No sportsbook prop line connected",
+  };
+  const nextLegs = replace ? [] : [...selectedParlaySlip.legs];
+  if (!nextLegs.some((item) => legSignature(item) === legSignature(pricedLeg))) nextLegs.push(pricedLeg);
+  selectedParlaySlip = {
+    name: sourceParlay?.name || (replace ? "Selected Parlay Slip" : selectedParlaySlip.name || "Custom Parlay Slip"),
+    sourceParlayId: sourceParlay?.id || selectedParlaySlip.sourceParlayId || "",
+    context: currentAppContext(),
+    riskMode: sourceParlay?.riskMode || selectedParlaySlip.riskMode || (parlayRiskToggle?.checked ? "risky" : "safe"),
+    legs: nextLegs.slice(0, 20),
+  };
+  saveParlaySlip();
+  renderParlaySlip();
+}
+
+function selectParlayForSlip(parlay) {
+  selectedParlaySlip = {
+    name: parlay.name || "Selected Parlay Slip",
+    sourceParlayId: parlay.id || "",
+    context: currentAppContext(),
+    riskMode: parlay.riskMode || (parlayRiskToggle?.checked ? "risky" : "safe"),
+    legs: (parlay.legs || []).slice(0, 20),
+  };
+  saveParlaySlip();
+  renderParlayTickets();
+  renderParlaySlip();
+  showPage("parlay-slip");
+  setParlaySlipMessage("Selected parlay loaded. Adjust the stake to preview the potential return.", "info");
+}
+
+function removeSlipLeg(signature) {
+  selectedParlaySlip = {
+    ...selectedParlaySlip,
+    legs: selectedParlaySlip.legs.filter((leg) => legSignature(leg) !== signature),
+  };
+  saveParlaySlip();
+  renderParlayTickets();
+  renderParlaySlip();
+}
+
+function renderParlaySlip() {
+  if (!parlaySlipOutput) return;
+  const legs = selectedParlaySlip.legs || [];
+  const combined = combinedDecimalOdds(legs);
+  const stake = slipStake();
+  const potentialReturn = stake * combined;
+  const potentialProfit = Math.max(0, potentialReturn - stake);
+  document.querySelector("#slipSelectionCount").textContent = legs.length;
+  document.querySelector("#slipEffectiveLegs").textContent = slipEffectiveLegCount(legs);
+  document.querySelector("#slipCombinedOdds").textContent = formatDecimalOdds(combined);
+  document.querySelector("#slipPotentialReturn").textContent = formatMoney(potentialReturn);
+  document.querySelector("#slipPotentialProfit").textContent = formatMoney(potentialProfit);
+  if (parlaySlipStatus) {
+    const sportsbookCount = legs.filter((leg) => leg.oddsType === "sportsbook").length;
+    const estimatedCount = legs.length - sportsbookCount;
+    parlaySlipStatus.textContent = legs.length
+      ? `${selectedParlaySlip.name || "Potential slip"} | ${sportsbookCount} sportsbook price${sportsbookCount === 1 ? "" : "s"} | ${estimatedCount} model estimate${estimatedCount === 1 ? "" : "s"}`
+      : "Select a generated parlay or individual props to preview stake and return";
+  }
+  if (trackParlaySlipButton) trackParlaySlipButton.disabled = !legs.length;
+  if (!legs.length) {
+    parlaySlipOutput.innerHTML = `<div class="empty-state">No selections yet. Go to Parlays and use Select parlay or Add to slip on individual props.</div>`;
+    return;
+  }
+  parlaySlipOutput.innerHTML = `
+    <article class="parlay-slip-card">
+      <div class="ticket-head">
+        <div>
+          <h3>${escapeHtml(selectedParlaySlip.name || "Potential Parlay Slip")}</h3>
+          <p class="muted">Estimated payout multiplies selection prices. Same-fixture props are grouped in the effective leg count for review.</p>
+        </div>
+        <span class="ticket-result">${formatDecimalOdds(combined)}x</span>
+      </div>
+      <ol class="parlay-leg-list slip-leg-list">
+        ${legs.map((leg, index) => renderSlipLeg(leg, index + 1)).join("")}
+      </ol>
+    </article>
+  `;
+}
+
+function renderSlipLeg(leg, index) {
+  const sourceLabel = leg.oddsType === "sportsbook" ? leg.oddsSource || "Sportsbook odds" : "Model est.";
+  return `
+    <li class="parlay-leg-row ${leg.type}-leg">
+      <span class="leg-number">${index}</span>
+      <div>
+        <strong>${escapeHtml(leg.pick)}</strong>
+        ${fixtureMiniLine(leg.fixture)}
+        <p class="fbref-line">${escapeHtml(leg.market || "")} | ${escapeHtml(leg.oddsStatus || "")}</p>
+      </div>
+      <div class="leg-row-meta">
+        <span>${escapeHtml(sourceLabel)}</span>
+        <strong>${formatDecimalOdds(leg.decimalOdds)}</strong>
+        <button class="ghost-button compact-button" type="button" data-remove-slip-leg="${escapeHtml(legSignature(leg))}">Remove</button>
+      </div>
+    </li>
+  `;
+}
+
 function setPlayerProfileMessage(message, kind = "info") {
   playerProfileMessage.className = `board-message ${message ? "is-visible" : ""} ${kind}`;
   playerProfileMessage.textContent = message;
@@ -2363,17 +2554,19 @@ function sortedParlays() {
 
 function renderParlayTickets() {
   parlayOutput.innerHTML = sortedParlays().map(renderParlayTicket).join("");
+  renderParlaySlip();
 }
 
 function renderParlayTicket(parlay) {
   const legs = parlay.legs || [];
   const riskCount = legs.filter((leg) => leg.riskMode).length;
+  const selectedTicket = selectedParlaySlip.sourceParlayId && selectedParlaySlip.sourceParlayId === parlay.id;
   return `
     <article class="parlay-ticket ${parlay.mode === "fixture-grid" ? "fixture-grid-ticket" : ""}">
       <div class="ticket-head">
         <div>
           <h3>${escapeHtml(parlay.name)}</h3>
-          <p class="muted">${legs.length} legs | average confidence ${Number(parlay.averageConfidence || 0).toFixed(1)}%</p>
+          <p class="muted">${legs.length} selections | ${slipEffectiveLegCount(legs)} effective legs | average confidence ${Number(parlay.averageConfidence || 0).toFixed(1)}%</p>
         </div>
         <div class="ticket-actions">
           <div class="ticket-stats">
@@ -2381,13 +2574,15 @@ function renderParlayTicket(parlay) {
             <span>${(parlay.propLegs || []).length} BTTS/corner</span>
             <span>${(parlay.teamScoreLegs || []).length} score</span>
             <span>${(parlay.matchResultLegs || []).length} result</span>
+            <span>${formatDecimalOdds(combinedDecimalOdds(legs))}x</span>
             ${riskCount ? `<span>${riskCount} risk</span>` : ""}
           </div>
+          <button class="select-ticket-button" type="button" data-select-ticket="${escapeHtml(parlay.id)}">${selectedTicket ? "Selected in slip" : "Select parlay"}</button>
           <button class="track-ticket-button" type="button" data-track-ticket="${escapeHtml(parlay.id)}">Track this option</button>
         </div>
       </div>
       <ol class="parlay-leg-list">
-        ${legs.map((leg, index) => renderLegListItem(leg, index + 1)).join("")}
+        ${legs.map((leg, index) => renderLegListItem(leg, index + 1, parlay.id, index)).join("")}
       </ol>
     </article>
   `;
@@ -2409,7 +2604,7 @@ function renderLegSection(title, legs, emptyText) {
   `;
 }
 
-function renderLegListItem(leg, index) {
+function renderLegListItem(leg, index, parlayId = "", legIndex = 0) {
   const detail =
     leg.type === "player"
       ? `${leg.fbrefMetric} | ${leg.fbrefSeason} | ${leg.source}`
@@ -2418,6 +2613,8 @@ function renderLegListItem(leg, index) {
       : leg.type === "btts"
       ? `${leg.projectedScore ? `Projected score ${leg.projectedScore} | ` : ""}${leg.source || ""}`
       : `Projected score ${leg.projectedScore || "N/A"} | ${leg.source || ""}`;
+  const selected = selectedParlaySlip.legs.some((item) => legSignature(item) === legSignature(leg));
+  const oddsLabel = leg.oddsType === "sportsbook" ? "Odds API" : "Model est.";
   return `
     <li class="parlay-leg-row ${leg.type}-leg">
       <span class="leg-number">${index}</span>
@@ -2429,7 +2626,9 @@ function renderLegListItem(leg, index) {
       </div>
       <div class="leg-row-meta">
         <span>${escapeHtml(leg.market)}</span>
-        <strong>${Number(leg.confidence || 0).toFixed(1)}%</strong>
+        <strong>${formatDecimalOdds(leg.decimalOdds)}</strong>
+        <small>${escapeHtml(oddsLabel)} | ${Number(leg.confidence || 0).toFixed(1)}%</small>
+        <button class="select-leg-button compact-button" type="button" data-select-leg="${escapeHtml(parlayId)}" data-leg-index="${legIndex}">${selected ? "Added" : "Add to slip"}</button>
       </div>
     </li>
   `;
@@ -3043,6 +3242,31 @@ seasonSelect?.addEventListener("change", async () => {
 });
 refreshParlayButton.addEventListener("click", () => refreshParlay({ forceNew: true }));
 parlayOutput.addEventListener("click", async (event) => {
+  const ticketSelectButton = event.target.closest("button[data-select-ticket]");
+  if (ticketSelectButton) {
+    const parlay = currentParlays.find((ticket) => ticket.id === ticketSelectButton.dataset.selectTicket);
+    if (!parlay) {
+      setParlayMessage("This parlay option is no longer available. Refresh parlays and try again.", "error");
+      return;
+    }
+    selectParlayForSlip(parlay);
+    return;
+  }
+
+  const legSelectButton = event.target.closest("button[data-select-leg][data-leg-index]");
+  if (legSelectButton) {
+    const parlay = currentParlays.find((ticket) => ticket.id === legSelectButton.dataset.selectLeg);
+    const leg = parlay?.legs?.[Number(legSelectButton.dataset.legIndex)];
+    if (!leg) {
+      setParlayMessage("This leg is no longer available. Refresh parlays and try again.", "error");
+      return;
+    }
+    addLegToParlaySlip(leg, { sourceParlay: { name: selectedParlaySlip.name || "Custom Parlay Slip", riskMode: parlay.riskMode } });
+    renderParlayTickets();
+    setParlayMessage(`Added ${leg.pick} to the potential parlay slip.`, "info");
+    return;
+  }
+
   const button = event.target.closest("button[data-track-ticket]");
   if (!button) return;
   const parlay = currentParlays.find((ticket) => ticket.id === button.dataset.trackTicket);
@@ -3086,6 +3310,42 @@ trackParlaysButton.addEventListener("click", async () => {
   } finally {
     trackParlaysButton.disabled = false;
     trackParlaysButton.textContent = originalText;
+  }
+});
+parlayStakeInput?.addEventListener("input", renderParlaySlip);
+clearParlaySlipButton?.addEventListener("click", () => {
+  selectedParlaySlip = { name: "Custom Parlay Slip", sourceParlayId: "", legs: [], context: currentAppContext(), riskMode: parlayRiskToggle?.checked ? "risky" : "safe" };
+  saveParlaySlip();
+  renderParlayTickets();
+  renderParlaySlip();
+  setParlaySlipMessage("Slip cleared.", "info");
+});
+parlaySlipOutput?.addEventListener("click", (event) => {
+  const button = event.target.closest("button[data-remove-slip-leg]");
+  if (!button) return;
+  removeSlipLeg(button.dataset.removeSlipLeg);
+  setParlaySlipMessage("Selection removed from slip.", "info");
+});
+trackParlaySlipButton?.addEventListener("click", async () => {
+  if (!selectedParlaySlip.legs.length) {
+    setParlaySlipMessage("Add selections before tracking this slip.", "error");
+    return;
+  }
+  const originalText = trackParlaySlipButton.textContent;
+  trackParlaySlipButton.disabled = true;
+  trackParlaySlipButton.textContent = "Tracking...";
+  try {
+    const data = await api("/api/parlay/backtest", {
+      method: "POST",
+      body: JSON.stringify({ parlays: [parlaySlipForTracking()] }),
+    });
+    setParlaySlipMessage(data.saved.length ? "Selected slip added to the parlay backtest ledger." : "This selected slip is already tracked.", "info");
+    await refreshParlayLedger();
+  } catch (error) {
+    setParlaySlipMessage(error.message, "error");
+  } finally {
+    trackParlaySlipButton.disabled = false;
+    trackParlaySlipButton.textContent = originalText;
   }
 });
 parlayLeagueFilter.addEventListener("change", () => refreshParlay({ forceNew: true }));
@@ -3304,6 +3564,8 @@ async function init() {
     updateSeasonOptions();
     updateContextLabels();
     updateContextNavigation();
+    loadParlaySlip();
+    renderParlaySlip();
     showPage(location.hash.replace("#", "") || "predictions");
     meta = await api("/api/meta");
     renderModelMeta(meta, meta.trainingStatus);

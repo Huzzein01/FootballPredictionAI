@@ -75,6 +75,52 @@ function parseProjectedScore(score) {
   return { homeGoals: Number(match[1]), awayGoals: Number(match[2]) };
 }
 
+function decimalPrice(value) {
+  const price = Number(value);
+  return Number.isFinite(price) && price > 1 ? Number(price.toFixed(2)) : null;
+}
+
+function modelEstimatedPrice(confidence) {
+  const probability = Math.max(8, Math.min(92, Number(confidence || 0))) / 100;
+  return Number((1 / probability).toFixed(2));
+}
+
+function sportsbookMatchPrice(fixture, pick) {
+  const odds = fixture.odds || {};
+  if (pick === "Draw") return decimalPrice(odds.drawOdds);
+  if (pick === `${fixture.homeTeam} win`) return decimalPrice(odds.homeOdds);
+  if (pick === `${fixture.awayTeam} win`) return decimalPrice(odds.awayOdds);
+  return null;
+}
+
+function withLegPricing(leg, fixture = null) {
+  const sportsbookPrice = fixture && leg.type === "match" ? sportsbookMatchPrice(fixture, leg.pick) : null;
+  if (sportsbookPrice) {
+    return {
+      ...leg,
+      decimalOdds: sportsbookPrice,
+      oddsType: "sportsbook",
+      oddsSource: fixture.oddsSource || "The Odds API",
+      oddsStatus: fixture.oddsStatus || "Public match-result odds",
+      oddsSourceUrl: fixture.oddsSourceUrl || "",
+      oddsSnapshotAt: fixture.oddsSnapshotAt || "",
+    };
+  }
+  return {
+    ...leg,
+    decimalOdds: modelEstimatedPrice(leg.confidence),
+    oddsType: "model-estimate",
+    oddsSource: "Model-estimated fair price",
+    oddsStatus: leg.type === "match" ? "No sportsbook price matched for this result leg" : "Sportsbook prop line not available from the current Odds API h2h feed",
+    oddsSourceUrl: "",
+    oddsSnapshotAt: "",
+  };
+}
+
+function decorateLegsWithPricing(legs, fixtureMap) {
+  return (legs || []).map((leg) => withLegPricing(leg, fixtureMap.get(String(leg.fixture || "").toLowerCase()) || null));
+}
+
 function loadFbrefRows() {
   return loadPlayerRows();
 }
@@ -933,6 +979,24 @@ function buildTicket({ index, requestedLegs, playerLegs, scoreLegs, resultLegs, 
   };
 }
 
+function decorateTicketsWithPricing(tickets, fixtures) {
+  const fixtureMap = new Map(fixtures.map((fixture) => [`${fixture.homeTeam} vs ${fixture.awayTeam}`.toLowerCase(), fixture]));
+  return (tickets || []).map((ticket) => {
+    const pricedLegs = decorateLegsWithPricing(ticket.legs, fixtureMap);
+    return {
+      ...ticket,
+      legs: pricedLegs,
+      playerStatLegs: pricedLegs.filter((leg) => leg.type === "player"),
+      teamScoreLegs: pricedLegs.filter((leg) => leg.type === "score"),
+      matchResultLegs: pricedLegs.filter((leg) => leg.type === "match"),
+      propLegs: pricedLegs.filter((leg) => ["btts", "corner"].includes(leg.type)),
+      pricedLegCount: pricedLegs.filter((leg) => Number(leg.decimalOdds || 0) > 1).length,
+      sportsbookLegCount: pricedLegs.filter((leg) => leg.oddsType === "sportsbook").length,
+      estimatedLegCount: pricedLegs.filter((leg) => leg.oddsType !== "sportsbook").length,
+    };
+  });
+}
+
 function buildFixtureGridTickets({ fixtures, requestedLegs, playerLegs, scoreLegs, resultLegs, propLegs, riskMode = "safe" }) {
   return fixtures.slice(0, 6).map((fixture, index) => {
     const fixtureName = `${fixture.homeTeam} vs ${fixture.awayTeam}`;
@@ -1013,7 +1077,7 @@ function buildInternationalParlays(options = {}) {
   const eligibleScoreLegs = scoreLegs;
   const eligibleResultLegs = resultLegs;
   const eligiblePropLegs = propLegs;
-  const parlays =
+  const rawParlays =
     generationMode === "fixture-grid"
       ? buildFixtureGridTickets({
           fixtures,
@@ -1038,6 +1102,7 @@ function buildInternationalParlays(options = {}) {
             riskMode,
           })
         ).filter((ticket) => ticket.legs.length);
+  const parlays = decorateTicketsWithPricing(rawParlays, fixtures);
 
   return {
     fbref,
@@ -1095,7 +1160,7 @@ function buildParlays(options = {}) {
   const eligibleScoreLegs = scoreLegs.filter((leg) => !excludedLegFixtures.has([leg.date || "", leg.fixture || ""].join("|").toLowerCase()));
   const eligibleResultLegs = resultLegs.filter((leg) => !excludedLegFixtures.has([leg.date || "", leg.fixture || ""].join("|").toLowerCase()));
   const eligiblePropLegs = propLegs.filter((leg) => !excludedLegFixtures.has([leg.date || "", leg.fixture || ""].join("|").toLowerCase()));
-  const parlays =
+  const rawParlays =
     generationMode === "fixture-grid"
       ? buildFixtureGridTickets({
           fixtures,
@@ -1120,6 +1185,7 @@ function buildParlays(options = {}) {
             riskMode,
           })
         ).filter((ticket) => ticket.legs.length);
+  const parlays = decorateTicketsWithPricing(rawParlays, fixtures);
 
   return {
     fbref,

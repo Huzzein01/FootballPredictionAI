@@ -18,6 +18,7 @@
         <select id="pageSelect" aria-label="Choose app section">
           <option value="predictions">Predictions</option>
           <option value="parlays">Parlays</option>
+          <option value="parlay-slip">Parlay Slip</option>
           <option value="player-profiles">Player Profiles</option>
           <option value="team-profiles">Team Profiles</option>
           <option value="futures">Futures</option>
@@ -71,6 +72,7 @@
     <nav class="page-nav" aria-label="App sections">
       <button class="page-tab is-active" type="button" data-page-target="predictions">Predictions</button>
       <button class="page-tab" type="button" data-page-target="parlays">Parlays</button>
+      <button class="page-tab" type="button" data-page-target="parlay-slip">Parlay Slip</button>
       <button class="page-tab" type="button" data-page-target="player-profiles">Player Profiles</button>
       <button class="page-tab" type="button" data-page-target="team-profiles">Team Profiles</button>
       <button class="page-tab" type="button" data-page-target="futures">Futures</button>
@@ -251,6 +253,32 @@
 
         <div id="parlayMessage" class="board-message" aria-live="polite"></div>
         <div id="parlayOutput" class="parlay-output" aria-live="polite"></div>
+      </section>
+
+      <section class="panel parlay-slip-panel page-section" data-page="parlay-slip" aria-labelledby="parlaySlipHeading">
+        <div class="section-head">
+          <div>
+            <h2 id="parlaySlipHeading">Potential Parlay Slip</h2>
+            <p id="parlaySlipStatus" class="muted">Select a generated parlay or individual props to preview stake and return</p>
+          </div>
+          <div class="section-actions">
+            <button id="clearParlaySlipButton" type="button">Clear Slip</button>
+            <button id="trackParlaySlipButton" class="primary" type="button">Track Selected Slip</button>
+          </div>
+        </div>
+        <div class="slip-summary-grid" aria-label="Potential parlay return">
+          <label>
+            Stake
+            <input id="parlayStakeInput" type="number" min="0" step="0.01" value="1.00" inputmode="decimal">
+          </label>
+          <span><strong id="slipSelectionCount">0</strong> selections</span>
+          <span><strong id="slipEffectiveLegs">0</strong> effective legs</span>
+          <span><strong id="slipCombinedOdds">1.00</strong> combined odds</span>
+          <span><strong id="slipPotentialReturn">$0.00</strong> potential return</span>
+          <span><strong id="slipPotentialProfit">$0.00</strong> potential profit</span>
+        </div>
+        <div id="parlaySlipMessage" class="board-message" aria-live="polite"></div>
+        <div id="parlaySlipOutput" class="parlay-slip-output" aria-live="polite"></div>
       </section>
 
       <section class="panel parlay-ledger-panel page-section" data-page="parlay-ledger" aria-labelledby="parlayLedgerHeading">
