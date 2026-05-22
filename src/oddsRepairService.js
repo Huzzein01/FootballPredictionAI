@@ -31,6 +31,19 @@ const PUBLIC_ODDS_SEEDS = [
     oddsSourceUrl: "https://tips.gg/matches/football/24-05-2026/sunderland-vs-chelsea/03-00/odds/",
     note: "Current public 1X2 line found online; Tips.GG listed Bet365 at Sunderland 3.60, Draw 3.60, Chelsea 1.95.",
   },
+  {
+    date: "2026-05-17",
+    league: "Ligue 1",
+    homeTeam: "Nantes",
+    awayTeam: "Toulouse",
+    homeOdds: "2.78",
+    drawOdds: "3.39",
+    awayOdds: "2.78",
+    oddsSource: "SportyTrader",
+    oddsStatus: "Public odds fallback",
+    oddsSourceUrl: "https://www.sportytrader.com/en/odds/nantes-toulouse-7679427/",
+    note: "The Odds API no longer lists the closed market; SportyTrader archived best 1X2 odds at Nantes 2.78, Draw 3.39, Toulouse 2.78.",
+  },
 ];
 
 function parseCsvLine(line) {

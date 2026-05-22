@@ -81,6 +81,7 @@ function normalizeLooseTeamName(team) {
     .trim();
   const aliases = {
     "afc bournemouth": "Bournemouth",
+    "atalanta bc": "Atalanta",
     "athletic bilbao": "Ath Bilbao",
     "athletic club": "Ath Bilbao",
     "atletico madrid": "Ath Madrid",
@@ -89,7 +90,9 @@ function normalizeLooseTeamName(team) {
     "borussia dortmund": "Dortmund",
     "borussia monchengladbach": "M'gladbach",
     "brighton and hove albion": "Brighton",
+    "ca osasuna": "Osasuna",
     "cologne": "FC Koln",
+    "elche cf": "Elche",
     "fc cologne": "FC Koln",
     "inter": "Inter Milan",
     "internazionale": "Inter Milan",
@@ -104,6 +107,7 @@ function normalizeLooseTeamName(team) {
     "real betis": "Betis",
     "real sociedad": "Real Sociedad",
     "stade rennais": "Rennes",
+    "ss lazio": "Lazio",
     "tottenham hotspur": "Tottenham",
     "west ham": "West Ham United",
     "west ham united": "West Ham United",
