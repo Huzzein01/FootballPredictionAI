@@ -1991,13 +1991,73 @@ function slipStake() {
   return Math.max(0, Number(parlayStakeInput?.value || 0));
 }
 
+function averageLegConfidence(legs) {
+  return legs?.length ? legs.reduce((sum, leg) => sum + Number(leg.confidence || 0), 0) / legs.length : 0;
+}
+
+function confidenceBand(confidence) {
+  const score = Number(confidence || 0);
+  if (score >= 70) return { label: "Confident", tone: "strong", note: "Above the preferred confidence line." };
+  if (score >= 65) return { label: "Playable", tone: "watch", note: "Inside the 65-70% review band." };
+  return { label: "Potential miss", tone: "risk", note: "Below the preferred confidence baseline." };
+}
+
+function slipConfidenceAssessment(legs) {
+  if (!legs?.length) {
+    return {
+      average: 0,
+      verdict: "No picks",
+      tone: "empty",
+      note: "Select props to calculate confidence.",
+      weakCount: 0,
+      reviewCount: 0,
+      strongCount: 0,
+    };
+  }
+  const average = averageLegConfidence(legs);
+  const weakCount = legs.filter((leg) => Number(leg.confidence || 0) < 65).length;
+  const reviewCount = legs.filter((leg) => Number(leg.confidence || 0) >= 65 && Number(leg.confidence || 0) < 70).length;
+  const strongCount = legs.filter((leg) => Number(leg.confidence || 0) >= 70).length;
+  if (average >= 70 && weakCount === 0) {
+    return {
+      average,
+      verdict: "Confident slip",
+      tone: "strong",
+      note: `${strongCount} selection${strongCount === 1 ? "" : "s"} above 70%; no leg below 65%.`,
+      weakCount,
+      reviewCount,
+      strongCount,
+    };
+  }
+  if (average >= 65 && weakCount <= 1) {
+    return {
+      average,
+      verdict: "Playable, review risk",
+      tone: "watch",
+      note: `${weakCount} below-baseline selection${weakCount === 1 ? "" : "s"}; keep stake controlled.`,
+      weakCount,
+      reviewCount,
+      strongCount,
+    };
+  }
+  return {
+    average,
+    verdict: "Potential miss risk",
+    tone: "risk",
+    note: `${weakCount} selection${weakCount === 1 ? "" : "s"} below 65%; this slip needs trimming.`,
+    weakCount,
+    reviewCount,
+    strongCount,
+  };
+}
+
 function parlaySlipForTracking() {
+  const confidence = slipConfidenceAssessment(selectedParlaySlip.legs);
   return {
     name: selectedParlaySlip.name || "Potential Parlay Slip",
     riskMode: selectedParlaySlip.riskMode || (parlayRiskToggle?.checked ? "risky" : "safe"),
-    averageConfidence: selectedParlaySlip.legs.length
-      ? selectedParlaySlip.legs.reduce((sum, leg) => sum + Number(leg.confidence || 0), 0) / selectedParlaySlip.legs.length
-      : 0,
+    averageConfidence: confidence.average,
+    confidenceVerdict: confidence.verdict,
     legs: selectedParlaySlip.legs,
     stake: slipStake(),
     decimalOdds: Number(combinedDecimalOdds(selectedParlaySlip.legs).toFixed(2)),
@@ -2076,8 +2136,12 @@ function renderParlaySlip() {
   const stake = slipStake();
   const potentialReturn = stake * combined;
   const potentialProfit = Math.max(0, potentialReturn - stake);
+  const confidence = slipConfidenceAssessment(legs);
   document.querySelector("#slipSelectionCount").textContent = legs.length;
   document.querySelector("#slipEffectiveLegs").textContent = slipEffectiveLegCount(legs);
+  document.querySelector("#slipAverageConfidence").textContent = `${confidence.average.toFixed(1)}%`;
+  document.querySelector("#slipConfidenceVerdict").textContent = confidence.verdict;
+  document.querySelector("#slipConfidenceVerdict").className = `confidence-verdict ${confidence.tone}`;
   document.querySelector("#slipCombinedOdds").textContent = formatDecimalOdds(combined);
   document.querySelector("#slipPotentialReturn").textContent = formatMoney(potentialReturn);
   document.querySelector("#slipPotentialProfit").textContent = formatMoney(potentialProfit);
@@ -2098,7 +2162,7 @@ function renderParlaySlip() {
       <div class="ticket-head">
         <div>
           <h3>${escapeHtml(selectedParlaySlip.name || "Potential Parlay Slip")}</h3>
-          <p class="muted">Estimated payout multiplies selection prices. Same-fixture props are grouped in the effective leg count for review.</p>
+          <p class="muted">Estimated payout multiplies selection prices. Confidence baseline: 65-70% and above. ${escapeHtml(confidence.note)}</p>
         </div>
         <span class="ticket-result">${formatDecimalOdds(combined)}x</span>
       </div>
@@ -2111,6 +2175,7 @@ function renderParlaySlip() {
 
 function renderSlipLeg(leg, index) {
   const sourceLabel = leg.oddsType === "sportsbook" ? leg.oddsSource || "Sportsbook odds" : "Model est.";
+  const confidence = confidenceBand(leg.confidence);
   return `
     <li class="parlay-leg-row ${leg.type}-leg">
       <span class="leg-number">${index}</span>
@@ -2122,6 +2187,7 @@ function renderSlipLeg(leg, index) {
       <div class="leg-row-meta">
         <span>${escapeHtml(sourceLabel)}</span>
         <strong>${formatDecimalOdds(leg.decimalOdds)}</strong>
+        <small class="confidence-chip ${confidence.tone}">${Number(leg.confidence || 0).toFixed(1)}% - ${escapeHtml(confidence.label)}</small>
         <button class="ghost-button compact-button" type="button" data-remove-slip-leg="${escapeHtml(legSignature(leg))}">Remove</button>
       </div>
     </li>

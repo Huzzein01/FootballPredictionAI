@@ -565,7 +565,7 @@ textarea:focus {
 
 .slip-summary-grid {
   display: grid;
-  grid-template-columns: minmax(150px, 1.1fr) repeat(5, minmax(130px, 1fr));
+  grid-template-columns: repeat(auto-fit, minmax(145px, 1fr));
   gap: 10px;
   margin-bottom: 14px;
 }
@@ -596,6 +596,33 @@ textarea:focus {
   line-height: 1;
   letter-spacing: 0;
   text-transform: none;
+}
+
+.confidence-verdict.strong,
+.confidence-chip.strong {
+  color: var(--teal);
+}
+
+.confidence-verdict.watch,
+.confidence-chip.watch {
+  color: var(--gold);
+}
+
+.confidence-verdict.risk,
+.confidence-chip.risk {
+  color: var(--red);
+}
+
+.confidence-chip {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  border: 1px solid currentColor;
+  border-radius: 999px;
+  padding: 4px 8px;
+  background: color-mix(in srgb, currentColor 10%, transparent);
+  font-weight: 900;
 }
 
 .parlay-slip-output {
