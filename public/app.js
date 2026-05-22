@@ -1858,6 +1858,39 @@ function pickText(prediction) {
   return "Draw";
 }
 
+function predictionKey(prediction) {
+  return [prediction.date || "", prediction.league || "", prediction.homeTeam || "", prediction.awayTeam || ""].join("|");
+}
+
+function predictionDecimalOdds(prediction) {
+  if (!prediction?.hasOdds) return null;
+  if (prediction.prediction === "H") return Number(prediction.odds?.homeOdds);
+  if (prediction.prediction === "A") return Number(prediction.odds?.awayOdds);
+  return Number(prediction.odds?.drawOdds);
+}
+
+function predictionSlipLeg(prediction) {
+  const price = predictionDecimalOdds(prediction);
+  const hasSportsbookPrice = Number.isFinite(price) && price > 1;
+  return {
+    type: "match",
+    date: prediction.date || "",
+    fixture: `${prediction.homeTeam} vs ${prediction.awayTeam}`,
+    league: prediction.league || "",
+    market: "match result",
+    pick: pickText(prediction),
+    confidence: Number(prediction.confidence || 0),
+    projectedScore: prediction.projectedScore || "",
+    source: prediction.judgment?.summary || motivationText(prediction) || "Prediction board model pick",
+    decimalOdds: hasSportsbookPrice ? Number(price.toFixed(2)) : null,
+    oddsType: hasSportsbookPrice ? "sportsbook" : "model-estimate",
+    oddsSource: hasSportsbookPrice ? prediction.oddsSource || "The Odds API" : "Model-estimated fair price",
+    oddsStatus: hasSportsbookPrice ? prediction.oddsStatus || "Public match-result odds" : "No sportsbook price connected for this prediction",
+    oddsSourceUrl: prediction.oddsSourceUrl || "",
+    oddsSnapshotAt: prediction.oddsSnapshotAt || "",
+  };
+}
+
 function probabilityRows(prediction) {
   const rows = [
     ["H", displayTeam(prediction.homeTeam), prediction.probabilities.homeWinPct],
@@ -2364,6 +2397,9 @@ function renderBoard() {
           <div class="callout">
             <span class="pick-pill tag-${prediction.prediction}">${escapeHtml(pickText(prediction))}</span>
             <strong>${prediction.confidence.toFixed(1)}%</strong>
+            <button class="select-prediction-button compact-button" type="button" data-select-prediction="${escapeHtml(predictionKey(prediction))}">
+              ${selectedParlaySlip.legs.some((leg) => legSignature(leg) === legSignature(predictionSlipLeg(prediction))) ? "Added" : "Select"}
+            </button>
           </div>
           <div class="score-line">
             <span>Projected score</span>
@@ -3256,6 +3292,20 @@ trackAllButton.addEventListener("click", async () => {
     trackAllButton.disabled = isInternationalMode() ? !hasCurrentInternationalFixtures() || !fixturePredictions.length : !isCurrentClubSeason();
     trackAllButton.textContent = originalText;
   }
+});
+
+fixtureBoard.addEventListener("click", (event) => {
+  const button = event.target.closest("button[data-select-prediction]");
+  if (!button) return;
+  const prediction = fixturePredictions.find((item) => predictionKey(item) === button.dataset.selectPrediction);
+  if (!prediction) {
+    setBoardMessage("That prediction is no longer available. Refresh the prediction board and try again.", "error");
+    return;
+  }
+  const leg = predictionSlipLeg(prediction);
+  addLegToParlaySlip(leg, { sourceParlay: { name: selectedParlaySlip.name || "Custom Prediction Slip", riskMode: parlayRiskToggle?.checked ? "risky" : "safe" } });
+  renderBoard();
+  setBoardMessage(`Added ${pickText(prediction)} from ${displayTeam(prediction.homeTeam)} vs ${displayTeam(prediction.awayTeam)} to the parlay slip.`, "info");
 });
 
 ledgerBody.addEventListener("click", async (event) => {
