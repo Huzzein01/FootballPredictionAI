@@ -15,6 +15,7 @@ const { loadMatches, normalizeTeamName } = require("./footballData");
 const { refreshMissingOdds } = require("./oddsRepairService");
 const { refreshEspnFixtures } = require("./espnFixtureService");
 const { refreshTheOddsApi } = require("./oddsApiService");
+const { apiFootballStatus } = require("./liveData");
 const parlayBacktests = require("./parlayBacktestStore");
 
 const PORT = Number(process.env.PORT || 4173);
@@ -316,6 +317,10 @@ async function handleApi(req, res, pathname) {
   if (req.method === "POST" && pathname === "/api/odds/refresh") {
     const snapshot = await refreshTheOddsApi({ force: true, includeClub: true, includeInternational: true, daysForward: 420 });
     return sendJson(res, 200, snapshot);
+  }
+
+  if (req.method === "GET" && pathname === "/api/live/api-football/status") {
+    return sendJson(res, 200, await apiFootballStatus());
   }
 
   if (req.method === "GET" && pathname === "/api/league-tables") {

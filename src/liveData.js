@@ -7,6 +7,7 @@ const PROVIDERS = {
   apiFootball: {
     name: "API-Football",
     envKey: "APISPORTS_KEY",
+    alternateEnvKey: "API_FOOTBALL_KEY",
     baseUrl: "https://v3.football.api-sports.io",
   },
   theSportsDb: {
@@ -27,13 +28,37 @@ async function fetchFootballData(path) {
 }
 
 async function fetchApiFootball(path) {
-  const key = process.env.APISPORTS_KEY;
-  if (!key) throw new Error("Set APISPORTS_KEY to use API-Football live/player data.");
+  const key = process.env.APISPORTS_KEY || process.env.API_FOOTBALL_KEY;
+  if (!key) throw new Error("Set APISPORTS_KEY or API_FOOTBALL_KEY to use API-Football live/player data.");
   const response = await fetch(`${PROVIDERS.apiFootball.baseUrl}${path}`, {
     headers: { "x-apisports-key": key },
   });
   if (!response.ok) throw new Error(`API-Football returned ${response.status}`);
   return response.json();
+}
+
+function apiFootballConfigured() {
+  return Boolean(process.env.APISPORTS_KEY || process.env.API_FOOTBALL_KEY);
+}
+
+async function apiFootballStatus() {
+  if (!apiFootballConfigured()) {
+    return {
+      provider: PROVIDERS.apiFootball.name,
+      connected: false,
+      message: "Set APISPORTS_KEY or API_FOOTBALL_KEY to enable API-Football.",
+    };
+  }
+
+  const payload = await fetchApiFootball("/status");
+  const response = payload.response || {};
+  return {
+    provider: PROVIDERS.apiFootball.name,
+    connected: true,
+    account: { firstname: response.account?.firstname || "" },
+    subscription: response.subscription || {},
+    requests: response.requests || {},
+  };
 }
 
 async function fetchTheSportsDb(path) {
@@ -70,5 +95,7 @@ async function getLiveContext({ provider = "footballData", competitionCode, team
 
 module.exports = {
   PROVIDERS,
+  apiFootballStatus,
+  fetchApiFootball,
   getLiveContext,
 };

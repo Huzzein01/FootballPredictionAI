@@ -53,6 +53,8 @@ const worldCupGroupsOutput = document.querySelector("#worldCupGroupsOutput");
 const internationalFixturesStatus = document.querySelector("#internationalFixturesStatus");
 const internationalFixturesOutput = document.querySelector("#internationalFixturesOutput");
 const playerProfileStatus = document.querySelector("#playerProfileStatus");
+const apiFootballStatus = document.querySelector("#apiFootballStatus");
+const checkApiFootballButton = document.querySelector("#checkApiFootballButton");
 const refreshPlayerProfilesButton = document.querySelector("#refreshPlayerProfilesButton");
 const playerStatForm = document.querySelector("#playerStatForm");
 const playerProfileSelect = document.querySelector("#playerProfileSelect");
@@ -3232,6 +3234,31 @@ async function refreshPlayerProfiles() {
   setPlayerProfileMessage("", "info");
 }
 
+async function checkApiFootballStatus() {
+  if (!apiFootballStatus || !checkApiFootballButton) return;
+  const originalText = checkApiFootballButton.textContent;
+  checkApiFootballButton.disabled = true;
+  checkApiFootballButton.textContent = "Checking...";
+  apiFootballStatus.textContent = "API-Football: checking connection...";
+  try {
+    const status = await api("/api/live/api-football/status");
+    if (!status.connected) {
+      apiFootballStatus.textContent = `API-Football: not connected. ${status.message || "Set the API key locally."}`;
+      return;
+    }
+    const plan = status.subscription?.plan || "plan unknown";
+    const current = Number(status.requests?.current || 0);
+    const dailyLimit = Number(status.requests?.limit_day || 0);
+    const requestText = dailyLimit ? `${current}/${dailyLimit} requests used today` : `${current} requests used today`;
+    apiFootballStatus.textContent = `API-Football: connected (${plan}) | ${requestText}`;
+  } catch (error) {
+    apiFootballStatus.textContent = `API-Football: connection failed (${error.message})`;
+  } finally {
+    checkApiFootballButton.disabled = false;
+    checkApiFootballButton.textContent = originalText;
+  }
+}
+
 async function refreshTeamProfiles() {
   if (!teamProfileGrid) return;
   setTeamProfileMessage("Loading team profiles...", "info");
@@ -3477,6 +3504,7 @@ parlayRiskToggle.addEventListener("change", () => refreshParlay({ forceNew: true
 parlayLayoutToggle.addEventListener("change", () => refreshParlay({ forceNew: true }));
 parlaySortSelect.addEventListener("change", renderParlayTickets);
 refreshParlayLedgerButton.addEventListener("click", refreshParlayLedger);
+checkApiFootballButton?.addEventListener("click", checkApiFootballStatus);
 refreshPlayerProfilesButton.addEventListener("click", refreshPlayerProfiles);
 refreshTeamProfilesButton?.addEventListener("click", refreshTeamProfiles);
 refreshLeagueTablesButton?.addEventListener("click", refreshLeagueTables);

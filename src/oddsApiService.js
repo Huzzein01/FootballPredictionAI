@@ -316,6 +316,7 @@ async function refreshTheOddsApi({ force = false, includeClub = true, includeInt
     const cached = readLiveOddsSnapshot();
     return { ...cached, cached: true };
   }
+  const previousSnapshot = readLiveOddsSnapshot() || {};
   const sportKeys = [
     ...(includeClub ? Object.values(CLUB_SPORT_KEYS) : []),
     ...(includeInternational ? [INTERNATIONAL_SPORT_KEYS["2026 World Cup"]] : []),
@@ -331,17 +332,21 @@ async function refreshTheOddsApi({ force = false, includeClub = true, includeInt
     }
   }
   const events = indexedEventsBySport(fetchedSports);
-  const club = includeClub ? updateClubFixtureOdds(events) : { checked: 0, updated: 0 };
+  const club = includeClub ? updateClubFixtureOdds(events) : previousSnapshot.club || { checked: 0, updated: 0 };
   const internationalOdds = includeInternational ? internationalOddsFromEvents(events) : [];
+  const preservedSports = Array.isArray(previousSnapshot.requestedSports) ? previousSnapshot.requestedSports : [];
+  const international = includeInternational
+    ? { updated: internationalOdds.length, fixtures: internationalOdds }
+    : previousSnapshot.international || { updated: 0, fixtures: [] };
   const snapshot = {
     updatedAt: new Date().toISOString(),
     provider: "The Odds API",
     enabled: Boolean(process.env.ODDS_API_KEY || process.env.THE_ODDS_API_KEY),
     cached: false,
-    requestedSports: uniqueSportKeys,
+    requestedSports: [...new Set([...preservedSports, ...uniqueSportKeys])],
     eventCount: events.length,
     club,
-    international: { updated: internationalOdds.length, fixtures: internationalOdds },
+    international,
     quota: fetchedSports.map((sport) => ({ sportKey: sport.sportKey, quota: sport.quota || null, skipped: sport.skipped || false, reason: sport.reason || "" })),
     errors,
   };
