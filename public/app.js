@@ -85,6 +85,7 @@ const pageSections = [...document.querySelectorAll("[data-page]")];
 let meta = null;
 let fixturePredictions = [];
 let playedPredictions = [];
+let playedPredictionsSeason = "";
 let currentParlays = [];
 let selectedParlaySlip = { name: "Custom Parlay Slip", sourceParlayId: "", legs: [], context: "club", riskMode: "safe" };
 let trackedParlayData = { parlays: [], summary: {} };
@@ -99,6 +100,7 @@ let futuresData = null;
 let parlayRefreshSeed = 0;
 let editingPlayerStatEntry = null;
 let editingTeamStatEntry = null;
+let trainingFixtureSourcesPromise = null;
 
 const CENTRAL_TIME_ZONE = "America/Chicago";
 const INTERNATIONAL_ONLY_PAGES = new Set(["world-cup-groups", "international-fixtures"]);
@@ -1654,7 +1656,7 @@ function fixtureSignature(fixture) {
 
 function trainingFixtures() {
   const seen = new Set();
-  return [...fixturePredictions, ...playedPredictions].filter((fixture) => {
+  return [...fixturePredictions, ...playedPredictions, ...ledgerPredictions].filter((fixture) => {
     const signature = fixtureSignature(fixture);
     if (seen.has(signature)) return false;
     seen.add(signature);
@@ -1669,10 +1671,39 @@ function findTrainingFixture(profile, date) {
     .sort((a, b) => Number(b.league === profile.league) - Number(a.league === profile.league))[0] || null;
 }
 
-function autofillTrainingFixture({ showMessage = true } = {}) {
+async function ensureTrainingFixtureSources() {
+  if (isInternationalMode()) return;
+  const season = selectedSeason();
+  const playedReady = playedPredictions.length && playedPredictionsSeason === season;
+  const currentSeasonReady = !isCurrentClubSeason() || (fixturePredictions.length && ledgerPredictions.length);
+  if (playedReady && currentSeasonReady) return;
+  if (!trainingFixtureSourcesPromise) {
+    trainingFixtureSourcesPromise = Promise.all([
+      isCurrentClubSeason() && !fixturePredictions.length ? api("/api/fixture-predictions") : Promise.resolve(null),
+      playedReady ? Promise.resolve(null) : api(`/api/played-fixtures?context=club&season=${encodeURIComponent(season)}`),
+      isCurrentClubSeason() && !ledgerPredictions.length ? api("/api/backtests") : Promise.resolve(null),
+    ])
+      .then(([fixtureData, playedData, ledgerData]) => {
+        if (fixtureData) fixturePredictions = fixtureData.predictions || [];
+        if (playedData) {
+          playedPredictions = playedData.predictions || [];
+          playedPredictionsSeason = season;
+        }
+        if (ledgerData) ledgerPredictions = ledgerData.predictions || [];
+      })
+      .finally(() => {
+        trainingFixtureSourcesPromise = null;
+      });
+  }
+  await trainingFixtureSourcesPromise;
+}
+
+async function autofillTrainingFixture({ showMessage = true } = {}) {
   const profile = (playerProfileData.profiles || []).find((item) => item.id === playerProfileSelect.value);
   const date = playerStatForm.elements.date?.value || "";
   if (!profile || !date) return;
+  await ensureTrainingFixtureSources();
+  if (playerProfileSelect.value !== profile.id || playerStatForm.elements.date?.value !== date) return;
   const fixture = findTrainingFixture(profile, date);
   if (!fixture) {
     playerStatForm.elements.opponent.value = "";
@@ -2347,11 +2378,13 @@ function fillTeamStatFormFromEntry(profile, entry) {
   setTeamProfileMessage(`Editing latest trained match for ${profile.displayName || displayTeam(profile.team)}. Update the fields and save to correct the team profile entry.`, "info");
 }
 
-function autofillTeamTrainingFixture({ showMessage = true } = {}) {
+async function autofillTeamTrainingFixture({ showMessage = true } = {}) {
   if (!teamStatForm || editingTeamStatEntry) return;
   const profile = (teamProfileData.profiles || []).find((item) => item.id === teamProfileSelect.value);
   const date = teamStatForm.elements.date?.value || "";
   if (!profile || !date) return;
+  await ensureTrainingFixtureSources();
+  if (teamProfileSelect.value !== profile.id || teamStatForm.elements.date?.value !== date) return;
   const fixture = findTrainingFixture(profile, date);
   if (!fixture) {
     teamStatForm.elements.opponent.value = "";
@@ -3164,6 +3197,7 @@ async function refreshPlayedBoard() {
   const previousDate = playedDateFilter.value;
   const data = await api(`/api/played-fixtures?context=club&season=${encodeURIComponent(selectedSeason())}`);
   playedPredictions = data.predictions || [];
+  playedPredictionsSeason = selectedSeason();
 
   const leagues = [...new Set(playedPredictions.map((prediction) => prediction.league))].sort();
   playedLeagueFilter.innerHTML = `<option value="All">All leagues</option>${leagues.map((league) => `<option value="${escapeHtml(league)}">${escapeHtml(league)}</option>`).join("")}`;
@@ -3273,6 +3307,18 @@ function renderApiFootballPlayerRefreshStatus(refresh) {
   }
   if (refresh.status === "FAILED") {
     apiFootballStatus.textContent = `API-Football: player refresh failed (${refresh.error || "unknown error"})`;
+    return;
+  }
+  if (refresh.status === "RATE_LIMITED") {
+    apiFootballStatus.textContent = `API-Football: rate limit reached while syncing ${refresh.season || selectedSeason()}. Cached or manual baselines remain active until the quota resets.`;
+    return;
+  }
+  if (refresh.status === "CURRENT_SEASON_SKIPPED") {
+    apiFootballStatus.textContent = `API-Football: current-season player sync is skipped on normal loads because the Free plan blocks 2025-26. Use Check API-Football to verify the key, or Refresh Profiles to force a check.`;
+    return;
+  }
+  if (refresh.status === "UNAVAILABLE_SEASON") {
+    apiFootballStatus.textContent = `API-Football: ${refresh.season || selectedSeason()} player stats are not available yet.`;
     return;
   }
   if (refresh.cached) {

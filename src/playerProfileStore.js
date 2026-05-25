@@ -506,9 +506,10 @@ function totalsForEntries(entries) {
   return totalsWithRates(totals);
 }
 
-function entriesForProfile(store, profileId, context = "club") {
+function entriesForProfile(store, profileId, context = "club", season = "") {
   return store.entries
     .filter((entry) => entry.profileId === profileId && (entry.context || "club") === context)
+    .filter((entry) => !season || entry.season === season)
     .sort((a, b) => String(b.date || "").localeCompare(String(a.date || "")));
 }
 
@@ -533,21 +534,21 @@ function supplementalProfileRows() {
   return SUPPLEMENTAL_PROFILE_ROWS.map((row) => ({ ...row }));
 }
 
-function recordProfileTotals(profileId, context = "club") {
+function recordProfileTotals(profileId, context = "club", season = "2025-26") {
   const profile = profileById(profileId);
   if (!profile) return totalsWithRates(emptyTotals());
   const store = readStore();
-  const baselineTotals = importedBaselineForProfile(profile).totals;
-  return combineTotals(baselineTotals, totalsForEntries(entriesForProfile(store, profileId, context)));
+  const baselineTotals = importedBaselineForProfile(profile, season).totals;
+  return combineTotals(baselineTotals, totalsForEntries(entriesForProfile(store, profileId, context, season)));
 }
 
-function importedBaselineForProfile(profile) {
+function importedBaselineForProfile(profile, season = "2025-26") {
   const { aggregatePlayers, normalizePlayerName } = require("./playerStats");
   const profilePlayer = normalizePlayerName(profile.player);
   const profileTeam = normalizeTeamName(profile.team);
   const importedPlayer = aggregatePlayers([...readImportedRows(), ...supplementalProfileRows(), ...readApiFootballRows()]).find(
     (player) =>
-      player.season === "2025-26" &&
+      player.season === season &&
       player.league === profile.league &&
       player.squad === profileTeam &&
       normalizePlayerName(player.player) === profilePlayer
@@ -655,7 +656,7 @@ function worldCupBaselineForProfile(profile, nationalTeam) {
   };
 }
 
-function internationalBaselineForProfile(profile) {
+function internationalBaselineForProfile(profile, season = "2025-26") {
   const baseline = INTERNATIONAL_PROFILE_BASELINES[profile.id] || {};
   const worldCupBaseline = worldCupBaselineForProfile(profile, baseline.team);
   if (worldCupBaseline) {
@@ -671,7 +672,7 @@ function internationalBaselineForProfile(profile) {
       updatedAt: "2026-05-18",
     };
   }
-  const clubBaseline = importedBaselineForProfile(profile);
+  const clubBaseline = importedBaselineForProfile(profile, season);
   const volume = estimatedInternationalVolume(profile, baseline, clubBaseline.totals);
   const totals = totalsWithRates({
     appearances: baseline.appearances || 0,
@@ -698,19 +699,21 @@ function internationalBaselineForProfile(profile) {
   };
 }
 
-function listPlayerProfiles() {
+function listPlayerProfiles(options = {}) {
+  const season = options.season || "2025-26";
   const store = readStore();
   return {
     updatedAt: store.updatedAt,
     profileCount: PLAYER_PROFILES.length,
     entryCount: store.entries.length,
+    season,
     profiles: PLAYER_PROFILES.map((profile) => {
-      const entries = entriesForProfile(store, profile.id, "club");
-      const internationalEntries = entriesForProfile(store, profile.id, "international");
+      const entries = entriesForProfile(store, profile.id, "club", season);
+      const internationalEntries = entriesForProfile(store, profile.id, "international", season);
       const manualTotals = totalsForEntries(entries);
       const internationalManualTotals = totalsForEntries(internationalEntries);
-      const importedBaseline = importedBaselineForProfile(profile);
-      const internationalBaseline = internationalBaselineForProfile(profile);
+      const importedBaseline = importedBaselineForProfile(profile, season);
+      const internationalBaseline = internationalBaselineForProfile(profile, season);
       return {
         ...profile,
         team: normalizeTeamName(profile.team),

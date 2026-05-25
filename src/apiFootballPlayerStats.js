@@ -175,9 +175,22 @@ function replaceSeasonRows(existingRows, season, nextRows) {
   ];
 }
 
+function errorsText(errors) {
+  if (!errors) return "";
+  if (typeof errors === "string") return errors;
+  if (Array.isArray(errors)) return errors.map(errorsText).join(" ");
+  if (typeof errors === "object") return Object.values(errors).map(errorsText).join(" ");
+  return String(errors);
+}
+
 function planBlocked(errors) {
-  const text = typeof errors === "string" ? errors : Object.values(errors || {}).join(" ");
+  const text = errorsText(errors);
   return /free plans do not have access/i.test(text);
+}
+
+function rateLimited(errors) {
+  const text = errorsText(errors);
+  return /429|rate limit|too many requests/i.test(text);
 }
 
 async function refreshApiFootballPlayerStats({ profiles = [], season = "2025-26", force = false } = {}) {
@@ -199,10 +212,17 @@ async function refreshApiFootballPlayerStats({ profiles = [], season = "2025-26"
     if (!leagueId) continue;
     checked += 1;
     const search = encodeURIComponent(normalizeSearchName(profile.player));
-    const payload = await fetchApiFootball(`/players?league=${leagueId}&season=${apiSeason}&search=${search}`);
+    let payload = null;
+    try {
+      payload = await fetchApiFootball(`/players?league=${leagueId}&season=${apiSeason}&search=${search}`);
+    } catch (error) {
+      errors.push({ profileId: profile.id, player: profile.player, league: profile.league, errors: { request: error.message } });
+      if (rateLimited(error.message)) break;
+      continue;
+    }
     if (Object.keys(payload.errors || {}).length) {
       errors.push({ profileId: profile.id, player: profile.player, league: profile.league, errors: payload.errors });
-      if (planBlocked(payload.errors)) break;
+      if (planBlocked(payload.errors) || rateLimited(payload.errors)) break;
       continue;
     }
 
@@ -235,6 +255,8 @@ async function refreshApiFootballPlayerStats({ profiles = [], season = "2025-26"
     errors,
     status: errors.some((entry) => planBlocked(entry.errors))
       ? "BLOCKED_BY_PLAN"
+      : errors.some((entry) => rateLimited(entry.errors))
+      ? "RATE_LIMITED"
       : rows.length
       ? "UPDATED"
       : "NO_ROWS",

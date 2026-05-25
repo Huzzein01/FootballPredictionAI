@@ -242,6 +242,14 @@ function historicalPlayedFixtures(season = "2025-26") {
     .sort((a, b) => `${b.date} ${b.homeTeam}`.localeCompare(`${a.date} ${a.homeTeam}`));
 }
 
+function shouldRefreshApiFootballPlayerSeason(season = "2025-26", forceLive = false) {
+  if (forceLive) return true;
+  if (!/^\d{4}-\d{2}$/.test(String(season))) return false;
+  if (season === "2025-26") return false;
+  if (season === "2026-27") return false;
+  return true;
+}
+
 async function handleApi(req, res, pathname) {
   if (req.method === "GET" && pathname === "/api/meta") {
     const model = JSON.parse(fs.readFileSync(path.join(process.cwd(), "model", "football_match_model.json"), "utf8"));
@@ -362,10 +370,22 @@ async function handleApi(req, res, pathname) {
     const forceLive = url.searchParams.get("forceLive") === "1";
     let liveRefresh = null;
     try {
-      liveRefresh = await refreshApiFootballPlayerStats({ profiles: PLAYER_PROFILES, season, force: forceLive });
-      if (liveRefresh.changed) {
-        resetPlayerStatsCache();
-        scheduleRetrain("api-football-player-profile-refresh");
+      if (shouldRefreshApiFootballPlayerSeason(season, forceLive)) {
+        liveRefresh = await refreshApiFootballPlayerStats({ profiles: PLAYER_PROFILES, season, force: forceLive });
+        if (liveRefresh.changed) {
+          resetPlayerStatsCache();
+          scheduleRetrain("api-football-player-profile-refresh");
+        }
+      } else {
+        liveRefresh = {
+          provider: "API-Football",
+          season,
+          status: season === "2025-26" ? "CURRENT_SEASON_SKIPPED" : "UNAVAILABLE_SEASON",
+          changed: false,
+          cached: true,
+          rowCount: 0,
+          updatedProfiles: 0,
+        };
       }
     } catch (error) {
       liveRefresh = {
@@ -376,7 +396,7 @@ async function handleApi(req, res, pathname) {
         changed: false,
       };
     }
-    return sendJson(res, 200, { ...listPlayerProfiles(), liveRefresh });
+    return sendJson(res, 200, { ...listPlayerProfiles({ season }), liveRefresh });
   }
 
   if (req.method === "GET" && pathname === "/api/team-profiles") {
