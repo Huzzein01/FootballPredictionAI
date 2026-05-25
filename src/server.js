@@ -13,7 +13,7 @@ const { futuresPredictions } = require("./futuresService");
 const { resetPlayerStatsCache } = require("./playerStats");
 const { loadMatches, normalizeTeamName } = require("./footballData");
 const { refreshMissingOdds } = require("./oddsRepairService");
-const { refreshEspnFixtures } = require("./espnFixtureService");
+const { refreshEspnFixtures, refreshEspnResults } = require("./espnFixtureService");
 const { refreshTheOddsApi } = require("./oddsApiService");
 const { apiFootballStatus } = require("./liveData");
 const { refreshApiFootballPlayerStats } = require("./apiFootballPlayerStats");
@@ -260,6 +260,11 @@ async function handleApi(req, res, pathname) {
   }
 
   if (req.method === "GET" && pathname === "/api/backtests") {
+    const resultSnapshot = await refreshEspnResults();
+    if (resultSnapshot.settled > 0) {
+      await refreshLiveLeagueContext();
+      scheduleRetrain("espn-auto-fixture-results");
+    }
     return sendJson(res, 200, { predictions: listPredictions(), summary: summary() });
   }
 
@@ -313,6 +318,15 @@ async function handleApi(req, res, pathname) {
   if (req.method === "POST" && pathname === "/api/fixtures/espn-refresh") {
     const snapshot = await refreshEspnFixtures({ daysBack: 7, daysForward: 120 });
     return sendJson(res, 200, snapshot);
+  }
+
+  if (req.method === "POST" && pathname === "/api/fixtures/espn-results-refresh") {
+    const snapshot = await refreshEspnResults({ daysBack: 21, daysForward: 1, force: true });
+    if (snapshot.settled > 0) {
+      await refreshLiveLeagueContext();
+      scheduleRetrain("espn-auto-fixture-results");
+    }
+    return sendJson(res, 200, { ...snapshot, summary: summary() });
   }
 
   if (req.method === "POST" && pathname === "/api/odds/refresh") {

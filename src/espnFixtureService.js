@@ -1,9 +1,11 @@
 const fs = require("fs");
 const path = require("path");
 const { normalizeTeamName } = require("./footballData");
+const { listPredictions, updateResult } = require("./backtestStore");
 
 const FIXTURE_PATH = path.join(process.cwd(), "data", "remaining_fixtures_2025_26_with_odds.csv");
 const LIVE_FIXTURE_PATH = path.join(process.cwd(), "data", "live_espn_fixtures.json");
+const LIVE_RESULTS_PATH = path.join(process.cwd(), "data", "live_espn_results.json");
 const USER_AGENT = "Mozilla/5.0 FootballPredictionAI espn-fixture-refresh";
 
 const ESPN_LEAGUES = {
@@ -116,15 +118,69 @@ function normalizeEspnEvent(event, league, sourceUrl) {
   };
 }
 
-async function fetchLeagueFixtures(league, dateWindow) {
+function competitorByHomeAway(competition, homeAway) {
+  return (competition.competitors || []).find((competitor) => competitor.homeAway === homeAway) || {};
+}
+
+function scoreForCompetitor(competition, homeAway) {
+  const score = competitorByHomeAway(competition, homeAway).score;
+  const n = Number(score);
+  return Number.isFinite(n) ? n : null;
+}
+
+function sourceLink(event, fallbackUrl) {
+  const links = event.links || [];
+  return links.find((link) => (link.rel || []).includes("summary"))?.href || fallbackUrl;
+}
+
+function normalizeEspnResult(event, league, sourceUrl) {
+  const competition = event.competitions?.[0] || {};
+  const status = event.status?.type || competition.status?.type || {};
+  const homeTeam = normalizeTeamName(teamFromCompetitors(competition.competitors || [], "home"));
+  const awayTeam = normalizeTeamName(teamFromCompetitors(competition.competitors || [], "away"));
+  const kickoff = event.date || competition.date || "";
+  const homeGoals = scoreForCompetitor(competition, "home");
+  const awayGoals = scoreForCompetitor(competition, "away");
+  return {
+    date: kickoff ? kickoff.slice(0, 10) : "",
+    league,
+    homeTeam,
+    awayTeam,
+    homeGoals,
+    awayGoals,
+    espnEventId: event.id || competition.id || "",
+    kickoffUtc: kickoff,
+    completed: Boolean(status.completed),
+    statusState: status.state || "",
+    statusName: status.name || "",
+    statusDetail: status.detail || status.shortDetail || "",
+    sourceName: "ESPN public event scoreboard API",
+    sourceUrl: sourceLink(event, sourceUrl),
+    fetchedAt: new Date().toISOString(),
+  };
+}
+
+async function fetchLeagueScoreboard(league, dateWindow) {
   const code = ESPN_LEAGUES[league];
   const sourceUrl = `https://site.api.espn.com/apis/site/v2/sports/soccer/${code}/scoreboard?dates=${dateWindow}&limit=300`;
   const response = await fetch(sourceUrl, { headers: { "user-agent": USER_AGENT } });
   if (!response.ok) throw new Error(`ESPN ${league} fixture request failed: ${response.status}`);
   const payload = await response.json();
-  return (payload.events || [])
+  return { sourceUrl, events: payload.events || [] };
+}
+
+async function fetchLeagueFixtures(league, dateWindow) {
+  const { sourceUrl, events } = await fetchLeagueScoreboard(league, dateWindow);
+  return events
     .map((event) => normalizeEspnEvent(event, league, sourceUrl))
     .filter((fixture) => fixture.date && fixture.homeTeam && fixture.awayTeam && !fixture.completed);
+}
+
+async function fetchLeagueResults(league, dateWindow) {
+  const { sourceUrl, events } = await fetchLeagueScoreboard(league, dateWindow);
+  return events
+    .map((event) => normalizeEspnResult(event, league, sourceUrl))
+    .filter((result) => result.completed && result.date && result.homeTeam && result.awayTeam && Number.isFinite(result.homeGoals) && Number.isFinite(result.awayGoals));
 }
 
 async function refreshEspnFixtures({ daysBack = 7, daysForward = 75 } = {}) {
@@ -198,7 +254,100 @@ async function refreshEspnFixtures({ daysBack = 7, daysForward = 75 } = {}) {
   return snapshot;
 }
 
+function readResultsSnapshot() {
+  if (!fs.existsSync(LIVE_RESULTS_PATH)) return null;
+  try {
+    return JSON.parse(fs.readFileSync(LIVE_RESULTS_PATH, "utf8").replace(/^\uFEFF/, ""));
+  } catch {
+    return null;
+  }
+}
+
+function resultsSnapshotIsFresh(maxAgeMinutes = 3) {
+  const snapshot = readResultsSnapshot();
+  if (!snapshot?.updatedAt) return false;
+  const ageMs = Date.now() - Date.parse(snapshot.updatedAt);
+  return Number.isFinite(ageMs) && ageMs >= 0 && ageMs < maxAgeMinutes * 60_000;
+}
+
+function resultMatchKey(result) {
+  return [result.league, normalizeTeamName(result.homeTeam), normalizeTeamName(result.awayTeam)].join("|").toLowerCase();
+}
+
+function predictionMatchesResult(prediction, result) {
+  if (prediction.status === "SETTLED") return false;
+  if (prediction.source !== "fixture-board") return false;
+  if (prediction.espnEventId && result.espnEventId && String(prediction.espnEventId) === String(result.espnEventId)) return true;
+  if (resultMatchKey(prediction) !== resultMatchKey(result)) return false;
+  return daysBetween(prediction.kickoffUtc || prediction.date, result.kickoffUtc || result.date) <= 2;
+}
+
+async function refreshEspnResults({ daysBack = 14, daysForward = 1, force = false } = {}) {
+  const maxAgeMinutes = Number(process.env.ESPN_RESULTS_CACHE_MINUTES || 3);
+  if (!force && resultsSnapshotIsFresh(maxAgeMinutes)) {
+    return { ...readResultsSnapshot(), cached: true };
+  }
+
+  const dateWindow = dateRange(daysBack, daysForward);
+  const results = [];
+  const errors = [];
+  for (const league of Object.keys(ESPN_LEAGUES)) {
+    try {
+      results.push(...await fetchLeagueResults(league, dateWindow));
+    } catch (error) {
+      errors.push({ league, message: error.message });
+    }
+  }
+
+  const pending = listPredictions().filter((prediction) => prediction.status !== "SETTLED");
+  const settled = [];
+  const seenIds = new Set();
+  for (const result of results) {
+    const match = pending.find((prediction) => predictionMatchesResult(prediction, result));
+    if (!match || seenIds.has(match.id)) continue;
+    const updated = updateResult(match.id, {
+      homeGoals: result.homeGoals,
+      awayGoals: result.awayGoals,
+      settledBy: "espn-auto",
+      sourceName: result.sourceName,
+      sourceUrl: result.sourceUrl,
+      sourceEventId: result.espnEventId,
+    });
+    if (updated) {
+      seenIds.add(match.id);
+      settled.push({
+        id: updated.id,
+        date: updated.date,
+        league: updated.league,
+        homeTeam: updated.homeTeam,
+        awayTeam: updated.awayTeam,
+        homeGoals: updated.homeGoals,
+        awayGoals: updated.awayGoals,
+        prediction: updated.prediction,
+        correct: updated.correct,
+        sourceUrl: result.sourceUrl,
+        espnEventId: result.espnEventId,
+      });
+    }
+  }
+
+  const snapshot = {
+    updatedAt: new Date().toISOString(),
+    source: "ESPN public event scoreboard API",
+    dateWindow,
+    checkedLeagues: Object.keys(ESPN_LEAGUES),
+    fetched: results.length,
+    settled: settled.length,
+    results,
+    settledPredictions: settled,
+    errors,
+  };
+  fs.writeFileSync(LIVE_RESULTS_PATH, JSON.stringify(snapshot, null, 2));
+  return snapshot;
+}
+
 module.exports = {
   ESPN_LEAGUES,
   refreshEspnFixtures,
+  refreshEspnResults,
 };

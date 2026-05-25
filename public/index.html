@@ -609,8 +609,12 @@
           <div>
             <h2 id="ledgerHeading">Backtest Ledger</h2>
             <p class="muted">Settle each fixture after the final score is known</p>
+            <p id="fixtureLedgerSyncStatus" class="live-provider-status">ESPN results sync runs automatically while this page is open</p>
           </div>
-          <button id="refreshButton" type="button">Refresh</button>
+          <div class="section-actions">
+            <button id="syncEspnResultsButton" class="ghost-button" type="button">Sync ESPN Results</button>
+            <button id="refreshButton" type="button">Refresh</button>
+          </div>
         </div>
         <div class="table-wrap">
           <table>

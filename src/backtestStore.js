@@ -125,6 +125,10 @@ function updateResult(id, update) {
   if (entry.actualResult) {
     entry.status = "SETTLED";
     entry.settledAt = new Date().toISOString();
+    entry.settledBy = update.settledBy || entry.settledBy || "manual";
+    entry.resultSourceName = update.sourceName || entry.resultSourceName || "";
+    entry.resultSourceUrl = update.sourceUrl || entry.resultSourceUrl || "";
+    entry.resultSourceEventId = update.sourceEventId || entry.resultSourceEventId || "";
     entry.correct = entry.prediction === entry.actualResult;
     entry.scoreCorrect = isExactScoreCorrect(entry);
   }

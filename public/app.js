@@ -4,6 +4,8 @@ const shortLabels = { H: "Home", D: "Draw", A: "Away" };
 const form = document.querySelector("#predictForm");
 const output = document.querySelector("#predictionOutput");
 const ledgerBody = document.querySelector("#ledgerBody");
+const fixtureLedgerSyncStatus = document.querySelector("#fixtureLedgerSyncStatus");
+const syncEspnResultsButton = document.querySelector("#syncEspnResultsButton");
 const teamList = document.querySelector("#teamList");
 const appContextToggle = document.querySelector("#appContextToggle");
 const leagueSelect = document.querySelector("#leagueSelect");
@@ -3171,6 +3173,37 @@ async function refreshPlayedBoard() {
   renderPlayedBoard();
 }
 
+function setFixtureLedgerSyncStatus(message, kind = "info") {
+  if (!fixtureLedgerSyncStatus) return;
+  fixtureLedgerSyncStatus.textContent = message;
+  fixtureLedgerSyncStatus.dataset.kind = kind;
+}
+
+async function syncEspnResults({ force = false, background = false } = {}) {
+  if (isInternationalMode() || !isCurrentClubSeason()) return null;
+  if (!background) setFixtureLedgerSyncStatus("ESPN results sync: checking completed matches...", "info");
+  if (syncEspnResultsButton) syncEspnResultsButton.disabled = true;
+  try {
+    const data = await api("/api/fixtures/espn-results-refresh", { method: "POST", body: JSON.stringify({ force }) });
+    const cacheLabel = data.cached ? "cached" : "live";
+    if (data.settled > 0) {
+      setFixtureLedgerSyncStatus(`ESPN results sync: settled ${data.settled} fixture${data.settled === 1 ? "" : "s"} from ${data.fetched || 0} ${cacheLabel} results. Retraining queued.`, "info");
+      await refreshLeagueTables();
+      await refreshFixtureBoard();
+      await refreshPlayedBoard();
+      await refreshTrainingStatus();
+    } else if (!background) {
+      setFixtureLedgerSyncStatus(`ESPN results sync: no new pending ledger fixtures matched ${data.fetched || 0} completed ${cacheLabel} results.`, "info");
+    }
+    return data;
+  } catch (error) {
+    setFixtureLedgerSyncStatus(`ESPN results sync failed: ${error.message}`, "error");
+    return null;
+  } finally {
+    if (syncEspnResultsButton) syncEspnResultsButton.disabled = false;
+  }
+}
+
 async function refreshParlay({ forceNew = false } = {}) {
   if (isInternationalMode()) {
     if (!hasCurrentInternationalFixtures()) {
@@ -3389,6 +3422,10 @@ ledgerBody.addEventListener("click", async (event) => {
 });
 
 document.querySelector("#refreshButton").addEventListener("click", refreshLedger);
+syncEspnResultsButton?.addEventListener("click", async () => {
+  await syncEspnResults({ force: true });
+  await refreshLedger();
+});
 leagueSelect.addEventListener("change", updateTeamList);
 singleCompetitionSelect?.addEventListener("change", () => {
   if (!isInternationalMode()) return;
@@ -3775,3 +3812,10 @@ window.setInterval(() => {
   if (document.visibilityState === "hidden") return;
   refreshPlayerProfiles({ background: true }).catch(() => {});
 }, 15 * 60 * 1000);
+
+window.setInterval(() => {
+  if (document.visibilityState === "hidden") return;
+  syncEspnResults({ background: true }).then((data) => {
+    if (data?.settled > 0) refreshLedger();
+  }).catch(() => {});
+}, 3 * 60 * 1000);
