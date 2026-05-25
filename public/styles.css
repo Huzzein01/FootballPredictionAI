@@ -1791,21 +1791,28 @@ textarea:focus {
 }
 
 .profile-training-latest {
-  grid-template-columns: minmax(0, 1fr);
-  align-items: start;
+  display: flex !important;
+  align-items: center;
+  gap: 10px;
+  grid-template-columns: none;
 }
 
 .profile-training-latest div {
   display: grid;
+  flex: 1 1 auto;
   gap: 3px;
   min-width: 0;
 }
 
 .profile-entry-edit-button {
-  justify-self: start;
-  min-width: 64px;
-  padding: 7px 10px;
+  align-self: center;
+  flex: 0 0 auto;
+  justify-self: end;
+  min-width: 58px;
+  min-height: 38px;
+  padding: 7px 12px;
   font-size: 12px;
+  line-height: 1;
   max-width: 100%;
 }
 
@@ -1816,6 +1823,17 @@ textarea:focus {
   text-overflow: clip;
   white-space: normal;
   overflow-wrap: anywhere;
+}
+
+@media (max-width: 520px) {
+  .profile-training-latest {
+    align-items: stretch;
+    flex-direction: column;
+  }
+
+  .profile-entry-edit-button {
+    width: 100%;
+  }
 }
 
 .profile-training-empty {
