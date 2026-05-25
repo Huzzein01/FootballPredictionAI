@@ -3227,11 +3227,46 @@ async function refreshParlayLedger() {
   renderParlayLedger();
 }
 
-async function refreshPlayerProfiles() {
-  setPlayerProfileMessage("Loading player profiles...", "info");
-  playerProfileData = await api("/api/player-profiles");
+function renderApiFootballPlayerRefreshStatus(refresh) {
+  if (!apiFootballStatus || !refresh) return;
+  if (refresh.status === "UPDATED") {
+    const cacheLabel = refresh.cached ? "cached" : "live";
+    apiFootballStatus.textContent = `API-Football: ${cacheLabel} player stats synced for ${refresh.updatedProfiles || 0} profiles (${refresh.rowCount || 0} rows)`;
+    return;
+  }
+  if (refresh.status === "BLOCKED_BY_PLAN") {
+    apiFootballStatus.textContent = `API-Football: connected, but the Free plan cannot access ${refresh.apiSeason || selectedSeason()} current-season player stats. Existing trained/manual baselines remain active.`;
+    return;
+  }
+  if (refresh.status === "FAILED") {
+    apiFootballStatus.textContent = `API-Football: player refresh failed (${refresh.error || "unknown error"})`;
+    return;
+  }
+  if (refresh.cached) {
+    apiFootballStatus.textContent = `API-Football: using cached player refresh for ${refresh.season || selectedSeason()}`;
+    return;
+  }
+  apiFootballStatus.textContent = `API-Football: no player rows returned for ${refresh.season || selectedSeason()}`;
+}
+
+async function refreshPlayerProfiles(options = {}) {
+  const forceLive = Boolean(options.forceLive);
+  if (!options.background) setPlayerProfileMessage(forceLive ? "Syncing API-Football player stats..." : "Loading player profiles...", "info");
+  const query = new URLSearchParams({
+    season: selectedSeason(),
+    forceLive: forceLive ? "1" : "0",
+  });
+  playerProfileData = await api(`/api/player-profiles?${query.toString()}`);
   renderPlayerProfiles();
-  setPlayerProfileMessage("", "info");
+  renderApiFootballPlayerRefreshStatus(playerProfileData.liveRefresh);
+  if (!options.background) {
+    if (playerProfileData.liveRefresh?.changed) {
+      setPlayerProfileMessage("API-Football player stats changed. Continuous training has been queued with the updated profile baseline.", "info");
+      await refreshTrainingStatus();
+    } else {
+      setPlayerProfileMessage("", "info");
+    }
+  }
 }
 
 async function checkApiFootballStatus() {
@@ -3505,7 +3540,7 @@ parlayLayoutToggle.addEventListener("change", () => refreshParlay({ forceNew: tr
 parlaySortSelect.addEventListener("change", renderParlayTickets);
 refreshParlayLedgerButton.addEventListener("click", refreshParlayLedger);
 checkApiFootballButton?.addEventListener("click", checkApiFootballStatus);
-refreshPlayerProfilesButton.addEventListener("click", refreshPlayerProfiles);
+refreshPlayerProfilesButton.addEventListener("click", () => refreshPlayerProfiles({ forceLive: true }));
 refreshTeamProfilesButton?.addEventListener("click", refreshTeamProfiles);
 refreshLeagueTablesButton?.addEventListener("click", refreshLeagueTables);
 leagueTableLeagueFilter?.addEventListener("change", renderLeagueTables);
@@ -3735,3 +3770,8 @@ async function init() {
 }
 
 init();
+
+window.setInterval(() => {
+  if (document.visibilityState === "hidden") return;
+  refreshPlayerProfiles({ background: true }).catch(() => {});
+}, 15 * 60 * 1000);

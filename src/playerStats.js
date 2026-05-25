@@ -54,12 +54,21 @@ function loadPlayerRows() {
   const worldCupRows = fs.existsSync(WORLD_CUP_PLAYER_STATS_JSON_PATH)
     ? JSON.parse(fs.readFileSync(WORLD_CUP_PLAYER_STATS_JSON_PATH, "utf8")).rows || []
     : [];
+  const { readApiFootballPlayerStats } = require("./apiFootballPlayerStats");
+  const apiFootballRows = readApiFootballPlayerStats().rows || [];
   const { manualPlayerRows, supplementalProfileRows } = require("./playerProfileStore");
-  return [...(Array.isArray(importedRows) ? importedRows : []), ...(Array.isArray(worldCupRows) ? worldCupRows : []), ...supplementalProfileRows(), ...manualPlayerRows()];
+  return [
+    ...(Array.isArray(importedRows) ? importedRows : []),
+    ...(Array.isArray(worldCupRows) ? worldCupRows : []),
+    ...(Array.isArray(apiFootballRows) ? apiFootballRows : []),
+    ...supplementalProfileRows(),
+    ...manualPlayerRows(),
+  ];
 }
 
 function playerSourceLabel(row) {
   if (String(row.ManualProfileSource).toLowerCase() === "true") return "Manual profile";
+  if (String(row.ApiFootballSource).toLowerCase() === "true") return "API-Football";
   if (String(row.PublicProfileSource).toLowerCase() === "true") return "Public profile";
   return String(row.ThunderbitSource).toLowerCase() === "true" ? "Thunderbit/FBref" : "FBref";
 }

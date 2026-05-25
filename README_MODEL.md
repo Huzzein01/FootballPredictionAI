@@ -210,7 +210,7 @@ League values used by the local data:
 The predictor is usable offline today. Live providers are wired as optional adapters:
 
 - football-data.org: set `FOOTBALL_DATA_API_KEY`
-- API-Football/API-SPORTS: set `APISPORTS_KEY`
+- API-Football/API-SPORTS: set `APISPORTS_KEY` or `API_FOOTBALL_KEY`
 - TheSportsDB: set `THESPORTSDB_API_KEY`
 
 Example:
@@ -221,3 +221,5 @@ npm run predict -- --league=EPL --home="Man United" --away="Chelsea" --provider=
 ```
 
 Public league standings are normalized into prediction features through `data/live_league_context.json`. Optional provider data can still be returned alongside predictions when API keys are available. Future upgrades can add injuries, confirmed lineups, and richer odds movement as additional features.
+
+Player Profiles also attempt a cached API-Football player-stat refresh through `/api/player-profiles`. When current-season player rows are available, the fetched appearances, starts, minutes, goals, assists, shots, shots on target, and goalkeeper saves are merged into `data/api_football/player_stats.json` and queued for continuous retraining. API-Football Free plans may block the active season; in that case the app keeps the imported/manual baselines and displays the provider limitation on the Player Profiles page.

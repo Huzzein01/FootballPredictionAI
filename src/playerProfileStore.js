@@ -1,6 +1,7 @@
 const fs = require("fs");
 const path = require("path");
 const { normalizeTeamName } = require("./footballData");
+const { API_FOOTBALL_PLAYER_STATS_PATH, readApiFootballPlayerStats } = require("./apiFootballPlayerStats");
 
 const PLAYER_PROFILE_STATS_PATH = path.join(process.cwd(), "data", "player_profile_updates.json");
 const IMPORTED_PLAYER_STATS_PATH = path.join(process.cwd(), "data", "fbref", "processed", "fbref_player_stats.json");
@@ -523,6 +524,11 @@ function readWorldCupRows() {
   return Array.isArray(data.rows) ? data.rows : [];
 }
 
+function readApiFootballRows() {
+  if (!fs.existsSync(API_FOOTBALL_PLAYER_STATS_PATH)) return [];
+  return readApiFootballPlayerStats().rows || [];
+}
+
 function supplementalProfileRows() {
   return SUPPLEMENTAL_PROFILE_ROWS.map((row) => ({ ...row }));
 }
@@ -531,29 +537,7 @@ function recordProfileTotals(profileId, context = "club") {
   const profile = profileById(profileId);
   if (!profile) return totalsWithRates(emptyTotals());
   const store = readStore();
-  const profileTeam = normalizeTeamName(profile.team);
-  const baselineTotals = totalsWithRates(
-    SUPPLEMENTAL_PROFILE_ROWS.filter(
-      (row) =>
-        row.season === "2025-26" &&
-        row.league === profile.league &&
-        normalizeTeamName(row.Squad) === profileTeam &&
-        String(row.Player || "").trim().toLowerCase() === String(profile.player || "").trim().toLowerCase()
-    ).reduce(
-      (sum, row) => {
-        sum.appearances = Math.max(sum.appearances, numeric(row.MP));
-        sum.starts = Math.max(sum.starts, numeric(row.Starts));
-        sum.minutes = Math.max(sum.minutes, numeric(row.Min));
-        sum.goals = Math.max(sum.goals, integer(row.Gls));
-        sum.assists = Math.max(sum.assists, integer(row.Ast));
-        sum.shots = Math.max(sum.shots, integer(row.Sh));
-        sum.shotsOnTarget = Math.max(sum.shotsOnTarget, integer(row.SoT));
-        sum.saves = Math.max(sum.saves, integer(row.Saves));
-        return sum;
-      },
-      emptyTotals()
-    )
-  );
+  const baselineTotals = importedBaselineForProfile(profile).totals;
   return combineTotals(baselineTotals, totalsForEntries(entriesForProfile(store, profileId, context)));
 }
 
@@ -561,7 +545,7 @@ function importedBaselineForProfile(profile) {
   const { aggregatePlayers, normalizePlayerName } = require("./playerStats");
   const profilePlayer = normalizePlayerName(profile.player);
   const profileTeam = normalizeTeamName(profile.team);
-  const importedPlayer = aggregatePlayers([...readImportedRows(), ...supplementalProfileRows()]).find(
+  const importedPlayer = aggregatePlayers([...readImportedRows(), ...supplementalProfileRows(), ...readApiFootballRows()]).find(
     (player) =>
       player.season === "2025-26" &&
       player.league === profile.league &&

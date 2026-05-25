@@ -5,7 +5,7 @@ const { buildParlay, fbrefStatus } = require("./parlayService");
 const { fixturePredictionBoard, predictMatch, teamsByLeague } = require("./predictionService");
 const { addPrediction, addPredictionsIfMissing, deletePrediction, listPredictions, summary, updateResult } = require("./backtestStore");
 const { readTrainingStatus, scheduleRetrain } = require("./continuousTraining");
-const { addPlayerStatEntry, listPlayerProfiles, updatePlayerStatEntry } = require("./playerProfileStore");
+const { PLAYER_PROFILES, addPlayerStatEntry, listPlayerProfiles, updatePlayerStatEntry } = require("./playerProfileStore");
 const { addTeamStatEntry, listTeamProfiles, updateTeamStatEntry } = require("./teamProfileStore");
 const { internationalFixturePredictions, internationalGroupTables, internationalStatus, readFixtureData } = require("./internationalData");
 const { archivedLeagueTables, refreshLiveLeagueContext } = require("./leagueTableService");
@@ -16,6 +16,7 @@ const { refreshMissingOdds } = require("./oddsRepairService");
 const { refreshEspnFixtures } = require("./espnFixtureService");
 const { refreshTheOddsApi } = require("./oddsApiService");
 const { apiFootballStatus } = require("./liveData");
+const { refreshApiFootballPlayerStats } = require("./apiFootballPlayerStats");
 const parlayBacktests = require("./parlayBacktestStore");
 
 const PORT = Number(process.env.PORT || 4173);
@@ -342,7 +343,26 @@ async function handleApi(req, res, pathname) {
   }
 
   if (req.method === "GET" && pathname === "/api/player-profiles") {
-    return sendJson(res, 200, listPlayerProfiles());
+    const url = new URL(req.url, `http://${req.headers.host}`);
+    const season = url.searchParams.get("season") || "2025-26";
+    const forceLive = url.searchParams.get("forceLive") === "1";
+    let liveRefresh = null;
+    try {
+      liveRefresh = await refreshApiFootballPlayerStats({ profiles: PLAYER_PROFILES, season, force: forceLive });
+      if (liveRefresh.changed) {
+        resetPlayerStatsCache();
+        scheduleRetrain("api-football-player-profile-refresh");
+      }
+    } catch (error) {
+      liveRefresh = {
+        provider: "API-Football",
+        season,
+        status: "FAILED",
+        error: error.message,
+        changed: false,
+      };
+    }
+    return sendJson(res, 200, { ...listPlayerProfiles(), liveRefresh });
   }
 
   if (req.method === "GET" && pathname === "/api/team-profiles") {
