@@ -2,8 +2,8 @@ const { execFileSync } = require("child_process");
 const fs = require("fs");
 const path = require("path");
 
-const SCREENSHOT_DIR = "C:\\Users\\adebi\\OneDrive\\Pictures\\Screenshots";
-const TESSERACT = "C:\\Program Files\\Tesseract-OCR\\tesseract.exe";
+const SCREENSHOT_DIR = process.env.SCREENSHOT_DIR || path.join(process.cwd(), "data", "screenshots_2025_26");
+const TESSERACT = process.env.TESSERACT_PATH || "tesseract";
 const PROCESSED_DIR = path.join(process.cwd(), "data", "fbref", "processed");
 const JSON_PATH = path.join(PROCESSED_DIR, "fbref_player_stats.json");
 const CSV_PATH = path.join(PROCESSED_DIR, "fbref_player_stats.csv");

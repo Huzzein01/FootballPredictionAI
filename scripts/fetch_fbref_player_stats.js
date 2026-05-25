@@ -86,6 +86,10 @@ function fbrefUrl(season, comp, statType) {
   return `https://fbref.com/en/comps/${comp.compId}/${season}/${statType}/players/${season}-${comp.slug}-Stats`;
 }
 
+function repoRelative(filePath) {
+  return path.relative(process.cwd(), filePath).replace(/\\/g, "/");
+}
+
 async function fetchOne(season, comp, statType) {
   const url = fbrefUrl(season, comp, statType);
   const file = path.join(RAW_DIR, `${season}_${comp.league}_${statType}.csv`);
@@ -123,7 +127,7 @@ async function main() {
         league: comp.league,
         statType,
         url: fbrefUrl(season, comp, statType),
-        targetFile: path.join(RAW_DIR, `${season}_${comp.league}_${statType}.csv`),
+        targetFile: repoRelative(path.join(RAW_DIR, `${season}_${comp.league}_${statType}.csv`)),
       }))
     )
   );
@@ -156,7 +160,10 @@ async function main() {
     }
   }
 
-  fs.writeFileSync(ERROR_PATH, JSON.stringify({ saved, errors, targetCount: targets.length, targetsPath: TARGETS_PATH, checkedAt: new Date().toISOString() }, null, 2));
+  fs.writeFileSync(
+    ERROR_PATH,
+    JSON.stringify({ saved, errors, targetCount: targets.length, targetsPath: repoRelative(TARGETS_PATH), checkedAt: new Date().toISOString() }, null, 2)
+  );
   console.log(`Fetch complete. Saved ${saved.length} tables. Errors written to ${ERROR_PATH}`);
   console.log(`Target manifest written to ${TARGETS_PATH}`);
   if (errors.some((item) => item.error.includes("403"))) {

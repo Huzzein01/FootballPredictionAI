@@ -9,7 +9,7 @@ const { aggregatePlayers, loadPlayerRows } = require("./playerStats");
 
 const CLUB_LEAGUES = ["EPL", "La Liga", "Bundesliga", "Ligue 1", "Serie A"];
 const HISTORICAL_SEASONS = ["2020-21", "2021-22", "2022-23", "2023-24", "2024-25", "2025-26"];
-const UEFA_DATA_ROOT = "C:\\Users\\adebi\\Downloads\\champions-league-master\\champions-league-master";
+const UEFA_DATA_ROOT = process.env.UEFA_DATA_ROOT || path.join(process.cwd(), "data", "uefa");
 const UEFA_SEASONS = ["2021-22", "2022-23", "2023-24", "2024-25", "2025-26"];
 const UEFA_COMPETITION_FILES = {
   "Champions League": ["cl.txt", "clq.txt"],

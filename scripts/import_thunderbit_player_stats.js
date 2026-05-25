@@ -1,11 +1,10 @@
 const fs = require("fs");
 const path = require("path");
 
-const DEFAULT_FILES = [
-  "C:\\Users\\adebi\\Downloads\\Thunderbit_c19bd0_20260514_055000.csv",
-  "C:\\Users\\adebi\\Downloads\\Thunderbit_c19bd0_20260514_053813.csv",
-  "C:\\Users\\adebi\\Downloads\\Thunderbit_c19bd0_20260514_062338.csv",
-];
+const DEFAULT_FILES = (process.env.THUNDERBIT_FILES || "")
+  .split(",")
+  .map((file) => file.trim())
+  .filter(Boolean);
 
 const PROCESSED_DIR = path.join(process.cwd(), "data", "fbref", "processed");
 const JSON_PATH = path.join(PROCESSED_DIR, "fbref_player_stats.json");

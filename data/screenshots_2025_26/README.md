@@ -2,11 +2,7 @@
 
 This folder stores original FBref screenshot files that were available on local disk and copied into the project as training evidence.
 
-Source checked:
-
-```text
-C:\Users\adebi\OneDrive\Pictures\Screenshots
-```
+Source checked: the local screenshots folder used during the original data import.
 
 At copy time, only this matching original PNG was present locally:
 

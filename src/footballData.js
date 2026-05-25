@@ -1,7 +1,7 @@
 const fs = require("fs");
 const path = require("path");
 
-const DATA_DIR = "C:\\Users\\adebi\\Downloads\\Football data";
+const DATA_DIR = process.env.FOOTBALL_DATA_DIR || path.join(process.cwd(), "data", "football-data");
 
 const SEASONS = [
   {
@@ -174,7 +174,11 @@ function parseCsv(text) {
 }
 
 function readCsv(file) {
-  const text = fs.readFileSync(path.join(DATA_DIR, file), "utf8").replace(/^\uFEFF/, "");
+  const filePath = path.join(DATA_DIR, file);
+  if (!fs.existsSync(filePath)) {
+    throw new Error(`Missing football data CSV: ${filePath}`);
+  }
+  const text = fs.readFileSync(filePath, "utf8").replace(/^\uFEFF/, "");
   const rows = parseCsv(text).filter((row) => row.some((cell) => cell !== ""));
   const headers = rows.shift();
   return rows.map((row) => Object.fromEntries(headers.map((header, i) => [header, row[i] ?? ""])));
