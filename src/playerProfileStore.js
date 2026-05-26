@@ -2,8 +2,10 @@ const fs = require("fs");
 const path = require("path");
 const { normalizeTeamName } = require("./footballData");
 const { API_FOOTBALL_PLAYER_STATS_PATH, readApiFootballPlayerStats } = require("./apiFootballPlayerStats");
+const { mutableDataPath, readJsonWithFallback, repoDataPath, writeJson } = require("./runtimePaths");
 
-const PLAYER_PROFILE_STATS_PATH = path.join(process.cwd(), "data", "player_profile_updates.json");
+const PLAYER_PROFILE_STATS_PATH = mutableDataPath("player_profile_updates.json");
+const SEEDED_PLAYER_PROFILE_STATS_PATH = repoDataPath("player_profile_updates.json");
 const IMPORTED_PLAYER_STATS_PATH = path.join(process.cwd(), "data", "fbref", "processed", "fbref_player_stats.json");
 const WORLD_CUP_PLAYER_STATS_PATH = path.join(process.cwd(), "data", "international", "processed", "world_cup_player_stats.json");
 
@@ -440,16 +442,15 @@ function integer(value) {
 }
 
 function readStore() {
-  if (!fs.existsSync(PLAYER_PROFILE_STATS_PATH)) {
+  const data = readJsonWithFallback(PLAYER_PROFILE_STATS_PATH, SEEDED_PLAYER_PROFILE_STATS_PATH, null);
+  if (!data) {
     return { updatedAt: "", entries: [] };
   }
-  const data = JSON.parse(fs.readFileSync(PLAYER_PROFILE_STATS_PATH, "utf8").replace(/^\uFEFF/, ""));
   return { updatedAt: data.updatedAt || "", entries: Array.isArray(data.entries) ? data.entries : [] };
 }
 
 function writeStore(store) {
-  fs.mkdirSync(path.dirname(PLAYER_PROFILE_STATS_PATH), { recursive: true });
-  fs.writeFileSync(PLAYER_PROFILE_STATS_PATH, JSON.stringify({ ...store, updatedAt: new Date().toISOString() }, null, 2));
+  writeJson(PLAYER_PROFILE_STATS_PATH, { ...store, updatedAt: new Date().toISOString() });
 }
 
 function profileById(profileId) {

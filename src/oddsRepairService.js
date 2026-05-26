@@ -1,7 +1,8 @@
 const fs = require("fs");
 const path = require("path");
+const { repoDataPath, writeFileIfWritable } = require("./runtimePaths");
 
-const FIXTURE_PATH = path.join(process.cwd(), "data", "remaining_fixtures_2025_26_with_odds.csv");
+const FIXTURE_PATH = repoDataPath("remaining_fixtures_2025_26_with_odds.csv");
 const USER_AGENT = "Mozilla/5.0 FootballPredictionAI odds-refresh";
 
 const PUBLIC_ODDS_SEEDS = [
@@ -97,7 +98,7 @@ function readFixtureCsv() {
 
 function writeFixtureCsv(headers, rows) {
   const output = [headers.join(","), ...rows.map((row) => headers.map((header) => csvCell(row[header])).join(","))].join("\n") + "\n";
-  fs.writeFileSync(FIXTURE_PATH, output);
+  writeFileIfWritable(FIXTURE_PATH, output);
 }
 
 function moneylineToDecimal(value) {

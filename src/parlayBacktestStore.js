@@ -1,24 +1,22 @@
 const fs = require("fs");
 const path = require("path");
+const { mutableDataPath, readJsonWithFallback, repoDataPath, writeJson } = require("./runtimePaths");
 
-const DATA_DIR = path.join(process.cwd(), "data");
-const STORE_PATH = path.join(DATA_DIR, "parlay_backtests.json");
+const STORE_PATH = mutableDataPath("parlay_backtests.json");
+const SEEDED_STORE_PATH = repoDataPath("parlay_backtests.json");
 
 function ensureStore() {
-  fs.mkdirSync(DATA_DIR, { recursive: true });
   if (!fs.existsSync(STORE_PATH)) {
-    fs.writeFileSync(STORE_PATH, JSON.stringify({ parlays: [] }, null, 2));
+    writeJson(STORE_PATH, readJsonWithFallback(SEEDED_STORE_PATH, null, { parlays: [] }));
   }
 }
 
 function readStore() {
-  ensureStore();
-  return JSON.parse(fs.readFileSync(STORE_PATH, "utf8"));
+  return readJsonWithFallback(STORE_PATH, SEEDED_STORE_PATH, { parlays: [] });
 }
 
 function writeStore(store) {
-  ensureStore();
-  fs.writeFileSync(STORE_PATH, JSON.stringify(store, null, 2));
+  writeJson(STORE_PATH, store);
 }
 
 function makeId(prefix) {

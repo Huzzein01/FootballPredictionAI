@@ -2,9 +2,11 @@ const fs = require("fs");
 const path = require("path");
 const { listPredictions } = require("./backtestStore");
 const { normalizeTeamName } = require("./footballData");
+const { mutableDataPath, readJsonWithFallback, repoDataPath, writeJson } = require("./runtimePaths");
 
-const LIVE_CONTEXT_PATH = path.join(process.cwd(), "data", "live_league_context.json");
-const PLAYED_RESULTS_PATH = path.join(process.cwd(), "data", "played_results.json");
+const LIVE_CONTEXT_PATH = mutableDataPath("live_league_context.json");
+const SEEDED_LIVE_CONTEXT_PATH = repoDataPath("live_league_context.json");
+const PLAYED_RESULTS_PATH = repoDataPath("played_results.json");
 const USER_AGENT = "Mozilla/5.0 FootballPredictionAI standings-refresh";
 
 const LEAGUE_RULES = {
@@ -86,13 +88,11 @@ async function fetchLeagueStandings(league, season = "2025-26") {
 }
 
 function loadLiveLeagueContext() {
-  if (!fs.existsSync(LIVE_CONTEXT_PATH)) return { updatedAt: "", season: "2025-26", leagues: {} };
-  return JSON.parse(fs.readFileSync(LIVE_CONTEXT_PATH, "utf8").replace(/^\uFEFF/, ""));
+  return readJsonWithFallback(LIVE_CONTEXT_PATH, SEEDED_LIVE_CONTEXT_PATH, { updatedAt: "", season: "2025-26", leagues: {} });
 }
 
 function writeLiveLeagueContext(context) {
-  fs.mkdirSync(path.dirname(LIVE_CONTEXT_PATH), { recursive: true });
-  fs.writeFileSync(LIVE_CONTEXT_PATH, JSON.stringify(context, null, 2));
+  writeJson(LIVE_CONTEXT_PATH, context);
 }
 
 function tableSignature(context) {

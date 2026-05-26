@@ -2,10 +2,13 @@ const fs = require("fs");
 const path = require("path");
 const { normalizeTeamName } = require("./footballData");
 const { listPredictions, updateResult } = require("./backtestStore");
+const { mutableDataPath, readJsonWithFallback, repoDataPath, writeFileIfWritable, writeJson } = require("./runtimePaths");
 
-const FIXTURE_PATH = path.join(process.cwd(), "data", "remaining_fixtures_2025_26_with_odds.csv");
-const LIVE_FIXTURE_PATH = path.join(process.cwd(), "data", "live_espn_fixtures.json");
-const LIVE_RESULTS_PATH = path.join(process.cwd(), "data", "live_espn_results.json");
+const FIXTURE_PATH = repoDataPath("remaining_fixtures_2025_26_with_odds.csv");
+const LIVE_FIXTURE_PATH = mutableDataPath("live_espn_fixtures.json");
+const SEEDED_LIVE_FIXTURE_PATH = repoDataPath("live_espn_fixtures.json");
+const LIVE_RESULTS_PATH = mutableDataPath("live_espn_results.json");
+const SEEDED_LIVE_RESULTS_PATH = repoDataPath("live_espn_results.json");
 const USER_AGENT = "Mozilla/5.0 FootballPredictionAI espn-fixture-refresh";
 
 const ESPN_LEAGUES = {
@@ -57,7 +60,7 @@ function readFixtureCsv() {
 function writeFixtureCsv(headers, rows) {
   const finalHeaders = [...new Set([...headers, "date", "league", "homeTeam", "awayTeam", "homeOdds", "drawOdds", "awayOdds", "oddsSource", "oddsStatus", "oddsSourceUrl", "oddsSnapshotAt", "espnEventId", "kickoffUtc", "fixtureSource"])];
   const output = [finalHeaders.join(","), ...rows.map((row) => finalHeaders.map((header) => csvCell(row[header])).join(","))].join("\n") + "\n";
-  fs.writeFileSync(FIXTURE_PATH, output);
+  writeFileIfWritable(FIXTURE_PATH, output);
 }
 
 function fixtureKey(fixture) {
@@ -250,17 +253,12 @@ async function refreshEspnFixtures({ daysBack = 7, daysForward = 75 } = {}) {
     errors,
     fixtures: fetched,
   };
-  fs.writeFileSync(LIVE_FIXTURE_PATH, JSON.stringify(snapshot, null, 2));
+  writeJson(LIVE_FIXTURE_PATH, snapshot);
   return snapshot;
 }
 
 function readResultsSnapshot() {
-  if (!fs.existsSync(LIVE_RESULTS_PATH)) return null;
-  try {
-    return JSON.parse(fs.readFileSync(LIVE_RESULTS_PATH, "utf8").replace(/^\uFEFF/, ""));
-  } catch {
-    return null;
-  }
+  return readJsonWithFallback(LIVE_RESULTS_PATH, SEEDED_LIVE_RESULTS_PATH, null);
 }
 
 function resultsSnapshotIsFresh(maxAgeMinutes = 3) {
@@ -342,7 +340,7 @@ async function refreshEspnResults({ daysBack = 14, daysForward = 1, force = fals
     settledPredictions: settled,
     errors,
   };
-  fs.writeFileSync(LIVE_RESULTS_PATH, JSON.stringify(snapshot, null, 2));
+  writeJson(LIVE_RESULTS_PATH, snapshot);
   return snapshot;
 }
 

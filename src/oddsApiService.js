@@ -1,10 +1,12 @@
 const fs = require("fs");
 const path = require("path");
 const { normalizeTeamName } = require("./footballData");
+const { mutableDataPath, readJsonWithFallback, repoDataPath, writeFileIfWritable, writeJson } = require("./runtimePaths");
 
-const FIXTURE_PATH = path.join(process.cwd(), "data", "remaining_fixtures_2025_26_with_odds.csv");
-const LIVE_ODDS_PATH = path.join(process.cwd(), "data", "live_odds_snapshot.json");
-const WORLD_CUP_FIXTURES_PATH = path.join(process.cwd(), "data", "international", "world_cup_2026_fixtures.json");
+const FIXTURE_PATH = repoDataPath("remaining_fixtures_2025_26_with_odds.csv");
+const LIVE_ODDS_PATH = mutableDataPath("live_odds_snapshot.json");
+const SEEDED_LIVE_ODDS_PATH = repoDataPath("live_odds_snapshot.json");
+const WORLD_CUP_FIXTURES_PATH = repoDataPath("international", "world_cup_2026_fixtures.json");
 const ODDS_API_BASE_URL = "https://api.the-odds-api.com/v4";
 const USER_AGENT = "FootballPredictionAI odds-api-refresh";
 
@@ -67,7 +69,7 @@ function readFixtureCsv() {
 function writeFixtureCsv(headers, rows) {
   const finalHeaders = [...new Set([...headers, "date", "league", "homeTeam", "awayTeam", "homeOdds", "drawOdds", "awayOdds", "oddsSource", "oddsStatus", "oddsSourceUrl", "oddsSnapshotAt"])];
   const output = [finalHeaders.join(","), ...rows.map((row) => finalHeaders.map((header) => csvCell(row[header])).join(","))].join("\n") + "\n";
-  fs.writeFileSync(FIXTURE_PATH, output);
+  writeFileIfWritable(FIXTURE_PATH, output);
 }
 
 function normalizeLooseTeamName(team) {
@@ -211,8 +213,7 @@ async function fetchOddsEvents(sportKey, { daysForward = 120 } = {}) {
 }
 
 function readLiveOddsSnapshot() {
-  if (!fs.existsSync(LIVE_ODDS_PATH)) return null;
-  return JSON.parse(fs.readFileSync(LIVE_ODDS_PATH, "utf8").replace(/^\uFEFF/, ""));
+  return readJsonWithFallback(LIVE_ODDS_PATH, SEEDED_LIVE_ODDS_PATH, null);
 }
 
 function readWorldCupFixtureData() {
@@ -350,7 +351,7 @@ async function refreshTheOddsApi({ force = false, includeClub = true, includeInt
     quota: fetchedSports.map((sport) => ({ sportKey: sport.sportKey, quota: sport.quota || null, skipped: sport.skipped || false, reason: sport.reason || "" })),
     errors,
   };
-  fs.writeFileSync(LIVE_ODDS_PATH, JSON.stringify(snapshot, null, 2));
+  writeJson(LIVE_ODDS_PATH, snapshot);
   return snapshot;
 }
 

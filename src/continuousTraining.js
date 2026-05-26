@@ -1,8 +1,9 @@
 const fs = require("fs");
 const path = require("path");
 const { spawn } = require("child_process");
+const { isReadOnlyRuntime, mutableModelPath } = require("./runtimePaths");
 
-const STATUS_PATH = path.join(process.cwd(), "model", "continuous_training_status.json");
+const STATUS_PATH = mutableModelPath("continuous_training_status.json");
 let retrainTimer = null;
 let retrainRunning = false;
 let pendingReason = "";
@@ -23,6 +24,10 @@ function writeStatus(status) {
 }
 
 function runRetrain(reason) {
+  if (isReadOnlyRuntime()) {
+    writeStatus({ status: "SKIPPED", reason, code: "READ_ONLY_RUNTIME", stdout: "", stderr: "Persistent retraining is disabled on read-only serverless deployments." });
+    return;
+  }
   if (retrainRunning) {
     pendingReason = reason || pendingReason;
     return;

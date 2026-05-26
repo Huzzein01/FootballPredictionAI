@@ -2,8 +2,10 @@ const fs = require("fs");
 const path = require("path");
 const { normalizeTeamName } = require("./footballData");
 const { fetchApiFootball } = require("./liveData");
+const { mutableDataPath, readJsonWithFallback, repoDataPath, writeJson } = require("./runtimePaths");
 
-const API_FOOTBALL_PLAYER_STATS_PATH = path.join(process.cwd(), "data", "api_football", "player_stats.json");
+const API_FOOTBALL_PLAYER_STATS_PATH = mutableDataPath("api_football", "player_stats.json");
+const SEEDED_API_FOOTBALL_PLAYER_STATS_PATH = repoDataPath("api_football", "player_stats.json");
 
 const LEAGUE_IDS = {
   EPL: 39,
@@ -21,9 +23,9 @@ function defaultCache() {
 }
 
 function readApiFootballPlayerStats() {
-  if (!fs.existsSync(API_FOOTBALL_PLAYER_STATS_PATH)) return defaultCache();
+  const data = readJsonWithFallback(API_FOOTBALL_PLAYER_STATS_PATH, SEEDED_API_FOOTBALL_PLAYER_STATS_PATH, null);
+  if (!data) return defaultCache();
   try {
-    const data = JSON.parse(fs.readFileSync(API_FOOTBALL_PLAYER_STATS_PATH, "utf8").replace(/^\uFEFF/, ""));
     return {
       ...defaultCache(),
       ...data,
@@ -36,8 +38,7 @@ function readApiFootballPlayerStats() {
 }
 
 function writeApiFootballPlayerStats(cache) {
-  fs.mkdirSync(path.dirname(API_FOOTBALL_PLAYER_STATS_PATH), { recursive: true });
-  fs.writeFileSync(API_FOOTBALL_PLAYER_STATS_PATH, JSON.stringify({ ...cache, updatedAt: new Date().toISOString() }, null, 2));
+  writeJson(API_FOOTBALL_PLAYER_STATS_PATH, { ...cache, updatedAt: new Date().toISOString() });
 }
 
 function seasonYear(season = "2025-26") {

@@ -1,8 +1,10 @@
 const fs = require("fs");
 const path = require("path");
 const { loadMatches, normalizeTeamName } = require("./footballData");
+const { mutableDataPath, readJsonWithFallback, repoDataPath, writeJson } = require("./runtimePaths");
 
-const TEAM_PROFILE_STATS_PATH = path.join(process.cwd(), "data", "team_profile_updates.json");
+const TEAM_PROFILE_STATS_PATH = mutableDataPath("team_profile_updates.json");
+const SEEDED_TEAM_PROFILE_STATS_PATH = repoDataPath("team_profile_updates.json");
 
 const TEAM_PROFILES = [
   { id: "man-united", team: "Man United", displayName: "Man United", league: "EPL" },
@@ -85,9 +87,9 @@ function defaultStore() {
 }
 
 function readStore() {
-  if (!fs.existsSync(TEAM_PROFILE_STATS_PATH)) return defaultStore();
+  const data = readJsonWithFallback(TEAM_PROFILE_STATS_PATH, SEEDED_TEAM_PROFILE_STATS_PATH, null);
+  if (!data) return defaultStore();
   try {
-    const data = JSON.parse(fs.readFileSync(TEAM_PROFILE_STATS_PATH, "utf8").replace(/^\uFEFF/, ""));
     return { ...defaultStore(), ...data, entries: Array.isArray(data.entries) ? data.entries : [] };
   } catch {
     return defaultStore();
@@ -95,8 +97,7 @@ function readStore() {
 }
 
 function writeStore(store) {
-  fs.mkdirSync(path.dirname(TEAM_PROFILE_STATS_PATH), { recursive: true });
-  fs.writeFileSync(TEAM_PROFILE_STATS_PATH, JSON.stringify({ ...store, updatedAt: new Date().toISOString() }, null, 2));
+  writeJson(TEAM_PROFILE_STATS_PATH, { ...store, updatedAt: new Date().toISOString() });
 }
 
 function profileById(profileId) {
