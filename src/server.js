@@ -18,6 +18,7 @@ const { refreshTheOddsApi } = require("./oddsApiService");
 const { apiFootballStatus } = require("./liveData");
 const { refreshApiFootballPlayerStats } = require("./apiFootballPlayerStats");
 const { readJsonWithFallback, repoDataPath } = require("./runtimePaths");
+const { hydrateKnownStoresOnce, persistKnownStores, storageStatus } = require("./supabaseJsonStore");
 const parlayBacktests = require("./parlayBacktestStore");
 
 const PORT = Number(process.env.PORT || 4173);
@@ -377,6 +378,12 @@ function shouldRefreshApiFootballPlayerSeason(season = "2025-26", forceLive = fa
 }
 
 async function handleApi(req, res, pathname) {
+  await hydrateKnownStoresOnce();
+
+  if (req.method === "GET" && pathname === "/api/storage/status") {
+    return sendJson(res, 200, await storageStatus());
+  }
+
   if (req.method === "GET" && pathname === "/api/meta") {
     const model = JSON.parse(fs.readFileSync(path.join(process.cwd(), "model", "football_match_model.json"), "utf8"));
     return sendJson(res, 200, { teamsByLeague: teamsByLeague(), metrics: model.metrics, hyperparameters: model.hyperparameters, trainedAt: model.trainedAt, feedbackRows: model.feedbackRows || 0, trainingStatus: readTrainingStatus() });
@@ -399,6 +406,7 @@ async function handleApi(req, res, pathname) {
       await refreshLiveLeagueContext();
       scheduleRetrain("espn-auto-fixture-results");
     }
+    await persistKnownStores(["backtests", "liveEspnResults", "liveLeagueContext"]);
     return sendJson(res, 200, { predictions: listPredictions(), summary: summary() });
   }
 
@@ -438,6 +446,7 @@ async function handleApi(req, res, pathname) {
         scheduleRetrain("espn-auto-fixture-results");
       }
       await refreshLiveLeagueContext();
+      await persistKnownStores(["backtests", "liveEspnResults", "liveLeagueContext"]);
     }
     const predictions = mergePlayedFixtureSources(
       season === "2025-26" ? playedFixturePredictions() : [],
@@ -470,6 +479,7 @@ async function handleApi(req, res, pathname) {
 
   if (req.method === "POST" && pathname === "/api/fixtures/espn-refresh") {
     const snapshot = await refreshEspnFixtures({ daysBack: 7, daysForward: 120 });
+    await persistKnownStores(["liveEspnFixtures"]);
     return sendJson(res, 200, snapshot);
   }
 
@@ -479,11 +489,13 @@ async function handleApi(req, res, pathname) {
       await refreshLiveLeagueContext();
       scheduleRetrain("espn-auto-fixture-results");
     }
+    await persistKnownStores(["backtests", "liveEspnResults", "liveLeagueContext"]);
     return sendJson(res, 200, { ...snapshot, summary: summary() });
   }
 
   if (req.method === "POST" && pathname === "/api/odds/refresh") {
     const snapshot = await refreshTheOddsApi({ force: true, includeClub: true, includeInternational: true, daysForward: 420 });
+    await persistKnownStores(["liveOdds"]);
     return sendJson(res, 200, snapshot);
   }
 
@@ -520,6 +532,7 @@ async function handleApi(req, res, pathname) {
         if (liveRefresh.changed) {
           resetPlayerStatsCache();
           scheduleRetrain("api-football-player-profile-refresh");
+          await persistKnownStores(["apiFootballPlayerStats"]);
         }
       } else {
         liveRefresh = {
@@ -588,6 +601,7 @@ async function handleApi(req, res, pathname) {
     if (!entry) return sendJson(res, 404, { error: "Player profile not found" });
     resetPlayerStatsCache();
     scheduleRetrain("manual-player-profile-stats");
+    await persistKnownStores(["playerProfiles"]);
     return sendJson(res, 200, { entry, profiles: listPlayerProfiles(), trainingStatus: readTrainingStatus() });
   }
 
@@ -597,6 +611,7 @@ async function handleApi(req, res, pathname) {
     if (!entry) return sendJson(res, 404, { error: "Player stat entry not found" });
     resetPlayerStatsCache();
     scheduleRetrain("manual-player-profile-stats-edited");
+    await persistKnownStores(["playerProfiles"]);
     return sendJson(res, 200, { entry, profiles: listPlayerProfiles(), trainingStatus: readTrainingStatus() });
   }
 
@@ -606,6 +621,7 @@ async function handleApi(req, res, pathname) {
     if (!entry) return sendJson(res, 404, { error: "Team profile not found" });
     scheduleRetrain("manual-team-profile-stats");
     const tableData = entry.context === "international" ? null : await archivedLeagueTables(entry.season);
+    await persistKnownStores(["teamProfiles"]);
     return sendJson(res, 200, { entry, profiles: listTeamProfiles(entry.season, tableData, entry.context || "club"), trainingStatus: readTrainingStatus() });
   }
 
@@ -615,6 +631,7 @@ async function handleApi(req, res, pathname) {
     if (!entry) return sendJson(res, 404, { error: "Team stat entry not found" });
     scheduleRetrain("manual-team-profile-stats-edited");
     const tableData = entry.context === "international" ? null : await archivedLeagueTables(entry.season);
+    await persistKnownStores(["teamProfiles"]);
     return sendJson(res, 200, { entry, profiles: listTeamProfiles(entry.season, tableData, entry.context || "club"), trainingStatus: readTrainingStatus() });
   }
 
@@ -648,6 +665,7 @@ async function handleApi(req, res, pathname) {
   if (req.method === "POST" && pathname === "/api/parlay/backtest") {
     const body = await readBody(req);
     const saved = parlayBacktests.saveParlaysIfMissing(body.parlays || [], "multi-parlay-board");
+    await persistKnownStores(["parlayBacktests"]);
     return sendJson(res, 200, { saved, summary: parlayBacktests.summary() });
   }
 
@@ -662,6 +680,7 @@ async function handleApi(req, res, pathname) {
       return leagueMatches && dateMatches;
     });
     const saved = addPredictionsIfMissing(predictions, body.context === "international" ? "international-fixture-board" : "fixture-board");
+    await persistKnownStores(["backtests"]);
     return sendJson(res, 200, { saved, summary: summary() });
   }
 
@@ -669,6 +688,7 @@ async function handleApi(req, res, pathname) {
     const body = await readBody(req);
     const fixtures = parseFixtureCsv(body.csv);
     const saved = fixtures.map((fixture) => addPrediction(predictMatch(fixture), "fixture-import"));
+    await persistKnownStores(["backtests"]);
     return sendJson(res, 200, { saved, summary: summary() });
   }
 
@@ -678,12 +698,15 @@ async function handleApi(req, res, pathname) {
     if (!updated) return sendJson(res, 404, { error: "Prediction not found" });
     await refreshLiveLeagueContext();
     scheduleRetrain("match-backtest-result");
+    await persistKnownStores(["backtests", "liveLeagueContext"]);
     return sendJson(res, 200, { updated, summary: summary() });
   }
 
   const deleteMatch = pathname.match(/^\/api\/backtests\/([^/]+)$/);
   if (req.method === "DELETE" && deleteMatch) {
-    return sendJson(res, 200, { deleted: deletePrediction(deleteMatch[1]), summary: summary() });
+    const deleted = deletePrediction(deleteMatch[1]);
+    await persistKnownStores(["backtests"]);
+    return sendJson(res, 200, { deleted, summary: summary() });
   }
 
   const parlayLegMatch = pathname.match(/^\/api\/parlay-backtests\/([^/]+)\/legs\/([^/]+)$/);
@@ -694,6 +717,7 @@ async function handleApi(req, res, pathname) {
     if (["HIT", "MISS"].includes(String(body.status || "").toUpperCase())) {
       scheduleRetrain(updated.newlyMissedParlays > 0 ? "parlay-missed-feedback" : "parlay-leg-feedback");
     }
+    await persistKnownStores(["parlayBacktests"]);
     return sendJson(res, 200, { updated, summary: parlayBacktests.summary() });
   }
 
