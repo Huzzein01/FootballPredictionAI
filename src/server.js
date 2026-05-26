@@ -13,15 +13,16 @@ const { futuresPredictions } = require("./futuresService");
 const { resetPlayerStatsCache } = require("./playerStats");
 const { loadMatches, normalizeTeamName } = require("./footballData");
 const { refreshMissingOdds } = require("./oddsRepairService");
-const { refreshEspnFixtures, refreshEspnResults } = require("./espnFixtureService");
+const { readResultsSnapshot, refreshEspnFixtures, refreshEspnResults } = require("./espnFixtureService");
 const { refreshTheOddsApi } = require("./oddsApiService");
 const { apiFootballStatus } = require("./liveData");
 const { refreshApiFootballPlayerStats } = require("./apiFootballPlayerStats");
+const { readJsonWithFallback, repoDataPath } = require("./runtimePaths");
 const parlayBacktests = require("./parlayBacktestStore");
 
 const PORT = Number(process.env.PORT || 4173);
 const PUBLIC_DIR = path.join(process.cwd(), "public");
-const PLAYED_RESULTS_PATH = path.join(process.cwd(), "data", "played_results.json");
+const PLAYED_RESULTS_PATH = repoDataPath("played_results.json");
 const FOCUSED_CLUB_TEAMS = new Set([
   "Man United",
   "Man City",
@@ -86,8 +87,7 @@ function actualResultCode(homeGoals, awayGoals) {
 }
 
 function loadVerifiedPlayedResults() {
-  if (!fs.existsSync(PLAYED_RESULTS_PATH)) return [];
-  const data = JSON.parse(fs.readFileSync(PLAYED_RESULTS_PATH, "utf8").replace(/^\uFEFF/, ""));
+  const data = readJsonWithFallback(PLAYED_RESULTS_PATH, null, { results: [] });
   return Array.isArray(data.results) ? data.results : [];
 }
 
@@ -242,6 +242,132 @@ function historicalPlayedFixtures(season = "2025-26") {
     .sort((a, b) => `${b.date} ${b.homeTeam}`.localeCompare(`${a.date} ${a.homeTeam}`));
 }
 
+function seasonDateRange(season = "2025-26") {
+  const match = String(season).match(/^(\d{4})-(\d{2})$/);
+  if (!match) return null;
+  const startYear = Number(match[1]);
+  let endYear = Math.floor(startYear / 100) * 100 + Number(match[2]);
+  if (endYear < startYear) endYear += 100;
+  return {
+    start: `${startYear}-07-01`,
+    end: `${endYear}-06-30`,
+  };
+}
+
+function dateInSeason(date, season = "2025-26") {
+  const range = seasonDateRange(season);
+  if (!range || !date) return false;
+  return date >= range.start && date <= range.end;
+}
+
+function playedPredictionKey(prediction) {
+  return parlayBacktests.fixtureSignatureFromFixture({
+    date: prediction.date,
+    homeTeam: normalizeTeamName(prediction.homeTeam),
+    awayTeam: normalizeTeamName(prediction.awayTeam),
+  });
+}
+
+function sourcePlayedResultCard(result, { modelPrediction = null, statusLabel = "API result" } = {}) {
+  const homeTeam = normalizeTeamName(result.homeTeam);
+  const awayTeam = normalizeTeamName(result.awayTeam);
+  const homeGoals = Number(result.homeGoals);
+  const awayGoals = Number(result.awayGoals);
+  const actualResult = actualResultCode(homeGoals, awayGoals);
+  const prediction = modelPrediction || {
+    league: result.league,
+    season: "2025-26",
+    date: result.date,
+    homeTeam,
+    awayTeam,
+    prediction: actualResult,
+    confidence: 100,
+    projectedScore: "",
+    probabilities: { homeWinPct: 0, drawPct: 0, awayWinPct: 0 },
+  };
+  const modelCorrect = modelPrediction?.prediction ? modelPrediction.prediction === actualResult : null;
+  const exactScoreCorrect = modelPrediction?.projectedScore ? String(modelPrediction.projectedScore).trim() === `${homeGoals}-${awayGoals}` : null;
+  return {
+    ...prediction,
+    league: result.league || prediction.league,
+    season: prediction.season || "2025-26",
+    date: result.date || prediction.date,
+    homeTeam,
+    awayTeam,
+    played: {
+      key: playedPredictionKey({ date: result.date, homeTeam, awayTeam }),
+      date: result.date,
+      fixture: `${homeTeam} vs ${awayTeam}`,
+      league: result.league || prediction.league,
+      hits: 0,
+      misses: 0,
+      voids: 0,
+      settledLegs: 0,
+      picks: [],
+      markets: [],
+      actualResult,
+      actualScore: `${homeGoals}-${awayGoals}`,
+      homeGoals,
+      awayGoals,
+      modelCorrect,
+      exactScoreCorrect,
+      sourceName: result.sourceName || "Fixture result API",
+      sourceUrl: result.sourceUrl || "",
+      statusLabel,
+    },
+  };
+}
+
+function apiPlayedFixtures(season = "2025-26") {
+  const snapshot = readResultsSnapshot();
+  const results = Array.isArray(snapshot?.results) ? snapshot.results : [];
+  if (!results.length) return [];
+  const storedPredictions = storedPredictionMap();
+  const boardPredictions = new Map(fixturePredictionBoard().map((prediction) => [playedPredictionKey(prediction), prediction]));
+  const ledgerFixtureKeys = new Set([...storedPredictions.keys(), ...boardPredictions.keys()]);
+
+  return results
+    .filter((result) => dateInSeason(result.date, season))
+    .filter((result) => result.league && result.homeTeam && result.awayTeam)
+    .filter((result) => Number.isFinite(Number(result.homeGoals)) && Number.isFinite(Number(result.awayGoals)))
+    .filter((result) => {
+      const homeTeam = normalizeTeamName(result.homeTeam);
+      const awayTeam = normalizeTeamName(result.awayTeam);
+      const key = playedPredictionKey({ date: result.date, homeTeam, awayTeam });
+      return ledgerFixtureKeys.has(key) || FOCUSED_CLUB_TEAMS.has(homeTeam) || FOCUSED_CLUB_TEAMS.has(awayTeam);
+    })
+    .map((result) => {
+      const homeTeam = normalizeTeamName(result.homeTeam);
+      const awayTeam = normalizeTeamName(result.awayTeam);
+      const key = playedPredictionKey({ date: result.date, homeTeam, awayTeam });
+      const modelPrediction = storedPredictions.get(key) || boardPredictions.get(key) || null;
+      const homeGoals = Number(result.homeGoals);
+      const awayGoals = Number(result.awayGoals);
+      const actualResult = actualResultCode(homeGoals, awayGoals);
+      const modelCorrect = modelPrediction?.prediction ? modelPrediction.prediction === actualResult : null;
+      const statusLabel = modelPrediction
+        ? modelCorrect
+          ? String(modelPrediction.projectedScore || "").trim() === `${homeGoals}-${awayGoals}`
+            ? "Pick and score correct"
+            : "Pick correct, score missed"
+          : "Pick missed"
+        : "API result";
+      return sourcePlayedResultCard({ ...result, homeTeam, awayTeam }, { modelPrediction, statusLabel });
+    });
+}
+
+function mergePlayedFixtureSources(...sources) {
+  const byKey = new Map();
+  for (const source of sources) {
+    for (const prediction of source || []) {
+      const key = playedPredictionKey(prediction);
+      if (!key || byKey.has(key)) continue;
+      byKey.set(key, prediction);
+    }
+  }
+  return [...byKey.values()].sort((a, b) => `${b.date} ${b.league} ${b.homeTeam}`.localeCompare(`${a.date} ${a.league} ${a.homeTeam}`));
+}
+
 function shouldRefreshApiFootballPlayerSeason(season = "2025-26", forceLive = false) {
   if (forceLive) return true;
   if (!/^\d{4}-\d{2}$/.test(String(season))) return false;
@@ -304,17 +430,36 @@ async function handleApi(req, res, pathname) {
         summary: { total: 0, correct: 0, wrong: 0, voided: 0, exactScores: 0 },
       });
     }
-    let predictions = historicalPlayedFixtures(season);
-    if (!predictions.length && season === "2025-26") {
+    let liveRefresh = null;
+    if (season === "2025-26") {
+      liveRefresh = await refreshEspnResults({ daysBack: 60, daysForward: 1 });
+      if (liveRefresh.settled > 0) {
+        await refreshLiveLeagueContext();
+        scheduleRetrain("espn-auto-fixture-results");
+      }
       await refreshLiveLeagueContext();
-      predictions = playedFixturePredictions();
     }
+    const predictions = mergePlayedFixtureSources(
+      season === "2025-26" ? playedFixturePredictions() : [],
+      season === "2025-26" ? apiPlayedFixtures(season) : [],
+      historicalPlayedFixtures(season)
+    );
     const correct = predictions.filter((prediction) => prediction.played?.modelCorrect === true).length;
     const wrong = predictions.filter((prediction) => prediction.played?.modelCorrect === false).length;
     const voided = predictions.filter((prediction) => prediction.played?.modelCorrect === null).length;
     const exactScores = predictions.filter((prediction) => prediction.played?.exactScoreCorrect === true).length;
     return sendJson(res, 200, {
       predictions,
+      apiSync: liveRefresh
+        ? {
+            source: liveRefresh.source,
+            updatedAt: liveRefresh.updatedAt,
+            cached: Boolean(liveRefresh.cached),
+            fetched: liveRefresh.fetched || 0,
+            settled: liveRefresh.settled || 0,
+            errors: liveRefresh.errors || [],
+          }
+        : null,
       summary: { total: predictions.length, correct, wrong, voided, exactScores },
     });
   }

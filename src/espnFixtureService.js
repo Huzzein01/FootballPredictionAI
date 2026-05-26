@@ -261,9 +261,10 @@ function readResultsSnapshot() {
   return readJsonWithFallback(LIVE_RESULTS_PATH, SEEDED_LIVE_RESULTS_PATH, null);
 }
 
-function resultsSnapshotIsFresh(maxAgeMinutes = 3) {
+function resultsSnapshotIsFresh(maxAgeMinutes = 3, dateWindow = "") {
   const snapshot = readResultsSnapshot();
   if (!snapshot?.updatedAt) return false;
+  if (dateWindow && snapshot.dateWindow !== dateWindow) return false;
   const ageMs = Date.now() - Date.parse(snapshot.updatedAt);
   return Number.isFinite(ageMs) && ageMs >= 0 && ageMs < maxAgeMinutes * 60_000;
 }
@@ -282,11 +283,11 @@ function predictionMatchesResult(prediction, result) {
 
 async function refreshEspnResults({ daysBack = 14, daysForward = 1, force = false } = {}) {
   const maxAgeMinutes = Number(process.env.ESPN_RESULTS_CACHE_MINUTES || 3);
-  if (!force && resultsSnapshotIsFresh(maxAgeMinutes)) {
+  const dateWindow = dateRange(daysBack, daysForward);
+  if (!force && resultsSnapshotIsFresh(maxAgeMinutes, dateWindow)) {
     return { ...readResultsSnapshot(), cached: true };
   }
 
-  const dateWindow = dateRange(daysBack, daysForward);
   const results = [];
   const errors = [];
   for (const league of Object.keys(ESPN_LEAGUES)) {
@@ -346,6 +347,7 @@ async function refreshEspnResults({ daysBack = 14, daysForward = 1, force = fals
 
 module.exports = {
   ESPN_LEAGUES,
+  readResultsSnapshot,
   refreshEspnFixtures,
   refreshEspnResults,
 };

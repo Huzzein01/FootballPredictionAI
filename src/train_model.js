@@ -3,14 +3,19 @@ const path = require("path");
 const { buildCurrentFeatureVector, buildTrainingRows, FEATURE_NAMES } = require("./features");
 const { normalizeTeamName } = require("./footballData");
 const { evaluate, trainSoftmax } = require("./model");
+const { mutableDataPath, readJsonWithFallback, repoDataPath } = require("./runtimePaths");
 
 const MODEL_DIR = path.join(process.cwd(), "model");
 const MODEL_PATH = path.join(MODEL_DIR, "football_match_model.json");
 const TRAINING_PATH = path.join(MODEL_DIR, "training_rows.json");
 const TUNING_PATH = path.join(MODEL_DIR, "tuning_results.json");
-const BACKTEST_PATH = path.join(process.cwd(), "data", "backtests.json");
-const PARLAY_BACKTEST_PATH = path.join(process.cwd(), "data", "parlay_backtests.json");
-const PLAYED_RESULTS_PATH = path.join(process.cwd(), "data", "played_results.json");
+const BACKTEST_PATH = mutableDataPath("backtests.json");
+const SEEDED_BACKTEST_PATH = repoDataPath("backtests.json");
+const PARLAY_BACKTEST_PATH = mutableDataPath("parlay_backtests.json");
+const SEEDED_PARLAY_BACKTEST_PATH = repoDataPath("parlay_backtests.json");
+const PLAYED_RESULTS_PATH = repoDataPath("played_results.json");
+const LIVE_RESULTS_PATH = mutableDataPath("live_espn_results.json");
+const SEEDED_LIVE_RESULTS_PATH = repoDataPath("live_espn_results.json");
 
 function actualResultCode(homeGoals, awayGoals) {
   const home = Number(homeGoals);
@@ -53,8 +58,7 @@ function labelFromMatchPick(leg) {
 }
 
 function manualBacktestTrainingRows() {
-  if (!fs.existsSync(BACKTEST_PATH)) return [];
-  const store = JSON.parse(fs.readFileSync(BACKTEST_PATH, "utf8"));
+  const store = readJsonWithFallback(BACKTEST_PATH, SEEDED_BACKTEST_PATH, { predictions: [] });
 
   return (store.predictions || [])
     .filter((entry) => entry.status === "SETTLED" && ["H", "D", "A"].includes(entry.actualResult))
@@ -77,9 +81,14 @@ function manualBacktestTrainingRows() {
 }
 
 function playedResultTrainingRows() {
-  if (!fs.existsSync(PLAYED_RESULTS_PATH)) return [];
-  const store = JSON.parse(fs.readFileSync(PLAYED_RESULTS_PATH, "utf8").replace(/^\uFEFF/, ""));
-  return (store.results || [])
+  const verifiedStore = readJsonWithFallback(PLAYED_RESULTS_PATH, null, { results: [] });
+  const liveStore = readJsonWithFallback(LIVE_RESULTS_PATH, SEEDED_LIVE_RESULTS_PATH, { results: [] });
+  const byFixture = new Map();
+  for (const entry of [...(verifiedStore.results || []), ...(liveStore.results || [])]) {
+    const key = [entry.date, entry.league, normalizeTeamName(entry.homeTeam), normalizeTeamName(entry.awayTeam)].join("|").toLowerCase();
+    if (!byFixture.has(key)) byFixture.set(key, entry);
+  }
+  return [...byFixture.values()]
     .map((entry) => ({
       entry,
       label: actualResultCode(entry.homeGoals, entry.awayGoals),
@@ -98,8 +107,7 @@ function playedResultTrainingRows() {
 }
 
 function parlayBacktestTrainingRows() {
-  if (!fs.existsSync(PARLAY_BACKTEST_PATH)) return [];
-  const store = JSON.parse(fs.readFileSync(PARLAY_BACKTEST_PATH, "utf8"));
+  const store = readJsonWithFallback(PARLAY_BACKTEST_PATH, SEEDED_PARLAY_BACKTEST_PATH, { parlays: [] });
   const rows = [];
 
   for (const parlay of store.parlays || []) {

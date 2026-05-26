@@ -2504,7 +2504,7 @@ function actualResultText(prediction) {
 }
 
 function isHistoricalResult(prediction) {
-  return prediction.played?.statusLabel === "Historical result" || prediction.played?.sourceName === "Imported historical match CSV";
+  return ["Historical result", "API result"].includes(prediction.played?.statusLabel) || prediction.played?.sourceName === "Imported historical match CSV";
 }
 
 function renderHistoricalPlayedCard(prediction) {
