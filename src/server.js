@@ -97,10 +97,12 @@ function publicAuthConfig() {
   const anonKey = process.env.SUPABASE_ANON_KEY || process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY || "";
   const hostedMode = Boolean(process.env.VERCEL || process.env.HOSTED_PUBLIC_MODE === "1");
   const hideModelStats = hostedMode || process.env.HIDE_MODEL_STATS === "1";
+  const requireSignIn = process.env.AUTH_GATE_ENABLED === "1" || process.env.REQUIRE_AUTH === "1";
   return {
     enabled: Boolean(supabaseUrl && anonKey),
     hostedMode,
     hideModelStats,
+    requireSignIn,
     url: supabaseUrl,
     anonKey,
   };
@@ -339,18 +341,11 @@ function apiPlayedFixtures(season = "2025-26") {
   if (!results.length) return [];
   const storedPredictions = storedPredictionMap();
   const boardPredictions = new Map(fixturePredictionBoard().map((prediction) => [playedPredictionKey(prediction), prediction]));
-  const ledgerFixtureKeys = new Set([...storedPredictions.keys(), ...boardPredictions.keys()]);
 
   return results
     .filter((result) => dateInSeason(result.date, season))
     .filter((result) => result.league && result.homeTeam && result.awayTeam)
     .filter((result) => Number.isFinite(Number(result.homeGoals)) && Number.isFinite(Number(result.awayGoals)))
-    .filter((result) => {
-      const homeTeam = normalizeTeamName(result.homeTeam);
-      const awayTeam = normalizeTeamName(result.awayTeam);
-      const key = playedPredictionKey({ date: result.date, homeTeam, awayTeam });
-      return ledgerFixtureKeys.has(key) || FOCUSED_CLUB_TEAMS.has(homeTeam) || FOCUSED_CLUB_TEAMS.has(awayTeam);
-    })
     .map((result) => {
       const homeTeam = normalizeTeamName(result.homeTeam);
       const awayTeam = normalizeTeamName(result.awayTeam);
@@ -429,10 +424,16 @@ async function handleApi(req, res, pathname) {
   }
 
   if (req.method === "GET" && pathname === "/api/fixture-predictions") {
-    await refreshEspnFixtures();
+    const resultSnapshot = await refreshEspnResults({ daysBack: 21, daysForward: 1 });
+    if (resultSnapshot.settled > 0) {
+      await refreshLiveLeagueContext();
+      scheduleRetrain("espn-auto-fixture-results");
+    }
+    await refreshEspnFixtures({ daysBack: 14, daysForward: 180 });
     await refreshTheOddsApi({ includeClub: true, includeInternational: false });
     await refreshMissingOdds();
     await refreshLiveLeagueContext();
+    await persistKnownStores(["backtests", "liveEspnFixtures", "liveEspnResults", "liveOdds", "liveLeagueContext"]);
     const predictions = remainingFixturePredictions();
     const playedCount = playedFixturePredictions().length;
     return sendJson(res, 200, {
@@ -496,13 +497,13 @@ async function handleApi(req, res, pathname) {
   }
 
   if (req.method === "POST" && pathname === "/api/fixtures/espn-refresh") {
-    const snapshot = await refreshEspnFixtures({ daysBack: 7, daysForward: 120 });
+    const snapshot = await refreshEspnFixtures({ daysBack: 14, daysForward: 180 });
     await persistKnownStores(["liveEspnFixtures"]);
     return sendJson(res, 200, snapshot);
   }
 
   if (req.method === "POST" && pathname === "/api/fixtures/espn-results-refresh") {
-    const snapshot = await refreshEspnResults({ daysBack: 21, daysForward: 1, force: true });
+    const snapshot = await refreshEspnResults({ daysBack: 60, daysForward: 1, force: true });
     if (snapshot.settled > 0) {
       await refreshLiveLeagueContext();
       scheduleRetrain("espn-auto-fixture-results");

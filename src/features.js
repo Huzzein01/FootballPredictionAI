@@ -320,7 +320,9 @@ function buildTrainingRows() {
 function buildCurrentFeatureVector(league, homeTeamInput, awayTeamInput, odds = {}, season = "2025-26") {
   const homeTeam = normalizeTeamName(homeTeamInput);
   const awayTeam = normalizeTeamName(awayTeamInput);
-  const matches = loadMatches().filter((m) => m.League === league);
+  const allMatches = loadMatches();
+  const leagueMatches = allMatches.filter((m) => m.League === league);
+  const matches = leagueMatches.length ? leagueMatches : allMatches;
   const table = new Map();
   const eloTable = new Map();
   const h2hMap = new Map();

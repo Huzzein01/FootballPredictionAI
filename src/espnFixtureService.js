@@ -17,6 +17,26 @@ const ESPN_LEAGUES = {
   Bundesliga: "ger.1",
   "Ligue 1": "fra.1",
   "Serie A": "ita.1",
+  "Champions League": "uefa.champions",
+  "Europa League": "uefa.europa",
+  "Conference League": "uefa.europa.conf",
+  "UEFA Super Cup": "uefa.super_cup",
+  "FA Cup": "eng.fa",
+  "Carabao Cup": "eng.league_cup",
+  "Copa del Rey": "esp.copa_del_rey",
+  "DFB-Pokal": "ger.dfb_pokal",
+  "Coppa Italia": "ita.coppa_italia",
+  "Coupe de France": "fra.coupe_de_france",
+  Eredivisie: "ned.1",
+  "Primeira Liga": "por.1",
+  "Scottish Premiership": "sco.1",
+  "Turkish Super Lig": "tur.1",
+  "Belgian Pro League": "bel.1",
+  "Austrian Bundesliga": "aut.1",
+  "Danish Superliga": "den.1",
+  Eliteserien: "nor.1",
+  Allsvenskan: "swe.1",
+  "Swiss Super League": "sui.1",
 };
 
 function parseCsvLine(line) {
@@ -170,6 +190,10 @@ async function fetchLeagueScoreboard(league, dateWindow) {
   if (!response.ok) throw new Error(`ESPN ${league} fixture request failed: ${response.status}`);
   const payload = await response.json();
   return { sourceUrl, events: payload.events || [] };
+}
+
+function allEuropeanLeagueNames() {
+  return Object.keys(ESPN_LEAGUES);
 }
 
 async function fetchLeagueFixtures(league, dateWindow) {
@@ -347,6 +371,7 @@ async function refreshEspnResults({ daysBack = 14, daysForward = 1, force = fals
 
 module.exports = {
   ESPN_LEAGUES,
+  allEuropeanLeagueNames,
   readResultsSnapshot,
   refreshEspnFixtures,
   refreshEspnResults,

@@ -16,6 +16,13 @@ const CLUB_SPORT_KEYS = {
   Bundesliga: "soccer_germany_bundesliga",
   "Ligue 1": "soccer_france_ligue_one",
   "Serie A": "soccer_italy_serie_a",
+  "Champions League": "soccer_uefa_champs_league",
+  "Europa League": "soccer_uefa_europa_league",
+  "Conference League": "soccer_uefa_europa_conference_league",
+  Eredivisie: "soccer_netherlands_eredivisie",
+  "Primeira Liga": "soccer_portugal_primeira_liga",
+  "Scottish Premiership": "soccer_spl",
+  "Turkish Super Lig": "soccer_turkey_super_league",
 };
 
 const INTERNATIONAL_SPORT_KEYS = {

@@ -115,7 +115,7 @@ let editingPlayerStatEntry = null;
 let editingTeamStatEntry = null;
 let trainingFixtureSourcesPromise = null;
 let authMode = "signin";
-let authConfig = { enabled: false, hostedMode: false, hideModelStats: false, url: "", anonKey: "" };
+let authConfig = { enabled: false, hostedMode: false, hideModelStats: false, requireSignIn: false, url: "", anonKey: "" };
 let authSession = null;
 let appDataLoaded = false;
 
@@ -1979,7 +1979,7 @@ function showAuthGate(message = "") {
 async function initAuth() {
   authConfig = await api("/api/auth/config").catch(() => authConfig);
   document.body.classList.toggle("hosted-public", Boolean(authConfig.hideModelStats));
-  const requiresAuth = Boolean(authConfig.hostedMode && authConfig.enabled);
+  const requiresAuth = Boolean(authConfig.requireSignIn && authConfig.enabled);
   if (!requiresAuth) {
     if (authGate) authGate.hidden = true;
     if (authAccount) authAccount.hidden = true;
