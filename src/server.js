@@ -92,6 +92,20 @@ function loadVerifiedPlayedResults() {
   return Array.isArray(data.results) ? data.results : [];
 }
 
+function publicAuthConfig() {
+  const supabaseUrl = process.env.SUPABASE_URL || process.env.NEXT_PUBLIC_SUPABASE_URL || "";
+  const anonKey = process.env.SUPABASE_ANON_KEY || process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY || "";
+  const hostedMode = Boolean(process.env.VERCEL || process.env.HOSTED_PUBLIC_MODE === "1");
+  const hideModelStats = hostedMode || process.env.HIDE_MODEL_STATS === "1";
+  return {
+    enabled: Boolean(supabaseUrl && anonKey),
+    hostedMode,
+    hideModelStats,
+    url: supabaseUrl,
+    anonKey,
+  };
+}
+
 function verifiedPlayedResultMap() {
   return new Map(loadVerifiedPlayedResults().map((result) => [parlayBacktests.fixtureSignatureFromFixture(result), result]));
 }
@@ -382,6 +396,10 @@ async function handleApi(req, res, pathname) {
 
   if (req.method === "GET" && pathname === "/api/storage/status") {
     return sendJson(res, 200, await storageStatus());
+  }
+
+  if (req.method === "GET" && pathname === "/api/auth/config") {
+    return sendJson(res, 200, publicAuthConfig());
   }
 
   if (req.method === "GET" && pathname === "/api/meta") {

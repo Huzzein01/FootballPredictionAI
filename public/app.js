@@ -81,6 +81,19 @@ const refreshFuturesButton = document.querySelector("#refreshFuturesButton");
 const futuresOutput = document.querySelector("#futuresOutput");
 const pageTabs = [...document.querySelectorAll("[data-page-target]")];
 const pageSections = [...document.querySelectorAll("[data-page]")];
+const authGate = document.querySelector("#authGate");
+const authForm = document.querySelector("#authForm");
+const authSignInTab = document.querySelector("#authSignInTab");
+const authSignUpTab = document.querySelector("#authSignUpTab");
+const authNameField = document.querySelector("#authNameField");
+const authDisplayName = document.querySelector("#authDisplayName");
+const authEmail = document.querySelector("#authEmail");
+const authPassword = document.querySelector("#authPassword");
+const authSubmitButton = document.querySelector("#authSubmitButton");
+const authMessage = document.querySelector("#authMessage");
+const authAccount = document.querySelector("#authAccount");
+const authUserEmail = document.querySelector("#authUserEmail");
+const signOutButton = document.querySelector("#signOutButton");
 
 let meta = null;
 let fixturePredictions = [];
@@ -101,8 +114,13 @@ let parlayRefreshSeed = 0;
 let editingPlayerStatEntry = null;
 let editingTeamStatEntry = null;
 let trainingFixtureSourcesPromise = null;
+let authMode = "signin";
+let authConfig = { enabled: false, hostedMode: false, hideModelStats: false, url: "", anonKey: "" };
+let authSession = null;
+let appDataLoaded = false;
 
 const CENTRAL_TIME_ZONE = "America/Chicago";
+const AUTH_SESSION_STORAGE_KEY = "footballPredictionSupabaseSession";
 const INTERNATIONAL_ONLY_PAGES = new Set(["world-cup-groups", "international-fixtures"]);
 const PARLAY_SLIP_STORAGE_KEY = "football-selected-parlay-slip";
 const CLUB_SEASONS = [
@@ -1857,6 +1875,131 @@ async function api(path, options = {}) {
   const data = await response.json();
   if (!response.ok) throw new Error(data.error || "Request failed");
   return data;
+}
+
+function setAuthMode(mode) {
+  authMode = mode === "signup" ? "signup" : "signin";
+  authSignInTab?.classList.toggle("is-active", authMode === "signin");
+  authSignUpTab?.classList.toggle("is-active", authMode === "signup");
+  if (authNameField) authNameField.hidden = authMode !== "signup";
+  if (authSubmitButton) authSubmitButton.textContent = authMode === "signup" ? "Create account" : "Sign in";
+  if (authPassword) authPassword.autocomplete = authMode === "signup" ? "new-password" : "current-password";
+  if (authMessage) authMessage.textContent = "";
+}
+
+function storedAuthSession() {
+  try {
+    const session = JSON.parse(localStorage.getItem(AUTH_SESSION_STORAGE_KEY) || "null");
+    if (!session?.access_token || !session?.expires_at) return null;
+    if (Number(session.expires_at) * 1000 <= Date.now() + 15_000) return null;
+    return session;
+  } catch (error) {
+    return null;
+  }
+}
+
+function saveAuthSession(session) {
+  authSession = session || null;
+  if (authSession) {
+    localStorage.setItem(AUTH_SESSION_STORAGE_KEY, JSON.stringify(authSession));
+  } else {
+    localStorage.removeItem(AUTH_SESSION_STORAGE_KEY);
+  }
+}
+
+function authHeaders(session = authSession) {
+  return {
+    apikey: authConfig.anonKey,
+    Authorization: `Bearer ${session?.access_token || authConfig.anonKey}`,
+    "Content-Type": "application/json",
+  };
+}
+
+async function supabaseAuthRequest(path, options = {}) {
+  const response = await fetch(`${authConfig.url}/auth/v1/${path}`, {
+    ...options,
+    headers: {
+      apikey: authConfig.anonKey,
+      "Content-Type": "application/json",
+      ...(options.headers || {}),
+    },
+  });
+  const data = await response.json().catch(() => ({}));
+  if (!response.ok) throw new Error(data.error_description || data.msg || data.message || "Authentication failed");
+  return data;
+}
+
+async function fetchSupabaseUser(session) {
+  const response = await fetch(`${authConfig.url}/auth/v1/user`, {
+    headers: authHeaders(session),
+  });
+  const data = await response.json().catch(() => ({}));
+  if (!response.ok) throw new Error(data.error_description || data.msg || data.message || "Session expired");
+  return data;
+}
+
+async function upsertUserProfile(session, user) {
+  if (!session?.access_token || !user?.id) return;
+  const displayName = authDisplayName?.value?.trim() || user.user_metadata?.display_name || user.email?.split("@")[0] || "";
+  await fetch(`${authConfig.url}/rest/v1/user_profiles?on_conflict=id`, {
+    method: "POST",
+    headers: {
+      ...authHeaders(session),
+      Prefer: "resolution=merge-duplicates",
+    },
+    body: JSON.stringify({
+      id: user.id,
+      email: user.email || "",
+      display_name: displayName,
+      last_sign_in_at: new Date().toISOString(),
+      last_seen_at: new Date().toISOString(),
+    }),
+  }).catch(() => {});
+}
+
+async function applyAuthenticatedSession(session) {
+  const user = session?.user || (await fetchSupabaseUser(session));
+  saveAuthSession({ ...session, user });
+  await upsertUserProfile(session, user);
+  document.body.classList.add("is-authenticated");
+  if (authGate) authGate.hidden = true;
+  if (authAccount) authAccount.hidden = false;
+  if (authUserEmail) authUserEmail.textContent = user.email || "Signed in";
+  await loadAppData();
+}
+
+function showAuthGate(message = "") {
+  document.body.classList.add("auth-required");
+  document.body.classList.remove("is-authenticated");
+  if (authGate) authGate.hidden = false;
+  if (authAccount) authAccount.hidden = true;
+  if (authMessage) authMessage.textContent = message;
+}
+
+async function initAuth() {
+  authConfig = await api("/api/auth/config").catch(() => authConfig);
+  document.body.classList.toggle("hosted-public", Boolean(authConfig.hideModelStats));
+  const requiresAuth = Boolean(authConfig.hostedMode && authConfig.enabled);
+  if (!requiresAuth) {
+    if (authGate) authGate.hidden = true;
+    if (authAccount) authAccount.hidden = true;
+    return true;
+  }
+
+  const stored = storedAuthSession();
+  if (!stored) {
+    showAuthGate();
+    return false;
+  }
+
+  try {
+    await applyAuthenticatedSession(stored);
+    return false;
+  } catch (error) {
+    saveAuthSession(null);
+    showAuthGate("Your session expired. Please sign in again.");
+    return false;
+  }
 }
 
 function updateSummary(summary) {
@@ -3819,16 +3962,63 @@ parlayLedgerOutput.addEventListener("click", async (event) => {
   await refreshTrainingStatus();
 });
 
-async function init() {
+authSignInTab?.addEventListener("click", () => setAuthMode("signin"));
+authSignUpTab?.addEventListener("click", () => setAuthMode("signup"));
+
+authForm?.addEventListener("submit", async (event) => {
+  event.preventDefault();
+  if (!authConfig.enabled) {
+    if (authMessage) authMessage.textContent = "Supabase sign-in is not configured for this deployment yet.";
+    return;
+  }
+
+  const email = authEmail?.value?.trim();
+  const password = authPassword?.value || "";
+  if (!email || !password) return;
+
+  if (authSubmitButton) authSubmitButton.disabled = true;
+  if (authMessage) authMessage.textContent = authMode === "signup" ? "Creating your account..." : "Signing you in...";
+
   try {
-    initTheme();
-    initContextMode();
-    updateSeasonOptions();
-    updateContextLabels();
-    updateContextNavigation();
-    loadParlaySlip();
-    renderParlaySlip();
-    showPage(location.hash.replace("#", "") || "predictions");
+    if (authMode === "signup") {
+      const data = await supabaseAuthRequest("signup", {
+        method: "POST",
+        body: JSON.stringify({
+          email,
+          password,
+          data: { display_name: authDisplayName?.value?.trim() || "" },
+        }),
+      });
+      if (!data.access_token) {
+        if (authMessage) authMessage.textContent = "Account created. Check your email to confirm before signing in.";
+        setAuthMode("signin");
+        return;
+      }
+      await applyAuthenticatedSession(data);
+      return;
+    }
+
+    const data = await supabaseAuthRequest("token?grant_type=password", {
+      method: "POST",
+      body: JSON.stringify({ email, password }),
+    });
+    await applyAuthenticatedSession(data);
+  } catch (error) {
+    if (authMessage) authMessage.textContent = error.message || "Unable to sign in. Check the email and password.";
+  } finally {
+    if (authSubmitButton) authSubmitButton.disabled = false;
+  }
+});
+
+signOutButton?.addEventListener("click", () => {
+  saveAuthSession(null);
+  showAuthGate("You signed out.");
+});
+
+async function loadAppData() {
+  if (appDataLoaded) return;
+  appDataLoaded = true;
+  try {
     meta = await api("/api/meta");
     renderModelMeta(meta, meta.trainingStatus);
     updateTeamList();
@@ -3846,6 +4036,25 @@ async function init() {
       await refreshLedger();
     }
   } catch (error) {
+    appDataLoaded = false;
+    document.querySelector("#modelMeta").textContent = "Unable to load model status";
+    setBoardMessage(error.name === "AbortError" ? "The app could not reach the local prediction server." : error.message, "error");
+    showMessage(error.name === "AbortError" ? "The app could not reach the local prediction server." : error.message);
+  }
+}
+
+async function init() {
+  try {
+    initTheme();
+    initContextMode();
+    updateSeasonOptions();
+    updateContextLabels();
+    updateContextNavigation();
+    loadParlaySlip();
+    renderParlaySlip();
+    showPage(location.hash.replace("#", "") || "predictions");
+    if (await initAuth()) await loadAppData();
+  } catch (error) {
     document.querySelector("#modelMeta").textContent = "Unable to load model status";
     setBoardMessage(error.name === "AbortError" ? "The app could not reach the local prediction server." : error.message, "error");
     showMessage(error.name === "AbortError" ? "The app could not reach the local prediction server." : error.message);
@@ -3856,11 +4065,13 @@ init();
 
 window.setInterval(() => {
   if (document.visibilityState === "hidden") return;
+  if (authConfig.hostedMode && authConfig.enabled && !authSession) return;
   refreshPlayerProfiles({ background: true }).catch(() => {});
 }, 15 * 60 * 1000);
 
 window.setInterval(() => {
   if (document.visibilityState === "hidden") return;
+  if (authConfig.hostedMode && authConfig.enabled && !authSession) return;
   syncEspnResults({ background: true }).then((data) => {
     if (data?.settled > 0) refreshLedger();
   }).catch(() => {});

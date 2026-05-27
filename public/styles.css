@@ -53,12 +53,26 @@
   box-sizing: border-box;
 }
 
+[hidden] {
+  display: none !important;
+}
+
 body {
   margin: 0;
   background: var(--bg);
   color: var(--ink);
   font-family: Inter, "Segoe UI", Arial, sans-serif;
   letter-spacing: 0;
+}
+
+body.hosted-public .model-private-stats,
+body.hosted-public #modelMeta {
+  display: none;
+}
+
+body.auth-required:not(.is-authenticated) .page-nav,
+body.auth-required:not(.is-authenticated) .dashboard {
+  display: none;
 }
 
 h1,
@@ -165,6 +179,101 @@ h1 {
   display: block;
   color: #fff;
   font-size: 18px;
+}
+
+.auth-account {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  border: 1px solid rgba(255, 255, 255, 0.18);
+  border-radius: 8px;
+  background: rgba(255, 255, 255, 0.08);
+  padding: 8px;
+  color: #eaf2ef;
+  font-size: 12px;
+  font-weight: 800;
+}
+
+.auth-account button {
+  padding: 7px 10px;
+  border-radius: 7px;
+  background: rgba(255, 255, 255, 0.1);
+  color: #fff;
+}
+
+.auth-gate {
+  min-height: calc(100vh - 150px);
+  display: grid;
+  place-items: center;
+  padding: 28px 16px;
+  background:
+    radial-gradient(circle at top left, rgba(16, 185, 129, 0.16), transparent 30%),
+    linear-gradient(180deg, var(--bg), color-mix(in srgb, var(--bg) 86%, #0f766e 14%));
+}
+
+.auth-panel {
+  width: min(440px, 100%);
+  border: 1px solid var(--line);
+  border-radius: 10px;
+  background: var(--panel);
+  box-shadow: var(--shadow);
+  padding: 24px;
+}
+
+.auth-panel h2 {
+  margin-top: 6px;
+  font-size: 26px;
+}
+
+.auth-copy {
+  margin-top: 8px;
+  color: var(--muted);
+  line-height: 1.45;
+}
+
+.auth-mode-tabs {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 8px;
+  margin-top: 18px;
+}
+
+.auth-mode-tabs button {
+  border-radius: 8px;
+  padding: 10px;
+}
+
+.auth-mode-tabs button.is-active {
+  border-color: var(--teal);
+  background: var(--blue-soft);
+  color: var(--teal);
+}
+
+.auth-form {
+  display: grid;
+  gap: 12px;
+  margin-top: 16px;
+}
+
+.auth-form label {
+  display: grid;
+  gap: 6px;
+  color: var(--muted);
+  font-size: 12px;
+  font-weight: 900;
+  text-transform: uppercase;
+}
+
+.auth-form input {
+  width: 100%;
+}
+
+.auth-message {
+  min-height: 20px;
+  margin-top: 12px;
+  color: var(--muted);
+  font-size: 13px;
+  line-height: 1.35;
 }
 
 .page-nav {
