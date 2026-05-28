@@ -1,0 +1,265 @@
+:root {
+  --font-heading: "Barlow Condensed", "Arial Narrow", "Segoe UI", Arial, sans-serif;
+  --font-body: "IBM Plex Sans", Inter, "Segoe UI", Arial, sans-serif;
+  --control-room-line: color-mix(in srgb, var(--line) 72%, var(--teal));
+  --control-room-glow: 0 18px 44px rgba(6, 18, 31, 0.14);
+}
+
+:root[data-theme="dark"] {
+  --control-room-line: color-mix(in srgb, var(--line) 78%, var(--teal));
+  --control-room-glow: 0 18px 48px rgba(0, 0, 0, 0.38);
+}
+
+body,
+button,
+input,
+select,
+textarea {
+  font-family: var(--font-body);
+  letter-spacing: 0;
+}
+
+h1,
+h2,
+h3,
+.ticket-head h3,
+.league-table-head h3,
+.futures-pick-rank,
+.summary strong,
+.board-stats strong,
+.accuracy-stats strong,
+.leg-row-meta strong,
+.scoreboard-row .callout strong {
+  font-family: var(--font-heading);
+  letter-spacing: 0;
+}
+
+.eyebrow,
+.theme-control,
+.season-control,
+.context-mode-control,
+.mobile-page-menu,
+.board-controls label,
+.parlay-controls label,
+.grid-form label,
+.player-stat-form label,
+.team-stat-form label,
+.section-actions label,
+.card-topline,
+.profile-source,
+.profile-entry-list small {
+  letter-spacing: 0;
+}
+
+.topbar {
+  background:
+    linear-gradient(135deg, rgba(17, 24, 39, 0.94), rgba(5, 15, 24, 0.98)),
+    radial-gradient(circle at 20% 0%, rgba(57, 216, 159, 0.16), transparent 36%);
+}
+
+:root[data-theme="dark"] .topbar {
+  background:
+    linear-gradient(135deg, rgba(8, 13, 20, 0.97), rgba(16, 23, 33, 0.99)),
+    radial-gradient(circle at 20% 0%, rgba(57, 216, 159, 0.18), transparent 38%);
+}
+
+.summary span,
+.context-mode-control,
+.theme-control,
+.season-control,
+.mobile-page-menu {
+  backdrop-filter: blur(12px);
+}
+
+.page-nav {
+  flex-wrap: wrap !important;
+  overflow-x: visible !important;
+  scrollbar-width: none;
+}
+
+.page-tab {
+  flex: 0 1 auto;
+  font-weight: 800;
+}
+
+.page-tab.is-active {
+  box-shadow: inset 0 0 0 1px color-mix(in srgb, var(--teal) 22%, transparent);
+}
+
+.panel,
+.parlay-ticket,
+.tracked-parlay,
+.fixture-card,
+.played-grid-card,
+.player-profile-card,
+.team-profile-card,
+.league-table-card,
+.futures-section,
+.slip-summary-grid,
+.player-stat-form,
+.team-stat-form,
+.grid-form,
+.table-wrap {
+  border-color: var(--control-room-line);
+  box-shadow: var(--control-room-glow);
+}
+
+.panel,
+.parlay-ticket,
+.tracked-parlay,
+.fixture-card,
+.played-grid-card,
+.player-profile-card,
+.team-profile-card,
+.league-table-card,
+.futures-section {
+  background:
+    linear-gradient(180deg, color-mix(in srgb, var(--panel) 96%, var(--surface)), color-mix(in srgb, var(--panel) 88%, var(--surface)));
+}
+
+:root[data-theme="dark"] .panel,
+:root[data-theme="dark"] .parlay-ticket,
+:root[data-theme="dark"] .tracked-parlay,
+:root[data-theme="dark"] .fixture-card,
+:root[data-theme="dark"] .played-grid-card,
+:root[data-theme="dark"] .player-profile-card,
+:root[data-theme="dark"] .team-profile-card,
+:root[data-theme="dark"] .league-table-card,
+:root[data-theme="dark"] .futures-section {
+  background:
+    linear-gradient(180deg, color-mix(in srgb, var(--panel) 92%, #203044), color-mix(in srgb, var(--panel) 94%, #0b1118));
+}
+
+.page-tab,
+button,
+input,
+select,
+textarea,
+.summary span,
+.board-stats span,
+.profile-stat-grid span,
+.profile-entry-list li,
+.played-result-grid div,
+.played-pick-list li,
+.callout,
+.score-line.compact,
+.scoreboard-row .score-line,
+.motivation-line,
+.odds-line {
+  border-radius: 8px;
+}
+
+.section-head h2,
+.league-table-head h3,
+.ticket-head h3 {
+  color: var(--ink);
+}
+
+.muted,
+.profile-source,
+.fbref-line,
+.parlay-leg-row p,
+.tracked-leg-row p {
+  font-weight: 600;
+}
+
+.scoreboard-row,
+.parlay-leg-row,
+.tracked-leg-row,
+.profile-entry-list li {
+  transition: border-color 160ms ease, transform 160ms ease, background 160ms ease;
+}
+
+.profile-training-latest {
+  display: grid !important;
+  grid-template-columns: minmax(0, 1fr) auto !important;
+  align-items: center !important;
+  gap: 10px !important;
+}
+
+.profile-training-latest div {
+  min-width: 0;
+}
+
+.profile-training-latest span {
+  white-space: normal;
+  overflow-wrap: anywhere;
+}
+
+.profile-entry-edit-button {
+  align-self: center;
+  justify-self: end;
+  min-width: 64px;
+  width: auto;
+}
+
+.fixture-card:hover,
+.played-grid-card:hover,
+.player-profile-card:hover,
+.team-profile-card:hover,
+.parlay-ticket:hover {
+  border-color: color-mix(in srgb, var(--teal) 62%, var(--line));
+  transform: translateY(-1px);
+}
+
+.league-table th,
+th {
+  font-family: var(--font-heading);
+  font-size: 14px;
+  letter-spacing: 0;
+}
+
+.table-status,
+.pick-pill,
+.ticket-stats span,
+.ticket-result,
+.risk-leg-badge {
+  font-weight: 800;
+}
+
+@media (max-width: 860px) {
+  .page-nav {
+    display: none !important;
+  }
+
+  .topbar {
+    background:
+      linear-gradient(145deg, rgba(2, 44, 34, 0.96), rgba(7, 17, 26, 0.98)),
+      radial-gradient(circle at 18% 0%, rgba(96, 165, 250, 0.2), transparent 34%);
+  }
+
+  .mobile-page-menu {
+    order: 3;
+  }
+
+  .topbar-right {
+    order: 2;
+  }
+
+  .topbar h1 {
+    font-size: 34px;
+    line-height: 0.98;
+  }
+
+  .section-head h2 {
+    font-size: 23px;
+    line-height: 1.02;
+  }
+
+  .fixture-card:hover,
+  .played-grid-card:hover,
+  .player-profile-card:hover,
+  .team-profile-card:hover,
+  .parlay-ticket:hover {
+    transform: none;
+  }
+
+  .profile-training-latest {
+    grid-template-columns: minmax(0, 1fr) !important;
+  }
+
+  .profile-entry-edit-button {
+    justify-self: stretch;
+    width: 100%;
+  }
+}

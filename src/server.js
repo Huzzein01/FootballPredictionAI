@@ -108,6 +108,50 @@ function publicAuthConfig() {
   };
 }
 
+const LIVE_FIXTURE_REFRESH_TTL_MS = 5 * 60 * 1000;
+let liveFixtureRefreshPromise = null;
+let liveFixtureRefreshStartedAt = 0;
+let liveFixtureRefreshCompletedAt = 0;
+
+function triggerLiveFixtureRefresh(reason = "background", { force = false } = {}) {
+  const now = Date.now();
+  if (liveFixtureRefreshPromise) {
+    return { running: true, reason, startedAt: new Date(liveFixtureRefreshStartedAt).toISOString() };
+  }
+  if (!force && liveFixtureRefreshCompletedAt && now - liveFixtureRefreshCompletedAt < LIVE_FIXTURE_REFRESH_TTL_MS) {
+    return { running: false, cached: true, reason, refreshedAt: new Date(liveFixtureRefreshCompletedAt).toISOString() };
+  }
+
+  liveFixtureRefreshStartedAt = now;
+  liveFixtureRefreshPromise = new Promise((resolve) => {
+    setTimeout(() => {
+      (async () => {
+        const resultSnapshot = await refreshEspnResults({ daysBack: 21, daysForward: 1 });
+        if (resultSnapshot.settled > 0) {
+          await refreshLiveLeagueContext();
+          scheduleRetrain(`espn-auto-fixture-results:${reason}`);
+        }
+        await refreshEspnFixtures({ daysBack: 14, daysForward: 180 });
+        await refreshTheOddsApi({ includeClub: true, includeInternational: false });
+        await refreshMissingOdds();
+        await refreshLiveLeagueContext();
+        await persistKnownStores(["backtests", "liveEspnFixtures", "liveEspnResults", "liveOdds", "liveLeagueContext"]);
+        liveFixtureRefreshCompletedAt = Date.now();
+      })()
+        .catch((error) => {
+          console.warn(`Live fixture refresh failed (${reason}):`, error.message);
+          liveFixtureRefreshCompletedAt = Date.now();
+        })
+        .finally(() => {
+          liveFixtureRefreshPromise = null;
+          resolve();
+        });
+    }, 0);
+  });
+
+  return { running: true, reason, startedAt: new Date(liveFixtureRefreshStartedAt).toISOString() };
+}
+
 function verifiedPlayedResultMap() {
   return new Map(loadVerifiedPlayedResults().map((result) => [parlayBacktests.fixtureSignatureFromFixture(result), result]));
 }
@@ -424,20 +468,12 @@ async function handleApi(req, res, pathname) {
   }
 
   if (req.method === "GET" && pathname === "/api/fixture-predictions") {
-    const resultSnapshot = await refreshEspnResults({ daysBack: 21, daysForward: 1 });
-    if (resultSnapshot.settled > 0) {
-      await refreshLiveLeagueContext();
-      scheduleRetrain("espn-auto-fixture-results");
-    }
-    await refreshEspnFixtures({ daysBack: 14, daysForward: 180 });
-    await refreshTheOddsApi({ includeClub: true, includeInternational: false });
-    await refreshMissingOdds();
-    await refreshLiveLeagueContext();
-    await persistKnownStores(["backtests", "liveEspnFixtures", "liveEspnResults", "liveOdds", "liveLeagueContext"]);
+    const liveRefresh = triggerLiveFixtureRefresh("fixture-predictions");
     const predictions = remainingFixturePredictions();
     const playedCount = playedFixturePredictions().length;
     return sendJson(res, 200, {
       predictions,
+      liveRefresh,
       summary: {
         total: predictions.length,
         played: playedCount,
@@ -459,13 +495,7 @@ async function handleApi(req, res, pathname) {
     }
     let liveRefresh = null;
     if (season === "2025-26") {
-      liveRefresh = await refreshEspnResults({ daysBack: 60, daysForward: 1 });
-      if (liveRefresh.settled > 0) {
-        await refreshLiveLeagueContext();
-        scheduleRetrain("espn-auto-fixture-results");
-      }
-      await refreshLiveLeagueContext();
-      await persistKnownStores(["backtests", "liveEspnResults", "liveLeagueContext"]);
+      liveRefresh = triggerLiveFixtureRefresh("played-fixtures");
     }
     const predictions = mergePlayedFixtureSources(
       season === "2025-26" ? playedFixturePredictions() : [],

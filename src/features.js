@@ -3,6 +3,9 @@ const { MOTIVATION_FEATURE_NAMES, currentStandingFeatures, standingFeaturesFromS
 const { PLAYER_FEATURE_NAMES, matchPlayerFeatureRow } = require("./playerStats");
 const { manualTeamStatEntries } = require("./teamProfileStore");
 
+const CURRENT_CONTEXT_CACHE_TTL_MS = 60 * 1000;
+let currentContextCache = new Map();
+
 const FEATURE_NAMES = [
   "homeGames",
   "awayGames",
@@ -257,6 +260,35 @@ function applyManualTeamStats(table, league, season) {
   }
 }
 
+function currentContextFor(league, season) {
+  const cacheKey = `${league}|${season}`;
+  const cached = currentContextCache.get(cacheKey);
+  if (cached && Date.now() - cached.createdAt < CURRENT_CONTEXT_CACHE_TTL_MS) return cached.context;
+
+  const allMatches = loadMatches();
+  const leagueMatches = allMatches.filter((m) => m.League === league);
+  const matches = leagueMatches.length ? leagueMatches : allMatches;
+  const table = new Map();
+  const eloTable = new Map();
+  const h2hMap = new Map();
+
+  for (const match of matches) {
+    if (match.Season === season) {
+      if (!table.has(match.HomeTeam)) table.set(match.HomeTeam, emptyStats(match.HomeTeam));
+      if (!table.has(match.AwayTeam)) table.set(match.AwayTeam, emptyStats(match.AwayTeam));
+      updateStats(table.get(match.HomeTeam), num(match.FTHG), num(match.FTAG), num(match.HS), num(match.HST), num(match.HC), num(match.HF), num(match.HY), num(match.HR));
+      updateStats(table.get(match.AwayTeam), num(match.FTAG), num(match.FTHG), num(match.AS), num(match.AST), num(match.AC), num(match.AF), num(match.AY), num(match.AR));
+    }
+    updateElo(eloTable, match.HomeTeam, match.AwayTeam, num(match.FTHG), num(match.FTAG));
+    updateH2H(h2hMap, match.HomeTeam, match.AwayTeam, num(match.FTHG), num(match.FTAG));
+  }
+  applyManualTeamStats(table, league, season);
+
+  const context = { table, eloTable, h2hMap };
+  currentContextCache.set(cacheKey, { createdAt: Date.now(), context });
+  return context;
+}
+
 function buildTrainingRows() {
   const matches = loadMatches();
   const byLeagueSeason = new Map();
@@ -320,24 +352,7 @@ function buildTrainingRows() {
 function buildCurrentFeatureVector(league, homeTeamInput, awayTeamInput, odds = {}, season = "2025-26") {
   const homeTeam = normalizeTeamName(homeTeamInput);
   const awayTeam = normalizeTeamName(awayTeamInput);
-  const allMatches = loadMatches();
-  const leagueMatches = allMatches.filter((m) => m.League === league);
-  const matches = leagueMatches.length ? leagueMatches : allMatches;
-  const table = new Map();
-  const eloTable = new Map();
-  const h2hMap = new Map();
-
-  for (const match of matches) {
-    if (match.Season === season) {
-      if (!table.has(match.HomeTeam)) table.set(match.HomeTeam, emptyStats(match.HomeTeam));
-      if (!table.has(match.AwayTeam)) table.set(match.AwayTeam, emptyStats(match.AwayTeam));
-      updateStats(table.get(match.HomeTeam), num(match.FTHG), num(match.FTAG), num(match.HS), num(match.HST), num(match.HC), num(match.HF), num(match.HY), num(match.HR));
-      updateStats(table.get(match.AwayTeam), num(match.FTAG), num(match.FTHG), num(match.AS), num(match.AST), num(match.AC), num(match.AF), num(match.AY), num(match.AR));
-    }
-    updateElo(eloTable, match.HomeTeam, match.AwayTeam, num(match.FTHG), num(match.FTAG));
-    updateH2H(h2hMap, match.HomeTeam, match.AwayTeam, num(match.FTHG), num(match.FTAG));
-  }
-  applyManualTeamStats(table, league, season);
+  const { table, eloTable, h2hMap } = currentContextFor(league, season);
 
   const standingContext = currentStandingFeatures(league, table, homeTeam, awayTeam);
 

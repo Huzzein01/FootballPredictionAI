@@ -9,6 +9,10 @@ const FIXTURE_PATH = path.join(process.cwd(), "data", "remaining_fixtures_2025_2
 
 let modelCache = null;
 let modelMtime = 0;
+let fixtureBoardCache = null;
+let fixtureBoardCacheKey = "";
+let fixtureBoardCacheAt = 0;
+const FIXTURE_BOARD_CACHE_TTL_MS = 60 * 1000;
 
 function loadModel() {
   const stat = fs.statSync(MODEL_PATH);
@@ -358,8 +362,30 @@ function loadRemainingFixtures() {
 }
 
 function fixturePredictionBoard() {
-  const predictions = loadRemainingFixtures().map((fixture) => predictMatch(fixture));
-  return predictions.sort((a, b) => `${a.date} ${a.league} ${a.homeTeam}`.localeCompare(`${b.date} ${b.league} ${b.homeTeam}`));
+  const fixtureStat = fs.existsSync(FIXTURE_PATH) ? fs.statSync(FIXTURE_PATH).mtimeMs : 0;
+  const modelStat = fs.existsSync(MODEL_PATH) ? fs.statSync(MODEL_PATH).mtimeMs : 0;
+  const cacheKey = `${fixtureStat}:${modelStat}`;
+  const now = Date.now();
+  if (fixtureBoardCache && fixtureBoardCacheKey === cacheKey && now - fixtureBoardCacheAt < FIXTURE_BOARD_CACHE_TTL_MS) {
+    return fixtureBoardCache.map((prediction) => ({
+      ...prediction,
+      probabilities: { ...(prediction.probabilities || {}) },
+      odds: { ...(prediction.odds || {}) },
+      standingContext: prediction.standingContext ? { ...prediction.standingContext } : prediction.standingContext,
+    }));
+  }
+  const predictions = loadRemainingFixtures()
+    .map((fixture) => predictMatch(fixture))
+    .sort((a, b) => `${a.date} ${a.league} ${a.homeTeam}`.localeCompare(`${b.date} ${b.league} ${b.homeTeam}`));
+  fixtureBoardCache = predictions;
+  fixtureBoardCacheKey = cacheKey;
+  fixtureBoardCacheAt = now;
+  return predictions.map((prediction) => ({
+    ...prediction,
+    probabilities: { ...(prediction.probabilities || {}) },
+    odds: { ...(prediction.odds || {}) },
+    standingContext: prediction.standingContext ? { ...prediction.standingContext } : prediction.standingContext,
+  }));
 }
 
 function teamsByLeague() {
