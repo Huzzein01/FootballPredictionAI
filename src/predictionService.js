@@ -221,6 +221,63 @@ function projectedScore(prediction, probabilities, hasOdds) {
   return `${underdogGoals}-${favoriteGoals}`;
 }
 
+function parseEspnRecord(record) {
+  const parts = String(record || "").match(/\d+/g)?.map(Number) || [];
+  if (parts.length < 3) return null;
+  const [wins, draws, losses] = parts;
+  const matches = wins + draws + losses;
+  if (!matches) return null;
+  return { wins, draws, losses, matches, ppg: (wins * 3 + draws) / matches, gdProxy: (wins - losses) / matches };
+}
+
+function applyEspnRecordLean(probabilities, input, features, hasOdds) {
+  if (hasOdds) return probabilities;
+  const f = featureMap(features);
+  if (Number(f.homeGames || 0) || Number(f.awayGames || 0)) return probabilities;
+  const home = parseEspnRecord(input.homeRecord);
+  const away = parseEspnRecord(input.awayRecord);
+  if (!home || !away) return probabilities;
+  const ppgDiff = home.ppg - away.ppg;
+  const gdDiff = home.gdProxy - away.gdProxy;
+  const homeLean = clamp(0.035 + ppgDiff * 0.16 + gdDiff * 0.08, -0.16, 0.18);
+  const recordDraw = clamp((home.draws / home.matches + away.draws / away.matches) / 2, 0.18, 0.34);
+  const target = normalizeProbabilities({
+    H: 0.38 + homeLean,
+    D: recordDraw * 0.85,
+    A: 0.34 - homeLean,
+  });
+  return normalizeProbabilities({
+    H: probabilities.H * 0.48 + target.H * 0.52,
+    D: probabilities.D * 0.48 + target.D * 0.52,
+    A: probabilities.A * 0.48 + target.A * 0.52,
+  });
+}
+
+function reduceUnsupportedDrawBias(probabilities, standingContext, features, hasOdds) {
+  if (hasOdds) return probabilities;
+  const f = featureMap(features);
+  const hasFixtureData = Number(f.homeGames || 0) > 0 && Number(f.awayGames || 0) > 0;
+  const hasTableContext = hasFixtureData && (standingContext?.source === "public-standings" || standingContext?.source === "local-season-table");
+  const hasH2H = Number(f.h2hMatches || 0) > 0;
+  if (hasTableContext || hasH2H || probabilities.D < Math.max(probabilities.H, probabilities.A)) return probabilities;
+
+  const drawCap = 0.285;
+  if (probabilities.D <= drawCap) return probabilities;
+  const released = probabilities.D - drawCap;
+  const homeLean =
+    Number(f.homeAdvantage || 0) * 0.22 +
+    Number(f.ppgDiff || 0) * 0.18 +
+    Number(f.eloDiff || 0) / 900 +
+    Number(f.homeLast5PPG || 0) * 0.08 -
+    Number(f.awayLast5PPG || 0) * 0.08;
+  const homeShare = clamp(0.5 + homeLean, 0.42, 0.68);
+  return normalizeProbabilities({
+    H: probabilities.H + released * homeShare,
+    D: drawCap,
+    A: probabilities.A + released * (1 - homeShare),
+  });
+}
+
 function buildJudgment({ prediction, probabilities, modelProbabilities, marketProbabilities, contextProbabilities, standingContext, features, homeTeam, awayTeam, hasOdds, drawCalibration }) {
   const f = featureMap(features);
   const predictedTeam = labelForResult(prediction, homeTeam, awayTeam);
@@ -236,7 +293,9 @@ function buildJudgment({ prediction, probabilities, modelProbabilities, marketPr
   const driverLine = `Drivers: PPG diff ${Number(f.ppgDiff || 0).toFixed(2)}, Elo diff ${Number(f.eloDiff || 0).toFixed(0)}, last-5 PPG ${Number(f.homeLast5PPG || 0).toFixed(2)}-${Number(f.awayLast5PPG || 0).toFixed(2)}, motivation diff ${Number((home.motivationScore || 0) - (away.motivationScore || 0)).toFixed(2)}.`;
   const drawLine = Number(drawCalibration?.drawAdjustment || 0) > 0.004
     ? `Draw risk was raised by ${(Number(drawCalibration.drawAdjustment) * 100).toFixed(1)} pts because the matchup profile looked close.`
-    : "Draw risk was kept near the model baseline because the matchup did not trigger a strong draw-risk flag.";
+    : drawCalibration?.unsupportedDrawBiasReduced
+      ? "Model-only draw risk was capped because this fixture has no usable market odds, table context, or head-to-head support."
+      : "Draw risk was kept near the model baseline because the matchup did not trigger a strong draw-risk flag.";
   const manualNotes = [home.manualNote && `${homeTeam}: ${home.manualNote}`, away.manualNote && `${awayTeam}: ${away.manualNote}`].filter(Boolean);
   const topProbability = pct(probabilities[prediction] || 0);
   const summary = hasOdds
@@ -269,7 +328,14 @@ function predictMatch(input) {
   const drawCalibration = applyDrawCalibration(motivationProbabilities, vector.standingContext, vector.features, hasOdds);
   const marketProbabilities = hasOdds ? marketProbabilitiesFromFeatures(vector.features) : null;
   const contextProbabilities = contextualProbabilities(vector.features, vector.standingContext);
-  const probabilities = applyContextualJudgment(drawCalibration.probabilities, contextProbabilities, vector.standingContext, hasOdds);
+  const judgedProbabilities = applyContextualJudgment(drawCalibration.probabilities, contextProbabilities, vector.standingContext, hasOdds);
+  const recordLeanProbabilities = applyEspnRecordLean(judgedProbabilities, input, vector.features, hasOdds);
+  const probabilities = reduceUnsupportedDrawBias(recordLeanProbabilities, vector.standingContext, vector.features, hasOdds);
+  const finalCalibration = {
+    ...drawCalibration.diagnostics,
+    unsupportedDrawBiasReduced: !hasOdds && probabilities.D < judgedProbabilities.D,
+    espnRecordLeanApplied: !hasOdds && recordLeanProbabilities !== judgedProbabilities,
+  };
   const prediction = bestLabel(probabilities);
 
   return {
@@ -278,6 +344,12 @@ function predictMatch(input) {
     date: input.date || "",
     homeTeam: vector.homeTeam,
     awayTeam: vector.awayTeam,
+    homeLogoUrl: input.homeLogoUrl || "",
+    awayLogoUrl: input.awayLogoUrl || "",
+    homeRecord: input.homeRecord || "",
+    awayRecord: input.awayRecord || "",
+    homeFlagUrl: input.homeFlagUrl || "",
+    awayFlagUrl: input.awayFlagUrl || "",
     odds,
     oddsSource: input.oddsSource || "",
     oddsSourceUrl: input.oddsSourceUrl || "",
@@ -289,7 +361,7 @@ function predictMatch(input) {
     projectedScore: projectedScore(prediction, probabilities, hasOdds),
     featureVector: vector.features,
     standingContext: vector.standingContext,
-    calibration: drawCalibration.diagnostics,
+    calibration: finalCalibration,
     judgment: buildJudgment({
       prediction,
       probabilities,
@@ -301,7 +373,7 @@ function predictMatch(input) {
       homeTeam: vector.homeTeam,
       awayTeam: vector.awayTeam,
       hasOdds,
-      drawCalibration: drawCalibration.diagnostics,
+      drawCalibration: finalCalibration,
     }),
     probabilities: {
       H: probabilities.H,

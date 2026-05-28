@@ -18,6 +18,8 @@ const boardStatus = document.querySelector("#boardStatus");
 const boardLeagueFilter = document.querySelector("#boardLeagueFilter");
 const boardDateFilter = document.querySelector("#boardDateFilter");
 const clearBoardDateButton = document.querySelector("#clearBoardDateButton");
+const boardOddsFilter = document.querySelector("#boardOddsFilter");
+const recheckOddsButton = document.querySelector("#recheckOddsButton");
 const boardSortSelect = document.querySelector("#boardSortSelect");
 const trackAllButton = document.querySelector("#trackAllButton");
 const playedBoard = document.querySelector("#playedBoard");
@@ -1854,9 +1856,9 @@ function teamLine(team) {
 function fixtureTeams(prediction) {
   return `
     <h3 class="fixture-teams">
-      ${fixtureTeamLine(prediction.homeTeam, prediction.homeFlagUrl)}
+      ${fixtureTeamLine(prediction.homeTeam, prediction.homeLogoUrl || prediction.homeFlagUrl)}
       <span class="versus">vs</span>
-      ${fixtureTeamLine(prediction.awayTeam, prediction.awayFlagUrl)}
+      ${fixtureTeamLine(prediction.awayTeam, prediction.awayLogoUrl || prediction.awayFlagUrl)}
     </h3>
   `;
 }
@@ -2561,10 +2563,17 @@ async function autofillTeamTrainingFixture({ showMessage = true } = {}) {
 function renderBoard() {
   const selectedLeague = boardLeagueFilter.value;
   const selectedDate = boardDateFilter.value;
+  const selectedOddsMode = boardOddsFilter?.value || "all";
   const filteredBase = fixturePredictions.filter((prediction) => {
     const leagueMatches = selectedLeague === "All" || prediction.league === selectedLeague;
     const dateMatches = !selectedDate || prediction.date === selectedDate;
-    return leagueMatches && dateMatches;
+    const oddsMatches =
+      selectedOddsMode === "with-odds"
+        ? prediction.hasOdds
+        : selectedOddsMode === "model-only"
+          ? !prediction.hasOdds
+          : true;
+    return leagueMatches && dateMatches && oddsMatches;
   });
   const filtered = sortFixturePredictions(filteredBase, boardSortSelect.value);
 
@@ -2572,7 +2581,8 @@ function renderBoard() {
   document.querySelector("#boardWithOdds").textContent = fixturePredictions.filter((prediction) => prediction.hasOdds).length;
   document.querySelector("#boardModelOnly").textContent = fixturePredictions.filter((prediction) => !prediction.hasOdds).length;
   const dateText = selectedDate ? ` on ${selectedDate}` : "";
-  boardStatus.textContent = `${filtered.length} fixture${filtered.length === 1 ? "" : "s"} shown${dateText}`;
+  const oddsFilterText = selectedOddsMode === "with-odds" ? " with odds" : selectedOddsMode === "model-only" ? " model-only" : "";
+  boardStatus.textContent = `${filtered.length} ${oddsFilterText} fixture${filtered.length === 1 ? "" : "s"} shown${dateText}`;
 
   if (!filtered.length) {
     fixtureBoard.innerHTML = `<div class="empty-state">No fixtures match this filter.</div>`;
@@ -2619,6 +2629,9 @@ function sortFixturePredictions(predictions, mode) {
   }
   if (mode === "league-date") {
     return sorted.sort((a, b) => `${a.league} ${dateKey(a)}`.localeCompare(`${b.league} ${dateKey(b)}`));
+  }
+  if (mode === "odds-first") {
+    return sorted.sort((a, b) => Number(b.hasOdds) - Number(a.hasOdds) || dateKey(a).localeCompare(dateKey(b)));
   }
   if (mode === "confidence-desc") {
     return sorted.sort((a, b) => Number(b.confidence || 0) - Number(a.confidence || 0));
@@ -3350,6 +3363,26 @@ async function refreshFixtureBoard() {
   setBoardMessage(refreshState, "info");
 }
 
+async function recheckPredictionOdds() {
+  if (isInternationalMode() || !isCurrentClubSeason()) {
+    setBoardMessage("Odds refresh is available for the current club fixture board.", "info");
+    return;
+  }
+  if (recheckOddsButton) recheckOddsButton.disabled = true;
+  setBoardMessage("Rechecking ESPN fixtures and sportsbook odds...", "info");
+  try {
+    await api("/api/fixtures/espn-refresh", { method: "POST", body: JSON.stringify({}) });
+    await api("/api/odds/refresh", { method: "POST", body: JSON.stringify({}) });
+    await refreshFixtureBoard();
+    const withOdds = fixturePredictions.filter((prediction) => prediction.hasOdds).length;
+    setBoardMessage(`Odds rechecked. ${withOdds} of ${fixturePredictions.length} fixtures currently have matched sportsbook 1X2 odds from active provider markets.`, "info");
+  } catch (error) {
+    setBoardMessage(`Odds recheck failed: ${error.message}`, "error");
+  } finally {
+    if (recheckOddsButton) recheckOddsButton.disabled = false;
+  }
+}
+
 async function refreshPlayedBoard() {
   if (isInternationalMode()) {
     renderInternationalPlayedBoard();
@@ -3645,6 +3678,8 @@ clearBoardDateButton.addEventListener("click", () => {
   boardDateFilter.value = "";
   renderBoard();
 });
+boardOddsFilter?.addEventListener("change", renderBoard);
+recheckOddsButton?.addEventListener("click", recheckPredictionOdds);
 boardSortSelect.addEventListener("change", renderBoard);
 playedLeagueFilter.addEventListener("change", renderPlayedBoard);
 playedDateFilter.addEventListener("change", renderPlayedBoard);
@@ -4042,8 +4077,7 @@ async function loadAppData() {
     renderModelMeta(meta, meta.trainingStatus);
     updateTeamList();
     if (!isHostedPublic()) {
-      await refreshPlayerProfiles();
-      await refreshTeamProfiles();
+      await Promise.allSettled([refreshPlayerProfiles(), refreshTeamProfiles()]);
     }
     if (isInternationalMode()) {
       await refreshInternationalStatus();

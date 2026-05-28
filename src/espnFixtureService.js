@@ -78,7 +78,7 @@ function readFixtureCsv() {
 }
 
 function writeFixtureCsv(headers, rows) {
-  const finalHeaders = [...new Set([...headers, "date", "league", "homeTeam", "awayTeam", "homeOdds", "drawOdds", "awayOdds", "oddsSource", "oddsStatus", "oddsSourceUrl", "oddsSnapshotAt", "espnEventId", "kickoffUtc", "fixtureSource"])];
+  const finalHeaders = [...new Set([...headers, "date", "league", "homeTeam", "awayTeam", "homeLogoUrl", "awayLogoUrl", "homeRecord", "awayRecord", "homeOdds", "drawOdds", "awayOdds", "oddsSource", "oddsStatus", "oddsSourceUrl", "oddsSnapshotAt", "espnEventId", "kickoffUtc", "fixtureSource"])];
   const output = [finalHeaders.join(","), ...rows.map((row) => finalHeaders.map((header) => csvCell(row[header])).join(","))].join("\n") + "\n";
   writeFileIfWritable(FIXTURE_PATH, output);
 }
@@ -114,17 +114,32 @@ function teamFromCompetitors(competitors, homeAway) {
   return competitors.find((competitor) => competitor.homeAway === homeAway)?.team?.displayName || "";
 }
 
+function logoFromCompetitors(competitors, homeAway) {
+  const team = competitors.find((competitor) => competitor.homeAway === homeAway)?.team || {};
+  return team.logos?.[0]?.href || team.logo || "";
+}
+
+function recordFromCompetitors(competitors, homeAway) {
+  const competitor = competitors.find((entry) => entry.homeAway === homeAway) || {};
+  return competitor.records?.find((record) => record.type === "total")?.summary || competitor.records?.[0]?.summary || "";
+}
+
 function normalizeEspnEvent(event, league, sourceUrl) {
   const competition = event.competitions?.[0] || {};
+  const competitors = competition.competitors || [];
   const status = event.status?.type || {};
-  const homeTeam = normalizeTeamName(teamFromCompetitors(competition.competitors || [], "home"));
-  const awayTeam = normalizeTeamName(teamFromCompetitors(competition.competitors || [], "away"));
+  const homeTeam = normalizeTeamName(teamFromCompetitors(competitors, "home"));
+  const awayTeam = normalizeTeamName(teamFromCompetitors(competitors, "away"));
   const kickoff = event.date || competition.date || "";
   return {
     date: kickoff ? kickoff.slice(0, 10) : "",
     league,
     homeTeam,
     awayTeam,
+    homeLogoUrl: logoFromCompetitors(competitors, "home"),
+    awayLogoUrl: logoFromCompetitors(competitors, "away"),
+    homeRecord: recordFromCompetitors(competitors, "home"),
+    awayRecord: recordFromCompetitors(competitors, "away"),
     homeOdds: "",
     drawOdds: "",
     awayOdds: "",
@@ -240,7 +255,16 @@ async function refreshEspnFixtures({ daysBack = 7, daysForward = 75 } = {}) {
     if (existing) {
       const existingKey = fixtureKey(existing);
       byKey.delete(existingKey);
-      byKey.set(existingKey, { ...existing, espnEventId: existing.espnEventId || fixture.espnEventId, kickoffUtc: existing.kickoffUtc || fixture.kickoffUtc, fixtureSource: existing.fixtureSource || fixture.fixtureSource });
+      byKey.set(existingKey, {
+        ...existing,
+        homeLogoUrl: existing.homeLogoUrl || fixture.homeLogoUrl,
+        awayLogoUrl: existing.awayLogoUrl || fixture.awayLogoUrl,
+        homeRecord: existing.homeRecord || fixture.homeRecord,
+        awayRecord: existing.awayRecord || fixture.awayRecord,
+        espnEventId: existing.espnEventId || fixture.espnEventId,
+        kickoffUtc: existing.kickoffUtc || fixture.kickoffUtc,
+        fixtureSource: existing.fixtureSource || fixture.fixtureSource,
+      });
       updated += 1;
     } else {
       byKey.set(key, fixture);
@@ -258,7 +282,16 @@ async function refreshEspnFixtures({ daysBack = 7, daysForward = 75 } = {}) {
       const existing = deduped[existingIndex];
       const keep = existing.homeOdds || !row.homeOdds ? existing : row;
       const merge = keep === existing ? row : existing;
-      deduped[existingIndex] = { ...keep, espnEventId: keep.espnEventId || merge.espnEventId, kickoffUtc: keep.kickoffUtc || merge.kickoffUtc, fixtureSource: keep.fixtureSource || merge.fixtureSource };
+      deduped[existingIndex] = {
+        ...keep,
+        homeLogoUrl: keep.homeLogoUrl || merge.homeLogoUrl,
+        awayLogoUrl: keep.awayLogoUrl || merge.awayLogoUrl,
+        homeRecord: keep.homeRecord || merge.homeRecord,
+        awayRecord: keep.awayRecord || merge.awayRecord,
+        espnEventId: keep.espnEventId || merge.espnEventId,
+        kickoffUtc: keep.kickoffUtc || merge.kickoffUtc,
+        fixtureSource: keep.fixtureSource || merge.fixtureSource,
+      };
     } else {
       deduped.push(row);
     }

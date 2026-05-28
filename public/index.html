@@ -144,11 +144,21 @@
           </label>
           <button id="clearBoardDateButton" type="button">All Dates</button>
           <label>
+            Odds
+            <select id="boardOddsFilter">
+              <option value="all" selected>All picks</option>
+              <option value="with-odds">With odds only</option>
+              <option value="model-only">Model only</option>
+            </select>
+          </label>
+          <button id="recheckOddsButton" type="button">Recheck Odds</button>
+          <label>
             Sort
             <select id="boardSortSelect">
               <option value="date-asc" selected>Date: earliest first</option>
               <option value="date-desc">Date: latest first</option>
               <option value="league-date">League, then date</option>
+              <option value="odds-first">Odds: priced first</option>
               <option value="confidence-desc">Confidence: high first</option>
               <option value="draw-risk-desc">Draw risk: high first</option>
             </select>
