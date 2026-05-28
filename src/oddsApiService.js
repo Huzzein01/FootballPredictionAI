@@ -16,6 +16,8 @@ const CLUB_SPORT_KEYS = {
   Bundesliga: "soccer_germany_bundesliga",
   "Ligue 1": "soccer_france_ligue_one",
   "Serie A": "soccer_italy_serie_a",
+  "Serie B": "soccer_italy_serie_b",
+  "La Liga 2": "soccer_spain_segunda_division",
   "Champions League": "soccer_uefa_champs_league",
   "Europa League": "soccer_uefa_europa_league",
   "Conference League": "soccer_uefa_europa_conference_league",
@@ -23,6 +25,11 @@ const CLUB_SPORT_KEYS = {
   "Primeira Liga": "soccer_portugal_primeira_liga",
   "Scottish Premiership": "soccer_spl",
   "Turkish Super Lig": "soccer_turkey_super_league",
+  "Belgian Pro League": "soccer_belgium_first_div",
+  Eliteserien: "soccer_norway_eliteserien",
+  Allsvenskan: "soccer_sweden_allsvenskan",
+  Veikkausliiga: "soccer_finland_veikkausliiga",
+  "League of Ireland": "soccer_league_of_ireland",
 };
 
 const INTERNATIONAL_SPORT_KEYS = {
@@ -34,6 +41,10 @@ const INTERNATIONAL_SPORT_KEYS = {
   "AFC Asian Cup": "soccer_afc_asian_cup",
   "CONCACAF Gold Cup": "soccer_concacaf_gold_cup",
 };
+
+let availableSportsCache = null;
+let availableSportsCacheAt = 0;
+const AVAILABLE_SPORTS_CACHE_MS = 6 * 60 * 60 * 1000;
 
 function parseCsvLine(line) {
   const cells = [];
@@ -219,6 +230,28 @@ async function fetchOddsEvents(sportKey, { daysForward = 120 } = {}) {
   };
 }
 
+async function fetchAvailableSoccerSportKeys() {
+  const apiKey = process.env.ODDS_API_KEY || process.env.THE_ODDS_API_KEY || "";
+  if (!apiKey) return null;
+  if (availableSportsCache && Date.now() - availableSportsCacheAt < AVAILABLE_SPORTS_CACHE_MS) return availableSportsCache;
+  try {
+    const url = new URL(`${ODDS_API_BASE_URL}/sports/`);
+    url.searchParams.set("apiKey", apiKey);
+    const response = await fetch(url, { headers: { "user-agent": USER_AGENT } });
+    if (!response.ok) return null;
+    const sports = await response.json();
+    availableSportsCache = new Set(
+      sports
+        .filter((sport) => sport?.active !== false && String(sport?.key || "").startsWith("soccer_"))
+        .map((sport) => sport.key)
+    );
+    availableSportsCacheAt = Date.now();
+    return availableSportsCache;
+  } catch {
+    return null;
+  }
+}
+
 function readLiveOddsSnapshot() {
   return readJsonWithFallback(LIVE_ODDS_PATH, SEEDED_LIVE_ODDS_PATH, null);
 }
@@ -325,11 +358,18 @@ async function refreshTheOddsApi({ force = false, includeClub = true, includeInt
     return { ...cached, cached: true };
   }
   const previousSnapshot = readLiveOddsSnapshot() || {};
-  const sportKeys = [
+  const requestedSportKeys = [
     ...(includeClub ? Object.values(CLUB_SPORT_KEYS) : []),
     ...(includeInternational ? [INTERNATIONAL_SPORT_KEYS["2026 World Cup"]] : []),
   ];
-  const uniqueSportKeys = [...new Set(sportKeys)];
+  const availableSports = await fetchAvailableSoccerSportKeys();
+  const uniqueRequestedSportKeys = [...new Set(requestedSportKeys)];
+  const uniqueSportKeys = availableSports
+    ? uniqueRequestedSportKeys.filter((sportKey) => availableSports.has(sportKey))
+    : uniqueRequestedSportKeys;
+  const unavailableSports = availableSports
+    ? uniqueRequestedSportKeys.filter((sportKey) => !availableSports.has(sportKey))
+    : [];
   const fetchedSports = [];
   const errors = [];
   for (const sportKey of uniqueSportKeys) {
@@ -352,6 +392,7 @@ async function refreshTheOddsApi({ force = false, includeClub = true, includeInt
     enabled: Boolean(process.env.ODDS_API_KEY || process.env.THE_ODDS_API_KEY),
     cached: false,
     requestedSports: [...new Set([...preservedSports, ...uniqueSportKeys])],
+    unavailableSports,
     eventCount: events.length,
     club,
     international,

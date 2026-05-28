@@ -95,7 +95,7 @@ function loadVerifiedPlayedResults() {
 function publicAuthConfig() {
   const supabaseUrl = process.env.SUPABASE_URL || process.env.NEXT_PUBLIC_SUPABASE_URL || "";
   const anonKey = process.env.SUPABASE_ANON_KEY || process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY || "";
-  const hostedMode = Boolean(process.env.VERCEL || process.env.HOSTED_PUBLIC_MODE === "1");
+  const hostedMode = isHostedPublicMode();
   const hideModelStats = hostedMode || process.env.HIDE_MODEL_STATS === "1";
   const requireSignIn = process.env.AUTH_GATE_ENABLED === "1" || process.env.REQUIRE_AUTH === "1";
   return {
@@ -106,6 +106,28 @@ function publicAuthConfig() {
     url: supabaseUrl,
     anonKey,
   };
+}
+
+function isHostedPublicMode() {
+  return Boolean(process.env.VERCEL || process.env.HOSTED_PUBLIC_MODE === "1");
+}
+
+function isHostedPrivateApiPath(req, pathname) {
+  if (!isHostedPublicMode()) return false;
+  if (pathname === "/api/training-status") return true;
+  if (pathname === "/api/backtests") return true;
+  if (pathname === "/api/played-fixtures") return true;
+  if (pathname === "/api/fbref/status") return true;
+  if (pathname === "/api/player-profiles") return true;
+  if (pathname === "/api/team-profiles") return true;
+  if (pathname === "/api/parlay-backtests") return true;
+  if (pathname === "/api/fixtures/espn-results-refresh") return true;
+  if (pathname === "/api/fixture-predictions/backtest") return true;
+  if (pathname === "/api/parlay/backtest") return true;
+  if (pathname === "/api/fixtures/bulk") return true;
+  if (/^\/api\/player-profiles\/[^/]+\/stats/.test(pathname)) return true;
+  if (/^\/api\/team-profiles\/[^/]+\/stats/.test(pathname)) return true;
+  return false;
 }
 
 const LIVE_FIXTURE_REFRESH_TTL_MS = 5 * 60 * 1000;
@@ -132,7 +154,7 @@ function triggerLiveFixtureRefresh(reason = "background", { force = false } = {}
           scheduleRetrain(`espn-auto-fixture-results:${reason}`);
         }
         await refreshEspnFixtures({ daysBack: 14, daysForward: 180 });
-        await refreshTheOddsApi({ includeClub: true, includeInternational: false });
+        await refreshTheOddsApi({ includeClub: true, includeInternational: true, daysForward: 420 });
         await refreshMissingOdds();
         await refreshLiveLeagueContext();
         await persistKnownStores(["backtests", "liveEspnFixtures", "liveEspnResults", "liveOdds", "liveLeagueContext"]);
@@ -433,6 +455,10 @@ function shouldRefreshApiFootballPlayerSeason(season = "2025-26", forceLive = fa
 async function handleApi(req, res, pathname) {
   await hydrateKnownStoresOnce();
 
+  if (isHostedPrivateApiPath(req, pathname)) {
+    return sendJson(res, 403, { error: "This internal training and model-accuracy endpoint is hidden on the hosted tester version." });
+  }
+
   if (req.method === "GET" && pathname === "/api/storage/status") {
     return sendJson(res, 200, await storageStatus());
   }
@@ -443,6 +469,16 @@ async function handleApi(req, res, pathname) {
 
   if (req.method === "GET" && pathname === "/api/meta") {
     const model = JSON.parse(fs.readFileSync(path.join(process.cwd(), "model", "football_match_model.json"), "utf8"));
+    if (publicAuthConfig().hideModelStats) {
+      return sendJson(res, 200, {
+        teamsByLeague: teamsByLeague(),
+        metrics: null,
+        hyperparameters: null,
+        trainedAt: model.trainedAt,
+        feedbackRows: 0,
+        trainingStatus: { status: "Hidden on hosted tester version" },
+      });
+    }
     return sendJson(res, 200, { teamsByLeague: teamsByLeague(), metrics: model.metrics, hyperparameters: model.hyperparameters, trainedAt: model.trainedAt, feedbackRows: model.feedbackRows || 0, trainingStatus: readTrainingStatus() });
   }
 

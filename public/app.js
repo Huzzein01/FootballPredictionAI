@@ -122,6 +122,7 @@ let appDataLoaded = false;
 const CENTRAL_TIME_ZONE = "America/Chicago";
 const AUTH_SESSION_STORAGE_KEY = "footballPredictionSupabaseSession";
 const INTERNATIONAL_ONLY_PAGES = new Set(["world-cup-groups", "international-fixtures"]);
+const HOSTED_PRIVATE_PAGES = new Set(["player-profiles", "team-profiles", "parlay-ledger", "played", "fixture-ledger"]);
 const PARLAY_SLIP_STORAGE_KEY = "football-selected-parlay-slip";
 const CLUB_SEASONS = [
   { value: "2025-26", label: "2025-26" },
@@ -781,6 +782,14 @@ function isCurrentClubSeason() {
 
 function hasCurrentInternationalFixtures() {
   return isInternationalMode() && selectedSeason() === "2026 World Cup";
+}
+
+function isHostedPublic() {
+  return Boolean(authConfig.hideModelStats);
+}
+
+function isHiddenHostedPage(page) {
+  return isHostedPublic() && HOSTED_PRIVATE_PAGES.has(page);
 }
 
 function seasonUnavailableMessage() {
@@ -1580,24 +1589,26 @@ function updateContextNavigation() {
   updateContextLabels();
   pageTabs.forEach((tab) => {
     const internationalOnly = INTERNATIONAL_ONLY_PAGES.has(tab.dataset.pageTarget);
-    tab.hidden = internationalOnly && !international;
-    tab.setAttribute("aria-hidden", internationalOnly && !international ? "true" : "false");
+    const hostedPrivate = isHiddenHostedPage(tab.dataset.pageTarget);
+    tab.hidden = hostedPrivate || (internationalOnly && !international);
+    tab.setAttribute("aria-hidden", hostedPrivate || (internationalOnly && !international) ? "true" : "false");
   });
   if (pageSelect) {
     [...pageSelect.options].forEach((option) => {
       const internationalOnly = INTERNATIONAL_ONLY_PAGES.has(option.value);
-      option.hidden = internationalOnly && !international;
-      option.disabled = internationalOnly && !international;
+      const hostedPrivate = isHiddenHostedPage(option.value);
+      option.hidden = hostedPrivate || (internationalOnly && !international);
+      option.disabled = hostedPrivate || (internationalOnly && !international);
     });
   }
   const activeSection = pageSections.find((section) => section.classList.contains("is-active"));
-  if (!international && INTERNATIONAL_ONLY_PAGES.has(activeSection?.dataset.page)) {
+  if (isHiddenHostedPage(activeSection?.dataset.page) || (!international && INTERNATIONAL_ONLY_PAGES.has(activeSection?.dataset.page))) {
     showPage("predictions");
   }
 }
 
 function showPage(page) {
-  const requested = !isInternationalMode() && INTERNATIONAL_ONLY_PAGES.has(page) ? "predictions" : page;
+  const requested = isHiddenHostedPage(page) || (!isInternationalMode() && INTERNATIONAL_ONLY_PAGES.has(page)) ? "predictions" : page;
   const fallback = pageSections.some((section) => section.dataset.page === requested) ? requested : "predictions";
   pageSections.forEach((section) => section.classList.toggle("is-active", section.dataset.page === fallback));
   pageTabs.forEach((tab) => {
@@ -1979,10 +1990,13 @@ function showAuthGate(message = "") {
 async function initAuth() {
   authConfig = await api("/api/auth/config").catch(() => authConfig);
   document.body.classList.toggle("hosted-public", Boolean(authConfig.hideModelStats));
+  updateContextNavigation();
   const requiresAuth = Boolean(authConfig.requireSignIn && authConfig.enabled);
   if (!requiresAuth) {
     if (authGate) authGate.hidden = true;
     if (authAccount) authAccount.hidden = true;
+    const activeSection = pageSections.find((section) => section.classList.contains("is-active"));
+    if (isHiddenHostedPage(activeSection?.dataset.page)) showPage("predictions");
     return true;
   }
 
@@ -3316,6 +3330,11 @@ async function refreshFixtureBoard() {
   const previousDate = boardDateFilter.value;
   const data = await api("/api/fixture-predictions");
   fixturePredictions = data.predictions;
+  const refreshState = data.liveRefresh?.running
+    ? "ESPN fixtures/results and Odds API prices are refreshing in the background; refresh again in a moment for newly matched odds."
+    : data.liveRefresh?.cached
+      ? "Using the latest cached ESPN/Odds API refresh; predictions blend market odds whenever a complete 1X2 line is available."
+      : "Predictions blend model, table motivation, and market odds whenever a complete 1X2 line is available.";
 
   const leagues = [...new Set(fixturePredictions.map((prediction) => prediction.league))].sort();
   boardLeagueFilter.innerHTML = `<option value="All">All leagues</option>${leagues.map((league) => `<option value="${escapeHtml(league)}">${escapeHtml(league)}</option>`).join("")}`;
@@ -3328,7 +3347,7 @@ async function refreshFixtureBoard() {
   syncDateFilter(parlayDateFilter, dates, parlayDateFilter.value);
 
   renderBoard();
-  setBoardMessage("", "info");
+  setBoardMessage(refreshState, "info");
 }
 
 async function refreshPlayedBoard() {
@@ -4022,18 +4041,22 @@ async function loadAppData() {
     meta = await api("/api/meta");
     renderModelMeta(meta, meta.trainingStatus);
     updateTeamList();
-    await refreshPlayerProfiles();
-    await refreshTeamProfiles();
+    if (!isHostedPublic()) {
+      await refreshPlayerProfiles();
+      await refreshTeamProfiles();
+    }
     if (isInternationalMode()) {
       await refreshInternationalStatus();
       await renderInternationalContext();
     } else {
       await refreshFixtureBoard();
-      await refreshPlayedBoard();
       await refreshParlay();
-      await refreshParlayLedger();
       await refreshLeagueTables();
-      await refreshLedger();
+      if (!isHostedPublic()) {
+        await refreshPlayedBoard();
+        await refreshParlayLedger();
+        await refreshLedger();
+      }
     }
   } catch (error) {
     appDataLoaded = false;
@@ -4065,12 +4088,14 @@ init();
 
 window.setInterval(() => {
   if (document.visibilityState === "hidden") return;
+  if (isHostedPublic()) return;
   if (authConfig.hostedMode && authConfig.enabled && !authSession) return;
   refreshPlayerProfiles({ background: true }).catch(() => {});
 }, 15 * 60 * 1000);
 
 window.setInterval(() => {
   if (document.visibilityState === "hidden") return;
+  if (isHostedPublic()) return;
   if (authConfig.hostedMode && authConfig.enabled && !authSession) return;
   syncEspnResults({ background: true }).then((data) => {
     if (data?.settled > 0) refreshLedger();
