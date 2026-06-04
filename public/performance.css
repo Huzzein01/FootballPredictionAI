@@ -1531,7 +1531,7 @@ button.primary {
   button { min-height: 42px; }
   button.primary { min-height: 46px; width: 100%; border-radius: 8px; font-size: 15px; }
 
-  /* ════════ 6. FIXTURE CARDS — Soccerway compact rows ════════ */
+  /* ════════ 6. FIXTURE CARDS — Uniform Soccerway rows ════════ */
 
   /* Bleed cards to panel edges */
   .fixture-board {
@@ -1539,10 +1539,10 @@ button.primary {
     margin: 0 -16px;
   }
 
-  /* Cards become flat rows */
+  /* Flat rows · single uniform background · thin separators only */
   .fixture-card {
     border-radius: 0 !important;
-    border-left-width: 3px !important;
+    border-left: 3px solid transparent !important;
     border-right: none !important;
     border-top: none !important;
     border-bottom: 1px solid var(--line) !important;
@@ -1550,61 +1550,150 @@ button.primary {
     background: var(--row) !important;
   }
 
-  /* Compact meta strip */
-  .scoreboard-row .card-topline {
-    padding: 5px 14px !important;
-    font-size: 10px !important;
-  }
+  /* Keep pick colour as the left accent only */
+  .fixture-card.pick-H { border-left-color: var(--green) !important; }
+  .fixture-card.pick-D { border-left-color: var(--gold) !important; }
+  .fixture-card.pick-A { border-left-color: var(--teal) !important; }
 
-  /* Tight teams */
-  .scoreboard-row .fixture-teams {
-    padding: 7px 14px 3px !important;
-  }
-  .scoreboard-row .fixture-teams .team-line { padding: 2px 0 !important; }
-  .scoreboard-row .team-name { font-size: 13px !important; }
-
-  /* Compact pick + confidence */
+  /* CRITICAL: every interior zone is transparent — no surface-coloured
+     blocks, no internal borders. This kills the two-tone jumble. */
+  .scoreboard-row .card-topline,
+  .scoreboard-row .fixture-teams,
+  .scoreboard-row .score-line,
+  .scoreboard-row .odds-line,
+  .scoreboard-row .motivation-line,
   .scoreboard-row .callout {
-    padding: 7px 14px 3px !important;
-    gap: 3px !important;
+    background: transparent !important;
+    border: none !important;
+    border-radius: 0 !important;
+    box-shadow: none !important;
   }
-  .scoreboard-row .callout strong { font-size: 17px !important; }
-  .scoreboard-row .pick-pill { font-size: 10px !important; padding: 3px 7px !important; }
 
-  /* Compact odds */
+  /* Meta header: date · league */
+  .scoreboard-row .card-topline {
+    padding: 9px 14px 0 !important;
+    font-size: 10px !important;
+    color: var(--muted) !important;
+    gap: 6px;
+  }
+
+  /* Teams */
+  .scoreboard-row .fixture-teams {
+    padding: 5px 14px 2px !important;
+  }
+  .scoreboard-row .fixture-teams .team-line { padding: 3px 0 !important; }
+  .scoreboard-row .team-name { font-size: 14px !important; font-weight: 700 !important; }
+  .scoreboard-row .versus { margin: 2px 0 !important; }
+
+  /* Pick + confidence: right column, no box */
+  .scoreboard-row .callout {
+    padding: 5px 14px 2px !important;
+    gap: 4px !important;
+  }
+  .scoreboard-row .callout strong { font-size: 18px !important; }
+  .scoreboard-row .pick-pill { font-size: 10px !important; padding: 2px 7px !important; }
+
+  /* Odds: one muted line */
   .scoreboard-row .odds-line {
-    padding: 2px 14px 8px !important;
+    padding: 0 14px 6px !important;
     font-size: 11px !important;
+    gap: 6px;
   }
+  .scoreboard-row .odds-line strong { font-size: 11px !important; color: var(--muted) !important; }
 
-  /* Compact score */
+  /* Score: muted footer */
   .scoreboard-row .score-line {
-    padding: 5px 14px !important;
+    padding: 0 14px 10px !important;
     font-size: 11px !important;
+    color: var(--muted) !important;
   }
+  .scoreboard-row .score-line strong { font-size: 13px !important; }
 
-  /* HIDE verbose elements on mobile */
-  .scoreboard-row .prob-bars     { display: none !important; }
+  /* Hide verbose probability + motivation on phones */
+  .scoreboard-row .prob-bars       { display: none !important; }
   .scoreboard-row .motivation-line { display: none !important; }
 
-  /* ════════ 7. BOARD CONTROLS ════════ */
+  /* ════════ 7. FILTER BAR — horizontal scroll pills (Soccerway nav) ════════ */
   .board-controls,
   .parlay-controls {
     display: flex !important;
-    flex-direction: column !important;
-    gap: 10px !important;
-    margin-bottom: 12px;
+    flex-direction: row !important;
+    flex-wrap: nowrap !important;
+    align-items: center !important;
+    gap: 8px !important;
+    overflow-x: auto !important;
+    -webkit-overflow-scrolling: touch;
+    scrollbar-width: none;
+    margin: 0 -16px 14px !important;
+    padding: 2px 16px 6px !important;
   }
-  .board-controls label,
-  .parlay-controls label { min-width: 0; width: 100%; }
-  .board-controls select,
-  .board-controls input[type="date"],
-  .parlay-controls select,
-  .parlay-controls input[type="date"] { min-width: 0 !important; width: 100%; }
+  .board-controls::-webkit-scrollbar,
+  .parlay-controls::-webkit-scrollbar { display: none; }
 
-  .board-stats { gap: 8px; justify-content: flex-start !important; }
-  .board-stats span { flex: 1; min-width: 0; padding: 8px 6px; text-align: center; font-size: 11px; }
-  .board-stats strong { font-size: 16px; }
+  /* Each filter becomes a compact pill */
+  .board-controls > label,
+  .parlay-controls > label {
+    flex: 0 0 auto !important;
+    width: auto !important;
+    min-width: 0 !important;
+    display: inline-flex !important;
+    flex-direction: row !important;
+    align-items: center;
+    gap: 6px;
+    background: var(--surface);
+    border: 1px solid var(--line);
+    border-radius: 999px;
+    padding: 6px 6px 6px 12px;
+    font-size: 9px;
+    font-weight: 900;
+    text-transform: uppercase;
+    letter-spacing: 0.04em;
+    color: var(--muted);
+    white-space: nowrap;
+  }
+
+  .board-controls > label select,
+  .board-controls > label input,
+  .parlay-controls > label select,
+  .parlay-controls > label input {
+    width: auto !important;
+    min-width: 0 !important;
+    border: none !important;
+    background: transparent !important;
+    padding: 2px 4px 2px 0 !important;
+    font-size: 12px;
+    font-weight: 700;
+    color: var(--ink) !important;
+    box-shadow: none !important;
+    outline: none;
+  }
+
+  /* Buttons in the bar become pills too */
+  .board-controls > button,
+  .parlay-controls > button {
+    flex: 0 0 auto !important;
+    width: auto !important;
+    min-height: 0 !important;
+    white-space: nowrap;
+    border-radius: 999px;
+    padding: 8px 14px;
+    font-size: 12px;
+  }
+
+  /* Stat boxes are redundant on mobile (count is in the status line) */
+  .board-controls > .board-stats { display: none !important; }
+
+  /* Parlay stat boxes: keep but wrap below the pills */
+  .parlay-controls > .board-stats {
+    flex: 0 0 100% !important;
+    order: 99;
+    display: grid !important;
+    grid-template-columns: 1fr 1fr 1fr;
+    gap: 6px;
+    margin-top: 6px;
+  }
+  .board-stats span { padding: 8px 6px; text-align: center; font-size: 10px; }
+  .board-stats strong { font-size: 15px; }
 
   /* ════════ 8. RISK MODE ════════ */
   .risk-mode-bar { gap: 6px; margin-bottom: 12px; }
