@@ -830,6 +830,141 @@ button.primary {
 
 
 /* ═══════════════════════════════════════════════════════
+   RESULTS PAGE — Live ESPN score tracking
+═══════════════════════════════════════════════════════ */
+
+.results-output {
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+}
+
+.results-date-group {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.results-date-heading {
+  margin: 0 0 4px;
+  font-family: var(--font-heading);
+  font-size: 14px;
+  font-weight: 800;
+  color: var(--muted);
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  padding: 4px 0;
+  border-bottom: 1px solid var(--line);
+}
+
+.results-match-list {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(min(300px, 100%), 1fr));
+  gap: 8px;
+}
+
+.result-card {
+  display: grid;
+  gap: 8px;
+  border: 1px solid var(--line);
+  border-left: 3px solid var(--line);
+  border-radius: 10px;
+  background: var(--row);
+  padding: 10px 14px;
+  transition: border-color 0.15s ease;
+}
+
+.result-card.result-correct {
+  border-left-color: var(--green);
+  background: color-mix(in srgb, var(--row) 95%, var(--green));
+}
+
+.result-card.result-wrong {
+  border-left-color: var(--red);
+  background: color-mix(in srgb, var(--row) 96%, var(--red));
+}
+
+.result-league {
+  font-size: 10px;
+  font-weight: 900;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  color: var(--muted);
+}
+
+.result-teams {
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+}
+
+.result-team-row {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.result-team-name {
+  flex: 1;
+  font-size: 14px;
+  font-weight: 800;
+  color: var(--ink);
+  min-width: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.result-score {
+  flex: 0 0 auto;
+  font-family: var(--font-heading);
+  font-size: 20px;
+  font-weight: 800;
+  color: var(--navy);
+  min-width: 24px;
+  text-align: right;
+  line-height: 1;
+}
+
+.result-meta {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  border-top: 1px solid var(--line);
+  padding-top: 7px;
+}
+
+.result-pick {
+  font-size: 11px;
+  font-weight: 800;
+  padding: 3px 8px;
+  border-radius: 6px;
+}
+
+.result-verdict {
+  font-size: 11px;
+  font-weight: 800;
+}
+
+.result-verdict.correct { color: var(--green); }
+.result-verdict.wrong   { color: var(--red); }
+
+[data-context="international"] .result-card.result-correct {
+  border-left-color: #0f8f6d;
+}
+
+[data-context="international"] .result-card.result-wrong {
+  border-left-color: #E31837;
+}
+
+@media (max-width: 680px) {
+  .results-match-list {
+    grid-template-columns: 1fr;
+  }
+}
+
+
+/* ═══════════════════════════════════════════════════════
    SOCCERWAY-INSPIRED MATCH CARD REDESIGN
    Teams stacked vertically · compact · data-dense
 ═══════════════════════════════════════════════════════ */

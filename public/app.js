@@ -54,6 +54,9 @@ const parlayAccuracyStats = document.querySelector("#parlayAccuracyStats");
 const refreshParlayLedgerButton = document.querySelector("#refreshParlayLedgerButton");
 const internationalFixturesStatus = document.querySelector("#internationalFixturesStatus");
 const internationalFixturesOutput = document.querySelector("#internationalFixturesOutput");
+const resultsOutput = document.querySelector("#resultsOutput");
+const resultsStatus = document.querySelector("#resultsStatus");
+const syncResultsButton = document.querySelector("#syncResultsButton");
 const playerProfileStatus = document.querySelector("#playerProfileStatus");
 const apiFootballStatus = document.querySelector("#apiFootballStatus");
 const checkApiFootballButton = document.querySelector("#checkApiFootballButton");
@@ -1561,8 +1564,13 @@ function updateContextNavigation() {
     [...pageSelect.options].forEach((option) => {
       const internationalOnly = INTERNATIONAL_ONLY_PAGES.has(option.value);
       const hostedPrivate = isHiddenHostedPage(option.value);
-      option.hidden = hostedPrivate || (internationalOnly && !international);
-      option.disabled = hostedPrivate || (internationalOnly && !international);
+      if (isHostedPublic() && hostedPrivate) {
+        // Completely remove from the DOM — not just hidden — on the hosted Vercel build
+        option.remove();
+      } else {
+        option.hidden = hostedPrivate || (internationalOnly && !international);
+        option.disabled = hostedPrivate || (internationalOnly && !international);
+      }
     });
   }
   const activeSection = pageSections.find((section) => section.classList.contains("is-active"));
@@ -1586,6 +1594,12 @@ function showPage(page) {
     renderInternationalFixturesPage();
     if (fallback === "league-tables") renderInternationalLeagueTables();
     if (fallback === "single") setInternationalSingleDemo();
+  }
+  if (fallback === "results") {
+    refreshResults();
+    startResultsAutoRefresh();
+  } else {
+    stopResultsAutoRefresh();
   }
 }
 
@@ -3407,6 +3421,93 @@ async function syncEspnResults({ force = false, background = false } = {}) {
   }
 }
 
+let resultsRefreshTimer = null;
+
+async function refreshResults({ silent = false } = {}) {
+  if (!resultsOutput) return;
+  if (!silent && resultsStatus) resultsStatus.textContent = "Syncing results from ESPN…";
+  try {
+    const season = selectedSeason();
+    const context = currentAppContext();
+    const data = await api(`/api/played-fixtures?season=${encodeURIComponent(season)}&context=${encodeURIComponent(context)}`);
+    const predictions = data.predictions || [];
+    if (resultsStatus) {
+      const total = predictions.length;
+      const correct = predictions.filter((p) => p.played?.modelCorrect === true).length;
+      resultsStatus.textContent = total
+        ? `${total} result${total === 1 ? "" : "s"} · model correct: ${correct}/${total}`
+        : "No results yet for this season";
+    }
+    renderResultsBoard(predictions);
+  } catch (err) {
+    if (resultsStatus) resultsStatus.textContent = `Results unavailable: ${err.message}`;
+  }
+}
+
+function renderResultsBoard(predictions) {
+  if (!resultsOutput) return;
+  if (!predictions.length) {
+    resultsOutput.innerHTML = `<div class="empty-state compact-empty">No results available yet. Results appear here as fixtures are completed.</div>`;
+    return;
+  }
+
+  // Group by date descending
+  const byDate = {};
+  for (const p of predictions) {
+    const key = p.date || "Unknown date";
+    if (!byDate[key]) byDate[key] = [];
+    byDate[key].push(p);
+  }
+
+  const sortedDates = Object.keys(byDate).sort((a, b) => b.localeCompare(a));
+
+  resultsOutput.innerHTML = sortedDates.map((date) => {
+    const rows = byDate[date];
+    return `
+      <section class="results-date-group">
+        <h3 class="results-date-heading">${escapeHtml(date)}</h3>
+        <div class="results-match-list">
+          ${rows.map((p) => {
+            const homeGoals = p.played?.homeGoals ?? "";
+            const awayGoals = p.played?.awayGoals ?? "";
+            const hasScore = homeGoals !== "" && awayGoals !== "";
+            const correct = p.played?.modelCorrect;
+            const statusClass = correct === true ? "result-correct" : correct === false ? "result-wrong" : "";
+            const pick = p.prediction ? `<span class="result-pick tag-${p.prediction}">${p.prediction === "H" ? "Home" : p.prediction === "A" ? "Away" : "Draw"}</span>` : "";
+            return `
+              <article class="result-card ${statusClass}">
+                <div class="result-league">${escapeHtml(p.league || "")}</div>
+                <div class="result-teams">
+                  <div class="result-team-row">
+                    ${teamBadge(p.homeTeam)}
+                    <span class="result-team-name">${escapeHtml(displayTeam(p.homeTeam))}</span>
+                    <span class="result-score">${hasScore ? escapeHtml(String(homeGoals)) : "–"}</span>
+                  </div>
+                  <div class="result-team-row">
+                    ${teamBadge(p.awayTeam)}
+                    <span class="result-team-name">${escapeHtml(displayTeam(p.awayTeam))}</span>
+                    <span class="result-score">${hasScore ? escapeHtml(String(awayGoals)) : "–"}</span>
+                  </div>
+                </div>
+                ${pick ? `<div class="result-meta">${pick}${correct === true ? '<span class="result-verdict correct">✓ Hit</span>' : correct === false ? '<span class="result-verdict wrong">✗ Miss</span>' : ''}</div>` : ''}
+              </article>
+            `;
+          }).join("")}
+        </div>
+      </section>
+    `;
+  }).join("");
+}
+
+function startResultsAutoRefresh() {
+  if (resultsRefreshTimer) clearInterval(resultsRefreshTimer);
+  resultsRefreshTimer = setInterval(() => refreshResults({ silent: true }), 60000);
+}
+
+function stopResultsAutoRefresh() {
+  if (resultsRefreshTimer) { clearInterval(resultsRefreshTimer); resultsRefreshTimer = null; }
+}
+
 async function refreshParlay({ forceNew = false } = {}) {
   if (isInternationalMode()) {
     if (!hasCurrentInternationalFixtures()) {
@@ -3637,6 +3738,7 @@ ledgerBody.addEventListener("click", async (event) => {
 });
 
 document.querySelector("#refreshButton").addEventListener("click", refreshLedger);
+syncResultsButton?.addEventListener("click", () => refreshResults());
 syncEspnResultsButton?.addEventListener("click", async () => {
   await syncEspnResults({ force: true });
   await refreshLedger();

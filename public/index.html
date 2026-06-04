@@ -7,8 +7,8 @@
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@600;700;800&family=IBM+Plex+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="/styles.css?v=analyst-20260604d">
-    <link rel="stylesheet" href="/performance.css?v=analyst-20260604d">
+    <link rel="stylesheet" href="/styles.css?v=analyst-20260604e">
+    <link rel="stylesheet" href="/performance.css?v=analyst-20260604e">
   </head>
   <body>
     <header class="topbar">
@@ -31,6 +31,7 @@
           <option value="single">Single Predictor</option>
           <option value="fixture-ledger">Fixture Ledger</option>
           <option value="league-tables">League Tables</option>
+          <option value="results">Results</option>
           <option value="international-fixtures">International Fixtures</option>
         </select>
       </label>
@@ -88,6 +89,7 @@
       <button class="page-tab" type="button" data-page-target="single">Single Predictor</button>
       <button class="page-tab" type="button" data-page-target="fixture-ledger">Fixture Ledger</button>
       <button class="page-tab" type="button" data-page-target="league-tables">League Tables</button>
+      <button class="page-tab" type="button" data-page-target="results">Results</button>
       <button class="page-tab" type="button" data-page-target="international-fixtures">International Fixtures</button>
     </nav>
 
@@ -700,6 +702,19 @@
           </div>
         </div>
         <div id="leagueTablesOutput" class="league-tables-output" aria-live="polite"></div>
+      </section>
+
+      <section class="panel results-panel page-section" data-page="results" aria-labelledby="resultsHeading">
+        <div class="section-head">
+          <div>
+            <h2 id="resultsHeading">Results</h2>
+            <p id="resultsStatus" class="muted">Loading results…</p>
+          </div>
+          <div class="section-actions">
+            <button id="syncResultsButton" type="button">Sync Results</button>
+          </div>
+        </div>
+        <div id="resultsOutput" class="results-output" aria-live="polite"></div>
       </section>
 
       <section class="panel international-fixtures-panel page-section" data-page="international-fixtures" aria-labelledby="internationalFixturesHeading">
