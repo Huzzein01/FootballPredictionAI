@@ -126,6 +126,23 @@ const CENTRAL_TIME_ZONE = "America/Chicago";
 const AUTH_SESSION_STORAGE_KEY = "footballPredictionSupabaseSession";
 const INTERNATIONAL_ONLY_PAGES = new Set(["international-fixtures"]);
 const HOSTED_PRIVATE_PAGES = new Set(["player-profiles", "team-profiles", "parlay-ledger", "played", "fixture-ledger"]);
+// Mainstream European leagues/competitions shown individually in the league filter.
+// Everything else (Allsvenskan, Eliteserien, Belgian Pro League, etc.) collapses under "Others".
+const MAINSTREAM_LEAGUES = new Set([
+  "Champions League", "UEFA Champions League",
+  "Europa League", "UEFA Europa League",
+  "Conference League", "UEFA Conference League",
+  "EPL", "Premier League", "English Premier League",
+  "La Liga", "LaLiga",
+  "Bundesliga",
+  "Serie A",
+  "Ligue 1",
+]);
+const OTHERS_LEAGUE_VALUE = "__OTHERS__";
+function isMainstreamLeague(league) {
+  return MAINSTREAM_LEAGUES.has(String(league || "").trim());
+}
+const CLUB_SEASON_VALUES = new Set(["2025-26", "2026-27", "2024-25", "2023-24", "2022-23", "2021-22", "2020-21"]);
 const PARLAY_SLIP_STORAGE_KEY = "football-selected-parlay-slip";
 const CLUB_SEASONS = [
   { value: "2025-26", label: "2025-26" },
@@ -2555,7 +2572,12 @@ function renderBoard() {
   const selectedDate = boardDateFilter.value;
   const selectedOddsMode = boardOddsFilter?.value || "all";
   const filteredBase = fixturePredictions.filter((prediction) => {
-    const leagueMatches = selectedLeague === "All" || prediction.league === selectedLeague;
+    const leagueMatches =
+      selectedLeague === "All"
+        ? true
+        : selectedLeague === OTHERS_LEAGUE_VALUE
+          ? !isMainstreamLeague(prediction.league)
+          : prediction.league === selectedLeague;
     const dateMatches = !selectedDate || prediction.date === selectedDate;
     const oddsMatches =
       selectedOddsMode === "with-odds"
@@ -3337,9 +3359,22 @@ async function refreshFixtureBoard() {
     ? "Predictions are updating — refresh in a moment for the latest."
     : "Predictions blend model, table context, and market odds whenever available.";
 
-  const leagues = [...new Set(fixturePredictions.map((prediction) => prediction.league))].sort();
-  boardLeagueFilter.innerHTML = `<option value="All">All leagues</option>${leagues.map((league) => `<option value="${escapeHtml(league)}">${escapeHtml(league)}</option>`).join("")}`;
-  boardLeagueFilter.value = leagues.includes(previousLeague) ? previousLeague : "All";
+  const leagues = [...new Set(fixturePredictions.map((prediction) => prediction.league))];
+  // Mainstream leagues that are actually present, in a sensible fixed order.
+  const mainstreamOrder = ["Champions League", "Europa League", "Conference League", "EPL", "La Liga", "Bundesliga", "Serie A", "Ligue 1"];
+  const mainstreamPresent = mainstreamOrder.filter((name) => leagues.some((l) => l === name || isMainstreamLeague(l) && l === name));
+  // Also catch alternate names that map to mainstream
+  const presentMainstream = leagues.filter(isMainstreamLeague);
+  const orderedMainstream = [...new Set([...mainstreamPresent, ...presentMainstream])];
+  const hasOthers = leagues.some((l) => !isMainstreamLeague(l));
+  const leagueOptions = [
+    `<option value="All">All leagues</option>`,
+    ...orderedMainstream.map((league) => `<option value="${escapeHtml(league)}">${escapeHtml(league)}</option>`),
+    hasOthers ? `<option value="${OTHERS_LEAGUE_VALUE}">Others</option>` : "",
+  ].join("");
+  boardLeagueFilter.innerHTML = leagueOptions;
+  const validValues = new Set(["All", OTHERS_LEAGUE_VALUE, ...orderedMainstream]);
+  boardLeagueFilter.value = validValues.has(previousLeague) ? previousLeague : "All";
 
   const dates = fixturePredictions.map((prediction) => prediction.date).filter(Boolean).sort();
   boardDateFilter.min = dates[0] || "";
@@ -3425,11 +3460,12 @@ let resultsRefreshTimer = null;
 
 async function refreshResults({ silent = false } = {}) {
   if (!resultsOutput) return;
-  if (!silent && resultsStatus) resultsStatus.textContent = "Syncing results from ESPN…";
+  if (!silent && resultsStatus) resultsStatus.textContent = "Loading results…";
   try {
-    const season = selectedSeason();
-    const context = currentAppContext();
-    const data = await api(`/api/played-fixtures?season=${encodeURIComponent(season)}&context=${encodeURIComponent(context)}`);
+    // Results are real-world completed matches from ESPN — always club context.
+    // Fall back to the current club season when the international toggle is on.
+    const season = CLUB_SEASON_VALUES.has(selectedSeason()) ? selectedSeason() : "2025-26";
+    const data = await api(`/api/played-fixtures?season=${encodeURIComponent(season)}&context=club`);
     const predictions = data.predictions || [];
     if (resultsStatus) {
       const total = predictions.length;
@@ -3738,7 +3774,17 @@ ledgerBody.addEventListener("click", async (event) => {
 });
 
 document.querySelector("#refreshButton").addEventListener("click", refreshLedger);
-syncResultsButton?.addEventListener("click", () => refreshResults());
+syncResultsButton?.addEventListener("click", async () => {
+  if (resultsStatus) resultsStatus.textContent = "Fetching latest results from ESPN…";
+  if (syncResultsButton) syncResultsButton.disabled = true;
+  try {
+    await api("/api/fixtures/espn-results-refresh", { method: "POST", body: JSON.stringify({ force: true }) });
+  } catch {
+    /* If the live pull fails (rate limit, offline), fall back to the cached snapshot below. */
+  }
+  await refreshResults();
+  if (syncResultsButton) syncResultsButton.disabled = false;
+});
 syncEspnResultsButton?.addEventListener("click", async () => {
   await syncEspnResults({ force: true });
   await refreshLedger();
