@@ -1348,301 +1348,297 @@ button.primary {
 
 
 /* ═══════════════════════════════════════════════════════
-   MOBILE LAYOUT — Phone-friendly spacing & header
+   MOBILE — Full rewrite. Soccerway-inspired compact layout.
    Target: ≤ 680px
 ═══════════════════════════════════════════════════════ */
 
 @media (max-width: 680px) {
 
-  /* ── HEADER ── */
+  /* ════════ 1. HEADER ════════ */
+
   .topbar {
-    padding: 16px 18px 0 !important;
+    display: flex !important;
+    flex-direction: column !important;
+    padding: 12px 16px 0 !important;
     gap: 0 !important;
   }
 
-  .topbar > div:first-child {
-    padding-bottom: 14px;
-  }
+  .topbar > div:first-child { padding-bottom: 10px; }
 
-  .topbar h1 {
-    font-size: 28px !important;
-    line-height: 1.05;
-  }
+  .topbar h1 { font-size: 26px !important; line-height: 1.05; }
+  .eyebrow   { font-size: 10px !important; }
+  #modelMeta { font-size: 11px !important; margin-top: 3px; }
 
-  .eyebrow { font-size: 10px !important; }
-
-  #modelMeta {
-    font-size: 11px !important;
-    margin-top: 4px;
-    line-height: 1.4;
-  }
-
-  /* ── CONTROL STRIP: single horizontal bar at bottom of header ── */
-  .topbar-right {
-    flex-direction: row !important;
-    align-items: center !important;
-    flex-wrap: wrap;
-    gap: 10px !important;
-    padding: 12px 0 14px;
-    border-top: 1px solid rgba(255, 255, 255, 0.12);
-    order: 2;
-  }
-
-  /* Remove frosted-glass that made controls look like floating boxes */
+  /* Kill frosted glass — causes the "floating box" look */
   .context-mode-control,
   .season-control,
   .theme-control,
-  .mobile-page-menu {
+  .mobile-page-menu,
+  .summary span {
     backdrop-filter: none !important;
     -webkit-backdrop-filter: none !important;
   }
 
-  /* Club / Intl toggle */
-  .context-mode-control {
-    flex: 0 0 auto;
-    font-size: 11px;
-    gap: 8px;
+  /* ── Controls strip: CLUB/INTL + Season in one row ── */
+  .topbar-right {
+    display: flex !important;          /* force flex — overrides any grid */
+    flex-direction: row !important;
+    flex-wrap: nowrap !important;
+    align-items: center !important;
+    gap: 0 !important;
+    width: calc(100% + 32px) !important;
+    margin-left: -16px;
+    border-top: 1px solid rgba(255,255,255,0.1);
     padding: 0;
+    order: 2;
+    min-height: 44px;
   }
 
-  /* Show "Intl" instead of "International" */
+  /* Context toggle: auto-width left cell */
+  .context-mode-control {
+    display: flex !important;
+    flex: 0 0 auto !important;
+    width: auto !important;
+    align-items: center;
+    gap: 7px;
+    padding: 0 12px;
+    font-size: 9px;
+    letter-spacing: 0.04em;
+    height: 44px;
+    border-right: 1px solid rgba(255,255,255,0.1);
+  }
+
   .context-short { display: inline !important; }
   .context-full  { display: none   !important; }
 
-  /* Season selector */
+  /* Season: fills remaining width */
   .season-control {
-    flex: 1;
-    min-width: 130px;
-    gap: 5px;
+    display: flex !important;
+    flex: 1 1 auto !important;
+    width: auto !important;
+    min-width: 0 !important;
+    align-items: center;
+    padding: 0 10px;
   }
 
   .season-control select {
-    background: rgba(255, 255, 255, 0.1) !important;
-    border-color: rgba(255, 255, 255, 0.18) !important;
-    color: #fff !important;
+    flex: 1 !important;
+    background: transparent !important;
+    border: none !important;
+    color: rgba(255,255,255,0.9) !important;
     color-scheme: dark;
     font-size: 13px;
-    padding: 8px 10px;
+    font-weight: 600;
+    padding: 10px 2px;
+    box-shadow: none !important;
+    outline: none;
   }
 
-  /* Hide theme — adaptive is fine on mobile */
+  /* Hide theme */
   .theme-control { display: none !important; }
 
-  /* Auth: compact */
+  /* Auth: right edge */
   .auth-account {
-    font-size: 11px;
-    padding: 7px 10px;
+    display: flex !important;
+    flex: 0 0 auto !important;
+    width: auto !important;
+    border-left: 1px solid rgba(255,255,255,0.1);
+    border-radius: 0;
+    border-top: none; border-right: none; border-bottom: none;
+    background: transparent;
+    padding: 0 10px;
+    font-size: 10px;
+    height: 44px;
+    align-items: center;
   }
 
-  /* Model stats: hidden on Vercel hosted */
+  .auth-account button { padding: 4px 8px; font-size: 10px; min-height: 0; }
+
   .model-private-stats { display: none !important; }
 
-  /* Section dropdown — its own row, part of header */
+  /* Section dropdown: its own full-width row */
   .mobile-page-menu {
-    display: grid !important;
+    display: flex !important;
+    flex-direction: column !important;
     order: 3 !important;
-    padding: 0 0 16px;
-    gap: 5px;
-    font-size: 10px;
+    width: calc(100% + 32px) !important;
+    margin-left: -16px;
+    padding: 8px 16px 12px;
+    gap: 4px;
+    font-size: 9px;
     font-weight: 900;
     text-transform: uppercase;
-    letter-spacing: 0.05em;
-    color: rgba(255, 255, 255, 0.6);
-    width: 100%;
+    letter-spacing: 0.06em;
+    color: rgba(255,255,255,0.5);
+    border-top: 1px solid rgba(255,255,255,0.08);
   }
 
   .mobile-page-menu select {
-    background: rgba(255, 255, 255, 0.1) !important;
-    border: 1px solid rgba(255, 255, 255, 0.18) !important;
+    display: block !important;
+    width: 100% !important;
+    background: rgba(255,255,255,0.1) !important;
+    border: 1px solid rgba(255,255,255,0.15) !important;
     color: #fff !important;
     color-scheme: dark;
     font-size: 14px;
-    padding: 11px 14px;
-    border-radius: 10px;
-    width: 100%;
+    padding: 10px 12px;
+    border-radius: 8px;
   }
 
-  /* ── NAV TABS ── */
+  /* ════════ 2. NAV TABS ════════ */
   .page-nav {
-    padding: 10px 14px !important;
-    gap: 7px !important;
+    padding: 8px 12px !important;
+    gap: 6px !important;
     flex-wrap: wrap !important;
   }
+  .page-tab { padding: 7px 11px !important; font-size: 12px !important; }
 
-  .page-tab {
-    padding: 8px 12px !important;
-    font-size: 13px !important;
-  }
-
-  /* ── DASHBOARD & PANELS ── */
+  /* ════════ 3. DASHBOARD ════════ */
   .dashboard {
-    padding: 14px 14px 32px !important;
-    gap: 14px !important;
+    padding: 0 !important;
+    gap: 0 !important;
+    background: var(--bg);
   }
 
+  /* Panels: edge-to-edge, no radius on mobile */
   .panel {
-    padding: 16px !important;
-    border-radius: 12px !important;
+    padding: 14px 16px !important;
+    border-radius: 0 !important;
+    border-left: none !important;
+    border-right: none !important;
+    margin-bottom: 8px;
+    box-shadow: none !important;
   }
 
-  /* ── SECTION HEADS ── */
+  /* ════════ 4. SECTION HEADS ════════ */
   .section-head {
-    align-items: flex-start !important;
+    display: flex !important;
     flex-direction: column !important;
+    align-items: flex-start !important;
     gap: 10px !important;
-    margin-bottom: 14px !important;
+    margin-bottom: 12px !important;
   }
-
-  .section-head h2 { font-size: 21px !important; }
-
+  .section-head h2 { font-size: 20px !important; }
   .section-actions {
+    display: flex !important;
     flex-direction: row !important;
     flex-wrap: wrap;
     gap: 8px;
     width: 100%;
   }
 
-  /* ── BUTTONS ── */
-  button { min-height: 44px; }
+  /* ════════ 5. BUTTONS ════════ */
+  button { min-height: 42px; }
+  button.primary { min-height: 46px; width: 100%; border-radius: 8px; font-size: 15px; }
 
-  button.primary {
-    min-height: 48px;
-    width: 100%;
-    border-radius: 10px;
-    font-size: 15px;
+  /* ════════ 6. FIXTURE CARDS — Soccerway compact rows ════════ */
+
+  /* Bleed cards to panel edges */
+  .fixture-board {
+    gap: 0 !important;
+    margin: 0 -16px;
   }
 
-  /* ── BOARD / PARLAY CONTROLS ── */
+  /* Cards become flat rows */
+  .fixture-card {
+    border-radius: 0 !important;
+    border-left-width: 3px !important;
+    border-right: none !important;
+    border-top: none !important;
+    border-bottom: 1px solid var(--line) !important;
+    box-shadow: none !important;
+    background: var(--row) !important;
+  }
+
+  /* Compact meta strip */
+  .scoreboard-row .card-topline {
+    padding: 5px 14px !important;
+    font-size: 10px !important;
+  }
+
+  /* Tight teams */
+  .scoreboard-row .fixture-teams {
+    padding: 7px 14px 3px !important;
+  }
+  .scoreboard-row .fixture-teams .team-line { padding: 2px 0 !important; }
+  .scoreboard-row .team-name { font-size: 13px !important; }
+
+  /* Compact pick + confidence */
+  .scoreboard-row .callout {
+    padding: 7px 14px 3px !important;
+    gap: 3px !important;
+  }
+  .scoreboard-row .callout strong { font-size: 17px !important; }
+  .scoreboard-row .pick-pill { font-size: 10px !important; padding: 3px 7px !important; }
+
+  /* Compact odds */
+  .scoreboard-row .odds-line {
+    padding: 2px 14px 8px !important;
+    font-size: 11px !important;
+  }
+
+  /* Compact score */
+  .scoreboard-row .score-line {
+    padding: 5px 14px !important;
+    font-size: 11px !important;
+  }
+
+  /* HIDE verbose elements on mobile */
+  .scoreboard-row .prob-bars     { display: none !important; }
+  .scoreboard-row .motivation-line { display: none !important; }
+
+  /* ════════ 7. BOARD CONTROLS ════════ */
   .board-controls,
   .parlay-controls {
+    display: flex !important;
     flex-direction: column !important;
-    gap: 12px !important;
-    margin-bottom: 16px;
+    gap: 10px !important;
+    margin-bottom: 12px;
   }
-
   .board-controls label,
-  .parlay-controls label {
-    min-width: 0;
-    width: 100%;
-  }
-
+  .parlay-controls label { min-width: 0; width: 100%; }
   .board-controls select,
   .board-controls input[type="date"],
   .parlay-controls select,
-  .parlay-controls input[type="date"] {
-    min-width: 0 !important;
-    width: 100%;
-  }
+  .parlay-controls input[type="date"] { min-width: 0 !important; width: 100%; }
 
-  .board-stats {
-    gap: 8px;
-    justify-content: flex-start !important;
-  }
+  .board-stats { gap: 8px; justify-content: flex-start !important; }
+  .board-stats span { flex: 1; min-width: 0; padding: 8px 6px; text-align: center; font-size: 11px; }
+  .board-stats strong { font-size: 16px; }
 
-  .board-stats span {
-    flex: 1;
-    min-width: 80px;
-    padding: 10px 8px;
-    text-align: center;
-  }
+  /* ════════ 8. RISK MODE ════════ */
+  .risk-mode-bar { gap: 6px; margin-bottom: 12px; }
+  .toggle-cluster { flex: 1; justify-content: center; padding: 8px 10px; font-size: 10px; gap: 8px; }
 
-  .board-stats strong { font-size: 18px; }
+  /* ════════ 9. PARLAY TICKETS ════════ */
+  .parlay-ticket { padding: 12px !important; border-radius: 0 !important; box-shadow: none !important; }
+  .ticket-head { flex-wrap: wrap; gap: 8px; margin-bottom: 10px; }
 
-  /* ── RISK MODE TOGGLES ── */
-  .risk-mode-bar {
-    gap: 8px;
-    margin-bottom: 14px;
-  }
-
-  .toggle-cluster {
-    flex: 1;
-    justify-content: center;
-    padding: 10px 12px;
-    font-size: 11px;
-    gap: 10px;
-  }
-
-  /* ── FIXTURE CARDS ── */
-  .fixture-board { gap: 10px; }
-
-  .fixture-card {
-    padding: 14px 16px;
-    border-radius: 10px;
-  }
-
-  h3 {
-    font-size: 17px !important;
-    min-height: 0 !important;
-    margin: 8px 0 !important;
-  }
-
-  .callout {
-    padding: 10px 12px;
-  }
-
-  /* ── PARLAY TICKETS ── */
-  .parlay-ticket {
-    padding: 14px;
-    border-radius: 10px;
-  }
-
-  .ticket-head {
-    flex-wrap: wrap;
-    gap: 10px;
-    margin-bottom: 12px;
-  }
-
-  /* ── ACCURACY STATS → 2×2 ── */
-  .accuracy-stats {
-    grid-template-columns: 1fr 1fr !important;
-    gap: 10px;
-  }
-
-  /* ── SLIP SUMMARY → 2-col ── */
-  .slip-summary-grid {
-    grid-template-columns: 1fr 1fr !important;
-    gap: 10px;
-  }
-
-  /* ── PROFILE FORMS ── */
+  /* ════════ 10. GRIDS ════════ */
+  .accuracy-stats   { grid-template-columns: 1fr 1fr !important; gap: 8px; }
+  .slip-summary-grid { grid-template-columns: 1fr 1fr !important; gap: 8px; }
   .player-stat-form,
-  .team-stat-form {
-    grid-template-columns: 1fr 1fr !important;
-    gap: 10px;
-    padding: 12px;
-  }
-
-  .profile-stat-grid {
-    grid-template-columns: 1fr 1fr !important;
-  }
-
-  /* ── WORLD CUP GROUPS → 1-col ── */
-  .world-cup-groups { grid-template-columns: 1fr; }
-
-  /* ── FUTURES → 1-col ── */
+  .team-stat-form   { grid-template-columns: 1fr 1fr !important; gap: 8px; padding: 10px; }
+  .profile-stat-grid { grid-template-columns: 1fr 1fr !important; }
+  .world-cup-groups  { grid-template-columns: 1fr; }
   .futures-pick-grid { grid-template-columns: 1fr !important; }
+  .results-match-list { grid-template-columns: 1fr !important; }
+  .intl-fixture-list  { grid-template-columns: 1fr !important; }
 
-  /* ── MISC ── */
-  .empty-state   { padding: 20px; font-size: 14px; }
-  .board-message { font-size: 13px; padding: 10px 12px; }
-  .auth-panel    { padding: 18px; }
+  /* ════════ 11. MISC ════════ */
+  .empty-state   { padding: 16px; font-size: 13px; }
+  .board-message { font-size: 12px; padding: 8px 10px; }
+  .auth-panel    { padding: 16px; }
   .auth-panel h2 { font-size: 22px; }
-  table          { font-size: 12px; }
-  th, td         { padding: 9px 7px; }
+  table { font-size: 12px; }
+  th, td { padding: 8px 6px; }
+  h3 { font-size: 16px !important; min-height: 0 !important; margin: 6px 0 !important; }
 }
 
 /* ── ULTRA-SMALL (≤ 390px, iPhone SE) ── */
 @media (max-width: 390px) {
-  .topbar h1 { font-size: 23px !important; }
-
-  .topbar-right { gap: 8px !important; }
-
-  .season-control { min-width: 110px; }
-
-  .slip-summary-grid,
-  .accuracy-stats {
-    grid-template-columns: 1fr !important;
-  }
-
-  .toggle-cluster { padding: 8px 10px; font-size: 10px; }
+  .topbar h1 { font-size: 22px !important; }
+  .context-mode-control { padding: 0 8px; font-size: 8px; gap: 5px; }
+  .slip-summary-grid, .accuracy-stats { grid-template-columns: 1fr !important; }
+  .toggle-cluster { padding: 6px 8px; font-size: 9px; }
 }
