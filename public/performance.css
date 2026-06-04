@@ -263,3 +263,567 @@ th {
     width: 100%;
   }
 }
+
+/* ═══════════════════════════════════════════════════════
+   UEFA CHAMPIONS LEAGUE — CLUB MODE THEME
+   Colors: UCL Navy #04091A, Starball Gold #C9A84C, UCL Blue #1A3566
+   Source: UEFA brand guidelines, Champions League visual identity
+═══════════════════════════════════════════════════════ */
+
+:root[data-context="club"] {
+  --theme-primary:      #C9A84C;
+  --theme-primary-dim:  rgba(201, 168, 76, 0.14);
+  --theme-accent:       #C9A84C;
+  --theme-header-1:     #04091A;
+  --theme-header-2:     #0C1B36;
+  --theme-border-top:   #C9A84C;
+  --theme-eyebrow:      #C9A84C;
+  --theme-nav-pill:     rgba(201, 168, 76, 0.13);
+  --theme-nav-text:     #C9A84C;
+  --theme-glow:         0 8px 32px rgba(201, 168, 76, 0.12);
+  --teal:               #4A7FD4;
+  --gold:               #C9A84C;
+  --accent:             #C9A84C;
+  --header:             #04091A;
+  --header-2:           #0C1B36;
+}
+
+:root[data-context="club"][data-theme="dark"] {
+  --bg:         #080E1E;
+  --panel:      #0E1A30;
+  --surface:    #091526;
+  --row:        #111F38;
+  --row-hover:  #172744;
+  --line:       #1E3166;
+  --blue-soft:  #0E1E3A;
+  --gold-soft:  #1E1506;
+  --teal:       #6CA8FF;
+  --gold:       #D4AF52;
+  --accent:     #C9A84C;
+  --header:     #030710;
+  --header-2:   #081224;
+}
+
+/* UCL TOPBAR */
+body[data-context="club"] .topbar,
+:root[data-context="club"] ~ body .topbar {
+  border-bottom-color: #C9A84C;
+  border-bottom-width: 3px;
+}
+
+[data-context="club"] .topbar {
+  background:
+    linear-gradient(160deg, #04091A 0%, #0C1B36 60%, #091526 100%),
+    radial-gradient(ellipse at 15% 0%, rgba(201,168,76,0.18) 0%, transparent 45%),
+    radial-gradient(ellipse at 85% 100%, rgba(26,53,102,0.4) 0%, transparent 40%);
+  border-bottom: 3px solid #C9A84C;
+  position: relative;
+  overflow: hidden;
+}
+
+/* Star pattern overlay */
+[data-context="club"] .topbar::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background-image:
+    radial-gradient(circle, rgba(201,168,76,0.55) 1px, transparent 1px),
+    radial-gradient(circle, rgba(201,168,76,0.3) 1px, transparent 1px),
+    radial-gradient(circle, rgba(255,255,255,0.12) 0.8px, transparent 0.8px);
+  background-size: 60px 60px, 90px 90px, 120px 120px;
+  background-position: 0 0, 30px 30px, 15px 45px;
+  pointer-events: none;
+  opacity: 0.6;
+}
+
+[data-context="club"] .topbar::after {
+  content: "★ ★ ★ ★ ★ ★ ★ ★";
+  position: absolute;
+  bottom: 6px;
+  left: 50%;
+  transform: translateX(-50%);
+  color: rgba(201,168,76,0.35);
+  font-size: 9px;
+  letter-spacing: 8px;
+  pointer-events: none;
+  white-space: nowrap;
+}
+
+[data-context="club"] .eyebrow {
+  color: #C9A84C;
+  letter-spacing: 0.05em;
+}
+
+[data-context="club"] .eyebrow::before {
+  content: "★ ";
+  font-size: 10px;
+}
+
+[data-context="club"] .meta-line {
+  color: rgba(201,168,76,0.75);
+}
+
+/* UCL NAV */
+[data-context="club"] .page-nav {
+  background:
+    linear-gradient(180deg, #04091A, #091526);
+  border-bottom-color: rgba(201,168,76,0.25);
+}
+
+[data-context="club"] .page-tab.is-active {
+  background: rgba(201,168,76,0.15);
+  border-color: rgba(201,168,76,0.55);
+  color: #C9A84C;
+  box-shadow: inset 0 0 0 1px rgba(201,168,76,0.25), 0 0 12px rgba(201,168,76,0.1);
+}
+
+[data-context="club"] .page-tab {
+  color: rgba(201,168,76,0.55);
+}
+
+[data-context="club"] .page-tab:hover:not(.is-active) {
+  background: rgba(201,168,76,0.07);
+  border-color: rgba(201,168,76,0.3);
+  color: #C9A84C;
+}
+
+/* UCL BUTTONS */
+[data-context="club"] button.primary {
+  background: linear-gradient(135deg, #1A3566, #0D2045);
+  border-color: #C9A84C;
+  color: #C9A84C;
+}
+
+[data-context="club"] button.primary:hover {
+  background: linear-gradient(135deg, #243F72, #162B56);
+  box-shadow: 0 0 16px rgba(201,168,76,0.25);
+}
+
+[data-context="club"] a {
+  color: #C9A84C;
+}
+
+/* UCL SUMMARY CHIPS */
+[data-context="club"] .summary span {
+  border-color: rgba(201,168,76,0.35);
+  background: rgba(201,168,76,0.08);
+}
+
+[data-context="club"] .summary strong {
+  color: #C9A84C;
+}
+
+/* UCL STAT CARDS */
+[data-context="club"] .board-stats strong,
+[data-context="club"] .slip-summary-grid strong,
+[data-context="club"] .accuracy-stats strong {
+  color: #C9A84C;
+}
+
+/* UCL FIXTURE CARDS */
+[data-context="club"][data-theme="dark"] .fixture-card,
+[data-context="club"][data-theme="dark"] .panel,
+[data-context="club"][data-theme="dark"] .parlay-ticket,
+[data-context="club"][data-theme="dark"] .played-grid-card,
+[data-context="club"][data-theme="dark"] .player-profile-card,
+[data-context="club"][data-theme="dark"] .league-table-card,
+[data-context="club"][data-theme="dark"] .futures-section {
+  background:
+    linear-gradient(180deg, #0E1A30, #091526);
+  border-color: rgba(30,49,102,0.9);
+}
+
+[data-context="club"][data-theme="dark"] .fixture-card:hover,
+[data-context="club"][data-theme="dark"] .panel:hover,
+[data-context="club"][data-theme="dark"] .player-profile-card:hover {
+  border-color: rgba(201,168,76,0.45);
+  box-shadow: 0 4px 24px rgba(201,168,76,0.12);
+}
+
+/* UCL SECTION HEADS */
+[data-context="club"][data-theme="dark"] .section-head h2 {
+  color: #C9A84C;
+}
+
+[data-context="club"] .page-tab.is-active,
+[data-context="club"] button.primary {
+  font-family: var(--font-heading);
+  letter-spacing: 0.02em;
+}
+
+/* UCL TABLE */
+[data-context="club"][data-theme="dark"] .page-nav {
+  background: linear-gradient(180deg, #03060E, #07101E);
+  border-bottom-color: rgba(201,168,76,0.2);
+}
+
+/* UCL focus ring */
+[data-context="club"] input:focus,
+[data-context="club"] select:focus {
+  border-color: #C9A84C;
+  box-shadow: 0 0 0 3px rgba(201,168,76,0.18);
+}
+
+/* UCL toggle */
+[data-context="club"] .mode-switch input:checked + .mode-switch-track {
+  border-color: rgba(201,168,76,0.72);
+  background: rgba(201,168,76,0.22);
+}
+
+[data-context="club"] .mode-switch input:checked + .mode-switch-track .mode-switch-thumb {
+  background: #C9A84C;
+}
+
+/* UCL auth */
+[data-context="club"] .auth-mode-tabs button.is-active {
+  border-color: #C9A84C;
+  background: rgba(201,168,76,0.12);
+  color: #C9A84C;
+}
+
+
+/* ═══════════════════════════════════════════════════════
+   FIFA WORLD CUP 2026 — INTERNATIONAL MODE THEME
+   Colors: FIFA Blue #003DA5, FIFA Red #E31837, Trophy Gold #C8992B
+   Source: FIFA 2026 "United" official brand palette
+═══════════════════════════════════════════════════════ */
+
+:root[data-context="international"] {
+  --theme-primary:      #E31837;
+  --theme-primary-dim:  rgba(227, 24, 55, 0.13);
+  --theme-accent:       #E31837;
+  --theme-header-1:     #000B1F;
+  --theme-header-2:     #001240;
+  --theme-border-top:   #E31837;
+  --theme-eyebrow:      #FF6B7A;
+  --theme-glow:         0 8px 32px rgba(227,24,55,0.14);
+  --teal:               #4285E8;
+  --gold:               #C8992B;
+  --accent:             #E31837;
+  --header:             #000B1F;
+  --header-2:           #001240;
+}
+
+:root[data-context="international"][data-theme="dark"] {
+  --bg:         #060A18;
+  --panel:      #0A1228;
+  --surface:    #060E20;
+  --row:        #0D1632;
+  --row-hover:  #122040;
+  --line:       #1A2E6A;
+  --blue-soft:  #0A1630;
+  --gold-soft:  #1A1205;
+  --red-soft:   #1A0309;
+  --teal:       #6FA8FF;
+  --gold:       #D4A830;
+  --accent:     #E31837;
+  --header:     #020510;
+  --header-2:   #050D22;
+}
+
+/* WC2026 TOPBAR */
+[data-context="international"] .topbar {
+  background:
+    linear-gradient(160deg, #000B1F 0%, #001845 55%, #000D2A 100%),
+    radial-gradient(ellipse at 12% 0%, rgba(227,24,55,0.22) 0%, transparent 40%),
+    radial-gradient(ellipse at 88% 80%, rgba(0,61,165,0.35) 0%, transparent 40%);
+  border-bottom: 4px solid #E31837;
+  position: relative;
+  overflow: hidden;
+}
+
+/* WC2026 geometric pattern (triangles reflect 2026 logo motif) */
+[data-context="international"] .topbar::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background-image:
+    linear-gradient(60deg, transparent 25%, rgba(227,24,55,0.06) 25%, rgba(227,24,55,0.06) 50%, transparent 50%),
+    linear-gradient(-60deg, transparent 25%, rgba(0,61,165,0.07) 25%, rgba(0,61,165,0.07) 50%, transparent 50%),
+    radial-gradient(circle, rgba(200,153,43,0.18) 1px, transparent 1px);
+  background-size: 40px 40px, 40px 40px, 80px 80px;
+  pointer-events: none;
+  opacity: 0.9;
+}
+
+/* Red + Blue diagonal stripe */
+[data-context="international"] .topbar::after {
+  content: "";
+  position: absolute;
+  top: 0;
+  right: 0;
+  width: 320px;
+  height: 100%;
+  background:
+    linear-gradient(135deg,
+      transparent 0%,
+      transparent 40%,
+      rgba(227,24,55,0.12) 40%,
+      rgba(227,24,55,0.12) 55%,
+      rgba(0,61,165,0.1) 55%,
+      rgba(0,61,165,0.1) 70%,
+      transparent 70%
+    );
+  pointer-events: none;
+}
+
+[data-context="international"] .eyebrow {
+  color: #FF8A96;
+  letter-spacing: 0.06em;
+}
+
+[data-context="international"] .eyebrow::before {
+  content: "🏆 ";
+  font-size: 12px;
+}
+
+[data-context="international"] .meta-line {
+  color: rgba(255,138,150,0.75);
+}
+
+/* WC2026 NAV */
+[data-context="international"] .page-nav {
+  background:
+    linear-gradient(180deg, #000B1F, #060E22);
+  border-bottom-color: rgba(227,24,55,0.3);
+}
+
+[data-context="international"] .page-tab.is-active {
+  background: rgba(227,24,55,0.15);
+  border-color: rgba(227,24,55,0.6);
+  color: #FF4D64;
+  box-shadow: inset 0 0 0 1px rgba(227,24,55,0.28), 0 0 12px rgba(227,24,55,0.1);
+}
+
+[data-context="international"] .page-tab {
+  color: rgba(255,100,118,0.55);
+}
+
+[data-context="international"] .page-tab:hover:not(.is-active) {
+  background: rgba(227,24,55,0.08);
+  border-color: rgba(227,24,55,0.35);
+  color: #FF4D64;
+}
+
+/* WC2026 BUTTONS */
+[data-context="international"] button.primary {
+  background: linear-gradient(135deg, #B0101F, #8A0A16);
+  border-color: #E31837;
+  color: #ffffff;
+}
+
+[data-context="international"] button.primary:hover {
+  background: linear-gradient(135deg, #C41224, #9E0C1A);
+  box-shadow: 0 0 16px rgba(227,24,55,0.3);
+}
+
+[data-context="international"] a {
+  color: #E31837;
+}
+
+[data-context="international"][data-theme="dark"] a {
+  color: #FF6B7A;
+}
+
+/* WC2026 SUMMARY CHIPS */
+[data-context="international"] .summary span {
+  border-color: rgba(227,24,55,0.35);
+  background: rgba(227,24,55,0.08);
+}
+
+[data-context="international"] .summary strong {
+  color: #FF6B7A;
+}
+
+/* WC2026 STAT VALUES */
+[data-context="international"] .board-stats strong,
+[data-context="international"] .slip-summary-grid strong,
+[data-context="international"] .accuracy-stats strong {
+  color: #E31837;
+}
+
+[data-context="international"][data-theme="dark"] .board-stats strong,
+[data-context="international"][data-theme="dark"] .slip-summary-grid strong,
+[data-context="international"][data-theme="dark"] .accuracy-stats strong {
+  color: #FF6B7A;
+}
+
+/* WC2026 CARDS */
+[data-context="international"][data-theme="dark"] .fixture-card,
+[data-context="international"][data-theme="dark"] .panel,
+[data-context="international"][data-theme="dark"] .parlay-ticket,
+[data-context="international"][data-theme="dark"] .played-grid-card,
+[data-context="international"][data-theme="dark"] .player-profile-card,
+[data-context="international"][data-theme="dark"] .league-table-card,
+[data-context="international"][data-theme="dark"] .futures-section {
+  background:
+    linear-gradient(180deg, #0A1228, #060E20);
+  border-color: rgba(26,46,106,0.9);
+}
+
+[data-context="international"][data-theme="dark"] .fixture-card:hover,
+[data-context="international"][data-theme="dark"] .panel:hover,
+[data-context="international"][data-theme="dark"] .player-profile-card:hover {
+  border-color: rgba(227,24,55,0.4);
+  box-shadow: 0 4px 24px rgba(227,24,55,0.1);
+}
+
+/* WC2026 SECTION HEADS */
+[data-context="international"][data-theme="dark"] .section-head h2 {
+  color: #FF6B7A;
+}
+
+/* WC2026 FIXTURE PICK COLORS (use FIFA flag palette: red/blue/white) */
+[data-context="international"] .fixture-card.pick-H {
+  border-left-color: #E31837;
+}
+
+[data-context="international"] .fixture-card.pick-D {
+  border-left-color: #C8992B;
+}
+
+[data-context="international"] .fixture-card.pick-A {
+  border-left-color: #003DA5;
+}
+
+[data-context="international"] .tag-H {
+  background: rgba(227,24,55,0.12);
+  color: #E31837;
+}
+
+[data-context="international"][data-theme="dark"] .tag-H {
+  background: rgba(227,24,55,0.18);
+  color: #FF6B7A;
+}
+
+[data-context="international"] .prob-fill.tag-H {
+  background: #E31837;
+}
+
+[data-context="international"] .tag-A {
+  background: rgba(0,61,165,0.12);
+  color: #003DA5;
+}
+
+[data-context="international"][data-theme="dark"] .tag-A {
+  background: rgba(66,133,232,0.18);
+  color: #6FA8FF;
+}
+
+[data-context="international"] .prob-fill.tag-A {
+  background: #003DA5;
+}
+
+[data-context="international"] .tag-D {
+  background: rgba(200,153,43,0.13);
+  color: #C8992B;
+}
+
+[data-context="international"][data-theme="dark"] .tag-D {
+  background: rgba(212,168,48,0.16);
+  color: #D4A830;
+}
+
+[data-context="international"] .prob-fill.tag-D {
+  background: #C8992B;
+}
+
+/* WC2026 GROUP/TABLE CARDS */
+[data-context="international"][data-theme="dark"] .world-cup-group-card {
+  background: linear-gradient(180deg, #0A1228, #060E20);
+  border-color: rgba(26,46,106,0.85);
+}
+
+[data-context="international"][data-theme="dark"] .world-cup-group-card:hover {
+  border-color: rgba(227,24,55,0.38);
+}
+
+/* WC2026 focus ring */
+[data-context="international"] input:focus,
+[data-context="international"] select:focus {
+  border-color: #E31837;
+  box-shadow: 0 0 0 3px rgba(227,24,55,0.16);
+}
+
+/* WC2026 toggle */
+[data-context="international"] .mode-switch input:checked + .mode-switch-track {
+  border-color: rgba(227,24,55,0.7);
+  background: rgba(227,24,55,0.2);
+}
+
+[data-context="international"] .mode-switch input:checked + .mode-switch-track .mode-switch-thumb {
+  background: #E31837;
+}
+
+/* WC2026 nav page */
+[data-context="international"][data-theme="dark"] .page-nav {
+  background: linear-gradient(180deg, #020510, #060A18);
+  border-bottom-color: rgba(227,24,55,0.25);
+}
+
+/* WC2026 auth tabs */
+[data-context="international"] .auth-mode-tabs button.is-active {
+  border-color: #E31837;
+  background: rgba(227,24,55,0.12);
+  color: #E31837;
+}
+
+/* WC2026 INTERNATIONAL FIXTURE CARDS */
+[data-context="international"][data-theme="dark"] .international-fixture-card {
+  background: linear-gradient(180deg, #0A1228, #060E20);
+  border-color: rgba(26,46,106,0.85);
+}
+
+/* Trophy gold for pick-pill/callout in international */
+[data-context="international"] .callout {
+  border-left: 3px solid #C8992B;
+}
+
+[data-context="international"][data-theme="dark"] .callout {
+  background: rgba(10,18,40,0.9);
+  border-color: rgba(200,153,43,0.35);
+}
+
+/* ── Light-mode topbar fix (both themes need white text) ── */
+[data-context="club"] .topbar,
+[data-context="international"] .topbar {
+  color: #ffffff;
+}
+
+[data-context="club"] .topbar h1,
+[data-context="international"] .topbar h1 {
+  color: #ffffff;
+  position: relative;
+  z-index: 1;
+}
+
+[data-context="club"] .topbar *,
+[data-context="international"] .topbar * {
+  position: relative;
+  z-index: 1;
+}
+
+/* Context label colour update */
+[data-context="club"] .context-label-international,
+[data-context="club"] .context-mode-control {
+  color: rgba(201,168,76,0.8);
+}
+
+[data-context="international"] .context-label-international,
+[data-context="international"] .context-mode-control {
+  color: rgba(255,107,122,0.85);
+}
+
+/* Smooth context transitions */
+.topbar,
+.page-nav,
+.fixture-card,
+.panel,
+.page-tab,
+button.primary {
+  transition:
+    background 0.4s ease,
+    border-color 0.35s ease,
+    color 0.3s ease,
+    box-shadow 0.35s ease;
+}

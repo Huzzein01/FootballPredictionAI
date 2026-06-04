@@ -816,6 +816,7 @@ function persistSelectedSeason() {
 }
 
 function updateContextLabels() {
+  document.documentElement.dataset.context = currentAppContext();
   const tableLabel = isInternationalMode() ? "Group Stage Tables" : "League Tables";
   if (leagueTablesHeading) leagueTablesHeading.textContent = tableLabel;
   if (leagueTableLeagueFilter) leagueTableLeagueFilter.closest("label").hidden = isInternationalMode();
@@ -848,6 +849,7 @@ function updateContextLabels() {
 function initContextMode() {
   if (!appContextToggle) return;
   appContextToggle.checked = localStorage.getItem("football-context-mode") === "international";
+  document.documentElement.dataset.context = currentAppContext();
   updateSeasonOptions();
   updateContextLabels();
 }
@@ -1573,6 +1575,7 @@ async function renderClubContext() {
 
 async function applyAppContext() {
   localStorage.setItem("football-context-mode", currentAppContext());
+  document.documentElement.dataset.context = currentAppContext();
   updateSeasonOptions();
   updateContextLabels();
   updateContextNavigation();
