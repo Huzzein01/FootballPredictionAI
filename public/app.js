@@ -1517,7 +1517,7 @@ async function refreshInternationalFixtureBoard() {
   const leagues = [...new Set(fixturePredictions.map((prediction) => prediction.league))].sort();
   boardLeagueFilter.innerHTML = `<option value="All">All groups</option>${leagues.map((league) => `<option value="${escapeHtml(league)}">${escapeHtml(league)}</option>`).join("")}`;
   boardLeagueFilter.value = leagues.includes(previousLeague) ? previousLeague : "All";
-  syncDateFilter(boardDateFilter, uniqueSortedDates(fixturePredictions), previousDate);
+  applyBoardDateNav(previousDate);
   syncDateFilter(parlayDateFilter, uniqueSortedDates(fixturePredictions), parlayDateFilter.value);
   renderInternationalFixtureBoard();
   renderInternationalFixturesPage();
@@ -2671,7 +2671,10 @@ function renderBoard() {
   boardStatus.textContent = `${filtered.length} ${oddsFilterText} fixture${filtered.length === 1 ? "" : "s"} shown${dateText}`;
 
   if (!filtered.length) {
-    fixtureBoard.innerHTML = `<div class="empty-state">No fixtures match this filter.</div>`;
+    const emptyMsg = selectedDate
+      ? `No matches on ${dateNavLabelText(selectedDate)}.`
+      : "No fixtures match this filter.";
+    fixtureBoard.innerHTML = `<div class="empty-state">${escapeHtml(emptyMsg)}</div>`;
     return;
   }
 
@@ -3457,12 +3460,21 @@ async function refreshFixtureBoard() {
   const validValues = new Set(["All", OTHERS_LEAGUE_VALUE, ...orderedMainstream]);
   boardLeagueFilter.value = validValues.has(previousLeague) ? previousLeague : "All";
 
+  const dates = applyBoardDateNav(previousDate);
+  syncDateFilter(parlayDateFilter, dates, parlayDateFilter.value);
+
+  renderBoard();
+  setBoardMessage(refreshState, "info");
+}
+
+// Set up the date navigator from the current fixturePredictions.
+// Defaults to a single day (today / nearest) so the board isn't one giant list.
+// Returns the sorted unique date list. Shared by club + international modes.
+function applyBoardDateNav(previousDate) {
   const dates = [...new Set(fixturePredictions.map((prediction) => prediction.date).filter(Boolean))].sort();
   boardFixtureDates = dates;
   boardDateFilter.min = dates[0] || "";
   boardDateFilter.max = dates[dates.length - 1] || "";
-  // Default to a single day (today / nearest) so the board isn't one giant list.
-  // Keep the previous selection if it still exists, otherwise pick the default day.
   const nextDate = previousDate && dates.includes(previousDate) ? previousDate : defaultBoardDate(dates);
   boardDateFilter.value = nextDate;
   if (boardDateNav) {
@@ -3471,10 +3483,7 @@ async function refreshFixtureBoard() {
     boardDateNav.value = nextDate;
   }
   updateDateNav();
-  syncDateFilter(parlayDateFilter, dates, parlayDateFilter.value);
-
-  renderBoard();
-  setBoardMessage(refreshState, "info");
+  return dates;
 }
 
 // Sync the date-navigator label + arrow availability with the selected date.

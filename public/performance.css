@@ -19,6 +19,23 @@ textarea {
   letter-spacing: 0;
 }
 
+/* Lock the page so it can't scroll sideways / reveal white margins.
+   Only opt-in containers (filter bar, tables) scroll horizontally. */
+html,
+body {
+  overflow-x: hidden;
+  max-width: 100%;
+}
+
+.topbar,
+.page-nav,
+.dashboard,
+.panel,
+.page-section {
+  max-width: 100%;
+  overflow-x: clip;
+}
+
 h1,
 h2,
 h3,
