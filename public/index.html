@@ -7,8 +7,8 @@
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@600;700;800&family=IBM+Plex+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="/styles.css?v=analyst-20260604i">
-    <link rel="stylesheet" href="/performance.css?v=analyst-20260604i">
+    <link rel="stylesheet" href="/styles.css?v=analyst-20260604k">
+    <link rel="stylesheet" href="/performance.css?v=analyst-20260604k">
   </head>
   <body>
     <header class="topbar">
@@ -131,6 +131,16 @@
           <button id="trackAllButton" class="primary" type="button">Track All Predictions</button>
         </div>
 
+        <div class="date-nav" aria-label="Match date navigation">
+          <button id="datePrevButton" class="date-nav-arrow" type="button" aria-label="Previous match day">‹</button>
+          <label class="date-nav-center">
+            <span id="dateNavLabel">Today</span>
+            <input id="boardDateNav" type="date" aria-label="Select match date">
+          </label>
+          <button id="dateNextButton" class="date-nav-arrow" type="button" aria-label="Next match day">›</button>
+          <button id="dateNavAll" class="date-nav-all" type="button">All</button>
+        </div>
+
         <div class="board-controls" aria-label="Fixture filters">
           <label>
             League
@@ -138,11 +148,11 @@
               <option value="All">All leagues</option>
             </select>
           </label>
-          <label>
+          <label class="board-date-control" hidden>
             Date
             <input id="boardDateFilter" type="date" aria-label="Filter predictions by date">
           </label>
-          <button id="clearBoardDateButton" type="button">All Dates</button>
+          <button id="clearBoardDateButton" type="button" hidden>All Dates</button>
           <label>
             Odds
             <select id="boardOddsFilter">

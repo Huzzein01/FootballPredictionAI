@@ -13,7 +13,7 @@ const { futuresPredictions } = require("./futuresService");
 const { resetPlayerStatsCache } = require("./playerStats");
 const { loadMatches, normalizeTeamName } = require("./footballData");
 const { refreshMissingOdds } = require("./oddsRepairService");
-const { readResultsSnapshot, refreshEspnFixtures, refreshEspnResults } = require("./espnFixtureService");
+const { readResultsSnapshot, refreshEspnFixtures, refreshEspnResults, enrichPredictionsWithLiveStatus } = require("./espnFixtureService");
 const { refreshTheOddsApi } = require("./oddsApiService");
 const { apiFootballStatus } = require("./liveData");
 const { refreshApiFootballPlayerStats } = require("./apiFootballPlayerStats");
@@ -505,7 +505,7 @@ async function handleApi(req, res, pathname) {
 
   if (req.method === "GET" && pathname === "/api/fixture-predictions") {
     const liveRefresh = triggerLiveFixtureRefresh("fixture-predictions");
-    const predictions = remainingFixturePredictions();
+    const predictions = enrichPredictionsWithLiveStatus(remainingFixturePredictions());
     const playedCount = playedFixturePredictions().length;
     return sendJson(res, 200, {
       predictions,

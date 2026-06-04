@@ -18,6 +18,12 @@ const boardStatus = document.querySelector("#boardStatus");
 const boardLeagueFilter = document.querySelector("#boardLeagueFilter");
 const boardDateFilter = document.querySelector("#boardDateFilter");
 const clearBoardDateButton = document.querySelector("#clearBoardDateButton");
+const datePrevButton = document.querySelector("#datePrevButton");
+const dateNextButton = document.querySelector("#dateNextButton");
+const dateNavAll = document.querySelector("#dateNavAll");
+const dateNavLabel = document.querySelector("#dateNavLabel");
+const boardDateNav = document.querySelector("#boardDateNav");
+let boardFixtureDates = [];
 const boardOddsFilter = document.querySelector("#boardOddsFilter");
 const recheckOddsButton = document.querySelector("#recheckOddsButton");
 const boardSortSelect = document.querySelector("#boardSortSelect");
@@ -1809,6 +1815,74 @@ function formatKickoff(value) {
   });
 }
 
+// Kickoff time only, in the user's Central (Chicago) time.
+function formatKickoffTime(value) {
+  const date = new Date(value);
+  if (Number.isNaN(date.getTime())) return "";
+  try {
+    return new Intl.DateTimeFormat("en-US", {
+      timeZone: CENTRAL_TIME_ZONE,
+      hour: "numeric",
+      minute: "2-digit",
+    }).format(date);
+  } catch {
+    return date.toLocaleTimeString(undefined, { hour: "numeric", minute: "2-digit" });
+  }
+}
+
+// Today's date (YYYY-MM-DD) in Central time.
+function chicagoToday() {
+  try {
+    return new Intl.DateTimeFormat("en-CA", {
+      timeZone: CENTRAL_TIME_ZONE,
+      year: "numeric",
+      month: "2-digit",
+      day: "2-digit",
+    }).format(new Date());
+  } catch {
+    return new Date().toISOString().slice(0, 10);
+  }
+}
+
+// Pick the default day to show: today if it has fixtures, else the
+// nearest upcoming fixture date, else the most recent one.
+function defaultBoardDate(dates) {
+  if (!dates.length) return "";
+  const today = chicagoToday();
+  if (dates.includes(today)) return today;
+  const upcoming = dates.find((d) => d >= today);
+  return upcoming || dates[dates.length - 1];
+}
+
+// Friendly label for the date navigator: "Today", "Tomorrow", or "Fri 29 May".
+function dateNavLabelText(dateStr) {
+  if (!dateStr) return "All dates";
+  const today = chicagoToday();
+  if (dateStr === today) return "Today";
+  const d = new Date(`${dateStr}T12:00:00`);
+  const t = new Date(`${today}T12:00:00`);
+  const diffDays = Math.round((d - t) / 86400000);
+  if (diffDays === 1) return "Tomorrow";
+  if (diffDays === -1) return "Yesterday";
+  return d.toLocaleDateString(undefined, { weekday: "short", day: "numeric", month: "short" });
+}
+
+// Small status chip for a fixture card (LIVE / FT / kickoff time).
+function fixtureStatusChip(prediction) {
+  if (prediction.statusState === "in") {
+    const detail = prediction.statusDetail ? ` ${escapeHtml(prediction.statusDetail)}` : "";
+    return `<span class="status-chip is-live"><span class="live-dot"></span>LIVE${detail}</span>`;
+  }
+  if (prediction.statusState === "post" || prediction.hasLiveScore) {
+    return `<span class="status-chip is-final">${escapeHtml(prediction.statusDetail || "FT")}</span>`;
+  }
+  if (prediction.kickoffUtc) {
+    const time = formatKickoffTime(prediction.kickoffUtc);
+    if (time) return `<span class="status-chip is-scheduled">${escapeHtml(time)}</span>`;
+  }
+  return "";
+}
+
 function playerInitials(player) {
   return String(player || "")
     .split(/\s+/)
@@ -2604,10 +2678,10 @@ function renderBoard() {
   fixtureBoard.innerHTML = filtered
     .map(
       (prediction) => `
-        <article class="fixture-card scoreboard-row pick-${prediction.prediction}">
+        <article class="fixture-card scoreboard-row pick-${prediction.prediction}${prediction.statusState === "in" ? " is-live" : ""}">
           <div class="card-topline">
-            <span>${escapeHtml(prediction.date)}</span>
             <span>${escapeHtml(prediction.league)}</span>
+            ${fixtureStatusChip(prediction)}
           </div>
           ${fixtureTeams(prediction)}
           <div class="callout">
@@ -2617,10 +2691,17 @@ function renderBoard() {
               ${selectedParlaySlip.legs.some((leg) => legSignature(leg) === legSignature(predictionSlipLeg(prediction))) ? "Added" : "Select"}
             </button>
           </div>
-          <div class="score-line">
-            <span>Projected score</span>
-            <strong>${escapeHtml(prediction.projectedScore || "")}</strong>
-          </div>
+          ${
+            prediction.hasLiveScore
+              ? `<div class="score-line live-score ${prediction.statusState === "in" ? "is-live" : "is-final"}">
+                   <span>${prediction.statusState === "in" ? "Live score" : "Final score"}</span>
+                   <strong>${escapeHtml(String(prediction.liveHomeGoals))} - ${escapeHtml(String(prediction.liveAwayGoals))}</strong>
+                 </div>`
+              : `<div class="score-line">
+                   <span>Projected score</span>
+                   <strong>${escapeHtml(prediction.projectedScore || "")}</strong>
+                 </div>`
+          }
           <div class="odds-line">
             <span>${oddsSourceMarkup(prediction)}</span>
             <strong>${escapeHtml(oddsText(prediction))}</strong>
@@ -3376,14 +3457,55 @@ async function refreshFixtureBoard() {
   const validValues = new Set(["All", OTHERS_LEAGUE_VALUE, ...orderedMainstream]);
   boardLeagueFilter.value = validValues.has(previousLeague) ? previousLeague : "All";
 
-  const dates = fixturePredictions.map((prediction) => prediction.date).filter(Boolean).sort();
+  const dates = [...new Set(fixturePredictions.map((prediction) => prediction.date).filter(Boolean))].sort();
+  boardFixtureDates = dates;
   boardDateFilter.min = dates[0] || "";
   boardDateFilter.max = dates[dates.length - 1] || "";
-  boardDateFilter.value = previousDate && dates.includes(previousDate) ? previousDate : "";
+  // Default to a single day (today / nearest) so the board isn't one giant list.
+  // Keep the previous selection if it still exists, otherwise pick the default day.
+  const nextDate = previousDate && dates.includes(previousDate) ? previousDate : defaultBoardDate(dates);
+  boardDateFilter.value = nextDate;
+  if (boardDateNav) {
+    boardDateNav.min = dates[0] || "";
+    boardDateNav.max = dates[dates.length - 1] || "";
+    boardDateNav.value = nextDate;
+  }
+  updateDateNav();
   syncDateFilter(parlayDateFilter, dates, parlayDateFilter.value);
 
   renderBoard();
   setBoardMessage(refreshState, "info");
+}
+
+// Sync the date-navigator label + arrow availability with the selected date.
+function updateDateNav() {
+  const current = boardDateFilter.value;
+  if (dateNavLabel) dateNavLabel.textContent = dateNavLabelText(current);
+  if (boardDateNav && boardDateNav.value !== current) boardDateNav.value = current;
+  const idx = boardFixtureDates.indexOf(current);
+  if (datePrevButton) datePrevButton.disabled = !current || idx <= 0;
+  if (dateNextButton) dateNextButton.disabled = !current || idx === -1 || idx >= boardFixtureDates.length - 1;
+  if (dateNavAll) dateNavAll.classList.toggle("is-active", !current);
+}
+
+// Move to the previous/next day that actually has fixtures.
+function stepBoardDate(direction) {
+  if (!boardFixtureDates.length) return;
+  const current = boardDateFilter.value;
+  let idx = boardFixtureDates.indexOf(current);
+  if (idx === -1) {
+    // Coming from "All": jump to the default day first.
+    idx = boardFixtureDates.indexOf(defaultBoardDate(boardFixtureDates));
+  }
+  const nextIdx = Math.min(Math.max(idx + direction, 0), boardFixtureDates.length - 1);
+  setBoardDate(boardFixtureDates[nextIdx]);
+}
+
+function setBoardDate(dateStr) {
+  boardDateFilter.value = dateStr || "";
+  if (boardDateNav) boardDateNav.value = dateStr || "";
+  updateDateNav();
+  renderBoard();
 }
 
 async function recheckPredictionOdds() {
@@ -3795,11 +3917,14 @@ singleCompetitionSelect?.addEventListener("change", () => {
   setInternationalSingleDemo();
 });
 boardLeagueFilter.addEventListener("change", renderBoard);
-boardDateFilter.addEventListener("change", renderBoard);
+boardDateFilter.addEventListener("change", () => { updateDateNav(); renderBoard(); });
 clearBoardDateButton.addEventListener("click", () => {
-  boardDateFilter.value = "";
-  renderBoard();
+  setBoardDate("");
 });
+datePrevButton?.addEventListener("click", () => stepBoardDate(-1));
+dateNextButton?.addEventListener("click", () => stepBoardDate(1));
+dateNavAll?.addEventListener("click", () => setBoardDate(""));
+boardDateNav?.addEventListener("change", () => setBoardDate(boardDateNav.value));
 boardOddsFilter?.addEventListener("change", renderBoard);
 recheckOddsButton?.addEventListener("click", recheckPredictionOdds);
 boardSortSelect.addEventListener("change", renderBoard);

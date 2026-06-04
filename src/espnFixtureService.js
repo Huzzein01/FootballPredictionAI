@@ -318,6 +318,74 @@ function readResultsSnapshot() {
   return readJsonWithFallback(LIVE_RESULTS_PATH, SEEDED_LIVE_RESULTS_PATH, null);
 }
 
+function readFixturesSnapshot() {
+  return readJsonWithFallback(LIVE_FIXTURE_PATH, SEEDED_LIVE_FIXTURE_PATH, null);
+}
+
+function liveStatusKey(date, home, away) {
+  return [String(date || "").slice(0, 10), normalizeTeamName(home), normalizeTeamName(away)].join("|").toLowerCase();
+}
+
+// Build a lookup of kickoff time, ESPN status (pre/in/post) and live/final
+// scores keyed by date|home|away, merging the fixtures + results snapshots.
+function liveStatusLookup() {
+  const lookup = new Map();
+
+  const fixtures = readFixturesSnapshot()?.fixtures || [];
+  for (const f of fixtures) {
+    if (!f.homeTeam || !f.awayTeam) continue;
+    lookup.set(liveStatusKey(f.date, f.homeTeam, f.awayTeam), {
+      kickoffUtc: f.kickoffUtc || "",
+      statusState: f.statusState || "",
+      statusName: f.statusName || "",
+      statusDetail: f.statusDetail || "",
+      completed: Boolean(f.completed),
+      espnEventId: f.espnEventId || "",
+    });
+  }
+
+  const results = readResultsSnapshot()?.results || [];
+  for (const r of results) {
+    if (!r.homeTeam || !r.awayTeam) continue;
+    const key = liveStatusKey(r.date, r.homeTeam, r.awayTeam);
+    const existing = lookup.get(key) || {};
+    lookup.set(key, {
+      ...existing,
+      kickoffUtc: r.kickoffUtc || existing.kickoffUtc || "",
+      statusState: r.statusState || existing.statusState || "",
+      statusName: r.statusName || existing.statusName || "",
+      statusDetail: r.statusDetail || existing.statusDetail || "",
+      completed: Boolean(r.completed),
+      espnEventId: r.espnEventId || existing.espnEventId || "",
+      homeGoals: Number.isFinite(Number(r.homeGoals)) ? Number(r.homeGoals) : existing.homeGoals,
+      awayGoals: Number.isFinite(Number(r.awayGoals)) ? Number(r.awayGoals) : existing.awayGoals,
+    });
+  }
+  return lookup;
+}
+
+// Attach kickoffUtc, ESPN status state and live/final scores to each prediction.
+function enrichPredictionsWithLiveStatus(predictions) {
+  const lookup = liveStatusLookup();
+  return predictions.map((p) => {
+    const info = lookup.get(liveStatusKey(p.date, p.homeTeam, p.awayTeam));
+    if (!info) return { ...p, statusState: "pre", hasLiveScore: false };
+    const hasScore = Number.isFinite(Number(info.homeGoals)) && Number.isFinite(Number(info.awayGoals));
+    return {
+      ...p,
+      kickoffUtc: info.kickoffUtc || p.kickoffUtc || "",
+      statusState: info.statusState || "pre",
+      statusName: info.statusName || "",
+      statusDetail: info.statusDetail || "",
+      completed: Boolean(info.completed),
+      espnEventId: info.espnEventId || "",
+      liveHomeGoals: hasScore ? Number(info.homeGoals) : undefined,
+      liveAwayGoals: hasScore ? Number(info.awayGoals) : undefined,
+      hasLiveScore: hasScore,
+    };
+  });
+}
+
 function resultsSnapshotIsFresh(maxAgeMinutes = 3, dateWindow = "") {
   const snapshot = readResultsSnapshot();
   if (!snapshot?.updatedAt) return false;
@@ -406,6 +474,9 @@ module.exports = {
   ESPN_LEAGUES,
   allEuropeanLeagueNames,
   readResultsSnapshot,
+  readFixturesSnapshot,
+  liveStatusLookup,
+  enrichPredictionsWithLiveStatus,
   refreshEspnFixtures,
   refreshEspnResults,
 };

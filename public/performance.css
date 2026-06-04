@@ -965,6 +965,173 @@ button.primary {
 
 
 /* ═══════════════════════════════════════════════════════
+   DATE NAVIGATOR — Soccerway-style ‹ Today › day picker
+═══════════════════════════════════════════════════════ */
+
+.date-nav {
+  display: flex;
+  align-items: stretch;
+  gap: 8px;
+  margin-bottom: 14px;
+}
+
+/* The date-nav replaces the old Date filter pill + All Dates button */
+.board-controls > label.board-date-control,
+#clearBoardDateButton {
+  display: none !important;
+}
+
+.date-nav-arrow {
+  flex: 0 0 auto;
+  width: 44px;
+  min-height: 46px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 22px;
+  font-weight: 700;
+  line-height: 1;
+  border-radius: 10px;
+  padding: 0;
+}
+
+.date-nav-arrow:disabled {
+  opacity: 0.4;
+  cursor: default;
+}
+
+.date-nav-center {
+  position: relative;
+  flex: 1 1 auto;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  min-height: 46px;
+  border: 1px solid var(--line);
+  border-radius: 10px;
+  background: var(--surface);
+  cursor: pointer;
+  font-family: var(--font-heading);
+  font-size: 16px;
+  font-weight: 700;
+  color: var(--ink);
+}
+
+#dateNavLabel {
+  pointer-events: none;
+}
+
+/* The native date input overlays the centre, invisible but clickable */
+.date-nav-center input[type="date"] {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  opacity: 0;
+  border: none;
+  background: transparent;
+  cursor: pointer;
+}
+
+.date-nav-all {
+  flex: 0 0 auto;
+  min-width: 56px;
+  min-height: 46px;
+  border-radius: 10px;
+  font-size: 12px;
+  font-weight: 800;
+}
+
+.date-nav-all.is-active {
+  background: var(--teal) !important;
+  border-color: var(--teal) !important;
+  color: #fff !important;
+}
+
+[data-context="club"] .date-nav-all.is-active {
+  background: var(--gold) !important;
+  border-color: var(--gold) !important;
+  color: #04091A !important;
+}
+
+[data-context="international"] .date-nav-all.is-active {
+  background: #E31837 !important;
+  border-color: #E31837 !important;
+  color: #fff !important;
+}
+
+/* ── Match status chips ── */
+.status-chip {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  font-size: 10px;
+  font-weight: 900;
+  letter-spacing: 0.03em;
+  padding: 3px 8px;
+  border-radius: 6px;
+  white-space: nowrap;
+}
+
+.status-chip.is-scheduled {
+  background: var(--blue-soft);
+  color: var(--teal);
+}
+
+.status-chip.is-final {
+  background: var(--surface);
+  color: var(--muted);
+  border: 1px solid var(--line);
+}
+
+.status-chip.is-live {
+  background: rgba(227, 24, 55, 0.14);
+  color: #E31837;
+}
+
+[data-theme="dark"] .status-chip.is-live {
+  color: #FF6B7A;
+}
+
+.live-dot {
+  width: 7px;
+  height: 7px;
+  border-radius: 50%;
+  background: currentColor;
+  animation: livePulse 1.2s ease-in-out infinite;
+}
+
+@keyframes livePulse {
+  0%, 100% { opacity: 1; transform: scale(1); }
+  50%      { opacity: 0.35; transform: scale(0.7); }
+}
+
+/* ── Live / final score line ── */
+.score-line.live-score strong {
+  font-size: 18px !important;
+  font-weight: 900;
+}
+
+.score-line.live-score.is-final strong {
+  color: var(--ink) !important;
+}
+
+.score-line.live-score.is-live strong {
+  color: #E31837 !important;
+}
+
+[data-theme="dark"] .score-line.live-score.is-live strong {
+  color: #FF6B7A !important;
+}
+
+/* Live card: subtle red left accent */
+.fixture-card.is-live {
+  border-left-color: #E31837 !important;
+}
+
+
+/* ═══════════════════════════════════════════════════════
    SOCCERWAY-INSPIRED MATCH CARD REDESIGN
    Teams stacked vertically · compact · data-dense
 ═══════════════════════════════════════════════════════ */
