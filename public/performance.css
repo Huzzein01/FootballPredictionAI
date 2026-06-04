@@ -830,168 +830,140 @@ button.primary {
 
 
 /* ═══════════════════════════════════════════════════════
-   MOBILE OVERHAUL — Compact header + responsive layout
-   Target: ≤ 680px (phones)
+   MOBILE LAYOUT — Phone-friendly spacing & header
+   Target: ≤ 680px
 ═══════════════════════════════════════════════════════ */
 
 @media (max-width: 680px) {
 
-  /* ── HEADER: compact, flush control strip ── */
+  /* ── HEADER ── */
   .topbar {
-    padding: 12px 16px 0 !important;
+    padding: 16px 18px 0 !important;
     gap: 0 !important;
-    overflow: visible;
   }
 
   .topbar > div:first-child {
-    padding-bottom: 10px;
+    padding-bottom: 14px;
   }
 
   .topbar h1 {
-    font-size: 26px !important;
+    font-size: 28px !important;
     line-height: 1.05;
-    letter-spacing: -0.3px;
   }
 
-  .eyebrow {
-    font-size: 10px !important;
-  }
+  .eyebrow { font-size: 10px !important; }
 
   #modelMeta {
     font-size: 11px !important;
-    margin-top: 2px;
+    margin-top: 4px;
     line-height: 1.4;
   }
 
-  /* topbar-right → horizontal control strip (override 920px column rule) */
+  /* ── CONTROL STRIP: single horizontal bar at bottom of header ── */
   .topbar-right {
     flex-direction: row !important;
-    align-items: stretch !important;
-    gap: 0 !important;
-    margin: 0 -16px;
-    border-top: 1px solid rgba(255, 255, 255, 0.1);
+    align-items: center !important;
+    flex-wrap: wrap;
+    gap: 10px !important;
+    padding: 12px 0 14px;
+    border-top: 1px solid rgba(255, 255, 255, 0.12);
     order: 2;
   }
 
-  /* Kill backdrop-blur — it's what makes controls look like floating boxes */
+  /* Remove frosted-glass that made controls look like floating boxes */
   .context-mode-control,
   .season-control,
   .theme-control,
-  .mobile-page-menu,
-  .summary span {
+  .mobile-page-menu {
     backdrop-filter: none !important;
     -webkit-backdrop-filter: none !important;
   }
 
-  /* Club / Intl toggle: left section */
+  /* Club / Intl toggle */
   .context-mode-control {
     flex: 0 0 auto;
-    padding: 8px 11px;
-    gap: 6px;
-    font-size: 9px;
-    letter-spacing: 0.04em;
-    border-right: 1px solid rgba(255, 255, 255, 0.1);
-    align-items: center;
+    font-size: 11px;
+    gap: 8px;
+    padding: 0;
   }
 
-  /* Show short "Intl" label on mobile */
+  /* Show "Intl" instead of "International" */
   .context-short { display: inline !important; }
   .context-full  { display: none   !important; }
 
-  /* Season: fills remaining space */
+  /* Season selector */
   .season-control {
     flex: 1;
-    min-width: 0;
-    padding: 0 10px;
-    display: flex !important;
-    align-items: center;
-    gap: 4px;
+    min-width: 130px;
+    gap: 5px;
   }
 
   .season-control select {
-    flex: 1 !important;
-    background: transparent !important;
-    border: none !important;
-    color: rgba(255, 255, 255, 0.88) !important;
+    background: rgba(255, 255, 255, 0.1) !important;
+    border-color: rgba(255, 255, 255, 0.18) !important;
+    color: #fff !important;
     color-scheme: dark;
-    padding: 10px 2px;
     font-size: 13px;
-    font-weight: 600;
-    box-shadow: none !important;
-    outline: none;
+    padding: 8px 10px;
   }
 
-  /* Hide theme selector — not needed on phone */
+  /* Hide theme — adaptive is fine on mobile */
   .theme-control { display: none !important; }
 
-  /* Auth button: compact */
+  /* Auth: compact */
   .auth-account {
-    flex: 0 0 auto;
-    border-left: 1px solid rgba(255, 255, 255, 0.1);
-    border-radius: 0;
-    border-top: none;
-    border-right: none;
-    border-bottom: none;
-    background: transparent;
-    padding: 8px 10px;
-    font-size: 10px;
+    font-size: 11px;
+    padding: 7px 10px;
   }
 
-  .auth-account button {
-    padding: 4px 8px;
-    font-size: 10px;
-    min-height: 0;
-  }
-
-  /* Model stats: hide — already hidden on hosted Vercel */
+  /* Model stats: hidden on Vercel hosted */
   .model-private-stats { display: none !important; }
 
-  /* Section dropdown: sits below the strip, styled as part of header */
+  /* Section dropdown — its own row, part of header */
   .mobile-page-menu {
     display: grid !important;
     order: 3 !important;
-    margin: 0 -16px;
-    padding: 8px 16px 12px;
-    gap: 3px;
-    font-size: 9px;
+    padding: 0 0 16px;
+    gap: 5px;
+    font-size: 10px;
     font-weight: 900;
     text-transform: uppercase;
-    letter-spacing: 0.06em;
-    color: rgba(255, 255, 255, 0.5);
-    border-top: 1px solid rgba(255, 255, 255, 0.08);
-  }
-
-  .mobile-page-menu select {
-    background: rgba(255, 255, 255, 0.08) !important;
-    border: 1px solid rgba(255, 255, 255, 0.14) !important;
-    color: #fff !important;
-    color-scheme: dark;
-    font-size: 14px;
-    padding: 10px 12px;
-    border-radius: 8px;
+    letter-spacing: 0.05em;
+    color: rgba(255, 255, 255, 0.6);
     width: 100%;
   }
 
-  /* ── PAGE NAV (when visible) ── */
+  .mobile-page-menu select {
+    background: rgba(255, 255, 255, 0.1) !important;
+    border: 1px solid rgba(255, 255, 255, 0.18) !important;
+    color: #fff !important;
+    color-scheme: dark;
+    font-size: 14px;
+    padding: 11px 14px;
+    border-radius: 10px;
+    width: 100%;
+  }
+
+  /* ── NAV TABS ── */
   .page-nav {
-    padding: 8px 12px !important;
-    gap: 6px !important;
+    padding: 10px 14px !important;
+    gap: 7px !important;
     flex-wrap: wrap !important;
   }
 
   .page-tab {
-    padding: 7px 10px !important;
-    font-size: 12px !important;
+    padding: 8px 12px !important;
+    font-size: 13px !important;
   }
 
-  /* ── DASHBOARD ── */
+  /* ── DASHBOARD & PANELS ── */
   .dashboard {
-    padding: 10px 12px 28px !important;
-    gap: 8px !important;
+    padding: 14px 14px 32px !important;
+    gap: 14px !important;
   }
 
   .panel {
-    padding: 12px !important;
+    padding: 16px !important;
     border-radius: 12px !important;
   }
 
@@ -999,180 +971,127 @@ button.primary {
   .section-head {
     align-items: flex-start !important;
     flex-direction: column !important;
-    gap: 8px !important;
-    margin-bottom: 10px !important;
+    gap: 10px !important;
+    margin-bottom: 14px !important;
   }
 
-  .section-head h2 {
-    font-size: 20px !important;
-  }
+  .section-head h2 { font-size: 21px !important; }
 
   .section-actions {
     flex-direction: row !important;
     flex-wrap: wrap;
-    gap: 6px;
+    gap: 8px;
     width: 100%;
   }
 
-  .section-actions button,
-  .section-actions label {
-    flex: 1 1 auto;
-  }
-
   /* ── BUTTONS ── */
-  button {
-    min-height: 42px;
-  }
+  button { min-height: 44px; }
 
   button.primary {
-    min-height: 46px;
+    min-height: 48px;
     width: 100%;
     border-radius: 10px;
     font-size: 15px;
   }
 
-  /* ── BOARD CONTROLS → 2-col grid ── */
-  .board-controls {
-    display: grid !important;
-    flex-direction: unset !important;
-    grid-template-columns: 1fr 1fr;
-    gap: 8px;
-    align-items: end;
-    margin-bottom: 10px;
+  /* ── BOARD / PARLAY CONTROLS ── */
+  .board-controls,
+  .parlay-controls {
+    flex-direction: column !important;
+    gap: 12px !important;
+    margin-bottom: 16px;
   }
 
-  .board-controls label { min-width: 0; }
+  .board-controls label,
+  .parlay-controls label {
+    min-width: 0;
+    width: 100%;
+  }
 
   .board-controls select,
-  .board-controls input[type="date"] {
+  .board-controls input[type="date"],
+  .parlay-controls select,
+  .parlay-controls input[type="date"] {
     min-width: 0 !important;
     width: 100%;
   }
 
-  .board-controls > button {
-    min-height: 40px;
-    width: auto;
-  }
-
-  .board-controls .board-stats {
-    grid-column: 1 / -1;
-    justify-content: flex-start;
-    gap: 6px;
+  .board-stats {
+    gap: 8px;
+    justify-content: flex-start !important;
   }
 
   .board-stats span {
     flex: 1;
-    min-width: 0;
-    padding: 8px 6px;
+    min-width: 80px;
+    padding: 10px 8px;
     text-align: center;
   }
 
-  .board-stats strong { font-size: 17px; }
+  .board-stats strong { font-size: 18px; }
 
-  /* ── PARLAY CONTROLS → 2-col grid ── */
-  .parlay-controls {
-    display: grid !important;
-    flex-direction: unset !important;
-    grid-template-columns: 1fr 1fr;
-    gap: 8px;
-    align-items: end;
-    margin-bottom: 10px;
-  }
-
-  .parlay-controls label { min-width: 0; }
-
-  .parlay-controls .board-stats {
-    grid-column: 1 / -1;
-    justify-content: flex-start;
-    gap: 6px;
-  }
-
-  /* ── RISK MODE BAR ── */
+  /* ── RISK MODE TOGGLES ── */
   .risk-mode-bar {
-    gap: 6px;
-    margin-bottom: 12px;
+    gap: 8px;
+    margin-bottom: 14px;
   }
 
   .toggle-cluster {
     flex: 1;
     justify-content: center;
-    padding: 8px 10px;
-    font-size: 10px;
-    gap: 8px;
+    padding: 10px 12px;
+    font-size: 11px;
+    gap: 10px;
   }
 
   /* ── FIXTURE CARDS ── */
-  .fixture-board { gap: 8px; }
+  .fixture-board { gap: 10px; }
 
   .fixture-card {
-    padding: 10px 12px;
+    padding: 14px 16px;
     border-radius: 10px;
   }
 
   h3 {
-    font-size: 16px !important;
+    font-size: 17px !important;
     min-height: 0 !important;
-    margin: 6px 0 !important;
+    margin: 8px 0 !important;
   }
 
   .callout {
-    flex-direction: row !important;
-    align-items: center !important;
-    padding: 8px 10px;
-    gap: 8px;
-  }
-
-  .callout strong { font-size: 16px; }
-
-  .prob-row {
-    grid-template-columns: minmax(56px, 0.65fr) minmax(72px, 1fr) 44px !important;
-    font-size: 12px;
+    padding: 10px 12px;
   }
 
   /* ── PARLAY TICKETS ── */
   .parlay-ticket {
-    padding: 12px;
+    padding: 14px;
     border-radius: 10px;
   }
 
   .ticket-head {
     flex-wrap: wrap;
-    gap: 8px;
-    margin-bottom: 10px;
-  }
-
-  .ticket-stats span,
-  .ticket-result {
-    font-size: 11px;
-    padding: 4px 7px;
+    gap: 10px;
+    margin-bottom: 12px;
   }
 
   /* ── ACCURACY STATS → 2×2 ── */
   .accuracy-stats {
     grid-template-columns: 1fr 1fr !important;
-    gap: 8px;
+    gap: 10px;
   }
-
-  .accuracy-stats strong { font-size: 20px; }
 
   /* ── SLIP SUMMARY → 2-col ── */
   .slip-summary-grid {
     grid-template-columns: 1fr 1fr !important;
-    gap: 8px;
+    gap: 10px;
   }
 
-  /* ── PROFILES ── */
+  /* ── PROFILE FORMS ── */
   .player-stat-form,
   .team-stat-form {
     grid-template-columns: 1fr 1fr !important;
-    gap: 8px;
-    padding: 10px;
-  }
-
-  .player-photo {
-    width: 56px;
-    height: 68px;
-    flex: 0 0 56px;
+    gap: 10px;
+    padding: 12px;
   }
 
   .profile-stat-grid {
@@ -1180,63 +1099,32 @@ button.primary {
   }
 
   /* ── WORLD CUP GROUPS → 1-col ── */
-  .world-cup-groups {
-    grid-template-columns: 1fr;
-  }
+  .world-cup-groups { grid-template-columns: 1fr; }
 
   /* ── FUTURES → 1-col ── */
   .futures-pick-grid { grid-template-columns: 1fr !important; }
 
   /* ── MISC ── */
-  .empty-state    { padding: 16px; font-size: 13px; }
-  .board-message  { font-size: 12px; padding: 8px 10px; }
-  .auth-panel     { padding: 16px; }
-  .auth-panel h2  { font-size: 22px; }
-
-  table    { font-size: 12px; }
-  th, td   { padding: 8px 6px; }
-
-  .parlay-leg-row,
-  .tracked-leg-row {
-    padding: 8px 10px;
-    gap: 8px;
-  }
-
-  .player-profile-card { padding: 12px; }
+  .empty-state   { padding: 20px; font-size: 14px; }
+  .board-message { font-size: 13px; padding: 10px 12px; }
+  .auth-panel    { padding: 18px; }
+  .auth-panel h2 { font-size: 22px; }
+  table          { font-size: 12px; }
+  th, td         { padding: 9px 7px; }
 }
 
-/* ── ULTRA-SMALL (≤ 390px, iPhone SE etc.) ── */
+/* ── ULTRA-SMALL (≤ 390px, iPhone SE) ── */
 @media (max-width: 390px) {
-  .topbar h1 { font-size: 22px !important; }
+  .topbar h1 { font-size: 23px !important; }
 
-  .context-mode-control {
-    font-size: 8px;
-    padding: 8px 8px;
-  }
+  .topbar-right { gap: 8px !important; }
 
-  .mode-switch-track {
-    width: 44px;
-    height: 24px;
-  }
-
-  .mode-switch-thumb {
-    width: 17px;
-    height: 17px;
-  }
-
-  .mode-switch input:checked + .mode-switch-track .mode-switch-thumb {
-    transform: translateX(20px);
-  }
-
-  .board-controls,
-  .parlay-controls {
-    grid-template-columns: 1fr !important;
-  }
+  .season-control { min-width: 110px; }
 
   .slip-summary-grid,
   .accuracy-stats {
     grid-template-columns: 1fr !important;
   }
 
-  .toggle-cluster { padding: 7px 8px; font-size: 9px; }
+  .toggle-cluster { padding: 8px 10px; font-size: 10px; }
 }

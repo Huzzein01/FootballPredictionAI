@@ -2119,7 +2119,7 @@ function oddsSourceLabel(prediction) {
 
 function oddsSourceMarkup(prediction) {
   const label = escapeHtml(oddsSourceLabel(prediction));
-  if (prediction.oddsSourceUrl) {
+  if (prediction.oddsSourceUrl && !isHostedPublic()) {
     return `<a href="${escapeHtml(prediction.oddsSourceUrl)}" target="_blank" rel="noreferrer">${label}</a>`;
   }
   return label;
@@ -2131,10 +2131,15 @@ function motivationText(prediction) {
   if (context.source === "international-fixtures") {
     return `World Cup context: ${displayTeam(prediction.homeTeam)} ${context.home.note}; ${displayTeam(prediction.awayTeam)} ${context.away.note}`;
   }
+  const homeNote = context.home.note || "";
+  const awayNote = context.away.note || "";
+  // Skip the line entirely when there's no useful table context for either team
+  const noContext = "No table context available";
+  if ((!homeNote || homeNote === noContext) && (!awayNote || awayNote === noContext)) return "";
   const source = context.source === "public-standings" ? "Live table" : "Local form table";
   const homeManual = context.home.manualNote ? ` (${context.home.manualNote})` : "";
   const awayManual = context.away.manualNote ? ` (${context.away.manualNote})` : "";
-  return `${source}: ${displayTeam(prediction.homeTeam)} ${context.home.note}${homeManual}; ${displayTeam(prediction.awayTeam)} ${context.away.note}${awayManual}`;
+  return `${source}: ${displayTeam(prediction.homeTeam)} ${homeNote}${homeManual}; ${displayTeam(prediction.awayTeam)} ${awayNote}${awayManual}`;
 }
 
 function motivationLine(prediction) {
@@ -2146,7 +2151,7 @@ function judgmentMarkup(prediction) {
   const judgment = prediction.judgment;
   if (!judgment) return motivationLine(prediction);
   const factors = (judgment.factors || []).filter(Boolean);
-  const source = judgment.sourceUrl
+  const source = judgment.sourceUrl && !isHostedPublic()
     ? `<a href="${escapeHtml(judgment.sourceUrl)}" target="_blank" rel="noreferrer">${escapeHtml(judgment.tableSource || "Standings source")}</a>`
     : escapeHtml(judgment.tableSource || "Standings source");
   return `
@@ -3347,10 +3352,8 @@ async function refreshFixtureBoard() {
   const data = await api("/api/fixture-predictions");
   fixturePredictions = data.predictions;
   const refreshState = data.liveRefresh?.running
-    ? "ESPN fixtures/results and Odds API prices are refreshing in the background; refresh again in a moment for newly matched odds."
-    : data.liveRefresh?.cached
-      ? "Using the latest cached ESPN/Odds API refresh; predictions blend market odds whenever a complete 1X2 line is available."
-      : "Predictions blend model, table motivation, and market odds whenever a complete 1X2 line is available.";
+    ? "Predictions are updating — refresh in a moment for the latest."
+    : "Predictions blend model, table context, and market odds whenever available.";
 
   const leagues = [...new Set(fixturePredictions.map((prediction) => prediction.league))].sort();
   boardLeagueFilter.innerHTML = `<option value="All">All leagues</option>${leagues.map((league) => `<option value="${escapeHtml(league)}">${escapeHtml(league)}</option>`).join("")}`;
