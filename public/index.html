@@ -7,8 +7,8 @@
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@600;700;800&family=IBM+Plex+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="/styles.css?v=analyst-20260604b">
-    <link rel="stylesheet" href="/performance.css?v=analyst-20260604b">
+    <link rel="stylesheet" href="/styles.css?v=analyst-20260604c">
+    <link rel="stylesheet" href="/performance.css?v=analyst-20260604c">
   </head>
   <body>
     <header class="topbar">
@@ -31,7 +31,6 @@
           <option value="single">Single Predictor</option>
           <option value="fixture-ledger">Fixture Ledger</option>
           <option value="league-tables">League Tables</option>
-          <option value="world-cup-groups">World Cup Groups</option>
           <option value="international-fixtures">International Fixtures</option>
         </select>
       </label>
@@ -89,7 +88,6 @@
       <button class="page-tab" type="button" data-page-target="single">Single Predictor</button>
       <button class="page-tab" type="button" data-page-target="fixture-ledger">Fixture Ledger</button>
       <button class="page-tab" type="button" data-page-target="league-tables">League Tables</button>
-      <button class="page-tab" type="button" data-page-target="world-cup-groups">World Cup Groups</button>
       <button class="page-tab" type="button" data-page-target="international-fixtures">International Fixtures</button>
     </nav>
 
@@ -702,16 +700,6 @@
           </div>
         </div>
         <div id="leagueTablesOutput" class="league-tables-output" aria-live="polite"></div>
-      </section>
-
-      <section class="panel groups-panel page-section" data-page="world-cup-groups" aria-labelledby="worldCupGroupsHeading">
-        <div class="section-head">
-          <div>
-            <h2 id="worldCupGroupsHeading">World Cup Groups</h2>
-            <p id="worldCupGroupsStatus" class="muted">Loading international groups</p>
-          </div>
-        </div>
-        <div id="worldCupGroupsOutput" class="world-cup-groups" aria-live="polite"></div>
       </section>
 
       <section class="panel international-fixtures-panel page-section" data-page="international-fixtures" aria-labelledby="internationalFixturesHeading">

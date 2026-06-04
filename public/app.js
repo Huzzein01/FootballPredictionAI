@@ -52,8 +52,6 @@ const parlayLedgerOutput = document.querySelector("#parlayLedgerOutput");
 const parlayLedgerStatus = document.querySelector("#parlayLedgerStatus");
 const parlayAccuracyStats = document.querySelector("#parlayAccuracyStats");
 const refreshParlayLedgerButton = document.querySelector("#refreshParlayLedgerButton");
-const worldCupGroupsStatus = document.querySelector("#worldCupGroupsStatus");
-const worldCupGroupsOutput = document.querySelector("#worldCupGroupsOutput");
 const internationalFixturesStatus = document.querySelector("#internationalFixturesStatus");
 const internationalFixturesOutput = document.querySelector("#internationalFixturesOutput");
 const playerProfileStatus = document.querySelector("#playerProfileStatus");
@@ -123,7 +121,7 @@ let appDataLoaded = false;
 
 const CENTRAL_TIME_ZONE = "America/Chicago";
 const AUTH_SESSION_STORAGE_KEY = "footballPredictionSupabaseSession";
-const INTERNATIONAL_ONLY_PAGES = new Set(["world-cup-groups", "international-fixtures"]);
+const INTERNATIONAL_ONLY_PAGES = new Set(["international-fixtures"]);
 const HOSTED_PRIVATE_PAGES = new Set(["player-profiles", "team-profiles", "parlay-ledger", "played", "fixture-ledger"]);
 const PARLAY_SLIP_STORAGE_KEY = "football-selected-parlay-slip";
 const CLUB_SEASONS = [
@@ -743,7 +741,7 @@ function centralHour() {
 
 function adaptiveTheme() {
   const hour = centralHour();
-  return hour >= 6 && hour < 18 ? "light" : "dark";
+  return hour >= 4 && hour < 16 ? "light" : "dark";
 }
 
 function applyTheme(mode) {
@@ -1127,58 +1125,6 @@ function setInternationalSingleDemo() {
   updateTeamList();
 }
 
-function renderWorldCupGroups() {
-  if (!worldCupGroupsOutput) return;
-  const historical = HISTORICAL_WORLD_CUPS[selectedSeason()];
-  if (historical) {
-    worldCupGroupsStatus.textContent = `${selectedSeason()} initial groups | Champion: ${historical.champion}`;
-    worldCupGroupsOutput.innerHTML = historical.groups.map((group) => `
-      <article class="world-cup-group-card">
-        <div class="group-card-head">
-          <span>Group ${escapeHtml(group.group)}</span>
-          <small>Historical draw</small>
-        </div>
-        <ul>
-          ${group.teams.map((team) => `
-            <li>
-              ${teamBadge(team)}
-              <span>${escapeHtml(displayTeam(team))}</span>
-            </li>
-          `).join("")}
-        </ul>
-      </article>
-    `).join("");
-    return;
-  }
-  if (!hasCurrentInternationalFixtures()) {
-    worldCupGroupsStatus.textContent = `${selectedSeason()} groups are not connected yet`;
-    worldCupGroupsOutput.innerHTML = internationalEmptyState("Information not available", seasonUnavailableMessage());
-    return;
-  }
-  const groups = internationalFixtureData?.groups
-    ? Object.entries(internationalFixtureData.groups).map(([group, teams]) => ({ group, teams }))
-    : WORLD_CUP_GROUPS;
-  const source = internationalFixtureData?.source || WORLD_CUP_GROUPS_SOURCE;
-  worldCupGroupsStatus.innerHTML = `2026 groups loaded from <a href="${escapeHtml(source.url)}" target="_blank" rel="noreferrer">${escapeHtml(source.name || "FIFA fixture feed")}</a>`;
-  worldCupGroupsOutput.innerHTML = groups.map((group) => `
-    <article class="world-cup-group-card">
-      <div class="group-card-head">
-        <span>Group ${escapeHtml(group.group)}</span>
-        <small>${internationalFixtureData?.groups ? "Fixture feed teams" : group.playoff ? "Includes playoff placeholder" : "Confirmed teams"}</small>
-      </div>
-      <ul>
-        ${group.teams.map((team) => `
-          <li>
-            ${teamBadge(team)}
-            <span>${escapeHtml(team)}</span>
-          </li>
-        `).join("")}
-      </ul>
-      ${!internationalFixtureData?.groups && group.playoff ? `<p class="muted">Placeholder pool: ${escapeHtml(group.playoff)}</p>` : ""}
-    </article>
-  `).join("");
-}
-
 function renderInternationalFixturesPage() {
   if (!internationalFixturesOutput) return;
   if (!hasCurrentInternationalFixtures()) {
@@ -1189,32 +1135,47 @@ function renderInternationalFixturesPage() {
   const fixtures = internationalFixtureData?.fixtures || [];
   const source = internationalFixtureData?.source;
   if (!fixtures.length) {
-    internationalFixturesStatus.textContent = "Waiting for imported fixture, venue, odds, and kickoff-time data";
+    internationalFixturesStatus.textContent = "Awaiting fixture, venue, and kickoff data";
     internationalFixturesOutput.innerHTML = internationalEmptyState(
-      "Fixture feed not connected yet",
-      "The international fixture page is ready, but predictions and parlays remain blank until a verified World Cup or Euros fixture feed is imported into the model."
+      "Fixtures not imported yet",
+      "The international fixture page is ready. Predictions and parlays populate once a verified World Cup fixture feed is imported."
     );
     return;
   }
-  internationalFixturesStatus.innerHTML = `${fixtures.length} World Cup 2026 group-stage fixtures loaded from <a href="${escapeHtml(source?.url || "#")}" target="_blank" rel="noreferrer">${escapeHtml(source?.name || "FIFA fixture feed")}</a>`;
-  internationalFixturesOutput.innerHTML = fixtures
-    .map((fixture) => `
-      <article class="international-fixture-card">
-        <div class="card-topline">
-          <span>Match ${fixture.matchNumber}</span>
-          <span>${escapeHtml(fixture.group)}</span>
-          <span>${escapeHtml(fixture.date)}</span>
+  internationalFixturesStatus.textContent = `${fixtures.length} World Cup 2026 group-stage fixtures`;
+  // Group fixtures by group letter
+  const byGroup = {};
+  for (const f of fixtures) {
+    const key = f.group || "Other";
+    if (!byGroup[key]) byGroup[key] = [];
+    byGroup[key].push(f);
+  }
+  internationalFixturesOutput.innerHTML = Object.entries(byGroup)
+    .sort(([a], [b]) => a.localeCompare(b))
+    .map(([group, groupFixtures]) => `
+      <section class="intl-group-section">
+        <h3 class="intl-group-heading"><span class="intl-group-badge">${escapeHtml(group)}</span></h3>
+        <div class="intl-fixture-list">
+          ${groupFixtures.map((fixture) => `
+            <article class="international-fixture-card">
+              <div class="intl-fixture-meta">
+                <span class="intl-match-num">Match ${fixture.matchNumber}</span>
+                <span class="intl-fixture-date">${escapeHtml(fixture.date || "")}</span>
+              </div>
+              <div class="fixture-teams intl-teams-row">
+                ${fixtureTeamLine(fixture.homeTeam, fixture.homeFlagUrl)}
+                <span class="versus">vs</span>
+                ${fixtureTeamLine(fixture.awayTeam, fixture.awayFlagUrl)}
+              </div>
+              <div class="intl-fixture-footer">
+                <span class="intl-venue">${escapeHtml(fixture.venue || "Venue TBA")}${fixture.city ? `, ${fixture.city}` : ""}</span>
+                <strong class="intl-kickoff">${escapeHtml(formatKickoff(fixture.kickoffUtc))}</strong>
+              </div>
+            </article>
+          `).join("")}
         </div>
-        <div class="fixture-teams">
-          ${fixtureTeamLine(fixture.homeTeam, fixture.homeFlagUrl)}
-          <span class="versus">vs</span>
-          ${fixtureTeamLine(fixture.awayTeam, fixture.awayFlagUrl)}
-        </div>
-        <p class="muted">${escapeHtml(fixture.venue || "Venue TBA")} | ${escapeHtml(fixture.city || "")}</p>
-        <strong>${escapeHtml(formatKickoff(fixture.kickoffUtc))}</strong>
-      </article>
-    `)
-    .join("");
+      </section>
+    `).join("");
 }
 
 function renderInternationalLeagueTables() {
@@ -1513,7 +1474,6 @@ async function refreshInternationalFixtureBoard() {
     syncDateFilter(parlayDateFilter, [], "");
     renderInternationalFixtureBoard();
     renderInternationalFixturesPage();
-    renderWorldCupGroups();
     setBoardMessage("", "info");
     return;
   }
@@ -1550,7 +1510,6 @@ async function renderInternationalContext() {
   await refreshLeagueTables();
   await refreshFutures();
   await refreshTeamProfiles();
-  renderWorldCupGroups();
   renderInternationalFixturesPage();
   renderPlayerProfiles();
   setInternationalSingleDemo();
@@ -1624,7 +1583,6 @@ function showPage(page) {
   if (pageSelect) pageSelect.value = fallback;
   history.replaceState(null, "", `#${fallback}`);
   if (isInternationalMode()) {
-    renderWorldCupGroups();
     renderInternationalFixturesPage();
     if (fallback === "league-tables") renderInternationalLeagueTables();
     if (fallback === "single") setInternationalSingleDemo();
@@ -1866,15 +1824,25 @@ function fixtureTeams(prediction) {
   `;
 }
 
-function fixtureMiniLine(fixture) {
-  const [homeTeam, awayTeam] = String(fixture || "").split(/\s+vs\s+/i);
-  if (!homeTeam || !awayTeam) return `<p>${escapeHtml(fixture || "")}</p>`;
+function fixtureMiniLine(fixture, leg = null) {
+  const [homeRaw, awayRaw] = String(fixture || "").split(/\s+vs\s+/i);
+  if (!homeRaw || !awayRaw) return `<p>${escapeHtml(fixture || "")}</p>`;
+  const homeTeam = homeRaw.trim();
+  const awayTeam = awayRaw.trim();
+  const homeFlagUrl = leg?.homeLogoUrl || leg?.homeFlagUrl || "";
+  const awayFlagUrl = leg?.awayLogoUrl || leg?.awayFlagUrl || "";
+  function miniBadge(team, flagUrl) {
+    if (flagUrl) {
+      return `<span class="team-badge"><img src="${escapeHtml(flagUrl)}" alt="" loading="lazy" onerror="this.parentElement.classList.add('is-fallback');this.remove();"><span>${escapeHtml(teamInitials(team))}</span></span>`;
+    }
+    return teamBadge(team);
+  }
   return `
     <p class="fixture-mini">
-      ${teamBadge(homeTeam)}
+      ${miniBadge(homeTeam, homeFlagUrl)}
       <span class="mini-team">${escapeHtml(displayTeam(homeTeam))}</span>
       <span class="mini-vs">vs</span>
-      ${teamBadge(awayTeam)}
+      ${miniBadge(awayTeam, awayFlagUrl)}
       <span class="mini-team">${escapeHtml(displayTeam(awayTeam))}</span>
     </p>
   `;
@@ -2416,7 +2384,7 @@ function renderSlipLeg(leg, index) {
       <span class="leg-number">${index}</span>
       <div>
         <strong>${escapeHtml(leg.pick)}</strong>
-        ${fixtureMiniLine(leg.fixture)}
+        ${fixtureMiniLine(leg.fixture, leg)}
         <p class="fbref-line">${escapeHtml(leg.market || "")} | ${escapeHtml(leg.oddsStatus || "")}</p>
       </div>
       <div class="leg-row-meta">
@@ -2938,7 +2906,7 @@ function renderLegListItem(leg, index, parlayId = "", legIndex = 0) {
       <div>
         <strong>${escapeHtml(leg.pick)}</strong>
         ${leg.riskMode ? `<span class="risk-leg-badge">Risk mode</span>` : ""}
-        ${fixtureMiniLine(leg.fixture)}
+        ${fixtureMiniLine(leg.fixture, leg)}
         <p class="fbref-line">${escapeHtml(detail)}</p>
       </div>
       <div class="leg-row-meta">
@@ -2972,7 +2940,7 @@ function renderLegCard(leg) {
         <span>${escapeHtml(leg.market)}</span>
         <strong>${Number(leg.confidence || 0).toFixed(1)}%</strong>
       </div>
-      ${fixtureMiniLine(leg.fixture)}
+      ${fixtureMiniLine(leg.fixture, leg)}
       <p class="fbref-line">${escapeHtml(detail)}</p>
     </article>
   `;
@@ -3042,7 +3010,7 @@ function renderTrackedLeg(parlayId, leg, index) {
       <div>
         <strong>${escapeHtml(leg.pick)}</strong>
         ${leg.riskMode ? `<span class="risk-leg-badge">Risk mode</span>` : ""}
-        ${fixtureMiniLine(leg.fixture)}
+        ${fixtureMiniLine(leg.fixture, leg)}
         <p class="fbref-line">${escapeHtml(detail)}</p>
       </div>
       <div class="leg-actions" data-parlay-id="${escapeHtml(parlayId)}" data-leg-id="${escapeHtml(leg.id)}">
