@@ -2933,10 +2933,12 @@ function renderParlay(data) {
   document.querySelector("#teamScoreLegCount").textContent = data.teamScoreCandidateCount || 0;
   const generationMode = data.filters?.generationMode || (parlayLayoutToggle.checked ? "fixture-grid" : "multi");
   parlayStatus.textContent = fbref.hasPlayerStats
-    ? `${riskMode === "risky" ? "Risk mode" : "Safe mode"} | ${generationMode === "fixture-grid" ? "Fixture grid" : "Multi-ticket"} | Using imported FBref stats from ${fbref.seasons.join(", ") || "local files"} | ${data.availableFixtureCount || 0} fixtures available${selectedDate ? ` on ${selectedDate}` : ""} | ${data.excludedFixtureCount || 0} played excluded${riskMode === "risky" ? ` | ${data.riskyPlayerCandidateCount || 0} risky player legs` : ""}`
-    : "Waiting for imported FBref player stats";
+    ? `${riskMode === "risky" ? "Risk mode" : "Safe mode"} · ${generationMode === "fixture-grid" ? "Fixture grid" : "Multi-ticket"} · ${data.availableFixtureCount || 0} fixtures${selectedDate ? ` on ${selectedDate}` : ""}`
+    : "No player props available yet";
 
-  setParlayMessage(data.parlay?.note || "", fbref.hasPlayerStats ? "info" : "error");
+  // Keep the message area clean — only surface real problems, not the
+  // verbose model/policy explanation.
+  setParlayMessage(fbref.hasPlayerStats ? "" : "No player props available yet.", fbref.hasPlayerStats ? "info" : "error");
 
   if (!legs.length) {
     parlayOutput.innerHTML = `<div class="empty-state">Import player-stat CSVs, run npm.cmd run import:thunderbit or npm.cmd run import:fbref, then refresh this parlay builder.</div>`;
@@ -3010,14 +3012,12 @@ function renderLegSection(title, legs, emptyText) {
 }
 
 function renderLegListItem(leg, index, parlayId = "", legIndex = 0) {
-  const detail =
-    leg.type === "player"
-      ? `${leg.fbrefMetric} | ${leg.fbrefSeason} | ${leg.source}`
-      : leg.type === "corner"
-      ? `${leg.fbrefMetric || "corner model"} | ${leg.source || ""}`
-      : leg.type === "btts"
-      ? `${leg.projectedScore ? `Projected score ${leg.projectedScore} | ` : ""}${leg.source || ""}`
-      : `Projected score ${leg.projectedScore || "N/A"} | ${leg.source || ""}`;
+  // Only show a projected score for team/score markets. Player & corner
+  // props show nothing here — the market + odds are already in the meta,
+  // and the verbose model/source jargon is hidden entirely.
+  const detail = leg.projectedScore && ["btts", "score", "match"].includes(leg.type)
+    ? `Projected score ${escapeHtml(leg.projectedScore)}`
+    : "";
   const selected = selectedParlaySlip.legs.some((item) => legSignature(item) === legSignature(leg));
   const oddsLabel = leg.oddsType === "sportsbook" ? "Odds API" : "Model est.";
   return `
@@ -3027,7 +3027,7 @@ function renderLegListItem(leg, index, parlayId = "", legIndex = 0) {
         <strong>${escapeHtml(leg.pick)}</strong>
         ${leg.riskMode ? `<span class="risk-leg-badge">Risk mode</span>` : ""}
         ${fixtureMiniLine(leg.fixture, leg)}
-        <p class="fbref-line">${escapeHtml(detail)}</p>
+        ${detail ? `<p class="fbref-line">${detail}</p>` : ""}
       </div>
       <div class="leg-row-meta">
         <span>${escapeHtml(leg.market)}</span>
@@ -3041,14 +3041,11 @@ function renderLegListItem(leg, index, parlayId = "", legIndex = 0) {
 
 function renderLegCard(leg) {
   const typeClass = leg.type === "player" ? "player-leg" : leg.type === "score" ? "score-leg" : leg.type === "corner" ? "corner-leg" : leg.type === "btts" ? "btts-leg" : "match-leg";
-  const detail =
-    leg.type === "player"
-      ? `FBref: ${leg.fbrefMetric} | ${leg.fbrefSeason} | ${leg.source}`
-      : leg.type === "corner"
-      ? `Corner model: ${leg.fbrefMetric || "team corner average"} | ${leg.source || ""}`
-      : leg.type === "btts"
-      ? `BTTS model: projected score ${leg.projectedScore || "N/A"} | ${leg.source || ""}`
-      : `Model: projected score ${leg.projectedScore || "N/A"} | ${leg.source || ""}`;
+  // User-facing detail only — projected score for team markets, nothing
+  // for player/corner props (the market + odds already say enough).
+  const detail = ["btts", "score", "match"].includes(leg.type) && leg.projectedScore
+    ? `Projected score ${escapeHtml(leg.projectedScore)}`
+    : "";
   return `
     <article class="leg-card ${typeClass}">
       <div class="card-topline">
@@ -3061,7 +3058,7 @@ function renderLegCard(leg) {
         <strong>${Number(leg.confidence || 0).toFixed(1)}%</strong>
       </div>
       ${fixtureMiniLine(leg.fixture, leg)}
-      <p class="fbref-line">${escapeHtml(detail)}</p>
+      ${detail ? `<p class="fbref-line">${detail}</p>` : ""}
     </article>
   `;
 }
