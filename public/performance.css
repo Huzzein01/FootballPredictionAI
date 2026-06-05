@@ -1820,6 +1820,15 @@ button.primary {
   .board-controls::-webkit-scrollbar,
   .parlay-controls::-webkit-scrollbar { display: none; }
 
+  /* Trailing spacer so the last pill isn't clipped at scroll-end */
+  .board-controls::after,
+  .parlay-controls::after {
+    content: '';
+    flex: 0 0 16px;
+    min-width: 16px;
+    order: 100;
+  }
+
   /* Uniform rectangular tabs — all the SAME fixed size for a clean,
      consistent look (label stacked above control). */
   .board-controls > label,
@@ -1834,6 +1843,15 @@ button.primary {
     border-radius: 8px !important;
     background: var(--surface) !important;
     border: 1px solid var(--line) !important;
+  }
+
+  /* [hidden] must override the !important display rule above */
+  .board-controls > [hidden],
+  .parlay-controls > [hidden] {
+    display: none !important;
+    flex: none !important;
+    width: 0 !important;
+    min-width: 0 !important;
   }
 
   /* Label tabs: tiny caption on top, control below */
@@ -1868,6 +1886,13 @@ button.primary {
     color: var(--ink) !important;
     box-shadow: none !important;
     outline: none;
+  }
+
+  /* Date input: use dark color-scheme so placeholder "mm/dd/yyyy" renders legibly */
+  .parlay-controls > label input[type="date"] {
+    color-scheme: dark;
+    font-size: 11px !important;
+    letter-spacing: -0.01em;
   }
 
   /* Button tabs: centered label, same size as filter tabs */
