@@ -2,10 +2,12 @@ const fs = require("fs");
 const path = require("path");
 const { listPredictions } = require("./backtestStore");
 const { oddsForInternationalFixture } = require("./oddsApiService");
+const { mutableDataPath, readJsonWithFallback } = require("./runtimePaths");
 
 const PLAYER_STATS_PATH = path.join(process.cwd(), "data", "international", "processed", "world_cup_player_stats.json");
 const SQUAD_STATS_PATH = path.join(process.cwd(), "data", "international", "processed", "world_cup_squad_stats.json");
 const WORLD_CUP_FIXTURES_PATH = path.join(process.cwd(), "data", "international", "world_cup_2026_fixtures.json");
+const INTL_FRIENDLY_RESULTS_PATH = mutableDataPath("international", "friendly_results.json");
 
 const TEAM_RATINGS = {
   Argentina: 92,
@@ -86,6 +88,32 @@ function ratingFor(team) {
   return TEAM_RATINGS[team] ?? 68;
 }
 
+// Read the ESPN-fetched international friendly results from disk.
+function readFriendlyResults() {
+  const snapshot = readJsonWithFallback(INTL_FRIENDLY_RESULTS_PATH, null, null);
+  return Array.isArray(snapshot?.results) ? snapshot.results : [];
+}
+
+// Compute a ±4-point form delta from the team's last 8 friendly results.
+// Returns 0 if fewer than 2 results are available.
+function friendlyFormAdjustment(team, results) {
+  const relevant = results
+    .filter((r) => r.homeTeam === team || r.awayTeam === team)
+    .slice(-8);
+  if (relevant.length < 2) return 0;
+  let points = 0;
+  for (const r of relevant) {
+    const isHome = r.homeTeam === team;
+    const scored = isHome ? r.homeGoals : r.awayGoals;
+    const conceded = isHome ? r.awayGoals : r.homeGoals;
+    if (scored > conceded) points += 3;
+    else if (scored === conceded) points += 1;
+  }
+  const ratio = points / (relevant.length * 3); // [0, 1]
+  const delta = ratio * 2 - 1; // [-1, +1]
+  return Math.round(delta * 4 * 10) / 10; // up to ±4.0
+}
+
 function hostBoost(fixture) {
   const hostTeams = new Set(["Canada", "Mexico", "USA"]);
   const homeBoost = hostTeams.has(fixture.homeTeam) && fixture.hostCountry === fixture.homeCode ? 3 : 0;
@@ -112,10 +140,12 @@ function projectedScore(diff, pick) {
   return `${home}-${away}`;
 }
 
-function predictInternationalFixture(fixture) {
+function predictInternationalFixture(fixture, friendlyResults = []) {
   const liveOdds = oddsForInternationalFixture(fixture);
-  const homeRating = ratingFor(fixture.homeTeam);
-  const awayRating = ratingFor(fixture.awayTeam);
+  const homeFormAdj = friendlyFormAdjustment(fixture.homeTeam, friendlyResults);
+  const awayFormAdj = friendlyFormAdjustment(fixture.awayTeam, friendlyResults);
+  const homeRating = ratingFor(fixture.homeTeam) + homeFormAdj;
+  const awayRating = ratingFor(fixture.awayTeam) + awayFormAdj;
   const diff = homeRating - awayRating + hostBoost(fixture);
   const draw = clamp(0.25 - Math.abs(diff) * 0.004, 0.16, 0.28);
   const homeShare = logistic(diff / 12);
@@ -173,7 +203,7 @@ function predictInternationalFixture(fixture) {
       factors: [
         `Fixture imported from FIFA schedule: Match ${fixture.matchNumber}, ${fixture.venue}, ${fixture.city}.`,
         `All World Cup 2026 group-stage teams are in scope in international mode.`,
-        `Rating signal: ${fixture.homeTeam} ${homeRating}, ${fixture.awayTeam} ${awayRating}${hostBoost(fixture) ? ", host boost applied" : ""}.`,
+        `Rating signal: ${fixture.homeTeam} ${homeRating.toFixed(1)}, ${fixture.awayTeam} ${awayRating.toFixed(1)}${hostBoost(fixture) ? ", host boost applied" : ""}${homeFormAdj || awayFormAdj ? ` (friendly form: ${fixture.homeTeam} ${homeFormAdj >= 0 ? "+" : ""}${homeFormAdj}, ${fixture.awayTeam} ${awayFormAdj >= 0 ? "+" : ""}${awayFormAdj})` : ""}.`,
         "Odds, injuries, final squad news, and fresh team/player form should be layered in as they become available.",
       ],
     },
@@ -181,7 +211,8 @@ function predictInternationalFixture(fixture) {
 }
 
 function internationalFixturePredictions() {
-  return readFixtureData().fixtures.map(predictInternationalFixture);
+  const friendlyResults = readFriendlyResults();
+  return readFixtureData().fixtures.map((f) => predictInternationalFixture(f, friendlyResults));
 }
 
 function emptyGroupRow(team) {

@@ -13,7 +13,7 @@ const { futuresPredictions } = require("./futuresService");
 const { resetPlayerStatsCache } = require("./playerStats");
 const { loadMatches, normalizeTeamName } = require("./footballData");
 const { refreshMissingOdds } = require("./oddsRepairService");
-const { readResultsSnapshot, refreshEspnFixtures, refreshEspnResults, enrichPredictionsWithLiveStatus } = require("./espnFixtureService");
+const { readResultsSnapshot, refreshEspnFixtures, refreshEspnResults, enrichPredictionsWithLiveStatus, refreshInternationalFriendlyResults, readFriendlyResultsSnapshot } = require("./espnFixtureService");
 const { refreshTheOddsApi } = require("./oddsApiService");
 const { apiFootballStatus } = require("./liveData");
 const { refreshApiFootballPlayerStats } = require("./apiFootballPlayerStats");
@@ -660,7 +660,10 @@ async function handleApi(req, res, pathname) {
   }
 
   if (req.method === "GET" && pathname === "/api/international/fixture-predictions") {
-    await refreshTheOddsApi({ includeClub: false, includeInternational: true, daysForward: 420 });
+    await Promise.all([
+      refreshTheOddsApi({ includeClub: false, includeInternational: true, daysForward: 420 }),
+      refreshInternationalFriendlyResults(),
+    ]);
     const predictions = internationalFixturePredictions();
     return sendJson(res, 200, {
       predictions,
@@ -678,6 +681,20 @@ async function handleApi(req, res, pathname) {
       groups: internationalGroupTables(),
       source: readFixtureData().source || null,
     });
+  }
+
+  if (req.method === "POST" && pathname === "/api/international/refresh-friendlies") {
+    const snapshot = await refreshInternationalFriendlyResults({ force: true });
+    return sendJson(res, 200, {
+      fetched: snapshot.fetched,
+      updatedAt: snapshot.updatedAt,
+      error: snapshot.error || null,
+      sample: (snapshot.results || []).slice(0, 5),
+    });
+  }
+
+  if (req.method === "GET" && pathname === "/api/international/friendly-results") {
+    return sendJson(res, 200, readFriendlyResultsSnapshot() || { results: [], fetched: 0 });
   }
 
   const playerStatsMatch = pathname.match(/^\/api\/player-profiles\/([^/]+)\/stats$/);

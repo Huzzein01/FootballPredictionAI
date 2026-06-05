@@ -9,6 +9,8 @@ const LIVE_FIXTURE_PATH = mutableDataPath("live_espn_fixtures.json");
 const SEEDED_LIVE_FIXTURE_PATH = repoDataPath("live_espn_fixtures.json");
 const LIVE_RESULTS_PATH = mutableDataPath("live_espn_results.json");
 const SEEDED_LIVE_RESULTS_PATH = repoDataPath("live_espn_results.json");
+const INTL_FRIENDLY_RESULTS_PATH = mutableDataPath("international", "friendly_results.json");
+const INTL_FRIENDLY_ESPN_SLUG = "FIFA.friendly";
 const USER_AGENT = "Mozilla/5.0 FootballPredictionAI espn-fixture-refresh";
 
 const ESPN_LEAGUES = {
@@ -470,13 +472,57 @@ async function refreshEspnResults({ daysBack = 14, daysForward = 1, force = fals
   return snapshot;
 }
 
+// Fetch the last 180 days of international friendly results from ESPN and
+// store them for use by the international prediction model.
+async function refreshInternationalFriendlyResults({ force = false } = {}) {
+  if (!force) {
+    const cached = readJsonWithFallback(INTL_FRIENDLY_RESULTS_PATH, null, null);
+    if (cached?.updatedAt) {
+      const ageMs = Date.now() - Date.parse(cached.updatedAt);
+      if (Number.isFinite(ageMs) && ageMs >= 0 && ageMs < 30 * 60_000) return { ...cached, cached: true };
+    }
+  }
+
+  const dateWindow = dateRange(180, 0);
+  const sourceUrl = `https://site.api.espn.com/apis/site/v2/sports/soccer/${INTL_FRIENDLY_ESPN_SLUG}/scoreboard?dates=${dateWindow}&limit=300`;
+  let results = [];
+  let error = null;
+  try {
+    const response = await fetch(sourceUrl, { headers: { "user-agent": USER_AGENT } });
+    if (!response.ok) throw new Error(`ESPN friendly request failed: ${response.status}`);
+    const payload = await response.json();
+    results = (payload.events || [])
+      .map((event) => normalizeEspnResult(event, "International Friendly", sourceUrl))
+      .filter((r) => r.completed && r.homeTeam && r.awayTeam && Number.isFinite(r.homeGoals) && Number.isFinite(r.awayGoals));
+  } catch (err) {
+    error = err.message;
+  }
+
+  const snapshot = {
+    updatedAt: new Date().toISOString(),
+    slug: INTL_FRIENDLY_ESPN_SLUG,
+    dateWindow,
+    fetched: results.length,
+    results,
+    error: error || null,
+  };
+  writeJson(INTL_FRIENDLY_RESULTS_PATH, snapshot);
+  return snapshot;
+}
+
+function readFriendlyResultsSnapshot() {
+  return readJsonWithFallback(INTL_FRIENDLY_RESULTS_PATH, null, null);
+}
+
 module.exports = {
   ESPN_LEAGUES,
   allEuropeanLeagueNames,
   readResultsSnapshot,
   readFixturesSnapshot,
+  readFriendlyResultsSnapshot,
   liveStatusLookup,
   enrichPredictionsWithLiveStatus,
   refreshEspnFixtures,
   refreshEspnResults,
+  refreshInternationalFriendlyResults,
 };

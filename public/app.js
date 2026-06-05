@@ -2976,14 +2976,6 @@ function renderParlayTicket(parlay) {
           <p class="muted">${legs.length} selections | ${slipEffectiveLegCount(legs)} effective legs | average confidence ${Number(parlay.averageConfidence || 0).toFixed(1)}%</p>
         </div>
         <div class="ticket-actions">
-          <div class="ticket-stats">
-            <span>${(parlay.playerStatLegs || []).length} player</span>
-            <span>${(parlay.propLegs || []).length} BTTS/corner</span>
-            <span>${(parlay.teamScoreLegs || []).length} score</span>
-            <span>${(parlay.matchResultLegs || []).length} result</span>
-            <span>${formatDecimalOdds(combinedDecimalOdds(legs))}x</span>
-            ${riskCount ? `<span>${riskCount} risk</span>` : ""}
-          </div>
           <button class="select-ticket-button" type="button" data-select-ticket="${escapeHtml(parlay.id)}">${selectedTicket ? "Selected in slip" : "Select parlay"}</button>
           <button class="track-ticket-button" type="button" data-track-ticket="${escapeHtml(parlay.id)}">Track this option</button>
         </div>

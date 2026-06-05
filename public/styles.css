@@ -70,6 +70,13 @@ body.hosted-public #modelMeta {
   display: none;
 }
 
+/* On hosted Vercel: strip internal jargon from leg rows (market label, model confidence) */
+body.hosted-public .leg-row-meta > span,
+body.hosted-public .leg-row-meta > small,
+body.hosted-public .ticket-stats {
+  display: none !important;
+}
+
 body.auth-required:not(.is-authenticated) .page-nav,
 body.auth-required:not(.is-authenticated) .dashboard {
   display: none;
@@ -776,8 +783,8 @@ textarea:focus {
 .parlay-leg-row,
 .tracked-leg-row {
   display: grid;
-  grid-template-columns: 34px minmax(0, 1fr) minmax(150px, auto);
-  gap: 10px;
+  grid-template-columns: 28px minmax(0, 1fr) minmax(150px, auto);
+  gap: 6px;
   align-items: center;
   border: 1px solid var(--line);
   border-left: 5px solid var(--teal);
