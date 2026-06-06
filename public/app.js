@@ -845,7 +845,15 @@ function updateContextLabels() {
   if (leagueTablesHeading) leagueTablesHeading.textContent = tableLabel;
   if (leagueTableLeagueFilter) leagueTableLeagueFilter.closest("label").hidden = isInternationalMode();
   if (futuresLeagueFilter) futuresLeagueFilter.closest("label").hidden = isInternationalMode();
-  if (futuresMarketFilter) futuresMarketFilter.closest("label").hidden = false;
+  if (futuresMarketFilter) {
+    futuresMarketFilter.closest("label").hidden = false;
+    const intl = isInternationalMode();
+    [...futuresMarketFilter.options].forEach((opt) => {
+      if (opt.value === "winners") opt.textContent = intl ? "Tournament winner" : "League winners";
+      if (opt.value === "europe") opt.hidden = intl;
+    });
+    if (intl && futuresMarketFilter.value === "europe") futuresMarketFilter.value = "winners";
+  }
   if (parlayLeagueFilter) parlayLeagueFilter.closest("label").hidden = isInternationalMode();
   if (playedLeagueFilter) playedLeagueFilter.closest("label").hidden = isInternationalMode();
   if (leagueSelect) {
@@ -1434,8 +1442,8 @@ function renderFutures() {
     return;
   }
   futuresStatus.textContent = `${data.context === "international" ? "International" : "Club"} futures | ${data.season || selectedSeason()} | generated ${new Date(data.generatedAt || Date.now()).toLocaleString()}`;
+  const intlFutures = data.context === "international";
   futuresOutput.innerHTML = `
-    ${data.sourcePolicy ? `<p class="futures-policy">${escapeHtml(data.sourcePolicy)}</p>` : ""}
     ${filteredSections
       .map((section) => {
         const listLayout = section.picks.every((pick) => /top scorer|top assist|team top scorer/i.test(pick.market || ""));
@@ -1450,7 +1458,12 @@ function renderFutures() {
             <div class="futures-pick-grid ${listLayout ? "is-list" : ""}">
               ${(section.picks || [])
                 .map(
-                  (pick) => `
+                  (pick) => {
+                    const rawDetail = pick.detail || "";
+                    const cleanDetail = intlFutures
+                      ? rawDetail.replace(/;\s*international baseline rating \d+\.?/i, "").trim()
+                      : rawDetail;
+                    return `
                     <div class="futures-pick-card">
                       <div class="card-topline">
                         <span>${escapeHtml(pick.market || "Futures lean")}</span>
@@ -1458,11 +1471,11 @@ function renderFutures() {
                       </div>
                       <h4>${escapeHtml(pick.label || "")}</h4>
                       <strong>${statNumber(pick.confidence, 1)}%</strong>
-                      <p>${escapeHtml(pick.detail || "")}</p>
-                      ${pick.note ? `<p class="fbref-line">${escapeHtml(pick.note)}</p>` : ""}
-                      ${pick.source?.url ? `<a href="${escapeHtml(pick.source.url)}" target="_blank" rel="noreferrer">${escapeHtml(pick.source.name || "Source")}</a>` : `<span class="profile-source">${escapeHtml(pick.source?.name || "")}</span>`}
+                      ${cleanDetail ? `<p>${escapeHtml(cleanDetail)}</p>` : ""}
+                      ${!intlFutures && pick.source?.name ? `<span class="profile-source">${escapeHtml(pick.source.name)}</span>` : ""}
                     </div>
-                  `
+                  `;
+                  }
                 )
                 .join("")}
             </div>
