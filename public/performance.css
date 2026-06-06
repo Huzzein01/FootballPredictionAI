@@ -1910,17 +1910,8 @@ button.primary {
   /* Stat boxes are redundant on mobile (count is in the status line) */
   .board-controls > .board-stats { display: none !important; }
 
-  /* Parlay stat boxes: keep but wrap below the pills */
-  .parlay-controls > .board-stats {
-    flex: 0 0 100% !important;
-    order: 99;
-    display: grid !important;
-    grid-template-columns: 1fr 1fr 1fr;
-    gap: 6px;
-    margin-top: 6px;
-  }
-  .board-stats span { padding: 8px 6px; text-align: center; font-size: 10px; }
-  .board-stats strong { font-size: 15px; }
+  /* Parlay stat boxes: hide on mobile — jargon not useful on phone */
+  .parlay-controls > .board-stats { display: none !important; }
 
   /* ════════ 8. RISK MODE ════════ */
   .risk-mode-bar { gap: 6px; margin-bottom: 12px; }
@@ -1929,6 +1920,62 @@ button.primary {
   /* ════════ 9. PARLAY TICKETS ════════ */
   .parlay-ticket { padding: 12px !important; border-radius: 0 !important; box-shadow: none !important; }
   .ticket-head { flex-wrap: wrap; gap: 8px; margin-bottom: 10px; }
+
+  /* ════════ 9b. PARLAY LEG ROWS ════════ */
+  /* 2-column layout: [number badge] [content].
+     The third child (leg-row-meta) moves to col 2 via grid-column override,
+     appearing below the main content — number stays vertically top-aligned. */
+  .parlay-leg-row,
+  .tracked-leg-row {
+    display: grid !important;
+    grid-template-columns: 26px 1fr !important;
+    gap: 0 8px !important;
+    align-items: start !important;
+    padding: 10px 12px !important;
+  }
+
+  /* Number badge: top of col 1, aligned with pick name */
+  .parlay-leg-row .leg-number,
+  .tracked-leg-row .leg-number {
+    margin-top: 2px;
+    align-self: start;
+  }
+
+  /* Content div takes col 2 — default auto-placement is correct */
+  .parlay-leg-row .leg-content,
+  .tracked-leg-row .leg-content { width: 100%; }
+
+  /* Pick name + odds on the same line */
+  .leg-pick-line {
+    display: flex !important;
+    justify-content: space-between !important;
+    align-items: flex-start !important;
+    gap: 6px !important;
+    margin-bottom: 2px;
+  }
+  .leg-pick { flex: 1 1 0; min-width: 0; }
+  .leg-odds {
+    flex: 0 0 auto;
+    font-size: 15px !important;
+    font-weight: 900 !important;
+    color: var(--teal) !important;
+    white-space: nowrap;
+  }
+
+  /* Meta row (market label, confidence, button) below the pick line */
+  .parlay-leg-row .leg-row-meta,
+  .tracked-leg-row .leg-row-meta {
+    display: flex !important;
+    flex-direction: row !important;
+    flex-wrap: wrap !important;
+    align-items: center !important;
+    justify-content: flex-start !important;
+    gap: 6px !important;
+    margin-top: 6px !important;
+    /* override any grid-column assignment from base styles */
+    grid-column: unset !important;
+    justify-items: unset !important;
+  }
 
   /* ════════ 10. GRIDS ════════ */
   .accuracy-stats   { grid-template-columns: 1fr 1fr !important; gap: 8px; }

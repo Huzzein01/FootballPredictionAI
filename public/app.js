@@ -2487,16 +2487,17 @@ function renderSlipLeg(leg, index) {
   return `
     <li class="parlay-leg-row ${leg.type}-leg">
       <span class="leg-number">${index}</span>
-      <div>
-        <strong>${escapeHtml(leg.pick)}</strong>
+      <div class="leg-content">
+        <div class="leg-pick-line">
+          <strong class="leg-pick">${escapeHtml(leg.pick)}</strong>
+          <strong class="leg-odds">${formatDecimalOdds(leg.decimalOdds)}</strong>
+        </div>
         ${fixtureMiniLine(leg.fixture, leg)}
-        <p class="fbref-line">${escapeHtml(leg.market || "")} | ${escapeHtml(leg.oddsStatus || "")}</p>
-      </div>
-      <div class="leg-row-meta">
-        <span>${escapeHtml(sourceLabel)}</span>
-        <strong>${formatDecimalOdds(leg.decimalOdds)}</strong>
-        <small class="confidence-chip ${confidence.tone}">${Number(leg.confidence || 0).toFixed(1)}% - ${escapeHtml(confidence.label)}</small>
-        <button class="ghost-button compact-button" type="button" data-remove-slip-leg="${escapeHtml(legSignature(leg))}">Remove</button>
+        <div class="leg-row-meta">
+          <span>${escapeHtml(sourceLabel)}</span>
+          <small class="confidence-chip ${confidence.tone}">${Number(leg.confidence || 0).toFixed(1)}% - ${escapeHtml(confidence.label)}</small>
+          <button class="ghost-button compact-button" type="button" data-remove-slip-leg="${escapeHtml(legSignature(leg))}">Remove</button>
+        </div>
       </div>
     </li>
   `;
@@ -3003,29 +3004,47 @@ function renderLegSection(title, legs, emptyText) {
   `;
 }
 
+// Ensure the projected score is consistent with a BTTS pick direction.
+// BTTS Yes → both teams must score; BTTS No → one team must score 0.
+function bttsConsistentScore(projectedScore, pick) {
+  const parts = String(projectedScore || "").split("-");
+  let h = Number(parts[0]);
+  let a = Number(parts[1]);
+  if (!Number.isFinite(h) || !Number.isFinite(a)) return projectedScore;
+  if (/\byes\b/i.test(pick)) {
+    if (h === 0) h = 1;
+    if (a === 0) a = 1;
+  } else {
+    // BTTS No: zero the smaller side if both currently scored
+    if (h > 0 && a > 0) { if (h <= a) h = 0; else a = 0; }
+  }
+  return `${h}-${a}`;
+}
+
 function renderLegListItem(leg, index, parlayId = "", legIndex = 0) {
-  // Only show a projected score for team/score markets. Player & corner
-  // props show nothing here — the market + odds are already in the meta,
-  // and the verbose model/source jargon is hidden entirely.
-  const detail = leg.projectedScore && ["btts", "score", "match"].includes(leg.type)
-    ? `Projected score ${escapeHtml(leg.projectedScore)}`
+  // Projected score only for team/score markets, with BTTS consistency check.
+  let rawScore = leg.projectedScore && ["btts", "score", "match"].includes(leg.type)
+    ? (leg.type === "btts" ? bttsConsistentScore(leg.projectedScore, leg.pick) : leg.projectedScore)
     : "";
+  const detail = rawScore ? `Projected score ${escapeHtml(rawScore)}` : "";
   const selected = selectedParlaySlip.legs.some((item) => legSignature(item) === legSignature(leg));
   const oddsLabel = leg.oddsType === "sportsbook" ? "Odds API" : "Model est.";
   return `
     <li class="parlay-leg-row ${leg.type}-leg">
       <span class="leg-number">${index}</span>
-      <div>
-        <strong>${escapeHtml(leg.pick)}</strong>
+      <div class="leg-content">
+        <div class="leg-pick-line">
+          <strong class="leg-pick">${escapeHtml(leg.pick)}</strong>
+          <strong class="leg-odds">${formatDecimalOdds(leg.decimalOdds)}</strong>
+        </div>
         ${leg.riskMode ? `<span class="risk-leg-badge">Risk mode</span>` : ""}
         ${fixtureMiniLine(leg.fixture, leg)}
         ${detail ? `<p class="fbref-line">${detail}</p>` : ""}
-      </div>
-      <div class="leg-row-meta">
-        <span>${escapeHtml(leg.market)}</span>
-        <strong>${formatDecimalOdds(leg.decimalOdds)}</strong>
-        <small>${escapeHtml(oddsLabel)} | ${Number(leg.confidence || 0).toFixed(1)}%</small>
-        <button class="select-leg-button compact-button" type="button" data-select-leg="${escapeHtml(parlayId)}" data-leg-index="${legIndex}">${selected ? "Added" : "Add to slip"}</button>
+        <div class="leg-row-meta">
+          <span>${escapeHtml(leg.market)}</span>
+          <small>${escapeHtml(oddsLabel)} | ${Number(leg.confidence || 0).toFixed(1)}%</small>
+          <button class="select-leg-button compact-button" type="button" data-select-leg="${escapeHtml(parlayId)}" data-leg-index="${legIndex}">${selected ? "Added" : "Add to slip"}</button>
+        </div>
       </div>
     </li>
   `;
