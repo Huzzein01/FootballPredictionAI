@@ -2211,6 +2211,74 @@ function oddsSourceMarkup(prediction) {
   return label;
 }
 
+/**
+ * Weather badge for international prediction cards.
+ * Only renders when standingContext.weather is present (WC 2026 fixtures only).
+ * Shows venue heat/altitude tier, home/away climate scores, and net edge.
+ */
+function weatherBadge(prediction) {
+  const w = prediction.standingContext?.weather;
+  if (!w) return "";
+
+  // Choose icon + tier class based on dominant stressor and heat level
+  let icon, tierClass, venueLabel;
+  if (w.dominantStressor === "altitude") {
+    icon = "⛰";
+    tierClass = "weather-altitude";
+    venueLabel = `High altitude · ${escapeHtml(prediction.city || "")} (${w.altitudeM}m)`;
+  } else if (w.venueTier >= 4.5) {
+    icon = "🔴";
+    tierClass = "weather-extreme";
+    venueLabel = `Extreme heat · ${escapeHtml(prediction.city || "")}`;
+  } else if (w.venueTier >= 3.5) {
+    icon = "🟠";
+    tierClass = "weather-severe";
+    venueLabel = `Severe heat · ${escapeHtml(prediction.city || "")}`;
+  } else if (w.venueTier >= 2.5) {
+    icon = "🟡";
+    tierClass = "weather-high";
+    venueLabel = `High heat · ${escapeHtml(prediction.city || "")}`;
+  } else if (w.venueTier >= 1.5) {
+    icon = "🟢";
+    tierClass = "weather-moderate";
+    venueLabel = `Moderate · ${escapeHtml(prediction.city || "")}`;
+  } else {
+    icon = "🔵";
+    tierClass = "weather-mild";
+    venueLabel = `Mild · ${escapeHtml(prediction.city || "")}`;
+  }
+
+  // Net edge label
+  let edgeText = "";
+  const net = w.netDiffImpact;
+  if (Math.abs(net) >= 0.3) {
+    const beneficiary = net > 0 ? prediction.homeTeam : prediction.awayTeam;
+    edgeText = `${escapeHtml(displayTeam(beneficiary))} +${Math.abs(net).toFixed(1)} pt weather edge`;
+  } else {
+    edgeText = "Neutral weather conditions";
+  }
+
+  // Climate score sub-labels
+  const hScore = w.home.climateScore.toFixed(1);
+  const aScore = w.away.climateScore.toFixed(1);
+  const hAdj   = (w.home.total >= 0 ? "+" : "") + w.home.total.toFixed(1);
+  const aAdj   = (w.away.total >= 0 ? "+" : "") + w.away.total.toFixed(1);
+
+  return `
+    <div class="weather-badge ${tierClass}">
+      <span class="weather-icon" aria-hidden="true">${icon}</span>
+      <span class="weather-venue-label">${venueLabel}</span>
+      <span class="weather-sep" aria-hidden="true">·</span>
+      <span class="weather-edge-label">${edgeText}</span>
+      <span class="weather-scores">
+        ${escapeHtml(displayTeam(prediction.homeTeam))} <em>${hAdj}</em>
+        <span aria-hidden="true">/</span>
+        ${escapeHtml(displayTeam(prediction.awayTeam))} <em>${aAdj}</em>
+      </span>
+    </div>
+  `;
+}
+
 function motivationText(prediction) {
   const context = prediction.standingContext;
   if (!context?.home || !context?.away) return "";
@@ -2723,6 +2791,7 @@ function renderBoard() {
             <span>${oddsSourceMarkup(prediction)}</span>
             <strong>${escapeHtml(oddsText(prediction))}</strong>
           </div>
+          ${weatherBadge(prediction)}
           ${motivationLine(prediction)}
           <div class="prob-bars">${probabilityRows(prediction)}</div>
         </article>

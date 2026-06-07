@@ -1370,6 +1370,43 @@ textarea:focus {
   font-weight: 800;
 }
 
+/* ── Weather badge — international fixture cards ─────────────────────── */
+.weather-badge {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 4px 8px;
+  padding: 6px 10px;
+  border-radius: 7px;
+  border-left: 3px solid transparent;
+  font-size: 11px;
+  font-weight: 700;
+  line-height: 1.4;
+  background: var(--surface);
+  border: 1px solid var(--line);
+  border-left-width: 3px;
+  color: var(--text);
+}
+.weather-badge .weather-icon { font-size: 13px; line-height: 1; }
+.weather-badge .weather-venue-label { font-weight: 800; }
+.weather-badge .weather-sep { color: var(--muted); }
+.weather-badge .weather-edge-label { color: var(--muted); font-weight: 600; flex: 1 1 auto; }
+.weather-badge .weather-scores {
+  width: 100%;
+  color: var(--muted);
+  font-weight: 600;
+  font-size: 10.5px;
+}
+.weather-badge .weather-scores em { font-style: normal; font-weight: 800; color: var(--text); }
+
+/* Tier colour-coding via left border */
+.weather-extreme  { border-left-color: #e53e3e; }
+.weather-severe   { border-left-color: #dd6b20; }
+.weather-high     { border-left-color: #d69e2e; }
+.weather-moderate { border-left-color: #38a169; }
+.weather-mild     { border-left-color: #3182ce; }
+.weather-altitude { border-left-color: #805ad5; }
+
 .scoreboard-row .prob-bars {
   grid-area: probs;
   margin-top: 0;
