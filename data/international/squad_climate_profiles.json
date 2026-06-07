@@ -1,0 +1,744 @@
+{
+  "_meta": {
+    "description": "WC 2026 squad climate profiles — average club-league climate tier per national team. Used by weatherService.js to compute heat/altitude adjustment in match predictions.",
+    "generatedAt": "2026-06-07T05:02:38.824Z",
+    "generatedBy": "scripts/buildSquadClimateProfiles.js",
+    "climateTierScale": {
+      "1.0–1.9": "Cold (Scotland, Scandinavia, northern MLS)",
+      "2.0–2.9": "Temperate (Premier League, Bundesliga, Eredivisie, Belgian, MLS mixed)",
+      "3.0–3.5": "Warm (Ligue 1, Serie A, Primeira Liga, Argentine Primera, J/K League)",
+      "3.6–4.4": "Hot/Dry (La Liga, Süper Lig, Liga MX, African domestic, Middle East)",
+      "4.5–5.0": "Hot/Humid (Saudi Pro League, Brazilian Série A, Egyptian, West African, Iraqi, Qatari)"
+    },
+    "altitudeAdaptedNote": "Teams marked altitudeAdapted:true have ≥30% of their squad from clubs in cities above 1,500m. They receive a reduced altitude penalty at Guadalajara (1,556m) and Mexico City (2,240m) fixtures.",
+    "teamCount": 48
+  },
+  "profiles": {
+    "Algeria": {
+      "squadClimateScore": 3.26,
+      "heatLabel": "Warm-climate squad",
+      "altitudeAdapted": false,
+      "distribution": {
+        "Ligue 1": 0.3,
+        "Algerian Ligue Pro": 0.18,
+        "Süper Lig": 0.1,
+        "Belgian Pro League": 0.08,
+        "Premier League": 0.05,
+        "Saudi Pro League": 0.07,
+        "Other European": 0.14,
+        "Other": 0.08
+      },
+      "notes": "Strong Ligue 1 presence (many French-Algerian players). Algerian domestic league is hot/dry (Algiers: warm Mediterranean). Turkish and Saudi exposure adds further heat adaptation. Solid warm-weather squad."
+    },
+    "Argentina": {
+      "squadClimateScore": 3.43,
+      "heatLabel": "Warm-climate squad",
+      "altitudeAdapted": false,
+      "distribution": {
+        "La Liga": 0.2,
+        "Argentine Primera": 0.18,
+        "Saudi Pro League": 0.12,
+        "Serie A": 0.1,
+        "Premier League": 0.1,
+        "Ligue 1": 0.08,
+        "MLS Mixed": 0.05,
+        "Bundesliga": 0.05,
+        "Other": 0.12
+      },
+      "notes": "Messi (Inter Miami MLS), Di María retired; Álvarez (Atlético), Martínez (Inter), De Paul (Atlético). Saudi contingent adds heat exposure. Argentine Primera is warm (Buenos Aires 15–28 °C). La Liga/Saudi together give warm-to-hot training environment for a large chunk of the squad."
+    },
+    "Australia": {
+      "squadClimateScore": 2.42,
+      "heatLabel": "Temperate-climate squad",
+      "altitudeAdapted": false,
+      "distribution": {
+        "A-League": 0.15,
+        "Premier League": 0.2,
+        "Scottish Premiership": 0.08,
+        "Bundesliga": 0.1,
+        "Eredivisie": 0.1,
+        "Other European": 0.22,
+        "Other": 0.15
+      },
+      "notes": "Socceroos split between A-League (warm Australian climate) and European leagues. A-League season (Oct–May) includes warm Australian summer. European-based players in colder environments. Net: moderate warm-climate exposure."
+    },
+    "Austria": {
+      "squadClimateScore": 2.42,
+      "heatLabel": "Temperate-climate squad",
+      "altitudeAdapted": false,
+      "distribution": {
+        "Bundesliga": 0.35,
+        "Austrian Bundesliga": 0.2,
+        "Premier League": 0.12,
+        "Serie A": 0.1,
+        "Other European": 0.15,
+        "Other": 0.08
+      },
+      "notes": "Austrian domestic league is cold/temperate; Bundesliga likewise. Alaba at Real Madrid is the notable warm-climate exception. Squad leans cold overall."
+    },
+    "Belgium": {
+      "squadClimateScore": 2.57,
+      "heatLabel": "Temperate-climate squad",
+      "altitudeAdapted": false,
+      "distribution": {
+        "Premier League": 0.3,
+        "Bundesliga": 0.15,
+        "Ligue 1": 0.15,
+        "Serie A": 0.1,
+        "La Liga": 0.1,
+        "Belgian Pro League": 0.12,
+        "Other European": 0.08
+      },
+      "notes": "Premier League is the most-represented single league. No significant hot-climate club exposure beyond occasional La Liga players."
+    },
+    "Bosnia and Herzegovina": {
+      "squadClimateScore": 2.98,
+      "heatLabel": "Warm-climate squad",
+      "altitudeAdapted": false,
+      "distribution": {
+        "Bundesliga": 0.18,
+        "Ligue 1": 0.12,
+        "Serie A": 0.12,
+        "Süper Lig": 0.1,
+        "Premier League": 0.1,
+        "Saudi Pro League": 0.08,
+        "Other European": 0.2,
+        "Bosnian Premier League": 0.1
+      },
+      "notes": "Widely distributed across European leagues plus a Saudi contingent. Džeko era winding down. Decent mix of warm (Turkish, Saudi) and cold (Bundesliga) environments."
+    },
+    "Brazil": {
+      "squadClimateScore": 3.77,
+      "heatLabel": "Hot/dry-climate squad",
+      "altitudeAdapted": false,
+      "distribution": {
+        "Brazilian Série A": 0.3,
+        "Premier League": 0.15,
+        "La Liga": 0.12,
+        "Saudi Pro League": 0.1,
+        "Serie A": 0.08,
+        "Ligue 1": 0.08,
+        "Bundesliga": 0.05,
+        "Other": 0.12
+      },
+      "notes": "Vinicius/Rodrygo (Real Madrid), Endrick, Raphinha (Barça), Alisson/Firmino era fading. Large Brazilian domestic contingent (São Paulo, Rio, Recife: 25–35 °C, highly humid year-round). Even European-based Brazilian players grow up heat-acclimatised. Most heat-tolerant CONMEBOL squad."
+    },
+    "Cabo Verde": {
+      "squadClimateScore": 3.01,
+      "heatLabel": "Warm-climate squad",
+      "altitudeAdapted": false,
+      "distribution": {
+        "Ligue 1": 0.2,
+        "Primeira Liga": 0.15,
+        "Czech Liga": 0.1,
+        "Cape Verdean": 0.15,
+        "Belgian Pro League": 0.08,
+        "Other European": 0.22,
+        "Other": 0.1
+      },
+      "notes": "Cape Verdean players are largely diaspora-based in France, Portugal, Czech Republic. Despite the islands being hot/tropical, players train in temperate European environments. Moderate climate score."
+    },
+    "Canada": {
+      "squadClimateScore": 2.47,
+      "heatLabel": "Temperate-climate squad",
+      "altitudeAdapted": false,
+      "distribution": {
+        "MLS Mixed": 0.35,
+        "Premier League": 0.15,
+        "Bundesliga": 0.1,
+        "Other European": 0.22,
+        "Canadian Premier": 0.08,
+        "Other": 0.1
+      },
+      "notes": "Davies (Bayern), Johnston, Eustaquio (Porto). Canadian MLS clubs are northern (Toronto, Vancouver, Montreal) — cool climate. Most European-based players in Bundesliga or similar temperate leagues. Low-to-moderate heat acclimatisation. Canada's home climate is cool."
+    },
+    "Colombia": {
+      "squadClimateScore": 3.37,
+      "heatLabel": "Warm-climate squad",
+      "altitudeAdapted": true,
+      "distribution": {
+        "Colombian Primera": 0.2,
+        "Argentine Primera": 0.1,
+        "Liga MX": 0.05,
+        "Premier League": 0.1,
+        "Serie A": 0.1,
+        "Ligue 1": 0.1,
+        "Bundesliga": 0.05,
+        "La Liga": 0.08,
+        "MLS Mixed": 0.08,
+        "Saudi Pro League": 0.05,
+        "Other": 0.09
+      },
+      "notes": "Colombian Primera has the broadest altitude range of any league: Bogotá (2,640m), Manizales (2,153m), Medellín (1,495m) alongside coastal Barranquilla/Cali. Significant proportion of squad altitude-adapted. Also heat-adapted from Barranquilla (hot/humid coast). Díaz (Liverpool), Arias, Córdoba spread across Europe."
+    },
+    "Congo DR": {
+      "squadClimateScore": 3.7,
+      "heatLabel": "Hot/dry-climate squad",
+      "altitudeAdapted": false,
+      "distribution": {
+        "Ligue 1": 0.2,
+        "Belgian Pro League": 0.15,
+        "DR Congo Linafoot": 0.25,
+        "Süper Lig": 0.08,
+        "Saudi Pro League": 0.05,
+        "Other European": 0.15,
+        "West African other": 0.12
+      },
+      "notes": "DR Congo Linafoot (Kinshasa: 26–32 °C year-round, humid equatorial) is the domestic base. Belgian and French leagues provide European exposure. High heat baseline from domestic league."
+    },
+    "Croatia": {
+      "squadClimateScore": 2.95,
+      "heatLabel": "Warm-climate squad",
+      "altitudeAdapted": false,
+      "distribution": {
+        "Bundesliga": 0.18,
+        "Serie A": 0.18,
+        "Premier League": 0.15,
+        "Ligue 1": 0.12,
+        "La Liga": 0.1,
+        "Süper Lig": 0.08,
+        "Croatian HNL": 0.1,
+        "Other European": 0.09
+      },
+      "notes": "Veteran core (Modric at Real Madrid) plus younger players spread across Europe. Turkish league presence adds moderate hot-climate exposure. Croatia's home league is warm-Mediterranean."
+    },
+    "Curaçao": {
+      "squadClimateScore": 2.73,
+      "heatLabel": "Temperate-climate squad",
+      "altitudeAdapted": false,
+      "distribution": {
+        "Eredivisie": 0.22,
+        "Belgian Pro League": 0.1,
+        "Premier League": 0.08,
+        "MLS Mixed": 0.1,
+        "Other European": 0.3,
+        "Caribbean / CONCACAF other": 0.2
+      },
+      "notes": "Curaçao is a hot Caribbean island but the squad is largely diaspora-based in the Netherlands and Europe. Dutch/Belgian leagues are cold/temperate. Small MLS contingent. Despite island origins, players train in cool European climates — moderate climate score."
+    },
+    "Czechia": {
+      "squadClimateScore": 2.43,
+      "heatLabel": "Temperate-climate squad",
+      "altitudeAdapted": false,
+      "distribution": {
+        "Czech Liga": 0.2,
+        "Bundesliga": 0.15,
+        "Premier League": 0.12,
+        "Eredivisie": 0.1,
+        "Serie A": 0.08,
+        "Ligue 1": 0.08,
+        "Other European": 0.15,
+        "Other": 0.12
+      },
+      "notes": "Soucek (West Ham), Kolar, Schick (Leverkusen), Hlozek. Czech domestic league is temperate; Bundesliga and PL likewise. Mid-range cold-climate exposure."
+    },
+    "Côte d'Ivoire": {
+      "squadClimateScore": 3.21,
+      "heatLabel": "Warm-climate squad",
+      "altitudeAdapted": false,
+      "distribution": {
+        "Ligue 1": 0.3,
+        "Premier League": 0.15,
+        "Bundesliga": 0.08,
+        "Ivorian Ligue 1": 0.15,
+        "Other European": 0.15,
+        "West African other": 0.1,
+        "Other": 0.07
+      },
+      "notes": "Ligue 1 is the primary base for Ivorian talent. Domestic league in Abidjan is extremely hot/humid year-round. Franck Kessie, Zaha, Haller profile: mid-range European with African heat baseline. Moderate-to-high warm acclimatisation."
+    },
+    "Ecuador": {
+      "squadClimateScore": 3.31,
+      "heatLabel": "Warm-climate squad",
+      "altitudeAdapted": true,
+      "distribution": {
+        "Argentine Primera": 0.2,
+        "Serie A": 0.12,
+        "Premier League": 0.1,
+        "Ligue 1": 0.08,
+        "La Liga": 0.08,
+        "Ecuadorian Serie A": 0.18,
+        "MLS Mixed": 0.05,
+        "Other": 0.19
+      },
+      "notes": "Ecuadorian Serie A includes Quito (2,850m) and Cuenca (2,550m) — the highest-altitude competitive league on earth. Squad is highly altitude-adapted. European-based players (Caicedo at Chelsea, Plata) are less so, but home-based players make up ~18%+. One of the two most altitude-adapted squads alongside Bolivia (not qualified)."
+    },
+    "Egypt": {
+      "squadClimateScore": 3.83,
+      "heatLabel": "Hot/dry-climate squad",
+      "altitudeAdapted": false,
+      "distribution": {
+        "Egyptian Premier League": 0.42,
+        "Saudi Pro League": 0.12,
+        "Premier League": 0.08,
+        "Ligue 1": 0.08,
+        "Other European": 0.18,
+        "Other": 0.12
+      },
+      "notes": "Largest contingent in Egyptian domestic league (Cairo: 30–40 °C in summer; season Oct–May still warm). Salah (Liverpool) is the main European exception. Saudi exposure adds further heat experience. High heat acclimatisation."
+    },
+    "England": {
+      "squadClimateScore": 2.35,
+      "heatLabel": "Temperate-climate squad",
+      "altitudeAdapted": false,
+      "distribution": {
+        "Premier League": 0.7,
+        "Bundesliga": 0.1,
+        "La Liga": 0.12,
+        "Serie A": 0.05,
+        "Other European": 0.03
+      },
+      "notes": "Squad is Premier League-dominant. Key exceptions: Bellingham/Alexander-Arnold (Real Madrid), Kane (Bayern). Temperate English conditions dominate training environment."
+    },
+    "France": {
+      "squadClimateScore": 3.15,
+      "heatLabel": "Warm-climate squad",
+      "altitudeAdapted": false,
+      "distribution": {
+        "La Liga": 0.28,
+        "Ligue 1": 0.2,
+        "Serie A": 0.22,
+        "Premier League": 0.2,
+        "Bundesliga": 0.05,
+        "Other": 0.05
+      },
+      "notes": "Heavily spread across top 4 European leagues. Mbappe/Camavinga/Tchouameni at Real Madrid; Thuram at Inter; Maignan at Milan. French domestic players are warm-climate acclimated; La Liga/Serie A players skew hotter."
+    },
+    "Germany": {
+      "squadClimateScore": 2.4,
+      "heatLabel": "Temperate-climate squad",
+      "altitudeAdapted": false,
+      "distribution": {
+        "Bundesliga": 0.65,
+        "Premier League": 0.15,
+        "La Liga": 0.08,
+        "Serie A": 0.05,
+        "Other European": 0.07
+      },
+      "notes": "Bundesliga dominates. A few stars abroad (Havertz at Arsenal, Wirtz). German league conditions are temperate; squad is not heat-acclimatised."
+    },
+    "Ghana": {
+      "squadClimateScore": 3.43,
+      "heatLabel": "Warm-climate squad",
+      "altitudeAdapted": false,
+      "distribution": {
+        "Premier League": 0.2,
+        "Ghanaian Premier": 0.18,
+        "Ligue 1": 0.1,
+        "Süper Lig": 0.08,
+        "Saudi Pro League": 0.05,
+        "Other European": 0.22,
+        "West African other": 0.1,
+        "Other": 0.07
+      },
+      "notes": "Split between Ghanaian domestic (Accra: 28–35 °C year-round, highly humid) and European leagues. Premier League players are cold-acclimated by day-to-day training but many have West African heritage and pre-season hot-weather experience. Moderate-to-high warm exposure."
+    },
+    "Haiti": {
+      "squadClimateScore": 3.63,
+      "heatLabel": "Hot/dry-climate squad",
+      "altitudeAdapted": false,
+      "distribution": {
+        "Haitian league": 0.25,
+        "Ligue 1": 0.15,
+        "MLS Mixed": 0.12,
+        "Other European": 0.15,
+        "Caribbean / CONCACAF other": 0.15,
+        "Other": 0.18
+      },
+      "notes": "Port-au-Prince is hot/humid year-round. Haitian domestic and Caribbean exposure is very warm. French-based Haitian diaspora players add warm Ligue 1 climate experience. Among the more heat-adapted CONCACAF squads."
+    },
+    "IR Iran": {
+      "squadClimateScore": 3.71,
+      "heatLabel": "Hot/dry-climate squad",
+      "altitudeAdapted": false,
+      "distribution": {
+        "Iranian Persian Gulf Pro": 0.38,
+        "Süper Lig": 0.12,
+        "Bundesliga": 0.1,
+        "Belgian Pro League": 0.08,
+        "Other European": 0.15,
+        "UAE Pro League": 0.08,
+        "Middle East other": 0.09
+      },
+      "notes": "Majority play in the Iranian domestic league (warm/hot continental climate, often 30–40 °C in summer though season somewhat moderated). Significant Turkish and Middle East exposure. One of the more heat-adapted Asian squads."
+    },
+    "Iraq": {
+      "squadClimateScore": 4.19,
+      "heatLabel": "Hot/dry-climate squad",
+      "altitudeAdapted": false,
+      "distribution": {
+        "Iraqi Stars League": 0.45,
+        "UAE Pro League": 0.12,
+        "Middle East other": 0.18,
+        "Other European": 0.15,
+        "Other": 0.1
+      },
+      "notes": "Iraqi domestic league (Baghdad: 40–50 °C summers, though season is autumn/winter-weighted). Even in the mild season matches are 25–35 °C. Combined with UAE exposure, Iraq is one of the top 3 heat-acclimatised squads."
+    },
+    "Japan": {
+      "squadClimateScore": 2.89,
+      "heatLabel": "Warm-climate squad",
+      "altitudeAdapted": false,
+      "distribution": {
+        "J1 League": 0.22,
+        "Bundesliga": 0.16,
+        "La Liga": 0.08,
+        "Serie A": 0.1,
+        "Premier League": 0.08,
+        "Ligue 1": 0.08,
+        "Eredivisie": 0.08,
+        "Other European": 0.12,
+        "Other": 0.08
+      },
+      "notes": "J League is warm/humid in summer but seasons are spring/autumn-weighted. Many players in Bundesliga, Serie A, La Liga. Well-spread squad with moderate heat acclimatisation. Minamino, Doan, Endo (Liverpool), Kamada etc."
+    },
+    "Jordan": {
+      "squadClimateScore": 4.02,
+      "heatLabel": "Hot/dry-climate squad",
+      "altitudeAdapted": false,
+      "distribution": {
+        "Jordanian Pro League": 0.42,
+        "UAE Pro League": 0.12,
+        "Saudi Pro League": 0.08,
+        "Other European": 0.2,
+        "Middle East other": 0.1,
+        "Other": 0.08
+      },
+      "notes": "Majority play in Jordan (Amman: hot, dry, 28–38 °C summers; season moderated to spring/autumn). Middle East club exposure makes this squad among the most heat-adapted in the tournament."
+    },
+    "Korea Republic": {
+      "squadClimateScore": 2.84,
+      "heatLabel": "Warm-climate squad",
+      "altitudeAdapted": false,
+      "distribution": {
+        "K League": 0.2,
+        "Premier League": 0.15,
+        "Bundesliga": 0.12,
+        "Ligue 1": 0.08,
+        "Serie A": 0.08,
+        "La Liga": 0.05,
+        "Other European": 0.2,
+        "Other": 0.12
+      },
+      "notes": "Son (Spurs), Lee Kang-In (PSG), Kim Min-Jae (Bayern). K League is warm but spring/autumn schedule moderates heat exposure. European-based players dominate. Moderate heat acclimatisation."
+    },
+    "Mexico": {
+      "squadClimateScore": 3.68,
+      "heatLabel": "Hot/dry-climate squad",
+      "altitudeAdapted": true,
+      "distribution": {
+        "Liga MX": 0.6,
+        "MLS Mixed": 0.12,
+        "La Liga": 0.05,
+        "Premier League": 0.05,
+        "Saudi Pro League": 0.05,
+        "Other": 0.13
+      },
+      "notes": "Liga MX-dominant. Mexican clubs play across a wide climate range: Mexico City (altitude + mild temps), Guadalajara (altitude + warm), Monterrey (hot), Tijuana (mild), Puebla (altitude). Mexico is the most altitude-adapted non-South-American squad. Also heat-adapted from Monterrey/Tigres/CF Pachuca environments."
+    },
+    "Morocco": {
+      "squadClimateScore": 3.23,
+      "heatLabel": "Warm-climate squad",
+      "altitudeAdapted": false,
+      "distribution": {
+        "Ligue 1": 0.25,
+        "La Liga": 0.1,
+        "Bundesliga": 0.1,
+        "Moroccan Botola": 0.15,
+        "Saudi Pro League": 0.08,
+        "Serie A": 0.08,
+        "Premier League": 0.1,
+        "Other European": 0.09,
+        "Other": 0.05
+      },
+      "notes": "Strong across top European leagues since WC 2022 breakthrough. Moroccan domestic league is warm/dry. Hakimi (PSG), Ziyech, En-Nesyri (Seville/hot La Liga). Moderate-to-high heat acclimatisation."
+    },
+    "Netherlands": {
+      "squadClimateScore": 2.34,
+      "heatLabel": "Temperate-climate squad",
+      "altitudeAdapted": false,
+      "distribution": {
+        "Eredivisie": 0.35,
+        "Premier League": 0.3,
+        "Bundesliga": 0.12,
+        "La Liga": 0.08,
+        "Serie A": 0.08,
+        "Other European": 0.07
+      },
+      "notes": "Split between home Eredivisie and English/German leagues. All cold/temperate environments. Van Dijk (Liverpool), de Bruyne era winding down; younger players largely Europe-based."
+    },
+    "New Zealand": {
+      "squadClimateScore": 2.39,
+      "heatLabel": "Temperate-climate squad",
+      "altitudeAdapted": false,
+      "distribution": {
+        "A-League": 0.2,
+        "Premier League": 0.15,
+        "Scottish Premiership": 0.1,
+        "Eredivisie": 0.1,
+        "Norwegian Eliteserien": 0.05,
+        "Other European": 0.22,
+        "MLS Mixed": 0.1,
+        "New Zealand": 0.08
+      },
+      "notes": "All Whites spread thinly across many leagues, including cold Scottish and Norwegian ones. Wood (Burnley), Cacace (Leicester). A-League is warm (Australian summer). Net: moderate-low climate score."
+    },
+    "Norway": {
+      "squadClimateScore": 2.19,
+      "heatLabel": "Temperate-climate squad",
+      "altitudeAdapted": false,
+      "distribution": {
+        "Premier League": 0.35,
+        "Bundesliga": 0.15,
+        "Eredivisie": 0.12,
+        "Ligue 1": 0.1,
+        "Norwegian Eliteserien": 0.12,
+        "Serie A": 0.08,
+        "Other European": 0.08
+      },
+      "notes": "Haaland (City), Odegaard (Arsenal), Sorloth, Normann — almost all in cold/temperate northern European leagues. One of the most cold-climate squads in the tournament. Large heat penalty expected in Miami/Monterrey."
+    },
+    "Panama": {
+      "squadClimateScore": 3.62,
+      "heatLabel": "Hot/dry-climate squad",
+      "altitudeAdapted": false,
+      "distribution": {
+        "Panamanian Liga": 0.3,
+        "MLS Mixed": 0.15,
+        "Argentine Primera": 0.08,
+        "Colombian Primera": 0.08,
+        "Other European": 0.2,
+        "Caribbean / CONCACAF other": 0.12,
+        "Other": 0.07
+      },
+      "notes": "Panama City is one of the hottest/most humid capitals in the Americas (30–35 °C, 80 %+ humidity year-round). Domestic league is very hot. Argentine and Colombian exposures add warm-weather acclimatisation. One of the most heat-adapted CONCACAF squads."
+    },
+    "Paraguay": {
+      "squadClimateScore": 3.5,
+      "heatLabel": "Warm-climate squad",
+      "altitudeAdapted": false,
+      "distribution": {
+        "Argentine Primera": 0.25,
+        "Paraguayan Div Pro": 0.18,
+        "Brazilian Série A": 0.08,
+        "Premier League": 0.08,
+        "Serie A": 0.08,
+        "Ligue 1": 0.08,
+        "Saudi Pro League": 0.05,
+        "Other European": 0.12,
+        "Other": 0.08
+      },
+      "notes": "Asunción is subtropical: 20–35 °C year-round, high humidity. Paraguayan domestic and Argentine Primera both warm. Brazilian exposure adds hot/humid baseline. Among the more heat-adapted CONMEBOL squads."
+    },
+    "Portugal": {
+      "squadClimateScore": 3.25,
+      "heatLabel": "Warm-climate squad",
+      "altitudeAdapted": false,
+      "distribution": {
+        "Premier League": 0.25,
+        "La Liga": 0.18,
+        "Primeira Liga": 0.18,
+        "Saudi Pro League": 0.12,
+        "Serie A": 0.1,
+        "Bundesliga": 0.08,
+        "Ligue 1": 0.06,
+        "Other": 0.03
+      },
+      "notes": "Diverse distribution. Large Saudi contingent (Ronaldo, Neves, others) adds hot-climate exposure. Primeira Liga and La Liga players are warm-acclimated. Among the more heat-tolerant UEFA squads."
+    },
+    "Qatar": {
+      "squadClimateScore": 4.54,
+      "heatLabel": "Hot/humid-climate squad",
+      "altitudeAdapted": false,
+      "distribution": {
+        "Qatar Stars League": 0.72,
+        "Qatari domestic": 0.08,
+        "Other European": 0.1,
+        "Middle East other": 0.1
+      },
+      "notes": "Nearly the entire squad plays in Qatar's domestic league (Doha: 28–45 °C year-round, season Oct–May). Most heat-acclimatised squad of the entire tournament — equally effective in Miami or Monterrey."
+    },
+    "Saudi Arabia": {
+      "squadClimateScore": 3.94,
+      "heatLabel": "Hot/dry-climate squad",
+      "altitudeAdapted": false,
+      "distribution": {
+        "Saudi Pro League": 0.58,
+        "Premier League": 0.15,
+        "Bundesliga": 0.05,
+        "Serie A": 0.05,
+        "Other European": 0.1,
+        "Other": 0.07
+      },
+      "notes": "Over half the squad plays in the Saudi Pro League — one of the hottest footballing environments in the world (Riyadh regularly 35–45 °C, season Oct–May still very warm). Best heat-acclimatised Asian squad. Neymar / Al-Hilal influence; Al-Qassim, Al-Ittihad clubs dominate."
+    },
+    "Scotland": {
+      "squadClimateScore": 1.88,
+      "heatLabel": "Cold-climate squad",
+      "altitudeAdapted": false,
+      "distribution": {
+        "Premier League": 0.35,
+        "Scottish Premiership": 0.32,
+        "Bundesliga": 0.05,
+        "Other European": 0.18,
+        "Other": 0.1
+      },
+      "notes": "Coldest-climate squad in the tournament. Over 30 % play in the Scottish Premiership (among the coldest footballing environments in Europe). The rest mostly in the English Premier League. Will struggle most in Miami and Monterrey heat."
+    },
+    "Senegal": {
+      "squadClimateScore": 3.36,
+      "heatLabel": "Warm-climate squad",
+      "altitudeAdapted": false,
+      "distribution": {
+        "Ligue 1": 0.35,
+        "Premier League": 0.1,
+        "Serie A": 0.08,
+        "Süper Lig": 0.08,
+        "Saudi Pro League": 0.08,
+        "Senegalese Ligue 1": 0.12,
+        "Other European": 0.12,
+        "Other": 0.07
+      },
+      "notes": "Ligue 1 is the main base (Dakar-born players often go to France). Senegalese domestic league (Dakar: 28–35 °C, very humid). Mané at Al-Nassr (Saudi). Sadio's squad profile skews warm/hot overall."
+    },
+    "South Africa": {
+      "squadClimateScore": 3.07,
+      "heatLabel": "Warm-climate squad",
+      "altitudeAdapted": false,
+      "distribution": {
+        "South African PSL": 0.35,
+        "Ligue 1": 0.12,
+        "Premier League": 0.1,
+        "Belgian Pro League": 0.08,
+        "Czech Liga": 0.05,
+        "Primeira Liga": 0.05,
+        "Other European": 0.15,
+        "Other": 0.1
+      },
+      "notes": "South African PSL is a warm winter league (Cape Town mild, Johannesburg warm). Decent European presence. Net: moderately warm squad."
+    },
+    "Spain": {
+      "squadClimateScore": 3.4,
+      "heatLabel": "Warm-climate squad",
+      "altitudeAdapted": false,
+      "distribution": {
+        "La Liga": 0.62,
+        "Premier League": 0.18,
+        "Bundesliga": 0.08,
+        "Ligue 1": 0.05,
+        "Serie A": 0.04,
+        "Other": 0.03
+      },
+      "notes": "La Liga-dominant. Most players train in warm/dry Madrid or Barcelona climate year-round. One of the most heat-adapted European squads."
+    },
+    "Sweden": {
+      "squadClimateScore": 2.25,
+      "heatLabel": "Temperate-climate squad",
+      "altitudeAdapted": false,
+      "distribution": {
+        "Bundesliga": 0.2,
+        "Premier League": 0.18,
+        "Eredivisie": 0.12,
+        "Swedish Allsvenskan": 0.15,
+        "Serie A": 0.1,
+        "Other European": 0.15,
+        "Other": 0.1
+      },
+      "notes": "Post-Ibrahimovic era; mix of Bundesliga and Scandinavian domestic. Swedish Allsvenskan players are cold-climate adapted. Heat will be a significant factor vs warm-weather opponents."
+    },
+    "Switzerland": {
+      "squadClimateScore": 2.53,
+      "heatLabel": "Temperate-climate squad",
+      "altitudeAdapted": false,
+      "distribution": {
+        "Bundesliga": 0.18,
+        "Premier League": 0.15,
+        "Swiss Super League": 0.2,
+        "Ligue 1": 0.12,
+        "Serie A": 0.12,
+        "Other European": 0.15,
+        "Other": 0.08
+      },
+      "notes": "Many players at mid-tier European clubs. Swiss Super League, Bundesliga, and Ligue 1 all temperate/warm. Xhaka (Bayer Leverkusen), Shaqiri winding down. Solid mid-table cold-climate exposure."
+    },
+    "Tunisia": {
+      "squadClimateScore": 3.25,
+      "heatLabel": "Warm-climate squad",
+      "altitudeAdapted": false,
+      "distribution": {
+        "Ligue 1": 0.3,
+        "Tunisian Ligue": 0.18,
+        "Saudi Pro League": 0.08,
+        "Süper Lig": 0.08,
+        "Premier League": 0.08,
+        "Other European": 0.18,
+        "Other": 0.1
+      },
+      "notes": "Ligue 1 and Tunisian domestic are key. Tunis is warm/dry Mediterranean. Saudi and Turkish exposure adds heat. Mid-to-high warm acclimatisation, similar to Algeria."
+    },
+    "Türkiye": {
+      "squadClimateScore": 3.36,
+      "heatLabel": "Warm-climate squad",
+      "altitudeAdapted": false,
+      "distribution": {
+        "Süper Lig": 0.52,
+        "Premier League": 0.15,
+        "Bundesliga": 0.1,
+        "Serie A": 0.08,
+        "La Liga": 0.07,
+        "Other European": 0.08
+      },
+      "notes": "Majority play in the Turkish Süper Lig — a warm-to-hot league (Istanbul summers 28–35 °C, Antalya even warmer). Among the most heat-adapted UEFA squads behind Spain and Portugal."
+    },
+    "USA": {
+      "squadClimateScore": 2.69,
+      "heatLabel": "Temperate-climate squad",
+      "altitudeAdapted": false,
+      "distribution": {
+        "Premier League": 0.15,
+        "Bundesliga": 0.12,
+        "MLS Mixed": 0.35,
+        "La Liga": 0.05,
+        "Ligue 1": 0.05,
+        "Serie A": 0.05,
+        "Other European": 0.13,
+        "Other": 0.1
+      },
+      "notes": "USMNT split between European stars (Pulisic at AC Milan, Reyna, McKennie, Adams) and MLS-based players. Southern MLS (Atlanta, Houston, Miami, Dallas) players are heat-acclimatised; northern MLS less so. Pulisic/Serie A/Bundesliga players are in cool-temperate environments. Net: moderate."
+    },
+    "Uruguay": {
+      "squadClimateScore": 3.21,
+      "heatLabel": "Warm-climate squad",
+      "altitudeAdapted": false,
+      "distribution": {
+        "Argentine Primera": 0.15,
+        "Uruguayan Primera": 0.12,
+        "Premier League": 0.12,
+        "Serie A": 0.1,
+        "La Liga": 0.08,
+        "Ligue 1": 0.08,
+        "Bundesliga": 0.05,
+        "Saudi Pro League": 0.08,
+        "MLS Mixed": 0.08,
+        "Other European": 0.08,
+        "Other": 0.06
+      },
+      "notes": "Valverde (Real Madrid), Núñez (Liverpool), Bentancur, Cavani winding down. Uruguayan Primera and Argentine leagues are warm. Saudi and La Liga add heat. Broadly distributed; warm-to-hot overall."
+    },
+    "Uzbekistan": {
+      "squadClimateScore": 3.07,
+      "heatLabel": "Warm-climate squad",
+      "altitudeAdapted": false,
+      "distribution": {
+        "Uzbek League": 0.28,
+        "Other European": 0.25,
+        "Russian Premier League": 0.12,
+        "Süper Lig": 0.12,
+        "Bundesliga": 0.08,
+        "Middle East other": 0.08,
+        "Other": 0.07
+      },
+      "notes": "Mix of domestic Uzbek league (hot continental summers, cold winters; season spring/autumn) and various European leagues. Some Turkish exposure. Net moderate warm-climate score."
+    }
+  }
+}
