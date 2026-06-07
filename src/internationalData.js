@@ -3,6 +3,7 @@ const path = require("path");
 const { listPredictions } = require("./backtestStore");
 const { oddsForInternationalFixture } = require("./oddsApiService");
 const { mutableDataPath, readJsonWithFallback } = require("./runtimePaths");
+const { weatherContextForFixture } = require("./weatherService");
 
 const PLAYER_STATS_PATH = path.join(process.cwd(), "data", "international", "processed", "world_cup_player_stats.json");
 const SQUAD_STATS_PATH = path.join(process.cwd(), "data", "international", "processed", "world_cup_squad_stats.json");
@@ -146,7 +147,8 @@ function predictInternationalFixture(fixture, friendlyResults = []) {
   const awayFormAdj = friendlyFormAdjustment(fixture.awayTeam, friendlyResults);
   const homeRating = ratingFor(fixture.homeTeam) + homeFormAdj;
   const awayRating = ratingFor(fixture.awayTeam) + awayFormAdj;
-  const diff = homeRating - awayRating + hostBoost(fixture);
+  const weather = weatherContextForFixture(fixture);
+  const diff = homeRating - awayRating + hostBoost(fixture) + weather.netDiffImpact;
   const draw = clamp(0.25 - Math.abs(diff) * 0.004, 0.16, 0.28);
   const homeShare = logistic(diff / 12);
   const home = (1 - draw) * homeShare;
@@ -192,8 +194,22 @@ function predictInternationalFixture(fixture, friendlyResults = []) {
       source: "international-fixtures",
       sourceName: "FIFA World Cup 2026 fixture feed",
       sourceUrl: readFixtureData().source?.url || "",
-      home: { note: `${fixture.group}; baseline rating ${homeRating}` },
-      away: { note: `${fixture.group}; baseline rating ${awayRating}` },
+      home: {
+        note: `${fixture.group}; baseline rating ${homeRating.toFixed(1)}; squad climate tier ${weather.home.climateScore.toFixed(1)}`,
+        weatherAdj: weather.home.total,
+      },
+      away: {
+        note: `${fixture.group}; baseline rating ${awayRating.toFixed(1)}; squad climate tier ${weather.away.climateScore.toFixed(1)}`,
+        weatherAdj: weather.away.total,
+      },
+      weather: {
+        venueTier: weather.venueTier,
+        heatRisk: weather.heatRisk,
+        dominantStressor: weather.dominantStressor,
+        altitudeM: weather.altitudeM,
+        hasAC: weather.hasAC,
+        netDiffImpact: weather.netDiffImpact,
+      },
     },
     judgment: {
       summary:
@@ -204,6 +220,7 @@ function predictInternationalFixture(fixture, friendlyResults = []) {
         `Fixture imported from FIFA schedule: Match ${fixture.matchNumber}, ${fixture.venue}, ${fixture.city}.`,
         `All World Cup 2026 group-stage teams are in scope in international mode.`,
         `Rating signal: ${fixture.homeTeam} ${homeRating.toFixed(1)}, ${fixture.awayTeam} ${awayRating.toFixed(1)}${hostBoost(fixture) ? ", host boost applied" : ""}${homeFormAdj || awayFormAdj ? ` (friendly form: ${fixture.homeTeam} ${homeFormAdj >= 0 ? "+" : ""}${homeFormAdj}, ${fixture.awayTeam} ${awayFormAdj >= 0 ? "+" : ""}${awayFormAdj})` : ""}.`,
+        weather.summaryFactor,
         "Odds, injuries, final squad news, and fresh team/player form should be layered in as they become available.",
       ],
     },
