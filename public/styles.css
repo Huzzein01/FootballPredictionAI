@@ -4472,3 +4472,190 @@ th {
     justify-self: start;
   }
 }
+
+/* ── WC 2026 Tournament Bracket Tree ──────────────────────────────────────── */
+.wc-bracket {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  max-width: 900px;
+}
+
+/* Champion Banner */
+.bracket-champion-banner {
+  background: linear-gradient(135deg, var(--accent, #1a6fef) 0%, #0f4fa8 100%);
+  color: #fff;
+  border-radius: 12px;
+  padding: 20px 24px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 8px;
+  text-align: center;
+}
+.bracket-champ-label {
+  font-size: 12px;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  opacity: 0.85;
+}
+.bracket-champ-team {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  font-size: 22px;
+  font-weight: 800;
+}
+.bracket-champ-flag {
+  width: 40px;
+  height: 28px;
+  object-fit: cover;
+  border-radius: 3px;
+  box-shadow: 0 2px 6px rgba(0,0,0,0.3);
+}
+.bracket-disclaimer {
+  font-size: 11px;
+  opacity: 0.7;
+  margin: 0;
+}
+
+/* Round Sections */
+.bracket-round-section {
+  background: var(--panel);
+  border: 1px solid var(--line);
+  border-radius: 10px;
+  padding: 14px 16px;
+}
+.bracket-round-section.is-expanded {
+  border-left: 3px solid var(--accent, #1a6fef);
+}
+.bracket-round-header {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-bottom: 12px;
+}
+.bracket-round-icon {
+  font-size: 18px;
+  line-height: 1;
+}
+.bracket-round-header strong {
+  font-size: 14px;
+}
+.bracket-round-count {
+  margin-left: auto;
+  background: var(--surface);
+  border: 1px solid var(--line);
+  border-radius: 20px;
+  padding: 2px 10px;
+  font-size: 12px;
+  font-weight: 700;
+  color: var(--muted);
+}
+
+/* Team Chips */
+.bracket-chips-row {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+}
+.bracket-chip {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  background: var(--surface);
+  border: 1px solid var(--line);
+  border-radius: 20px;
+  padding: 4px 10px 4px 5px;
+  font-size: 12px;
+  font-weight: 600;
+  white-space: nowrap;
+}
+.bracket-chip.is-predicted-winner {
+  background: #fff8e1;
+  border-color: #f59e0b;
+  color: #92400e;
+}
+[data-theme="dark"] .bracket-chip.is-predicted-winner {
+  background: #452a00;
+  border-color: #f59e0b;
+  color: #fde68a;
+}
+.bracket-flag {
+  width: 22px;
+  height: 15px;
+  object-fit: cover;
+  border-radius: 2px;
+  flex-shrink: 0;
+}
+.bracket-flag-placeholder {
+  width: 22px;
+  height: 15px;
+  background: var(--line);
+  border-radius: 2px;
+  flex-shrink: 0;
+}
+
+/* Match Detail Rows */
+.bracket-matches-detail {
+  margin-top: 12px;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+.bracket-match-row {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  background: var(--surface);
+  border: 1px solid var(--line);
+  border-radius: 8px;
+  padding: 8px 12px;
+  flex-wrap: wrap;
+}
+.bracket-match-side {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  flex: 1 1 140px;
+  min-width: 0;
+}
+.bracket-match-side.is-winner {
+  font-weight: 700;
+}
+.bracket-match-side.is-winner .bracket-chip {
+  border-color: var(--accent, #1a6fef);
+  background: rgba(26, 111, 239, 0.07);
+}
+[data-theme="dark"] .bracket-match-side.is-winner .bracket-chip {
+  background: rgba(26, 111, 239, 0.2);
+}
+.bracket-pct {
+  font-size: 11px;
+  font-weight: 700;
+  color: var(--muted);
+  white-space: nowrap;
+}
+.bracket-match-side.is-winner .bracket-pct {
+  color: var(--accent, #1a6fef);
+}
+.bracket-match-divider {
+  font-size: 11px;
+  color: var(--muted);
+  flex-shrink: 0;
+}
+
+/* Loading state */
+.bracket-loading {
+  padding: 40px;
+  text-align: center;
+  font-size: 14px;
+}
+
+@media (max-width: 520px) {
+  .bracket-champ-team { font-size: 18px; }
+  .bracket-champion-banner { padding: 16px; }
+  .bracket-match-side { flex: 1 1 100%; }
+  .bracket-match-divider { width: 100%; text-align: center; }
+}

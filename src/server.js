@@ -8,6 +8,7 @@ const { readTrainingStatus, scheduleRetrain } = require("./continuousTraining");
 const { PLAYER_PROFILES, addPlayerStatEntry, listPlayerProfiles, updatePlayerStatEntry } = require("./playerProfileStore");
 const { addTeamStatEntry, listTeamProfiles, updateTeamStatEntry } = require("./teamProfileStore");
 const { internationalFixturePredictions, internationalGroupTables, internationalStatus, readFixtureData } = require("./internationalData");
+const { projectTournament } = require("./tournamentProjection");
 const { archivedLeagueTables, refreshLiveLeagueContext } = require("./leagueTableService");
 const { futuresPredictions } = require("./futuresService");
 const { resetPlayerStatsCache } = require("./playerStats");
@@ -695,6 +696,15 @@ async function handleApi(req, res, pathname) {
 
   if (req.method === "GET" && pathname === "/api/international/friendly-results") {
     return sendJson(res, 200, readFriendlyResultsSnapshot() || { results: [], fetched: 0 });
+  }
+
+  if (req.method === "GET" && pathname === "/api/international/bracket") {
+    try {
+      const bracket = projectTournament();
+      return sendJson(res, 200, bracket);
+    } catch (e) {
+      return sendJson(res, 500, { error: e.message });
+    }
   }
 
   const playerStatsMatch = pathname.match(/^\/api\/player-profiles\/([^/]+)\/stats$/);

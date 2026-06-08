@@ -119,6 +119,7 @@ let internationalFixtureData = null;
 let internationalGroupTableData = null;
 let leagueTableData = null;
 let futuresData = null;
+let bracketData = null;
 let parlayRefreshSeed = 0;
 let editingPlayerStatEntry = null;
 let editingTeamStatEntry = null;
@@ -1409,9 +1410,113 @@ async function refreshLeagueTables() {
   renderTeamProfiles();
 }
 
+// ── Bracket rendering helpers ─────────────────────────────────────────────────
+
+function bracketTeamChip(slot, isWinner = false) {
+  const flag = slot.flag
+    ? `<img class="bracket-flag" src="${escapeHtml(slot.flag)}" alt="${escapeHtml(slot.team)}" loading="lazy" onerror="this.style.display='none'">`
+    : `<span class="bracket-flag-placeholder"></span>`;
+  return `<div class="bracket-chip${isWinner ? " is-predicted-winner" : ""}">${flag}<span>${escapeHtml(slot.team)}</span></div>`;
+}
+
+function bracketMatchRow(match) {
+  const homeWin = match.winner === match.home.team;
+  return `
+    <div class="bracket-match-row">
+      <div class="bracket-match-side${homeWin ? " is-winner" : ""}">
+        ${bracketTeamChip(match.home)}
+        <span class="bracket-pct">${statNumber(match.homeWinPct ?? (homeWin ? match.confidence : 100 - match.confidence), 0)}%</span>
+      </div>
+      <div class="bracket-match-divider">vs</div>
+      <div class="bracket-match-side${!homeWin ? " is-winner" : ""}">
+        ${bracketTeamChip(match.away)}
+        <span class="bracket-pct">${statNumber(match.awayWinPct ?? (!homeWin ? match.confidence : 100 - match.confidence), 0)}%</span>
+      </div>
+    </div>`;
+}
+
+function renderBracketTree(bracket, champion) {
+  if (!bracket) {
+    return `<div class="empty-state bracket-loading">⏳ Generating tournament bracket projection…</div>`;
+  }
+
+  const rounds = [
+    { key: "r16",       icon: "⚽", expand: false },
+    { key: "qf",        icon: "⚽", expand: false },
+    { key: "sf",        icon: "🔥", expand: true  },
+    { key: "finalFour", icon: "🔥", expand: true  },
+    { key: "final",     icon: "🏆", expand: true  },
+  ];
+
+  // Champion banner
+  const champFlag = champion?.flag
+    ? `<img class="bracket-champ-flag" src="${escapeHtml(champion.flag)}" alt="${escapeHtml(champion.team)}" loading="lazy" onerror="this.style.display='none'">`
+    : "";
+  const champBanner = `
+    <div class="bracket-champion-banner">
+      <div class="bracket-champ-label">🏆 Predicted World Cup Champion</div>
+      <div class="bracket-champ-team">${champFlag}<span>${escapeHtml(champion?.team || "")}</span></div>
+      <p class="bracket-disclaimer muted">Model projection · weather &amp; climate-adjusted · no live odds or injury data applied</p>
+    </div>`;
+
+  // Round sections
+  const roundSections = rounds.map(({ key, icon, expand }) => {
+    const round = bracket[key];
+    if (!round) return "";
+
+    const advancers = round.advancers || [];
+    const matches   = round.matches  || [];
+
+    // Advancer chips
+    const chipsHtml = advancers.map(s =>
+      bracketTeamChip(s, s.team === champion?.team)
+    ).join("");
+
+    // Match detail rows (shown in expanded rounds)
+    const matchesHtml = expand && matches.length
+      ? `<div class="bracket-matches-detail">${matches.map(bracketMatchRow).join("")}</div>`
+      : "";
+
+    // Collapsed rounds get a count badge
+    const countBadge = !expand
+      ? `<span class="bracket-round-count">${advancers.length}</span>`
+      : "";
+
+    return `
+      <section class="bracket-round-section${expand ? " is-expanded" : ""}">
+        <div class="bracket-round-header">
+          <span class="bracket-round-icon">${icon}</span>
+          <div>
+            <strong>${escapeHtml(round.label)}</strong>
+            <span class="muted"> — ${escapeHtml(round.subtitle)}</span>
+          </div>
+          ${countBadge}
+        </div>
+        <div class="bracket-chips-row">${chipsHtml}</div>
+        ${matchesHtml}
+      </section>`;
+  }).join("");
+
+  return `<div class="wc-bracket">${champBanner}${roundSections}</div>`;
+}
+
+// ── Main renderFutures ────────────────────────────────────────────────────────
 function renderFutures() {
   if (!futuresOutput || !futuresStatus) return;
   const data = futuresData || {};
+  const market = futuresMarketFilter?.value || "winners";
+  const intlFutures = data.context === "international" || isInternationalMode();
+
+  // ── International "Tournament winner" market → show bracket tree ──────────
+  if (intlFutures && market === "winners") {
+    futuresStatus.textContent = bracketData
+      ? `WC 2026 bracket projection | generated ${new Date(bracketData.generatedAt || Date.now()).toLocaleString()}`
+      : "Generating WC 2026 bracket projection…";
+    futuresOutput.innerHTML = renderBracketTree(bracketData?.bracket, bracketData?.champion);
+    return;
+  }
+
+  // ── Standard card layout (scorers / assists / club futures) ──────────────
   if (data.unavailable) {
     futuresStatus.textContent = `${data.season || selectedSeason()} futures not available`;
     futuresOutput.innerHTML = internationalEmptyState("Information not available", data.message || seasonUnavailableMessage());
@@ -1423,7 +1528,6 @@ function renderFutures() {
     futuresOutput.innerHTML = `<div class="empty-state">No futures prediction data is available yet.</div>`;
     return;
   }
-  const market = futuresMarketFilter?.value || "winners";
   const marketMatches = (pick) => {
     const text = `${pick.market || ""} ${pick.label || ""}`.toLowerCase();
     if (market === "winners") return text.includes("winner") || text.includes("runner-up") || text.includes("semi-finalist") || text.includes("challenger");
@@ -1442,7 +1546,6 @@ function renderFutures() {
     return;
   }
   futuresStatus.textContent = `${data.context === "international" ? "International" : "Club"} futures | ${data.season || selectedSeason()} | generated ${new Date(data.generatedAt || Date.now()).toLocaleString()}`;
-  const intlFutures = data.context === "international";
   futuresOutput.innerHTML = `
     ${filteredSections
       .map((section) => {
@@ -1457,30 +1560,26 @@ function renderFutures() {
             </div>
             <div class="futures-pick-grid ${listLayout ? "is-list" : ""}">
               ${(section.picks || [])
-                .map(
-                  (pick) => {
-                    const rawDetail = pick.detail || "";
-                    const cleanDetail = intlFutures
-                      ? rawDetail.replace(/;\s*international baseline rating \d+\.?/i, "").trim()
-                      : rawDetail;
-                    return `
-                    <div class="futures-pick-card">
-                      <div class="card-topline">
-                        <span>${escapeHtml(pick.market || "Futures lean")}</span>
-                        <span>#${escapeHtml(pick.rank || "")}</span>
-                      </div>
-                      <h4>${escapeHtml(pick.label || "")}</h4>
-                      <strong>${statNumber(pick.confidence, 1)}%</strong>
-                      ${cleanDetail ? `<p>${escapeHtml(cleanDetail)}</p>` : ""}
-                      ${!intlFutures && pick.source?.name ? `<span class="profile-source">${escapeHtml(pick.source.name)}</span>` : ""}
+                .map((pick) => {
+                  const rawDetail = pick.detail || "";
+                  const cleanDetail = intlFutures
+                    ? rawDetail.replace(/;\s*international baseline rating \d+\.?/i, "").trim()
+                    : rawDetail;
+                  return `
+                  <div class="futures-pick-card">
+                    <div class="card-topline">
+                      <span>${escapeHtml(pick.market || "Futures lean")}</span>
+                      <span>#${escapeHtml(pick.rank || "")}</span>
                     </div>
-                  `;
-                  }
-                )
+                    <h4>${escapeHtml(pick.label || "")}</h4>
+                    <strong>${statNumber(pick.confidence, 1)}%</strong>
+                    ${cleanDetail ? `<p>${escapeHtml(cleanDetail)}</p>` : ""}
+                    ${!intlFutures && pick.source?.name ? `<span class="profile-source">${escapeHtml(pick.source.name)}</span>` : ""}
+                  </div>`;
+                })
                 .join("")}
             </div>
-          </article>
-        `;
+          </article>`;
       })
       .join("")}
   `;
@@ -1492,6 +1591,16 @@ async function refreshFutures() {
   const league = isInternationalMode() ? "International" : futuresLeagueFilter?.value || "All";
   futuresData = await api(`/api/futures?context=${encodeURIComponent(currentAppContext())}&season=${encodeURIComponent(selectedSeason())}&league=${encodeURIComponent(league)}`);
   renderFutures();
+}
+
+async function refreshBracket() {
+  if (!isInternationalMode()) return;
+  try {
+    bracketData = await api("/api/international/bracket");
+    renderFutures(); // re-render once bracket arrives
+  } catch (_) {
+    bracketData = null;
+  }
 }
 
 async function refreshInternationalStatus() {
@@ -1547,7 +1656,7 @@ async function renderInternationalContext() {
   renderInternationalParlayLedger();
   await refreshLedger();
   await refreshLeagueTables();
-  await refreshFutures();
+  await Promise.all([refreshFutures(), refreshBracket()]);
   await refreshTeamProfiles();
   renderInternationalFixturesPage();
   renderPlayerProfiles();
