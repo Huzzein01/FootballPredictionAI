@@ -415,6 +415,32 @@ function playerPropCandidates(players, fixture, riskMode = "safe") {
           fbrefSeason: player.season,
           source: motivationSourceSuffix(fixture, team, playerSource(player)),
         });
+
+        // First goal scorer — risk mode: player most likely to open the scoring
+        if (isRiskyMode && player.goalsPer90 >= 0.4) {
+          const teamGoals = projectedTeamGoals(fixture, team);
+          // P(first scorer) ≈ P(player scores) × share of team goals × scoring-team lead factor
+          const anytimeChance = poissonAtLeast(player.goalsPer90, 1);
+          const teamGoalChance = Math.min(0.92, poissonAtLeast(Math.max(0.6, teamGoals), 1));
+          const scoringShare = Math.min(0.55, player.goalsPer90 / Math.max(1, teamGoals));
+          const firstScorerChance = anytimeChance * teamGoalChance * scoringShare * 1.35;
+          const fgsConfidence = Math.max(22, Math.min(58, 20 + firstScorerChance * 120));
+          candidates.push({
+            type: "player",
+            fixture: `${fixture.homeTeam} vs ${fixture.awayTeam}`,
+            date: fixture.date,
+            league: fixture.league,
+            team,
+            player: playerName,
+            market: "first goal scorer",
+            pick: `${playerName} first goal scorer`,
+            confidence: adjustedConfidence(fgsConfidence, fixture, team, "player", 20, 58),
+            fbrefMetric: `${player.goalsPer90.toFixed(2)} goals/90, ${teamGoals} team goals projected`,
+            fbrefSeason: player.season,
+            source: riskSourceSuffix(motivationSourceSuffix(fixture, team, playerSource(player)), `${player.goalsPer90.toFixed(2)} goals/90`, "first goal scorer"),
+            riskMode: true,
+          });
+        }
       }
 
       if (player.hasAssistStats && player.assistsPer90 >= 0.22) {
@@ -638,38 +664,88 @@ function matchResultLegs(fixtures) {
   return [...winnerLegs, ...drawLegs].sort((a, b) => b.confidence - a.confidence);
 }
 
-function bttsLegs(fixtures) {
-  return fixtures
-    .map((fixture) => {
-      const score = parseProjectedScore(fixture.projectedScore);
-      const homeGF = featureValue(fixture, "homeGFPerGame");
-      const awayGF = featureValue(fixture, "awayGFPerGame");
-      const homeGA = featureValue(fixture, "homeGAPerGame");
-      const awayGA = featureValue(fixture, "awayGAPerGame");
-      const homeClean = featureValue(fixture, "homeCleanSheetRate");
-      const awayClean = featureValue(fixture, "awayCleanSheetRate");
-      const projectedYes = score ? score.homeGoals > 0 && score.awayGoals > 0 : false;
-      const attackingSignal = (homeGF + awayGF + homeGA + awayGA) / 4;
-      const cleanSheetSignal = (homeClean + awayClean) / 2;
-      const yesScore = (projectedYes ? 0.42 : 0.1) + Math.min(0.38, attackingSignal * 0.18) - cleanSheetSignal * 0.16;
-      const yes = yesScore >= 0.47;
-      return {
-        type: "btts",
-        fixture: `${fixture.homeTeam} vs ${fixture.awayTeam}`,
-        date: fixture.date,
-        league: fixture.league,
-        homeTeam: fixture.homeTeam,
-        awayTeam: fixture.awayTeam,
-        market: "both teams to score",
-        pick: yes ? "Both teams to score: Yes" : "Both teams to score: No",
-        confidence: yes
-          ? Math.max(44, Math.min(74, 46 + yesScore * 42 + fixtureLeanScore(fixture) * 0.08))
-          : Math.max(42, Math.min(72, 62 - yesScore * 34 + cleanSheetSignal * 12)),
-        projectedScore: fixture.projectedScore,
-        source: `Projected score ${fixture.projectedScore || "N/A"}; scoring profile GF ${homeGF.toFixed(2)}-${awayGF.toFixed(2)}, GA ${homeGA.toFixed(2)}-${awayGA.toFixed(2)}, clean-sheet rate ${homeClean.toFixed(2)}-${awayClean.toFixed(2)}`,
-      };
-    })
-    .sort((a, b) => b.confidence - a.confidence);
+function bttsLegs(fixtures, riskMode = "safe") {
+  const isRiskyMode = riskMode === "risky";
+  const legs = [];
+
+  for (const fixture of fixtures) {
+    const score = parseProjectedScore(fixture.projectedScore);
+    const homeGF = featureValue(fixture, "homeGFPerGame");
+    const awayGF = featureValue(fixture, "awayGFPerGame");
+    const homeGA = featureValue(fixture, "homeGAPerGame");
+    const awayGA = featureValue(fixture, "awayGAPerGame");
+    const homeClean = featureValue(fixture, "homeCleanSheetRate");
+    const awayClean = featureValue(fixture, "awayCleanSheetRate");
+    const projectedYes = score ? score.homeGoals > 0 && score.awayGoals > 0 : false;
+    const attackingSignal = (homeGF + awayGF + homeGA + awayGA) / 4;
+    const cleanSheetSignal = (homeClean + awayClean) / 2;
+    const yesScore = (projectedYes ? 0.42 : 0.1) + Math.min(0.38, attackingSignal * 0.18) - cleanSheetSignal * 0.16;
+    const yes = yesScore >= 0.47;
+    const bttsSource = `Projected score ${fixture.projectedScore || "N/A"}; scoring profile GF ${homeGF.toFixed(2)}-${awayGF.toFixed(2)}, GA ${homeGA.toFixed(2)}-${awayGA.toFixed(2)}, clean-sheet rate ${homeClean.toFixed(2)}-${awayClean.toFixed(2)}`;
+
+    legs.push({
+      type: "btts",
+      fixture: `${fixture.homeTeam} vs ${fixture.awayTeam}`,
+      date: fixture.date,
+      league: fixture.league,
+      homeTeam: fixture.homeTeam,
+      awayTeam: fixture.awayTeam,
+      market: "both teams to score",
+      pick: yes ? "Both teams to score: Yes" : "Both teams to score: No",
+      confidence: yes
+        ? Math.max(44, Math.min(74, 46 + yesScore * 42 + fixtureLeanScore(fixture) * 0.08))
+        : Math.max(42, Math.min(72, 62 - yesScore * 34 + cleanSheetSignal * 12)),
+      projectedScore: fixture.projectedScore,
+      source: bttsSource,
+    });
+
+    // Risk mode: "team to not score" / clean sheet props based on projected goals and clean sheet rate
+    if (isRiskyMode) {
+      // Home team clean sheet (away team doesn't score)
+      const homeKeepsClean = score ? score.awayGoals === 0 : false;
+      const homeCleanChance = homeClean * 0.7 + (homeGA <= 0.85 ? 0.18 : 0) + (homeKeepsClean ? 0.15 : 0);
+      if (homeCleanChance >= 0.28 || homeClean >= 0.30) {
+        const cleanConf = Math.max(34, Math.min(64, 30 + homeCleanChance * 90 + cleanSheetSignal * 6));
+        legs.push({
+          type: "btts",
+          fixture: `${fixture.homeTeam} vs ${fixture.awayTeam}`,
+          date: fixture.date,
+          league: fixture.league,
+          homeTeam: fixture.homeTeam,
+          awayTeam: fixture.awayTeam,
+          market: "team clean sheet",
+          pick: `${fixture.homeTeam} to keep a clean sheet`,
+          confidence: adjustedConfidence(cleanConf, fixture, fixture.homeTeam, "score", 30, 66),
+          projectedScore: fixture.projectedScore,
+          source: `${bttsSource}; ${fixture.homeTeam} clean sheet rate ${homeClean.toFixed(2)}, away GF rate ${awayGF.toFixed(2)}`,
+          riskMode: true,
+        });
+      }
+
+      // Away team clean sheet (home team doesn't score)
+      const awayKeepsClean = score ? score.homeGoals === 0 : false;
+      const awayCleanChance = awayClean * 0.7 + (awayGA <= 0.85 ? 0.18 : 0) + (awayKeepsClean ? 0.15 : 0);
+      if (awayCleanChance >= 0.28 || awayClean >= 0.30) {
+        const cleanConf = Math.max(34, Math.min(64, 30 + awayCleanChance * 90 + cleanSheetSignal * 6));
+        legs.push({
+          type: "btts",
+          fixture: `${fixture.homeTeam} vs ${fixture.awayTeam}`,
+          date: fixture.date,
+          league: fixture.league,
+          homeTeam: fixture.homeTeam,
+          awayTeam: fixture.awayTeam,
+          market: "team clean sheet",
+          pick: `${fixture.awayTeam} to keep a clean sheet`,
+          confidence: adjustedConfidence(cleanConf, fixture, fixture.awayTeam, "score", 30, 66),
+          projectedScore: fixture.projectedScore,
+          source: `${bttsSource}; ${fixture.awayTeam} clean sheet rate ${awayClean.toFixed(2)}, home GF rate ${homeGF.toFixed(2)}`,
+          riskMode: true,
+        });
+      }
+    }
+  }
+
+  return legs.sort((a, b) => b.confidence - a.confidence);
 }
 
 function cornerLegs(fixtures, riskMode = "safe") {
@@ -1152,7 +1228,7 @@ function buildParlays(options = {}) {
   const playerLegs = fixtures.flatMap((fixture) => playerPropCandidates(players, fixture, riskMode));
   const scoreLegs = teamScoreLegs(fixtures);
   const resultLegs = matchResultLegs(fixtures);
-  const propLegs = [...bttsLegs(fixtures), ...cornerLegs(fixtures, riskMode)];
+  const propLegs = [...bttsLegs(fixtures, riskMode), ...cornerLegs(fixtures, riskMode)];
   const excludedLegFixtures = new Set([...excludedFixtureKeys]);
   const eligiblePlayerLegs = playerLegs
     .filter((leg) => !excludedLegFixtures.has([leg.date || "", leg.fixture || ""].join("|").toLowerCase()))

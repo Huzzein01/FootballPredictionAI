@@ -467,6 +467,24 @@ function tableZone(league, rank, total) {
   return "";
 }
 
+function simulateForm(team, wins, draws, losses) {
+  const total = wins + draws + losses;
+  if (!total) return ["D", "D", "D", "D", "D"];
+  const wRate = wins / total;
+  const dRate = draws / total;
+  let seed = 0;
+  for (const c of team) seed = ((seed * 31) + c.charCodeAt(0)) >>> 0;
+  // Mix the seed so different teams don't end up with similar initial patterns
+  seed = (seed ^ (seed >>> 16)) >>> 0;
+  const form = [];
+  for (let i = 0; i < 5; i++) {
+    seed = ((seed * 1664525) + 1013904223) >>> 0;
+    const r = seed / 4294967296;
+    form.push(r < wRate ? "W" : r < wRate + dRate ? "D" : "L");
+  }
+  return form;
+}
+
 function projectedLeagueTable(league, trends) {
   const matchCount = leagueMatchCount(league);
   const rows = trends.map((trend) => {
@@ -494,7 +512,12 @@ function projectedLeagueTable(league, trends) {
   });
   rows.sort((a, b) => b.points - a.points || b.goalDifference - a.goalDifference || b.goalsFor - a.goalsFor || a.team.localeCompare(b.team));
   const total = rows.length;
-  return rows.map((row, index) => ({ ...row, rank: index + 1, zone: tableZone(league, index + 1, total) }));
+  return rows.map((row, index) => ({
+    ...row,
+    rank: index + 1,
+    zone: tableZone(league, index + 1, total),
+    form: simulateForm(row.team, row.wins, row.draws, row.losses),
+  }));
 }
 
 function domesticCupSection(cup) {
@@ -1282,8 +1305,20 @@ function europeanPlayerWatchlist(competition, teams, profiles, metric) {
       rate: 0,
     }];
   });
+  // Build a profile-team map so we can validate hardcoded candidates against current player location
+  const profileTeamByPlayer = new Map(
+    profiles.map((p) => [String(p.player || "").toLowerCase(), normalizeTeamName(p.team)])
+  );
   const rawCandidates = [...configured, ...profileCandidates, ...fallbackCandidates]
-    .filter((candidate) => !teamSet.size || teamSet.has(normalizeTeamName(candidate.team)))
+    .filter((candidate) => {
+      if (teamSet.size && !teamSet.has(normalizeTeamName(candidate.team))) return false;
+      // If profile says this player is at a DIFFERENT team, discard the hardcoded entry
+      const profileTeam = profileTeamByPlayer.get(String(candidate.player || "").toLowerCase());
+      if (profileTeam && profileTeam !== normalizeTeamName(candidate.team) && candidate.prior !== "tracked player-profile baseline") {
+        return false;
+      }
+      return true;
+    })
     .map((candidate) => {
       const profile = profilesByPlayer.get(String(candidate.player || "").toLowerCase());
       const totals = profile?.totals || {};

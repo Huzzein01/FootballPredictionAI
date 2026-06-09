@@ -1541,17 +1541,22 @@ function renderFuturesLeagueTable(section, intlFutures) {
   const zoneLegend = [...new Set(rows.map((r) => r.zone).filter(Boolean))].map(
     (z) => `<span class="futures-zone-chip ${ZONE_CLASSES[z] || ""}">${ZONE_LABELS[z] || z}</span>`
   ).join("");
+  const formBadge = (result) => {
+    const cls = result === "W" ? "form-w" : result === "D" ? "form-d" : "form-l";
+    return `<span class="futures-form-badge ${cls}">${result}</span>`;
+  };
   const tableHtml = rows.length ? `
     <div class="futures-table-wrap">
       <table class="futures-projected-table">
         <thead><tr>
           <th>Pos</th><th>Team</th><th>P</th><th>W</th><th>D</th><th>L</th>
-          <th>GF</th><th>GA</th><th>GD</th><th>Pts</th>
+          <th>GF</th><th>GA</th><th>GD</th><th>Pts</th><th>Form</th>
         </tr></thead>
         <tbody>
           ${rows.map((row) => {
             const zoneClass = row.zone ? `futures-row-${row.zone.toLowerCase()}` : "";
             const promotedBadge = row.promoted ? `<span class="futures-promoted-badge" title="Promoted side">&#8593;</span>` : "";
+            const formHtml = (row.form || []).map(formBadge).join("");
             return `<tr class="${zoneClass}">
               <td>${escapeHtml(String(row.rank))}</td>
               <td>${escapeHtml(row.team)}${promotedBadge}</td>
@@ -1563,6 +1568,7 @@ function renderFuturesLeagueTable(section, intlFutures) {
               <td>${escapeHtml(String(row.goalsAgainst ?? ""))}</td>
               <td>${escapeHtml(String(row.goalDifference ?? ""))}</td>
               <td><strong>${escapeHtml(String(row.points ?? ""))}</strong></td>
+              <td class="form-cell">${formHtml}</td>
             </tr>`;
           }).join("")}
         </tbody>
