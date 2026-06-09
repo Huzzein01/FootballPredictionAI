@@ -2255,32 +2255,17 @@ function showAuthGate(message = "") {
 }
 
 async function initAuth() {
+  // Sign-in/login has been removed. The app is always open — no auth gate.
   authConfig = await api("/api/auth/config").catch(() => authConfig);
   document.body.classList.toggle("hosted-public", Boolean(authConfig.hideModelStats));
+  document.body.classList.remove("auth-required");
+  document.body.classList.add("is-authenticated");
   updateContextNavigation();
-  const requiresAuth = Boolean(authConfig.requireSignIn && authConfig.enabled);
-  if (!requiresAuth) {
-    if (authGate) authGate.hidden = true;
-    if (authAccount) authAccount.hidden = true;
-    const activeSection = pageSections.find((section) => section.classList.contains("is-active"));
-    if (isHiddenHostedPage(activeSection?.dataset.page)) showPage("predictions");
-    return true;
-  }
-
-  const stored = storedAuthSession();
-  if (!stored) {
-    showAuthGate();
-    return false;
-  }
-
-  try {
-    await applyAuthenticatedSession(stored);
-    return false;
-  } catch (error) {
-    saveAuthSession(null);
-    showAuthGate("Your session expired. Please sign in again.");
-    return false;
-  }
+  if (authGate) authGate.hidden = true;
+  if (authAccount) authAccount.hidden = true;
+  const activeSection = pageSections.find((section) => section.classList.contains("is-active"));
+  if (isHiddenHostedPage(activeSection?.dataset.page)) showPage("predictions");
+  return true;
 }
 
 function updateSummary(summary) {

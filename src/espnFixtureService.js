@@ -3,6 +3,8 @@ const path = require("path");
 const { normalizeTeamName } = require("./footballData");
 const { listPredictions, updateResult } = require("./backtestStore");
 const { mutableDataPath, readJsonWithFallback, repoDataPath, writeFileIfWritable, writeJson } = require("./runtimePaths");
+const { updateTeamResultsFromEspn } = require("./teamResultsStore");
+const { updateTeamTrainingProfiles } = require("./teamTrainingStore");
 
 const FIXTURE_PATH = repoDataPath("remaining_fixtures_2025_26_with_odds.csv");
 const LIVE_FIXTURE_PATH = mutableDataPath("live_espn_fixtures.json");
@@ -457,6 +459,17 @@ async function refreshEspnResults({ daysBack = 14, daysForward = 1, force = fals
     }
   }
 
+  // Persist match results as one file per team, then refresh each team's
+  // continuously-trained corpus (results + odds + stats + motivation slots).
+  let teamResultsSummary = { teamsTouched: 0, inserted: 0, updated: 0 };
+  let teamTrainingSummary = { profilesUpdated: 0 };
+  try {
+    teamResultsSummary = updateTeamResultsFromEspn(results);
+    teamTrainingSummary = updateTeamTrainingProfiles({ reason: "espn-results-refresh" });
+  } catch (error) {
+    teamResultsSummary = { teamsTouched: 0, inserted: 0, updated: 0, error: error.message };
+  }
+
   const snapshot = {
     updatedAt: new Date().toISOString(),
     source: "ESPN public event scoreboard API",
@@ -466,6 +479,8 @@ async function refreshEspnResults({ daysBack = 14, daysForward = 1, force = fals
     settled: settled.length,
     results,
     settledPredictions: settled,
+    teamResults: teamResultsSummary,
+    teamTraining: teamTrainingSummary,
     errors,
   };
   writeJson(LIVE_RESULTS_PATH, snapshot);

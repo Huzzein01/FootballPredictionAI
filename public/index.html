@@ -64,10 +64,6 @@
             <option value="2020-21">2020-21</option>
           </select>
         </label>
-        <div class="auth-account" id="authAccount" hidden>
-          <span id="authUserEmail"></span>
-          <button id="signOutButton" type="button">Sign out</button>
-        </div>
         <div class="summary model-private-stats" aria-label="Backtest summary">
           <span><strong id="totalCount">0</strong> total</span>
           <span><strong id="pendingCount">0</strong> pending</span>
@@ -92,34 +88,6 @@
       <button class="page-tab" type="button" data-page-target="results">Results</button>
       <button class="page-tab" type="button" data-page-target="international-fixtures">International Fixtures</button>
     </nav>
-
-    <section id="authGate" class="auth-gate" hidden aria-labelledby="authGateTitle">
-      <div class="auth-panel">
-        <p class="eyebrow">Private Model Access</p>
-        <h2 id="authGateTitle">Sign in to Football Prediction AI</h2>
-        <p class="auth-copy">Create an account or sign in to use the hosted model. Your account profile is stored in Supabase.</p>
-        <div class="auth-mode-tabs" role="tablist" aria-label="Authentication mode">
-          <button id="authSignInTab" class="is-active" type="button">Sign in</button>
-          <button id="authSignUpTab" type="button">Sign up</button>
-        </div>
-        <form id="authForm" class="auth-form">
-          <label id="authNameField" hidden>
-            Name
-            <input id="authDisplayName" name="displayName" type="text" autocomplete="name" placeholder="Your name">
-          </label>
-          <label>
-            Email
-            <input id="authEmail" name="email" type="email" autocomplete="email" required placeholder="you@example.com">
-          </label>
-          <label>
-            Password
-            <input id="authPassword" name="password" type="password" autocomplete="current-password" required minlength="6" placeholder="Password">
-          </label>
-          <button id="authSubmitButton" class="primary" type="submit">Sign in</button>
-        </form>
-        <p id="authMessage" class="auth-message" aria-live="polite"></p>
-      </div>
-    </section>
 
     <main class="dashboard">
       <section class="panel board-panel page-section is-active" data-page="predictions" aria-labelledby="boardHeading">

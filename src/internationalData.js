@@ -248,6 +248,9 @@ function predictInternationalFixture(fixture, friendlyResults = []) {
         altitudeM: weather.altitudeM,
         hasAC: weather.hasAC,
         netDiffImpact: weather.netDiffImpact,
+        // Per-team climate sub-scores consumed by the weatherBadge() UI.
+        home: { team: weather.home.team, climateScore: weather.home.climateScore, total: weather.home.total },
+        away: { team: weather.away.team, climateScore: weather.away.climateScore, total: weather.away.total },
       },
     },
     judgment: {

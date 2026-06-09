@@ -16,6 +16,8 @@ const { resetPlayerStatsCache } = require("./playerStats");
 const { loadMatches, normalizeTeamName } = require("./footballData");
 const { refreshMissingOdds } = require("./oddsRepairService");
 const { readResultsSnapshot, refreshEspnFixtures, refreshEspnResults, enrichPredictionsWithLiveStatus, refreshInternationalFriendlyResults, readFriendlyResultsSnapshot } = require("./espnFixtureService");
+const { listTeamResults, getTeamResults } = require("./teamResultsStore");
+const { listTeamTraining, getTeamTraining, appendTeamNote, updateTeamTrainingProfiles } = require("./teamTrainingStore");
 const { refreshTheOddsApi } = require("./oddsApiService");
 const { apiFootballStatus } = require("./liveData");
 const { refreshApiFootballPlayerStats } = require("./apiFootballPlayerStats");
@@ -99,9 +101,13 @@ function publicAuthConfig() {
   const anonKey = process.env.SUPABASE_ANON_KEY || process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY || "";
   const hostedMode = isHostedPublicMode();
   const hideModelStats = hostedMode || process.env.HIDE_MODEL_STATS === "1";
-  const requireSignIn = process.env.AUTH_GATE_ENABLED === "1" || process.env.REQUIRE_AUTH === "1";
+  // Sign-in/login has been removed. The gate is permanently disabled regardless
+  // of any AUTH_GATE_ENABLED / REQUIRE_AUTH environment variables so the app is
+  // always open. Supabase config is still reported for the KV JSON store, but it
+  // never forces an auth wall.
+  const requireSignIn = false;
   return {
-    enabled: Boolean(supabaseUrl && anonKey),
+    enabled: false,
     hostedMode,
     hideModelStats,
     requireSignIn,
@@ -584,6 +590,37 @@ async function handleApi(req, res, pathname) {
     const snapshot = await refreshTheOddsApi({ force: true, includeClub: true, includeInternational: true, daysForward: 420 });
     await persistKnownStores(["liveOdds"]);
     return sendJson(res, 200, snapshot);
+  }
+
+  // ── Per-team ESPN results & continuous training corpus ─────────────────────
+  if (req.method === "GET" && pathname === "/api/teams/results") {
+    return sendJson(res, 200, listTeamResults());
+  }
+  if (req.method === "GET" && pathname === "/api/teams/training") {
+    return sendJson(res, 200, listTeamTraining());
+  }
+  if (req.method === "POST" && pathname === "/api/teams/train") {
+    const summaryOut = updateTeamTrainingProfiles({ reason: "manual-api-trigger" });
+    scheduleRetrain("team-training-refresh");
+    return sendJson(res, 200, { ...summaryOut, trainingStatus: readTrainingStatus() });
+  }
+  const teamResultsMatch = pathname.match(/^\/api\/teams\/([^/]+)\/results$/);
+  if (req.method === "GET" && teamResultsMatch) {
+    const record = getTeamResults(decodeURIComponent(teamResultsMatch[1]));
+    if (!record) return sendJson(res, 404, { error: "No results stored for this team yet" });
+    return sendJson(res, 200, record);
+  }
+  const teamNoteMatch = pathname.match(/^\/api\/teams\/([^/]+)\/note$/);
+  if (req.method === "POST" && teamNoteMatch) {
+    const profile = appendTeamNote(decodeURIComponent(teamNoteMatch[1]), await readBody(req));
+    if (!profile) return sendJson(res, 404, { error: "Team not found or note text missing" });
+    return sendJson(res, 200, profile);
+  }
+  const teamTrainingMatch = pathname.match(/^\/api\/teams\/([^/]+)$/);
+  if (req.method === "GET" && teamTrainingMatch) {
+    const profile = getTeamTraining(decodeURIComponent(teamTrainingMatch[1]));
+    if (!profile) return sendJson(res, 404, { error: "No training profile for this team yet" });
+    return sendJson(res, 200, profile);
   }
 
   if (req.method === "GET" && pathname === "/api/live/api-football/status") {
