@@ -4653,9 +4653,62 @@ th {
   font-size: 14px;
 }
 
+/* Actual score display (replaces % for completed matches) */
+.bracket-score {
+  font-size: 11px;
+  font-weight: 700;
+  color: var(--muted);
+  white-space: nowrap;
+}
+.bracket-match-side.is-winner .bracket-score {
+  color: var(--accent, #1a6fef);
+}
+
+/* Competition selector tabs (CL / EL / ECL) */
+.bracket-comp-tabs {
+  display: flex;
+  gap: 6px;
+  flex-wrap: wrap;
+  margin-bottom: 16px;
+}
+.bracket-comp-tab {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 8px 14px;
+  border: 2px solid var(--line);
+  border-radius: 10px;
+  background: var(--surface);
+  cursor: pointer;
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--text);
+  gap: 2px;
+  transition: border-color 0.15s, background 0.15s;
+}
+.bracket-comp-tab:hover {
+  border-color: var(--accent, #1a6fef);
+  background: rgba(26, 111, 239, 0.05);
+}
+.bracket-comp-tab.is-active {
+  border-color: var(--accent, #1a6fef);
+  background: rgba(26, 111, 239, 0.1);
+  color: var(--accent, #1a6fef);
+}
+.bracket-comp-season {
+  font-size: 10px;
+  font-weight: 400;
+  opacity: 0.7;
+}
+[data-theme="dark"] .bracket-comp-tab.is-active {
+  background: rgba(26, 111, 239, 0.2);
+}
+
 @media (max-width: 520px) {
   .bracket-champ-team { font-size: 18px; }
   .bracket-champion-banner { padding: 16px; }
   .bracket-match-side { flex: 1 1 100%; }
   .bracket-match-divider { width: 100%; text-align: center; }
+  .bracket-comp-tabs { gap: 4px; }
+  .bracket-comp-tab { padding: 6px 10px; font-size: 12px; }
 }

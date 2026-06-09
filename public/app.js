@@ -120,6 +120,8 @@ let internationalGroupTableData = null;
 let leagueTableData = null;
 let futuresData = null;
 let bracketData = null;
+let clubBracketData = {};           // { "champions-league": {...}, "europa-league": {...}, "conference-league": {...} }
+let clubBracketComp = "champions-league"; // which club bracket is currently displayed
 let parlayRefreshSeed = 0;
 let editingPlayerStatEntry = null;
 let editingTeamStatEntry = null;
@@ -1421,23 +1423,31 @@ function bracketTeamChip(slot, isWinner = false) {
 
 function bracketMatchRow(match) {
   const homeWin = match.winner === match.home.team;
+  const isActual = match.source === "actual";
+  // For actual results show the aggregate score; for projections show win %
+  const homeLabel = isActual
+    ? (homeWin ? `<span class="bracket-score">${escapeHtml(match.score || "")}</span>` : "")
+    : `<span class="bracket-pct">${statNumber(match.homeWinPct ?? (homeWin ? match.confidence : 100 - match.confidence), 0)}%</span>`;
+  const awayLabel = isActual
+    ? (!homeWin ? `<span class="bracket-score">${escapeHtml(match.score || "")}</span>` : "")
+    : `<span class="bracket-pct">${statNumber(match.awayWinPct ?? (!homeWin ? match.confidence : 100 - match.confidence), 0)}%</span>`;
   return `
     <div class="bracket-match-row">
       <div class="bracket-match-side${homeWin ? " is-winner" : ""}">
         ${bracketTeamChip(match.home)}
-        <span class="bracket-pct">${statNumber(match.homeWinPct ?? (homeWin ? match.confidence : 100 - match.confidence), 0)}%</span>
+        ${homeLabel}
       </div>
-      <div class="bracket-match-divider">vs</div>
+      <div class="bracket-match-divider">${isActual ? "" : "vs"}</div>
       <div class="bracket-match-side${!homeWin ? " is-winner" : ""}">
         ${bracketTeamChip(match.away)}
-        <span class="bracket-pct">${statNumber(match.awayWinPct ?? (!homeWin ? match.confidence : 100 - match.confidence), 0)}%</span>
+        ${awayLabel}
       </div>
     </div>`;
 }
 
-function renderBracketTree(bracket, champion) {
+function renderBracketTree(bracket, champion, opts = {}) {
   if (!bracket) {
-    return `<div class="empty-state bracket-loading">⏳ Generating tournament bracket projection…</div>`;
+    return `<div class="empty-state bracket-loading">⏳ Generating bracket projection…</div>`;
   }
 
   const rounds = [
@@ -1448,15 +1458,18 @@ function renderBracketTree(bracket, champion) {
     { key: "final",     icon: "🏆", expand: true  },
   ];
 
+  const championLabel = opts.championLabel || "🏆 Predicted Champion";
+  const disclaimer    = opts.disclaimer    || "Model projection · no live odds or injury data applied";
+
   // Champion banner
   const champFlag = champion?.flag
     ? `<img class="bracket-champ-flag" src="${escapeHtml(champion.flag)}" alt="${escapeHtml(champion.team)}" loading="lazy" onerror="this.style.display='none'">`
     : "";
   const champBanner = `
     <div class="bracket-champion-banner">
-      <div class="bracket-champ-label">🏆 Predicted World Cup Champion</div>
-      <div class="bracket-champ-team">${champFlag}<span>${escapeHtml(champion?.team || "")}</span></div>
-      <p class="bracket-disclaimer muted">Model projection · weather &amp; climate-adjusted · no live odds or injury data applied</p>
+      <div class="bracket-champ-label">${escapeHtml(championLabel)}</div>
+      <div class="bracket-champ-team">${champFlag}<span>${escapeHtml(champion?.team || "TBD")}</span></div>
+      <p class="bracket-disclaimer muted">${escapeHtml(disclaimer)}</p>
     </div>`;
 
   // Round sections
@@ -1507,12 +1520,55 @@ function renderFutures() {
   const market = futuresMarketFilter?.value || "winners";
   const intlFutures = data.context === "international" || isInternationalMode();
 
-  // ── International "Tournament winner" market → show bracket tree ──────────
+  // ── International "Tournament winner" market → WC bracket tree ──────────
   if (intlFutures && market === "winners") {
     futuresStatus.textContent = bracketData
       ? `WC 2026 bracket projection | generated ${new Date(bracketData.generatedAt || Date.now()).toLocaleString()}`
       : "Generating WC 2026 bracket projection…";
-    futuresOutput.innerHTML = renderBracketTree(bracketData?.bracket, bracketData?.champion);
+    futuresOutput.innerHTML = renderBracketTree(
+      bracketData?.bracket,
+      bracketData?.champion,
+      { championLabel: "🏆 Predicted World Cup Champion", disclaimer: "Model projection · weather & climate-adjusted · no live odds or injury data applied" }
+    );
+    return;
+  }
+
+  // ── Club "Tournament winner" market → UEFA knockout bracket tree ─────────
+  if (!intlFutures && market === "winners") {
+    const CLUB_COMPS = [
+      { id: "champions-league",  label: "Champions League", season: "2025–26" },
+      { id: "europa-league",     label: "Europa League",    season: "2024–25" },
+      { id: "conference-league", label: "Conference League", season: "2024–25" },
+    ];
+    const active = clubBracketData[clubBracketComp];
+    const activeComp = CLUB_COMPS.find(c => c.id === clubBracketComp) || CLUB_COMPS[0];
+
+    futuresStatus.textContent = active
+      ? `${active.competition?.label || activeComp.label} ${active.competition?.season || activeComp.season} bracket | generated ${new Date(active.generatedAt || Date.now()).toLocaleTimeString()}`
+      : "Generating bracket projections…";
+
+    // Competition selector tabs
+    const tabs = CLUB_COMPS.map(c => `
+      <button class="bracket-comp-tab${c.id === clubBracketComp ? " is-active" : ""}"
+              onclick="clubBracketComp='${c.id}';renderFutures()">
+        ${escapeHtml(c.label)}
+        <span class="bracket-comp-season">${escapeHtml(c.season)}</span>
+      </button>`).join("");
+
+    const tabBar = `<div class="bracket-comp-tabs">${tabs}</div>`;
+
+    const bracketHtml = active
+      ? renderBracketTree(
+          active.bracket,
+          active.champion,
+          {
+            championLabel: `🏆 ${escapeHtml(active.championLabel || activeComp.label + " Winner")}`,
+            disclaimer: active.disclaimer || "Results from official competition data.",
+          }
+        )
+      : `<div class="empty-state bracket-loading">⏳ Loading ${escapeHtml(activeComp.label)} bracket…</div>`;
+
+    futuresOutput.innerHTML = tabBar + bracketHtml;
     return;
   }
 
@@ -1594,12 +1650,23 @@ async function refreshFutures() {
 }
 
 async function refreshBracket() {
-  if (!isInternationalMode()) return;
-  try {
-    bracketData = await api("/api/international/bracket");
-    renderFutures(); // re-render once bracket arrives
-  } catch (_) {
-    bracketData = null;
+  if (isInternationalMode()) {
+    try {
+      bracketData = await api("/api/international/bracket");
+      renderFutures();
+    } catch (_) {
+      bracketData = null;
+    }
+  } else {
+    // Fetch all three club competition brackets in parallel
+    const comps = ["champions-league", "europa-league", "conference-league"];
+    const results = await Promise.allSettled(
+      comps.map(id => api(`/api/bracket/${id}`))
+    );
+    results.forEach((r, i) => {
+      clubBracketData[comps[i]] = r.status === "fulfilled" ? r.value : null;
+    });
+    renderFutures();
   }
 }
 
@@ -1677,7 +1744,7 @@ async function renderClubContext() {
   await refreshLeagueTables();
   await refreshTeamProfiles();
   await refreshLedger();
-  await refreshFutures();
+  await Promise.all([refreshFutures(), refreshBracket()]);
 }
 
 async function applyAppContext() {

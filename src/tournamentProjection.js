@@ -51,6 +51,10 @@ function simulateKnockoutMatch(homeSlot, awaySlot, fixtureStub) {
     kickoffUtc:  fixtureStub?.kickoffUtc  || "",
     kickoffLocal: fixtureStub?.kickoffLocal || "",
     hostCountry: fixtureStub?.hostCountry  || "",
+    // Activates WC_TOURNAMENT_PRESTIGE bonus in predictInternationalFixture()
+    // so historically dominant nations (Argentina, France, Brazil, Spain, etc.)
+    // get appropriate extra weight in deep knockout rounds.
+    isKnockout:  true,
   };
 
   try {
@@ -288,6 +292,10 @@ function projectTournament() {
       away:       { team: r.away.team, flag: r.away.flagUrl },
       winner:     r.winner.team,
       confidence: r.confidence,
+      homeWinPct: r.homeWinPct,
+      awayWinPct: r.awayWinPct,
+      source:     "projected",
+      score:      null,
     };
   }
 

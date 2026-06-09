@@ -64,6 +64,36 @@ const TEAM_RATINGS = {
   "Curaçao": 65,
 };
 
+/**
+ * Historical World Cup tournament pedigree + recent continental performance.
+ * Applied only in knockout rounds (fixture.isKnockout === true) via ratingFor().
+ *
+ * Sources:
+ *   WC titles  — Brazil 5, Germany 4, Italy 4, Argentina 3, France 2, England/Uruguay/Spain 1
+ *   2022 WC    — Argentina champion, France finalist, Morocco 4th (best African run ever)
+ *   2024       — Spain: Euros winner; Argentina: Copa América winner
+ *   Croatia    — 2018 WC finalist, 2022 3rd place
+ *   Colombia   — 2024 Copa América finalist
+ */
+const WC_TOURNAMENT_PRESTIGE = {
+  Argentina:   8,  // 3× WC champion (1978, 1986, 2022); Copa América 2024 winner
+  France:      7,  // 2× WC champion (1998, 2018); 2022 WC finalist; Euros 2024 finalist
+  Brazil:      7,  // 5× WC champion; always a top-4 contender
+  Germany:     6,  // 4× WC champion; consistently deep runs
+  Spain:       6,  // 1× WC champion (2010); 3× Euros; Euros 2024 winner
+  England:     4,  // 1× WC champion (1966); SF/QF in 2018, 2022
+  Uruguay:     3,  // 2× WC champion (early era); perennial Copa América force
+  Netherlands: 3,  // 3× WC finalist (never won); consistent deep runs
+  Croatia:     4,  // 2018 WC finalist; 2022 WC 3rd place
+  Morocco:     4,  // 2022 WC 4th place — best African run in history
+  Portugal:    2,  // 2006 4th place; 2022 QF; elite individual talent
+  Colombia:    2,  // 2024 Copa América finalist; rising continental power
+  Mexico:      1,  // 6× R16 exits; 2026 co-host advantage
+  USA:         1,  // 2026 host nation; improving programme
+  Senegal:     1,  // 2022 R16; growing African power
+  Japan:       1,  // 2022 R16; most successful Asian WC nation
+};
+
 function readRows(filePath) {
   if (!fs.existsSync(filePath)) return [];
   const data = JSON.parse(fs.readFileSync(filePath, "utf8").replace(/^\uFEFF/, ""));
@@ -85,8 +115,15 @@ function logistic(value) {
   return 1 / (1 + Math.exp(-value));
 }
 
-function ratingFor(team) {
-  return TEAM_RATINGS[team] ?? 68;
+/**
+ * Returns the effective rating for a team.
+ * In knockout rounds (includePrestige=true) the WC_TOURNAMENT_PRESTIGE bonus
+ * is added so historically dominant nations have a stronger edge late on.
+ */
+function ratingFor(team, includePrestige = false) {
+  const base = TEAM_RATINGS[team] ?? 68;
+  if (!includePrestige) return base;
+  return base + (WC_TOURNAMENT_PRESTIGE[team] ?? 0);
 }
 
 // Read the ESPN-fetched international friendly results from disk.
@@ -145,8 +182,10 @@ function predictInternationalFixture(fixture, friendlyResults = []) {
   const liveOdds = oddsForInternationalFixture(fixture);
   const homeFormAdj = friendlyFormAdjustment(fixture.homeTeam, friendlyResults);
   const awayFormAdj = friendlyFormAdjustment(fixture.awayTeam, friendlyResults);
-  const homeRating = ratingFor(fixture.homeTeam) + homeFormAdj;
-  const awayRating = ratingFor(fixture.awayTeam) + awayFormAdj;
+  // isKnockout flag activates the WC_TOURNAMENT_PRESTIGE bonus for deep rounds
+  const includePrestige = !!fixture.isKnockout;
+  const homeRating = ratingFor(fixture.homeTeam, includePrestige) + homeFormAdj;
+  const awayRating = ratingFor(fixture.awayTeam, includePrestige) + awayFormAdj;
   const weather = weatherContextForFixture(fixture);
   const diff = homeRating - awayRating + hostBoost(fixture) + weather.netDiffImpact;
   const draw = clamp(0.25 - Math.abs(diff) * 0.004, 0.16, 0.28);
@@ -343,4 +382,5 @@ module.exports = {
   internationalGroupTables,
   internationalStatus,
   readFixtureData,
+  predictInternationalFixture,  // exported for knockout-round simulation in tournamentProjection.js
 };

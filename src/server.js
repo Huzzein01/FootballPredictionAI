@@ -9,6 +9,7 @@ const { PLAYER_PROFILES, addPlayerStatEntry, listPlayerProfiles, updatePlayerSta
 const { addTeamStatEntry, listTeamProfiles, updateTeamStatEntry } = require("./teamProfileStore");
 const { internationalFixturePredictions, internationalGroupTables, internationalStatus, readFixtureData } = require("./internationalData");
 const { projectTournament } = require("./tournamentProjection");
+const { projectClubBracket } = require("./clubBracketProjection");
 const { archivedLeagueTables, refreshLiveLeagueContext } = require("./leagueTableService");
 const { futuresPredictions } = require("./futuresService");
 const { resetPlayerStatsCache } = require("./playerStats");
@@ -701,6 +702,18 @@ async function handleApi(req, res, pathname) {
   if (req.method === "GET" && pathname === "/api/international/bracket") {
     try {
       const bracket = projectTournament();
+      return sendJson(res, 200, bracket);
+    } catch (e) {
+      return sendJson(res, 500, { error: e.message });
+    }
+  }
+
+  // ── Club competition knockout brackets ──────────────────────────────────
+  const clubBracketMatch = pathname.match(/^\/api\/bracket\/(champions-league|europa-league|conference-league)$/);
+  if (req.method === "GET" && clubBracketMatch) {
+    const compId = clubBracketMatch[1];
+    try {
+      const bracket = projectClubBracket(compId);
       return sendJson(res, 200, bracket);
     } catch (e) {
       return sendJson(res, 500, { error: e.message });
