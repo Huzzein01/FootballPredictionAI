@@ -161,6 +161,16 @@
           <button id="refreshPlayedButton" type="button">Refresh Played</button>
         </div>
 
+        <div class="date-nav" aria-label="Played match date navigation">
+          <button id="playedDatePrevButton" class="date-nav-arrow" type="button" aria-label="Previous day">‹</button>
+          <label class="date-nav-center">
+            <span id="playedDateNavLabel">All dates</span>
+            <input id="playedDateNav" type="date" aria-label="Select played match date">
+          </label>
+          <button id="playedDateNextButton" class="date-nav-arrow" type="button" aria-label="Next day">›</button>
+          <button id="playedDateNavAll" class="date-nav-all" type="button">All</button>
+        </div>
+
         <div class="board-controls" aria-label="Played fixture filters">
           <label>
             League
@@ -168,11 +178,11 @@
               <option value="All">All leagues</option>
             </select>
           </label>
-          <label>
+          <label class="board-date-control" hidden>
             Date
             <input id="playedDateFilter" type="date" aria-label="Filter played matches by date">
           </label>
-          <button id="clearPlayedDateButton" type="button">All Dates</button>
+          <button id="clearPlayedDateButton" type="button" hidden>All Dates</button>
           <div class="board-stats" aria-label="Played fixture summary">
             <span><strong id="playedTotal">0</strong> played</span>
             <span><strong id="playedCorrect">0</strong> correct</span>
@@ -214,6 +224,16 @@
           </div>
         </div>
 
+        <div class="date-nav" aria-label="Parlay date navigation">
+          <button id="parlayDatePrevButton" class="date-nav-arrow" type="button" aria-label="Previous day">‹</button>
+          <label class="date-nav-center">
+            <span id="parlayDateNavLabel">All dates</span>
+            <input id="parlayDateNav" type="date" aria-label="Select parlay date">
+          </label>
+          <button id="parlayDateNextButton" class="date-nav-arrow" type="button" aria-label="Next day">›</button>
+          <button id="parlayDateNavAll" class="date-nav-all" type="button">All</button>
+        </div>
+
         <div class="parlay-controls" aria-label="Parlay controls">
           <label>
             League
@@ -225,11 +245,11 @@
               <option value="Ligue 1">Ligue 1</option>
             </select>
           </label>
-          <label>
+          <label class="board-date-control" hidden>
             Date
             <input id="parlayDateFilter" type="date" aria-label="Build parlays from a specific fixture date">
           </label>
-          <button id="clearParlayDateButton" type="button">All Dates</button>
+          <button id="clearParlayDateButton" type="button" hidden>All Dates</button>
           <label>
             Legs
             <select id="parlayLegCount">
@@ -520,38 +540,42 @@
       </section>
 
       <section class="panel futures-panel page-section" data-page="futures" aria-labelledby="futuresHeading">
-        <div class="section-head">
+        <div class="section-head board-head">
           <div>
             <h2 id="futuresHeading">Futures Predictions</h2>
             <p id="futuresStatus" class="muted">Loading season and tournament futures</p>
           </div>
-          <div class="section-actions">
-            <label>
-              League
-              <select id="futuresLeagueFilter" aria-label="Filter futures league">
-                <option value="All">All leagues</option>
-                <option value="EPL">EPL</option>
+          <button id="refreshFuturesButton" type="button">Refresh</button>
+        </div>
+        <div class="board-controls" aria-label="Futures competition filter">
+          <label>
+            Competition
+            <select id="futuresCompetitionSelect" aria-label="Select futures competition">
+              <optgroup label="Domestic Leagues">
+                <option value="EPL" selected>Premier League</option>
                 <option value="La Liga">La Liga</option>
                 <option value="Bundesliga">Bundesliga</option>
                 <option value="Ligue 1">Ligue 1</option>
                 <option value="Serie A">Serie A</option>
+              </optgroup>
+              <optgroup label="European Competitions">
                 <option value="Champions League">Champions League</option>
                 <option value="Europa League">Europa League</option>
                 <option value="Conference League">Conference League</option>
-              </select>
-            </label>
-            <label>
-              Market
-              <select id="futuresMarketFilter" aria-label="Filter futures market">
-                <option value="winners">League winners</option>
-                <option value="scorers">Top scorers</option>
-                <option value="assists">Top assists</option>
-                <option value="team-scorers">Team scorers</option>
-                <option value="europe">European profiles</option>
-              </select>
-            </label>
-            <button id="refreshFuturesButton" type="button">Refresh Futures</button>
-          </div>
+              </optgroup>
+              <optgroup label="English Cups">
+                <option value="FA Cup">FA Cup</option>
+                <option value="Carabao Cup">Carabao Cup</option>
+              </optgroup>
+              <optgroup label="Other Cups">
+                <option value="Copa del Rey">Copa del Rey</option>
+                <option value="Supercopa de España">Supercopa de España</option>
+                <option value="DFB-Pokal">DFB-Pokal</option>
+                <option value="Coupe de France">Coupe de France</option>
+                <option value="Coppa Italia">Coppa Italia</option>
+              </optgroup>
+            </select>
+          </label>
         </div>
         <div id="futuresOutput" class="futures-output" aria-live="polite"></div>
       </section>

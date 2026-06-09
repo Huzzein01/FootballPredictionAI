@@ -2271,6 +2271,167 @@ a {
   color: var(--teal);
 }
 
+/* ── Futures redesign: zone legend ─────────────────────────────────────────── */
+.futures-zone-legend {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+  margin-top: 8px;
+}
+
+.futures-zone-chip {
+  padding: 3px 9px;
+  border-radius: 20px;
+  font-size: 11px;
+  font-weight: 700;
+  border: 1px solid;
+}
+
+.futures-zone-chip.zone-cl  { border-color: var(--teal);  color: var(--teal); }
+.futures-zone-chip.zone-el  { border-color: var(--gold);   color: var(--gold); }
+.futures-zone-chip.zone-conf { border-color: var(--green); color: var(--green); }
+.futures-zone-chip.zone-rel { border-color: var(--red);    color: var(--red); }
+.futures-zone-chip.zone-po  { border-color: var(--accent); color: var(--accent); }
+
+/* ── Futures redesign: projected table ─────────────────────────────────────── */
+.futures-table-wrap {
+  overflow-x: auto;
+}
+
+.futures-projected-table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 13px;
+}
+
+.futures-projected-table th,
+.futures-projected-table td {
+  padding: 6px 8px;
+  text-align: center;
+  border-bottom: 1px solid var(--line);
+}
+
+.futures-projected-table th {
+  font-size: 11px;
+  font-weight: 700;
+  color: var(--muted);
+  text-transform: uppercase;
+}
+
+.futures-projected-table td:nth-child(2) {
+  text-align: left;
+}
+
+.futures-projected-table .futures-row-cl  { border-left: 3px solid var(--teal); }
+.futures-projected-table .futures-row-el  { border-left: 3px solid var(--gold); }
+.futures-projected-table .futures-row-conf { border-left: 3px solid var(--green); }
+.futures-projected-table .futures-row-rel { border-left: 3px solid var(--red); }
+.futures-projected-table .futures-row-po  { border-left: 3px solid var(--accent); }
+
+.futures-promoted-badge {
+  display: inline-block;
+  font-size: 10px;
+  color: var(--green);
+  margin-left: 4px;
+  vertical-align: middle;
+}
+
+/* ── Futures redesign: bracket ──────────────────────────────────────────────── */
+.futures-bracket {
+  display: flex;
+  gap: 12px;
+  overflow-x: auto;
+  padding: 4px 0;
+}
+
+.bracket-round {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  min-width: 150px;
+  flex: 1;
+}
+
+.bracket-round-label {
+  font-size: 11px;
+  font-weight: 700;
+  color: var(--muted);
+  text-transform: uppercase;
+  margin-bottom: 4px;
+}
+
+.bracket-slot {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  border: 1px solid var(--line);
+  border-radius: 6px;
+  background: var(--surface);
+  padding: 8px 10px;
+  font-size: 13px;
+}
+
+.bracket-slot.bracket-winner {
+  border-color: var(--gold);
+  background: var(--gold-soft);
+  font-weight: 700;
+}
+
+.bracket-slot.bracket-runner-up {
+  border-color: var(--teal);
+  background: var(--blue-soft);
+}
+
+.bracket-slot.bracket-tbd {
+  border-style: dashed;
+  opacity: 0.55;
+  color: var(--muted);
+}
+
+/* ── Futures redesign: cup skeleton ────────────────────────────────────────── */
+.cup-rounds-track {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 6px;
+  overflow-x: auto;
+  padding: 4px 0;
+}
+
+.cup-round-slot {
+  padding: 7px 12px;
+  border: 1px solid var(--line);
+  border-radius: 6px;
+  font-size: 13px;
+  background: var(--surface);
+}
+
+.cup-slot-tbd {
+  border-style: dashed;
+  color: var(--muted);
+  opacity: 0.6;
+}
+
+.cup-round-arrow {
+  color: var(--muted);
+  font-size: 16px;
+}
+
+/* ── Futures redesign: picks disclosure ────────────────────────────────────── */
+.futures-picks-detail {
+  border: 1px solid var(--line);
+  border-radius: 8px;
+  padding: 10px 12px;
+}
+
+.futures-picks-detail summary {
+  cursor: pointer;
+  font-size: 13px;
+  font-weight: 700;
+  color: var(--muted);
+  user-select: none;
+}
+
 .score-line,
 .odds-line {
   margin-top: 10px;

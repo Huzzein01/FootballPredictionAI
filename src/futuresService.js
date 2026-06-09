@@ -16,6 +16,36 @@ const UEFA_COMPETITION_FILES = {
   "Europa League": ["el.txt", "elq.txt"],
   "Conference League": ["conf.txt", "confq.txt"],
 };
+const DOMESTIC_CUPS = {
+  EPL: [
+    { id: "fa-cup", name: "FA Cup", notes: "Open to all English football clubs. Third round begins in January." },
+    { id: "carabao-cup", name: "Carabao Cup", notes: "Also known as the EFL Cup or League Cup." },
+  ],
+  "La Liga": [
+    { id: "copa-del-rey", name: "Copa del Rey", notes: "Spain's primary domestic knockout cup competition." },
+    { id: "supercopa-espana", name: "Supercopa de España", notes: "Four-team mini-tournament held in January." },
+  ],
+  Bundesliga: [
+    { id: "dfb-pokal", name: "DFB-Pokal", notes: "Germany's premier domestic cup competition." },
+  ],
+  "Ligue 1": [
+    { id: "coupe-de-france", name: "Coupe de France", notes: "Open to all French football clubs." },
+  ],
+  "Serie A": [
+    { id: "coppa-italia", name: "Coppa Italia", notes: "Italy's domestic cup with group stage format for top clubs." },
+  ],
+};
+
+const CUP_ROUNDS = {
+  "fa-cup": ["Third Round", "Fourth Round", "Fifth Round", "Quarter-Finals", "Semi-Finals", "Final"],
+  "carabao-cup": ["Round of 16", "Quarter-Finals", "Semi-Finals", "Final"],
+  "copa-del-rey": ["Round of 32", "Round of 16", "Quarter-Finals", "Semi-Finals", "Final"],
+  "supercopa-espana": ["Semi-Finals", "Final"],
+  "dfb-pokal": ["First Round", "Second Round", "Quarter-Finals", "Semi-Finals", "Final"],
+  "coupe-de-france": ["Round of 32", "Round of 16", "Quarter-Finals", "Semi-Finals", "Final"],
+  "coppa-italia": ["Round of 16", "Quarter-Finals", "Semi-Finals", "Final"],
+};
+
 const NEXT_SEASON_RULES = {
   EPL: { relegatedCount: 3, promotedCount: 3, secondTierCode: "eng.2", secondTierName: "Championship" },
   "La Liga": { relegatedCount: 3, promotedCount: 3, secondTierCode: "esp.2", secondTierName: "LaLiga 2" },
@@ -409,6 +439,79 @@ const INTERNATIONAL_PRIORITY_PLAYERS = new Set([
   "Jamal Musiala",
   "Michael Olise",
 ]);
+
+function tableZone(league, rank, total) {
+  if (league === "EPL" || league === "La Liga" || league === "Serie A") {
+    if (rank <= 4) return "CL";
+    if (rank <= 6) return "EL";
+    if (rank === 7) return "CONF";
+    if (rank > total - 3) return "REL";
+    return "";
+  }
+  if (league === "Bundesliga") {
+    if (rank <= 4) return "CL";
+    if (rank <= 6) return "EL";
+    if (rank === 7) return "CONF";
+    if (rank === total - 1) return "PO";
+    if (rank >= total) return "REL";
+    return "";
+  }
+  if (league === "Ligue 1") {
+    if (rank <= 3) return "CL";
+    if (rank <= 5) return "EL";
+    if (rank === 6) return "CONF";
+    if (rank === total - 1) return "PO";
+    if (rank >= total) return "REL";
+    return "";
+  }
+  return "";
+}
+
+function projectedLeagueTable(league, trends) {
+  const matchCount = leagueMatchCount(league);
+  const rows = trends.map((trend) => {
+    const isPromoted = trend.promoted || false;
+    let ppg = clamp(numeric(trend.ppg) || 1.3, 0.3, 2.8);
+    let gfPer = clamp(numeric(trend.goalsForPerMatch) || 1.3, 0.3, 3.5);
+    let gaPer = clamp(numeric(trend.goalsAgainstPerMatch) || 1.3, 0.3, 3.5);
+    if (isPromoted) {
+      ppg = clamp(ppg * 0.60, 0.65, 1.15);
+      gfPer = clamp(gfPer * 0.68, 0.7, 1.5);
+      gaPer = clamp(gaPer * 1.18, 0.9, 2.0);
+    }
+    const pts = Math.round(ppg * matchCount);
+    const rawWins = (pts - 0.25 * matchCount) / 2.75;
+    const w = Math.min(matchCount, Math.max(0, Math.round(rawWins)));
+    const d = Math.max(0, Math.min(matchCount - w, Math.round(pts - w * 3)));
+    const l = Math.max(0, matchCount - w - d);
+    const goalsFor = Math.round(gfPer * matchCount);
+    const goalsAgainst = Math.round(gaPer * matchCount);
+    return {
+      team: trend.team, played: matchCount, wins: w, draws: d, losses: l,
+      points: pts, goalsFor, goalsAgainst, goalDifference: goalsFor - goalsAgainst,
+      promoted: isPromoted, rating: round(trend.rating, 1),
+    };
+  });
+  rows.sort((a, b) => b.points - a.points || b.goalDifference - a.goalDifference || b.goalsFor - a.goalsFor || a.team.localeCompare(b.team));
+  const total = rows.length;
+  return rows.map((row, index) => ({ ...row, rank: index + 1, zone: tableZone(league, index + 1, total) }));
+}
+
+function domesticCupSection(cup) {
+  const rounds = CUP_ROUNDS[cup.id] || [];
+  return {
+    id: `${cup.id}-2026-27`,
+    title: `${cup.name} 2026-27`,
+    subtitle: `${cup.notes} Draw and bracket data will be imported once the competition begins.`,
+    type: "cup-skeleton",
+    rounds: rounds.map((name) => ({ name })),
+    picks: [],
+  };
+}
+
+function domesticCupSections(league) {
+  return (DOMESTIC_CUPS[league] || []).map(domesticCupSection);
+}
 
 function numeric(value) {
   const n = Number(value);
@@ -1242,6 +1345,7 @@ function europeanCompetitionSection(competition, teamRows, allLeagueTrends, prof
     id: `${competition.toLowerCase().replace(/[^a-z0-9]+/g, "-")}-futures`,
     title: `${competition} Futures`,
     subtitle: `${teams.length} teams in the current ${competition} futures pool. Winner, scorer, and assist markets are pre-draw predictions.`,
+    type: "knockout",
     picks: [
       ...europeanWinnerPicks(competition, teams),
       ...europeanPlayerWatchlist(competition, teams, profiles, "goals"),
@@ -1293,8 +1397,10 @@ async function nextSeasonClubFutures({ league = "All" } = {}) {
     for (const [leagueName, trends] of trendPairs) {
       sections.push({
         id: `${leagueName}-2026-27-futures`,
-        title: `${leagueName} 2026-27 Futures`,
-        subtitle: `${HISTORICAL_SEASONS[0]} through ${HISTORICAL_SEASONS[HISTORICAL_SEASONS.length - 1]} compiled baseline, before new fixtures and summer transfer adjustments.`,
+        title: `${leagueName} — 2026-27 Season Projection`,
+        subtitle: `Projected final standings based on ${HISTORICAL_SEASONS[0]}–${HISTORICAL_SEASONS[HISTORICAL_SEASONS.length - 1]} form trends. Re-runs after transfers and preseason data are imported.`,
+        type: "league-table",
+        projectedTable: projectedLeagueTable(leagueName, trends),
         picks: [
           ...leagueWinnerPicksFromTrends(leagueName, leagueName, trends),
           ...promotedTeamBaselinePicks(leagueName, trends),
@@ -1303,6 +1409,9 @@ async function nextSeasonClubFutures({ league = "All" } = {}) {
           ...teamScorerWatchlist(leagueName, trends, playerProfiles),
         ],
       });
+      if (league !== "All") {
+        sections.push(...domesticCupSections(leagueName));
+      }
     }
   }
   if (league === "All" || league === "Champions League") {
@@ -1355,13 +1464,31 @@ async function clubFutures({ season = "2025-26", league = "All" } = {}) {
     const trainedTeams = teamProfiles.filter((profile) => profile.league === leagueName && numeric(profile.totals?.matches) > 0).length;
     sections.push({
       id: `${leagueName}-futures`,
-      title: `${tableLeague.name || leagueName} Futures`,
-      subtitle: `${trainedTeams} manually trained team profile${trainedTeams === 1 ? "" : "s"} layered into club context.`,
+      title: `${tableLeague.name || leagueName} — ${season} Live Table`,
+      subtitle: `${trainedTeams} manually trained team profile${trainedTeams === 1 ? "" : "s"} layered in. Current standings as of latest ESPN refresh.`,
+      type: "league-table",
+      projectedTable: (tableLeague.standings || []).map((row, index) => ({
+        rank: index + 1,
+        team: normalizeTeamName(row.team),
+        played: numeric(row.played),
+        wins: numeric(row.wins),
+        draws: numeric(row.draws),
+        losses: numeric(row.losses),
+        points: numeric(row.points),
+        goalsFor: numeric(row.goalsFor),
+        goalsAgainst: numeric(row.goalsAgainst),
+        goalDifference: numeric(row.goalDifference),
+        zone: tableZone(leagueName, index + 1, (tableLeague.standings || []).length),
+        promoted: false,
+      })),
       picks: [
         ...(leagueWinner ? [{ ...leagueWinner, market: "League winner / next-season baseline" }] : []),
         ...scorerPicks.map((pick) => ({ ...pick, market: "Top scorer watchlist" })),
       ],
     });
+    if (league !== "All") {
+      sections.push(...domesticCupSections(leagueName));
+    }
   }
 
   return {
@@ -1575,6 +1702,19 @@ async function internationalFutures({ season = "2026 World Cup" } = {}) {
 
 async function futuresPredictions({ context = "club", season, league } = {}) {
   if (context === "international") return internationalFutures({ season: season || "2026 World Cup" });
+  const allCups = Object.values(DOMESTIC_CUPS).flat();
+  const cupMatch = allCups.find((cup) => cup.name === league);
+  if (cupMatch) {
+    return {
+      context: "club",
+      season: season || "2026-27",
+      league,
+      generatedAt: new Date().toISOString(),
+      unavailable: false,
+      sourcePolicy: "",
+      sections: [domesticCupSection(cupMatch)],
+    };
+  }
   return clubFutures({ season: season || "2025-26", league: league || "All" });
 }
 

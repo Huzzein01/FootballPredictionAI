@@ -84,9 +84,19 @@ const refreshLeagueTablesButton = document.querySelector("#refreshLeagueTablesBu
 const leagueTableLeagueFilter = document.querySelector("#leagueTableLeagueFilter");
 const leagueTablesOutput = document.querySelector("#leagueTablesOutput");
 const futuresStatus = document.querySelector("#futuresStatus");
-const futuresLeagueFilter = document.querySelector("#futuresLeagueFilter");
-const futuresMarketFilter = document.querySelector("#futuresMarketFilter");
+const futuresCompetitionSelect = document.querySelector("#futuresCompetitionSelect");
 const refreshFuturesButton = document.querySelector("#refreshFuturesButton");
+const playedDatePrevButton = document.querySelector("#playedDatePrevButton");
+const playedDateNextButton = document.querySelector("#playedDateNextButton");
+const playedDateNavAll = document.querySelector("#playedDateNavAll");
+const playedDateNavLabel = document.querySelector("#playedDateNavLabel");
+const playedDateNav = document.querySelector("#playedDateNav");
+let playedFixtureDates = [];
+const parlayDatePrevButton = document.querySelector("#parlayDatePrevButton");
+const parlayDateNextButton = document.querySelector("#parlayDateNextButton");
+const parlayDateNavAll = document.querySelector("#parlayDateNavAll");
+const parlayDateNavLabel = document.querySelector("#parlayDateNavLabel");
+const parlayDateNav = document.querySelector("#parlayDateNav");
 const futuresOutput = document.querySelector("#futuresOutput");
 const pageTabs = [...document.querySelectorAll("[data-page-target]")];
 const pageSections = [...document.querySelectorAll("[data-page]")];
@@ -847,16 +857,7 @@ function updateContextLabels() {
   const tableLabel = isInternationalMode() ? "Group Stage Tables" : "League Tables";
   if (leagueTablesHeading) leagueTablesHeading.textContent = tableLabel;
   if (leagueTableLeagueFilter) leagueTableLeagueFilter.closest("label").hidden = isInternationalMode();
-  if (futuresLeagueFilter) futuresLeagueFilter.closest("label").hidden = isInternationalMode();
-  if (futuresMarketFilter) {
-    futuresMarketFilter.closest("label").hidden = false;
-    const intl = isInternationalMode();
-    [...futuresMarketFilter.options].forEach((opt) => {
-      if (opt.value === "winners") opt.textContent = intl ? "Tournament winner" : "League winners";
-      if (opt.value === "europe") opt.hidden = intl;
-    });
-    if (intl && futuresMarketFilter.value === "europe") futuresMarketFilter.value = "winners";
-  }
+  if (futuresCompetitionSelect) futuresCompetitionSelect.closest("label").hidden = isInternationalMode();
   if (parlayLeagueFilter) parlayLeagueFilter.closest("label").hidden = isInternationalMode();
   if (playedLeagueFilter) playedLeagueFilter.closest("label").hidden = isInternationalMode();
   if (leagueSelect) {
@@ -1005,6 +1006,8 @@ function renderInternationalPlayedBoard() {
   playedDateFilter.value = "";
   playedDateFilter.min = "";
   playedDateFilter.max = "";
+  playedFixtureDates = [];
+  updatePlayedDateNav();
   document.querySelector("#playedTotal").textContent = "0";
   document.querySelector("#playedCorrect").textContent = "0";
   document.querySelector("#playedWrong").textContent = "0";
@@ -1513,15 +1516,144 @@ function renderBracketTree(bracket, champion, opts = {}) {
   return `<div class="wc-bracket">${champBanner}${roundSections}</div>`;
 }
 
-// ── Main renderFutures ────────────────────────────────────────────────────────
+// ── Futures rendering system ──────────────────────────────────────────────────
+const ZONE_LABELS = { CL: "CL", EL: "EL", CONF: "CONF", REL: "REL", PO: "P/O" };
+const ZONE_CLASSES = { CL: "zone-cl", EL: "zone-el", CONF: "zone-conf", REL: "zone-rel", PO: "zone-po" };
+
+function futuresPickCard(pick, intlFutures) {
+  const rawDetail = pick.detail || "";
+  const cleanDetail = intlFutures ? rawDetail.replace(/;\s*international baseline rating \d+\.?/i, "").trim() : rawDetail;
+  return `<div class="futures-pick-card">
+    <div class="card-topline">
+      <span>${escapeHtml(pick.market || "Futures lean")}</span>
+      <span>#${escapeHtml(String(pick.rank || ""))}</span>
+    </div>
+    <h4>${escapeHtml(pick.label || "")}</h4>
+    <strong>${statNumber(pick.confidence, 1)}%</strong>
+    ${cleanDetail ? `<p>${escapeHtml(cleanDetail)}</p>` : ""}
+    ${!intlFutures && pick.source?.name ? `<span class="profile-source">${escapeHtml(pick.source.name)}</span>` : ""}
+  </div>`;
+}
+
+function renderFuturesLeagueTable(section, intlFutures) {
+  const rows = section.projectedTable || [];
+  const picks = section.picks || [];
+  const zoneLegend = [...new Set(rows.map((r) => r.zone).filter(Boolean))].map(
+    (z) => `<span class="futures-zone-chip ${ZONE_CLASSES[z] || ""}">${ZONE_LABELS[z] || z}</span>`
+  ).join("");
+  const tableHtml = rows.length ? `
+    <div class="futures-table-wrap">
+      <table class="futures-projected-table">
+        <thead><tr>
+          <th>Pos</th><th>Team</th><th>P</th><th>W</th><th>D</th><th>L</th>
+          <th>GF</th><th>GA</th><th>GD</th><th>Pts</th>
+        </tr></thead>
+        <tbody>
+          ${rows.map((row) => {
+            const zoneClass = row.zone ? `futures-row-${row.zone.toLowerCase()}` : "";
+            const promotedBadge = row.promoted ? `<span class="futures-promoted-badge" title="Promoted side">&#8593;</span>` : "";
+            return `<tr class="${zoneClass}">
+              <td>${escapeHtml(String(row.rank))}</td>
+              <td>${escapeHtml(row.team)}${promotedBadge}</td>
+              <td>${escapeHtml(String(row.played ?? ""))}</td>
+              <td>${escapeHtml(String(row.wins ?? ""))}</td>
+              <td>${escapeHtml(String(row.draws ?? ""))}</td>
+              <td>${escapeHtml(String(row.losses ?? ""))}</td>
+              <td>${escapeHtml(String(row.goalsFor ?? ""))}</td>
+              <td>${escapeHtml(String(row.goalsAgainst ?? ""))}</td>
+              <td>${escapeHtml(String(row.goalDifference ?? ""))}</td>
+              <td><strong>${escapeHtml(String(row.points ?? ""))}</strong></td>
+            </tr>`;
+          }).join("")}
+        </tbody>
+      </table>
+    </div>
+    ${zoneLegend ? `<div class="futures-zone-legend">${zoneLegend}</div>` : ""}` : "";
+  const picksHtml = picks.length ? `
+    <details class="futures-picks-detail">
+      <summary>${picks.length} market pick${picks.length === 1 ? "" : "s"}</summary>
+      <div class="futures-pick-grid">${picks.map((p) => futuresPickCard(p, intlFutures)).join("")}</div>
+    </details>` : "";
+  return `<article class="futures-section">
+    <div class="league-table-head"><div>
+      <h3>${escapeHtml(section.title)}</h3>
+      <p class="muted">${escapeHtml(section.subtitle || "")}</p>
+    </div></div>
+    ${tableHtml}${picksHtml}
+  </article>`;
+}
+
+function renderFuturesKnockout(section, intlFutures) {
+  const picks = section.picks || [];
+  const winner = picks.find((p) => /winner/i.test(p.market || ""));
+  const runnerUp = picks.find((p) => /runner-up/i.test(p.market || ""));
+  const semis = picks.filter((p) => /semi-finalist/i.test(p.market || "")).slice(0, 2);
+  const bracketSlot = (label, cls) =>
+    `<div class="bracket-slot ${cls || "bracket-tbd"}">
+      <span>${escapeHtml(label || "TBD")}</span>
+    </div>`;
+  const bracketHtml = `<div class="futures-bracket">
+    <div class="bracket-round">
+      <div class="bracket-round-label">Semi-Finals</div>
+      ${bracketSlot(semis[0]?.label, semis[0] ? "bracket-runner-up" : "bracket-tbd")}
+      ${bracketSlot(semis[1]?.label, semis[1] ? "bracket-runner-up" : "bracket-tbd")}
+    </div>
+    <div class="bracket-round">
+      <div class="bracket-round-label">Final</div>
+      ${bracketSlot(runnerUp?.label, runnerUp ? "bracket-runner-up" : "bracket-tbd")}
+    </div>
+    <div class="bracket-round">
+      <div class="bracket-round-label">Winner</div>
+      ${bracketSlot(winner?.label, winner ? "bracket-winner" : "bracket-tbd")}
+    </div>
+  </div>`;
+  const remainingPicks = picks.filter((p) => !/winner|runner-up|semi-finalist/i.test(p.market || ""));
+  const picksHtml = remainingPicks.length ? `
+    <details class="futures-picks-detail">
+      <summary>${picks.length} market pick${picks.length === 1 ? "" : "s"}</summary>
+      <div class="futures-pick-grid">${picks.map((p) => futuresPickCard(p, intlFutures)).join("")}</div>
+    </details>` : picks.length ? `
+    <details class="futures-picks-detail">
+      <summary>${picks.length} market pick${picks.length === 1 ? "" : "s"}</summary>
+      <div class="futures-pick-grid">${picks.map((p) => futuresPickCard(p, intlFutures)).join("")}</div>
+    </details>` : "";
+  return `<article class="futures-section">
+    <div class="league-table-head"><div>
+      <h3>${escapeHtml(section.title)}</h3>
+      <p class="muted">${escapeHtml(section.subtitle || "")}</p>
+    </div></div>
+    ${bracketHtml}${picksHtml}
+  </article>`;
+}
+
+function renderFuturesCupSkeleton(section) {
+  const rounds = section.rounds || [];
+  const roundsHtml = rounds.map((r, i) =>
+    `<div class="cup-round-slot cup-slot-tbd">${escapeHtml(r.name)}</div>${i < rounds.length - 1 ? '<span class="cup-round-arrow">›</span>' : ""}`
+  ).join("");
+  return `<article class="futures-section">
+    <div class="league-table-head"><div>
+      <h3>${escapeHtml(section.title)}</h3>
+      <p class="muted">${escapeHtml(section.subtitle || "")}</p>
+    </div></div>
+    <div class="cup-rounds-track">${roundsHtml}</div>
+  </article>`;
+}
+
+function renderFuturesSection(section, intlFutures) {
+  if (section.type === "cup-skeleton") return renderFuturesCupSkeleton(section);
+  if (section.type === "knockout") return renderFuturesKnockout(section, intlFutures);
+  if (section.type === "league-table") return renderFuturesLeagueTable(section, intlFutures);
+  // Fallback: treat as knockout for European comps
+  return renderFuturesKnockout(section, intlFutures);
+}
+
 function renderFutures() {
   if (!futuresOutput || !futuresStatus) return;
   const data = futuresData || {};
-  const market = futuresMarketFilter?.value || "winners";
   const intlFutures = data.context === "international" || isInternationalMode();
 
-  // ── International "Tournament winner" market → WC bracket tree ──────────
-  if (intlFutures && market === "winners") {
+  if (intlFutures) {
     futuresStatus.textContent = bracketData
       ? `WC 2026 bracket projection | generated ${new Date(bracketData.generatedAt || Date.now()).toLocaleString()}`
       : "Generating WC 2026 bracket projection…";
@@ -1533,46 +1665,6 @@ function renderFutures() {
     return;
   }
 
-  // ── Club "Tournament winner" market → UEFA knockout bracket tree ─────────
-  if (!intlFutures && market === "winners") {
-    const CLUB_COMPS = [
-      { id: "champions-league",  label: "Champions League", season: "2025–26" },
-      { id: "europa-league",     label: "Europa League",    season: "2024–25" },
-      { id: "conference-league", label: "Conference League", season: "2024–25" },
-    ];
-    const active = clubBracketData[clubBracketComp];
-    const activeComp = CLUB_COMPS.find(c => c.id === clubBracketComp) || CLUB_COMPS[0];
-
-    futuresStatus.textContent = active
-      ? `${active.competition?.label || activeComp.label} ${active.competition?.season || activeComp.season} bracket | generated ${new Date(active.generatedAt || Date.now()).toLocaleTimeString()}`
-      : "Generating bracket projections…";
-
-    // Competition selector tabs
-    const tabs = CLUB_COMPS.map(c => `
-      <button class="bracket-comp-tab${c.id === clubBracketComp ? " is-active" : ""}"
-              onclick="clubBracketComp='${c.id}';renderFutures()">
-        ${escapeHtml(c.label)}
-        <span class="bracket-comp-season">${escapeHtml(c.season)}</span>
-      </button>`).join("");
-
-    const tabBar = `<div class="bracket-comp-tabs">${tabs}</div>`;
-
-    const bracketHtml = active
-      ? renderBracketTree(
-          active.bracket,
-          active.champion,
-          {
-            championLabel: `🏆 ${escapeHtml(active.championLabel || activeComp.label + " Winner")}`,
-            disclaimer: active.disclaimer || "Results from official competition data.",
-          }
-        )
-      : `<div class="empty-state bracket-loading">⏳ Loading ${escapeHtml(activeComp.label)} bracket…</div>`;
-
-    futuresOutput.innerHTML = tabBar + bracketHtml;
-    return;
-  }
-
-  // ── Standard card layout (scorers / assists / club futures) ──────────────
   if (data.unavailable) {
     futuresStatus.textContent = `${data.season || selectedSeason()} futures not available`;
     futuresOutput.innerHTML = internationalEmptyState("Information not available", data.message || seasonUnavailableMessage());
@@ -1584,68 +1676,16 @@ function renderFutures() {
     futuresOutput.innerHTML = `<div class="empty-state">No futures prediction data is available yet.</div>`;
     return;
   }
-  const marketMatches = (pick) => {
-    const text = `${pick.market || ""} ${pick.label || ""}`.toLowerCase();
-    if (market === "winners") return text.includes("winner") || text.includes("runner-up") || text.includes("semi-finalist") || text.includes("challenger");
-    if (market === "scorers") return text.includes("top scorer");
-    if (market === "assists") return text.includes("assist");
-    if (market === "team-scorers") return text.includes("team top scorer");
-    if (market === "europe") return text.includes("champions league") || text.includes("europa") || text.includes("conference") || text.includes("league phase") || text.includes("qualifier");
-    return false;
-  };
-  const filteredSections = sections
-    .map((section) => ({ ...section, picks: (section.picks || []).filter(marketMatches) }))
-    .filter((section) => section.picks.length);
-  if (!filteredSections.length) {
-    futuresStatus.textContent = `${data.context === "international" ? "International" : "Club"} futures | ${data.season || selectedSeason()} | no ${market} market picks`;
-    futuresOutput.innerHTML = `<div class="empty-state">No futures picks match this market filter.</div>`;
-    return;
-  }
-  futuresStatus.textContent = `${data.context === "international" ? "International" : "Club"} futures | ${data.season || selectedSeason()} | generated ${new Date(data.generatedAt || Date.now()).toLocaleString()}`;
-  futuresOutput.innerHTML = `
-    ${filteredSections
-      .map((section) => {
-        const listLayout = section.picks.every((pick) => /top scorer|top assist|team top scorer/i.test(pick.market || ""));
-        return `
-          <article class="futures-section">
-            <div class="league-table-head">
-              <div>
-                <h3>${escapeHtml(section.title)}</h3>
-                <p class="muted">${escapeHtml(section.subtitle || "")} ${section.picks.length ? `| ${section.picks.length} visible pick${section.picks.length === 1 ? "" : "s"}` : ""}</p>
-              </div>
-            </div>
-            <div class="futures-pick-grid ${listLayout ? "is-list" : ""}">
-              ${(section.picks || [])
-                .map((pick) => {
-                  const rawDetail = pick.detail || "";
-                  const cleanDetail = intlFutures
-                    ? rawDetail.replace(/;\s*international baseline rating \d+\.?/i, "").trim()
-                    : rawDetail;
-                  return `
-                  <div class="futures-pick-card">
-                    <div class="card-topline">
-                      <span>${escapeHtml(pick.market || "Futures lean")}</span>
-                      <span>#${escapeHtml(pick.rank || "")}</span>
-                    </div>
-                    <h4>${escapeHtml(pick.label || "")}</h4>
-                    <strong>${statNumber(pick.confidence, 1)}%</strong>
-                    ${cleanDetail ? `<p>${escapeHtml(cleanDetail)}</p>` : ""}
-                    ${!intlFutures && pick.source?.name ? `<span class="profile-source">${escapeHtml(pick.source.name)}</span>` : ""}
-                  </div>`;
-                })
-                .join("")}
-            </div>
-          </article>`;
-      })
-      .join("")}
-  `;
+  futuresStatus.textContent = `Club futures | ${data.season || selectedSeason()} | generated ${new Date(data.generatedAt || Date.now()).toLocaleString()}`;
+  futuresOutput.innerHTML = sections.map((s) => renderFuturesSection(s, intlFutures)).join("");
 }
 
 async function refreshFutures() {
   if (!futuresOutput || !futuresStatus) return;
   futuresStatus.textContent = isInternationalMode() ? "Refreshing international futures..." : "Refreshing club futures from public tables and profile baselines...";
-  const league = isInternationalMode() ? "International" : futuresLeagueFilter?.value || "All";
-  futuresData = await api(`/api/futures?context=${encodeURIComponent(currentAppContext())}&season=${encodeURIComponent(selectedSeason())}&league=${encodeURIComponent(league)}`);
+  const league = isInternationalMode() ? "International" : futuresCompetitionSelect?.value || "EPL";
+  const season = (league === "FA Cup" || league === "Carabao Cup" || league === "Copa del Rey" || league === "Supercopa de España" || league === "DFB-Pokal" || league === "Coupe de France" || league === "Coppa Italia") ? "2026-27" : selectedSeason();
+  futuresData = await api(`/api/futures?context=${encodeURIComponent(currentAppContext())}&season=${encodeURIComponent(season)}&league=${encodeURIComponent(league)}`);
   renderFutures();
 }
 
@@ -1686,7 +1726,7 @@ async function refreshInternationalFixtureBoard() {
     boardLeagueFilter.innerHTML = `<option value="All">All groups</option>`;
     boardLeagueFilter.value = "All";
     syncDateFilter(boardDateFilter, [], "");
-    syncDateFilter(parlayDateFilter, [], "");
+    applyParlayDateNav([], "");
     renderInternationalFixtureBoard();
     renderInternationalFixturesPage();
     setBoardMessage("", "info");
@@ -1707,7 +1747,7 @@ async function refreshInternationalFixtureBoard() {
   boardLeagueFilter.innerHTML = `<option value="All">All groups</option>${leagues.map((league) => `<option value="${escapeHtml(league)}">${escapeHtml(league)}</option>`).join("")}`;
   boardLeagueFilter.value = leagues.includes(previousLeague) ? previousLeague : "All";
   applyBoardDateNav(previousDate);
-  syncDateFilter(parlayDateFilter, uniqueSortedDates(fixturePredictions), parlayDateFilter.value);
+  applyParlayDateNav(uniqueSortedDates(fixturePredictions), parlayDateFilter.value);
   renderInternationalFixtureBoard();
   renderInternationalFixturesPage();
   setBoardMessage("", "info");
@@ -1836,6 +1876,74 @@ function syncDateFilter(input, dates, previousValue = input.value) {
   input.min = dates[0] || "";
   input.max = dates[dates.length - 1] || "";
   input.value = previousValue && dates.includes(previousValue) ? previousValue : "";
+}
+
+function applyPlayedDateNav(previousDate) {
+  const dates = uniqueSortedDates(playedPredictions);
+  playedFixtureDates = dates;
+  syncDateFilter(playedDateFilter, dates, previousDate);
+  if (playedDateNav) {
+    playedDateNav.min = dates[0] || "";
+    playedDateNav.max = dates[dates.length - 1] || "";
+    playedDateNav.value = playedDateFilter.value;
+  }
+  updatePlayedDateNav();
+}
+
+function updatePlayedDateNav() {
+  const current = playedDateFilter.value;
+  if (playedDateNavLabel) playedDateNavLabel.textContent = current ? dateNavLabelText(current) : "All dates";
+  if (playedDateNav && playedDateNav.value !== current) playedDateNav.value = current;
+  const idx = playedFixtureDates.indexOf(current);
+  if (playedDatePrevButton) playedDatePrevButton.disabled = !current || idx <= 0;
+  if (playedDateNextButton) playedDateNextButton.disabled = !current || idx === -1 || idx >= playedFixtureDates.length - 1;
+  if (playedDateNavAll) playedDateNavAll.classList.toggle("is-active", !current);
+}
+
+function setPlayedDate(dateStr) {
+  playedDateFilter.value = dateStr || "";
+  if (playedDateNav) playedDateNav.value = dateStr || "";
+  updatePlayedDateNav();
+  renderPlayedBoard();
+}
+
+function stepPlayedDate(direction) {
+  if (!playedFixtureDates.length) return;
+  const current = playedDateFilter.value;
+  let idx = playedFixtureDates.indexOf(current);
+  if (idx === -1) idx = direction > 0 ? -1 : 0;
+  const nextIdx = Math.min(Math.max(idx + direction, 0), playedFixtureDates.length - 1);
+  setPlayedDate(playedFixtureDates[nextIdx]);
+}
+
+let parlayFixtureDates = [];
+
+function applyParlayDateNav(dates, previousDate) {
+  parlayFixtureDates = dates;
+  syncDateFilter(parlayDateFilter, dates, previousDate);
+  if (parlayDateNav) {
+    parlayDateNav.min = dates[0] || "";
+    parlayDateNav.max = dates[dates.length - 1] || "";
+    parlayDateNav.value = parlayDateFilter.value;
+  }
+  updateParlayDateNav();
+}
+
+function updateParlayDateNav() {
+  const current = parlayDateFilter.value;
+  if (parlayDateNavLabel) parlayDateNavLabel.textContent = current ? dateNavLabelText(current) : "All dates";
+  if (parlayDateNav && parlayDateNav.value !== current) parlayDateNav.value = current;
+  const idx = parlayFixtureDates.indexOf(current);
+  if (parlayDatePrevButton) parlayDatePrevButton.disabled = !current || idx <= 0;
+  if (parlayDateNextButton) parlayDateNextButton.disabled = !current || idx === -1 || idx >= parlayFixtureDates.length - 1;
+  if (parlayDateNavAll) parlayDateNavAll.classList.toggle("is-active", !current);
+}
+
+function setParlayDate(dateStr) {
+  parlayDateFilter.value = dateStr || "";
+  if (parlayDateNav) parlayDateNav.value = dateStr || "";
+  updateParlayDateNav();
+  refreshParlay({ forceNew: true });
 }
 
 function displayTeam(team) {
@@ -3675,7 +3783,7 @@ async function refreshFixtureBoard() {
     boardLeagueFilter.innerHTML = `<option value="All">All leagues</option>`;
     boardLeagueFilter.value = "All";
     syncDateFilter(boardDateFilter, [], "");
-    syncDateFilter(parlayDateFilter, [], "");
+    applyParlayDateNav([], "");
     document.querySelector("#boardTotal").textContent = "0";
     document.querySelector("#boardWithOdds").textContent = "0";
     document.querySelector("#boardModelOnly").textContent = "0";
@@ -3712,7 +3820,7 @@ async function refreshFixtureBoard() {
   boardLeagueFilter.value = validValues.has(previousLeague) ? previousLeague : "All";
 
   const dates = applyBoardDateNav(previousDate);
-  syncDateFilter(parlayDateFilter, dates, parlayDateFilter.value);
+  applyParlayDateNav(dates, parlayDateFilter.value);
 
   renderBoard();
   setBoardMessage(refreshState, "info");
@@ -3802,7 +3910,7 @@ async function refreshPlayedBoard() {
   const leagues = [...new Set(playedPredictions.map((prediction) => prediction.league))].sort();
   playedLeagueFilter.innerHTML = `<option value="All">All leagues</option>${leagues.map((league) => `<option value="${escapeHtml(league)}">${escapeHtml(league)}</option>`).join("")}`;
   playedLeagueFilter.value = leagues.includes(previousLeague) ? previousLeague : "All";
-  syncDateFilter(playedDateFilter, uniqueSortedDates(playedPredictions), previousDate);
+  applyPlayedDateNav(previousDate);
 
   renderPlayedBoard();
 }
@@ -4192,6 +4300,7 @@ playedLeagueFilter.addEventListener("change", renderPlayedBoard);
 playedDateFilter.addEventListener("change", renderPlayedBoard);
 clearPlayedDateButton.addEventListener("click", () => {
   playedDateFilter.value = "";
+  updatePlayedDateNav();
   renderPlayedBoard();
 });
 refreshPlayedButton.addEventListener("click", refreshPlayedBoard);
@@ -4317,6 +4426,7 @@ parlayLeagueFilter.addEventListener("change", () => refreshParlay({ forceNew: tr
 parlayDateFilter.addEventListener("change", () => refreshParlay({ forceNew: true }));
 clearParlayDateButton.addEventListener("click", () => {
   parlayDateFilter.value = "";
+  updateParlayDateNav();
   refreshParlay({ forceNew: true });
 });
 parlayLegCount.addEventListener("change", () => refreshParlay({ forceNew: true }));
@@ -4332,8 +4442,27 @@ refreshTeamProfilesButton?.addEventListener("click", refreshTeamProfiles);
 refreshLeagueTablesButton?.addEventListener("click", refreshLeagueTables);
 leagueTableLeagueFilter?.addEventListener("change", renderLeagueTables);
 refreshFuturesButton?.addEventListener("click", refreshFutures);
-futuresLeagueFilter?.addEventListener("change", refreshFutures);
-futuresMarketFilter?.addEventListener("change", renderFutures);
+futuresCompetitionSelect?.addEventListener("change", refreshFutures);
+playedDatePrevButton?.addEventListener("click", () => stepPlayedDate(-1));
+playedDateNextButton?.addEventListener("click", () => stepPlayedDate(1));
+playedDateNav?.addEventListener("change", () => setPlayedDate(playedDateNav.value));
+playedDateNavAll?.addEventListener("click", () => setPlayedDate(""));
+parlayDatePrevButton?.addEventListener("click", () => {
+  if (!parlayFixtureDates.length) return;
+  const current = parlayDateFilter.value;
+  let idx = parlayFixtureDates.indexOf(current);
+  if (idx === -1) idx = 0;
+  setParlayDate(parlayFixtureDates[Math.max(0, idx - 1)]);
+});
+parlayDateNextButton?.addEventListener("click", () => {
+  if (!parlayFixtureDates.length) return;
+  const current = parlayDateFilter.value;
+  let idx = parlayFixtureDates.indexOf(current);
+  if (idx === -1) idx = parlayFixtureDates.length - 1;
+  setParlayDate(parlayFixtureDates[Math.min(parlayFixtureDates.length - 1, idx + 1)]);
+});
+parlayDateNav?.addEventListener("change", () => setParlayDate(parlayDateNav.value));
+parlayDateNavAll?.addEventListener("click", () => setParlayDate(""));
 pageSelect?.addEventListener("change", () => showPage(pageSelect.value));
 playerProfileSelect.addEventListener("change", () => {
   setPlayerFormMode(null);
