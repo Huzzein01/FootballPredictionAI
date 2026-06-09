@@ -2,6 +2,7 @@ const { loadMatches, normalizeTeamName, num } = require("./footballData");
 const { MOTIVATION_FEATURE_NAMES, currentStandingFeatures, standingFeaturesFromStatsTable } = require("./leagueContext");
 const { PLAYER_FEATURE_NAMES, matchPlayerFeatureRow } = require("./playerStats");
 const { manualTeamStatEntries } = require("./teamProfileStore");
+const { xiFeature } = require("./squadRatings");
 
 const CURRENT_CONTEXT_CACHE_TTL_MS = 60 * 1000;
 let currentContextCache = new Map();
@@ -50,6 +51,9 @@ const FEATURE_NAMES = [
   "marketAwayProb",
   "marketHomeEdge",
   "marketAwayEdge",
+  "homeSquadRating",
+  "awaySquadRating",
+  "squadRatingDiff",
 ];
 
 function emptyStats(team) {
@@ -316,6 +320,8 @@ function buildTrainingRows() {
       num(match.AvgCD || match.AvgD),
       num(match.AvgCA || match.AvgA)
     );
+    const hXI = xiFeature(homeTeam);
+    const aXI = xiFeature(awayTeam);
     const features = [
       ...featureRow(homeStats, awayStats),
       ...contextFeatures(eloTable, h2hMap, homeTeam, awayTeam),
@@ -326,6 +332,9 @@ function buildTrainingRows() {
       market[2],
       market[0] - market[1],
       market[2] - market[1],
+      hXI,
+      aXI,
+      hXI - aXI,
     ];
     rows.push({
       season: match.Season,
@@ -367,7 +376,9 @@ function buildCurrentFeatureVector(league, homeTeamInput, awayTeamInput, odds = 
       ...matchPlayerFeatureRow(league, season, homeTeam, awayTeam),
       ...(() => {
         const market = impliedMarket(num(odds.homeOdds), num(odds.drawOdds), num(odds.awayOdds));
-        return [market[0], market[1], market[2], market[0] - market[1], market[2] - market[1]];
+        const hXI = xiFeature(homeTeam);
+        const aXI = xiFeature(awayTeam);
+        return [market[0], market[1], market[2], market[0] - market[1], market[2] - market[1], hXI, aXI, hXI - aXI];
       })(),
     ],
   };
