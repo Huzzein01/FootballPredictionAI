@@ -24,6 +24,7 @@ const { refreshApiFootballPlayerStats } = require("./apiFootballPlayerStats");
 const { readJsonWithFallback, repoDataPath } = require("./runtimePaths");
 const { hydrateKnownStoresOnce, persistKnownStores, storageStatus } = require("./supabaseJsonStore");
 const parlayBacktests = require("./parlayBacktestStore");
+const { projectDomesticCup, CUP_CONFIG } = require("./domesticCupProjection");
 
 const PORT = Number(process.env.PORT || 4173);
 const PUBLIC_DIR = path.join(process.cwd(), "public");
@@ -124,7 +125,8 @@ function isHostedPrivateApiPath(req, pathname) {
   if (!isHostedPublicMode()) return false;
   if (pathname === "/api/training-status") return true;
   if (pathname === "/api/backtests") return true;
-  if (pathname === "/api/played-fixtures") return true;
+  // NOTE: /api/played-fixtures is intentionally NOT blocked — it serves live
+  // ESPN match results to all users on the hosted version.
   if (pathname === "/api/fbref/status") return true;
   if (pathname === "/api/player-profiles") return true;
   if (pathname === "/api/team-profiles") return true;
@@ -537,29 +539,60 @@ async function handleApi(req, res, pathname) {
         summary: { total: 0, correct: 0, wrong: 0, voided: 0, exactScores: 0 },
       });
     }
-    let liveRefresh = null;
-    if (season === "2025-26") {
-      liveRefresh = triggerLiveFixtureRefresh("played-fixtures");
+
+    // On the hosted version, always do a fresh ESPN results fetch so users see
+    // up-to-date scores (ESPN API returns completed matches from the last 14 days).
+    let espnSnapshot = null;
+    try {
+      espnSnapshot = await refreshEspnResults({ daysBack: 21, daysForward: 1 });
+    } catch (_) {
+      espnSnapshot = readResultsSnapshot();
     }
-    const predictions = mergePlayedFixtureSources(
+
+    // Build the predictions list: merge ESPN results with any locally stored predictions
+    let predictions = mergePlayedFixtureSources(
       season === "2025-26" ? playedFixturePredictions() : [],
-      season === "2025-26" ? apiPlayedFixtures(season) : [],
+      apiPlayedFixtures(season),
       historicalPlayedFixtures(season)
     );
-    const correct = predictions.filter((prediction) => prediction.played?.modelCorrect === true).length;
-    const wrong = predictions.filter((prediction) => prediction.played?.modelCorrect === false).length;
-    const voided = predictions.filter((prediction) => prediction.played?.modelCorrect === null).length;
-    const exactScores = predictions.filter((prediction) => prediction.played?.exactScoreCorrect === true).length;
+
+    // If we still have no predictions, build simple result cards directly from the ESPN snapshot
+    if (!predictions.length && espnSnapshot?.results?.length) {
+      predictions = (espnSnapshot.results || [])
+        .filter((r) => r.completed && r.homeTeam && r.awayTeam && Number.isFinite(Number(r.homeGoals)) && Number.isFinite(Number(r.awayGoals)))
+        .map((r) => ({
+          id: r.espnEventId || `${r.date}-${r.homeTeam}-${r.awayTeam}`,
+          date: r.date || "",
+          league: r.league || "",
+          homeTeam: normalizeTeamName(r.homeTeam),
+          awayTeam: normalizeTeamName(r.awayTeam),
+          prediction: null,
+          played: {
+            homeGoals: Number(r.homeGoals),
+            awayGoals: Number(r.awayGoals),
+            modelCorrect: null,
+            exactScoreCorrect: null,
+            statusLabel: "ESPN result",
+            sourceName: r.sourceName || "ESPN public scoreboard",
+            sourceUrl: r.sourceUrl || "",
+          },
+        }));
+    }
+
+    const correct = predictions.filter((p) => p.played?.modelCorrect === true).length;
+    const wrong = predictions.filter((p) => p.played?.modelCorrect === false).length;
+    const voided = predictions.filter((p) => p.played?.modelCorrect === null).length;
+    const exactScores = predictions.filter((p) => p.played?.exactScoreCorrect === true).length;
     return sendJson(res, 200, {
       predictions,
-      apiSync: liveRefresh
+      apiSync: espnSnapshot
         ? {
-            source: liveRefresh.source,
-            updatedAt: liveRefresh.updatedAt,
-            cached: Boolean(liveRefresh.cached),
-            fetched: liveRefresh.fetched || 0,
-            settled: liveRefresh.settled || 0,
-            errors: liveRefresh.errors || [],
+            source: espnSnapshot.source || "ESPN public scoreboard",
+            updatedAt: espnSnapshot.updatedAt,
+            cached: Boolean(espnSnapshot.cached),
+            fetched: espnSnapshot.fetched || 0,
+            settled: espnSnapshot.settled || 0,
+            errors: espnSnapshot.errors || [],
           }
         : null,
       summary: { total: predictions.length, correct, wrong, voided, exactScores },
@@ -634,15 +667,50 @@ async function handleApi(req, res, pathname) {
 
   if (req.method === "GET" && pathname === "/api/futures") {
     const url = new URL(req.url, `http://${req.headers.host}`);
+    const context = url.searchParams.get("context") || "club";
+    const season  = url.searchParams.get("season") || "";
+    const league  = url.searchParams.get("league") || "All";
+
+    // ── Cache-first on Vercel ────────────────────────────────────────────────
+    // Try the pre-built JSON first; fall back to live computation on local dev.
+    if (isHostedPublicMode()) {
+      const safeSeason = (season || "2025-26").replace(/[^a-zA-Z0-9-]/g, "");
+      const safeLeague = league.replace(/[^a-zA-Z0-9]/g, "-");
+      const cacheKey  = context === "international"
+        ? "international__2026-World-Cup"
+        : `club__${safeSeason}__${safeLeague}`;
+      const cachePath = path.join(process.cwd(), "data", "cached", "futures", `${cacheKey}.json`);
+      if (fs.existsSync(cachePath)) {
+        try {
+          return sendJson(res, 200, JSON.parse(fs.readFileSync(cachePath, "utf8")));
+        } catch (_) { /* fall through to live */ }
+      }
+    }
+
     return sendJson(
-      res,
-      200,
-      await futuresPredictions({
-        context: url.searchParams.get("context") || "club",
-        season: url.searchParams.get("season") || "",
-        league: url.searchParams.get("league") || "All",
-      })
+      res, 200,
+      await futuresPredictions({ context, season, league })
     );
+  }
+
+  // ── Domestic cup bracket projection ────────────────────────────────────
+  const cupBracketMatch = pathname.match(/^\/api\/cup-bracket\/([\w-]+)$/);
+  if (req.method === "GET" && cupBracketMatch) {
+    const cupId = cupBracketMatch[1];
+    if (!CUP_CONFIG[cupId]) return sendJson(res, 404, { error: `Unknown cup: ${cupId}` });
+
+    // Try pre-built cache first
+    const cupCachePath = path.join(process.cwd(), "data", "cached", "cups", `${cupId}.json`);
+    if (fs.existsSync(cupCachePath)) {
+      try {
+        return sendJson(res, 200, JSON.parse(fs.readFileSync(cupCachePath, "utf8")));
+      } catch (_) { /* fall through */ }
+    }
+    try {
+      return sendJson(res, 200, projectDomesticCup(cupId));
+    } catch (e) {
+      return sendJson(res, 500, { error: e.message });
+    }
   }
 
   if (req.method === "GET" && pathname === "/api/player-profiles") {

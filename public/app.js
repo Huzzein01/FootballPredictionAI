@@ -131,6 +131,7 @@ let leagueTableData = null;
 let futuresData = null;
 let bracketData = null;
 let clubBracketData = {};           // { "champions-league": {...}, "europa-league": {...}, "conference-league": {...} }
+let cupBracketData  = {};           // { "fa-cup": {...}, "carabao-cup": {...}, ... }
 let clubBracketComp = "champions-league"; // which club bracket is currently displayed
 let parlayRefreshSeed = 0;
 let editingPlayerStatEntry = null;
@@ -1652,7 +1653,39 @@ function renderFuturesKnockout(section, intlFutures) {
   </article>`;
 }
 
+// CUP_ID_MAP maps futuresService section ids (e.g. "fa-cup-2026-27") → API cupId ("fa-cup")
+const CUP_ID_FROM_SECTION = {
+  "fa-cup-2026-27":         "fa-cup",
+  "carabao-cup-2026-27":    "carabao-cup",
+  "copa-del-rey-2026-27":   "copa-del-rey",
+  "supercopa-espana-2026-27": null,
+  "dfb-pokal-2026-27":      "dfb-pokal",
+  "coupe-de-france-2026-27":"coupe-de-france",
+  "coppa-italia-2026-27":   "coppa-italia",
+};
+
 function renderFuturesCupSkeleton(section) {
+  // Try the pre-loaded cup bracket data first
+  const cupId = CUP_ID_FROM_SECTION[section.id] || null;
+  const cbd = cupId ? cupBracketData[cupId] : null;
+  if (cbd?.bracket) {
+    const bracketHtml = renderBracketTree(
+      cbd.bracket,
+      cbd.champion,
+      {
+        championLabel: `🏆 Predicted ${cbd.cupName || section.title.replace(/ 2026-27$/, "")} Winner`,
+        disclaimer: cbd.disclaimer || `Model projection based on squad strength · actual draws are random`,
+      }
+    );
+    return `<article class="futures-section">
+      <div class="league-table-head"><div>
+        <h3>${escapeHtml(section.title)}</h3>
+        <p class="muted">${escapeHtml(section.subtitle || "")} ${cbd.participantCount ? `${cbd.participantCount} teams in projected pool.` : ""}</p>
+      </div></div>
+      ${bracketHtml}
+    </article>`;
+  }
+  // Fallback: show round timeline (loading placeholder)
   const rounds = section.rounds || [];
   const roundsHtml = rounds.map((r, i) =>
     `<div class="cup-round-slot cup-slot-tbd">${escapeHtml(r.name)}</div>${i < rounds.length - 1 ? '<span class="cup-round-arrow">›</span>' : ""}`
@@ -1663,6 +1696,7 @@ function renderFuturesCupSkeleton(section) {
       <p class="muted">${escapeHtml(section.subtitle || "")}</p>
     </div></div>
     <div class="cup-rounds-track">${roundsHtml}</div>
+    <div class="empty-state bracket-loading" style="margin-top:8px">⏳ Loading bracket projection…</div>
   </article>`;
 }
 
@@ -1706,13 +1740,50 @@ function renderFutures() {
   futuresOutput.innerHTML = sections.map((s) => renderFuturesSection(s, intlFutures)).join("");
 }
 
+// Cup ids that have a /api/cup-bracket/:id endpoint
+const DOMESTIC_CUP_IDS = ["fa-cup", "carabao-cup", "copa-del-rey", "dfb-pokal", "coppa-italia", "coupe-de-france"];
+
+async function fetchCupBrackets(cupIds) {
+  const results = await Promise.allSettled(
+    cupIds.map((id) => api(`/api/cup-bracket/${id}`))
+  );
+  results.forEach((r, i) => {
+    if (r.status === "fulfilled") cupBracketData[cupIds[i]] = r.value;
+  });
+}
+
 async function refreshFutures() {
   if (!futuresOutput || !futuresStatus) return;
-  futuresStatus.textContent = isInternationalMode() ? "Refreshing international futures..." : "Refreshing club futures from public tables and profile baselines...";
+  futuresStatus.textContent = isInternationalMode()
+    ? "Loading international futures…"
+    : "Loading futures projections…";
+  futuresOutput.innerHTML = `<div class="empty-state bracket-loading">⏳ Loading predictions…</div>`;
+
   const league = isInternationalMode() ? "International" : futuresCompetitionSelect?.value || "EPL";
-  const season = (league === "FA Cup" || league === "Carabao Cup" || league === "Copa del Rey" || league === "Supercopa de España" || league === "DFB-Pokal" || league === "Coupe de France" || league === "Coppa Italia") ? "2026-27" : selectedSeason();
-  futuresData = await api(`/api/futures?context=${encodeURIComponent(currentAppContext())}&season=${encodeURIComponent(season)}&league=${encodeURIComponent(league)}`);
-  renderFutures();
+  const isCup = ["FA Cup","Carabao Cup","Copa del Rey","Supercopa de España","DFB-Pokal","Coupe de France","Coppa Italia"].includes(league);
+  const season = isCup ? "2026-27" : selectedSeason();
+
+  try {
+    // Fetch futures data and cup brackets in parallel when showing "All" or a specific league
+    const cupIdsToFetch = isCup
+      ? Object.values(CUP_ID_FROM_SECTION).filter(Boolean)  // all cups for cup-specific view
+      : DOMESTIC_CUP_IDS;  // always pre-load cup brackets alongside futures
+
+    const [futuresResult] = await Promise.all([
+      api(`/api/futures?context=${encodeURIComponent(currentAppContext())}&season=${encodeURIComponent(season)}&league=${encodeURIComponent(league)}`),
+      fetchCupBrackets(cupIdsToFetch),
+    ]);
+    futuresData = futuresResult;
+    renderFutures();
+  } catch (err) {
+    futuresStatus.textContent = "Futures failed to load";
+    futuresOutput.innerHTML = `
+      <div class="empty-state bracket-error">
+        <p>⚠️ Could not load futures predictions.</p>
+        <p style="font-size:0.85em;opacity:0.7;">${err?.message || "Server error"}</p>
+        <button class="btn-secondary" onclick="refreshFutures()" style="margin-top:10px">↻ Retry</button>
+      </div>`;
+  }
 }
 
 async function refreshBracket() {
