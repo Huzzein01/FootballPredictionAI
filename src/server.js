@@ -737,6 +737,14 @@ async function handleApi(req, res, pathname) {
   }
 
   if (req.method === "GET" && pathname === "/api/international/bracket") {
+    // Try pre-built cache first (generated at build time for Vercel)
+    const cachedPath = path.join(process.cwd(), "data", "cached", "brackets", "international.json");
+    if (fs.existsSync(cachedPath)) {
+      try {
+        const cached = JSON.parse(fs.readFileSync(cachedPath, "utf8"));
+        return sendJson(res, 200, cached);
+      } catch (_) { /* fall through to live computation */ }
+    }
     try {
       const bracket = projectTournament();
       return sendJson(res, 200, bracket);
@@ -749,6 +757,14 @@ async function handleApi(req, res, pathname) {
   const clubBracketMatch = pathname.match(/^\/api\/bracket\/(champions-league|europa-league|conference-league)$/);
   if (req.method === "GET" && clubBracketMatch) {
     const compId = clubBracketMatch[1];
+    // Try pre-built cache first (generated at build time for Vercel)
+    const cachedPath = path.join(process.cwd(), "data", "cached", "brackets", `${compId}.json`);
+    if (fs.existsSync(cachedPath)) {
+      try {
+        const cached = JSON.parse(fs.readFileSync(cachedPath, "utf8"));
+        return sendJson(res, 200, cached);
+      } catch (_) { /* fall through to live computation */ }
+    }
     try {
       const bracket = projectClubBracket(compId);
       return sendJson(res, 200, bracket);

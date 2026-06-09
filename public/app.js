@@ -1717,21 +1717,51 @@ async function refreshFutures() {
 
 async function refreshBracket() {
   if (isInternationalMode()) {
+    // Show loading state immediately
+    if (futuresOutput) futuresOutput.innerHTML = `<div class="empty-state bracket-loading">⏳ Generating WC 2026 bracket projection…</div>`;
+    if (futuresStatus) futuresStatus.textContent = "Generating WC 2026 bracket projection…";
     try {
       bracketData = await api("/api/international/bracket");
       renderFutures();
-    } catch (_) {
+    } catch (err) {
       bracketData = null;
+      if (futuresOutput) futuresOutput.innerHTML = `
+        <div class="empty-state bracket-error">
+          <p>⚠️ Could not load bracket projection.</p>
+          <p style="font-size:0.85em;opacity:0.7;">${err?.message || "Server error — try again in a moment."}</p>
+          <button class="btn-secondary" onclick="refreshBracket()" style="margin-top:10px">↻ Retry</button>
+        </div>`;
+      if (futuresStatus) futuresStatus.textContent = "Bracket generation failed";
     }
   } else {
+    // Show loading state for each club bracket
+    if (futuresOutput) futuresOutput.innerHTML = `<div class="empty-state bracket-loading">⏳ Generating club competition brackets…</div>`;
+    if (futuresStatus) futuresStatus.textContent = "Generating club bracket projections…";
     // Fetch all three club competition brackets in parallel
     const comps = ["champions-league", "europa-league", "conference-league"];
     const results = await Promise.allSettled(
       comps.map(id => api(`/api/bracket/${id}`))
     );
+    let anySuccess = false;
     results.forEach((r, i) => {
-      clubBracketData[comps[i]] = r.status === "fulfilled" ? r.value : null;
+      if (r.status === "fulfilled") {
+        clubBracketData[comps[i]] = r.value;
+        anySuccess = true;
+      } else {
+        clubBracketData[comps[i]] = null;
+        console.warn(`Bracket fetch failed for ${comps[i]}:`, r.reason?.message || r.reason);
+      }
     });
+    if (!anySuccess && futuresOutput) {
+      futuresOutput.innerHTML = `
+        <div class="empty-state bracket-error">
+          <p>⚠️ Could not load club bracket projections.</p>
+          <p style="font-size:0.85em;opacity:0.7;">Server may be warming up — please try again in a moment.</p>
+          <button class="btn-secondary" onclick="refreshBracket()" style="margin-top:10px">↻ Retry</button>
+        </div>`;
+      if (futuresStatus) futuresStatus.textContent = "Bracket generation failed";
+      return;
+    }
     renderFutures();
   }
 }
