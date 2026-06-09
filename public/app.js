@@ -2131,18 +2131,20 @@ async function ensureTrainingFixtureSources() {
   const currentSeasonReady = !isCurrentClubSeason() || (fixturePredictions.length && ledgerPredictions.length);
   if (playedReady && currentSeasonReady) return;
   if (!trainingFixtureSourcesPromise) {
-    trainingFixtureSourcesPromise = Promise.all([
+    // Use allSettled so a 403 on /api/backtests (blocked on hosted Vercel version)
+    // does NOT kill the played-fixtures or fixture-predictions loads.
+    trainingFixtureSourcesPromise = Promise.allSettled([
       isCurrentClubSeason() && !fixturePredictions.length ? api("/api/fixture-predictions") : Promise.resolve(null),
       playedReady ? Promise.resolve(null) : api(`/api/played-fixtures?context=club&season=${encodeURIComponent(season)}`),
       isCurrentClubSeason() && !ledgerPredictions.length ? api("/api/backtests") : Promise.resolve(null),
     ])
-      .then(([fixtureData, playedData, ledgerData]) => {
-        if (fixtureData) fixturePredictions = fixtureData.predictions || [];
-        if (playedData) {
-          playedPredictions = playedData.predictions || [];
+      .then(([fixtureResult, playedResult, ledgerResult]) => {
+        if (fixtureResult.status === "fulfilled" && fixtureResult.value) fixturePredictions = fixtureResult.value.predictions || [];
+        if (playedResult.status === "fulfilled" && playedResult.value) {
+          playedPredictions = playedResult.value.predictions || [];
           playedPredictionsSeason = season;
         }
-        if (ledgerData) ledgerPredictions = ledgerData.predictions || [];
+        if (ledgerResult.status === "fulfilled" && ledgerResult.value) ledgerPredictions = ledgerResult.value.predictions || [];
       })
       .finally(() => {
         trainingFixtureSourcesPromise = null;

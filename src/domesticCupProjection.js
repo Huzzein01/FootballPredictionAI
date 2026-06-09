@@ -14,78 +14,56 @@ const { xiFeature, getSquadRating } = require("./squadRatings");
 const { normalizeTeamName } = require("./footballData");
 
 // ── Cup definitions ────────────────────────────────────────────────────────
+// totalSlots MUST be a power of 2. All cups render 4 rounds (r16→qf→sf→final)
+// so we always seed exactly 16 teams: 8 R16 matches → 4 QF → 2 SF → 1 Final.
 const CUP_CONFIG = {
   "fa-cup": {
     name: "FA Cup",
     country: "England",
     espnCode: "eng.fa",
-    rounds: ["Third Round", "Fourth Round", "Fifth Round", "Quarter-Finals", "Semi-Finals", "Final"],
-    bracketRounds: ["r32", "r16", "r5", "qf", "sf", "final"],
-    renderRounds: ["r16", "qf", "sf", "final"],   // keys shown in bracket tree
+    renderRounds: ["r16", "qf", "sf", "final"],
     renderLabels: { r16: "Fifth Round", qf: "Quarter-Finals", sf: "Semi-Finals", final: "Final" },
-    topLeagueTeams: 20,   // all EPL teams
-    lowerTierTeams: 8,    // top Championship teams
-    totalSlots: 32,       // 32 teams from 3rd round onwards (simplified)
+    totalSlots: 16, // top 16 teams by squad strength from EPL + Championship pool
   },
   "carabao-cup": {
     name: "Carabao Cup",
     country: "England",
     espnCode: "eng.league_cup",
-    rounds: ["Round of 16", "Quarter-Finals", "Semi-Finals", "Final"],
-    bracketRounds: ["r16", "qf", "sf", "final"],
     renderRounds: ["r16", "qf", "sf", "final"],
     renderLabels: { r16: "Round of 16", qf: "Quarter-Finals", sf: "Semi-Finals", final: "Final" },
-    topLeagueTeams: 20,
-    lowerTierTeams: 12,
     totalSlots: 16,
   },
   "copa-del-rey": {
     name: "Copa del Rey",
     country: "Spain",
     espnCode: "esp.copa_del_rey",
-    rounds: ["Round of 32", "Round of 16", "Quarter-Finals", "Semi-Finals", "Final"],
-    bracketRounds: ["r32", "r16", "qf", "sf", "final"],
     renderRounds: ["r16", "qf", "sf", "final"],
     renderLabels: { r16: "Round of 16", qf: "Quarter-Finals", sf: "Semi-Finals", final: "Final" },
-    topLeagueTeams: 20,
-    lowerTierTeams: 12,
-    totalSlots: 32,
+    totalSlots: 16,
   },
   "dfb-pokal": {
     name: "DFB-Pokal",
     country: "Germany",
     espnCode: "ger.dfb_pokal",
-    rounds: ["Round of 16", "Quarter-Finals", "Semi-Finals", "Final"],
-    bracketRounds: ["r16", "qf", "sf", "final"],
     renderRounds: ["r16", "qf", "sf", "final"],
     renderLabels: { r16: "Round of 16", qf: "Quarter-Finals", sf: "Semi-Finals", final: "Final" },
-    topLeagueTeams: 18,
-    lowerTierTeams: 14,
     totalSlots: 16,
   },
   "coppa-italia": {
     name: "Coppa Italia",
     country: "Italy",
     espnCode: "ita.coppa_italia",
-    rounds: ["Round of 16", "Quarter-Finals", "Semi-Finals", "Final"],
-    bracketRounds: ["r16", "qf", "sf", "final"],
     renderRounds: ["r16", "qf", "sf", "final"],
     renderLabels: { r16: "Round of 16", qf: "Quarter-Finals", sf: "Semi-Finals", final: "Final" },
-    topLeagueTeams: 20,
-    lowerTierTeams: 12,
     totalSlots: 16,
   },
   "coupe-de-france": {
     name: "Coupe de France",
     country: "France",
     espnCode: "fra.coupe_de_france",
-    rounds: ["Round of 32", "Round of 16", "Quarter-Finals", "Semi-Finals", "Final"],
-    bracketRounds: ["r32", "r16", "qf", "sf", "final"],
     renderRounds: ["r16", "qf", "sf", "final"],
     renderLabels: { r16: "Round of 16", qf: "Quarter-Finals", sf: "Semi-Finals", final: "Final" },
-    topLeagueTeams: 20,
-    lowerTierTeams: 12,
-    totalSlots: 32,
+    totalSlots: 16,
   },
 };
 
@@ -211,8 +189,13 @@ function buildParticipants(cupId, liveStandings) {
     pool.sort((a, b) => teamStrength(b) - teamStrength(a));
   }
 
-  // Trim to totalSlots
-  const slots = cfg.totalSlots || 32;
+  // Always sort by squad strength so the top-N teams are the strongest.
+  // (If liveStandings was used to re-order, strength is still the final sort
+  //  because we want the bracket's "seed 1" to be the strongest on paper.)
+  pool.sort((a, b) => teamStrength(b) - teamStrength(a));
+
+  // Trim to exactly totalSlots — must be a power of 2 (set in CUP_CONFIG).
+  const slots = cfg.totalSlots || 16;
   return [...new Set(pool)].slice(0, slots);
 }
 
@@ -246,18 +229,18 @@ function buildBracket(participants, cfg) {
   const renderRounds = cfg.renderRounds; // ["r16", "qf", "sf", "final"]
   const renderLabels = cfg.renderLabels;
 
-  // Simulate from entry round down to the renderRounds
+  // totalSlots must be power of 2 and equals 2^(renderRounds.length).
+  // Pad or trim to exactly that number so every round halves cleanly.
+  const exactSize = Math.pow(2, renderRounds.length); // e.g. 2^4 = 16
   let remaining = [...participants];
-
-  // If we have more teams than needed for the first displayed round,
-  // simulate preliminary rounds silently to get to the right team count.
-  const firstRoundSize = renderRounds.length > 0 ? Math.pow(2, renderRounds.length) : 16;
-  while (remaining.length > firstRoundSize && remaining.length > 2) {
-    const rnd = simulateRound(remaining, "Preliminary");
-    remaining = rnd.advancers.map((a) => a.team);
+  // Trim to exactSize (pool was already sorted strongest-first)
+  if (remaining.length > exactSize) remaining = remaining.slice(0, exactSize);
+  // Pad with weakest team repeated if somehow short (shouldn't happen with correct config)
+  while (remaining.length < exactSize && remaining.length > 0) {
+    remaining.push(remaining[remaining.length - 1]);
   }
 
-  // Now simulate each displayed round
+  // Simulate each displayed round — always exactSize / 2 matches per round
   const bracket = {};
   for (const roundKey of renderRounds) {
     if (remaining.length < 2) break;
