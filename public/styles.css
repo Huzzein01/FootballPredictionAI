@@ -1407,6 +1407,19 @@ textarea:focus {
 .weather-mild     { border-left-color: #3182ce; }
 .weather-altitude { border-left-color: #805ad5; }
 
+/* On mobile the badge sits inside the match card — remove the nested-box look */
+@media (max-width: 640px) {
+  .weather-badge {
+    background: transparent;
+    border: none;
+    border-left: 3px solid transparent;
+    border-radius: 0;
+    padding: 3px 0 3px 10px;
+    font-size: 10.5px;
+  }
+  .weather-badge .weather-scores { font-size: 10px; }
+}
+
 .scoreboard-row .prob-bars {
   grid-area: probs;
   margin-top: 0;

@@ -272,7 +272,15 @@ function projectTournament() {
   const ffMatchups = pairWinners(sfResults);
   const ffResults  = simulateRound(ffMatchups, "Final Four");
 
-  // ── 7. Final ────────────────────────────────────────────────────────────────
+  // ── 7. Third-place play-off (FF losers) ─────────────────────────────────────
+  const thirdPlaceMatchup = [{
+    home:  ffResults[0].loser,
+    away:  ffResults[1].loser,
+    label: "Third-place play-off",
+  }];
+  const thirdPlaceResults = simulateRound(thirdPlaceMatchup, "Third Place");
+
+  // ── 8. Final ────────────────────────────────────────────────────────────────
   const finalMatchup = [{
     home:  ffResults[0].winner,
     away:  ffResults[1].winner,
@@ -281,7 +289,7 @@ function projectTournament() {
   const finalResults = simulateRound(finalMatchup, "Final");
   const champion = finalResults[0].winner;
 
-  // ── 8. Build compact display layers ─────────────────────────────────────────
+  // ── 9. Build compact display layers ─────────────────────────────────────────
   // Each layer is a deduplicated list of teams at that stage
   function advancers(results) {
     return results.map(r => r.winner);
@@ -330,6 +338,12 @@ function projectTournament() {
         subtitle: "4 teams · 2 finalists",
         matches:  ffResults.map(toSlimMatch),
         advancers: advancers(ffResults).map(s => ({ team: s.team, flag: s.flagUrl })),
+      },
+      thirdPlace: {
+        label:    "Third-Place Play-off",
+        subtitle: "Semifinal losers · bronze medal match",
+        matches:  thirdPlaceResults.map(toSlimMatch),
+        advancers: [{ team: thirdPlaceResults[0].winner.team, flag: thirdPlaceResults[0].winner.flagUrl }],
       },
       final: {
         label:    "Final",

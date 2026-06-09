@@ -1454,11 +1454,12 @@ function renderBracketTree(bracket, champion, opts = {}) {
   }
 
   const rounds = [
-    { key: "r16",       icon: "⚽", expand: false },
-    { key: "qf",        icon: "⚽", expand: false },
-    { key: "sf",        icon: "🔥", expand: true  },
-    { key: "finalFour", icon: "🔥", expand: true  },
-    { key: "final",     icon: "🏆", expand: true  },
+    { key: "r16",        icon: "⚽", expand: false },
+    { key: "qf",         icon: "⚽", expand: false },
+    { key: "sf",         icon: "🔥", expand: true  },
+    { key: "finalFour",  icon: "🔥", expand: true  },
+    { key: "thirdPlace", icon: "🥉", expand: true  },
+    { key: "final",      icon: "🏆", expand: true  },
   ];
 
   const championLabel = opts.championLabel || "🏆 Predicted Champion";
@@ -1591,6 +1592,35 @@ function renderFuturesLeagueTable(section, intlFutures) {
 
 function renderFuturesKnockout(section, intlFutures) {
   const picks = section.picks || [];
+  const picksHtml = picks.length ? `
+    <details class="futures-picks-detail">
+      <summary>${picks.length} market pick${picks.length === 1 ? "" : "s"}</summary>
+      <div class="futures-pick-grid">${picks.map((p) => futuresPickCard(p, intlFutures)).join("")}</div>
+    </details>` : "";
+
+  // Use full club bracket data if available (R16 → QF → SF → Final)
+  const bracketId = (section.id || "").replace(/-futures$/, "");
+  const clubBd = clubBracketData[bracketId];
+  if (clubBd?.bracket) {
+    const compName = section.title.replace(/ Futures$/i, "");
+    const bracketHtml = renderBracketTree(
+      clubBd.bracket,
+      clubBd.champion,
+      {
+        championLabel: `🏆 Predicted ${compName} Winner`,
+        disclaimer: clubBd.disclaimer || "Model projection based on UEFA match files",
+      }
+    );
+    return `<article class="futures-section">
+      <div class="league-table-head"><div>
+        <h3>${escapeHtml(section.title)}</h3>
+        <p class="muted">${escapeHtml(section.subtitle || "")}</p>
+      </div></div>
+      ${bracketHtml}${picksHtml}
+    </article>`;
+  }
+
+  // Fallback: simple 3-slot bracket from picks data
   const winner = picks.find((p) => /winner/i.test(p.market || ""));
   const runnerUp = picks.find((p) => /runner-up/i.test(p.market || ""));
   const semis = picks.filter((p) => /semi-finalist/i.test(p.market || "")).slice(0, 2);
@@ -1598,7 +1628,7 @@ function renderFuturesKnockout(section, intlFutures) {
     `<div class="bracket-slot ${cls || "bracket-tbd"}">
       <span>${escapeHtml(label || "TBD")}</span>
     </div>`;
-  const bracketHtml = `<div class="futures-bracket">
+  const simpleBracket = `<div class="futures-bracket">
     <div class="bracket-round">
       <div class="bracket-round-label">Semi-Finals</div>
       ${bracketSlot(semis[0]?.label, semis[0] ? "bracket-runner-up" : "bracket-tbd")}
@@ -1613,22 +1643,12 @@ function renderFuturesKnockout(section, intlFutures) {
       ${bracketSlot(winner?.label, winner ? "bracket-winner" : "bracket-tbd")}
     </div>
   </div>`;
-  const remainingPicks = picks.filter((p) => !/winner|runner-up|semi-finalist/i.test(p.market || ""));
-  const picksHtml = remainingPicks.length ? `
-    <details class="futures-picks-detail">
-      <summary>${picks.length} market pick${picks.length === 1 ? "" : "s"}</summary>
-      <div class="futures-pick-grid">${picks.map((p) => futuresPickCard(p, intlFutures)).join("")}</div>
-    </details>` : picks.length ? `
-    <details class="futures-picks-detail">
-      <summary>${picks.length} market pick${picks.length === 1 ? "" : "s"}</summary>
-      <div class="futures-pick-grid">${picks.map((p) => futuresPickCard(p, intlFutures)).join("")}</div>
-    </details>` : "";
   return `<article class="futures-section">
     <div class="league-table-head"><div>
       <h3>${escapeHtml(section.title)}</h3>
       <p class="muted">${escapeHtml(section.subtitle || "")}</p>
     </div></div>
-    ${bracketHtml}${picksHtml}
+    ${simpleBracket}${picksHtml}
   </article>`;
 }
 
