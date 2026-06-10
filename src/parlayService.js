@@ -1,7 +1,7 @@
 const fs = require("fs");
 const path = require("path");
 const { fixturePredictionBoard } = require("./predictionService");
-const { internationalFixturePredictions, internationalStatus } = require("./internationalData");
+const { internationalFixturePredictions, internationalStatus, normalizeIntlTeam, readFriendlyTraining } = require("./internationalData");
 const { FEATURE_NAMES } = require("./features");
 const { aggregatePlayers, loadPlayerRows } = require("./playerStats");
 const { fixtureSignatureFromFixture, playedFixtureKeys } = require("./parlayBacktestStore");
@@ -523,9 +523,175 @@ function playerPropCandidates(players, fixture, riskMode = "safe") {
   return candidates.sort((a, b) => b.confidence - a.confidence);
 }
 
+const WC2026_PROFILES_PATH = path.join(process.cwd(), "data", "international", "wc2026_player_profiles.json");
+
+let wc2026ProfilesCache = null;
+// Researched 2026 squad profiles (all 48 teams) — FIFA squad announcements,
+// ESPN squad lists, and June 2026 pre-WC friendly performances.
+function loadWc2026Profiles() {
+  if (wc2026ProfilesCache) return wc2026ProfilesCache;
+  wc2026ProfilesCache = readJsonFile(WC2026_PROFILES_PATH, { teams: {} });
+  return wc2026ProfilesCache;
+}
+
+// Player-prop candidates from the researched 2026 squad profiles. Unlike the
+// legacy 2018/2022 imported rows (39 squads, superstar whitelist only), this
+// covers every team at the tournament — so fixtures like Mexico vs South
+// Africa produce a full prop board instead of falling back to odds-only legs.
+function wc2026ProfilePropCandidates(fixture, riskMode = "safe") {
+  const isRiskyMode = riskMode === "risky";
+  const profiles = loadWc2026Profiles().teams || {};
+  const training = readFriendlyTraining();
+  const candidates = [];
+
+  for (const team of [fixture.homeTeam, fixture.awayTeam]) {
+    const fifaName = normalizeIntlTeam(team);
+    const profile = profiles[fifaName];
+    if (!profile || !Array.isArray(profile.players)) continue;
+    const opponent = team === fixture.homeTeam ? fixture.awayTeam : fixture.homeTeam;
+    const opponentProfile = profiles[normalizeIntlTeam(opponent)];
+    const teamGoalProjection = Math.max(0.6, projectedTeamGoals(fixture, team));
+    // Friendly form nudges prop confidence by up to ±3 — friendlies signal
+    // capability without being treated as competitive-grade evidence.
+    const friendlyDelta = training?.teams?.[fifaName]?.weightedFormDelta || 0;
+    const formNudge = friendlyDelta * 0.75;
+    // Stronger opposing attack → more save chances for the GK, fewer clean games.
+    const opponentAttack = Number(opponentProfile?.attackTier ?? 0.5);
+    const baseSource = `2026 squad research (FIFA/ESPN squad lists + June 2026 pre-WC friendlies)${profile.recentForm ? `; recent form: ${profile.recentForm}` : ""}`;
+
+    for (const player of profile.players) {
+      const playerName = cleanPlayerName(player.name);
+      const goalsPer90 = Number(player.goalsPer90 || 0);
+      const assistsPer90 = Number(player.assistsPer90 || 0);
+      const shotsPer90 = Number(player.shotsPer90 || 0);
+      const sotPer90 = Number(player.shotsOnTargetPer90 || 0);
+      const savesPer90 = Number(player.savesPer90 || 0);
+      const detail = [player.position, player.club].filter(Boolean).join(", ");
+      const playerSourceText = `${baseSource}${player.note ? `; ${player.note}` : ""}`;
+
+      if (player.position !== "GK" && goalsPer90 >= 0.25) {
+        const scoringChance = poissonAtLeast(goalsPer90 * Math.max(0.7, teamGoalProjection / 1.3), 1);
+        candidates.push({
+          type: "player",
+          fixture: `${fixture.homeTeam} vs ${fixture.awayTeam}`,
+          date: fixture.date,
+          league: fixture.league,
+          team,
+          player: playerName,
+          market: "anytime scorer",
+          pick: `${playerName} anytime scorer`,
+          confidence: Math.max(30, Math.min(isRiskyMode ? 74 : 66, 32 + scoringChance * 46 + teamGoalProjection * 2 + formNudge)),
+          fbrefMetric: `${goalsPer90.toFixed(2)} goals/90 est. (${detail})`,
+          fbrefSeason: "2026 squads",
+          source: playerSourceText,
+          riskMode: isRiskyMode && scoringChance < 0.4,
+        });
+      }
+
+      if (player.position !== "GK" && assistsPer90 >= 0.18) {
+        const assistChance = poissonAtLeast(assistsPer90 * Math.max(0.75, teamGoalProjection / 1.3), 1);
+        candidates.push({
+          type: "player",
+          fixture: `${fixture.homeTeam} vs ${fixture.awayTeam}`,
+          date: fixture.date,
+          league: fixture.league,
+          team,
+          player: playerName,
+          market: "assist",
+          pick: `${playerName} to assist`,
+          confidence: Math.max(28, Math.min(isRiskyMode ? 64 : 56, 28 + assistChance * 40 + teamGoalProjection * 1.5 + formNudge)),
+          fbrefMetric: `${assistsPer90.toFixed(2)} assists/90 est. (${detail})`,
+          fbrefSeason: "2026 squads",
+          source: playerSourceText,
+          riskMode: isRiskyMode,
+        });
+      }
+
+      if (player.position !== "GK" && goalsPer90 + assistsPer90 >= 0.45) {
+        const involvementChance = poissonAtLeast((goalsPer90 + assistsPer90) * Math.max(0.75, teamGoalProjection / 1.3), 1);
+        candidates.push({
+          type: "player",
+          fixture: `${fixture.homeTeam} vs ${fixture.awayTeam}`,
+          date: fixture.date,
+          league: fixture.league,
+          team,
+          player: playerName,
+          market: "score or assist",
+          pick: `${playerName} to score or assist`,
+          confidence: Math.max(32, Math.min(isRiskyMode ? 76 : 70, 34 + involvementChance * 44 + formNudge)),
+          fbrefMetric: `${(goalsPer90 + assistsPer90).toFixed(2)} goals+assists/90 est. (${detail})`,
+          fbrefSeason: "2026 squads",
+          source: playerSourceText,
+          riskMode: false,
+        });
+      }
+
+      if (player.position !== "GK" && sotPer90 >= 0.7) {
+        candidates.push({
+          type: "player",
+          fixture: `${fixture.homeTeam} vs ${fixture.awayTeam}`,
+          date: fixture.date,
+          league: fixture.league,
+          team,
+          player: playerName,
+          market: "1+ shot on target",
+          pick: `${playerName} 1+ shot on target`,
+          confidence: Math.max(36, Math.min(82, 46 + sotPer90 * 20 + formNudge)),
+          fbrefMetric: `${sotPer90.toFixed(2)} shots on target/90 est. (${detail})`,
+          fbrefSeason: "2026 squads",
+          source: playerSourceText,
+        });
+      }
+
+      if (isRiskyMode && player.position !== "GK" && shotsPer90 >= 2.3) {
+        const twoShotChance = poissonAtLeast(shotsPer90, 2);
+        candidates.push({
+          type: "player",
+          fixture: `${fixture.homeTeam} vs ${fixture.awayTeam}`,
+          date: fixture.date,
+          league: fixture.league,
+          team,
+          player: playerName,
+          market: "2+ shots",
+          pick: `${playerName} 2+ shots`,
+          confidence: Math.max(36, Math.min(74, 36 + twoShotChance * 40 + formNudge)),
+          fbrefMetric: `${shotsPer90.toFixed(2)} shots/90 est. (${detail})`,
+          fbrefSeason: "2026 squads",
+          source: `${playerSourceText}; risk mode: threshold close to the player's estimated volume`,
+          riskMode: true,
+        });
+      }
+
+      if (isRiskyMode && player.position === "GK" && savesPer90 >= 2.2) {
+        const saveLambda = savesPer90 * (0.7 + opponentAttack * 0.6);
+        const twoSaveChance = poissonAtLeast(saveLambda, 2);
+        candidates.push({
+          type: "player",
+          fixture: `${fixture.homeTeam} vs ${fixture.awayTeam}`,
+          date: fixture.date,
+          league: fixture.league,
+          team,
+          player: playerName,
+          market: "2+ saves",
+          pick: `${playerName} 2+ saves`,
+          confidence: Math.max(34, Math.min(72, 34 + twoSaveChance * 42)),
+          fbrefMetric: `${savesPer90.toFixed(2)} saves/90 est. vs ${opponent} attack tier ${opponentAttack.toFixed(2)} (${detail})`,
+          fbrefSeason: "2026 squads",
+          source: `${playerSourceText}; risk mode: save volume scaled by opponent attacking strength`,
+          riskMode: true,
+        });
+      }
+    }
+  }
+  return candidates;
+}
+
 function internationalPlayerPropCandidates(players, fixture, riskMode = "safe") {
   const isRiskyMode = riskMode === "risky";
-  const candidates = [];
+  // Primary source: researched 2026 squad profiles covering all 48 teams.
+  const candidates = wc2026ProfilePropCandidates(fixture, riskMode);
+  const coveredPicks = new Set(candidates.map((leg) => `${leg.player}|${leg.market}`));
+  // Legacy supplement: imported 2018/2022 World Cup rows for the marquee names.
   for (const team of [fixture.homeTeam, fixture.awayTeam]) {
     const teamGoalProjection = projectedTeamGoals(fixture, team);
     const teamPlayers = internationalTeamPlayers(players, team)
@@ -535,7 +701,7 @@ function internationalPlayerPropCandidates(players, fixture, riskMode = "safe") 
     for (const player of teamPlayers) {
       const playerName = cleanPlayerName(player.player);
       const scoringChance = poissonAtLeast(Math.max(0.12, player.goalsPer90 * Math.max(0.65, teamGoalProjection)), 1);
-      if (player.goals > 0 || player.goalsPer90 >= 0.25) {
+      if ((player.goals > 0 || player.goalsPer90 >= 0.25) && !coveredPicks.has(`${playerName}|anytime scorer`)) {
         candidates.push({
           type: "player",
           fixture: `${fixture.homeTeam} vs ${fixture.awayTeam}`,
@@ -553,7 +719,7 @@ function internationalPlayerPropCandidates(players, fixture, riskMode = "safe") 
         });
       }
       const assistChance = poissonAtLeast(Math.max(0.08, player.assistsPer90 * Math.max(0.75, teamGoalProjection)), 1);
-      if (player.assists > 0 || player.assistsPer90 >= 0.2) {
+      if ((player.assists > 0 || player.assistsPer90 >= 0.2) && !coveredPicks.has(`${playerName}|assist`)) {
         candidates.push({
           type: "player",
           fixture: `${fixture.homeTeam} vs ${fixture.awayTeam}`,
@@ -1073,6 +1239,41 @@ function decorateTicketsWithPricing(tickets, fixtures) {
   });
 }
 
+// Round-robin player legs across markets (best anytime scorer, best shot on
+// target, best assist, …) so a fixture ticket shows a varied prop board
+// instead of five copies of the single highest-confidence market.
+function diversifyPlayerLegs(legs) {
+  const byMarket = new Map();
+  for (const leg of legs) {
+    const list = byMarket.get(leg.market) || [];
+    list.push(leg);
+    byMarket.set(leg.market, list);
+  }
+  const queues = [...byMarket.values()].sort((a, b) => Number(b[0]?.confidence || 0) - Number(a[0]?.confidence || 0));
+  const ordered = [];
+  const overflow = [];
+  const perPlayer = new Map();
+  let added = true;
+  while (added) {
+    added = false;
+    for (const queue of queues) {
+      const leg = queue.shift();
+      if (!leg) continue;
+      added = true;
+      // At most 2 legs per player up front; extras go to the back so one
+      // star doesn't crowd out the rest of the prop board.
+      const count = perPlayer.get(leg.player) || 0;
+      if (leg.player && count >= 2) {
+        overflow.push(leg);
+      } else {
+        ordered.push(leg);
+        perPlayer.set(leg.player, count + 1);
+      }
+    }
+  }
+  return [...ordered, ...overflow];
+}
+
 function buildFixtureGridTickets({ fixtures, requestedLegs, playerLegs, scoreLegs, resultLegs, propLegs, riskMode = "safe" }) {
   return fixtures.slice(0, 6).map((fixture, index) => {
     const fixtureName = `${fixture.homeTeam} vs ${fixture.awayTeam}`;
@@ -1080,7 +1281,7 @@ function buildFixtureGridTickets({ fixtures, requestedLegs, playerLegs, scoreLeg
     const fixtureProps = byConfidence(propLegs);
     const fixtureBtts = fixtureProps.filter((leg) => leg.type === "btts");
     const fixtureCorners = fixtureProps.filter((leg) => leg.type === "corner");
-    const fixturePlayers = byConfidence(playerLegs);
+    const fixturePlayers = diversifyPlayerLegs(byConfidence(playerLegs));
     const fixtureResults = byConfidence(resultLegs);
     const fixtureScores = byConfidence(scoreLegs);
     const propTarget = Math.min(fixtureProps.length, Math.max(2, Math.floor(requestedLegs * 0.35)));
@@ -1201,7 +1402,7 @@ function buildInternationalParlays(options = {}) {
         matchResultLegs: [],
         averageConfidence: 0,
       }),
-      note: `International ${riskMode} mode uses 72 imported World Cup group-stage fixtures, model-only team ratings, and 2018/2022 World Cup player rows. Odds are not required for this baseline; once public odds, final squads, injuries, and player-prop lines are imported, the model should re-rank every ticket. ${generationMode === "fixture-grid" ? "Fixture grid mode groups props by individual World Cup matches." : "Multi-ticket mode builds broader World Cup parlays across the fixture pool."}`,
+      note: `International ${riskMode} mode uses imported World Cup group-stage fixtures, model team ratings trained on down-weighted pre-WC friendlies, researched 2026 squad profiles for all 48 teams (FIFA/ESPN squad lists + June 2026 warm-up performances), and 2018/2022 World Cup player rows. ${generationMode === "fixture-grid" ? "Fixture grid mode groups props by individual World Cup matches." : "Multi-ticket mode builds broader World Cup parlays across the fixture pool."}`,
     },
   };
 }

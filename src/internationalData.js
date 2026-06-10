@@ -94,6 +94,48 @@ const WC_TOURNAMENT_PRESTIGE = {
   Japan:       1,  // 2022 R16; most successful Asian WC nation
 };
 
+const FRIENDLY_TRAINING_PATH = path.join(process.cwd(), "data", "international", "processed", "friendly_training_summary.json");
+
+// ESPN scoreboard names \u2192 FIFA fixture-feed names. Without this map the
+// friendly-form signal silently missed USA, Korea Republic, IR Iran,
+// C\u00F4te d'Ivoire, Cabo Verde, and Bosnia and Herzegovina entirely.
+const INTL_TEAM_ALIASES = {
+  "United States": "USA",
+  "South Korea": "Korea Republic",
+  "Korea": "Korea Republic",
+  "Iran": "IR Iran",
+  "Ivory Coast": "C\u00F4te d'Ivoire",
+  "Cote d'Ivoire": "C\u00F4te d'Ivoire",
+  "Cape Verde": "Cabo Verde",
+  "Cape Verde Islands": "Cabo Verde",
+  "Bosnia-Herzegovina": "Bosnia and Herzegovina",
+  "Bosnia": "Bosnia and Herzegovina",
+  "Turkey": "T\u00FCrkiye",
+  "Turkiye": "T\u00FCrkiye",
+  "Czech Republic": "Czechia",
+  "DR Congo": "Congo DR",
+  "Curacao": "Cura\u00E7ao",
+};
+
+function normalizeIntlTeam(name) {
+  const trimmed = String(name || "").trim();
+  return INTL_TEAM_ALIASES[trimmed] || trimmed;
+}
+
+let friendlyTrainingCache = null;
+// Second-batch training output from scripts/trainInternationalFriendlies.js:
+// friendly results down-weighted (seriousness 0.6) and recency-weighted.
+function readFriendlyTraining() {
+  if (friendlyTrainingCache) return friendlyTrainingCache;
+  if (!fs.existsSync(FRIENDLY_TRAINING_PATH)) return null;
+  try {
+    friendlyTrainingCache = JSON.parse(fs.readFileSync(FRIENDLY_TRAINING_PATH, "utf8").replace(/^\uFEFF/, ""));
+  } catch (_) {
+    friendlyTrainingCache = null;
+  }
+  return friendlyTrainingCache;
+}
+
 function readRows(filePath) {
   if (!fs.existsSync(filePath)) return [];
   const data = JSON.parse(fs.readFileSync(filePath, "utf8").replace(/^\uFEFF/, ""));
@@ -132,16 +174,23 @@ function readFriendlyResults() {
   return Array.isArray(snapshot?.results) ? snapshot.results : [];
 }
 
-// Compute a ±4-point form delta from the team's last 8 friendly results.
-// Returns 0 if fewer than 2 results are available.
+// ±4-point form delta from pre-WC friendlies. Prefers the prebuilt training
+// summary (down-weighted for friendly seriousness + recency-weighted); falls
+// back to an inline computation over the raw ESPN results, with team-name
+// normalization so every WC squad's friendlies are matched.
 function friendlyFormAdjustment(team, results) {
+  const fifaName = normalizeIntlTeam(team);
+  const trained = readFriendlyTraining();
+  const trainedEntry = trained?.teams?.[fifaName];
+  if (trainedEntry && trainedEntry.matches >= 2) return trainedEntry.weightedFormDelta;
+
   const relevant = results
-    .filter((r) => r.homeTeam === team || r.awayTeam === team)
+    .filter((r) => normalizeIntlTeam(r.homeTeam) === fifaName || normalizeIntlTeam(r.awayTeam) === fifaName)
     .slice(-8);
   if (relevant.length < 2) return 0;
   let points = 0;
   for (const r of relevant) {
-    const isHome = r.homeTeam === team;
+    const isHome = normalizeIntlTeam(r.homeTeam) === fifaName;
     const scored = isHome ? r.homeGoals : r.awayGoals;
     const conceded = isHome ? r.awayGoals : r.homeGoals;
     if (scored > conceded) points += 3;
@@ -149,7 +198,9 @@ function friendlyFormAdjustment(team, results) {
   }
   const ratio = points / (relevant.length * 3); // [0, 1]
   const delta = ratio * 2 - 1; // [-1, +1]
-  return Math.round(delta * 4 * 10) / 10; // up to ±4.0
+  // Friendlies are softer evidence than competitive matches — cap at ±4 but
+  // discount the inline (unweighted) path to 60% seriousness.
+  return Math.round(delta * 4 * 0.6 * 10) / 10;
 }
 
 function hostBoost(fixture) {
@@ -386,4 +437,6 @@ module.exports = {
   internationalStatus,
   readFixtureData,
   predictInternationalFixture,  // exported for knockout-round simulation in tournamentProjection.js
+  normalizeIntlTeam,
+  readFriendlyTraining,
 };
