@@ -95,6 +95,43 @@ const WC_TOURNAMENT_PRESTIGE = {
 };
 
 const FRIENDLY_TRAINING_PATH = path.join(process.cwd(), "data", "international", "processed", "friendly_training_summary.json");
+const FIFA_RANKINGS_PATH = path.join(process.cwd(), "data", "international", "fifa_rankings.json");
+
+let fifaRankingsCache = null;
+// FIFA Men's World Ranking snapshot (inside.fifa.com), refreshed by
+// scripts/fetchFifaRankings.js. Names follow the FIFA convention, which is
+// what the World Cup fixture feed uses, so no aliasing is required here.
+function readFifaRankings() {
+  if (fifaRankingsCache) return fifaRankingsCache;
+  if (!fs.existsSync(FIFA_RANKINGS_PATH)) return null;
+  try {
+    const data = JSON.parse(fs.readFileSync(FIFA_RANKINGS_PATH, "utf8").replace(/^﻿/, ""));
+    fifaRankingsCache = {
+      ...data,
+      byTeam: new Map((data.rankings || []).map((row) => [row.team, row])),
+    };
+  } catch (_) {
+    fifaRankingsCache = null;
+  }
+  return fifaRankingsCache;
+}
+
+// Converts FIFA ranking points (~800–1900) onto the model's 60–95 rating
+// scale. Anchors: 1880 pts ≈ rating 92 (Spain/France/Argentina tier),
+// 1280 pts ≈ rating 65 (lowest-ranked WC qualifier tier).
+function fifaPointsToRating(points) {
+  const scaled = 65 + ((points - 1280) / (1880 - 1280)) * 27;
+  return Math.max(55, Math.min(95, scaled));
+}
+
+// Movement signal from the latest ranking update (captures the most recent
+// official results window): points gained/lost since the previous release,
+// clamped to ±1.5 rating points.
+function fifaMovementNudge(row) {
+  const delta = Number(row.points) - Number(row.previousPoints);
+  if (!Number.isFinite(delta)) return 0;
+  return Math.max(-1.5, Math.min(1.5, delta / 10));
+}
 
 // ESPN scoreboard names \u2192 FIFA fixture-feed names. Without this map the
 // friendly-form signal silently missed USA, Korea Republic, IR Iran,
@@ -164,8 +201,15 @@ function logistic(value) {
  */
 function ratingFor(team, includePrestige = false) {
   const base = TEAM_RATINGS[team] ?? 68;
-  if (!includePrestige) return base;
-  return base + (WC_TOURNAMENT_PRESTIGE[team] ?? 0);
+  // Blend the hand-tuned prior with the live FIFA World Ranking: 55% prior,
+  // 45% FIFA points (mapped to the rating scale), plus a ±1.5 nudge from the
+  // points movement in the latest ranking release (most recent results).
+  const fifaRow = readFifaRankings()?.byTeam?.get(normalizeIntlTeam(team));
+  const blended = fifaRow
+    ? base * 0.55 + fifaPointsToRating(fifaRow.points) * 0.45 + fifaMovementNudge(fifaRow)
+    : base;
+  if (!includePrestige) return blended;
+  return blended + (WC_TOURNAMENT_PRESTIGE[team] ?? 0);
 }
 
 // Read the ESPN-fetched international friendly results from disk.
@@ -250,6 +294,14 @@ function predictInternationalFixture(fixture, friendlyResults = []) {
   ].sort((a, b) => b[1] - a[1]);
   const prediction = entries[0][0];
   const confidence = roundPct(entries[0][1]);
+  // Every fixture carries odds: live sportsbook prices when available,
+  // otherwise model-derived fair prices from the trained probabilities
+  // (4% overround so they read like a realistic book).
+  const fairPrice = (p) => (1 / (Math.min(0.95, Math.max(0.04, p)) * 1.04)).toFixed(2);
+  const modelFairOdds = { homeOdds: fairPrice(home), drawOdds: fairPrice(draw), awayOdds: fairPrice(away) };
+  const fifaData = readFifaRankings();
+  const homeFifa = fifaData?.byTeam?.get(normalizeIntlTeam(fixture.homeTeam));
+  const awayFifa = fifaData?.byTeam?.get(normalizeIntlTeam(fixture.awayTeam));
   return {
     league: fixture.group,
     season: "2026 World Cup",
@@ -264,11 +316,12 @@ function predictInternationalFixture(fixture, friendlyResults = []) {
     city: fixture.city,
     kickoffUtc: fixture.kickoffUtc,
     kickoffLocal: fixture.kickoffLocal,
-    odds: liveOdds?.odds || { homeOdds: "", drawOdds: "", awayOdds: "" },
-    oddsSource: liveOdds?.oddsSource || "Model only",
-    oddsStatus: liveOdds?.oddsStatus || "Waiting for public odds",
-    oddsSourceUrl: liveOdds?.oddsSourceUrl || "",
-    hasOdds: Boolean(liveOdds?.odds),
+    odds: liveOdds?.odds || modelFairOdds,
+    oddsSource: liveOdds?.oddsSource || "Model fair odds (FIFA-ranking + friendly-trained probabilities)",
+    oddsStatus: liveOdds?.oddsStatus || "No public sportsbook line yet — model-derived fair price shown",
+    oddsSourceUrl: liveOdds?.oddsSourceUrl || "https://inside.fifa.com/fifa-world-ranking/men",
+    hasOdds: true,
+    oddsType: liveOdds?.odds ? "sportsbook" : "model-fair",
     prediction,
     confidence,
     projectedScore: projectedScore(diff, prediction),
@@ -313,6 +366,9 @@ function predictInternationalFixture(fixture, friendlyResults = []) {
         `Fixture imported from FIFA schedule: Match ${fixture.matchNumber}, ${fixture.venue}, ${fixture.city}.`,
         `All World Cup 2026 group-stage teams are in scope in international mode.`,
         `Rating signal: ${fixture.homeTeam} ${homeRating.toFixed(1)}, ${fixture.awayTeam} ${awayRating.toFixed(1)}${hostBoost(fixture) ? ", host boost applied" : ""}${homeFormAdj || awayFormAdj ? ` (friendly form: ${fixture.homeTeam} ${homeFormAdj >= 0 ? "+" : ""}${homeFormAdj}, ${fixture.awayTeam} ${awayFormAdj >= 0 ? "+" : ""}${awayFormAdj})` : ""}.`,
+        homeFifa && awayFifa
+          ? `FIFA World Ranking (${fifaData.rankingDate || "latest release"}): ${fixture.homeTeam} #${homeFifa.rank} (${Math.round(homeFifa.points)} pts, ${homeFifa.points >= homeFifa.previousPoints ? "+" : ""}${(homeFifa.points - homeFifa.previousPoints).toFixed(1)}), ${fixture.awayTeam} #${awayFifa.rank} (${Math.round(awayFifa.points)} pts, ${awayFifa.points >= awayFifa.previousPoints ? "+" : ""}${(awayFifa.points - awayFifa.previousPoints).toFixed(1)}).`
+          : "FIFA World Ranking data not available for this pairing.",
         weather.summaryFactor,
         "Odds, injuries, final squad news, and fresh team/player form should be layered in as they become available.",
       ],
