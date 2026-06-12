@@ -540,4 +540,6 @@ module.exports = {
   refreshEspnFixtures,
   refreshEspnResults,
   refreshInternationalFriendlyResults,
+  normalizeEspnResult,
+  dateRange,
 };

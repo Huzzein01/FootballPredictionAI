@@ -1001,24 +1001,55 @@ function renderInternationalPlayedBoard() {
     `;
     return;
   }
-  playedPredictions = [];
+  // Live 2026 World Cup: results auto-sync from the ESPN scoreboard on the
+  // server (tracked predictions are auto-created and auto-settled).
   playedLeagueFilter.innerHTML = `<option value="International">International</option>`;
   playedLeagueFilter.value = "International";
-  playedDateFilter.value = "";
-  playedDateFilter.min = "";
-  playedDateFilter.max = "";
-  playedFixtureDates = [];
-  updatePlayedDateNav();
-  document.querySelector("#playedTotal").textContent = "0";
-  document.querySelector("#playedCorrect").textContent = "0";
-  document.querySelector("#playedWrong").textContent = "0";
-  document.querySelector("#playedExact").textContent = "0";
-  document.querySelector("#playedVoided").textContent = "0";
-  playedStatus.textContent = "No international matches have been imported as played";
-  playedBoard.innerHTML = internationalEmptyState(
-    "No international played matches yet",
-    "Played matches and settled results will stay empty until World Cup, Euros, or friendly results are imported."
-  );
+  playedStatus.textContent = "Syncing World Cup results from ESPN…";
+  api(`/api/played-fixtures?context=international`)
+    .then((data) => {
+      if (!isInternationalMode()) return;
+      playedPredictions = data.predictions || [];
+      playedFixtureDates = [...new Set(playedPredictions.map((p) => p.date))].sort();
+      updatePlayedDateNav();
+      const s = data.summary || {};
+      document.querySelector("#playedTotal").textContent = String(s.total || 0);
+      document.querySelector("#playedCorrect").textContent = String(s.correct || 0);
+      document.querySelector("#playedWrong").textContent = String(s.wrong || 0);
+      document.querySelector("#playedExact").textContent = String(s.exactScores || 0);
+      document.querySelector("#playedVoided").textContent = String(s.voided || 0);
+      if (!playedPredictions.length) {
+        playedStatus.textContent = "World Cup results sync is live — finished matches appear here automatically";
+        playedBoard.innerHTML = internationalEmptyState(
+          "No completed World Cup matches yet",
+          "Results auto-fetch from the ESPN scoreboard as soon as each match ends; the model's tracked picks settle and retrain automatically."
+        );
+        return;
+      }
+      const sync = data.apiSync;
+      playedStatus.textContent = `${s.total} World Cup result${s.total === 1 ? "" : "s"} auto-settled from ESPN${sync?.updatedAt ? ` (synced ${new Date(sync.updatedAt).toLocaleTimeString()})` : ""} — model record ${s.correct}/${s.total}`;
+      playedBoard.innerHTML = playedPredictions
+        .map((p) => {
+          const played = p.played || {};
+          const outcome = played.modelCorrect === true ? "correct" : played.modelCorrect === false ? "wrong" : "voided";
+          const pickLabel = p.prediction === "H" ? `${p.homeTeam} win` : p.prediction === "A" ? `${p.awayTeam} win` : "Draw";
+          return `
+            <article class="played-grid-card played-${outcome}">
+              <div class="played-card-head">
+                <span>${escapeHtml(p.league || "World Cup")} · ${escapeHtml(p.date || "")}</span>
+                <span class="status-pill ${outcome === "correct" ? "status-good" : outcome === "wrong" ? "status-bad" : ""}">${outcome === "correct" ? "Model correct" : outcome === "wrong" ? "Model wrong" : "Unscored"}</span>
+              </div>
+              <h3>${escapeHtml(p.homeTeam)} ${escapeHtml(String(played.homeGoals))} - ${escapeHtml(String(played.awayGoals))} ${escapeHtml(p.awayTeam)}</h3>
+              <p>Model pick: <strong>${escapeHtml(pickLabel)}</strong> (${escapeHtml(String(p.confidence ?? ""))}%) · Projected ${escapeHtml(p.projectedScore || "—")}${played.exactScoreCorrect ? " · Exact score ✓" : ""}</p>
+              <small>${escapeHtml(played.statusLabel || "Auto-settled from ESPN")}${played.sourceUrl ? ` · <a href="${escapeHtml(played.sourceUrl)}" target="_blank" rel="noopener">match report</a>` : ""}</small>
+            </article>`;
+        })
+        .join("");
+    })
+    .catch((error) => {
+      playedStatus.textContent = `World Cup results sync failed: ${error.message}`;
+      playedBoard.innerHTML = internationalEmptyState("Results temporarily unavailable", "Retry shortly — the ESPN sync runs automatically.");
+    });
 }
 
 function renderInternationalParlay() {
@@ -4081,16 +4112,25 @@ async function refreshResults({ silent = false } = {}) {
   if (!resultsOutput) return;
   if (!silent && resultsStatus) resultsStatus.textContent = "Loading results…";
   try {
-    // Results are real-world completed matches from ESPN — always club context.
-    // Fall back to the current club season when the international toggle is on.
-    const season = CLUB_SEASON_VALUES.has(selectedSeason()) ? selectedSeason() : "2025-26";
-    const data = await api(`/api/played-fixtures?season=${encodeURIComponent(season)}&context=club`);
+    // Real-world completed matches from ESPN. In international mode this is
+    // the live World Cup feed (auto-settled as each match ends); otherwise
+    // the club-season results feed.
+    let data;
+    if (isInternationalMode()) {
+      data = await api(`/api/played-fixtures?context=international`);
+    } else {
+      const season = CLUB_SEASON_VALUES.has(selectedSeason()) ? selectedSeason() : "2025-26";
+      data = await api(`/api/played-fixtures?season=${encodeURIComponent(season)}&context=club`);
+    }
     const predictions = data.predictions || [];
     if (resultsStatus) {
       const total = predictions.length;
       const correct = predictions.filter((p) => p.played?.modelCorrect === true).length;
+      const syncedAt = data.apiSync?.updatedAt ? ` · ESPN sync ${new Date(data.apiSync.updatedAt).toLocaleTimeString()}` : "";
       resultsStatus.textContent = total
-        ? `${total} result${total === 1 ? "" : "s"} · model correct: ${correct}/${total}`
+        ? `${total} result${total === 1 ? "" : "s"} · model correct: ${correct}/${total}${syncedAt}`
+        : isInternationalMode()
+        ? "World Cup results appear here automatically as each match ends"
         : "No results yet for this season";
     }
     renderResultsBoard(predictions);

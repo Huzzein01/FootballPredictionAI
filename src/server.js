@@ -16,6 +16,7 @@ const { resetPlayerStatsCache } = require("./playerStats");
 const { loadMatches, normalizeTeamName } = require("./footballData");
 const { refreshMissingOdds } = require("./oddsRepairService");
 const { readResultsSnapshot, refreshEspnFixtures, refreshEspnResults, enrichPredictionsWithLiveStatus, refreshInternationalFriendlyResults, readFriendlyResultsSnapshot } = require("./espnFixtureService");
+const { refreshWorldCupResults, syncWorldCupPlayerStats, readWorldCupResults } = require("./worldCupSync");
 const { listTeamResults, getTeamResults } = require("./teamResultsStore");
 const { listTeamTraining, getTeamTraining, appendTeamNote, updateTeamTrainingProfiles } = require("./teamTrainingStore");
 const { refreshTheOddsApi } = require("./oddsApiService");
@@ -162,6 +163,15 @@ function triggerLiveFixtureRefresh(reason = "background", { force = false } = {}
         if (resultSnapshot.settled > 0) {
           await refreshLiveLeagueContext();
           scheduleRetrain(`espn-auto-fixture-results:${reason}`);
+        }
+        // World Cup live sync: results → auto-settled tracked predictions →
+        // training summary rebuild → retrain; then live player stat sync.
+        try {
+          await refreshWorldCupResults();
+          await syncWorldCupPlayerStats();
+          await refreshInternationalFriendlyResults();
+        } catch (error) {
+          console.warn("World Cup sync failed:", error.message);
         }
         await refreshEspnFixtures({ daysBack: 14, daysForward: 180 });
         await refreshTheOddsApi({ includeClub: true, includeInternational: true, daysForward: 420 });
@@ -534,9 +544,57 @@ async function handleApi(req, res, pathname) {
     const season = url.searchParams.get("season") || "2025-26";
     const context = url.searchParams.get("context") === "international" ? "international" : "club";
     if (context === "international") {
+      // Auto-sync World Cup results from ESPN (TTL-cached), which also
+      // auto-creates and settles tracked predictions for finished matches.
+      let wcSnapshot = null;
+      try {
+        wcSnapshot = await refreshWorldCupResults();
+        await syncWorldCupPlayerStats();
+      } catch (_) {
+        wcSnapshot = readWorldCupResults();
+      }
+      const settledIntl = listPredictions()
+        .filter((p) => p.source === "international-fixture-board" && p.status === "SETTLED")
+        .map((p) => ({
+          id: p.id,
+          date: p.date,
+          league: p.league,
+          homeTeam: p.homeTeam,
+          awayTeam: p.awayTeam,
+          homeFlagUrl: p.homeFlagUrl || "",
+          awayFlagUrl: p.awayFlagUrl || "",
+          prediction: p.prediction,
+          confidence: p.confidence,
+          projectedScore: p.projectedScore,
+          played: {
+            homeGoals: Number(p.homeGoals),
+            awayGoals: Number(p.awayGoals),
+            actualResult: p.actualResult,
+            modelCorrect: p.correct === true ? true : p.correct === false ? false : null,
+            exactScoreCorrect: p.scoreCorrect === true,
+            statusLabel: "Auto-settled from ESPN World Cup scoreboard",
+            sourceName: p.resultSourceName || "ESPN public scoreboard",
+            sourceUrl: p.resultSourceUrl || "",
+          },
+        }))
+        .sort((a, b) => String(b.date).localeCompare(String(a.date)));
+      const correct = settledIntl.filter((p) => p.played.modelCorrect === true).length;
+      const wrong = settledIntl.filter((p) => p.played.modelCorrect === false).length;
+      const voided = settledIntl.filter((p) => p.played.modelCorrect === null).length;
+      const exactScores = settledIntl.filter((p) => p.played.exactScoreCorrect).length;
       return sendJson(res, 200, {
-        predictions: [],
-        summary: { total: 0, correct: 0, wrong: 0, voided: 0, exactScores: 0 },
+        predictions: settledIntl,
+        apiSync: wcSnapshot
+          ? {
+              source: wcSnapshot.source || "ESPN World Cup scoreboard",
+              updatedAt: wcSnapshot.updatedAt || "",
+              cached: Boolean(wcSnapshot.cached),
+              fetched: wcSnapshot.fetched || 0,
+              settled: wcSnapshot.settled || 0,
+              errors: wcSnapshot.error ? [{ league: "FIFA World Cup", message: wcSnapshot.error }] : [],
+            }
+          : null,
+        summary: { total: settledIntl.length, correct, wrong, voided, exactScores },
       });
     }
 
@@ -770,13 +828,15 @@ async function handleApi(req, res, pathname) {
     await Promise.all([
       refreshTheOddsApi({ includeClub: false, includeInternational: true, daysForward: 420 }),
       refreshInternationalFriendlyResults(),
+      refreshWorldCupResults().catch(() => null),
     ]);
     const predictions = internationalFixturePredictions();
+    const playedIntl = listPredictions().filter((p) => p.source === "international-fixture-board" && p.status === "SETTLED").length;
     return sendJson(res, 200, {
       predictions,
       summary: {
         total: predictions.length,
-        played: 0,
+        played: playedIntl,
         withOdds: predictions.filter((prediction) => prediction.hasOdds).length,
         modelOnly: predictions.filter((prediction) => !prediction.hasOdds).length,
       },
@@ -784,9 +844,34 @@ async function handleApi(req, res, pathname) {
   }
 
   if (req.method === "GET" && pathname === "/api/international/group-tables") {
+    // Standings are derived from auto-settled World Cup results — sync first
+    // (TTL-cached) so the tables update as soon as matches finish.
+    try {
+      await refreshWorldCupResults();
+    } catch (_) { /* fall back to stored results */ }
+    const wcSnapshot = readWorldCupResults();
     return sendJson(res, 200, {
       groups: internationalGroupTables(),
       source: readFixtureData().source || null,
+      apiSync: {
+        source: wcSnapshot?.source || "ESPN World Cup scoreboard",
+        updatedAt: wcSnapshot?.updatedAt || "",
+        completedMatches: wcSnapshot?.completedCount || 0,
+      },
+    });
+  }
+
+  if (req.method === "POST" && pathname === "/api/international/wc-sync") {
+    const snapshot = await refreshWorldCupResults({ force: true });
+    const playerStats = await syncWorldCupPlayerStats();
+    return sendJson(res, 200, {
+      updatedAt: snapshot.updatedAt,
+      fetched: snapshot.fetched,
+      completed: snapshot.completedCount,
+      settled: snapshot.settled,
+      settledPredictions: snapshot.settledPredictions,
+      playerStatEvents: playerStats.newEvents || 0,
+      error: snapshot.error || null,
     });
   }
 
@@ -991,3 +1076,26 @@ const server = http.createServer(async (req, res) => {
 server.listen(PORT, () => {
   console.log(`Prediction app running at http://localhost:${PORT}`);
 });
+
+// ── Continuous background sync ───────────────────────────────────────────
+// Every 5 minutes (long-lived runtimes only — Vercel functions are
+// request-scoped and use the on-request TTL triggers instead):
+//   fixtures, results, odds, league context  → triggerLiveFixtureRefresh
+//   World Cup results → auto-settled tracked predictions → retrain
+//   live WC player stats and team training profiles
+if (!process.env.VERCEL) {
+  const SYNC_INTERVAL_MS = 5 * 60 * 1000;
+  const backgroundSync = async () => {
+    try {
+      triggerLiveFixtureRefresh("background-interval");
+      await refreshWorldCupResults();
+      await syncWorldCupPlayerStats();
+    } catch (error) {
+      console.warn("Background sync error:", error.message);
+    }
+  };
+  setTimeout(backgroundSync, 10_000).unref?.();
+  const timer = setInterval(backgroundSync, SYNC_INTERVAL_MS);
+  timer.unref?.();
+  console.log("Continuous auto-sync enabled: ESPN fixtures/results, World Cup settlement, player stats (every 5 min).");
+}

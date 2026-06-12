@@ -542,6 +542,16 @@ function wc2026ProfilePropCandidates(fixture, riskMode = "safe") {
   const isRiskyMode = riskMode === "risky";
   const profiles = loadWc2026Profiles().teams || {};
   const training = readFriendlyTraining();
+  // Live tournament output (auto-synced from ESPN match summaries): players
+  // actually scoring at the World Cup get their estimates trained upward.
+  let liveStats = { players: {} };
+  try {
+    liveStats = require("./worldCupSync").readWcLivePlayerStats();
+  } catch (_) { /* sync module unavailable — fall back to researched profiles */ }
+  // Accent/case-insensitive keys: ESPN reports "Raúl Jiménez", profiles store
+  // "Raul Jimenez" — both must hit the same live-stats record.
+  const foldName = (name) => String(name || "").normalize("NFD").replace(/[̀-ͯ]/g, "").toLowerCase().trim();
+  const liveByPlayer = new Map(Object.values(liveStats.players || {}).map((p) => [foldName(p.player), p]));
   const candidates = [];
 
   for (const team of [fixture.homeTeam, fixture.awayTeam]) {
@@ -561,13 +571,23 @@ function wc2026ProfilePropCandidates(fixture, riskMode = "safe") {
 
     for (const player of profile.players) {
       const playerName = cleanPlayerName(player.name);
-      const goalsPer90 = Number(player.goalsPer90 || 0);
-      const assistsPer90 = Number(player.assistsPer90 || 0);
+      let goalsPer90 = Number(player.goalsPer90 || 0);
+      let assistsPer90 = Number(player.assistsPer90 || 0);
       const shotsPer90 = Number(player.shotsPer90 || 0);
       const sotPer90 = Number(player.shotsOnTargetPer90 || 0);
       const savesPer90 = Number(player.savesPer90 || 0);
       const detail = [player.position, player.club].filter(Boolean).join(", ");
-      const playerSourceText = `${baseSource}${player.note ? `; ${player.note}` : ""}`;
+      // Blend in live tournament output once the player has featured.
+      const live = liveByPlayer.get(foldName(playerName));
+      let liveNote = "";
+      if (live && live.matches > 0) {
+        const liveGoalsRate = live.goals / live.matches;
+        const liveAssistsRate = live.assists / live.matches;
+        goalsPer90 = goalsPer90 * 0.6 + liveGoalsRate * 0.4;
+        assistsPer90 = assistsPer90 * 0.6 + liveAssistsRate * 0.4;
+        liveNote = `; WC 2026 so far: ${live.goals}g ${live.assists}a in ${live.matches} match${live.matches === 1 ? "" : "es"}`;
+      }
+      const playerSourceText = `${baseSource}${player.note ? `; ${player.note}` : ""}${liveNote}`;
 
       if (player.position !== "GK" && goalsPer90 >= 0.25) {
         const scoringChance = poissonAtLeast(goalsPer90 * Math.max(0.7, teamGoalProjection / 1.3), 1);
@@ -1336,7 +1356,16 @@ function buildInternationalParlays(options = {}) {
   const riskMode = options.riskMode === "risky" ? "risky" : "safe";
   const generationMode = options.generationMode === "fixture-grid" ? "fixture-grid" : "multi";
   const date = String(options.date || "").trim();
-  const allFixtures = internationalFixturePredictions().filter((fixture) => !date || fixture.date === date);
+  // Exclude fixtures already settled by the World Cup auto-sync — parlays
+  // should only offer upcoming matches.
+  const settledIntlKeys = new Set(
+    (require("./backtestStore").listPredictions() || [])
+      .filter((p) => p.source === "international-fixture-board" && p.status === "SETTLED")
+      .map((p) => `${p.homeTeam}|${p.awayTeam}|${p.date}`.toLowerCase())
+  );
+  const allFixtures = internationalFixturePredictions().filter(
+    (fixture) => (!date || fixture.date === date) && !settledIntlKeys.has(`${fixture.homeTeam}|${fixture.awayTeam}|${fixture.date}`.toLowerCase())
+  );
   const fixtures = allFixtures;
   const players = aggregatePlayers(loadFbrefRows());
   const fbref = {

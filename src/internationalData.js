@@ -160,13 +160,19 @@ function normalizeIntlTeam(name) {
 }
 
 let friendlyTrainingCache = null;
-// Second-batch training output from scripts/trainInternationalFriendlies.js:
-// friendly results down-weighted (seriousness 0.6) and recency-weighted.
+let friendlyTrainingCacheMtime = 0;
+// Continuous-training output (friendlies down-weighted at 0.6 + live World
+// Cup results at full weight). Cache keyed on file mtime so a rebuild after
+// each settled WC match takes effect immediately without a restart.
 function readFriendlyTraining() {
-  if (friendlyTrainingCache) return friendlyTrainingCache;
-  if (!fs.existsSync(FRIENDLY_TRAINING_PATH)) return null;
+  const livePath = mutableDataPath("international", "processed", "friendly_training_summary.json");
+  const activePath = fs.existsSync(livePath) ? livePath : FRIENDLY_TRAINING_PATH;
+  if (!fs.existsSync(activePath)) return null;
+  const mtime = fs.statSync(activePath).mtimeMs;
+  if (friendlyTrainingCache && mtime === friendlyTrainingCacheMtime) return friendlyTrainingCache;
   try {
-    friendlyTrainingCache = JSON.parse(fs.readFileSync(FRIENDLY_TRAINING_PATH, "utf8").replace(/^\uFEFF/, ""));
+    friendlyTrainingCache = JSON.parse(fs.readFileSync(activePath, "utf8").replace(/^\uFEFF/, ""));
+    friendlyTrainingCacheMtime = mtime;
   } catch (_) {
     friendlyTrainingCache = null;
   }
