@@ -1,0 +1,63 @@
+name: WC Matchday Cloud Trainer
+
+# Runs on GitHub's servers (no laptop needed) once nightly during the World
+# Cup, plus on-demand. Fetches the latest results, auto-settles tracked
+# predictions, retunes the model toward the 75%-by-matchday-4 target, rolls
+# the daily capital slip, regenerates caches, and pushes back — which
+# auto-redeploys Vercel.
+#
+# NOTE: GitHub Actions cron is in UTC. 07:17 UTC ≈ late evening across North
+# American time zones, so it catches the full day's World Cup fixtures
+# (including late West-Coast kickoffs that finish ~06:00 UTC).
+
+on:
+  schedule:
+    - cron: "17 7 * * *"
+  workflow_dispatch: {}   # manual "Run workflow" button
+
+# Allow the job to commit results back to the repo.
+permissions:
+  contents: write
+
+concurrency:
+  group: wc-matchday-train
+  cancel-in-progress: false
+
+jobs:
+  train:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: "20"
+
+      - name: Install dependencies
+        run: npm install --no-audit --no-fund
+
+      - name: Run matchday training pass
+        id: train
+        run: node scripts/cloudMatchdayTrain.js
+
+      - name: Regenerate cached brackets/futures
+        if: steps.train.outputs.CHANGES == 'yes'
+        run: node scripts/prebuildBrackets.js
+
+      - name: Commit & push if the model retrained
+        if: steps.train.outputs.CHANGES == 'yes'
+        run: |
+          git config user.name "wc-matchday-bot"
+          git config user.email "actions@github.com"
+          git add -A
+          if git diff --cached --quiet; then
+            echo "No file changes to commit."
+          else
+            git commit \
+              -m "Cloud matchday trainer: sync results, retune model, roll capital slip" \
+              -m "Automated nightly pass (GitHub Actions). See the run summary for accuracy and bankroll figures." \
+              -m "Co-Authored-By: Claude Opus 4.8 <noreply@anthropic.com>"
+            git push origin HEAD:main
+          fi
