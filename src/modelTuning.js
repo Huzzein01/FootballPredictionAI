@@ -71,10 +71,14 @@ function saveTuning(tuning) {
 // Candidate values explored per parameter (coordinate descent sweeps each).
 const SEARCH_GRID = {
   fifaBlend: [0.3, 0.4, 0.45, 0.5, 0.6, 0.7],
-  logisticSteepness: [8, 10, 12, 14, 16],
+  logisticSteepness: [8, 10, 12, 14, 16, 20],
+  // Draw curve reaches high enough that evenly-matched fixtures are actually
+  // called draws (~24% of international results are draws; the old 0.28 cap
+  // meant the model never picked one).
   friendlySeriousness: [0.4, 0.5, 0.6, 0.7, 0.8],
-  drawBase: [0.22, 0.25, 0.28, 0.3],
-  drawSlope: [0.003, 0.004, 0.006],
+  drawBase: [0.25, 0.3, 0.34, 0.38, 0.42],
+  drawSlope: [0.003, 0.004, 0.006, 0.008],
+  drawMax: [0.28, 0.34, 0.4, 0.46],
   hostBoost: [2, 3, 4],
   fifaMovementCap: [1.0, 1.5, 2.0],
   motivationWeight: [0, 0.5, 1.0, 1.5, 2.0],

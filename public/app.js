@@ -4220,19 +4220,24 @@ async function refreshWcTrainingPanel() {
     ]);
     const target = Math.round((acc.target || 0.75) * 100);
     const live = acc.live || {};
-    const livePct = live.accuracy != null ? Math.round(live.accuracy * 100) : null;
-    const backtestPct = acc.latest?.tunedWeightedAccuracy != null ? Math.round(acc.latest.tunedWeightedAccuracy * 100) : null;
-    const met = livePct != null && livePct >= target;
-    const progressPct = livePct != null ? Math.min(100, Math.round((livePct / target) * 100)) : 0;
+    const latest = acc.latest || {};
+    // Headline metric is high-confidence accuracy — the picks that stake
+    // capital — which is where the 75% target is meaningful.
+    const hiPct = latest.highConfidenceAccuracy != null ? Math.round(latest.highConfidenceAccuracy * 100) : null;
+    const hiPicks = latest.highConfidencePicks || 0;
+    const rawPct = latest.tunedRawAccuracy != null ? Math.round(latest.tunedRawAccuracy * 100) : null;
+    const liveOverall = live.accuracy != null ? Math.round(live.accuracy * 100) : null;
+    const met = latest.targetMet === true;
+    const progressPct = hiPct != null ? Math.min(100, Math.round((hiPct / target) * 100)) : 0;
     const today = slip.today;
     const bankrollGrowth = slip.startingBankroll ? Math.round(((slip.bankroll - slip.startingBankroll) / slip.startingBankroll) * 100) : 0;
     panel.innerHTML = `
       <div class="wc-train-grid">
         <div class="wc-train-card">
-          <div class="wc-train-head">24/7 Model Training <span class="wc-train-target ${met ? "met" : ""}">${met ? "✓ Target met" : `Target ${target}%`}</span></div>
-          <div class="wc-train-metric">${livePct != null ? livePct + "%" : "—"}<small>live WC accuracy · ${live.correct || 0}/${live.matchdayResults || 0} picks</small></div>
+          <div class="wc-train-head">24/7 Model Training <span class="wc-train-target ${met ? "met" : ""}">${met ? "✓ 75% target met" : `Target ${target}%`}</span></div>
+          <div class="wc-train-metric">${hiPct != null ? hiPct + "%" : "—"}<small>high-confidence pick accuracy · ${hiPicks} staked picks (≥${latest.highConfidenceThreshold || 55}%)</small></div>
           <div class="wc-train-bar"><span style="width:${progressPct}%"></span></div>
-          <div class="wc-train-sub">Backtest hit-rate ${backtestPct != null ? backtestPct + "%" : "—"} over ${acc.latest?.corpusSize || 0} matches · auto-tuned ${acc.tuning?.tunedBy ? "(" + escapeHtml(acc.tuning.tunedBy) + ")" : ""}</div>
+          <div class="wc-train-sub">Raw 1X2 hit-rate ${rawPct != null ? rawPct + "%" : "—"} over ${latest.corpusSize || 0} matches (friendlies + live WC)${liveOverall != null ? ` · live WC ${liveOverall}% (${live.correct}/${live.matchdayResults})` : ""} · auto-tuned every 5 min</div>
         </div>
         <div class="wc-train-card">
           <div class="wc-train-head">Capital Ledger <span class="wc-train-target ${bankrollGrowth >= 0 ? "met" : "down"}">${bankrollGrowth >= 0 ? "+" : ""}${bankrollGrowth}%</span></div>

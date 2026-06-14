@@ -523,7 +523,7 @@ function internationalGroupTables() {
  * avoid circular leakage when scoring against the friendly corpus itself.
  * Returns "H" | "D" | "A".
  */
-function predictResultForTuning(homeTeam, awayTeam, tuning = getTuning()) {
+function scoredPickForTuning(homeTeam, awayTeam, tuning = getTuning()) {
   const homeRating = ratingFor(homeTeam, false, tuning);
   const awayRating = ratingFor(awayTeam, false, tuning);
   const diff = homeRating - awayRating;
@@ -532,7 +532,11 @@ function predictResultForTuning(homeTeam, awayTeam, tuning = getTuning()) {
   const home = (1 - draw) * homeShare;
   const away = (1 - draw) * (1 - homeShare);
   const entries = [["H", home], ["D", draw], ["A", away]].sort((a, b) => b[1] - a[1]);
-  return entries[0][0];
+  return { pick: entries[0][0], confidence: entries[0][1] * 100 };
+}
+
+function predictResultForTuning(homeTeam, awayTeam, tuning = getTuning()) {
+  return scoredPickForTuning(homeTeam, awayTeam, tuning).pick;
 }
 
 function internationalStatus() {
@@ -567,6 +571,7 @@ module.exports = {
   readFixtureData,
   predictInternationalFixture,  // exported for knockout-round simulation in tournamentProjection.js
   predictResultForTuning,       // exported for the auto-tuner backtest
+  scoredPickForTuning,          // pick + confidence, for high-confidence accuracy
   normalizeIntlTeam,
   readFriendlyTraining,
 };
