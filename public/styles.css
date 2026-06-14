@@ -4916,3 +4916,24 @@ th {
   .bracket-comp-tabs { gap: 4px; }
   .bracket-comp-tab { padding: 6px 10px; font-size: 12px; }
 }
+
+/* World Cup 24/7 training + capital panel (international parlay view) */
+.wc-training-panel { margin: 12px 0 4px; }
+.wc-train-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
+.wc-train-card { background: var(--panel-2, #14161c); border: 1px solid var(--border, #262a33); border-radius: 12px; padding: 14px 16px; }
+.wc-train-head { display: flex; justify-content: space-between; align-items: center; font-weight: 600; font-size: 13px; color: var(--text, #e6e8ee); margin-bottom: 8px; }
+.wc-train-target { font-size: 11px; padding: 2px 8px; border-radius: 999px; background: rgba(120,130,150,0.18); color: var(--text-muted, #99a); }
+.wc-train-target.met { background: rgba(46,160,90,0.2); color: #4ade80; }
+.wc-train-target.down { background: rgba(200,70,70,0.18); color: #f87171; }
+.wc-train-metric { font-size: 30px; font-weight: 700; color: var(--text, #fff); line-height: 1.1; }
+.wc-train-metric small { display: block; font-size: 11px; font-weight: 500; color: var(--text-muted, #889); margin-top: 2px; }
+.wc-train-bar { height: 6px; border-radius: 999px; background: rgba(120,130,150,0.18); margin: 10px 0 6px; overflow: hidden; }
+.wc-train-bar span { display: block; height: 100%; background: linear-gradient(90deg, #3b82f6, #4ade80); border-radius: 999px; transition: width .4s ease; }
+.wc-train-sub { font-size: 11px; color: var(--text-muted, #889); }
+.wc-slip { margin-top: 10px; border-top: 1px solid var(--border, #262a33); padding-top: 8px; }
+.wc-slip-head { font-size: 12px; font-weight: 600; color: var(--text, #dde); margin-bottom: 6px; }
+.wc-slip-leg { display: flex; justify-content: space-between; gap: 8px; font-size: 12px; padding: 3px 0; color: var(--text-muted, #abb); }
+.wc-slip-leg.won { color: #4ade80; }
+.wc-slip-leg.lost { color: #f87171; text-decoration: line-through; }
+.wc-slip-foot { font-size: 11px; color: var(--text-muted, #889); margin-top: 6px; }
+@media (max-width: 720px) { .wc-train-grid { grid-template-columns: 1fr; } }

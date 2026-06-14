@@ -4203,7 +4203,55 @@ function stopResultsAutoRefresh() {
   if (resultsRefreshTimer) { clearInterval(resultsRefreshTimer); resultsRefreshTimer = null; }
 }
 
+// World Cup model-training + capital panel (international mode only). Surfaces
+// live model accuracy vs the 75% target and the daily auto-generated slip.
+async function refreshWcTrainingPanel() {
+  const panel = document.querySelector("#wcTrainingPanel");
+  if (!panel) return;
+  if (!isInternationalMode()) {
+    panel.hidden = true;
+    return;
+  }
+  panel.hidden = false;
+  try {
+    const [acc, slip] = await Promise.all([
+      api("/api/international/training-accuracy"),
+      api("/api/international/daily-slip"),
+    ]);
+    const target = Math.round((acc.target || 0.75) * 100);
+    const live = acc.live || {};
+    const livePct = live.accuracy != null ? Math.round(live.accuracy * 100) : null;
+    const backtestPct = acc.latest?.tunedWeightedAccuracy != null ? Math.round(acc.latest.tunedWeightedAccuracy * 100) : null;
+    const met = livePct != null && livePct >= target;
+    const progressPct = livePct != null ? Math.min(100, Math.round((livePct / target) * 100)) : 0;
+    const today = slip.today;
+    const bankrollGrowth = slip.startingBankroll ? Math.round(((slip.bankroll - slip.startingBankroll) / slip.startingBankroll) * 100) : 0;
+    panel.innerHTML = `
+      <div class="wc-train-grid">
+        <div class="wc-train-card">
+          <div class="wc-train-head">24/7 Model Training <span class="wc-train-target ${met ? "met" : ""}">${met ? "✓ Target met" : `Target ${target}%`}</span></div>
+          <div class="wc-train-metric">${livePct != null ? livePct + "%" : "—"}<small>live WC accuracy · ${live.correct || 0}/${live.matchdayResults || 0} picks</small></div>
+          <div class="wc-train-bar"><span style="width:${progressPct}%"></span></div>
+          <div class="wc-train-sub">Backtest hit-rate ${backtestPct != null ? backtestPct + "%" : "—"} over ${acc.latest?.corpusSize || 0} matches · auto-tuned ${acc.tuning?.tunedBy ? "(" + escapeHtml(acc.tuning.tunedBy) + ")" : ""}</div>
+        </div>
+        <div class="wc-train-card">
+          <div class="wc-train-head">Capital Ledger <span class="wc-train-target ${bankrollGrowth >= 0 ? "met" : "down"}">${bankrollGrowth >= 0 ? "+" : ""}${bankrollGrowth}%</span></div>
+          <div class="wc-train-metric">${slip.bankroll != null ? slip.bankroll : "—"}<small>${escapeHtml(slip.currency || "units")} · started ${slip.startingBankroll}</small></div>
+          ${today ? `
+            <div class="wc-slip">
+              <div class="wc-slip-head">Today's highest-confidence slip · ${escapeHtml(today.date)} · ${today.legCount} legs @ ${today.combinedOdds.toFixed(2)}</div>
+              ${today.legs.map((l) => `<div class="wc-slip-leg ${l.status === "WON" ? "won" : l.status === "LOST" ? "lost" : ""}"><span>${escapeHtml(l.pick)}</span><span>${l.decimalOdds.toFixed(2)} · ${Math.round(l.confidence)}%</span></div>`).join("")}
+              <div class="wc-slip-foot">Stake ${today.stake} → potential ${today.potentialReturn} · joint prob ${Math.round(today.jointProbability * 100)}%</div>
+            </div>` : `<div class="wc-train-sub">${escapeHtml(slip.note || "Daily slip rolls once upcoming fixtures qualify.")}</div>`}
+        </div>
+      </div>`;
+  } catch (error) {
+    panel.innerHTML = `<div class="wc-train-sub">Training panel unavailable: ${escapeHtml(error.message)}</div>`;
+  }
+}
+
 async function refreshParlay({ forceNew = false } = {}) {
+  refreshWcTrainingPanel();
   if (isInternationalMode()) {
     if (!hasCurrentInternationalFixtures()) {
       renderInternationalParlay();

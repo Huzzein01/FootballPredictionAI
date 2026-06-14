@@ -176,6 +176,20 @@ async function refreshWorldCupResults({ force = false, daysBack = 6, daysForward
     } catch (error) {
       snapshot.trainingError = error.message;
     }
+    // Re-tune model parameters against the freshly settled corpus, grade the
+    // capital-ledger slips that just resolved, and roll the next day's slip.
+    try {
+      snapshot.tuning = require("./autoTune").runAutoTune({ reason: "world-cup-results-settled" });
+    } catch (error) {
+      snapshot.tuningError = error.message;
+    }
+    try {
+      const { gradeDailySlips, generateDailySlip } = require("./dailyParlay");
+      snapshot.slipGrading = gradeDailySlips();
+      generateDailySlip();
+    } catch (error) {
+      snapshot.slipError = error.message;
+    }
     scheduleRetrain("world-cup-results-settled");
   }
   return snapshot;

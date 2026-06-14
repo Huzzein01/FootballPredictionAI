@@ -861,6 +861,37 @@ async function handleApi(req, res, pathname) {
     });
   }
 
+  if (req.method === "GET" && pathname === "/api/international/training-accuracy") {
+    const { readAccuracyHistory, liveWorldCupAccuracy, TARGET_ACCURACY } = require("./autoTune");
+    const store = readAccuracyHistory();
+    return sendJson(res, 200, {
+      target: TARGET_ACCURACY,
+      live: liveWorldCupAccuracy(),
+      latest: store.latest || null,
+      history: (store.history || []).slice(-40),
+      tuning: require("./modelTuning").getTuning(),
+    });
+  }
+
+  if (req.method === "POST" && pathname === "/api/international/tune") {
+    const snapshot = require("./autoTune").runAutoTune({ reason: "manual-trigger" });
+    return sendJson(res, 200, snapshot);
+  }
+
+  if (req.method === "GET" && pathname === "/api/international/daily-slip") {
+    const { readCapitalLedger, generateDailySlip, gradeDailySlips } = require("./dailyParlay");
+    gradeDailySlips();
+    const ledger = generateDailySlip();
+    return sendJson(res, 200, {
+      bankroll: ledger.bankroll,
+      startingBankroll: ledger.startingBankroll,
+      currency: ledger.currency,
+      today: ledger.today || null,
+      note: ledger.note || "",
+      slips: (ledger.slips || []).slice(0, 30),
+    });
+  }
+
   if (req.method === "POST" && pathname === "/api/international/wc-sync") {
     const snapshot = await refreshWorldCupResults({ force: true });
     const playerStats = await syncWorldCupPlayerStats();
@@ -1090,6 +1121,19 @@ if (!process.env.VERCEL) {
       triggerLiveFixtureRefresh("background-interval");
       await refreshWorldCupResults();
       await syncWorldCupPlayerStats();
+      // 24/7 training: re-tune toward the 75% target, refresh the daily slip.
+      try {
+        require("./autoTune").runAutoTune({ reason: "background-interval" });
+      } catch (error) {
+        console.warn("Auto-tune error:", error.message);
+      }
+      try {
+        const { gradeDailySlips, generateDailySlip } = require("./dailyParlay");
+        gradeDailySlips();
+        generateDailySlip();
+      } catch (error) {
+        console.warn("Daily slip error:", error.message);
+      }
     } catch (error) {
       console.warn("Background sync error:", error.message);
     }
@@ -1097,5 +1141,5 @@ if (!process.env.VERCEL) {
   setTimeout(backgroundSync, 10_000).unref?.();
   const timer = setInterval(backgroundSync, SYNC_INTERVAL_MS);
   timer.unref?.();
-  console.log("Continuous auto-sync enabled: ESPN fixtures/results, World Cup settlement, player stats (every 5 min).");
+  console.log("Continuous auto-sync + auto-tune enabled: ESPN fixtures/results, WC settlement, player stats, model tuning, daily parlay slip (every 5 min).");
 }

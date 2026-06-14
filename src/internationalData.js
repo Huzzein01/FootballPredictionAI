@@ -4,6 +4,7 @@ const { listPredictions } = require("./backtestStore");
 const { oddsForInternationalFixture } = require("./oddsApiService");
 const { mutableDataPath, readJsonWithFallback } = require("./runtimePaths");
 const { weatherContextForFixture } = require("./weatherService");
+const { getTuning } = require("./modelTuning");
 
 const PLAYER_STATS_PATH = path.join(process.cwd(), "data", "international", "processed", "world_cup_player_stats.json");
 const SQUAD_STATS_PATH = path.join(process.cwd(), "data", "international", "processed", "world_cup_squad_stats.json");
@@ -126,11 +127,11 @@ function fifaPointsToRating(points) {
 
 // Movement signal from the latest ranking update (captures the most recent
 // official results window): points gained/lost since the previous release,
-// clamped to ±1.5 rating points.
-function fifaMovementNudge(row) {
+// clamped to ±cap rating points (cap is tunable).
+function fifaMovementNudge(row, cap = 1.5) {
   const delta = Number(row.points) - Number(row.previousPoints);
   if (!Number.isFinite(delta)) return 0;
-  return Math.max(-1.5, Math.min(1.5, delta / 10));
+  return Math.max(-cap, Math.min(cap, delta / 10));
 }
 
 // ESPN scoreboard names \u2192 FIFA fixture-feed names. Without this map the
@@ -205,14 +206,16 @@ function logistic(value) {
  * In knockout rounds (includePrestige=true) the WC_TOURNAMENT_PRESTIGE bonus
  * is added so historically dominant nations have a stronger edge late on.
  */
-function ratingFor(team, includePrestige = false) {
+function ratingFor(team, includePrestige = false, tuning = getTuning()) {
   const base = TEAM_RATINGS[team] ?? 68;
-  // Blend the hand-tuned prior with the live FIFA World Ranking: 55% prior,
-  // 45% FIFA points (mapped to the rating scale), plus a ±1.5 nudge from the
-  // points movement in the latest ranking release (most recent results).
+  // Blend the hand-tuned prior with the live FIFA World Ranking. The blend
+  // weight and the latest-release movement cap are auto-tuned (defaults:
+  // 45% FIFA points, ±1.5 movement nudge).
   const fifaRow = readFifaRankings()?.byTeam?.get(normalizeIntlTeam(team));
+  const blend = Math.max(0, Math.min(1, Number(tuning.fifaBlend ?? 0.45)));
+  const movementCap = Number(tuning.fifaMovementCap ?? 1.5);
   const blended = fifaRow
-    ? base * 0.55 + fifaPointsToRating(fifaRow.points) * 0.45 + fifaMovementNudge(fifaRow)
+    ? base * (1 - blend) + fifaPointsToRating(fifaRow.points) * blend + fifaMovementNudge(fifaRow, movementCap)
     : base;
   if (!includePrestige) return blended;
   return blended + (WC_TOURNAMENT_PRESTIGE[team] ?? 0);
@@ -253,10 +256,52 @@ function friendlyFormAdjustment(team, results) {
   return Math.round(delta * 4 * 0.6 * 10) / 10;
 }
 
-function hostBoost(fixture) {
+// Memoized group-standings lookup (team -> points/played/rank), rebuilt only
+// when the settled-result count changes. Powers the motivation signal.
+let standingsLookupCache = null;
+let standingsLookupSettledCount = -1;
+function groupStandingsLookup() {
+  const settledCount = settledInternationalResults().length;
+  if (standingsLookupCache && settledCount === standingsLookupSettledCount) return standingsLookupCache;
+  const lookup = new Map();
+  try {
+    for (const { group, standings } of internationalGroupTables()) {
+      const groupSize = standings.length;
+      standings.forEach((row, index) => {
+        lookup.set(normalizeIntlTeam(row.team), { points: row.points, played: row.played, rank: index + 1, groupSize, group });
+      });
+    }
+  } catch (_) { /* before any results, motivation is neutral */ }
+  standingsLookupCache = lookup;
+  standingsLookupSettledCount = settledCount;
+  return lookup;
+}
+
+// Motivation ("motives") signal for group-stage matches: as the group unfolds,
+// teams chasing qualification press harder while safe teams rotate. Returns a
+// home-minus-away rating nudge bounded to ±2, scaled by matchday and the
+// tunable motivationWeight. Neutral on matchday 1 (no standings signal yet).
+function motivationAdjustment(fixture, weight = 1) {
+  if (fixture.isKnockout || !weight) return 0;
+  const lookup = groupStandingsLookup();
+  const teamMotive = (team) => {
+    const row = lookup.get(normalizeIntlTeam(team));
+    if (!row || row.played < 1) return 0;
+    const matchdayFactor = Math.min(1, row.played / 2); // ramps to MD3
+    // Distance from the ~4-point safety line, normalized to [0,1].
+    const need = Math.max(0, Math.min(1, (4 - row.points) / 4));
+    let motive = need * matchdayFactor;            // desperation boost
+    if (row.points >= 6) motive -= 0.5 * matchdayFactor; // already through → rotation
+    return motive;
+  };
+  const net = teamMotive(fixture.homeTeam) - teamMotive(fixture.awayTeam);
+  return clamp(net * weight, -2, 2);
+}
+
+function hostBoost(fixture, boost = 3) {
   const hostTeams = new Set(["Canada", "Mexico", "USA"]);
-  const homeBoost = hostTeams.has(fixture.homeTeam) && fixture.hostCountry === fixture.homeCode ? 3 : 0;
-  const awayBoost = hostTeams.has(fixture.awayTeam) && fixture.hostCountry === fixture.awayCode ? 3 : 0;
+  const homeBoost = hostTeams.has(fixture.homeTeam) && fixture.hostCountry === fixture.homeCode ? boost : 0;
+  const awayBoost = hostTeams.has(fixture.awayTeam) && fixture.hostCountry === fixture.awayCode ? boost : 0;
   return homeBoost - awayBoost;
 }
 
@@ -264,9 +309,9 @@ function clamp(value, min, max) {
   return Math.min(max, Math.max(min, value));
 }
 
-function projectedScore(diff, pick) {
-  let homeGoals = clamp(1.15 + diff / 26, 0.4, 2.7);
-  let awayGoals = clamp(1.15 - diff / 26, 0.4, 2.7);
+function projectedScore(diff, pick, scoreSlope = 26) {
+  let homeGoals = clamp(1.15 + diff / scoreSlope, 0.4, 2.7);
+  let awayGoals = clamp(1.15 - diff / scoreSlope, 0.4, 2.7);
   let home = Math.max(0, Math.round(homeGoals));
   let away = Math.max(0, Math.round(awayGoals));
   if (pick === "H" && home <= away) home = away + 1;
@@ -280,17 +325,19 @@ function projectedScore(diff, pick) {
 }
 
 function predictInternationalFixture(fixture, friendlyResults = []) {
+  const tuning = getTuning();
   const liveOdds = oddsForInternationalFixture(fixture);
   const homeFormAdj = friendlyFormAdjustment(fixture.homeTeam, friendlyResults);
   const awayFormAdj = friendlyFormAdjustment(fixture.awayTeam, friendlyResults);
   // isKnockout flag activates the WC_TOURNAMENT_PRESTIGE bonus for deep rounds
   const includePrestige = !!fixture.isKnockout;
-  const homeRating = ratingFor(fixture.homeTeam, includePrestige) + homeFormAdj;
-  const awayRating = ratingFor(fixture.awayTeam, includePrestige) + awayFormAdj;
+  const homeRating = ratingFor(fixture.homeTeam, includePrestige, tuning) + homeFormAdj;
+  const awayRating = ratingFor(fixture.awayTeam, includePrestige, tuning) + awayFormAdj;
   const weather = weatherContextForFixture(fixture);
-  const diff = homeRating - awayRating + hostBoost(fixture) + weather.netDiffImpact;
-  const draw = clamp(0.25 - Math.abs(diff) * 0.004, 0.16, 0.28);
-  const homeShare = logistic(diff / 12);
+  const motive = motivationAdjustment(fixture, tuning.motivationWeight);
+  const diff = homeRating - awayRating + hostBoost(fixture, tuning.hostBoost) + weather.netDiffImpact + motive;
+  const draw = clamp(tuning.drawBase - Math.abs(diff) * tuning.drawSlope, tuning.drawMin, tuning.drawMax);
+  const homeShare = logistic(diff / tuning.logisticSteepness);
   const home = (1 - draw) * homeShare;
   const away = (1 - draw) * (1 - homeShare);
   const entries = [
@@ -330,7 +377,7 @@ function predictInternationalFixture(fixture, friendlyResults = []) {
     oddsType: liveOdds?.odds ? "sportsbook" : "model-fair",
     prediction,
     confidence,
-    projectedScore: projectedScore(diff, prediction),
+    projectedScore: projectedScore(diff, prediction, tuning.scoreSlope),
     probabilities: {
       H: home,
       D: draw,
@@ -371,7 +418,7 @@ function predictInternationalFixture(fixture, friendlyResults = []) {
       factors: [
         `Fixture imported from FIFA schedule: Match ${fixture.matchNumber}, ${fixture.venue}, ${fixture.city}.`,
         `All World Cup 2026 group-stage teams are in scope in international mode.`,
-        `Rating signal: ${fixture.homeTeam} ${homeRating.toFixed(1)}, ${fixture.awayTeam} ${awayRating.toFixed(1)}${hostBoost(fixture) ? ", host boost applied" : ""}${homeFormAdj || awayFormAdj ? ` (friendly form: ${fixture.homeTeam} ${homeFormAdj >= 0 ? "+" : ""}${homeFormAdj}, ${fixture.awayTeam} ${awayFormAdj >= 0 ? "+" : ""}${awayFormAdj})` : ""}.`,
+        `Rating signal: ${fixture.homeTeam} ${homeRating.toFixed(1)}, ${fixture.awayTeam} ${awayRating.toFixed(1)}${hostBoost(fixture, tuning.hostBoost) ? ", host boost applied" : ""}${homeFormAdj || awayFormAdj ? ` (friendly form: ${fixture.homeTeam} ${homeFormAdj >= 0 ? "+" : ""}${homeFormAdj}, ${fixture.awayTeam} ${awayFormAdj >= 0 ? "+" : ""}${awayFormAdj})` : ""}.`,
         homeFifa && awayFifa
           ? `FIFA World Ranking (${fifaData.rankingDate || "latest release"}): ${fixture.homeTeam} #${homeFifa.rank} (${Math.round(homeFifa.points)} pts, ${homeFifa.points >= homeFifa.previousPoints ? "+" : ""}${(homeFifa.points - homeFifa.previousPoints).toFixed(1)}), ${fixture.awayTeam} #${awayFifa.rank} (${Math.round(awayFifa.points)} pts, ${awayFifa.points >= awayFifa.previousPoints ? "+" : ""}${(awayFifa.points - awayFifa.previousPoints).toFixed(1)}).`
           : "FIFA World Ranking data not available for this pairing.",
@@ -468,6 +515,26 @@ function internationalGroupTables() {
   });
 }
 
+/**
+ * Structural result prediction for backtest/tuning: ratings (prior + FIFA)
+ * driven through the tunable logistic + draw model on a neutral footing
+ * (no host boost / weather, since historical friendlies carry no venue
+ * metadata). The per-team friendly-form delta is intentionally excluded to
+ * avoid circular leakage when scoring against the friendly corpus itself.
+ * Returns "H" | "D" | "A".
+ */
+function predictResultForTuning(homeTeam, awayTeam, tuning = getTuning()) {
+  const homeRating = ratingFor(homeTeam, false, tuning);
+  const awayRating = ratingFor(awayTeam, false, tuning);
+  const diff = homeRating - awayRating;
+  const draw = clamp(tuning.drawBase - Math.abs(diff) * tuning.drawSlope, tuning.drawMin, tuning.drawMax);
+  const homeShare = logistic(diff / tuning.logisticSteepness);
+  const home = (1 - draw) * homeShare;
+  const away = (1 - draw) * (1 - homeShare);
+  const entries = [["H", home], ["D", draw], ["A", away]].sort((a, b) => b[1] - a[1]);
+  return entries[0][0];
+}
+
 function internationalStatus() {
   const playerRows = readRows(PLAYER_STATS_PATH);
   const squadRows = readRows(SQUAD_STATS_PATH);
@@ -499,6 +566,7 @@ module.exports = {
   internationalStatus,
   readFixtureData,
   predictInternationalFixture,  // exported for knockout-round simulation in tournamentProjection.js
+  predictResultForTuning,       // exported for the auto-tuner backtest
   normalizeIntlTeam,
   readFriendlyTraining,
 };
