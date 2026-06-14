@@ -23,7 +23,9 @@ const dateNextButton = document.querySelector("#dateNextButton");
 const dateNavAll = document.querySelector("#dateNavAll");
 const dateNavLabel = document.querySelector("#dateNavLabel");
 const boardDateNav = document.querySelector("#boardDateNav");
+const boardMatchdayNav = document.querySelector("#boardMatchdayNav");
 let boardFixtureDates = [];
+let selectedMatchday = "all"; // international-mode matchday filter ("all" | number)
 const boardOddsFilter = document.querySelector("#boardOddsFilter");
 const recheckOddsButton = document.querySelector("#recheckOddsButton");
 const boardSortSelect = document.querySelector("#boardSortSelect");
@@ -855,6 +857,10 @@ function persistSelectedSeason() {
 
 function updateContextLabels() {
   document.documentElement.dataset.context = currentAppContext();
+  // In international mode the matchday selector replaces the per-date nav.
+  const boardDateNavEl = document.querySelector(".board-panel .date-nav");
+  if (boardDateNavEl) boardDateNavEl.hidden = isInternationalMode();
+  if (isInternationalMode() && boardDateFilter) boardDateFilter.value = "";
   const tableLabel = isInternationalMode() ? "Group Stage Tables" : "League Tables";
   if (leagueTablesHeading) leagueTablesHeading.textContent = tableLabel;
   if (leagueTableLeagueFilter) leagueTableLeagueFilter.closest("label").hidden = isInternationalMode();
@@ -2013,6 +2019,77 @@ function showPage(page) {
   }
 }
 
+// ── Support tutor ─────────────────────────────────────────────────────────
+// A guided helper: users pick what they want to view; each card explains the
+// feature and jumps straight to it (optionally pre-setting context/matchday).
+const TUTOR_TOPICS = [
+  { icon: "🔮", title: "Match Predictions", page: "predictions",
+    desc: "The model's pick, confidence and projected score for every fixture. In World Cup mode, filter by matchday with the chips at the top." },
+  { icon: "🗓️", title: "Matchdays explained", page: "predictions", intl: true, matchday: 1,
+    desc: "Each team plays 3 group games (Matchday 1–3) then the knockouts. Matchday 4 = Round of 32 — that's the 75% model-accuracy target deadline." },
+  { icon: "🎟️", title: "Build a Parlay", page: "parlays",
+    desc: "Generate multi-leg parlays from the model's picks and player props. Toggle safe/risk mode and fixture-grid layout." },
+  { icon: "📈", title: "Daily Slip & Capital", page: "parlays", intl: true,
+    desc: "The single highest-confidence slip of the day plus the compounding capital ledger that the model's winning picks grow." },
+  { icon: "🎯", title: "Model Training & Accuracy", page: "parlays", intl: true,
+    desc: "Live view of the 24/7 self-tuning model: high-confidence pick accuracy vs the 75% target, raw hit-rate, and auto-tuning status." },
+  { icon: "📊", title: "Group Tables", page: "league-tables",
+    desc: "Live group standings, auto-built from settled results as each World Cup match finishes." },
+  { icon: "✅", title: "Results", page: "results",
+    desc: "Completed matches with the model's pick graded against the final score — auto-fetched from ESPN as games end." },
+  { icon: "👤", title: "Player & Team Profiles", page: "player-profiles",
+    desc: "Per-player and per-team stats that continuously train the model and power player props." },
+  { icon: "🏆", title: "Futures & Brackets", page: "futures",
+    desc: "Tournament bracket projection and futures (winner, top scorer, group winners) for the World Cup and club competitions." },
+];
+
+function openTutor() {
+  const overlay = document.querySelector("#tutorOverlay");
+  const topics = document.querySelector("#tutorTopics");
+  if (!overlay || !topics) return;
+  const intl = isInternationalMode();
+  topics.innerHTML = TUTOR_TOPICS
+    .filter((t) => !t.intl || intl)
+    .map((t, i) => `
+      <button class="tutor-card" type="button" data-topic="${i}">
+        <span class="tutor-card-icon">${t.icon}</span>
+        <span class="tutor-card-body">
+          <span class="tutor-card-title">${escapeHtml(t.title)}</span>
+          <span class="tutor-card-desc">${escapeHtml(t.desc)}</span>
+        </span>
+        <span class="tutor-card-go">View →</span>
+      </button>`)
+    .join("");
+  const visible = TUTOR_TOPICS.filter((t) => !t.intl || intl);
+  topics.querySelectorAll(".tutor-card").forEach((card) => {
+    card.addEventListener("click", () => {
+      const topic = visible[Number(card.dataset.topic)];
+      closeTutor();
+      if (topic.matchday && isInternationalMode()) {
+        selectedMatchday = topic.matchday;
+      }
+      showPage(topic.page);
+      if (topic.page === "predictions") renderBoard();
+    });
+  });
+  overlay.hidden = false;
+}
+
+function closeTutor() {
+  const overlay = document.querySelector("#tutorOverlay");
+  if (overlay) overlay.hidden = true;
+}
+
+function initTutor() {
+  const launcher = document.querySelector("#tutorLauncher");
+  const closeBtn = document.querySelector("#tutorClose");
+  const overlay = document.querySelector("#tutorOverlay");
+  launcher?.addEventListener("click", openTutor);
+  closeBtn?.addEventListener("click", closeTutor);
+  overlay?.addEventListener("click", (e) => { if (e.target === overlay) closeTutor(); });
+  document.addEventListener("keydown", (e) => { if (e.key === "Escape") closeTutor(); });
+}
+
 function formJson(formElement) {
   return Object.fromEntries(new FormData(formElement).entries());
 }
@@ -3152,9 +3229,39 @@ async function autofillTeamTrainingFixture({ showMessage = true } = {}) {
   }
 }
 
+// Matchday selector (international mode only). Builds a segmented control of
+// the matchdays present in the fixture board so users can jump to "Matchday 1"
+// etc. instead of clicking through individual dates.
+function renderBoardMatchdayNav() {
+  if (!boardMatchdayNav) return;
+  if (!isInternationalMode()) {
+    boardMatchdayNav.hidden = true;
+    return;
+  }
+  const mds = [...new Set(fixturePredictions.map((p) => p.matchday).filter(Boolean))].sort((a, b) => a - b);
+  if (!mds.length) {
+    boardMatchdayNav.hidden = true;
+    return;
+  }
+  boardMatchdayNav.hidden = false;
+  const labelFor = (p) => p.matchdayLabel || `Matchday ${p.matchday}`;
+  const labels = new Map(fixturePredictions.filter((p) => p.matchday).map((p) => [p.matchday, labelFor(p)]));
+  const btn = (val, text) => `<button type="button" class="matchday-chip ${String(selectedMatchday) === String(val) ? "active" : ""}" data-matchday="${val}">${escapeHtml(text)}</button>`;
+  boardMatchdayNav.innerHTML = btn("all", "All matchdays") + mds.map((md) => btn(md, labels.get(md) || `Matchday ${md}`)).join("");
+  boardMatchdayNav.querySelectorAll(".matchday-chip").forEach((el) => {
+    el.addEventListener("click", () => {
+      selectedMatchday = el.dataset.matchday === "all" ? "all" : Number(el.dataset.matchday);
+      renderBoardMatchdayNav();
+      renderBoard();
+    });
+  });
+}
+
 function renderBoard() {
+  renderBoardMatchdayNav();
   const selectedLeague = boardLeagueFilter.value;
   const selectedDate = boardDateFilter.value;
+  const matchdayActive = isInternationalMode() && selectedMatchday !== "all";
   const selectedOddsMode = boardOddsFilter?.value || "all";
   const filteredBase = fixturePredictions.filter((prediction) => {
     const leagueMatches =
@@ -3163,23 +3270,26 @@ function renderBoard() {
         : selectedLeague === OTHERS_LEAGUE_VALUE
           ? !isMainstreamLeague(prediction.league)
           : prediction.league === selectedLeague;
-    const dateMatches = !selectedDate || prediction.date === selectedDate;
+    // International mode is matchday-driven: ignore the per-date filter.
+    const dateMatches = isInternationalMode() ? true : (!selectedDate || prediction.date === selectedDate);
+    const matchdayMatches = !matchdayActive || prediction.matchday === selectedMatchday;
     const oddsMatches =
       selectedOddsMode === "with-odds"
         ? prediction.hasOdds
         : selectedOddsMode === "model-only"
           ? !prediction.hasOdds
           : true;
-    return leagueMatches && dateMatches && oddsMatches;
+    return leagueMatches && dateMatches && matchdayMatches && oddsMatches;
   });
   const filtered = sortFixturePredictions(filteredBase, boardSortSelect.value);
 
   document.querySelector("#boardTotal").textContent = fixturePredictions.length;
   document.querySelector("#boardWithOdds").textContent = fixturePredictions.filter((prediction) => prediction.hasOdds).length;
   document.querySelector("#boardModelOnly").textContent = fixturePredictions.filter((prediction) => !prediction.hasOdds).length;
-  const dateText = selectedDate ? ` on ${selectedDate}` : "";
+  const matchdayText = matchdayActive ? ` · ${filtered[0]?.matchdayLabel || `Matchday ${selectedMatchday}`}` : isInternationalMode() ? " · all matchdays" : "";
+  const dateText = !isInternationalMode() && selectedDate ? ` on ${selectedDate}` : "";
   const oddsFilterText = selectedOddsMode === "with-odds" ? " with odds" : selectedOddsMode === "model-only" ? " model-only" : "";
-  boardStatus.textContent = `${filtered.length} ${oddsFilterText} fixture${filtered.length === 1 ? "" : "s"} shown${dateText}`;
+  boardStatus.textContent = `${filtered.length} ${oddsFilterText} fixture${filtered.length === 1 ? "" : "s"} shown${dateText}${matchdayText}`;
 
   if (!filtered.length) {
     const emptyMsg = selectedDate
@@ -4962,6 +5072,7 @@ async function init() {
   try {
     initTheme();
     initContextMode();
+    initTutor();
     updateSeasonOptions();
     updateContextLabels();
     updateContextNavigation();

@@ -30,6 +30,10 @@ const HIGH_CONFIDENCE_THRESHOLD = 55;
 const ACCURACY_HISTORY_PATH = mutableDataPath("international", "accuracy_history.json");
 const FRIENDLY_PATH = mutableDataPath("international", "friendly_results.json");
 const TARGET_ACCURACY = 0.75;
+// The 75% target is judged at MATCHDAY 4 — when every team has played its
+// fourth match (the first knockout round, Round of 32). The group stage
+// (matchdays 1–3) is the run-up where the model trains and sharpens.
+const TARGET_MATCHDAY = 4;
 const WC_KICKOFF = new Date("2026-06-11T00:00:00Z").getTime();
 const WC_WEIGHT = 3;        // live World Cup matches count 3× a friendly
 const RECENCY_HALF_LIFE_DAYS = 90;
@@ -143,7 +147,8 @@ function highConfidenceAccuracy(corpus, tuning, threshold = HIGH_CONFIDENCE_THRE
 }
 
 // Live World Cup model accuracy from settled tracked predictions — reported
-// both overall and on the high-confidence (staked) band.
+// both overall and on the high-confidence (staked) band, with matchday
+// context (the 75% target is judged at matchday 4).
 function liveWorldCupAccuracy() {
   const settled = listPredictions().filter(
     (p) => p.source === "international-fixture-board" && p.status === "SETTLED" && (p.correct === true || p.correct === false)
@@ -151,10 +156,29 @@ function liveWorldCupAccuracy() {
   const correct = settled.filter((p) => p.correct === true).length;
   const highConf = settled.filter((p) => Number(p.confidence) >= HIGH_CONFIDENCE_THRESHOLD);
   const highConfCorrect = highConf.filter((p) => p.correct === true).length;
+
+  // Join settled picks to their matchday via the tagged prediction board.
+  let currentMatchday = 0;
+  const perMatchday = {};
+  try {
+    const board = require("./internationalData").internationalFixturePredictions();
+    const mdByKey = new Map(board.map((b) => [`${normalizeIntlTeam(b.homeTeam)}|${normalizeIntlTeam(b.awayTeam)}|${b.date}`.toLowerCase(), b.matchday]));
+    for (const p of settled) {
+      const md = mdByKey.get(`${normalizeIntlTeam(p.homeTeam)}|${normalizeIntlTeam(p.awayTeam)}|${p.date}`.toLowerCase()) || 0;
+      if (md > currentMatchday) currentMatchday = md;
+      if (!perMatchday[md]) perMatchday[md] = { played: 0, correct: 0 };
+      perMatchday[md].played += 1;
+      if (p.correct === true) perMatchday[md].correct += 1;
+    }
+  } catch (_) { /* board unavailable */ }
+
   return {
     matchdayResults: settled.length,
     correct,
     accuracy: settled.length ? correct / settled.length : null,
+    currentMatchday,
+    targetMatchday: TARGET_MATCHDAY,
+    perMatchday,
     highConfidence: {
       threshold: HIGH_CONFIDENCE_THRESHOLD,
       picks: highConf.length,
@@ -214,6 +238,8 @@ function runAutoTune({ reason = "scheduled" } = {}) {
     highConfidenceThreshold: highConf.threshold,
     liveWorldCup: live,
     targetAccuracy: TARGET_ACCURACY,
+    targetMatchday: TARGET_MATCHDAY,
+    currentMatchday: live.currentMatchday,
     // The goal is judged on the staked (high-confidence) band — that is the
     // accuracy that funds capital. Backtest band uses the full 274-match
     // sample; the tiny live sample is reported alongside but not gating.
@@ -242,5 +268,6 @@ module.exports = {
   liveWorldCupAccuracy,
   buildCorpus,
   TARGET_ACCURACY,
+  TARGET_MATCHDAY,
   ACCURACY_HISTORY_PATH,
 };

@@ -553,12 +553,19 @@ async function handleApi(req, res, pathname) {
       } catch (_) {
         wcSnapshot = readWorldCupResults();
       }
+      // Matchday lookup so settled result cards can be grouped/filtered.
+      const intlBoard = internationalFixturePredictions();
+      const mdByKey = new Map(
+        intlBoard.map((b) => [`${b.homeTeam}|${b.awayTeam}|${b.date}`.toLowerCase(), { matchday: b.matchday, matchdayLabel: b.matchdayLabel }])
+      );
       const settledIntl = listPredictions()
         .filter((p) => p.source === "international-fixture-board" && p.status === "SETTLED")
         .map((p) => ({
           id: p.id,
           date: p.date,
           league: p.league,
+          matchday: mdByKey.get(`${p.homeTeam}|${p.awayTeam}|${p.date}`.toLowerCase())?.matchday || null,
+          matchdayLabel: mdByKey.get(`${p.homeTeam}|${p.awayTeam}|${p.date}`.toLowerCase())?.matchdayLabel || "",
           homeTeam: p.homeTeam,
           awayTeam: p.awayTeam,
           homeFlagUrl: p.homeFlagUrl || "",

@@ -429,9 +429,68 @@ function predictInternationalFixture(fixture, friendlyResults = []) {
   };
 }
 
+// Assign a "matchday" (the Nth match each team plays) to every fixture.
+// Group stage → matchday 1..3; knockout fixtures (if/when imported) continue
+// 4 (Round of 32), 5 (Round of 16) … The 75% accuracy target is judged at
+// matchday 4 — when every team has played its fourth match.
+const KNOCKOUT_MATCHDAY_LABELS = {
+  4: "Round of 32",
+  5: "Round of 16",
+  6: "Quarter-Final",
+  7: "Semi-Final",
+  8: "Final / 3rd Place",
+};
+
+function assignMatchdays(fixtures) {
+  const byMatchday = new Map();
+  // Group-stage fixtures: count per-team appearances within each group, in
+  // chronological order, so each team's 1st/2nd/3rd game maps to MD 1/2/3.
+  const groups = new Map();
+  for (const f of fixtures) {
+    const key = f.groupLetter || f.group || "_";
+    if (!groups.has(key)) groups.set(key, []);
+    groups.get(key).push(f);
+  }
+  for (const groupFixtures of groups.values()) {
+    const order = [...groupFixtures].sort(
+      (a, b) => String(a.date).localeCompare(String(b.date)) || (a.matchNumber || 0) - (b.matchNumber || 0)
+    );
+    const teamCount = new Map();
+    for (const f of order) {
+      if (f.isKnockout) continue; // handled below
+      const h = normalizeIntlTeam(f.homeTeam);
+      const a = normalizeIntlTeam(f.awayTeam);
+      const md = Math.max(teamCount.get(h) || 0, teamCount.get(a) || 0) + 1;
+      teamCount.set(h, md);
+      teamCount.set(a, md);
+      byMatchday.set(f, md);
+    }
+  }
+  // Knockout fixtures: map round → matchday (group stage is always 3 games).
+  for (const f of fixtures) {
+    if (!f.isKnockout || byMatchday.has(f)) continue;
+    const roundOrder = { "Round of 32": 4, "Round of 16": 5, "Quarter-Final": 6, "Quarter-Finals": 6, "Semi-Final": 7, "Semi-Finals": 7, Final: 8, "Third Place": 8, "3rd Place": 8 };
+    byMatchday.set(f, roundOrder[f.round] || 4);
+  }
+  return byMatchday;
+}
+
+function matchdayLabel(md) {
+  if (!md) return "";
+  return md <= 3 ? `Matchday ${md}` : KNOCKOUT_MATCHDAY_LABELS[md] || `Matchday ${md}`;
+}
+
 function internationalFixturePredictions() {
   const friendlyResults = readFriendlyResults();
-  return readFixtureData().fixtures.map((f) => predictInternationalFixture(f, friendlyResults));
+  const fixtures = readFixtureData().fixtures;
+  const matchdays = assignMatchdays(fixtures);
+  return fixtures.map((f) => {
+    const prediction = predictInternationalFixture(f, friendlyResults);
+    const md = matchdays.get(f) || null;
+    prediction.matchday = md;
+    prediction.matchdayLabel = matchdayLabel(md);
+    return prediction;
+  });
 }
 
 function emptyGroupRow(team) {
@@ -572,6 +631,8 @@ module.exports = {
   predictInternationalFixture,  // exported for knockout-round simulation in tournamentProjection.js
   predictResultForTuning,       // exported for the auto-tuner backtest
   scoredPickForTuning,          // pick + confidence, for high-confidence accuracy
+  assignMatchdays,
+  matchdayLabel,
   normalizeIntlTeam,
   readFriendlyTraining,
 };

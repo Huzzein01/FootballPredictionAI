@@ -87,6 +87,7 @@
       <button class="page-tab" type="button" data-page-target="league-tables">League Tables</button>
       <button class="page-tab" type="button" data-page-target="results">Results</button>
       <button class="page-tab" type="button" data-page-target="international-fixtures">International Fixtures</button>
+      <button id="tutorLauncher" class="page-tab tutor-launcher" type="button" aria-haspopup="dialog">🎓 Guide</button>
     </nav>
 
     <main class="dashboard">
@@ -108,6 +109,8 @@
           <button id="dateNextButton" class="date-nav-arrow" type="button" aria-label="Next match day">›</button>
           <button id="dateNavAll" class="date-nav-all" type="button">All</button>
         </div>
+
+        <div id="boardMatchdayNav" class="matchday-nav" aria-label="Matchday filter" hidden></div>
 
         <div class="board-controls" aria-label="Fixture filters">
           <label>
@@ -731,6 +734,17 @@
         <div id="internationalFixturesOutput" class="international-fixtures-output" aria-live="polite"></div>
       </section>
     </main>
+
+    <div id="tutorOverlay" class="tutor-overlay" hidden role="dialog" aria-modal="true" aria-labelledby="tutorTitle">
+      <div class="tutor-modal">
+        <div class="tutor-modal-head">
+          <h2 id="tutorTitle">🎓 Support Tutor</h2>
+          <button id="tutorClose" class="tutor-close" type="button" aria-label="Close guide">✕</button>
+        </div>
+        <p class="tutor-intro">Pick what you'd like to view or understand. Each card explains the feature and takes you straight there.</p>
+        <div id="tutorTopics" class="tutor-topics"></div>
+      </div>
+    </div>
 
     <script src="/app.js?v=auth-20260527"></script>
   </body>
