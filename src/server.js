@@ -7,7 +7,7 @@ const { addPrediction, addPredictionsIfMissing, deletePrediction, listPrediction
 const { readTrainingStatus, scheduleRetrain } = require("./continuousTraining");
 const { PLAYER_PROFILES, addPlayerStatEntry, listPlayerProfiles, updatePlayerStatEntry } = require("./playerProfileStore");
 const { addTeamStatEntry, listTeamProfiles, updateTeamStatEntry } = require("./teamProfileStore");
-const { internationalFixturePredictions, internationalGroupTables, internationalStatus, readFixtureData } = require("./internationalData");
+const { internationalFixturePredictions, internationalGroupTables, internationalStatus, readFixtureData, normalizeIntlTeam } = require("./internationalData");
 const { projectTournament } = require("./tournamentProjection");
 const { projectClubBracket } = require("./clubBracketProjection");
 const { archivedLeagueTables, refreshLiveLeagueContext } = require("./leagueTableService");
@@ -216,6 +216,29 @@ function settledPredictionMap() {
       .filter((prediction) => prediction.status === "SETTLED")
       .map((prediction) => [parlayBacktests.fixtureSignatureFromFixture(prediction), prediction])
   );
+}
+
+// A World Cup fixture is "played" once its tracked prediction has settled or a
+// completed ESPN result exists for it. Played matches are hidden from the
+// predictions board, the international fixtures page, and parlays — they live
+// only on the Results page. Returns a predicate (fixture|prediction) => boolean.
+function playedInternationalPredicate() {
+  const exactKey = (h, a, d) => `${normalizeIntlTeam(h)}|${normalizeIntlTeam(a)}|${d}`.toLowerCase();
+  const pairKey = (h, a) => `${normalizeIntlTeam(h)}|${normalizeIntlTeam(a)}`.toLowerCase();
+  const exact = new Set();
+  const pairs = new Set();
+  for (const p of listPredictions()) {
+    if (p.source === "international-fixture-board" && p.status === "SETTLED") {
+      exact.add(exactKey(p.homeTeam, p.awayTeam, p.date));
+      pairs.add(pairKey(p.homeTeam, p.awayTeam));
+    }
+  }
+  try {
+    for (const r of readWorldCupResults().results || []) {
+      if (r.completed) pairs.add(pairKey(r.homeTeam, r.awayTeam));
+    }
+  } catch (_) { /* results snapshot optional */ }
+  return (fx) => exact.has(exactKey(fx.homeTeam, fx.awayTeam, fx.date)) || pairs.has(pairKey(fx.homeTeam, fx.awayTeam));
 }
 
 function remainingFixturePredictions() {
@@ -827,8 +850,17 @@ async function handleApi(req, res, pathname) {
   }
 
   if (req.method === "GET" && pathname === "/api/international/fixtures") {
+    // Reflect settled results first so played matches drop off immediately.
+    try { await refreshWorldCupResults(); } catch (_) { /* use stored */ }
     const fixtureData = readFixtureData();
-    return sendJson(res, 200, fixtureData);
+    const isPlayed = playedInternationalPredicate();
+    const upcoming = (fixtureData.fixtures || []).filter((f) => !isPlayed(f));
+    return sendJson(res, 200, {
+      ...fixtureData,
+      fixtures: upcoming,
+      fixtureCount: upcoming.length,
+      playedCount: (fixtureData.fixtures || []).length - upcoming.length,
+    });
   }
 
   if (req.method === "GET" && pathname === "/api/international/fixture-predictions") {
@@ -837,13 +869,15 @@ async function handleApi(req, res, pathname) {
       refreshInternationalFriendlyResults(),
       refreshWorldCupResults().catch(() => null),
     ]);
-    const predictions = internationalFixturePredictions();
-    const playedIntl = listPredictions().filter((p) => p.source === "international-fixture-board" && p.status === "SETTLED").length;
+    // Hide played matches — they belong on the Results page only.
+    const isPlayed = playedInternationalPredicate();
+    const allPredictions = internationalFixturePredictions();
+    const predictions = allPredictions.filter((prediction) => !isPlayed(prediction));
     return sendJson(res, 200, {
       predictions,
       summary: {
         total: predictions.length,
-        played: playedIntl,
+        played: allPredictions.length - predictions.length,
         withOdds: predictions.filter((prediction) => prediction.hasOdds).length,
         modelOnly: predictions.filter((prediction) => !prediction.hasOdds).length,
       },
