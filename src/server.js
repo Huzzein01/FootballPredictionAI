@@ -218,11 +218,12 @@ function settledPredictionMap() {
   );
 }
 
-// A World Cup fixture is "played" once its tracked prediction has settled or a
-// completed ESPN result exists for it. Played matches are hidden from the
-// predictions board, the international fixtures page, and parlays — they live
-// only on the Results page. Returns a predicate (fixture|prediction) => boolean.
-function playedInternationalPredicate() {
+// A World Cup fixture leaves the "upcoming" predictions board once it is
+// either PLAYED (settled tracked prediction or completed ESPN result) or
+// LIVE (in progress). Played matches live on the Results page; live matches
+// live in the Live Now section. Only true upcoming fixtures stay on the
+// Predictions board / International Fixtures page / parlays.
+function hideFromUpcomingPredicate() {
   const exactKey = (h, a, d) => `${normalizeIntlTeam(h)}|${normalizeIntlTeam(a)}|${d}`.toLowerCase();
   const pairKey = (h, a) => `${normalizeIntlTeam(h)}|${normalizeIntlTeam(a)}`.toLowerCase();
   const exact = new Set();
@@ -235,7 +236,8 @@ function playedInternationalPredicate() {
   }
   try {
     for (const r of readWorldCupResults().results || []) {
-      if (r.completed) pairs.add(pairKey(r.homeTeam, r.awayTeam));
+      // Hide both finished matches and ones currently in progress.
+      if (r.completed || r.statusState === "in") pairs.add(pairKey(r.homeTeam, r.awayTeam));
     }
   } catch (_) { /* results snapshot optional */ }
   return (fx) => exact.has(exactKey(fx.homeTeam, fx.awayTeam, fx.date)) || pairs.has(pairKey(fx.homeTeam, fx.awayTeam));
@@ -853,8 +855,8 @@ async function handleApi(req, res, pathname) {
     // Reflect settled results first so played matches drop off immediately.
     try { await refreshWorldCupResults(); } catch (_) { /* use stored */ }
     const fixtureData = readFixtureData();
-    const isPlayed = playedInternationalPredicate();
-    const upcoming = (fixtureData.fixtures || []).filter((f) => !isPlayed(f));
+    const isHidden = hideFromUpcomingPredicate();
+    const upcoming = (fixtureData.fixtures || []).filter((f) => !isHidden(f));
     return sendJson(res, 200, {
       ...fixtureData,
       fixtures: upcoming,
@@ -869,10 +871,10 @@ async function handleApi(req, res, pathname) {
       refreshInternationalFriendlyResults(),
       refreshWorldCupResults().catch(() => null),
     ]);
-    // Hide played matches — they belong on the Results page only.
-    const isPlayed = playedInternationalPredicate();
+    // Hide played (Results) and live (Live Now) matches — keep only upcoming.
+    const isHidden = hideFromUpcomingPredicate();
     const allPredictions = internationalFixturePredictions();
-    const predictions = allPredictions.filter((prediction) => !isPlayed(prediction));
+    const predictions = allPredictions.filter((prediction) => !isHidden(prediction));
     return sendJson(res, 200, {
       predictions,
       summary: {
@@ -881,6 +883,47 @@ async function handleApi(req, res, pathname) {
         withOdds: predictions.filter((prediction) => prediction.hasOdds).length,
         modelOnly: predictions.filter((prediction) => !prediction.hasOdds).length,
       },
+    });
+  }
+
+  if (req.method === "GET" && pathname === "/api/international/live") {
+    // Currently in-progress World Cup matches with live score + clock, joined
+    // to the model's pre-match pick so users see prediction vs live state.
+    let snap = null;
+    try { snap = await refreshWorldCupResults({ force: true }); } catch (_) { snap = readWorldCupResults(); }
+    const liveRaw = (snap?.results || []).filter((r) => r.statusState === "in");
+    const board = internationalFixturePredictions();
+    const byPair = new Map(
+      board.map((b) => [`${normalizeIntlTeam(b.homeTeam)}|${normalizeIntlTeam(b.awayTeam)}`.toLowerCase(), b])
+    );
+    const matches = liveRaw.map((r) => {
+      const pred = byPair.get(`${normalizeIntlTeam(r.homeTeam)}|${normalizeIntlTeam(r.awayTeam)}`.toLowerCase()) || null;
+      const homeGoals = Number(r.homeGoals);
+      const awayGoals = Number(r.awayGoals);
+      const leader = !Number.isFinite(homeGoals) || homeGoals === awayGoals ? "D" : homeGoals > awayGoals ? "H" : "A";
+      return {
+        homeTeam: pred?.homeTeam || r.homeTeam,
+        awayTeam: pred?.awayTeam || r.awayTeam,
+        homeFlagUrl: pred?.homeFlagUrl || "",
+        awayFlagUrl: pred?.awayFlagUrl || "",
+        homeGoals: Number.isFinite(homeGoals) ? homeGoals : null,
+        awayGoals: Number.isFinite(awayGoals) ? awayGoals : null,
+        clock: r.statusDetail || r.statusName || "Live",
+        group: pred?.group || pred?.league || "",
+        matchday: pred?.matchday || null,
+        matchdayLabel: pred?.matchdayLabel || "",
+        prediction: pred?.prediction || null,
+        confidence: pred?.confidence ?? null,
+        projectedScore: pred?.projectedScore || "",
+        // Is the model's pick currently ahead on the live scoreline?
+        pickTrackingLive: pred?.prediction ? pred.prediction === leader : null,
+        sourceUrl: r.sourceUrl || "",
+      };
+    });
+    return sendJson(res, 200, {
+      updatedAt: snap?.updatedAt || new Date().toISOString(),
+      count: matches.length,
+      matches,
     });
   }
 

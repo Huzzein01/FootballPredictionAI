@@ -1960,7 +1960,9 @@ async function applyAppContext() {
   if (isInternationalMode()) {
     await refreshInternationalStatus();
     await renderInternationalContext();
+    startLiveNowPolling();
   } else {
+    stopLiveNowPolling();
     await renderClubContext();
   }
   updateContextNavigation();
@@ -3227,6 +3229,60 @@ async function autofillTeamTrainingFixture({ showMessage = true } = {}) {
   if (showMessage) {
     setTeamProfileMessage(`Matched ${displayTeam(profile.team)} ${isHome ? "vs" : "at"} ${displayTeam(opponent)} on ${date}. Opponent and venue filled from fixtures.`, "info");
   }
+}
+
+// ── Live Now (international mode) ──────────────────────────────────────────
+// A dedicated strip of currently in-progress World Cup matches with running
+// score + clock + the model's pick vs the live scoreline. Polls every 30s.
+let liveNowTimer = null;
+
+async function refreshLiveNow() {
+  const section = document.querySelector("#liveNowSection");
+  if (!section) return;
+  if (!isInternationalMode()) {
+    section.hidden = true;
+    return;
+  }
+  let data;
+  try {
+    data = await api("/api/international/live");
+  } catch (_) {
+    return; // keep last render; try again on next tick
+  }
+  const matches = data.matches || [];
+  if (!matches.length) {
+    section.hidden = true;
+    section.innerHTML = "";
+    return;
+  }
+  section.hidden = false;
+  section.innerHTML = `
+    <div class="live-now-head"><span class="live-dot"></span> Live Now · ${matches.length} match${matches.length === 1 ? "" : "es"} in progress</div>
+    <div class="live-now-grid">
+      ${matches.map((m) => {
+        const pickLabel = m.prediction === "H" ? `${m.homeTeam} win` : m.prediction === "A" ? `${m.awayTeam} win` : m.prediction === "D" ? "Draw" : "—";
+        const track = m.pickTrackingLive === true ? "tracking" : m.pickTrackingLive === false ? "behind" : "";
+        const trackText = m.pickTrackingLive === true ? "pick ahead ✓" : m.pickTrackingLive === false ? "pick behind" : "";
+        return `
+          <article class="live-card">
+            <div class="live-card-top"><span class="live-clock">${escapeHtml(m.clock || "Live")}</span><span class="live-group">${escapeHtml(m.matchdayLabel || m.group || "")}</span></div>
+            <div class="live-score-row"><span class="live-team">${escapeHtml(m.homeTeam)}</span><span class="live-score">${m.homeGoals ?? "-"} - ${m.awayGoals ?? "-"}</span><span class="live-team">${escapeHtml(m.awayTeam)}</span></div>
+            <div class="live-card-foot">Model: <strong>${escapeHtml(pickLabel)}</strong>${m.confidence != null ? ` (${Math.round(m.confidence)}%)` : ""}${m.projectedScore ? ` · proj ${escapeHtml(m.projectedScore)}` : ""} ${trackText ? `<span class="live-track ${track}">${trackText}</span>` : ""}</div>
+          </article>`;
+      }).join("")}
+    </div>`;
+}
+
+function startLiveNowPolling() {
+  if (liveNowTimer) clearInterval(liveNowTimer);
+  refreshLiveNow();
+  liveNowTimer = setInterval(refreshLiveNow, 30000); // 30s
+}
+
+function stopLiveNowPolling() {
+  if (liveNowTimer) { clearInterval(liveNowTimer); liveNowTimer = null; }
+  const section = document.querySelector("#liveNowSection");
+  if (section) { section.hidden = true; section.innerHTML = ""; }
 }
 
 // Matchday selector (international mode only). Builds a segmented control of
@@ -5080,6 +5136,7 @@ async function init() {
     renderParlaySlip();
     showPage(location.hash.replace("#", "") || "predictions");
     if (await initAuth()) await loadAppData();
+    if (isInternationalMode()) startLiveNowPolling();
   } catch (error) {
     document.querySelector("#modelMeta").textContent = "Unable to load model status";
     setBoardMessage(error.name === "AbortError" ? "The app could not reach the local prediction server." : error.message, "error");
