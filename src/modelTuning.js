@@ -76,9 +76,9 @@ const SEARCH_GRID = {
   // called draws (~24% of international results are draws; the old 0.28 cap
   // meant the model never picked one).
   friendlySeriousness: [0.4, 0.5, 0.6, 0.7, 0.8],
-  drawBase: [0.25, 0.3, 0.34, 0.38, 0.42],
-  drawSlope: [0.003, 0.004, 0.006, 0.008],
-  drawMax: [0.28, 0.34, 0.4, 0.46],
+  drawBase: [0.25, 0.3, 0.34, 0.36, 0.38, 0.4, 0.42, 0.46],
+  drawSlope: [0.004, 0.006, 0.008, 0.01, 0.012, 0.016],
+  drawMax: [0.28, 0.34, 0.4, 0.44, 0.48],
   hostBoost: [2, 3, 4],
   fifaMovementCap: [1.0, 1.5, 2.0],
   motivationWeight: [0, 0.5, 1.0, 1.5, 2.0],

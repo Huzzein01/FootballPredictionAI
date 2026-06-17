@@ -101,24 +101,64 @@ function paramDrift(params) {
   return drift / keys.length;
 }
 
+// Objective blends weighted accuracy with macro-F1 across Home/Draw/Away.
+// Plain accuracy ignores the minority Draw class (always picking the favorite
+// scores best), so the model never predicts draws. Macro-F1 averages the
+// per-class F1, so predicting zero draws tanks Draw-F1 to 0 and the objective —
+// forcing the tuner to choose draw-capable parameters for the tightest
+// matchups while still picking the favorite when one side is clearly stronger.
+//
+// Weighted heavily toward macro-F1 (0.75): football draws are intrinsically
+// hard to pin down (precision ≈ the ~25% base rate), so making the model
+// genuinely call draws costs some raw accuracy. That trade is intentional —
+// a tight match should read as a draw, not a forced 2-1. High-confidence
+// winner picks (large rating gap) are unaffected, so the staked capital band
+// stays winner-focused.
+const MACRO_F1_WEIGHT = 0.75;
+
 function makeScorer(corpus) {
+  const classes = ["H", "D", "A"];
   return (params) => {
     let correctW = 0;
     let totalW = 0;
     let rawCorrect = 0;
+    const tp = { H: 0, D: 0, A: 0 };
+    const fp = { H: 0, D: 0, A: 0 };
+    const fn = { H: 0, D: 0, A: 0 };
+    let drawPredicted = 0;
     for (const m of corpus) {
       const pick = predictResultForTuning(m.home, m.away, params);
       totalW += m.weight;
       if (pick === m.actual) {
         correctW += m.weight;
         rawCorrect += 1;
+        tp[pick] += 1;
+      } else {
+        fp[pick] += 1;
+        fn[m.actual] += 1;
       }
+      if (pick === "D") drawPredicted += 1;
     }
-    const accuracy = totalW > 0 ? correctW / totalW : 0;
+    const f1 = {};
+    for (const c of classes) {
+      const precision = tp[c] + fp[c] > 0 ? tp[c] / (tp[c] + fp[c]) : 0;
+      const recall = tp[c] + fn[c] > 0 ? tp[c] / (tp[c] + fn[c]) : 0;
+      f1[c] = precision + recall > 0 ? (2 * precision * recall) / (precision + recall) : 0;
+    }
+    const macroF1 = (f1.H + f1.D + f1.A) / 3;
+    const weightedAccuracy = totalW > 0 ? correctW / totalW : 0;
+    const objective = (1 - MACRO_F1_WEIGHT) * weightedAccuracy + MACRO_F1_WEIGHT * macroF1;
+    const drawTotal = tp.D + fn.D;
     return {
-      accuracy: accuracy - REGULARIZATION * paramDrift(params),
+      // searchBestParams maximizes `accuracy` — feed it the blended objective.
+      accuracy: objective - REGULARIZATION * paramDrift(params),
+      objective,
+      macroF1,
+      drawF1: f1.D,
+      drawRecall: drawTotal > 0 ? tp.D / drawTotal : 0,
+      drawPredicted,
       rawAccuracy: corpus.length ? rawCorrect / corpus.length : 0,
-      weightedAccuracy: accuracy,
+      weightedAccuracy,
       sample: corpus.length,
     };
   };
@@ -207,18 +247,34 @@ function runAutoTune({ reason = "scheduled" } = {}) {
     return { skipped: true, reason: "insufficient corpus", sample: corpus.length };
   }
   const scorer = makeScorer(corpus);
-  const baseline = scorer(getTuning());
-  const { params, evaluation, passes } = searchBestParams(scorer, getTuning());
+  const current = getTuning();
+  const baseline = scorer(current);
+  // Multi-start coordinate descent. Coordinate descent moves one parameter at
+  // a time, so it can't make the JOINT drawBase+drawSlope jump needed to leave
+  // the "never predict draws" corner. Seeding a second start inside the
+  // draw-capable basin lets the search discover the macro-F1 optimum; the
+  // better of the two wins (and the draw-capable optimum is stable once found).
+  const starts = [current, { ...current, drawBase: 0.38, drawSlope: 0.008, drawMax: 0.44 }];
+  let result = null;
+  for (const start of starts) {
+    const r = searchBestParams(scorer, start);
+    if (!result || r.evaluation.accuracy > result.evaluation.accuracy) result = r;
+  }
+  const { params, evaluation, passes } = result;
 
   const live = liveWorldCupAccuracy();
   const highConf = highConfidenceAccuracy(corpus, params);
-  // Only persist params that did not regress weighted backtest accuracy.
+  // Persist params that did not regress the blended objective (accuracy +
+  // macro-F1). Using the objective — not raw accuracy — lets the tuner adopt
+  // draw-capable params that trade a little raw accuracy for correctly calling
+  // tight matches as draws.
   let saved = null;
-  if (evaluation.weightedAccuracy >= baseline.weightedAccuracy - 1e-9) {
+  if (evaluation.objective >= baseline.objective - 1e-9) {
     saved = saveTuning({
       ...params,
       tunedBy: `auto-tune:${reason}`,
       backtestAccuracy: Math.round(evaluation.weightedAccuracy * 1000) / 1000,
+      macroF1: Math.round(evaluation.macroF1 * 1000) / 1000,
       sampleSize: evaluation.sample,
     });
   }
@@ -232,6 +288,12 @@ function runAutoTune({ reason = "scheduled" } = {}) {
     baselineWeightedAccuracy: Math.round(baseline.weightedAccuracy * 1000) / 1000,
     tunedWeightedAccuracy: Math.round(evaluation.weightedAccuracy * 1000) / 1000,
     tunedRawAccuracy: Math.round(evaluation.rawAccuracy * 1000) / 1000,
+    baselineMacroF1: Math.round(baseline.macroF1 * 1000) / 1000,
+    tunedMacroF1: Math.round(evaluation.macroF1 * 1000) / 1000,
+    drawF1: Math.round(evaluation.drawF1 * 1000) / 1000,
+    drawRecall: Math.round(evaluation.drawRecall * 1000) / 1000,
+    drawsPredicted: evaluation.drawPredicted,
+    drawSharePct: corpus.length ? Math.round((evaluation.drawPredicted / corpus.length) * 1000) / 10 : 0,
     highConfidenceAccuracy: highConf.accuracy != null ? Math.round(highConf.accuracy * 1000) / 1000 : null,
     highConfidencePicks: highConf.picks,
     highConfidenceCoverage: Math.round(highConf.coverage * 1000) / 1000,

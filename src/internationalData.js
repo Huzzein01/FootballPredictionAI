@@ -336,7 +336,9 @@ function predictInternationalFixture(fixture, friendlyResults = []) {
   const weather = weatherContextForFixture(fixture);
   const motive = motivationAdjustment(fixture, tuning.motivationWeight);
   const diff = homeRating - awayRating + hostBoost(fixture, tuning.hostBoost) + weather.netDiffImpact + motive;
-  const draw = clamp(tuning.drawBase - Math.abs(diff) * tuning.drawSlope, tuning.drawMin, tuning.drawMax);
+  // Ceiling is at least drawBase so a high base isn't clamped below its own
+  // peak — this lets the tuner unlock draws by raising drawBase alone.
+  const draw = clamp(tuning.drawBase - Math.abs(diff) * tuning.drawSlope, tuning.drawMin, Math.max(tuning.drawMax, tuning.drawBase));
   const homeShare = logistic(diff / tuning.logisticSteepness);
   const home = (1 - draw) * homeShare;
   const away = (1 - draw) * (1 - homeShare);
@@ -586,7 +588,9 @@ function scoredPickForTuning(homeTeam, awayTeam, tuning = getTuning()) {
   const homeRating = ratingFor(homeTeam, false, tuning);
   const awayRating = ratingFor(awayTeam, false, tuning);
   const diff = homeRating - awayRating;
-  const draw = clamp(tuning.drawBase - Math.abs(diff) * tuning.drawSlope, tuning.drawMin, tuning.drawMax);
+  // Ceiling is at least drawBase so a high base isn't clamped below its own
+  // peak — this lets the tuner unlock draws by raising drawBase alone.
+  const draw = clamp(tuning.drawBase - Math.abs(diff) * tuning.drawSlope, tuning.drawMin, Math.max(tuning.drawMax, tuning.drawBase));
   const homeShare = logistic(diff / tuning.logisticSteepness);
   const home = (1 - draw) * homeShare;
   const away = (1 - draw) * (1 - homeShare);
