@@ -5,6 +5,7 @@ const { oddsForInternationalFixture } = require("./oddsApiService");
 const { mutableDataPath, readJsonWithFallback } = require("./runtimePaths");
 const { weatherContextForFixture } = require("./weatherService");
 const { getTuning } = require("./modelTuning");
+const { teamMatchForm } = require("./teamMatchStats");
 
 const PLAYER_STATS_PATH = path.join(process.cwd(), "data", "international", "processed", "world_cup_player_stats.json");
 const SQUAD_STATS_PATH = path.join(process.cwd(), "data", "international", "processed", "world_cup_squad_stats.json");
@@ -335,7 +336,15 @@ function predictInternationalFixture(fixture, friendlyResults = []) {
   const awayRating = ratingFor(fixture.awayTeam, includePrestige, tuning) + awayFormAdj;
   const weather = weatherContextForFixture(fixture);
   const motive = motivationAdjustment(fixture, tuning.motivationWeight);
-  const diff = homeRating - awayRating + hostBoost(fixture, tuning.hostBoost) + weather.netDiffImpact + motive;
+  // In-tournament match-stats form: shots-on-target-led performance margin from
+  // completed games (ESPN boxscore), shrunk by sample size. Reveals teams
+  // over/under-performing their results — an xG-style signal. Live-only (no
+  // friendly stats), applied as a bounded, tunable-weighted nudge.
+  const matchStatsWeight = Number(tuning.matchStatsWeight ?? 1);
+  const homeStatForm = teamMatchForm(fixture.homeTeam);
+  const awayStatForm = teamMatchForm(fixture.awayTeam);
+  const statFormDelta = matchStatsWeight * (homeStatForm.delta - awayStatForm.delta);
+  const diff = homeRating - awayRating + hostBoost(fixture, tuning.hostBoost) + weather.netDiffImpact + motive + statFormDelta;
   // Ceiling is at least drawBase so a high base isn't clamped below its own
   // peak — this lets the tuner unlock draws by raising drawBase alone.
   const draw = clamp(tuning.drawBase - Math.abs(diff) * tuning.drawSlope, tuning.drawMin, Math.max(tuning.drawMax, tuning.drawBase));
@@ -424,6 +433,9 @@ function predictInternationalFixture(fixture, friendlyResults = []) {
         homeFifa && awayFifa
           ? `FIFA World Ranking (${fifaData.rankingDate || "latest release"}): ${fixture.homeTeam} #${homeFifa.rank} (${Math.round(homeFifa.points)} pts, ${homeFifa.points >= homeFifa.previousPoints ? "+" : ""}${(homeFifa.points - homeFifa.previousPoints).toFixed(1)}), ${fixture.awayTeam} #${awayFifa.rank} (${Math.round(awayFifa.points)} pts, ${awayFifa.points >= awayFifa.previousPoints ? "+" : ""}${(awayFifa.points - awayFifa.previousPoints).toFixed(1)}).`
           : "FIFA World Ranking data not available for this pairing.",
+        homeStatForm.matches || awayStatForm.matches
+          ? `In-tournament match-stats form (shots-on-target margin, ESPN): ${fixture.homeTeam} ${homeStatForm.delta >= 0 ? "+" : ""}${homeStatForm.delta} (${homeStatForm.matches} game${homeStatForm.matches === 1 ? "" : "s"}), ${fixture.awayTeam} ${awayStatForm.delta >= 0 ? "+" : ""}${awayStatForm.delta} (${awayStatForm.matches} game${awayStatForm.matches === 1 ? "" : "s"}).`
+          : "No in-tournament match-stats form yet (no completed games).",
         weather.summaryFactor,
         "Odds, injuries, final squad news, and fresh team/player form should be layered in as they become available.",
       ],

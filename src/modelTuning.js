@@ -34,6 +34,12 @@ const DEFAULT_TUNING = {
   hostBoost: 3,
   scoreSlope: 26,         // diff / slope in the projected-score model
   motivationWeight: 1.0,  // group-stage "motives" nudge (must-win vs rotation)
+  // Trust placed in the in-tournament match-stats form nudge (shots-on-target
+  // margin from completed games). Fixed default, not in the search grid: the
+  // backtest core (predictResultForTuning) excludes it to avoid leakage, since
+  // form is derived from the same matches being scored. The signal is already
+  // shrinkage-bounded, so a weight of 1.0 is safe untuned.
+  matchStatsWeight: 1.0,
   updatedAt: "",
   tunedBy: "default",
   backtestAccuracy: null,

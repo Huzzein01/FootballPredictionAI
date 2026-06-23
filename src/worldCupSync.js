@@ -223,9 +223,20 @@ async function syncWorldCupPlayerStats({ maxEventsPerRun = 8 } = {}) {
   const queue = completed.filter((r) => !synced.has(String(r.espnEventId))).slice(0, maxEventsPerRun);
   if (!queue.length) return { ...store, newEvents: 0 };
 
+  // Harvest team match-stats from the SAME summary fetch (zero extra calls).
+  let teamStats = null;
+  let teamStatsStore = null;
+  try {
+    teamStats = require("./teamMatchStats");
+    teamStatsStore = teamStats.readTeamMatchStats();
+  } catch (_) { /* team-stats module optional */ }
+
   for (const result of queue) {
     try {
       const summary = await fetchEventSummary(result.espnEventId);
+      if (teamStats && teamStatsStore) {
+        try { teamStats.recordTeamStatsFromSummary(teamStatsStore, summary, result); } catch (_) { /* skip */ }
+      }
       const competitors = summary?.boxscore?.players || [];
       // Scorers/assists come from the key events feed; rosters give appearances.
       const appearedThisEvent = new Set();
@@ -274,6 +285,9 @@ async function syncWorldCupPlayerStats({ maxEventsPerRun = 8 } = {}) {
   store.updatedAt = new Date().toISOString();
   store.source = "ESPN public event summary API (FIFA World Cup)";
   writeJson(WC_PLAYER_STATS_PATH, store);
+  if (teamStats && teamStatsStore) {
+    try { teamStats.saveTeamMatchStats(teamStatsStore); } catch (_) { /* skip */ }
+  }
   return { ...store, newEvents: queue.length };
 }
 
