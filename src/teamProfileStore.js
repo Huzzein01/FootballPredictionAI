@@ -23,27 +23,52 @@ const TEAM_PROFILES = [
   { id: "napoli", team: "Napoli", displayName: "Napoli", league: "Serie A" },
 ];
 
-const INTERNATIONAL_TEAM_PROFILES = [
-  { id: "intl-france", team: "France", displayName: "France", league: "International", context: "international" },
-  { id: "intl-portugal", team: "Portugal", displayName: "Portugal", league: "International", context: "international" },
-  { id: "intl-brazil", team: "Brazil", displayName: "Brazil", league: "International", context: "international" },
-  { id: "intl-england", team: "England", displayName: "England", league: "International", context: "international" },
-  { id: "intl-argentina", team: "Argentina", displayName: "Argentina", league: "International", context: "international" },
-  { id: "intl-germany", team: "Germany", displayName: "Germany", league: "International", context: "international" },
-  { id: "intl-spain", team: "Spain", displayName: "Spain", league: "International", context: "international" },
-  { id: "intl-belgium", team: "Belgium", displayName: "Belgium", league: "International", context: "international" },
-  { id: "intl-usa", team: "USA", displayName: "United States", league: "International", context: "international" },
-  { id: "intl-uruguay", team: "Uruguay", displayName: "Uruguay", league: "International", context: "international" },
-  { id: "intl-colombia", team: "Colombia", displayName: "Colombia", league: "International", context: "international" },
-  { id: "intl-morocco", team: "Morocco", displayName: "Morocco", league: "International", context: "international" },
-  { id: "intl-netherlands", team: "Netherlands", displayName: "Netherlands", league: "International", context: "international" },
-  { id: "intl-sweden", team: "Sweden", displayName: "Sweden", league: "International", context: "international" },
-  { id: "intl-egypt", team: "Egypt", displayName: "Egypt", league: "International", context: "international" },
-  { id: "intl-croatia", team: "Croatia", displayName: "Croatia", league: "International", context: "international" },
-  { id: "intl-norway", team: "Norway", displayName: "Norway", league: "International", context: "international" },
-  { id: "intl-senegal", team: "Senegal", displayName: "Senegal", league: "International", context: "international" },
-  { id: "intl-ghana", team: "Ghana", displayName: "Ghana", league: "International", context: "international" },
+// Nicer display labels for a few FIFA names; everything else shows as-is.
+const INTL_DISPLAY_OVERRIDES = {
+  USA: "United States",
+  "IR Iran": "Iran",
+  "Korea Republic": "South Korea",
+  "Congo DR": "DR Congo",
+  "Cabo Verde": "Cape Verde",
+};
+
+function intlProfileId(team) {
+  return `intl-${String(team).toLowerCase().normalize("NFD").replace(/[̀-ͯ]/g, "").replace(/[^a-z0-9]+/g, "-").replace(/(^-|-$)/g, "")}`;
+}
+
+// The "focused teams" in international mode are every nation at the current
+// World Cup. Generated from the fixtures feed so all 48 appear (not a curated
+// subset), falling back to a powerhouse list if the feed is unavailable.
+const FALLBACK_INTERNATIONAL_TEAMS = [
+  "France", "Portugal", "Brazil", "England", "Argentina", "Germany", "Spain",
+  "Belgium", "USA", "Uruguay", "Colombia", "Morocco", "Netherlands", "Sweden",
+  "Egypt", "Croatia", "Norway", "Senegal", "Ghana",
 ];
+
+let intlProfilesCache = null;
+function buildInternationalProfiles() {
+  if (intlProfilesCache) return intlProfilesCache;
+  let teams = [];
+  try {
+    const fixturesPath = repoDataPath("international", "world_cup_2026_fixtures.json");
+    const data = readJsonWithFallback(fixturesPath, null, null);
+    teams = Array.isArray(data?.teams) ? data.teams.filter(Boolean) : [];
+  } catch (_) { /* fall back below */ }
+  if (!teams.length) teams = FALLBACK_INTERNATIONAL_TEAMS;
+  intlProfilesCache = [...new Set(teams)]
+    .sort((a, b) => String(a).localeCompare(String(b)))
+    .map((team) => ({
+      id: intlProfileId(team),
+      team,
+      displayName: INTL_DISPLAY_OVERRIDES[team] || team,
+      league: "International",
+      context: "international",
+    }));
+  return intlProfilesCache;
+}
+
+// Kept as an exported snapshot for backward compatibility.
+const INTERNATIONAL_TEAM_PROFILES = buildInternationalProfiles();
 
 const INTERNATIONAL_BASELINES = {
   "2022 World Cup": {
@@ -101,11 +126,11 @@ function writeStore(store) {
 }
 
 function profileById(profileId) {
-  return [...TEAM_PROFILES, ...INTERNATIONAL_TEAM_PROFILES].find((profile) => profile.id === profileId);
+  return [...TEAM_PROFILES, ...buildInternationalProfiles()].find((profile) => profile.id === profileId);
 }
 
 function profilesForContext(context = "club") {
-  return context === "international" ? INTERNATIONAL_TEAM_PROFILES : TEAM_PROFILES;
+  return context === "international" ? buildInternationalProfiles() : TEAM_PROFILES;
 }
 
 function numeric(value) {
@@ -193,13 +218,86 @@ function internationalBaselineRows(team, season) {
     .filter(Boolean);
 }
 
+// Live 2026 World Cup match stats harvested from the ESPN summary feed
+// (src/teamMatchStats.js → team_match_stats.json). Turns each completed match
+// into a team-profile entry so the focused team's card fills with real
+// tournament info: result, GF/GA, shots, SOT, corners, possession, cards.
+function worldCup2026EntriesForProfile(profile) {
+  let rows = [];
+  let normalizeIntl = normalizeTeamName;
+  try {
+    const tms = require("./teamMatchStats");
+    rows = tms.readTeamMatchStats().matches || [];
+    normalizeIntl = require("./internationalTraining").normalizeIntlTeam;
+  } catch (_) {
+    return [];
+  }
+  const target = normalizeIntl(profile.team);
+  return rows
+    .filter((r) => normalizeIntl(r.team) === target)
+    .sort((a, b) => String(b.date || "").localeCompare(String(a.date || "")))
+    .map((r) => {
+      const gf = integer(r.gf);
+      const ga = integer(r.ga);
+      return {
+        id: `wc2026_${r.eventId}_${profile.id}`,
+        profileId: profile.id,
+        team: normalizeTeamName(profile.team),
+        displayName: profile.displayName,
+        league: "International",
+        context: "international",
+        season: "2026 World Cup",
+        date: r.date || "",
+        opponent: r.opponent || "",
+        venue: r.isHome ? "Home" : "Away",
+        result: normalizeResult("", gf, ga),
+        goalsFor: gf,
+        goalsAgainst: ga,
+        expectedGoalsFor: 0,
+        expectedGoalsAgainst: 0,
+        shotsFor: integer(r.shots),
+        shotsAgainst: integer(r.shotsAg),
+        shotsOnTargetFor: integer(r.sot),
+        shotsOnTargetAgainst: integer(r.sotAg),
+        cornersFor: integer(r.corners),
+        cornersAgainst: 0,
+        possession: numeric(r.poss),
+        yellowCards: integer(r.yellow),
+        redCards: integer(r.red),
+        cleanSheet: ga === 0,
+        readOnly: true,
+        source: "ESPN match stats",
+      };
+    });
+}
+
+function worldCup2026BaselineForProfile(profile) {
+  const entries = worldCup2026EntriesForProfile(profile);
+  if (!entries.length) return null;
+  return {
+    entries,
+    totals: totalsForEntries(entries),
+    source: "2026 World Cup live match stats (ESPN)",
+    detail: `Auto-filled from ${entries.length} completed World Cup match${entries.length === 1 ? "" : "es"}: result, goals, shots, shots on target, corners, possession, and cards. xG is not in the free ESPN feed (still to be filled).`,
+    hasBaseline: true,
+  };
+}
+
 function internationalBaselineForProfile(profile, season) {
+  // For the live tournament, prefer real 2026 World Cup match stats harvested
+  // from ESPN over the static 2018/2022 historical baseline.
+  if (season === "2026 World Cup") {
+    const live = worldCup2026BaselineForProfile(profile);
+    if (live) return { totals: live.totals, source: live.source, detail: live.detail, hasBaseline: true };
+  }
   const rows = internationalBaselineRows(profile.team, season);
   if (!rows.length) {
     return {
       totals: totalsWithRates(emptyTotals()),
-      source: "No imported international baseline for this team yet",
-      detail: "Add World Cup, Euros, qualifier, or friendly team-profile entries as data becomes available.",
+      source: season === "2026 World Cup" ? "Awaiting first 2026 World Cup match" : "No imported international baseline for this team yet",
+      detail: season === "2026 World Cup"
+        ? "This team's profile fills automatically once they play their first World Cup match (stats are fetched from ESPN after each game)."
+        : "Add World Cup, Euros, qualifier, or friendly team-profile entries as data becomes available.",
       hasBaseline: false,
     };
   }
@@ -453,13 +551,21 @@ function listTeamProfiles(season = "", tableData = null, context = "club") {
       const entries = entriesForProfile(store, profile.id, profileSeason);
       const manualTotals = totalsForEntries(entries);
       const importedBaseline = importedBaselineForProfile(profile, profileSeason, tableData);
+      // For the live World Cup, surface the harvested match rows as the
+      // team's recent matches (form chips + entry list) ahead of any manual
+      // entries, so each focused team's card shows real tournament games.
+      const wcEntries = context === "international" && profileSeason === "2026 World Cup"
+        ? worldCup2026EntriesForProfile(profile)
+        : [];
+      const latestEntries = [...wcEntries, ...entries].slice(0, 8);
       return {
         ...profile,
         team: normalizeTeamName(profile.team),
         totals: combineTotals(importedBaseline.totals, manualTotals),
         importedBaseline,
         manualTotals,
-        latestEntries: entries.slice(0, 5),
+        worldCupMatchCount: wcEntries.length,
+        latestEntries,
       };
     }),
   };
