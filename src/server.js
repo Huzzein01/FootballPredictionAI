@@ -1175,7 +1175,10 @@ const server = http.createServer(async (req, res) => {
     const url = new URL(req.url, `http://${req.headers.host}`);
     if (url.pathname.startsWith("/api/")) return await handleApi(req, res, url.pathname);
 
-    const requested = url.pathname === "/" ? "index.html" : url.pathname.slice(1);
+    // New immersive front-end (built alongside the current app). /v2 and /v2/
+    // serve the SPA entry; deep links under /v2 fall back to it too.
+    let requested = url.pathname === "/" ? "index.html" : url.pathname.slice(1);
+    if (url.pathname === "/v2" || url.pathname === "/v2/") requested = "v2/index.html";
     const filePath = path.resolve(PUBLIC_DIR, requested);
     if (!filePath.startsWith(PUBLIC_DIR) || !fs.existsSync(filePath)) {
       res.writeHead(404, { "Content-Type": "text/plain" });
