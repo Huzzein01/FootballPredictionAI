@@ -1,77 +1,83 @@
 /* ===========================================================================
    Football Analyst — immersive front-end (v2)
-   Vanilla SPA: splash sequence, router, and section renderers wired to the
-   existing /api endpoints. No build step, no dependencies.
+   Vanilla SPA: splash, immersive hero, every section wired to /api, and a
+   live goal-celebration overlay that fires when a goal is detected.
    =========================================================================== */
 "use strict";
 
 const $ = (sel, root = document) => root.querySelector(sel);
 const el = (tag, cls, html) => { const n = document.createElement(tag); if (cls) n.className = cls; if (html != null) n.innerHTML = html; return n; };
 const esc = (s) => String(s ?? "").replace(/[&<>"']/g, (c) => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" }[c]));
-async function api(path) { const r = await fetch(path); if (!r.ok) throw new Error(`${r.status} ${path}`); return r.json(); }
+const num = (v, d = 0) => { const n = Number(v); return Number.isFinite(n) ? n : d; };
+async function api(path, opts) { const r = await fetch(path, opts); if (!r.ok) throw new Error(`${r.status}`); return r.json(); }
 
-const STATE = { context: "international", section: "predictions", matchday: "all", liveTimer: null };
+const STATE = {
+  context: "international", section: "predictions", matchday: "all",
+  liveTimer: null, goalWatch: null, liveScores: {}, parlayRisk: "safe",
+};
 
 const SECTIONS = [
-  { id: "predictions", label: "Predictions", both: true },
-  { id: "live", label: "Live Now", intlOnly: true },
-  { id: "results", label: "Results", both: true },
-  { id: "tables", label: "Group Tables", intlOnly: true },
-  { id: "parlays", label: "Parlays", both: true, soon: true },
-  { id: "teams", label: "Team Profiles", both: true, soon: true },
-  { id: "futures", label: "Futures", both: true, soon: true },
+  { id: "predictions", label: "Predictions" },
+  { id: "live", label: "Live Now", intl: true },
+  { id: "parlays", label: "Parlays" },
+  { id: "slip", label: "Daily Slip", intl: true },
+  { id: "teams", label: "Team Profiles" },
+  { id: "players", label: "Player Profiles" },
+  { id: "futures", label: "Futures" },
+  { id: "tables", label: "Tables" },
+  { id: "results", label: "Results" },
+  { id: "training", label: "Model Training", intl: true },
+  { id: "fixtures", label: "Fixtures", intl: true },
+  { id: "single", label: "Single Predictor" },
 ];
 
-/* ── Splash sequence ─────────────────────────────────────────────────────── */
+const flag = (url) => url ? `<img class="flag" src="${esc(url)}" alt="" loading="lazy" onerror="this.style.visibility='hidden'">` : `<span class="flag"></span>`;
+const stat = (b, s, cls = "") => `<div class="hero-stat"><b class="${cls}">${esc(b)}</b><span>${esc(s)}</span></div>`;
+const seasonFor = () => STATE.context === "international" ? "2026 World Cup" : "2025-26";
+
+/* ── Splash ──────────────────────────────────────────────────────────────── */
 function runSplash() {
   const splash = $("#splash");
-  const ball = $(".ball", splash);
-  const net = $(".net", splash);
-  const flash = $(".strike-flash", splash);
-  const board = $(".scoreboard", splash);
-  const goalText = $(".goal-flash", splash);
-  const sbHome = $(".sb-h", splash);
-
+  const ball = $(".ball", splash), net = $(".net", splash), flash = $(".strike-flash", splash);
+  const board = $(".scoreboard", splash), goalText = $(".goal-flash", splash), sbHome = $(".sb-h", splash);
   const reduce = window.matchMedia && window.matchMedia("(prefers-reduced-motion: reduce)").matches;
-  const T = reduce ? 0.15 : 1;
-
+  const T = reduce ? 0.12 : 1;
   setTimeout(() => board.classList.add("show"), 300 * T);
-  // Strike moment (~1.84s): flash, ball flies, net shakes
-  setTimeout(() => {
-    flash.classList.add("fire");
-    ball.classList.add("go");
-  }, 1840 * T);
-  // Ball reaches the net (~2.46s): GOAL
-  setTimeout(() => {
-    net.classList.add("shake");
-    goalText.classList.add("fire");
-    sbHome.textContent = "1";
-    sbHome.classList.add("pop");
-  }, 2460 * T);
-  // Lift into the app
-  const finish = () => endSplash();
-  setTimeout(finish, (reduce ? 600 : 3500));
+  setTimeout(() => { flash.classList.add("fire"); ball.classList.add("go"); }, 1840 * T);
+  setTimeout(() => { net.classList.add("shake"); goalText.classList.add("fire"); sbHome.textContent = "1"; sbHome.classList.add("pop"); }, 2460 * T);
+  setTimeout(endSplash, reduce ? 600 : 3500);
   $("#skipSplash").addEventListener("click", endSplash, { once: true });
 }
-
 let splashEnded = false;
 function endSplash() {
   if (splashEnded) return; splashEnded = true;
-  const splash = $("#splash");
-  splash.classList.add("lift");
-  setTimeout(() => { splash.remove(); }, 700);
-  const app = $("#app");
-  app.hidden = false;
+  const splash = $("#splash"); splash.classList.add("lift");
+  setTimeout(() => splash.remove(), 700);
+  $("#app").hidden = false;
   bootApp();
 }
 
-/* ── App boot ────────────────────────────────────────────────────────────── */
+/* ── Boot ────────────────────────────────────────────────────────────────── */
 function bootApp() {
+  spawnParticles();
   buildNav();
   bindContextSwitch();
   positionCtxGlow();
   renderSection();
   refreshHeroStats();
+  startGoalWatch();
+}
+
+function spawnParticles() {
+  const host = $("#hsParticles"); if (!host) return;
+  for (let i = 0; i < 16; i++) {
+    const p = el("i");
+    p.style.left = Math.random() * 100 + "%";
+    p.style.animationDuration = (6 + Math.random() * 8) + "s";
+    p.style.animationDelay = (Math.random() * 8) + "s";
+    p.style.opacity = (0.2 + Math.random() * 0.5).toFixed(2);
+    host.appendChild(p);
+  }
 }
 
 function bindContextSwitch() {
@@ -82,46 +88,31 @@ function bindContextSwitch() {
       document.documentElement.dataset.context = STATE.context;
       $("#ctxSwitch").querySelectorAll(".ctx-btn").forEach((b) => b.classList.toggle("is-active", b === btn));
       positionCtxGlow();
-      $("#heroSub").textContent = STATE.context === "international"
-        ? "2026 World Cup · immersive prediction engine"
-        : "Club football · immersive prediction engine";
-      // Reset to a valid section for this context.
+      $("#heroSub").textContent = STATE.context === "international" ? "2026 World Cup · immersive prediction engine" : "Club football · immersive prediction engine";
       if (!sectionAllowed(STATE.section)) STATE.section = "predictions";
-      buildNav();
-      renderSection();
-      refreshHeroStats();
+      buildNav(); renderSection(); refreshHeroStats();
     });
   });
 }
 function positionCtxGlow() {
-  const active = $("#ctxSwitch .ctx-btn.is-active");
-  const glow = $(".ctx-glow");
+  const active = $("#ctxSwitch .ctx-btn.is-active"), glow = $(".ctx-glow");
   if (active && glow) { glow.style.left = active.offsetLeft + "px"; glow.style.width = active.offsetWidth + "px"; }
 }
-
-function sectionAllowed(id) {
-  const s = SECTIONS.find((x) => x.id === id);
-  if (!s) return false;
-  if (s.intlOnly && STATE.context !== "international") return false;
-  return true;
-}
+const sectionAllowed = (id) => { const s = SECTIONS.find((x) => x.id === id); return s && (!s.intl || STATE.context === "international"); };
 
 function buildNav() {
-  const nav = $("#nav");
-  nav.innerHTML = "";
-  SECTIONS.filter((s) => s.both || s.intlOnly === (STATE.context === "international") || (s.intlOnly && STATE.context === "international"))
-    .filter((s) => !(s.intlOnly && STATE.context !== "international"))
-    .forEach((s) => {
-      const b = el("button", "nav-btn" + (s.id === STATE.section ? " is-active" : ""), esc(s.label) + (s.soon ? " ·" : ""));
-      b.addEventListener("click", () => { STATE.section = s.id; buildNav(); renderSection(); });
-      nav.appendChild(b);
-    });
+  const nav = $("#nav"); nav.innerHTML = "";
+  SECTIONS.filter((s) => !s.intl || STATE.context === "international").forEach((s) => {
+    const b = el("button", "nav-btn" + (s.id === STATE.section ? " is-active" : ""), esc(s.label));
+    b.addEventListener("click", () => { STATE.section = s.id; buildNav(); renderSection(); });
+    nav.appendChild(b);
+  });
 }
 
 /* ── Hero stats ──────────────────────────────────────────────────────────── */
 async function refreshHeroStats() {
   const host = $("#heroStats");
-  host.innerHTML = `<div class="hero-stat"><b>—</b><span>loading</span></div>`;
+  host.innerHTML = stat("—", "loading");
   try {
     if (STATE.context === "international") {
       const [acc, res] = await Promise.all([
@@ -129,51 +120,41 @@ async function refreshHeroStats() {
         api("/api/played-fixtures?context=international").catch(() => null),
       ]);
       const hi = acc?.latest?.highConfidenceAccuracy != null ? Math.round(acc.latest.highConfidenceAccuracy * 100) + "%" : "—";
-      const md = acc?.latest?.currentMatchday || acc?.live?.currentMatchday || 0;
-      const played = res?.summary?.total ?? 0;
-      const rec = res?.summary ? `${res.summary.correct}/${res.summary.total}` : "—";
-      host.innerHTML = stat(hi, "High-conf accuracy", "good") + stat("MD " + (md || "1"), "Current matchday")
-        + stat(played, "Matches settled") + stat(rec, "Model record");
+      const md = acc?.latest?.currentMatchday || acc?.live?.currentMatchday || 1;
+      const s = res?.summary || {};
+      host.innerHTML = stat(hi, "High-conf accuracy", "good") + stat("MD " + md, "Current matchday")
+        + stat(s.total ?? 0, "Matches settled") + stat(s.total ? `${s.correct}/${s.total}` : "—", "Model record");
     } else {
-      host.innerHTML = stat("Club", "Mode") + stat("Live", "ESPN feed") + stat("Auto", "Retraining") + stat("⚽", "");
+      host.innerHTML = stat("Club", "Mode") + stat("Live", "ESPN feed") + stat("Auto", "Retraining") + stat("⚽", "Predictions");
     }
-  } catch (_) {
-    host.innerHTML = stat("—", "stats unavailable");
-  }
+  } catch (_) { host.innerHTML = stat("—", "stats unavailable"); }
 }
-const stat = (b, s, cls = "") => `<div class="hero-stat"><b class="${cls}">${esc(b)}</b><span>${esc(s)}</span></div>`;
 
-/* ── Section router ──────────────────────────────────────────────────────── */
+/* ── Router ──────────────────────────────────────────────────────────────── */
 function renderSection() {
   if (STATE.liveTimer) { clearInterval(STATE.liveTimer); STATE.liveTimer = null; }
-  const stage = $("#stage");
-  stage.innerHTML = `<div class="loading"><div class="spinner"></div><span>Loading ${esc(STATE.section)}…</span></div>`;
-  const map = { predictions: renderPredictions, live: renderLive, results: renderResults, tables: renderTables };
-  const fn = map[STATE.section];
-  const soon = SECTIONS.find((s) => s.id === STATE.section)?.soon;
-  if (soon || !fn) return renderSoon();
-  fn().catch((e) => { stage.innerHTML = `<div class="empty">Couldn't load this section: ${esc(e.message)}</div>`; });
+  $("#stage").innerHTML = `<div class="loading"><div class="spinner"></div><span>Loading…</span></div>`;
+  const map = { predictions: renderPredictions, live: renderLive, parlays: renderParlays, slip: renderSlip,
+    teams: renderTeams, players: renderPlayers, futures: renderFutures, tables: renderTables,
+    results: renderResults, training: renderTraining, fixtures: renderFixtures, single: renderSingle };
+  (map[STATE.section] || renderPredictions)().catch((e) => {
+    $("#stage").innerHTML = `<div class="empty">Couldn't load this section: ${esc(e.message)}</div>`;
+  });
 }
-
-function renderSoon() {
-  $("#stage").innerHTML = `<div class="soon"><div class="ball2">⚽</div><h2 style="font-family:var(--display);letter-spacing:1px;margin:10px 0 6px">Coming next in the new UI</h2><p>This section is being ported into the immersive experience. It still works in the <a href="/" class="foot-link">classic UI</a> meanwhile.</p></div>`;
-}
+const headEl = (title, sub) => el("div", "section-head", `<h2>${esc(title)}</h2><span class="sub">${esc(sub || "")}</span>`);
 
 /* ── Predictions ─────────────────────────────────────────────────────────── */
 async function renderPredictions() {
   const intl = STATE.context === "international";
   const data = await api(intl ? "/api/international/fixture-predictions" : "/api/fixture-predictions");
   const preds = data.predictions || [];
-  const stage = $("#stage");
-  stage.innerHTML = "";
-  const head = el("div", "section-head", `<h2>Upcoming Predictions</h2><span class="sub">${preds.length} fixtures · model picks with confidence & odds</span>`);
-  stage.appendChild(head);
-
+  const stage = $("#stage"); stage.innerHTML = "";
+  stage.appendChild(headEl("Upcoming Predictions", `${preds.length} fixtures · model picks, confidence & odds`));
   if (intl) {
     const mds = [...new Set(preds.map((p) => p.matchday).filter(Boolean))].sort((a, b) => a - b);
     if (mds.length) {
       const bar = el("div", "matchday-bar");
-      const chip = (val, label) => { const c = el("button", "md-chip" + (String(STATE.matchday) === String(val) ? " is-active" : ""), esc(label)); c.onclick = () => { STATE.matchday = val; renderPredictions(); }; return c; };
+      const chip = (v, l) => { const c = el("button", "md-chip" + (String(STATE.matchday) === String(v) ? " is-active" : ""), esc(l)); c.onclick = () => { STATE.matchday = v; renderPredictions(); }; return c; };
       bar.appendChild(chip("all", "All matchdays"));
       mds.forEach((md) => bar.appendChild(chip(md, preds.find((p) => p.matchday === md)?.matchdayLabel || ("Matchday " + md))));
       stage.appendChild(bar);
@@ -181,62 +162,45 @@ async function renderPredictions() {
   }
   let list = preds;
   if (intl && STATE.matchday !== "all") list = preds.filter((p) => p.matchday === STATE.matchday);
-
   if (!list.length) { stage.appendChild(el("div", "empty", "No upcoming fixtures for this filter.")); return; }
-  const grid = el("div", "grid");
-  list.slice(0, 60).forEach((p) => grid.appendChild(predictionCard(p)));
+  const grid = el("div", "grid"); list.slice(0, 60).forEach((p) => grid.appendChild(predictionCard(p)));
   stage.appendChild(grid);
 }
-
 function predictionCard(p) {
   const pickLabel = p.prediction === "H" ? `${p.homeTeam} win` : p.prediction === "A" ? `${p.awayTeam} win` : "Draw";
-  const probs = p.probabilities || {};
-  const h = Math.round(probs.homeWinPct ?? 0), d = Math.round(probs.drawPct ?? 0), a = Math.round(probs.awayWinPct ?? 0);
-  const odds = p.odds || {};
-  const pickType = p.prediction === "D" ? "draw" : "pick";
+  const pr = p.probabilities || {};
+  const h = Math.round(pr.homeWinPct ?? 0), d = Math.round(pr.drawPct ?? 0), a = Math.round(pr.awayWinPct ?? 0);
+  const o = p.odds || {};
   const card = el("article", "card");
   card.innerHTML = `
-    <div class="card-top"><span>${esc(p.matchdayLabel || p.league || p.group || "Fixture")}</span><span class="pill ${pickType}">${esc(pickLabel)} · ${esc(String(p.confidence ?? ""))}%</span></div>
-    <div class="match">
-      <div class="team">${flag(p.homeFlagUrl)}<span class="tn">${esc(p.homeTeam)}</span></div>
-      <div class="vs">vs</div>
-      <div class="team">${flag(p.awayFlagUrl)}<span class="tn">${esc(p.awayTeam)}</span></div>
-    </div>
+    <div class="card-top"><span>${esc(p.matchdayLabel || p.league || p.group || "Fixture")}</span><span class="pill ${p.prediction === "D" ? "draw" : "pick"}">${esc(pickLabel)} · ${esc(String(p.confidence ?? ""))}%</span></div>
+    <div class="match"><div class="team">${flag(p.homeFlagUrl)}<span class="tn">${esc(p.homeTeam)}</span></div><div class="vs">vs</div><div class="team">${flag(p.awayFlagUrl)}<span class="tn">${esc(p.awayTeam)}</span></div></div>
     <div class="conf-bar"><i class="conf-h" style="width:${h}%"></i><i class="conf-d" style="width:${d}%"></i><i class="conf-a" style="width:${a}%"></i></div>
     <div class="conf-legend"><span>H ${h}%</span><span>D ${d}%</span><span>A ${a}%</span></div>
     <div class="proj">Projected score <b>${esc(p.projectedScore || "—")}</b></div>
-    <div class="odds-row">
-      ${oddChip("1", odds.homeOdds, p.prediction === "H")}
-      ${oddChip("X", odds.drawOdds, p.prediction === "D")}
-      ${oddChip("2", odds.awayOdds, p.prediction === "A")}
-    </div>`;
+    <div class="odds-row">${oddChip("1", o.homeOdds, p.prediction === "H")}${oddChip("X", o.drawOdds, p.prediction === "D")}${oddChip("2", o.awayOdds, p.prediction === "A")}</div>`;
   return card;
 }
 const oddChip = (l, v, best) => `<div class="odds-chip${best ? " best" : ""}">${l}<b>${v ? esc(v) : "—"}</b></div>`;
-const flag = (url) => url ? `<img class="flag" src="${esc(url)}" alt="" loading="lazy" onerror="this.style.visibility='hidden'">` : `<span class="flag"></span>`;
 
 /* ── Live Now ────────────────────────────────────────────────────────────── */
 async function renderLive() {
   const paint = async () => {
     const data = await api("/api/international/live");
-    const stage = $("#stage");
-    const matches = data.matches || [];
-    stage.innerHTML = "";
-    stage.appendChild(el("div", "section-head", `<h2><span class="live-badge"><span class="live-dot"></span>Live Now</span></h2><span class="sub">${matches.length ? matches.length + " in progress · auto-refresh 30s" : "no matches in progress"}</span>`));
-    if (!matches.length) { stage.appendChild(el("div", "empty", "No World Cup matches are live right now. This view lights up automatically when one kicks off.")); return; }
+    detectGoals(data.matches || []);
+    const stage = $("#stage"); const matches = data.matches || []; stage.innerHTML = "";
+    stage.appendChild(headEl("", ""));
+    $(".section-head h2", stage).innerHTML = `<span class="live-badge"><span class="live-dot"></span>Live Now</span>`;
+    $(".section-head .sub", stage).textContent = matches.length ? `${matches.length} in progress · auto-refresh 30s` : "no matches in progress";
+    if (!matches.length) { stage.appendChild(el("div", "empty", "No World Cup matches are live right now. This view — and the goal celebration — fire automatically when one kicks off.")); return; }
     const grid = el("div", "grid");
     matches.forEach((m) => {
-      const pickLabel = m.prediction === "H" ? `${m.homeTeam} win` : m.prediction === "A" ? `${m.awayTeam} win` : m.prediction === "D" ? "Draw" : "—";
+      const pl = m.prediction === "H" ? `${m.homeTeam} win` : m.prediction === "A" ? `${m.awayTeam} win` : m.prediction === "D" ? "Draw" : "—";
       const track = m.pickTrackingLive === true ? `<span style="color:var(--good);font-weight:700">pick ahead ✓</span>` : m.pickTrackingLive === false ? `<span style="color:var(--bad)">pick behind</span>` : "";
       const c = el("article", "card");
-      c.innerHTML = `
-        <div class="card-top"><span>${esc(m.matchdayLabel || m.group || "World Cup")}</span><span class="live-badge"><span class="live-dot"></span>${esc(m.clock || "LIVE")}</span></div>
-        <div class="match">
-          <div class="team">${flag(m.homeFlagUrl)}<span class="tn">${esc(m.homeTeam)}</span></div>
-          <div class="score"><span class="live">${m.homeGoals ?? "-"}</span> : <span class="live">${m.awayGoals ?? "-"}</span></div>
-          <div class="team">${flag(m.awayFlagUrl)}<span class="tn">${esc(m.awayTeam)}</span></div>
-        </div>
-        <div class="proj">Model: <b>${esc(pickLabel)}</b>${m.confidence != null ? ` (${Math.round(m.confidence)}%)` : ""} · proj ${esc(m.projectedScore || "—")} ${track}</div>`;
+      c.innerHTML = `<div class="card-top"><span>${esc(m.matchdayLabel || m.group || "World Cup")}</span><span class="live-badge"><span class="live-dot"></span>${esc(m.clock || "LIVE")}</span></div>
+        <div class="match"><div class="team">${flag(m.homeFlagUrl)}<span class="tn">${esc(m.homeTeam)}</span></div><div class="score"><span class="live">${m.homeGoals ?? "-"}</span> : <span class="live">${m.awayGoals ?? "-"}</span></div><div class="team">${flag(m.awayFlagUrl)}<span class="tn">${esc(m.awayTeam)}</span></div></div>
+        <div class="proj">Model: <b>${esc(pl)}</b>${m.confidence != null ? ` (${Math.round(m.confidence)}%)` : ""} · proj ${esc(m.projectedScore || "—")} ${track}</div>`;
       grid.appendChild(c);
     });
     stage.appendChild(grid);
@@ -245,58 +209,351 @@ async function renderLive() {
   STATE.liveTimer = setInterval(() => { if (STATE.section === "live") paint().catch(() => {}); }, 30000);
 }
 
-/* ── Results ─────────────────────────────────────────────────────────────── */
-async function renderResults() {
-  const intl = STATE.context === "international";
-  const data = await api(intl ? "/api/played-fixtures?context=international" : "/api/played-fixtures?context=club&season=2025-26");
-  const preds = (data.predictions || []).filter((p) => p.played);
-  const stage = $("#stage");
-  stage.innerHTML = "";
-  const s = data.summary || {};
-  stage.appendChild(el("div", "section-head", `<h2>Results</h2><span class="sub">${s.total || preds.length} settled · model ${s.correct ?? "—"}/${s.total ?? "—"}${s.exactScores ? " · " + s.exactScores + " exact" : ""}</span>`));
-  if (!preds.length) { stage.appendChild(el("div", "empty", "No completed matches yet — results appear here automatically as games finish.")); return; }
-  const grid = el("div", "grid");
-  preds.slice(0, 80).forEach((p) => {
-    const pl = p.played || {};
-    const ok = pl.modelCorrect === true, wrong = pl.modelCorrect === false;
-    const verdict = ok ? `<span class="pill" style="background:rgba(74,222,128,.2);color:var(--good)">Model ✓</span>` : wrong ? `<span class="pill" style="background:rgba(248,113,113,.2);color:var(--bad)">Model ✗</span>` : `<span class="pill">—</span>`;
-    const pickLabel = p.prediction === "H" ? `${p.homeTeam} win` : p.prediction === "A" ? `${p.awayTeam} win` : p.prediction === "D" ? "Draw" : "result";
+/* ── Parlays ─────────────────────────────────────────────────────────────── */
+async function renderParlays() {
+  const stage = $("#stage"); stage.innerHTML = "";
+  stage.appendChild(headEl("Multi-Leg Parlays", "model-built tickets · player props + match picks"));
+  const controls = el("div", "controls");
+  controls.innerHTML = `
+    <label>Legs<select id="pLegs"><option>4</option><option selected>6</option><option>8</option><option>10</option></select></label>
+    <label>Tickets<select id="pTickets"><option>1</option><option selected>2</option><option>3</option></select></label>
+    <span class="toggle" id="pRisk"><button data-r="safe" class="on">Safe</button><button data-r="risky">Risk</button></span>
+    <button class="btn" id="pGo">Generate ⚡</button>`;
+  stage.appendChild(controls);
+  const out = el("div", "grid"); out.id = "parlayOut"; stage.appendChild(out);
+  $("#pRisk").querySelectorAll("button").forEach((b) => b.onclick = () => { STATE.parlayRisk = b.dataset.r; $("#pRisk").querySelectorAll("button").forEach((x) => x.classList.toggle("on", x === b)); });
+  const gen = async () => {
+    out.innerHTML = `<div class="loading"><div class="spinner"></div><span>Building tickets…</span></div>`;
+    const legs = $("#pLegs").value, tickets = $("#pTickets").value;
+    const url = `/api/parlay?context=${STATE.context}&league=${STATE.context === "international" ? "International" : "All"}&legs=${legs}&tickets=${tickets}&type=mixed&riskMode=${STATE.parlayRisk}&generationMode=multi`;
+    try {
+      const data = await api(url);
+      const parlays = data.parlays || [];
+      out.innerHTML = "";
+      if (!parlays.length) { out.innerHTML = `<div class="empty">No parlays available right now.</div>`; return; }
+      parlays.forEach((p, i) => out.appendChild(parlayCard(p, i)));
+    } catch (e) { out.innerHTML = `<div class="empty">Couldn't build parlays: ${esc(e.message)}</div>`; }
+  };
+  $("#pGo").onclick = gen;
+  gen();
+}
+function parlayCard(p, i) {
+  const legs = p.legs || [];
+  const combined = legs.reduce((a, l) => a * (num(l.decimalOdds, 1) || 1), 1);
+  const c = el("article", "card");
+  c.innerHTML = `<div class="card-top"><span>Ticket ${i + 1}${p.riskMode === "risky" ? " · risk" : ""}</span><span class="pill">${Math.round(p.averageConfidence || 0)}% avg</span></div>
+    <ul class="legs">${legs.map(legRow).join("")}</ul>
+    <div class="parlay-foot"><div><div class="lbl">${legs.length} legs · combined</div></div><div class="odds">${combined.toFixed(2)}×</div></div>`;
+  return c;
+}
+const legRow = (l) => `<li class="leg"><div><span class="leg-type">${esc((l.type || "").slice(0, 4))}</span><span class="lp">${esc(l.pick || l.market)}</span><div class="lm">${esc(l.fixture || "")}${l.confidence ? " · " + Math.round(l.confidence) + "%" : ""}</div></div><span class="lo">${num(l.decimalOdds) ? num(l.decimalOdds).toFixed(2) : "—"}</span></li>`;
+
+/* ── Daily Slip & Capital ────────────────────────────────────────────────── */
+async function renderSlip() {
+  const data = await api("/api/international/daily-slip");
+  const stage = $("#stage"); stage.innerHTML = "";
+  stage.appendChild(headEl("Daily Slip & Capital", "highest-confidence slip · compounding bankroll"));
+  const growth = data.startingBankroll ? Math.round(((data.bankroll - data.startingBankroll) / data.startingBankroll) * 100) : 0;
+  const kpis = el("div", "kpi-grid");
+  kpis.innerHTML = `<div class="kpi gold"><b>${esc(String(data.bankroll))}</b><span>Bankroll (${esc(data.currency || "units")})</span></div>
+    <div class="kpi ${growth >= 0 ? "good" : ""}"><b>${growth >= 0 ? "+" : ""}${growth}%</b><span>Growth</span></div>
+    <div class="kpi"><b>${esc(String(data.startingBankroll ?? 100))}</b><span>Starting</span></div>
+    <div class="kpi"><b>${(data.slips || []).length}</b><span>Slips tracked</span></div>`;
+  stage.appendChild(kpis);
+  const t = data.today;
+  if (t) {
     const c = el("article", "card");
-    c.innerHTML = `
-      <div class="card-top"><span>${esc(p.matchdayLabel || p.league || "")} · ${esc(p.date || "")}</span>${verdict}</div>
-      <div class="match">
-        <div class="team">${flag(p.homeFlagUrl)}<span class="tn">${esc(p.homeTeam)}</span></div>
-        <div class="score">${esc(String(pl.homeGoals))} : ${esc(String(pl.awayGoals))}</div>
-        <div class="team">${flag(p.awayFlagUrl)}<span class="tn">${esc(p.awayTeam)}</span></div>
-      </div>
-      <div class="proj">Model pick: <b>${esc(pickLabel)}</b>${p.confidence != null ? ` (${esc(String(p.confidence))}%)` : ""} · proj ${esc(p.projectedScore || "—")}${pl.exactScoreCorrect ? " · exact ✓" : ""}</div>`;
+    c.innerHTML = `<div class="card-top"><span>Today's slip · ${esc(t.date)}</span><span class="pill pick">${t.legCount} legs @ ${num(t.combinedOdds).toFixed(2)}×</span></div>
+      <ul class="legs">${(t.legs || []).map((l) => `<li class="leg"><div><span class="lp">${esc(l.pick)}</span><div class="lm">${esc(l.fixture)}${l.confidence ? " · " + Math.round(l.confidence) + "%" : ""}</div></div><span class="lo">${num(l.decimalOdds).toFixed(2)}</span></li>`).join("")}</ul>
+      <div class="parlay-foot"><div><div class="lbl">Stake ${esc(String(t.stake))} → potential</div></div><div class="odds">${esc(String(t.potentialReturn))}</div></div>`;
+    stage.appendChild(c);
+  } else { stage.appendChild(el("div", "empty", data.note || "No slip yet — rolls when fixtures qualify.")); }
+  const settled = (data.slips || []).filter((s) => s.status !== "PENDING");
+  if (settled.length) {
+    const h = el("div", "section-head", `<h2 style="font-size:18px">Slip history</h2>`); stage.appendChild(h);
+    const grid = el("div", "grid");
+    settled.slice(0, 12).forEach((s) => {
+      const won = s.status === "WON";
+      const c = el("article", "card");
+      c.innerHTML = `<div class="card-top"><span>${esc(s.date)}</span><span class="pill" style="background:${won ? "rgba(74,222,128,.2)" : "rgba(248,113,113,.2)"};color:${won ? "var(--good)" : "var(--bad)"}">${esc(s.status)}</span></div>
+        <div class="proj">${s.legCount} legs @ ${num(s.combinedOdds).toFixed(2)}× · stake ${esc(String(s.stake))} · ${won ? "profit +" + esc(String(s.profit)) : "−" + esc(String(s.stake))} · bankroll → <b>${esc(String(s.bankrollAfter))}</b></div>`;
+      grid.appendChild(c);
+    });
+    stage.appendChild(grid);
+  }
+}
+
+/* ── Team Profiles ───────────────────────────────────────────────────────── */
+async function renderTeams() {
+  const data = await api(`/api/team-profiles?season=${encodeURIComponent(seasonFor())}&context=${STATE.context}`);
+  const profiles = data.profiles || [];
+  const stage = $("#stage"); stage.innerHTML = "";
+  stage.appendChild(headEl("Team Profiles", `${profiles.length} teams · ${STATE.context === "international" ? "live World Cup match stats" : "season form"}`));
+  const grid = el("div", "grid");
+  profiles.forEach((p) => {
+    const t = p.totals || {};
+    const last = (p.latestEntries || []).slice(0, 5);
+    const c = el("article", "card");
+    c.innerHTML = `<div class="card-top"><span>${esc(p.league)}</span><span class="formchips">${last.map((e) => `<span class="fc ${esc(e.result)}">${esc(e.result)}</span>`).join("") || ""}</span></div>
+      <div class="pcard">${flag(null)}<div class="pmeta"><b>${esc(p.displayName || p.team)}</b><span>${esc(p.importedBaseline?.source || "")}</span></div></div>
+      <div class="pstats">
+        <div class="pstat"><b>${t.matches || 0}</b><span>matches</span></div>
+        <div class="pstat"><b>${(t.pointsPerGame || 0).toFixed(2)}</b><span>PPG</span></div>
+        <div class="pstat"><b>${(t.goalsForPerGame || 0).toFixed(1)}</b><span>GF/g</span></div>
+        <div class="pstat"><b>${(t.shotsForPerGame || 0).toFixed(1)}</b><span>shots/g</span></div>
+        <div class="pstat"><b>${(t.sotForPerGame || 0).toFixed(1)}</b><span>SOT/g</span></div>
+        <div class="pstat"><b>${Math.round((t.cleanSheetRate || 0) * 100)}%</b><span>clean sheet</span></div>
+      </div>`;
     grid.appendChild(c);
   });
   stage.appendChild(grid);
 }
 
-/* ── Group Tables ────────────────────────────────────────────────────────── */
-async function renderTables() {
-  const data = await api("/api/international/group-tables");
-  const groups = data.groups || [];
-  const stage = $("#stage");
-  stage.innerHTML = "";
-  stage.appendChild(el("div", "section-head", `<h2>Group Tables</h2><span class="sub">live standings · auto-built from settled results</span>`));
+/* ── Player Profiles ─────────────────────────────────────────────────────── */
+async function renderPlayers() {
+  const data = await api(`/api/player-profiles?season=${encodeURIComponent(seasonFor())}&context=${STATE.context}`);
+  const profiles = data.profiles || [];
+  const stage = $("#stage"); stage.innerHTML = "";
+  stage.appendChild(headEl("Player Profiles", `${profiles.length} players · goals, assists & shot output`));
   const grid = el("div", "grid");
-  groups.forEach((g) => {
-    const rows = (g.standings || []).map((r, i) => `
-      <tr class="${i < 2 ? "adv" : ""}">
-        <td><span class="rk">${i + 1}</span></td><td>${esc(r.team)}</td>
-        <td>${r.played}</td><td>${r.wins}-${r.draws}-${r.losses}</td>
-        <td>${r.goalsFor}:${r.goalsAgainst}</td><td><b>${r.points}</b></td>
-      </tr>`).join("");
+  profiles.forEach((p) => {
+    const t = p.totals || {};
     const c = el("article", "card");
-    c.innerHTML = `<div class="card-top"><span>Group ${esc(g.group)}</span><span>${g.appliedResults || 0} played</span></div>
-      <table class="table"><thead><tr><th>#</th><th>Team</th><th>P</th><th>W-D-L</th><th>GF:GA</th><th>Pts</th></tr></thead><tbody>${rows}</tbody></table>`;
+    c.innerHTML = `<div class="card-top"><span>${esc(p.team)}</span><span class="pill">${esc(p.role || p.position || "")}</span></div>
+      <div class="pcard">${p.photoUrl ? `<img class="photo" src="${esc(p.photoUrl)}" alt="" onerror="this.style.visibility='hidden'">` : `<div class="photo"></div>`}<div class="pmeta"><b>${esc(p.displayName || p.player)}</b><span>${esc(p.team)}</span></div></div>
+      <div class="pstats">
+        <div class="pstat"><b>${num(t.goals)}</b><span>goals</span></div>
+        <div class="pstat"><b>${num(t.assists)}</b><span>assists</span></div>
+        <div class="pstat"><b>${num(t.shots)}</b><span>shots</span></div>
+        <div class="pstat"><b>${num(t.goalsPer90).toFixed(2)}</b><span>G/90</span></div>
+        <div class="pstat"><b>${num(t.assistsPer90).toFixed(2)}</b><span>A/90</span></div>
+        <div class="pstat"><b>${num(t.appearances || t.nineties)}</b><span>apps</span></div>
+      </div>`;
+    grid.appendChild(c);
+  });
+  if (!profiles.length) stage.appendChild(el("div", "empty", "No player profiles for this context yet."));
+  else stage.appendChild(grid);
+}
+
+/* ── Futures (+ bracket) ─────────────────────────────────────────────────── */
+async function renderFutures() {
+  const intl = STATE.context === "international";
+  const data = await api(`/api/futures?context=${STATE.context}&season=${encodeURIComponent(seasonFor())}&league=${intl ? "International" : "EPL"}`);
+  const stage = $("#stage"); stage.innerHTML = "";
+  stage.appendChild(headEl("Futures", data.unavailable ? (data.message || "unavailable") : "winner, top scorer & top assist markets"));
+  // Bracket placeholder (filled async so it never blocks the futures picks).
+  const bracketMount = el("div"); if (intl) stage.appendChild(bracketMount);
+  // Futures pick cards render immediately.
+  const grid = el("div", "grid");
+  (data.sections || []).forEach((sec) => {
+    const c = el("article", "card");
+    const picks = (sec.picks || []).slice(0, 8).map((pk) => `
+      <div class="fut-pick"><span class="fut-rank">${pk.rank}</span>
+        <span class="fut-label">${esc(pk.label)}<span class="fut-detail">${esc(pk.detail || "")}</span></span>
+        <span class="fut-conf-bar"><i style="width:${Math.min(100, num(pk.confidence))}%"></i></span>
+        <span class="fut-conf">${num(pk.confidence)}%</span></div>`).join("");
+    c.innerHTML = `<div class="card-top"><span>${esc(sec.title)}</span></div><div class="lm" style="margin-bottom:8px">${esc(sec.subtitle || "")}</div>${picks}`;
+    grid.appendChild(c);
+  });
+  if (grid.children.length) stage.appendChild(grid);
+  else if (!intl) stage.appendChild(el("div", "empty", data.message || "No futures markets for this league yet."));
+  // Load the bracket separately.
+  if (intl) {
+    api("/api/international/bracket").then((br) => {
+      if (STATE.section !== "futures") return;
+      if (br.champion) bracketMount.appendChild(el("div", "champion", `<div style="font-size:11px;color:var(--muted);text-transform:uppercase;letter-spacing:1px">Projected champion</div><div class="ct">${esc(br.champion.team)}</div>`));
+      const rounds = br.bracket || {};
+      const tn = (x) => (x && typeof x === "object") ? (x.team || x.name || "") : (x || "");
+      const wrap = el("div", "bracket");
+      [["r16", "Round of 16"], ["qf", "Quarter-Finals"], ["sf", "Semi-Finals"], ["final", "Final"]].forEach(([k, label]) => {
+        const r = rounds[k]; if (!r) return;
+        const col = el("div", "bround", `<h4>${esc(label)}</h4>`);
+        (r.matches || []).forEach((m) => {
+          const home = tn(m.home), away = tn(m.away), w = tn(m.winner);
+          col.appendChild(el("div", "btie", `<span class="${w && w === home ? "w" : ""}">${esc(home)}</span> v <span class="${w && w === away ? "w" : ""}">${esc(away)}</span>`));
+        });
+        wrap.appendChild(col);
+      });
+      if (wrap.children.length) { bracketMount.appendChild(el("div", "section-head", `<h2 style="font-size:18px">Bracket projection</h2>`)); bracketMount.appendChild(wrap); }
+    }).catch(() => {});
+  }
+}
+
+/* ── Tables ──────────────────────────────────────────────────────────────── */
+async function renderTables() {
+  const stage = $("#stage");
+  if (STATE.context === "international") {
+    const data = await api("/api/international/group-tables");
+    stage.innerHTML = ""; stage.appendChild(headEl("Group Tables", "live standings · auto-built from settled results"));
+    const grid = el("div", "grid");
+    (data.groups || []).forEach((g) => {
+      const rows = (g.standings || []).map((r, i) => `<tr class="${i < 2 ? "adv" : ""}"><td><span class="rk">${i + 1}</span></td><td>${esc(r.team)}</td><td>${r.played}</td><td>${r.wins}-${r.draws}-${r.losses}</td><td>${r.goalsFor}:${r.goalsAgainst}</td><td><b>${r.points}</b></td></tr>`).join("");
+      const c = el("article", "card");
+      c.innerHTML = `<div class="card-top"><span>Group ${esc(g.group)}</span><span>${g.appliedResults || 0} played</span></div><table class="table"><thead><tr><th>#</th><th>Team</th><th>P</th><th>W-D-L</th><th>GF:GA</th><th>Pts</th></tr></thead><tbody>${rows}</tbody></table>`;
+      grid.appendChild(c);
+    });
+    stage.appendChild(grid); return;
+  }
+  const data = await api(`/api/league-tables?season=${encodeURIComponent(seasonFor())}`).catch(() => null);
+  stage.innerHTML = ""; stage.appendChild(headEl("League Tables", "current standings"));
+  const leagues = data?.leagues ? Object.entries(data.leagues) : [];
+  if (!leagues.length) { stage.appendChild(el("div", "empty", "League tables unavailable right now.")); return; }
+  const grid = el("div", "grid");
+  leagues.forEach(([name, lg]) => {
+    const rows = (lg.standings || []).slice(0, 20).map((r, i) => `<tr><td><span class="rk">${i + 1}</span></td><td>${esc(r.team)}</td><td>${r.played}</td><td>${r.goalsFor}:${r.goalsAgainst}</td><td><b>${r.points}</b></td></tr>`).join("");
+    const c = el("article", "card");
+    c.innerHTML = `<div class="card-top"><span>${esc(name)}</span></div><table class="table"><thead><tr><th>#</th><th>Team</th><th>P</th><th>GF:GA</th><th>Pts</th></tr></thead><tbody>${rows}</tbody></table>`;
     grid.appendChild(c);
   });
   stage.appendChild(grid);
 }
+
+/* ── Results ─────────────────────────────────────────────────────────────── */
+async function renderResults() {
+  const intl = STATE.context === "international";
+  const data = await api(intl ? "/api/played-fixtures?context=international" : "/api/played-fixtures?context=club&season=2025-26");
+  const preds = (data.predictions || []).filter((p) => p.played);
+  const stage = $("#stage"); stage.innerHTML = ""; const s = data.summary || {};
+  stage.appendChild(headEl("Results", `${s.total || preds.length} settled · model ${s.correct ?? "—"}/${s.total ?? "—"}${s.exactScores ? " · " + s.exactScores + " exact" : ""}`));
+  if (!preds.length) { stage.appendChild(el("div", "empty", "No completed matches yet — results appear automatically as games finish.")); return; }
+  const grid = el("div", "grid");
+  preds.slice(0, 80).forEach((p) => {
+    const pl = p.played || {}; const ok = pl.modelCorrect === true, wrong = pl.modelCorrect === false;
+    const verdict = ok ? `<span class="pill" style="background:rgba(74,222,128,.2);color:var(--good)">Model ✓</span>` : wrong ? `<span class="pill" style="background:rgba(248,113,113,.2);color:var(--bad)">Model ✗</span>` : `<span class="pill">—</span>`;
+    const pk = p.prediction === "H" ? `${p.homeTeam} win` : p.prediction === "A" ? `${p.awayTeam} win` : p.prediction === "D" ? "Draw" : "result";
+    const c = el("article", "card");
+    c.innerHTML = `<div class="card-top"><span>${esc(p.matchdayLabel || p.league || "")} · ${esc(p.date || "")}</span>${verdict}</div>
+      <div class="match"><div class="team">${flag(p.homeFlagUrl)}<span class="tn">${esc(p.homeTeam)}</span></div><div class="score">${esc(String(pl.homeGoals))} : ${esc(String(pl.awayGoals))}</div><div class="team">${flag(p.awayFlagUrl)}<span class="tn">${esc(p.awayTeam)}</span></div></div>
+      <div class="proj">Model: <b>${esc(pk)}</b>${p.confidence != null ? ` (${esc(String(p.confidence))}%)` : ""} · proj ${esc(p.projectedScore || "—")}${pl.exactScoreCorrect ? " · exact ✓" : ""}</div>`;
+    grid.appendChild(c);
+  });
+  stage.appendChild(grid);
+}
+
+/* ── Model Training ──────────────────────────────────────────────────────── */
+async function renderTraining() {
+  const acc = await api("/api/international/training-accuracy");
+  const L = acc.latest || {}; const live = acc.live || {};
+  const stage = $("#stage"); stage.innerHTML = "";
+  stage.appendChild(headEl("Model Training", "24/7 auto-tuning · target 75% high-confidence by matchday 4"));
+  const hi = L.highConfidenceAccuracy != null ? Math.round(L.highConfidenceAccuracy * 100) : 0;
+  const target = Math.round((acc.target || 0.75) * 100);
+  const kpis = el("div", "kpi-grid");
+  kpis.innerHTML = `<div class="kpi ${hi >= target ? "good" : ""}"><b>${hi}%</b><span>High-conf accuracy</span></div>
+    <div class="kpi"><b>${L.tunedRawAccuracy != null ? Math.round(L.tunedRawAccuracy * 100) + "%" : "—"}</b><span>Raw 1X2</span></div>
+    <div class="kpi"><b>${L.tunedMacroF1 != null ? L.tunedMacroF1.toFixed(3) : "—"}</b><span>Macro-F1</span></div>
+    <div class="kpi gold"><b>${L.drawsPredicted ?? "—"}</b><span>Draws predicted</span></div>
+    <div class="kpi"><b>MD ${L.currentMatchday ?? live.currentMatchday ?? 1}/${L.targetMatchday ?? 4}</b><span>Matchday</span></div>
+    <div class="kpi"><b>${L.corpusSize ?? "—"}</b><span>Training matches</span></div>`;
+  stage.appendChild(kpis);
+  const card = el("article", "card");
+  card.innerHTML = `<div class="card-top"><span>Progress to ${target}% target</span><span class="pill ${L.targetMet ? "pick" : ""}">${L.targetMet ? "✓ met" : "in progress"}</span></div>
+    <div class="progress"><i style="width:${Math.min(100, Math.round((hi / target) * 100))}%"></i></div>
+    <div class="proj">High-confidence picks (≥${L.highConfidenceThreshold || 55}%): <b>${L.highConfidencePicks ?? 0}</b> staked · live WC record ${live.correct ?? "—"}/${live.matchdayResults ?? "—"} · draw recall ${L.drawRecall != null ? Math.round(L.drawRecall * 100) + "%" : "—"} · last tuned ${esc((acc.tuning?.tunedBy || "").replace("auto-tune:", "") || "—")}</div>`;
+  stage.appendChild(card);
+}
+
+/* ── International Fixtures ───────────────────────────────────────────────── */
+async function renderFixtures() {
+  const data = await api("/api/international/fixtures");
+  const fixtures = data.fixtures || [];
+  const stage = $("#stage"); stage.innerHTML = "";
+  stage.appendChild(headEl("Fixtures", `${fixtures.length} upcoming World Cup matches`));
+  const byDate = {};
+  fixtures.forEach((f) => { (byDate[f.date] = byDate[f.date] || []).push(f); });
+  Object.keys(byDate).sort().forEach((date) => {
+    stage.appendChild(el("div", "section-head", `<h2 style="font-size:16px">${esc(date)}</h2><span class="sub">${byDate[date].length} matches</span>`));
+    const grid = el("div", "grid");
+    byDate[date].forEach((f) => {
+      const c = el("article", "card");
+      c.innerHTML = `<div class="card-top"><span>${esc(f.group || "")}</span><span>${esc((f.kickoffLocal || f.kickoffUtc || "").slice(11, 16) || "")}</span></div>
+        <div class="match"><div class="team">${flag(f.homeFlagUrl)}<span class="tn">${esc(f.homeTeam)}</span></div><div class="vs">vs</div><div class="team">${flag(f.awayFlagUrl)}<span class="tn">${esc(f.awayTeam)}</span></div></div>
+        <div class="proj" style="text-align:center">${esc(f.venue || "")}${f.city ? " · " + esc(f.city) : ""}</div>`;
+      grid.appendChild(c);
+    });
+    stage.appendChild(grid);
+  });
+}
+
+/* ── Single Predictor ────────────────────────────────────────────────────── */
+async function renderSingle() {
+  const stage = $("#stage"); stage.innerHTML = "";
+  stage.appendChild(headEl("Single Predictor", "pick any two teams · instant model projection"));
+  let teams = [];
+  try {
+    if (STATE.context === "international") teams = (await api("/api/international/fixtures")).teams || [];
+    else teams = [...new Set(((await api("/api/fixture-predictions")).predictions || []).flatMap((p) => [p.homeTeam, p.awayTeam]))];
+    teams = [...new Set(teams)].sort();
+  } catch (_) {}
+  const opts = teams.map((t) => `<option>${esc(t)}</option>`).join("");
+  const form = el("div", "single-form");
+  form.innerHTML = `<label>Home<select id="sHome">${opts}</select></label><span class="vs">vs</span><label>Away<select id="sAway">${opts}</select></label>`;
+  stage.appendChild(form);
+  const go = el("button", "btn", "Predict ⚡"); go.style.marginTop = "12px"; stage.appendChild(go);
+  const result = el("div", "single-result"); stage.appendChild(result);
+  if (teams[1]) $("#sAway", form).selectedIndex = 1;
+  go.onclick = async () => {
+    const homeTeam = $("#sHome").value, awayTeam = $("#sAway").value;
+    if (homeTeam === awayTeam) { result.innerHTML = `<div class="empty">Pick two different teams.</div>`; return; }
+    result.innerHTML = `<div class="loading"><div class="spinner"></div><span>Predicting…</span></div>`;
+    try {
+      const data = await api("/api/predict", { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify({ homeTeam, awayTeam, context: STATE.context, season: seasonFor() }) });
+      const p = data.prediction || data;
+      const pickLabel = p.prediction === "H" ? `${homeTeam} win` : p.prediction === "A" ? `${awayTeam} win` : p.prediction === "D" ? "Draw" : "—";
+      const grid = el("div", "grid"); grid.appendChild(predictionCard({ ...p, homeTeam, awayTeam, league: "Single predictor" }));
+      result.innerHTML = ""; result.appendChild(grid);
+      void pickLabel;
+    } catch (e) { result.innerHTML = `<div class="empty">Prediction unavailable for this matchup (${esc(e.message)}).</div>`; }
+  };
+}
+
+/* ── Live goal detection + celebration ───────────────────────────────────── */
+function startGoalWatch() {
+  if (STATE.goalWatch) clearInterval(STATE.goalWatch);
+  const poll = async () => {
+    if (STATE.context !== "international" || document.hidden) return;
+    try { const data = await api("/api/international/live"); detectGoals(data.matches || []); } catch (_) {}
+  };
+  poll();
+  STATE.goalWatch = setInterval(poll, 20000);
+}
+function detectGoals(matches) {
+  matches.forEach((m) => {
+    const key = `${m.homeTeam}|${m.awayTeam}`;
+    const h = num(m.homeGoals), a = num(m.awayGoals), total = h + a;
+    const prev = STATE.liveScores[key];
+    if (prev != null && total > prev.total) {
+      const scorer = h > prev.h ? m.homeTeam : a > prev.a ? m.awayTeam : "";
+      fireGoal(scorer, `${m.homeTeam} ${h} – ${a} ${m.awayTeam}`);
+    }
+    STATE.liveScores[key] = { h, a, total };
+  });
+}
+function fireGoal(team, detail) {
+  const ov = $("#goalOverlay"); if (!ov) return;
+  $("#goDetail").textContent = team ? `${team} scores! ${detail}` : detail;
+  // confetti
+  const conf = $("#goConfetti"); conf.innerHTML = "";
+  const colors = ["#e0245e", "#2bd47a", "#ffcf4d", "#3b82f6", "#ffffff"];
+  for (let i = 0; i < 60; i++) {
+    const c = el("i");
+    c.style.left = Math.random() * 100 + "%";
+    c.style.background = colors[i % colors.length];
+    c.style.animationDelay = (Math.random() * 0.5) + "s";
+    c.style.transform = `rotate(${Math.random() * 360}deg)`;
+    conf.appendChild(c);
+  }
+  ov.hidden = false; ov.classList.remove("out");
+  // restart SVG animations by reflow
+  ov.querySelectorAll(".go-striker,.go-leg,.go-arm,.go-ball,.go-net,.go-word,.go-detail").forEach((n) => { n.style.animation = "none"; void n.offsetWidth; n.style.animation = ""; });
+  ov.classList.add("show");
+  clearTimeout(fireGoal._t);
+  fireGoal._t = setTimeout(() => {
+    ov.classList.add("out");
+    setTimeout(() => { ov.hidden = true; ov.classList.remove("show", "out"); }, 500);
+  }, 3200);
+}
+window.__testGoal = (t) => fireGoal(t || "Brazil", "Brazil 1 – 0 Croatia");
 
 /* ── Go ──────────────────────────────────────────────────────────────────── */
 document.addEventListener("DOMContentLoaded", runSplash);

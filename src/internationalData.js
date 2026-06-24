@@ -494,17 +494,29 @@ function matchdayLabel(md) {
   return md <= 3 ? `Matchday ${md}` : KNOCKOUT_MATCHDAY_LABELS[md] || `Matchday ${md}`;
 }
 
+// Short-TTL memo: this rebuilds 72 fixture predictions (ratings + FIFA +
+// weather + motivation + match-stats form) and is called by several hot
+// endpoints (live polled every 20s, fixture-predictions, training, played).
+// Predictions only change when tuning/results change, so a few seconds of
+// staleness is safe and keeps the single-threaded server responsive.
+let predictionsCache = null;
+let predictionsCacheAt = 0;
+const PREDICTIONS_TTL_MS = 12 * 1000;
+
 function internationalFixturePredictions() {
+  if (predictionsCache && Date.now() - predictionsCacheAt < PREDICTIONS_TTL_MS) return predictionsCache;
   const friendlyResults = readFriendlyResults();
   const fixtures = readFixtureData().fixtures;
   const matchdays = assignMatchdays(fixtures);
-  return fixtures.map((f) => {
+  predictionsCache = fixtures.map((f) => {
     const prediction = predictInternationalFixture(f, friendlyResults);
     const md = matchdays.get(f) || null;
     prediction.matchday = md;
     prediction.matchdayLabel = matchdayLabel(md);
     return prediction;
   });
+  predictionsCacheAt = Date.now();
+  return predictionsCache;
 }
 
 function emptyGroupRow(team) {
