@@ -172,6 +172,8 @@ function predictionCard(p) {
   const h = Math.round(pr.homeWinPct ?? 0), d = Math.round(pr.drawPct ?? 0), a = Math.round(pr.awayWinPct ?? 0);
   const o = p.odds || {};
   const card = el("article", "card");
+  card.dataset.pick = p.prediction || "";
+  if (num(p.confidence) >= 55) card.classList.add("high-conf");
   card.innerHTML = `
     <div class="card-top"><span>${esc(p.matchdayLabel || p.league || p.group || "Fixture")}</span><span class="pill ${p.prediction === "D" ? "draw" : "pick"}">${esc(pickLabel)} · ${esc(String(p.confidence ?? ""))}%</span></div>
     <div class="match"><div class="team">${flag(p.homeFlagUrl)}<span class="tn">${esc(p.homeTeam)}</span></div><div class="vs">vs</div><div class="team">${flag(p.awayFlagUrl)}<span class="tn">${esc(p.awayTeam)}</span></div></div>

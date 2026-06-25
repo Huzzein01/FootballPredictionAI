@@ -239,7 +239,17 @@ a { color: inherit; }
 .odds-row { display: flex; gap: 8px; margin-top: 10px; }
 .odds-chip { flex: 1; text-align: center; padding: 7px 4px; border-radius: 9px; background: rgba(0,0,0,0.25); border: 1px solid var(--border); font-size: 12px; }
 .odds-chip b { display: block; font-size: 15px; margin-top: 2px; }
-.odds-chip.best { border-color: rgba(43,212,122,0.55); }
+.odds-chip.best { border-color: rgba(43,212,122,0.6); background: rgba(43,212,122,0.1); }
+.odds-chip.best b { color: var(--pitch); }
+
+/* Pick-type side accent stripe */
+.card[data-pick="H"]::before { content: ""; position: absolute; left: 0; top: 0; bottom: 0; width: 3px; background: var(--accent-2); }
+.card[data-pick="D"]::before { content: ""; position: absolute; left: 0; top: 0; bottom: 0; width: 3px; background: var(--gold); }
+.card[data-pick="A"]::before { content: ""; position: absolute; left: 0; top: 0; bottom: 0; width: 3px; background: var(--accent); }
+
+/* High-confidence card highlight */
+.card.high-conf { box-shadow: var(--shadow), 0 0 30px rgba(43,212,122,0.14); border-color: rgba(43,212,122,0.3); }
+.card.high-conf .pill.pick { box-shadow: 0 2px 10px rgba(224,36,94,0.45); }
 
 .live-badge { display: inline-flex; align-items: center; gap: 6px; color: var(--pitch); font-weight: 700; }
 .live-dot { width: 8px; height: 8px; border-radius: 50%; background: #ff3b5c; box-shadow: 0 0 0 0 rgba(255,59,92,.6); animation: pulse 1.5s infinite; }

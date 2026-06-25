@@ -48,6 +48,7 @@
 @media (prefers-reduced-motion: reduce) { .hs-leg,.hs-arm,.hs-striker,.hs-ball,.hs-net,.hs-flood,.hs-stands span,.hs-particles i { animation: none !important; } }
 
 /* Live goal celebration overlay */
+.goal-overlay[hidden] { display: none; }
 .goal-overlay { position: fixed; inset: 0; z-index: 200; display: grid; place-items: center;
   background: radial-gradient(circle at 50% 45%, rgba(6,30,16,0.85), rgba(2,6,12,0.96)); }
 .goal-overlay.show { animation: goFade 0.3s ease; }
