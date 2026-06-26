@@ -282,18 +282,34 @@ function groupStandingsLookup() {
 // teams chasing qualification press harder while safe teams rotate. Returns a
 // home-minus-away rating nudge bounded to ±2, scaled by matchday and the
 // tunable motivationWeight. Neutral on matchday 1 (no standings signal yet).
+//
+// States (scaled by matchdayFactor which ramps 0.5→1.0 across MD2→MD3):
+//   clinched group winner (6+ pts)       → -1.0  heavy rotation/rest
+//   2nd place locked (4+ pts, rank≤2, MD≥2) → -0.4  mild rotation
+//   virtually eliminated (maxPossible<3)  → -0.2  nothing to play for
+//   must-win (0-1 pts, played≥1)          → +1.0  full desperation
+//   chasing qualification                 → graduated by points gap
 function motivationAdjustment(fixture, weight = 1) {
   if (fixture.isKnockout || !weight) return 0;
   const lookup = groupStandingsLookup();
   const teamMotive = (team) => {
     const row = lookup.get(normalizeIntlTeam(team));
     if (!row || row.played < 1) return 0;
-    const matchdayFactor = Math.min(1, row.played / 2); // ramps to MD3
-    // Distance from the ~4-point safety line, normalized to [0,1].
-    const need = Math.max(0, Math.min(1, (4 - row.points) / 4));
-    let motive = need * matchdayFactor;            // desperation boost
-    if (row.points >= 6) motive -= 0.5 * matchdayFactor; // already through → rotation
-    return motive;
+    const played = row.played;
+    const pts = row.points;
+    const matchdayFactor = Math.min(1, played / 2); // 0.5 at MD2, 1.0 at MD3
+    const maxPossible = pts + (3 - played) * 3;
+    // Already clinched group winner — heavy rotation risk
+    if (pts >= 6) return -1.0 * matchdayFactor;
+    // Second place essentially locked after MD2
+    if (pts >= 4 && row.rank <= 2 && played >= 2) return -0.4 * matchdayFactor;
+    // Virtually eliminated: even winning out can't reach 3 pts
+    if (maxPossible < 3 && played >= 2) return -0.2 * matchdayFactor;
+    // Must-win: 0 or 1 pt — full-intensity desperation
+    if (pts <= 1) return 1.0 * matchdayFactor;
+    // Chasing qualification: graduated desperation by points gap
+    const need = Math.max(0, Math.min(1, (4 - pts) / 4));
+    return need * 0.8 * matchdayFactor;
   };
   const net = teamMotive(fixture.homeTeam) - teamMotive(fixture.awayTeam);
   return clamp(net * weight, -2, 2);

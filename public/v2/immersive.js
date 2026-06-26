@@ -13,6 +13,7 @@ async function api(path, opts) { const r = await fetch(path, opts); if (!r.ok) t
 
 const STATE = {
   context: "international", section: "predictions", matchday: "all",
+  sortBy: "confidence", clubSeason: "2025-26",
   liveTimer: null, goalWatch: null, liveScores: {}, parlayRisk: "safe",
 };
 
@@ -146,10 +147,41 @@ const headEl = (title, sub) => el("div", "section-head", `<h2>${esc(title)}</h2>
 /* ── Predictions ─────────────────────────────────────────────────────────── */
 async function renderPredictions() {
   const intl = STATE.context === "international";
-  const data = await api(intl ? "/api/international/fixture-predictions" : "/api/fixture-predictions");
+  const url = intl
+    ? "/api/international/fixture-predictions"
+    : `/api/fixture-predictions?season=${encodeURIComponent(STATE.clubSeason)}`;
+  const data = await api(url);
   const preds = data.predictions || [];
   const stage = $("#stage"); stage.innerHTML = "";
   stage.appendChild(headEl("Upcoming Predictions", `${preds.length} fixtures · model picks, confidence & odds`));
+
+  // ── Sort + season toolbar ──────────────────────────────────────────────────
+  const toolbar = el("div", "pred-toolbar");
+  const sortOpts = [
+    { k: "confidence", l: "Confidence ↓" },
+    { k: "date", l: "Date" },
+    { k: intl ? "group" : "league", l: intl ? "Group" : "League" },
+  ];
+  sortOpts.forEach(({ k, l }) => {
+    const b = el("button", "sort-btn" + (STATE.sortBy === k ? " is-active" : ""), l);
+    b.onclick = () => { STATE.sortBy = k; renderPredictions(); };
+    toolbar.appendChild(b);
+  });
+  if (!intl) {
+    const wrap = el("label", "season-lbl", "Season ");
+    const sel = el("select", "season-pick");
+    ["2025-26", "2024-25", "2023-24"].forEach((s) => {
+      const o = document.createElement("option"); o.value = s; o.textContent = s;
+      if (s === STATE.clubSeason) o.selected = true;
+      sel.appendChild(o);
+    });
+    sel.onchange = () => { STATE.clubSeason = sel.value; renderPredictions(); };
+    wrap.appendChild(sel);
+    toolbar.appendChild(wrap);
+  }
+  stage.appendChild(toolbar);
+
+  // ── Matchday filter (international only) ──────────────────────────────────
   if (intl) {
     const mds = [...new Set(preds.map((p) => p.matchday).filter(Boolean))].sort((a, b) => a - b);
     if (mds.length) {
@@ -160,8 +192,17 @@ async function renderPredictions() {
       stage.appendChild(bar);
     }
   }
+
   let list = preds;
   if (intl && STATE.matchday !== "all") list = preds.filter((p) => p.matchday === STATE.matchday);
+
+  // ── Sort ──────────────────────────────────────────────────────────────────
+  list = [...list].sort((a, b) => {
+    if (STATE.sortBy === "confidence") return num(b.confidence) - num(a.confidence);
+    if (STATE.sortBy === "date") return (a.date || "").localeCompare(b.date || "");
+    return (a.league || a.group || "").localeCompare(b.league || b.group || "");
+  });
+
   if (!list.length) { stage.appendChild(el("div", "empty", "No upcoming fixtures for this filter.")); return; }
   const grid = el("div", "grid"); list.slice(0, 60).forEach((p) => grid.appendChild(predictionCard(p)));
   stage.appendChild(grid);

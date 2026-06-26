@@ -7,8 +7,8 @@
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700;800&family=Rajdhani:wght@600;700&display=swap" rel="stylesheet" />
-  <link rel="stylesheet" href="/v2/immersive.css?v=5" />
-  <link rel="stylesheet" href="/v2/immersive-2.css?v=5" />
+  <link rel="stylesheet" href="/v2/immersive.css?v=6" />
+  <link rel="stylesheet" href="/v2/immersive-2.css?v=6" />
 </head>
 <body>
   <!-- ── Immersive splash: striker strikes, ball hits the net, scoreboard lights ── -->
@@ -92,36 +92,61 @@
         <div class="hs-flood hs-flood-l"></div>
         <div class="hs-flood hs-flood-r"></div>
         <div class="hs-particles" id="hsParticles"></div>
-        <svg class="hs-pitch" viewBox="0 0 1200 360" preserveAspectRatio="xMidYMax slice">
-          <defs>
-            <linearGradient id="hgrass" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#0e5e31"/><stop offset="1" stop-color="#06351c"/></linearGradient>
-          </defs>
-          <rect x="0" y="150" width="1200" height="210" fill="url(#hgrass)"/>
-          <g opacity="0.35" stroke="#bfeccb" stroke-width="2" fill="none">
-            <path d="M0 175 L1200 175"/><path d="M0 230 L1200 230"/><path d="M0 300 L1200 300"/>
-          </g>
-          <!-- goal right -->
-          <g class="hs-net" stroke="rgba(255,255,255,0.28)" stroke-width="1">
-            <path d="M1010 120 L1150 120 L1150 270 L1010 270 Z" fill="rgba(255,255,255,0.05)"/>
-            <line x1="1035" y1="120" x2="1035" y2="270"/><line x1="1060" y1="120" x2="1060" y2="270"/>
-            <line x1="1085" y1="120" x2="1085" y2="270"/><line x1="1110" y1="120" x2="1110" y2="270"/>
-            <line x1="1135" y1="120" x2="1135" y2="270"/>
-            <line x1="1010" y1="150" x2="1150" y2="150"/><line x1="1010" y1="190" x2="1150" y2="190"/><line x1="1010" y1="230" x2="1150" y2="230"/>
-          </g>
-          <g stroke="#f4f7ff" stroke-width="6" stroke-linecap="round" fill="none">
-            <line x1="1008" y1="118" x2="1008" y2="272"/><line x1="1008" y1="118" x2="1152" y2="118"/><line x1="1152" y1="118" x2="1152" y2="272"/>
-          </g>
-          <!-- striker left, loops a strike -->
-          <g class="hs-striker" transform="translate(150,300)">
-            <ellipse cx="0" cy="6" rx="34" ry="7" fill="rgba(0,0,0,0.3)"/>
-            <circle cx="0" cy="-96" r="14" fill="#0b0d12"/>
-            <rect x="-12" y="-83" width="24" height="54" rx="10" fill="#0b0d12"/>
-            <g class="hs-arm" transform="translate(10,-78)"><rect x="-5" y="0" width="10" height="36" rx="5" fill="#10131a"/></g>
-            <g transform="translate(-6,-30)"><rect x="-6" y="0" width="13" height="34" rx="6" fill="#0b0d12"/></g>
-            <g class="hs-leg" transform="translate(8,-30)"><rect x="-6" y="0" width="13" height="34" rx="6" fill="#0b0d12"/><rect x="-8" y="30" width="22" height="9" rx="4" fill="#e0245e"/></g>
-          </g>
-          <circle class="hs-ball" cx="195" cy="312" r="11" fill="#fff" stroke="#111" stroke-width="1.2"/>
-        </svg>
+        <!-- 3D perspective pitch: top-down SVG + CSS rotateX = broadcast camera angle -->
+        <div class="hs-3d-wrap" aria-hidden="true">
+          <svg class="hs-3d-svg" viewBox="0 0 800 580" preserveAspectRatio="xMidYMax meet" xmlns="http://www.w3.org/2000/svg">
+            <defs>
+              <linearGradient id="hgrass3d" x1="0" y1="0" x2="0" y2="1">
+                <stop offset="0" stop-color="#0a6030"/><stop offset="1" stop-color="#0e7d3a"/>
+              </linearGradient>
+              <radialGradient id="fog3d" cx="0.5" cy="0" r="0.9" gradientUnits="objectBoundingBox">
+                <stop offset="0%" stop-color="rgba(4,10,22,0.62)"/>
+                <stop offset="75%" stop-color="rgba(4,10,22,0)"/>
+              </radialGradient>
+            </defs>
+            <!-- Grass surface -->
+            <rect x="0" y="0" width="800" height="580" fill="url(#hgrass3d)"/>
+            <!-- Mow stripes -->
+            <rect x="0" y="0"   width="800" height="58"  fill="rgba(0,0,0,0.08)"/>
+            <rect x="0" y="116" width="800" height="58"  fill="rgba(0,0,0,0.08)"/>
+            <rect x="0" y="232" width="800" height="58"  fill="rgba(0,0,0,0.08)"/>
+            <rect x="0" y="348" width="800" height="58"  fill="rgba(0,0,0,0.08)"/>
+            <rect x="0" y="464" width="800" height="58"  fill="rgba(0,0,0,0.08)"/>
+            <!-- Pitch boundary -->
+            <rect x="30" y="14" width="740" height="552" fill="none" stroke="rgba(255,255,255,0.72)" stroke-width="2.5"/>
+            <!-- Halfway line -->
+            <line x1="30" y1="290" x2="770" y2="290" stroke="rgba(255,255,255,0.72)" stroke-width="2.5"/>
+            <!-- Centre circle + spot -->
+            <circle cx="400" cy="290" r="85" fill="none" stroke="rgba(255,255,255,0.68)" stroke-width="2.5"/>
+            <circle cx="400" cy="290" r="4.5" fill="rgba(255,255,255,0.8)"/>
+            <!-- Far penalty area -->
+            <rect x="228" y="14" width="344" height="114" fill="none" stroke="rgba(255,255,255,0.62)" stroke-width="2"/>
+            <rect x="320" y="14" width="160" height="48"  fill="none" stroke="rgba(255,255,255,0.42)" stroke-width="1.5"/>
+            <circle cx="400" cy="88" r="4" fill="rgba(255,255,255,0.62)"/>
+            <!-- Far goal mouth -->
+            <rect x="344" y="5" width="112" height="18" fill="rgba(255,255,255,0.07)" stroke="#fff" stroke-width="3"/>
+            <!-- Far goal net -->
+            <g stroke="rgba(255,255,255,0.28)" stroke-width="1">
+              <line x1="360" y1="5" x2="360" y2="23"/><line x1="378" y1="5" x2="378" y2="23"/>
+              <line x1="400" y1="5" x2="400" y2="23"/><line x1="422" y1="5" x2="422" y2="23"/>
+              <line x1="440" y1="5" x2="440" y2="23"/>
+              <line x1="344" y1="14" x2="456" y2="14"/>
+            </g>
+            <!-- Near penalty area -->
+            <rect x="228" y="452" width="344" height="114" fill="none" stroke="rgba(255,255,255,0.62)" stroke-width="2"/>
+            <rect x="320" y="518" width="160" height="48"  fill="none" stroke="rgba(255,255,255,0.42)" stroke-width="1.5"/>
+            <circle cx="400" cy="492" r="4" fill="rgba(255,255,255,0.62)"/>
+            <!-- Near goal mouth -->
+            <rect x="344" y="556" width="112" height="10" fill="rgba(255,255,255,0.05)" stroke="rgba(255,255,255,0.8)" stroke-width="3"/>
+            <!-- Atmospheric depth haze at far end -->
+            <rect x="0" y="0" width="800" height="290" fill="url(#fog3d)"/>
+            <!-- Animated ball (travels near → far → into goal → reset) -->
+            <g class="hs-ball-3d-g">
+              <circle cx="400" cy="480" r="13" fill="#f8f8f8" stroke="#1a1a1a" stroke-width="1.5"/>
+              <path d="M400 471 L408 476 L405 486 L395 486 L392 476 Z" fill="#1a1a1a"/>
+            </g>
+          </svg>
+        </div>
       </div>
       <div class="hero-inner">
         <div class="hero-title">
@@ -173,6 +198,6 @@
     <div class="go-text"><span class="go-word">GOAL!</span><span class="go-detail" id="goDetail"></span></div>
   </div>
 
-  <script src="/v2/immersive.js?v=5"></script>
+  <script src="/v2/immersive.js?v=6"></script>
 </body>
 </html>
