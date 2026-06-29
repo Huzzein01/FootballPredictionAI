@@ -577,7 +577,7 @@ function fireGoal(team, detail) {
   $("#goDetail").textContent = team ? `${team} scores! ${detail}` : detail;
   // confetti
   const conf = $("#goConfetti"); conf.innerHTML = "";
-  const colors = ["#e0245e", "#2bd47a", "#ffcf4d", "#3b82f6", "#ffffff"];
+  const colors = ["#7a1a2a", "#b87d20", "#e8a030", "#4a8c4a", "#f0ebe0"];
   for (let i = 0; i < 60; i++) {
     const c = el("i");
     c.style.left = Math.random() * 100 + "%";
@@ -598,6 +598,86 @@ function fireGoal(team, detail) {
 }
 window.__testGoal = (t) => fireGoal(t || "Brazil", "Brazil 1 – 0 Croatia");
 
+/* ── GSAP cinematic animations ───────────────────────────────────────────── */
+function initGsapAnimations() {
+  if (!window.gsap) return;
+  const stageEl = document.getElementById("stage");
+  const heroStatsEl = document.getElementById("heroStats");
+  if (!stageEl) return;
+
+  /* Animate numbers (KPI, hero stats) with a counter sweep */
+  function animateNumbers(root) {
+    root.querySelectorAll(".kpi b:not(.gsap-done), .hero-stat b:not(.gsap-done)").forEach((numEl) => {
+      const raw = numEl.textContent.trim();
+      const match = raw.match(/^(\d+(?:\.\d+)?)/);
+      if (!match) return;
+      numEl.classList.add("gsap-done");
+      const target = parseFloat(match[1]);
+      const suffix = raw.slice(match[1].length);
+      const obj = { val: 0 };
+      gsap.to(obj, {
+        val: target, duration: 0.9, delay: 0.15, ease: "power2.out",
+        onUpdate() {
+          numEl.textContent = (Number.isInteger(target) ? Math.round(obj.val) : obj.val.toFixed(1)) + suffix;
+        },
+      });
+    });
+  }
+
+  /* Stage: observe direct children for section changes */
+  let stageTimer;
+  new MutationObserver(() => {
+    clearTimeout(stageTimer);
+    stageTimer = setTimeout(() => {
+      const head = stageEl.querySelector(".section-head:not(.gsap-done)");
+      if (head) {
+        head.classList.add("gsap-done");
+        gsap.fromTo(head,
+          { y: 12, opacity: 0 },
+          { y: 0, opacity: 1, duration: 0.4, ease: "power3.out" }
+        );
+      }
+      const cards = stageEl.querySelectorAll(".card:not(.gsap-done)");
+      if (cards.length) {
+        cards.forEach((c) => c.classList.add("gsap-done"));
+        gsap.fromTo(cards,
+          { y: 20, opacity: 0 },
+          { y: 0, opacity: 1, duration: 0.36, stagger: 0.055, ease: "power3.out", clearProps: "transform,opacity" }
+        );
+      }
+      animateNumbers(stageEl);
+    }, 40);
+  }).observe(stageEl, { childList: true });
+
+  /* Hero stats: separate observer for counter animation */
+  if (heroStatsEl) {
+    new MutationObserver(() => {
+      gsap.fromTo(
+        heroStatsEl.querySelectorAll(".hero-stat"),
+        { opacity: 0, y: 7 },
+        { opacity: 1, y: 0, duration: 0.32, stagger: 0.07, ease: "power3.out", clearProps: "transform,opacity" }
+      );
+      animateNumbers(heroStatsEl);
+    }).observe(heroStatsEl, { childList: true });
+  }
+
+  /* Scroll parallax — hero pitch drifts on scroll */
+  const wrap = document.querySelector(".hs-3d-wrap");
+  if (wrap) {
+    window.addEventListener("scroll", () => {
+      gsap.to(wrap, { y: window.scrollY * 0.18, duration: 0, ease: "none", overwrite: true });
+    }, { passive: true });
+  }
+
+  /* Nav tab switch — fade stage content */
+  document.getElementById("nav").addEventListener("click", () => {
+    gsap.fromTo(stageEl, { opacity: 0.3 }, { opacity: 1, duration: 0.28, ease: "power2.out" });
+  });
+}
+
 /* ── Go ──────────────────────────────────────────────────────────────────── */
 document.addEventListener("DOMContentLoaded", runSplash);
 window.addEventListener("resize", positionCtxGlow);
+
+/* Init GSAP after GSAP script loads (defer) */
+window.addEventListener("load", initGsapAnimations);

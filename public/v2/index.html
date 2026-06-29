@@ -6,12 +6,13 @@
   <title>Football Analyst — Immersive</title>
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-  <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700;800&family=Rajdhani:wght@600;700&display=swap" rel="stylesheet" />
-  <link rel="stylesheet" href="/v2/immersive.css?v=6" />
-  <link rel="stylesheet" href="/v2/immersive-2.css?v=6" />
+  <link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@600;700;800&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="/v2/immersive.css?v=8" />
+  <link rel="stylesheet" href="/v2/immersive-2.css?v=8" />
 </head>
 <body>
-  <!-- ── Immersive splash: striker strikes, ball hits the net, scoreboard lights ── -->
+
+  <!-- ── Splash: striker, ball arc, net shake, scoreboard ── -->
   <div id="splash" class="splash" aria-hidden="true">
     <div class="splash-sky"></div>
     <div class="splash-floods">
@@ -25,7 +26,7 @@
             <stop offset="0" stop-color="#0c5a2e"/><stop offset="1" stop-color="#073d20"/>
           </linearGradient>
           <radialGradient id="spot" cx="0.5" cy="0.2" r="0.9">
-            <stop offset="0" stop-color="rgba(255,255,255,0.18)"/><stop offset="1" stop-color="rgba(255,255,255,0)"/>
+            <stop offset="0" stop-color="rgba(255,175,60,0.14)"/><stop offset="1" stop-color="rgba(255,255,255,0)"/>
           </radialGradient>
         </defs>
         <rect x="0" y="300" width="1000" height="260" fill="url(#grass)"/>
@@ -61,10 +62,10 @@
             <g class="arm-back" transform="translate(-10,-66)"><rect x="-6" y="0" width="11" height="40" rx="5" fill="#10131a"/></g>
             <g class="arm-front" transform="translate(10,-66)"><rect x="-5" y="0" width="11" height="40" rx="5" fill="#10131a"/></g>
             <g class="leg-plant" transform="translate(-6,-16)"><rect x="-7" y="0" width="14" height="62" rx="7" fill="#0b0d12"/></g>
-            <g class="leg-kick" transform="translate(8,-16)"><rect x="-7" y="0" width="14" height="60" rx="7" fill="#0b0d12"/><rect x="-9" y="54" width="26" height="11" rx="5" fill="#e0245e"/></g>
+            <g class="leg-kick" transform="translate(8,-16)"><rect x="-7" y="0" width="14" height="60" rx="7" fill="#0b0d12"/><rect x="-9" y="54" width="26" height="11" rx="5" fill="#7a1a2a"/></g>
           </g>
         </g>
-        <circle class="strike-flash" cx="235" cy="356" r="0" fill="rgba(255,240,150,0.9)"/>
+        <circle class="strike-flash" cx="235" cy="356" r="0" fill="rgba(255,190,70,0.9)"/>
       </svg>
       <div class="scoreboard" aria-hidden="true">
         <span class="sb-team sb-home">MODEL</span>
@@ -100,8 +101,8 @@
                 <stop offset="0" stop-color="#0a6030"/><stop offset="1" stop-color="#0e7d3a"/>
               </linearGradient>
               <radialGradient id="fog3d" cx="0.5" cy="0" r="0.9" gradientUnits="objectBoundingBox">
-                <stop offset="0%" stop-color="rgba(4,10,22,0.62)"/>
-                <stop offset="75%" stop-color="rgba(4,10,22,0)"/>
+                <stop offset="0%" stop-color="rgba(12,4,4,0.68)"/>
+                <stop offset="75%" stop-color="rgba(12,4,4,0)"/>
               </radialGradient>
             </defs>
             <!-- Grass surface -->
@@ -140,7 +141,7 @@
             <rect x="344" y="556" width="112" height="10" fill="rgba(255,255,255,0.05)" stroke="rgba(255,255,255,0.8)" stroke-width="3"/>
             <!-- Atmospheric depth haze at far end -->
             <rect x="0" y="0" width="800" height="290" fill="url(#fog3d)"/>
-            <!-- Animated ball (travels near → far → into goal → reset) -->
+            <!-- Animated ball -->
             <g class="hs-ball-3d-g">
               <circle cx="400" cy="480" r="13" fill="#f8f8f8" stroke="#1a1a1a" stroke-width="1.5"/>
               <path d="M400 471 L408 476 L405 486 L395 486 L392 476 Z" fill="#1a1a1a"/>
@@ -191,13 +192,14 @@
         <rect x="-14" y="-90" width="28" height="60" rx="12" fill="#0b0d12"/>
         <g class="go-arm" transform="translate(12,-84)"><rect x="-6" y="0" width="12" height="40" rx="6" fill="#12161f"/></g>
         <g transform="translate(-7,-32)"><rect x="-7" y="0" width="15" height="40" rx="7" fill="#0b0d12"/></g>
-        <g class="go-leg" transform="translate(9,-32)"><rect x="-7" y="0" width="15" height="38" rx="7" fill="#0b0d12"/><rect x="-9" y="34" width="26" height="11" rx="5" fill="#e0245e"/></g>
+        <g class="go-leg" transform="translate(9,-32)"><rect x="-7" y="0" width="15" height="38" rx="7" fill="#0b0d12"/><rect x="-9" y="34" width="26" height="11" rx="5" fill="#7a1a2a"/></g>
       </g>
       <circle class="go-ball" cx="170" cy="292" r="14" fill="#fff" stroke="#111" stroke-width="1.5"/>
     </svg>
     <div class="go-text"><span class="go-word">GOAL!</span><span class="go-detail" id="goDetail"></span></div>
   </div>
 
-  <script src="/v2/immersive.js?v=6"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js" defer></script>
+  <script src="/v2/immersive.js?v=8"></script>
 </body>
 </html>

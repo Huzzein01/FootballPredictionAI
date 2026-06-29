@@ -20,6 +20,7 @@ const { refreshWorldCupResults, syncWorldCupPlayerStats, readWorldCupResults } =
 const { listTeamResults, getTeamResults } = require("./teamResultsStore");
 const { listTeamTraining, getTeamTraining, appendTeamNote, updateTeamTrainingProfiles } = require("./teamTrainingStore");
 const { refreshTheOddsApi } = require("./oddsApiService");
+const { runFixtureBridge, bridgeState } = require("./espnFixtureBridge");
 const { apiFootballStatus } = require("./liveData");
 const { refreshApiFootballPlayerStats } = require("./apiFootballPlayerStats");
 const { readJsonWithFallback, repoDataPath } = require("./runtimePaths");
@@ -174,6 +175,8 @@ function triggerLiveFixtureRefresh(reason = "background", { force = false } = {}
           console.warn("World Cup sync failed:", error.message);
         }
         await refreshEspnFixtures({ daysBack: 14, daysForward: 180 });
+        // Merge newly-published WC knockout fixtures from ESPN into the fixture file.
+        try { await runFixtureBridge(); } catch (e) { console.warn("Fixture bridge error:", e.message); }
         await refreshTheOddsApi({ includeClub: true, includeInternational: true, daysForward: 420 });
         await refreshMissingOdds();
         await refreshLiveLeagueContext();
@@ -529,6 +532,15 @@ async function handleApi(req, res, pathname) {
 
   if (req.method === "GET" && pathname === "/api/training-status") {
     return sendJson(res, 200, readTrainingStatus());
+  }
+
+  if (req.method === "GET" && pathname === "/api/fixture-bridge/status") {
+    return sendJson(res, 200, bridgeState());
+  }
+
+  if (req.method === "POST" && pathname === "/api/fixture-bridge/sync") {
+    const result = await runFixtureBridge({ force: true });
+    return sendJson(res, 200, result);
   }
 
   if (req.method === "POST" && pathname === "/api/predict") {
@@ -1215,6 +1227,9 @@ if (!process.env.VERCEL) {
       triggerLiveFixtureRefresh("background-interval");
       await refreshWorldCupResults();
       await syncWorldCupPlayerStats();
+      // Bridge: catches newly-published fixtures (especially WC knockout round
+      // match-ups) the moment ESPN publishes them.
+      try { await runFixtureBridge(); } catch (e) { console.warn("Fixture bridge error:", e.message); }
       // 24/7 training: re-tune toward the 75% target, refresh the daily slip.
       try {
         require("./autoTune").runAutoTune({ reason: "background-interval" });
@@ -1235,5 +1250,5 @@ if (!process.env.VERCEL) {
   setTimeout(backgroundSync, 10_000).unref?.();
   const timer = setInterval(backgroundSync, SYNC_INTERVAL_MS);
   timer.unref?.();
-  console.log("Continuous auto-sync + auto-tune enabled: ESPN fixtures/results, WC settlement, player stats, model tuning, daily parlay slip (every 5 min).");
+  console.log("Continuous auto-sync + auto-tune enabled: ESPN fixture bridge (WC knockout + club near-term), results, WC settlement, player stats, model tuning, daily parlay slip (every 5 min).");
 }
