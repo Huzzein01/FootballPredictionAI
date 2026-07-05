@@ -3295,26 +3295,90 @@
         "hostBoost": 3,
         "fifaMovementCap": 2
       }
+    },
+    {
+      "at": "2026-07-05T09:47:43.719Z",
+      "reason": "cloud-cron-matchday",
+      "passes": 1,
+      "corpusSize": 353,
+      "wcMatches": 90,
+      "baselineWeightedAccuracy": 0.595,
+      "tunedWeightedAccuracy": 0.595,
+      "tunedRawAccuracy": 0.552,
+      "baselineMacroF1": 0.52,
+      "tunedMacroF1": 0.52,
+      "drawF1": 0.323,
+      "drawRecall": 0.368,
+      "drawsPredicted": 111,
+      "drawSharePct": 31.4,
+      "highConfidenceAccuracy": 0.86,
+      "highConfidencePicks": 50,
+      "highConfidenceCoverage": 0.142,
+      "highConfidenceThreshold": 55,
+      "liveWorldCup": {
+        "matchdayResults": 87,
+        "correct": 56,
+        "accuracy": 0.6436781609195402,
+        "currentMatchday": 4,
+        "targetMatchday": 4,
+        "perMatchday": {
+          "1": {
+            "played": 24,
+            "correct": 11
+          },
+          "2": {
+            "played": 24,
+            "correct": 17
+          },
+          "3": {
+            "played": 24,
+            "correct": 15
+          },
+          "4": {
+            "played": 15,
+            "correct": 13
+          }
+        },
+        "highConfidence": {
+          "threshold": 55,
+          "picks": 39,
+          "correct": 29,
+          "accuracy": 0.7435897435897436
+        }
+      },
+      "targetAccuracy": 0.75,
+      "targetMatchday": 4,
+      "currentMatchday": 4,
+      "targetMet": true,
+      "params": {
+        "fifaBlend": 0.6,
+        "logisticSteepness": 12,
+        "friendlySeriousness": 0.6,
+        "drawBase": 0.38,
+        "drawSlope": 0.008,
+        "hostBoost": 3,
+        "fifaMovementCap": 2
+      }
     }
   ],
   "latest": {
-    "at": "2026-07-04T09:31:54.362Z",
+    "at": "2026-07-05T09:47:43.719Z",
     "reason": "cloud-cron-matchday",
     "passes": 1,
-    "corpusSize": 351,
-    "wcMatches": 88,
-    "baselineWeightedAccuracy": 0.59,
-    "tunedWeightedAccuracy": 0.59,
-    "tunedRawAccuracy": 0.55,
-    "baselineMacroF1": 0.516,
-    "tunedMacroF1": 0.516,
+    "corpusSize": 353,
+    "wcMatches": 90,
+    "baselineWeightedAccuracy": 0.595,
+    "tunedWeightedAccuracy": 0.595,
+    "tunedRawAccuracy": 0.552,
+    "baselineMacroF1": 0.52,
+    "tunedMacroF1": 0.52,
     "drawF1": 0.323,
     "drawRecall": 0.368,
     "drawsPredicted": 111,
-    "drawSharePct": 31.6,
-    "highConfidenceAccuracy": 0.857,
-    "highConfidencePicks": 49,
-    "highConfidenceCoverage": 0.14,
+    "drawSharePct": 31.4,
+    "highConfidenceAccuracy": 0.86,
+    "highConfidencePicks": 50,
+    "highConfidenceCoverage": 0.142,
     "highConfidenceThreshold": 55,
     "liveWorldCup": {
       "matchdayResults": 87,
