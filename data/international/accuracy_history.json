@@ -3551,23 +3551,87 @@
         "hostBoost": 3,
         "fifaMovementCap": 2
       }
+    },
+    {
+      "at": "2026-07-10T10:30:01.907Z",
+      "reason": "cloud-cron-matchday",
+      "passes": 1,
+      "corpusSize": 360,
+      "wcMatches": 97,
+      "baselineWeightedAccuracy": 0.604,
+      "tunedWeightedAccuracy": 0.604,
+      "tunedRawAccuracy": 0.558,
+      "baselineMacroF1": 0.527,
+      "tunedMacroF1": 0.527,
+      "drawF1": 0.33,
+      "drawRecall": 0.375,
+      "drawsPredicted": 112,
+      "drawSharePct": 31.1,
+      "highConfidenceAccuracy": 0.863,
+      "highConfidencePicks": 51,
+      "highConfidenceCoverage": 0.142,
+      "highConfidenceThreshold": 55,
+      "liveWorldCup": {
+        "matchdayResults": 87,
+        "correct": 56,
+        "accuracy": 0.6436781609195402,
+        "currentMatchday": 4,
+        "targetMatchday": 4,
+        "perMatchday": {
+          "1": {
+            "played": 24,
+            "correct": 11
+          },
+          "2": {
+            "played": 24,
+            "correct": 17
+          },
+          "3": {
+            "played": 24,
+            "correct": 15
+          },
+          "4": {
+            "played": 15,
+            "correct": 13
+          }
+        },
+        "highConfidence": {
+          "threshold": 55,
+          "picks": 39,
+          "correct": 29,
+          "accuracy": 0.7435897435897436
+        }
+      },
+      "targetAccuracy": 0.75,
+      "targetMatchday": 4,
+      "currentMatchday": 4,
+      "targetMet": true,
+      "params": {
+        "fifaBlend": 0.6,
+        "logisticSteepness": 12,
+        "friendlySeriousness": 0.6,
+        "drawBase": 0.38,
+        "drawSlope": 0.008,
+        "hostBoost": 3,
+        "fifaMovementCap": 2
+      }
     }
   ],
   "latest": {
-    "at": "2026-07-08T09:38:59.511Z",
+    "at": "2026-07-10T10:30:01.907Z",
     "reason": "cloud-cron-matchday",
     "passes": 1,
-    "corpusSize": 359,
-    "wcMatches": 96,
-    "baselineWeightedAccuracy": 0.602,
-    "tunedWeightedAccuracy": 0.602,
-    "tunedRawAccuracy": 0.557,
-    "baselineMacroF1": 0.526,
-    "tunedMacroF1": 0.526,
+    "corpusSize": 360,
+    "wcMatches": 97,
+    "baselineWeightedAccuracy": 0.604,
+    "tunedWeightedAccuracy": 0.604,
+    "tunedRawAccuracy": 0.558,
+    "baselineMacroF1": 0.527,
+    "tunedMacroF1": 0.527,
     "drawF1": 0.33,
     "drawRecall": 0.375,
     "drawsPredicted": 112,
-    "drawSharePct": 31.2,
+    "drawSharePct": 31.1,
     "highConfidenceAccuracy": 0.863,
     "highConfidencePicks": 51,
     "highConfidenceCoverage": 0.142,
