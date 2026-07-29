@@ -3,9 +3,9 @@ const path = require("path");
 const { FEATURE_NAMES, buildCurrentFeatureVector } = require("./features");
 const { loadMatches } = require("./footballData");
 const { predictProba } = require("./model");
+const { fixturePathForSeason } = require("./espnFixtureService");
 
 const MODEL_PATH = path.join(process.cwd(), "model", "football_match_model.json");
-const FIXTURE_PATH = path.join(process.cwd(), "data", "remaining_fixtures_2025_26_with_odds.csv");
 
 let modelCache = null;
 let modelMtime = 0;
@@ -422,21 +422,23 @@ function parseCsvLine(line) {
   return cells.map((value) => value.trim());
 }
 
-function loadRemainingFixtures() {
-  if (!fs.existsSync(FIXTURE_PATH)) return [];
-  const [headerLine, ...lines] = fs.readFileSync(FIXTURE_PATH, "utf8").replace(/^\uFEFF/, "").split(/\r?\n/).filter(Boolean);
+function loadRemainingFixtures(season = "2025-26") {
+  const fixturePath = fixturePathForSeason(season);
+  if (!fs.existsSync(fixturePath)) return [];
+  const [headerLine, ...lines] = fs.readFileSync(fixturePath, "utf8").replace(/^\uFEFF/, "").split(/\r?\n/).filter(Boolean);
   const headers = parseCsvLine(headerLine);
 
   return lines
     .map((line) => Object.fromEntries(parseCsvLine(line).map((value, index) => [headers[index], value])))
     .filter((fixture) => fixture.date && fixture.league && fixture.homeTeam && fixture.awayTeam)
-    .map((fixture) => ({ ...fixture, season: "2025-26" }));
+    .map((fixture) => ({ ...fixture, season }));
 }
 
-function fixturePredictionBoard() {
-  const fixtureStat = fs.existsSync(FIXTURE_PATH) ? fs.statSync(FIXTURE_PATH).mtimeMs : 0;
+function fixturePredictionBoard({ season = "2025-26" } = {}) {
+  const fixturePath = fixturePathForSeason(season);
+  const fixtureStat = fs.existsSync(fixturePath) ? fs.statSync(fixturePath).mtimeMs : 0;
   const modelStat = fs.existsSync(MODEL_PATH) ? fs.statSync(MODEL_PATH).mtimeMs : 0;
-  const cacheKey = `${fixtureStat}:${modelStat}`;
+  const cacheKey = `${season}:${fixtureStat}:${modelStat}`;
   const now = Date.now();
   if (fixtureBoardCache && fixtureBoardCacheKey === cacheKey && now - fixtureBoardCacheAt < FIXTURE_BOARD_CACHE_TTL_MS) {
     return fixtureBoardCache.map((prediction) => ({
@@ -446,7 +448,7 @@ function fixturePredictionBoard() {
       standingContext: prediction.standingContext ? { ...prediction.standingContext } : prediction.standingContext,
     }));
   }
-  const predictions = loadRemainingFixtures()
+  const predictions = loadRemainingFixtures(season)
     .map((fixture) => predictMatch(fixture))
     .sort((a, b) => `${a.date} ${a.league} ${a.homeTeam}`.localeCompare(`${b.date} ${b.league} ${b.homeTeam}`));
   fixtureBoardCache = predictions;

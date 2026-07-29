@@ -73,18 +73,27 @@ function csvCell(value) {
   return /[",\n\r]/.test(text) ? `"${text.replaceAll("\"", "\"\"")}"` : text;
 }
 
-function readFixtureCsv() {
-  if (!fs.existsSync(FIXTURE_PATH)) return { headers: [], rows: [] };
-  const lines = fs.readFileSync(FIXTURE_PATH, "utf8").replace(/^\uFEFF/, "").split(/\r?\n/).filter(Boolean);
+function fixturePathForSeason(season = "2025-26") {
+  // Keep the original filename stable for the current historical data set;
+  // store each new season separately so a refresh never mixes campaigns.
+  if (season === "2025-26") return FIXTURE_PATH;
+  const safeSeason = String(season).replace(/[^0-9-]/g, "").replaceAll("-", "_");
+  return repoDataPath(`fixtures_${safeSeason}_with_odds.csv`);
+}
+
+function readFixtureCsv(season = "2025-26") {
+  const fixturePath = fixturePathForSeason(season);
+  if (!fs.existsSync(fixturePath)) return { headers: [], rows: [] };
+  const lines = fs.readFileSync(fixturePath, "utf8").replace(/^\uFEFF/, "").split(/\r?\n/).filter(Boolean);
   const headers = parseCsvLine(lines.shift() || "");
   const rows = lines.map((line) => Object.fromEntries(parseCsvLine(line).map((value, index) => [headers[index], value])));
   return { headers, rows };
 }
 
-function writeFixtureCsv(headers, rows) {
+function writeFixtureCsv(headers, rows, season = "2025-26") {
   const finalHeaders = [...new Set([...headers, "date", "league", "homeTeam", "awayTeam", "homeLogoUrl", "awayLogoUrl", "homeRecord", "awayRecord", "homeOdds", "drawOdds", "awayOdds", "oddsSource", "oddsStatus", "oddsSourceUrl", "oddsSnapshotAt", "espnEventId", "kickoffUtc", "fixtureSource"])];
   const output = [finalHeaders.join(","), ...rows.map((row) => finalHeaders.map((header) => csvCell(row[header])).join(","))].join("\n") + "\n";
-  writeFileIfWritable(FIXTURE_PATH, output);
+  writeFileIfWritable(fixturePathForSeason(season), output);
 }
 
 function fixtureKey(fixture) {
@@ -204,7 +213,9 @@ function normalizeEspnResult(event, league, sourceUrl) {
 
 async function fetchLeagueScoreboard(league, dateWindow) {
   const code = ESPN_LEAGUES[league];
-  const sourceUrl = `https://site.api.espn.com/apis/site/v2/sports/soccer/${code}/scoreboard?dates=${dateWindow}&limit=300`;
+  // A domestic season can have 380 fixtures (EPL/La Liga/etc.); 300 silently
+  // truncates the calendar, so request a page large enough for the full season.
+  const sourceUrl = `https://site.api.espn.com/apis/site/v2/sports/soccer/${code}/scoreboard?dates=${dateWindow}&limit=500`;
   const response = await fetch(sourceUrl, { headers: { "user-agent": USER_AGENT } });
   if (!response.ok) throw new Error(`ESPN ${league} fixture request failed: ${response.status}`);
   const payload = await response.json();
@@ -229,19 +240,19 @@ async function fetchLeagueResults(league, dateWindow) {
     .filter((result) => result.completed && result.date && result.homeTeam && result.awayTeam && Number.isFinite(result.homeGoals) && Number.isFinite(result.awayGoals));
 }
 
-async function refreshEspnFixtures({ daysBack = 7, daysForward = 75 } = {}) {
-  const dateWindow = dateRange(daysBack, daysForward);
+async function refreshEspnFixtures({ daysBack = 7, daysForward = 75, dateWindow = "", season = "2025-26" } = {}) {
+  const requestedWindow = dateWindow || dateRange(daysBack, daysForward);
   const fetched = [];
   const errors = [];
   for (const league of Object.keys(ESPN_LEAGUES)) {
     try {
-      fetched.push(...await fetchLeagueFixtures(league, dateWindow));
+      fetched.push(...await fetchLeagueFixtures(league, requestedWindow));
     } catch (error) {
       errors.push({ league, message: error.message });
     }
   }
 
-  const { headers, rows } = readFixtureCsv();
+  const { headers, rows } = readFixtureCsv(season);
   const byKey = new Map(rows.map((row) => [fixtureKey(row), { ...row }]));
   const byMatchup = new Map();
   for (const row of rows) {
@@ -271,7 +282,7 @@ async function refreshEspnFixtures({ daysBack = 7, daysForward = 75 } = {}) {
       });
       updated += 1;
     } else {
-      byKey.set(key, fixture);
+      byKey.set(key, { ...fixture, season });
       inserted += 1;
     }
   }
@@ -301,12 +312,13 @@ async function refreshEspnFixtures({ daysBack = 7, daysForward = 75 } = {}) {
     }
   }
   const mergedRows = deduped.sort((a, b) => `${a.date} ${a.league} ${a.homeTeam}`.localeCompare(`${b.date} ${b.league} ${b.homeTeam}`));
-  if (inserted || updated) writeFixtureCsv(headers, mergedRows);
+  if (inserted || updated) writeFixtureCsv(headers, mergedRows, season);
 
   const snapshot = {
     updatedAt: new Date().toISOString(),
     source: "ESPN public event scoreboard API",
-    dateWindow,
+    dateWindow: requestedWindow,
+    season,
     checkedLeagues: Object.keys(ESPN_LEAGUES),
     fetched: fetched.length,
     inserted,
@@ -538,6 +550,7 @@ module.exports = {
   liveStatusLookup,
   enrichPredictionsWithLiveStatus,
   refreshEspnFixtures,
+  fixturePathForSeason,
   refreshEspnResults,
   refreshInternationalFriendlyResults,
   normalizeEspnResult,

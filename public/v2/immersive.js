@@ -13,7 +13,7 @@ async function api(path, opts) { const r = await fetch(path, opts); if (!r.ok) t
 
 const STATE = {
   context: "international", section: "predictions", matchday: "all",
-  sortBy: "confidence", clubSeason: "2025-26",
+  sortBy: "confidence", clubSeason: "2026-27",
   liveTimer: null, goalWatch: null, liveScores: {}, parlayRisk: "safe",
 };
 
@@ -108,6 +108,10 @@ function buildNav() {
     b.addEventListener("click", () => { STATE.section = s.id; buildNav(); renderSection(); });
     nav.appendChild(b);
   });
+  const classic = el("button", "nav-btn nav-ui-toggle", "Classic UI");
+  classic.title = "Open the classic interface";
+  classic.addEventListener("click", () => window.location.assign("/classic/"));
+  nav.appendChild(classic);
 }
 
 /* ── Hero stats ──────────────────────────────────────────────────────────── */
@@ -170,7 +174,7 @@ async function renderPredictions() {
   if (!intl) {
     const wrap = el("label", "season-lbl", "Season ");
     const sel = el("select", "season-pick");
-    ["2025-26", "2024-25", "2023-24"].forEach((s) => {
+    ["2026-27", "2025-26", "2024-25", "2023-24"].forEach((s) => {
       const o = document.createElement("option"); o.value = s; o.textContent = s;
       if (s === STATE.clubSeason) o.selected = true;
       sel.appendChild(o);

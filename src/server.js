@@ -246,11 +246,11 @@ function hideFromUpcomingPredicate() {
   return (fx) => exact.has(exactKey(fx.homeTeam, fx.awayTeam, fx.date)) || pairs.has(pairKey(fx.homeTeam, fx.awayTeam));
 }
 
-function remainingFixturePredictions() {
+function remainingFixturePredictions(season = "2025-26") {
   const playedKeys = parlayBacktests.playedFixtureKeys();
   const verifiedResults = verifiedPlayedResultMap();
   const settledPredictions = settledPredictionMap();
-  return fixturePredictionBoard().filter((prediction) => {
+  return fixturePredictionBoard({ season }).filter((prediction) => {
     const key = parlayBacktests.fixtureSignatureFromFixture(prediction);
     return !playedKeys.has(key) && !verifiedResults.has(key) && !settledPredictions.has(key);
   });
@@ -561,9 +561,13 @@ async function handleApi(req, res, pathname) {
   }
 
   if (req.method === "GET" && pathname === "/api/fixture-predictions") {
-    const liveRefresh = triggerLiveFixtureRefresh("fixture-predictions");
-    const predictions = enrichPredictionsWithLiveStatus(remainingFixturePredictions());
-    const playedCount = playedFixturePredictions().length;
+    const url = new URL(req.url, `http://${req.headers.host}`);
+    const season = url.searchParams.get("season") || "2025-26";
+    const liveRefresh = season === "2025-26"
+      ? triggerLiveFixtureRefresh("fixture-predictions")
+      : { running: false, season, message: "Use the season fixture refresh to update this schedule." };
+    const predictions = enrichPredictionsWithLiveStatus(remainingFixturePredictions(season));
+    const playedCount = season === "2025-26" ? playedFixturePredictions().length : 0;
     return sendJson(res, 200, {
       predictions,
       liveRefresh,
@@ -706,7 +710,11 @@ async function handleApi(req, res, pathname) {
   }
 
   if (req.method === "POST" && pathname === "/api/fixtures/espn-refresh") {
-    const snapshot = await refreshEspnFixtures({ daysBack: 14, daysForward: 180 });
+    const body = await readBody(req);
+    const season = /^\d{4}-\d{2}$/.test(String(body.season || "")) ? body.season : "2025-26";
+    const [startYear] = season.split("-").map(Number);
+    const dateWindow = `${startYear}0701-${startYear + 1}0630`;
+    const snapshot = await refreshEspnFixtures({ dateWindow, season });
     await persistKnownStores(["liveEspnFixtures"]);
     return sendJson(res, 200, snapshot);
   }
