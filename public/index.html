@@ -3,7 +3,7 @@
   <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>Football Analyst</title>
+    <title>Sportsbooks Analyst</title>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@600;700;800&family=IBM+Plex+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
@@ -14,7 +14,7 @@
     <header class="topbar">
       <div>
         <p class="eyebrow">Predictive Football Intelligence</p>
-        <h1>Football Analyst</h1>
+        <h1>Sportsbooks Analyst</h1>
         <p id="modelMeta" class="meta-line">Loading model status</p>
       </div>
       <label class="mobile-page-menu">
@@ -75,6 +75,11 @@
 
     <nav class="page-nav" aria-label="App sections">
       <button id="immersiveUiToggle" class="page-tab ui-mode-toggle" type="button" title="Open the immersive interface">Immersive UI</button>
+      <span class="sport-nav-label" aria-hidden="true">Sport</span>
+      <a class="page-tab sport-tab is-active" href="/classic/#predictions" aria-current="page">Football</a>
+      <a class="page-tab sport-tab" href="/baseball/">Baseball</a>
+      <a class="page-tab sport-tab" href="/basketball/">Basketball</a>
+      <span class="sport-nav-divider" aria-hidden="true"></span>
       <button class="page-tab is-active" type="button" data-page-target="predictions">Predictions</button>
       <button class="page-tab" type="button" data-page-target="parlays">Parlays</button>
       <button class="page-tab" type="button" data-page-target="parlay-slip">Parlay Slip</button>
