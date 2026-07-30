@@ -9,6 +9,8 @@
     "update:league-context": "node scripts/update_league_context.js",
     "train": "node src/train_model.js",
     "build:team-training": "node scripts/buildTeamTraining.js --fetch",
+    "train:baseball": "node scripts/train_baseball_model.js",
+    "test:baseball": "node --test test/baseballModel.test.js",
     "predict": "node src/predict.js",
     "start": "node src/server.js"
   },
