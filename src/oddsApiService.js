@@ -403,6 +403,43 @@ async function refreshTheOddsApi({ force = false, includeClub = true, includeInt
   return snapshot;
 }
 
+// Look up one selected matchup without refreshing every configured football
+// competition. This keeps the Single Predictor's odds check targeted and lets
+// the UI explicitly fall back to user-entered market prices when no book has
+// the matchup yet.
+async function lookupMatchOdds({ homeTeam, awayTeam, context = "club", league = "" } = {}) {
+  if (!homeTeam || !awayTeam) return { found: false, reason: "Choose both teams first." };
+  const apiKey = process.env.ODDS_API_KEY || process.env.THE_ODDS_API_KEY || "";
+  if (!apiKey) return { found: false, reason: "Odds data is not configured." };
+
+  const sportKey = context === "international"
+    ? INTERNATIONAL_SPORT_KEYS[league] || INTERNATIONAL_SPORT_KEYS["2026 World Cup"]
+    : CLUB_SPORT_KEYS[league];
+  if (!sportKey) return { found: false, reason: "No supported odds market is linked to this competition." };
+
+  try {
+    const fetched = await fetchOddsEvents(sportKey, { daysForward: 120 });
+    const targetHome = normalizeLooseTeamName(homeTeam);
+    const targetAway = normalizeLooseTeamName(awayTeam);
+    const event = indexedEventsBySport([fetched]).find((candidate) =>
+      candidate.homeTeam === targetHome && candidate.awayTeam === targetAway
+    );
+    if (!event) return { found: false, reason: "No public market is available for this matchup yet.", sportKey, quota: fetched.quota || null };
+    return {
+      found: true,
+      odds: event.odds,
+      provider: "The Odds API",
+      sportKey,
+      bookmakerCount: event.bookmakerCount,
+      kickoffUtc: event.commenceTime,
+      sourceUrl: eventSourceUrl(sportKey),
+      quota: fetched.quota || null,
+    };
+  } catch (error) {
+    return { found: false, reason: "Odds could not be retrieved right now.", error: error.message };
+  }
+}
+
 function oddsForInternationalFixture(fixture) {
   const snapshot = readLiveOddsSnapshot();
   const matches = snapshot?.international?.fixtures || [];
@@ -419,5 +456,6 @@ module.exports = {
   INTERNATIONAL_SPORT_KEYS,
   LIVE_ODDS_PATH,
   oddsForInternationalFixture,
+  lookupMatchOdds,
   refreshTheOddsApi,
 };

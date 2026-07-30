@@ -601,6 +601,13 @@ body {
 .single-submit:hover { background: var(--ox-hi); }
 .single-submit:disabled { cursor: not-allowed; opacity: .55; }
 .single-no-teams { grid-column: 1 / -1; padding: 18px; border: 1px dashed var(--border); border-radius: 10px; color: var(--muted); text-align: center; }
+.single-manual-odds { margin-top: 18px; padding: 16px; border: 1px solid oklch(0.72 0.13 75 / .55); border-radius: 10px; background: oklch(0.98 0.025 85); }
+.single-manual-odds b { color: var(--ink); font-size: 13px; }
+.single-manual-odds p { margin: 4px 0 13px; color: var(--muted); font-size: 12px; }
+.manual-odds-fields { display: grid; grid-template-columns: repeat(3, minmax(100px, 1fr)) auto; gap: 10px; align-items: end; }
+.manual-odds-fields label { display: grid; gap: 5px; color: var(--muted); font-size: 10px; font-weight: 800; letter-spacing: .08em; text-transform: uppercase; }
+.manual-odds-fields input { width: 100%; box-sizing: border-box; border: 1px solid var(--border); border-radius: 7px; padding: 9px 10px; background: var(--bg-2); color: var(--ink); font: inherit; font-weight: 700; }
+.single-manual-submit { white-space: nowrap; }
 .single-result { margin-top: 18px; }
 
 @media (max-width: 720px) {
@@ -610,6 +617,8 @@ body {
   .single-form { grid-template-columns: 1fr; gap: 12px; }
   .single-versus { justify-self: center; margin: -1px 0; }
   .single-submit { width: 100%; }
+  .manual-odds-fields { grid-template-columns: 1fr; }
+  .single-manual-submit { width: 100%; }
 }
 
 /* ===========================================================================

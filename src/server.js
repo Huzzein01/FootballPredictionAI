@@ -19,7 +19,7 @@ const { readResultsSnapshot, refreshEspnFixtures, refreshEspnResults, enrichPred
 const { refreshWorldCupResults, syncWorldCupPlayerStats, readWorldCupResults } = require("./worldCupSync");
 const { listTeamResults, getTeamResults } = require("./teamResultsStore");
 const { listTeamTraining, getTeamTraining, appendTeamNote, updateTeamTrainingProfiles } = require("./teamTrainingStore");
-const { refreshTheOddsApi } = require("./oddsApiService");
+const { refreshTheOddsApi, lookupMatchOdds } = require("./oddsApiService");
 const { runFixtureBridge, bridgeState } = require("./espnFixtureBridge");
 const { apiFootballStatus } = require("./liveData");
 const { readOrRefreshSportSeason } = require("./multiSportDataService");
@@ -570,6 +570,17 @@ async function handleApi(req, res, pathname) {
     const prediction = predictMatch(body);
     const saved = body.save ? addPrediction(prediction, "manual") : null;
     return sendJson(res, 200, { prediction, saved, summary: summary() });
+  }
+
+  if (req.method === "POST" && pathname === "/api/odds/lookup") {
+    const body = await readBody(req);
+    const result = await lookupMatchOdds({
+      homeTeam: String(body.homeTeam || ""),
+      awayTeam: String(body.awayTeam || ""),
+      context: body.context === "international" ? "international" : "club",
+      league: String(body.league || ""),
+    });
+    return sendJson(res, 200, result);
   }
 
   if (req.method === "GET" && pathname === "/api/backtests") {

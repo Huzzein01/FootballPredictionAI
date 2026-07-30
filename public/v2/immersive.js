@@ -669,19 +669,36 @@ async function renderSingle() {
   const stage = $("#stage"); stage.innerHTML = "";
   stage.appendChild(headEl("Single Predictor", "pick any two teams · instant model projection"));
   let teams = [];
+  const teamInfo = new Map();
+  const rememberTeam = (team, info) => { if (team && !teamInfo.has(team)) teamInfo.set(team, info); };
   try {
-    if (STATE.context === "international") teams = (await api("/api/international/fixtures")).teams || [];
+    if (STATE.context === "international") {
+      const data = await api("/api/international/fixtures");
+      teams = data.teams || [];
+      (data.fixtures || []).forEach((fixture) => {
+        rememberTeam(fixture.homeTeam, { flagUrl: fixture.homeFlagUrl, league: seasonFor() });
+        rememberTeam(fixture.awayTeam, { flagUrl: fixture.awayFlagUrl, league: seasonFor() });
+      });
+    }
     else {
       const data = await api(`/api/fixture-predictions?season=${encodeURIComponent(STATE.clubSeason)}`);
-      teams = [...new Set(filterFootballEntries(data.predictions || []).flatMap((p) => [p.homeTeam, p.awayTeam]))];
+      const fixtures = filterFootballEntries(data.predictions || []);
+      teams = [...new Set(fixtures.flatMap((p) => [p.homeTeam, p.awayTeam]))];
+      fixtures.forEach((fixture) => {
+        rememberTeam(fixture.homeTeam, { crestUrl: fixture.homeLogoUrl, league: fixture.league });
+        rememberTeam(fixture.awayTeam, { crestUrl: fixture.awayLogoUrl, league: fixture.league });
+      });
     }
     teams = [...new Set(teams)].sort();
   } catch (_) {}
   const opts = teams.map((t) => `<option value="${esc(t)}">${esc(t)}</option>`).join("");
   const scope = STATE.context === "club" ? `${STATE.clubSeason} · ${competitionLabel()}` : STATE.internationalSeason;
-  const crest = (team) => STATE.context === "club"
-    ? clubCrest(team, "", selectedLeague())
-    : `<span class="single-team-ball" aria-hidden="true">⚽</span>`;
+  const crest = (team) => {
+    const info = teamInfo.get(team) || {};
+    return STATE.context === "club"
+      ? clubCrest(team, info.crestUrl, info.league || selectedLeague())
+      : flag(info.flagUrl);
+  };
   const form = el("section", "single-predictor");
   form.innerHTML = `
     <div class="single-predictor-top">
@@ -702,6 +719,15 @@ async function renderSingle() {
     <div class="single-predictor-actions">
       <span class="single-note">Uses the current ${STATE.context === "club" ? "club" : "international"} model baseline.</span>
       <button type="button" class="btn single-submit" id="sPredict" ${teams.length < 2 ? "disabled" : ""}>Generate prediction <span aria-hidden="true">→</span></button>
+    </div>
+    <div class="single-manual-odds" id="sManualOdds" hidden>
+      <div><b>Market odds unavailable</b><p id="sOddsNotice">Enter decimal 1X2 odds to continue with this prediction.</p></div>
+      <div class="manual-odds-fields">
+        <label>Home <input id="sHomeOdds" inputmode="decimal" type="number" min="1.01" step="0.01" placeholder="2.40"></label>
+        <label>Draw <input id="sDrawOdds" inputmode="decimal" type="number" min="1.01" step="0.01" placeholder="3.50"></label>
+        <label>Away <input id="sAwayOdds" inputmode="decimal" type="number" min="1.01" step="0.01" placeholder="2.90"></label>
+        <button type="button" class="btn single-manual-submit" id="sManualSubmit">Use these odds</button>
+      </div>
     </div>`;
   stage.appendChild(form);
   const result = el("div", "single-result"); stage.appendChild(result);
@@ -718,18 +744,56 @@ async function renderSingle() {
   updateCrests();
   home.addEventListener("change", updateCrests);
   away.addEventListener("change", updateCrests);
-  go.onclick = async () => {
+  const predict = async (odds, source = "") => {
     const homeTeam = home.value, awayTeam = away.value;
-    if (homeTeam === awayTeam) { result.innerHTML = `<div class="empty">Pick two different teams.</div>`; return; }
+    if (homeTeam === awayTeam) { result.innerHTML = `<div class="empty">Pick two different teams.</div>`; return false; }
     result.innerHTML = `<div class="loading"><div class="spinner"></div><span>Predicting…</span></div>`;
     try {
-      const data = await api("/api/predict", { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify({ homeTeam, awayTeam, context: STATE.context, season: seasonFor() }) });
+      const data = await api("/api/predict", { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify({
+        homeTeam, awayTeam, context: STATE.context, season: seasonFor(),
+        league: STATE.context === "international" ? seasonFor() : (teamInfo.get(homeTeam)?.league || selectedLeague()),
+        homeOdds: odds.homeOdds, drawOdds: odds.drawOdds, awayOdds: odds.awayOdds,
+        oddsSource: source,
+      }) });
       const p = data.prediction || data;
       const pickLabel = p.prediction === "H" ? `${homeTeam} win` : p.prediction === "A" ? `${awayTeam} win` : p.prediction === "D" ? "Draw" : "—";
       const grid = el("div", "grid"); grid.appendChild(predictionCard({ ...p, homeTeam, awayTeam, league: "Single predictor" }));
       result.innerHTML = ""; result.appendChild(grid);
       void pickLabel;
-    } catch (e) { result.innerHTML = `<div class="empty">Prediction unavailable for this matchup (${esc(e.message)}).</div>`; }
+      return true;
+    } catch (e) { result.innerHTML = `<div class="empty">Prediction unavailable for this matchup (${esc(e.message)}).</div>`; return false; }
+  };
+  const manualOdds = $("#sManualOdds", form);
+  go.onclick = async () => {
+    const homeTeam = home.value, awayTeam = away.value;
+    if (homeTeam === awayTeam) { result.innerHTML = `<div class="empty">Pick two different teams.</div>`; return; }
+    manualOdds.hidden = true;
+    go.disabled = true; go.innerHTML = "Checking odds…";
+    const homeLeague = teamInfo.get(homeTeam)?.league;
+    const awayLeague = teamInfo.get(awayTeam)?.league;
+    const league = STATE.context === "international" ? seasonFor() : (homeLeague && homeLeague === awayLeague ? homeLeague : "");
+    try {
+      const lookup = await api("/api/odds/lookup", { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify({ homeTeam, awayTeam, context: STATE.context, league }) });
+      if (lookup.found && lookup.odds) {
+        await predict(lookup.odds, lookup.provider || "The Odds API");
+        return;
+      }
+      $("#sOddsNotice", form).textContent = `${lookup.reason || "No public market is available for this matchup yet."} Enter decimal 1X2 odds to continue.`;
+      manualOdds.hidden = false;
+    } catch (_) {
+      $("#sOddsNotice", form).textContent = "Odds could not be retrieved right now. Enter decimal 1X2 odds to continue.";
+      manualOdds.hidden = false;
+    } finally {
+      go.disabled = false; go.innerHTML = "Generate prediction <span aria-hidden=\"true\">→</span>";
+    }
+  };
+  $("#sManualSubmit", form).onclick = () => {
+    const odds = { homeOdds: $("#sHomeOdds", form).value, drawOdds: $("#sDrawOdds", form).value, awayOdds: $("#sAwayOdds", form).value };
+    if (!Object.values(odds).every((value) => Number(value) > 1)) {
+      $("#sOddsNotice", form).textContent = "Enter valid decimal odds greater than 1.00 for home, draw, and away.";
+      return;
+    }
+    predict(odds, "User-entered odds");
   };
 }
 
