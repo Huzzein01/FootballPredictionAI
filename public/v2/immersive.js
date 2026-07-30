@@ -103,12 +103,15 @@ const sectionAllowed = (id) => { const s = SECTIONS.find((x) => x.id === id); re
 
 function buildNav() {
   const nav = $("#nav"); nav.innerHTML = "";
+  const brand = el("a", "nav-brand", '<span class="nav-brand-mark">SA</span><span>Sportsbooks <b>Analyst</b></span>');
+  brand.href = "/v2/";
+  brand.setAttribute("aria-label", "Sportsbooks Analyst home");
+  nav.appendChild(brand);
   // Keep the mode switch first so it stays reachable when the section nav
   // overflows on smaller screens.
   const classic = el("button", "nav-btn nav-ui-toggle", "Classic UI");
   classic.title = "Open the classic interface";
   classic.addEventListener("click", () => window.location.assign("/classic/"));
-  nav.appendChild(classic);
   const sportLinks = [
     { label: "Football", href: "/v2/", active: true },
     { label: "Baseball", href: "/baseball/" },
@@ -120,6 +123,8 @@ function buildNav() {
     if (sport.active) link.setAttribute("aria-current", "page");
     nav.appendChild(link);
   });
+  nav.appendChild(el("span", "nav-divider", ""));
+  nav.appendChild(classic);
   SECTIONS.filter((s) => !s.intl || STATE.context === "international").forEach((s) => {
     const b = el("button", "nav-btn" + (s.id === STATE.section ? " is-active" : ""), esc(s.label));
     b.addEventListener("click", () => { STATE.section = s.id; buildNav(); renderSection(); });

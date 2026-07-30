@@ -111,6 +111,161 @@
 }
 
 /* ===========================================================================
+   SPORTSBOOKS ANALYST — blue-market interface
+   Original visual system inspired by modern sportsbook information hierarchy:
+   cobalt primary navigation, navy utility rail, and bright analytical cards.
+   =========================================================================== */
+:root {
+  --bg-0: #e9f0f9;
+  --bg-1: #f5f8fc;
+  --bg-2: #ffffff;
+  --surface: #ffffff;
+  --border: #d7e1ef;
+  --border-solid: #c6d4e6;
+  --ink: #0a2242;
+  --muted: #5b6d82;
+  --ox: #1267e9;
+  --ox-hi: #2e7df2;
+  --ox-glow: rgb(18 103 233 / 20%);
+  --amber: #1168e9;
+  --amber-hi: #2e7df2;
+  --amber-glow: rgb(18 103 233 / 18%);
+  --good: #0b9a69;
+  --draw-border: #4c88d9;
+  --draw-pill: #e5f0ff;
+  --bad: #dc3d54;
+}
+
+body {
+  background: linear-gradient(180deg, #f7faff 0, #edf3fa 360px, #f8fafc 100%);
+  color: var(--ink);
+}
+
+.app {
+  max-width: none;
+  padding: 0 0 56px;
+  display: flex;
+  flex-direction: column;
+}
+
+.nav {
+  order: -2;
+  width: 100%;
+  min-height: 64px;
+  padding: 0 max(20px, calc((100vw - 1280px) / 2));
+  margin: 0;
+  align-items: stretch;
+  background: linear-gradient(90deg, #146eea, #2476ea 64%, #1468dc);
+  border: 0;
+  box-shadow: 0 2px 10px rgb(18 68 139 / 20%);
+}
+
+.nav-brand {
+  display: inline-flex;
+  align-items: center;
+  gap: 9px;
+  margin-right: 18px;
+  color: #fff;
+  text-decoration: none;
+  font-family: var(--display);
+  font-size: 20px;
+  font-weight: 800;
+  letter-spacing: -.01em;
+  white-space: nowrap;
+}
+.nav-brand b { font-weight: 600; }
+.nav-brand-mark {
+  display: grid;
+  place-items: center;
+  width: 31px;
+  height: 35px;
+  color: #176ce5;
+  background: #fff;
+  clip-path: polygon(50% 0, 94% 15%, 88% 76%, 50% 100%, 12% 76%, 6% 15%);
+  font-family: Inter, sans-serif;
+  font-size: 10px;
+  font-weight: 900;
+  letter-spacing: -.08em;
+}
+.nav-btn {
+  display: inline-flex;
+  align-items: center;
+  min-height: 64px;
+  padding: 0 13px;
+  color: rgb(255 255 255 / 82%);
+  font-size: 14px;
+  font-weight: 700;
+  text-decoration: none;
+  border-bottom: 4px solid transparent;
+}
+.nav-btn:hover { color: #fff; background: rgb(0 44 132 / 11%); }
+.nav-btn.is-active { color: #fff; border-bottom-color: #fff; }
+.nav-divider { width: 1px; height: 26px; align-self: center; margin: 0 6px; background: rgb(255 255 255 / 30%); }
+.nav-ui-toggle { color: #fff; background: rgb(4 40 105 / 27%); }
+
+.hero {
+  order: -1;
+  width: min(1280px, calc(100% - 40px));
+  min-height: 178px;
+  margin: 24px auto 0;
+  border: 0;
+  border-radius: 14px;
+  background: linear-gradient(114deg, #071d42 0%, #0a3477 52%, #176be4 100%);
+  box-shadow: 0 14px 30px rgb(16 61 120 / 16%);
+}
+.hero-scene { opacity: .13; mix-blend-mode: screen; }
+.hs-sky { background: radial-gradient(circle at 76% 16%, #88bbff, transparent 30%), linear-gradient(90deg, #061936, #166eea); }
+.hero-inner { padding: 26px 30px 18px; align-items: center; }
+.hero-logo { display: grid; place-items: center; width: 48px; height: 48px; font-size: 25px; background: rgb(255 255 255 / 12%); border: 1px solid rgb(255 255 255 / 25%); border-radius: 12px; }
+.hero-title h1 { color: #fff; font-size: clamp(28px, 4vw, 40px); letter-spacing: -.025em; }
+.hero-sub { color: #dbeaff; font-size: 13px; }
+.ctx-switch { background: rgb(2 21 52 / 35%); border-color: rgb(255 255 255 / 24%); border-radius: 999px; }
+.ctx-btn { color: #d8e8ff; border-radius: 999px; }
+.ctx-btn.is-active { background: #fff; color: #0a55bd; }
+.hero-stats { margin-top: 0; background: rgb(255 255 255 / 20%); border: 0; border-radius: 0 0 14px 14px; }
+.hero-stat { background: rgb(0 26 71 / 25%); padding: 13px 20px; }
+.hero-stat b { color: #fff; }
+.hero-stat span { color: #d7e7ff; }
+.hero-stat b.good, .hero-stat b.gold { color: #bce3ff; }
+.hero-stats::before { background: rgb(255 255 255 / 24%); }
+
+.stage {
+  width: min(1280px, calc(100% - 40px));
+  min-height: 420px;
+  margin: 22px auto 0;
+  padding: 24px;
+  border: 1px solid #d9e3f0;
+  border-radius: 14px;
+  background: #fff;
+  box-shadow: 0 6px 18px rgb(18 57 107 / 7%);
+}
+.section-head { margin-bottom: 17px; border-color: #dce5f0; }
+.section-head h2 { color: #0a2242; font-size: 28px; }
+.section-head .sub { color: #5d6e82; }
+.card { background: #fff; border-color: #d8e3f0; border-top-width: 3px; border-radius: 10px; box-shadow: 0 2px 7px rgb(18 57 107 / 5%); }
+.card:hover { border-color: #78a9ee; box-shadow: 0 10px 22px rgb(19 89 185 / 12%); }
+.card[data-pick="H"] { border-top-color: #1b70e8; }
+.card[data-pick="D"] { border-top-color: #6e99cc; }
+.card[data-pick="A"] { border-top-color: #107d9c; }
+.card.high-conf { border-color: #82b2f5; box-shadow: 0 0 0 1px #d9ebff, 0 9px 20px rgb(27 112 232 / 9%); }
+.card-top, .conf-legend, .proj { color: #607287; }
+.team .flag { background: #edf3fa; }
+.team .tn, .proj b { color: #102b50; }
+.vs { color: #7890ac; }
+.conf-bar { background: #e5edf6; }
+.conf-h { background: #176de6; }.conf-d { background: #86a7ce; }.conf-a { background: #168aa9; }
+.odds-chip { color: #607287; background: #f7faff; border-color: #dbe6f2; }.odds-chip b { color: #102b50; }.odds-chip.best { border-color: #2175e9; background: #eaf3ff; }.odds-chip.best b { color: #1267df; }
+.pill { color: #42607e; background: #edf3fa; }.pill.pick { background: #146ce5; color: #fff; }.pill.draw { background: #e2efff; color: #225c9e; }
+.sort-btn, .md-chip, .season-pick { background: #f8fbff; color: #54708f; border-color: #d8e4f0; }.sort-btn.is-active, .md-chip.is-active { color: #fff; background: #176de6; border-color: #176de6; }
+.table th { color: #607287; border-color: #dbe5f0; }.table td { border-color: #edf2f7; }
+.foot { width: min(1280px, calc(100% - 40px)); margin: 24px auto 0; color: #667991; border-color: #d8e4ef; }.foot-link { color: #1267e9; }
+
+@media (max-width: 720px) {
+  .nav { min-height: 54px; padding: 0 12px; }.nav-brand { margin-right: 8px; font-size: 16px; }.nav-brand-mark { width: 25px; height: 29px; }.nav-btn { min-height: 54px; padding: 0 10px; font-size: 12px; }.nav-divider { display: none; }
+  .hero, .stage, .foot { width: min(100% - 24px, 1280px); }.hero { margin-top: 14px; }.stage { padding: 17px; }
+}
+
+/* ===========================================================================
    LIVE GOAL CELEBRATION OVERLAY
    =========================================================================== */
 .goal-overlay[hidden] { display: none; }
