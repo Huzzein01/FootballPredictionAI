@@ -135,12 +135,14 @@ function bindCompetitionFilter() {
 }
 function updateCompetitionSwitch() {
   const wrap = $("#competitionSwitch");
+  const pickerField = $("#competitionPicker");
   const type = $("#competitionType");
   const optionsHost = $("#competitionOptions");
   const summary = $("#competitionSummary");
-  if (!wrap || !type || !optionsHost || !summary) return;
+  if (!wrap || !pickerField || !type || !optionsHost || !summary) return;
   const international = STATE.context === "international";
   wrap.hidden = international;
+  pickerField.hidden = international;
   if (international) return;
   type.value = STATE.competitionType;
   const options = FOOTBALL_CATALOG[STATE.competitionType];
