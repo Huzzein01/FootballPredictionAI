@@ -12,7 +12,7 @@ async function api(path, opts) { const r = await fetch(path, opts); if (!r.ok) t
 
 const STATE = {
   context: "international", section: "predictions", matchday: "all",
-  sortBy: "confidence", clubSeason: "2026-27", internationalSeason: "2026 World Cup", competitionType: "league", competition: "All Leagues",
+  sortBy: "confidence", clubSeason: "2026-27", internationalSeason: "2026 World Cup", competitionType: "league", competitions: ["All Leagues"],
   liveTimer: null, goalWatch: null, liveScores: {}, parlayRisk: "safe",
 };
 
@@ -110,23 +110,20 @@ function updateSeasonSwitch() {
 }
 function bindCompetitionFilter() {
   const type = $("#competitionType");
-  const select = $("#competitionSelect");
-  if (!type || !select) return;
+  const optionsHost = $("#competitionOptions");
+  if (!type || !optionsHost) return;
   const savedType = localStorage.getItem("football-competition-type");
-  const savedCompetition = localStorage.getItem("football-competition");
+  let savedCompetitions = [];
+  try { savedCompetitions = JSON.parse(localStorage.getItem("football-competitions") || "[]"); } catch (_) { savedCompetitions = []; }
   if (Object.hasOwn(FOOTBALL_CATALOG, savedType)) STATE.competitionType = savedType;
-  if (FOOTBALL_CATALOG[STATE.competitionType].includes(savedCompetition)) STATE.competition = savedCompetition;
+  const available = FOOTBALL_CATALOG[STATE.competitionType];
+  if (Array.isArray(savedCompetitions) && savedCompetitions.length && savedCompetitions.every((name) => available.includes(name))) STATE.competitions = savedCompetitions;
   type.addEventListener("change", () => {
     STATE.competitionType = type.value;
-    STATE.competition = FOOTBALL_CATALOG[STATE.competitionType][0];
+    STATE.competitions = [FOOTBALL_CATALOG[STATE.competitionType][0]];
     localStorage.setItem("football-competition-type", STATE.competitionType);
-    localStorage.setItem("football-competition", STATE.competition);
+    localStorage.setItem("football-competitions", JSON.stringify(STATE.competitions));
     updateCompetitionSwitch();
-    renderSection();
-  });
-  select.addEventListener("change", () => {
-    STATE.competition = select.value;
-    localStorage.setItem("football-competition", STATE.competition);
     renderSection();
   });
   updateCompetitionSwitch();
@@ -134,16 +131,27 @@ function bindCompetitionFilter() {
 function updateCompetitionSwitch() {
   const wrap = $("#competitionSwitch");
   const type = $("#competitionType");
-  const select = $("#competitionSelect");
-  if (!wrap || !type || !select) return;
+  const optionsHost = $("#competitionOptions");
+  const summary = $("#competitionSummary");
+  if (!wrap || !type || !optionsHost || !summary) return;
   const international = STATE.context === "international";
   wrap.hidden = international;
   if (international) return;
   type.value = STATE.competitionType;
   const options = FOOTBALL_CATALOG[STATE.competitionType];
-  if (!options.includes(STATE.competition)) STATE.competition = options[0];
-  select.innerHTML = options.map((name) => `<option value="${esc(name)}">${esc(name)}</option>`).join("");
-  select.value = STATE.competition;
+  const allName = options[0];
+  if (!STATE.competitions.length || STATE.competitions.some((name) => !options.includes(name))) STATE.competitions = [allName];
+  if (STATE.competitions.includes(allName) && STATE.competitions.length > 1) STATE.competitions = [allName];
+  summary.textContent = STATE.competitions.includes(allName) ? allName : `${STATE.competitions.length} selected`;
+  optionsHost.innerHTML = options.map((name) => `<label><input type="checkbox" value="${esc(name)}"${STATE.competitions.includes(name) ? " checked" : ""}> <span>${esc(name)}</span></label>`).join("");
+  optionsHost.querySelectorAll("input").forEach((input) => input.addEventListener("change", () => {
+    const picked = [...optionsHost.querySelectorAll("input:checked")].map((box) => box.value);
+    STATE.competitions = input.value === allName && input.checked ? [allName] : picked.filter((name) => name !== allName);
+    if (!STATE.competitions.length) STATE.competitions = [allName];
+    localStorage.setItem("football-competitions", JSON.stringify(STATE.competitions));
+    updateCompetitionSwitch();
+    renderSection();
+  }));
 }
 function isCompetitionEntry(entry) {
   return KNOCKOUT_COMPETITIONS.has(String(entry?.league || entry?.competition || ""));
@@ -153,14 +161,18 @@ function filterFootballEntries(entries) {
   const filtered = (entries || []).filter((entry) => {
     const isCompetition = isCompetitionEntry(entry);
     if (STATE.competitionType === "league") {
-      return !isCompetition && (STATE.competition === "All Leagues" || entry.league === STATE.competition);
+      return !isCompetition && (STATE.competitions.includes("All Leagues") || STATE.competitions.includes(entry.league));
     }
-    return isCompetition && (STATE.competition === "All Competitions" || entry.league === STATE.competition);
+    return isCompetition && (STATE.competitions.includes("All Competitions") || STATE.competitions.includes(entry.league));
   });
   return filtered;
 }
-function competitionLabel() { return STATE.context === "international" ? "International" : STATE.competition; }
-function selectedLeague() { return STATE.competitionType === "league" && STATE.competition !== "All Leagues" ? STATE.competition : "All"; }
+function competitionLabel() {
+  if (STATE.context === "international") return "International";
+  const allName = FOOTBALL_CATALOG[STATE.competitionType][0];
+  return STATE.competitions.includes(allName) ? allName : STATE.competitions.join(", ");
+}
+function selectedLeague() { return STATE.competitionType === "league" && STATE.competitions.length === 1 && STATE.competitions[0] !== "All Leagues" ? STATE.competitions[0] : "All"; }
 function positionCtxGlow() {
   const active = $("#ctxSwitch .ctx-btn.is-active"), glow = $(".ctx-glow");
   if (active && glow) { glow.style.left = active.offsetLeft + "px"; glow.style.width = active.offsetWidth + "px"; }
@@ -528,7 +540,7 @@ async function renderTables() {
   }
   const data = await api(`/api/league-tables?season=${encodeURIComponent(seasonFor())}`).catch(() => null);
   stage.innerHTML = ""; stage.appendChild(headEl("League Tables", "current standings"));
-  const leagues = data?.leagues ? Object.entries(data.leagues).filter(([name]) => STATE.competition === "All Leagues" || name === STATE.competition) : [];
+  const leagues = data?.leagues ? Object.entries(data.leagues).filter(([name]) => STATE.competitions.includes("All Leagues") || STATE.competitions.includes(name)) : [];
   if (!leagues.length) { stage.appendChild(el("div", "empty", "League tables unavailable right now.")); return; }
   const grid = el("div", "grid");
   leagues.forEach(([name, lg]) => {

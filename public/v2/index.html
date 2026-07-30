@@ -175,7 +175,10 @@
               <option value="league">Leagues</option>
               <option value="competition">Competitions</option>
             </select>
-            <select id="competitionSelect" aria-label="Football league or competition"></select>
+            <details class="competition-picker" id="competitionPicker">
+              <summary id="competitionSummary">All Leagues</summary>
+              <div id="competitionOptions" class="competition-options" role="group" aria-label="Choose leagues or competitions"></div>
+            </details>
           </label>
         </div>
       </div>
