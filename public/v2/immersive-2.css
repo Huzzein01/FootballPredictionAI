@@ -146,6 +146,8 @@ body {
   padding: 0 0 56px;
   display: flex;
   flex-direction: column;
+  opacity: 1;
+  animation: none;
 }
 
 .nav {
@@ -213,7 +215,7 @@ body {
   background: linear-gradient(114deg, #071d42 0%, #0a3477 52%, #176be4 100%);
   box-shadow: 0 14px 30px rgb(16 61 120 / 16%);
 }
-.hero-scene { opacity: .13; mix-blend-mode: screen; }
+.hero-scene { display: none; }
 .hs-sky { background: radial-gradient(circle at 76% 16%, #88bbff, transparent 30%), linear-gradient(90deg, #061936, #166eea); }
 .hero-inner { padding: 26px 30px 18px; align-items: center; }
 .hero-logo { display: grid; place-items: center; width: 48px; height: 48px; font-size: 25px; background: rgb(255 255 255 / 12%); border: 1px solid rgb(255 255 255 / 25%); border-radius: 12px; }
@@ -243,7 +245,7 @@ body {
 .section-head h2 { color: #0a2242; font-size: 28px; }
 .section-head .sub { color: #5d6e82; }
 .card { background: #fff; border-color: #d8e3f0; border-top-width: 3px; border-radius: 10px; box-shadow: 0 2px 7px rgb(18 57 107 / 5%); }
-.card:hover { border-color: #78a9ee; box-shadow: 0 10px 22px rgb(19 89 185 / 12%); }
+.card:hover { border-color: #78a9ee; box-shadow: 0 4px 10px rgb(19 89 185 / 9%); transform: none; }
 .card[data-pick="H"] { border-top-color: #1b70e8; }
 .card[data-pick="D"] { border-top-color: #6e99cc; }
 .card[data-pick="A"] { border-top-color: #107d9c; }
@@ -259,6 +261,9 @@ body {
 .sort-btn, .md-chip, .season-pick { background: #f8fbff; color: #54708f; border-color: #d8e4f0; }.sort-btn.is-active, .md-chip.is-active { color: #fff; background: #176de6; border-color: #176de6; }
 .table th { color: #607287; border-color: #dbe5f0; }.table td { border-color: #edf2f7; }
 .foot { width: min(1280px, calc(100% - 40px)); margin: 24px auto 0; color: #667991; border-color: #d8e4ef; }.foot-link { color: #1267e9; }
+
+/* Deliberately static: this is a decision dashboard, not an animated experience. */
+.hero, .hero *, .nav-btn, .card, .kpi, .hero-stat { animation: none !important; transition: none; }
 
 @media (max-width: 720px) {
   .nav { min-height: 54px; padding: 0 12px; }.nav-brand { margin-right: 8px; font-size: 16px; }.nav-brand-mark { width: 25px; height: 29px; }.nav-btn { min-height: 54px; padding: 0 10px; font-size: 12px; }.nav-divider { display: none; }

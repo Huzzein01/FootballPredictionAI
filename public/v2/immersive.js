@@ -1,7 +1,6 @@
 /* ===========================================================================
    Football Analyst — immersive front-end (v2)
-   Vanilla SPA: splash, immersive hero, every section wired to /api, and a
-   live goal-celebration overlay that fires when a goal is detected.
+  Data-first sportsbook dashboard wired to the prediction APIs.
    =========================================================================== */
 "use strict";
 
@@ -36,49 +35,13 @@ const flag = (url) => url ? `<img class="flag" src="${esc(url)}" alt="" loading=
 const stat = (b, s, cls = "") => `<div class="hero-stat"><b class="${cls}">${esc(b)}</b><span>${esc(s)}</span></div>`;
 const seasonFor = () => STATE.context === "international" ? "2026 World Cup" : "2025-26";
 
-/* ── Splash ──────────────────────────────────────────────────────────────── */
-function runSplash() {
-  const splash = $("#splash");
-  const ball = $(".ball", splash), net = $(".net", splash), flash = $(".strike-flash", splash);
-  const board = $(".scoreboard", splash), goalText = $(".goal-flash", splash), sbHome = $(".sb-h", splash);
-  const reduce = window.matchMedia && window.matchMedia("(prefers-reduced-motion: reduce)").matches;
-  const T = reduce ? 0.12 : 1;
-  setTimeout(() => board.classList.add("show"), 300 * T);
-  setTimeout(() => { flash.classList.add("fire"); ball.classList.add("go"); }, 1840 * T);
-  setTimeout(() => { net.classList.add("shake"); goalText.classList.add("fire"); sbHome.textContent = "1"; sbHome.classList.add("pop"); }, 2460 * T);
-  setTimeout(endSplash, reduce ? 600 : 3500);
-  $("#skipSplash").addEventListener("click", endSplash, { once: true });
-}
-let splashEnded = false;
-function endSplash() {
-  if (splashEnded) return; splashEnded = true;
-  const splash = $("#splash"); splash.classList.add("lift");
-  setTimeout(() => splash.remove(), 700);
-  $("#app").hidden = false;
-  bootApp();
-}
-
 /* ── Boot ────────────────────────────────────────────────────────────────── */
 function bootApp() {
-  spawnParticles();
   buildNav();
   bindContextSwitch();
   positionCtxGlow();
   renderSection();
   refreshHeroStats();
-  startGoalWatch();
-}
-
-function spawnParticles() {
-  const host = $("#hsParticles"); if (!host) return;
-  for (let i = 0; i < 16; i++) {
-    const p = el("i");
-    p.style.left = Math.random() * 100 + "%";
-    p.style.animationDuration = (6 + Math.random() * 8) + "s";
-    p.style.animationDelay = (Math.random() * 8) + "s";
-    p.style.opacity = (0.2 + Math.random() * 0.5).toFixed(2);
-    host.appendChild(p);
-  }
 }
 
 function bindContextSwitch() {
@@ -89,7 +52,7 @@ function bindContextSwitch() {
       document.documentElement.dataset.context = STATE.context;
       $("#ctxSwitch").querySelectorAll(".ctx-btn").forEach((b) => b.classList.toggle("is-active", b === btn));
       positionCtxGlow();
-      $("#heroSub").textContent = STATE.context === "international" ? "2026 World Cup · immersive prediction engine" : "Club football · immersive prediction engine";
+      $("#heroSub").textContent = STATE.context === "international" ? "2026 World Cup · data-led prediction dashboard" : "Club football · data-led prediction dashboard";
       if (!sectionAllowed(STATE.section)) STATE.section = "predictions";
       buildNav(); renderSection(); refreshHeroStats();
     });
@@ -252,7 +215,6 @@ const oddChip = (l, v, best) => `<div class="odds-chip${best ? " best" : ""}">${
 async function renderLive() {
   const paint = async () => {
     const data = await api("/api/international/live");
-    detectGoals(data.matches || []);
     const stage = $("#stage"); const matches = data.matches || []; stage.innerHTML = "";
     stage.appendChild(headEl("", ""));
     $(".section-head h2", stage).innerHTML = `<span class="live-badge"><span class="live-dot"></span>Live Now</span>`;
@@ -572,134 +534,6 @@ async function renderSingle() {
   };
 }
 
-/* ── Live goal detection + celebration ───────────────────────────────────── */
-function startGoalWatch() {
-  if (STATE.goalWatch) clearInterval(STATE.goalWatch);
-  const poll = async () => {
-    if (STATE.context !== "international" || document.hidden) return;
-    try { const data = await api("/api/international/live"); detectGoals(data.matches || []); } catch (_) {}
-  };
-  poll();
-  STATE.goalWatch = setInterval(poll, 20000);
-}
-function detectGoals(matches) {
-  matches.forEach((m) => {
-    const key = `${m.homeTeam}|${m.awayTeam}`;
-    const h = num(m.homeGoals), a = num(m.awayGoals), total = h + a;
-    const prev = STATE.liveScores[key];
-    if (prev != null && total > prev.total) {
-      const scorer = h > prev.h ? m.homeTeam : a > prev.a ? m.awayTeam : "";
-      fireGoal(scorer, `${m.homeTeam} ${h} – ${a} ${m.awayTeam}`);
-    }
-    STATE.liveScores[key] = { h, a, total };
-  });
-}
-function fireGoal(team, detail) {
-  const ov = $("#goalOverlay"); if (!ov) return;
-  $("#goDetail").textContent = team ? `${team} scores! ${detail}` : detail;
-  // confetti
-  const conf = $("#goConfetti"); conf.innerHTML = "";
-  const colors = ["#7a1a2a", "#b87d20", "#e8a030", "#4a8c4a", "#f0ebe0"];
-  for (let i = 0; i < 60; i++) {
-    const c = el("i");
-    c.style.left = Math.random() * 100 + "%";
-    c.style.background = colors[i % colors.length];
-    c.style.animationDelay = (Math.random() * 0.5) + "s";
-    c.style.transform = `rotate(${Math.random() * 360}deg)`;
-    conf.appendChild(c);
-  }
-  ov.hidden = false; ov.classList.remove("out");
-  // restart SVG animations by reflow
-  ov.querySelectorAll(".go-striker,.go-leg,.go-arm,.go-ball,.go-net,.go-word,.go-detail").forEach((n) => { n.style.animation = "none"; void n.offsetWidth; n.style.animation = ""; });
-  ov.classList.add("show");
-  clearTimeout(fireGoal._t);
-  fireGoal._t = setTimeout(() => {
-    ov.classList.add("out");
-    setTimeout(() => { ov.hidden = true; ov.classList.remove("show", "out"); }, 500);
-  }, 3200);
-}
-window.__testGoal = (t) => fireGoal(t || "Brazil", "Brazil 1 – 0 Croatia");
-
-/* ── GSAP cinematic animations ───────────────────────────────────────────── */
-function initGsapAnimations() {
-  if (!window.gsap) return;
-  const stageEl = document.getElementById("stage");
-  const heroStatsEl = document.getElementById("heroStats");
-  if (!stageEl) return;
-
-  /* Animate numbers (KPI, hero stats) with a counter sweep */
-  function animateNumbers(root) {
-    root.querySelectorAll(".kpi b:not(.gsap-done), .hero-stat b:not(.gsap-done)").forEach((numEl) => {
-      const raw = numEl.textContent.trim();
-      const match = raw.match(/^(\d+(?:\.\d+)?)/);
-      if (!match) return;
-      numEl.classList.add("gsap-done");
-      const target = parseFloat(match[1]);
-      const suffix = raw.slice(match[1].length);
-      const obj = { val: 0 };
-      gsap.to(obj, {
-        val: target, duration: 0.9, delay: 0.15, ease: "power2.out",
-        onUpdate() {
-          numEl.textContent = (Number.isInteger(target) ? Math.round(obj.val) : obj.val.toFixed(1)) + suffix;
-        },
-      });
-    });
-  }
-
-  /* Stage: observe direct children for section changes */
-  let stageTimer;
-  new MutationObserver(() => {
-    clearTimeout(stageTimer);
-    stageTimer = setTimeout(() => {
-      const head = stageEl.querySelector(".section-head:not(.gsap-done)");
-      if (head) {
-        head.classList.add("gsap-done");
-        gsap.fromTo(head,
-          { y: 12, opacity: 0 },
-          { y: 0, opacity: 1, duration: 0.4, ease: "power3.out" }
-        );
-      }
-      const cards = stageEl.querySelectorAll(".card:not(.gsap-done)");
-      if (cards.length) {
-        cards.forEach((c) => c.classList.add("gsap-done"));
-        gsap.fromTo(cards,
-          { y: 20, opacity: 0 },
-          { y: 0, opacity: 1, duration: 0.36, stagger: 0.055, ease: "power3.out", clearProps: "transform,opacity" }
-        );
-      }
-      animateNumbers(stageEl);
-    }, 40);
-  }).observe(stageEl, { childList: true });
-
-  /* Hero stats: separate observer for counter animation */
-  if (heroStatsEl) {
-    new MutationObserver(() => {
-      gsap.fromTo(
-        heroStatsEl.querySelectorAll(".hero-stat"),
-        { opacity: 0, y: 7 },
-        { opacity: 1, y: 0, duration: 0.32, stagger: 0.07, ease: "power3.out", clearProps: "transform,opacity" }
-      );
-      animateNumbers(heroStatsEl);
-    }).observe(heroStatsEl, { childList: true });
-  }
-
-  /* Scroll parallax — hero pitch drifts on scroll */
-  const wrap = document.querySelector(".hs-3d-wrap");
-  if (wrap) {
-    window.addEventListener("scroll", () => {
-      gsap.to(wrap, { y: window.scrollY * 0.18, duration: 0, ease: "none", overwrite: true });
-    }, { passive: true });
-  }
-
-  /* Nav tab switch — fade stage content */
-  document.getElementById("nav").addEventListener("click", () => {
-    gsap.fromTo(stageEl, { opacity: 0.3 }, { opacity: 1, duration: 0.28, ease: "power2.out" });
-  });
-}
-
 /* ── Go ──────────────────────────────────────────────────────────────────── */
-document.addEventListener("DOMContentLoaded", runSplash);
+document.addEventListener("DOMContentLoaded", bootApp);
 window.addEventListener("resize", positionCtxGlow);
-
-/* Init GSAP after GSAP script loads (defer) */
-window.addEventListener("load", initGsapAnimations);

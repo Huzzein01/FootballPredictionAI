@@ -3,17 +3,17 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
-  <title>Sportsbooks Analyst — Immersive</title>
+  <title>Sportsbooks Analyst</title>
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@600;700;800&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet" />
-  <link rel="stylesheet" href="/v2/immersive.css?v=8" />
-  <link rel="stylesheet" href="/v2/immersive-2.css?v=8" />
+  <link rel="stylesheet" href="/v2/immersive.css?v=9" />
+  <link rel="stylesheet" href="/v2/immersive-2.css?v=9" />
 </head>
 <body>
 
   <!-- ── Splash: striker, ball arc, net shake, scoreboard ── -->
-  <div id="splash" class="splash" aria-hidden="true">
+  <div id="splash" class="splash" aria-hidden="true" hidden>
     <div class="splash-sky"></div>
     <div class="splash-floods">
       <span class="flood flood-1"></span><span class="flood flood-2"></span>
@@ -83,8 +83,8 @@
     <button id="skipSplash" class="skip-splash" type="button">Skip ›</button>
   </div>
 
-  <!-- ── App shell ── -->
-  <div id="app" class="app" hidden>
+  <!-- ── Dashboard shell ── -->
+  <div id="app" class="app">
     <header class="hero">
       <!-- Immersive looping stadium scene -->
       <div class="hero-scene" id="heroScene" aria-hidden="true">
@@ -154,7 +154,7 @@
           <span class="hero-logo">⚽</span>
           <div>
             <h1>Sportsbooks Analyst</h1>
-            <p id="heroSub" class="hero-sub">2026 World Cup · immersive prediction engine</p>
+            <p id="heroSub" class="hero-sub">2026 World Cup · data-led prediction dashboard</p>
           </div>
         </div>
         <div class="hero-controls">
@@ -173,33 +173,6 @@
     <footer class="foot"><span id="footStatus">Live data · ESPN + FIFA ranking · auto-trained</span></footer>
   </div>
 
-  <!-- ── Live goal celebration overlay ── -->
-  <div id="goalOverlay" class="goal-overlay" hidden aria-hidden="true">
-    <div class="go-confetti" id="goConfetti"></div>
-    <svg class="go-scene" viewBox="0 0 600 380" preserveAspectRatio="xMidYMid meet">
-      <g class="go-net" stroke="rgba(255,255,255,0.4)" stroke-width="1.5">
-        <path d="M380 80 L560 80 L560 280 L380 280 Z" fill="rgba(255,255,255,0.06)"/>
-        <line x1="410" y1="80" x2="410" y2="280"/><line x1="440" y1="80" x2="440" y2="280"/><line x1="470" y1="80" x2="470" y2="280"/>
-        <line x1="500" y1="80" x2="500" y2="280"/><line x1="530" y1="80" x2="530" y2="280"/>
-        <line x1="380" y1="120" x2="560" y2="120"/><line x1="380" y1="170" x2="560" y2="170"/><line x1="380" y1="220" x2="560" y2="220"/>
-      </g>
-      <g stroke="#fff" stroke-width="7" stroke-linecap="round" fill="none">
-        <line x1="378" y1="78" x2="378" y2="282"/><line x1="378" y1="78" x2="562" y2="78"/><line x1="562" y1="78" x2="562" y2="282"/>
-      </g>
-      <g class="go-striker" transform="translate(120,280)">
-        <ellipse cx="0" cy="8" rx="40" ry="8" fill="rgba(0,0,0,0.35)"/>
-        <circle cx="0" cy="-104" r="16" fill="#0b0d12"/>
-        <rect x="-14" y="-90" width="28" height="60" rx="12" fill="#0b0d12"/>
-        <g class="go-arm" transform="translate(12,-84)"><rect x="-6" y="0" width="12" height="40" rx="6" fill="#12161f"/></g>
-        <g transform="translate(-7,-32)"><rect x="-7" y="0" width="15" height="40" rx="7" fill="#0b0d12"/></g>
-        <g class="go-leg" transform="translate(9,-32)"><rect x="-7" y="0" width="15" height="38" rx="7" fill="#0b0d12"/><rect x="-9" y="34" width="26" height="11" rx="5" fill="#7a1a2a"/></g>
-      </g>
-      <circle class="go-ball" cx="170" cy="292" r="14" fill="#fff" stroke="#111" stroke-width="1.5"/>
-    </svg>
-    <div class="go-text"><span class="go-word">GOAL!</span><span class="go-detail" id="goDetail"></span></div>
-  </div>
-
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js" defer></script>
-  <script src="/v2/immersive.js?v=8"></script>
+  <script src="/v2/immersive.js?v=9"></script>
 </body>
 </html>
