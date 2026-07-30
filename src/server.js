@@ -23,6 +23,7 @@ const { refreshTheOddsApi } = require("./oddsApiService");
 const { runFixtureBridge, bridgeState } = require("./espnFixtureBridge");
 const { apiFootballStatus } = require("./liveData");
 const { readOrRefreshSportSeason } = require("./multiSportDataService");
+const { resolveClubCrest, fallbackSvg } = require("./clubCrestService");
 const { refreshApiFootballPlayerStats } = require("./apiFootballPlayerStats");
 const { readJsonWithFallback, repoDataPath } = require("./runtimePaths");
 const { hydrateKnownStoresOnce, persistKnownStores, storageStatus } = require("./supabaseJsonStore");
@@ -502,6 +503,13 @@ function shouldRefreshApiFootballPlayerSeason(season = "2025-26", forceLive = fa
 }
 
 async function handleApi(req, res, pathname) {
+  if (req.method === "GET" && pathname === "/api/club-crest") {
+    const url = new URL(req.url, `http://${req.headers.host}`);
+    const crest = await resolveClubCrest(url.searchParams.get("team") || "");
+    if (crest) { res.writeHead(302, { Location: crest, "Cache-Control": "public, max-age=604800" }); return res.end(); }
+    res.writeHead(200, { "Content-Type": "image/svg+xml", "Cache-Control": "public, max-age=86400" });
+    return res.end(fallbackSvg(url.searchParams.get("team")));
+  }
   await hydrateKnownStoresOnce();
 
   if (isHostedPrivateApiPath(req, pathname)) {

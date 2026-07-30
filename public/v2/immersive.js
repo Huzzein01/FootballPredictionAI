@@ -40,6 +40,7 @@ const SECTIONS = [
 ];
 
 const flag = (url) => url ? `<img class="flag" src="${esc(url)}" alt="" loading="lazy" onerror="this.style.visibility='hidden'">` : `<span class="flag"></span>`;
+const clubCrest = (team, supplied, league) => `<img class="flag" src="${esc(supplied || `/api/club-crest?team=${encodeURIComponent(team)}&league=${encodeURIComponent(league || "")}`)}" alt="" loading="lazy" onerror="this.style.visibility='hidden'">`;
 const stat = (b, s, cls = "") => `<div class="hero-stat"><b class="${cls}">${esc(b)}</b><span>${esc(s)}</span></div>`;
 const seasonFor = () => STATE.context === "international" ? STATE.internationalSeason : STATE.clubSeason;
 const isCurrentInternationalSeason = () => STATE.internationalSeason === "2026 World Cup";
@@ -342,7 +343,7 @@ function predictionCard(p) {
   if (num(p.confidence) >= 55) card.classList.add("high-conf");
   card.innerHTML = `
     <div class="card-top"><span>${esc(p.matchdayLabel || p.league || p.group || "Fixture")}</span><span class="pill ${p.prediction === "D" ? "draw" : "pick"}">${esc(pickLabel)} · ${esc(String(p.confidence ?? ""))}%</span></div>
-    <div class="match"><div class="team">${flag(p.homeFlagUrl)}<span class="tn">${esc(p.homeTeam)}</span></div><div class="vs">vs</div><div class="team">${flag(p.awayFlagUrl)}<span class="tn">${esc(p.awayTeam)}</span></div></div>
+    <div class="match"><div class="team">${STATE.context === "club" ? clubCrest(p.homeTeam, p.homeLogoUrl, p.league) : flag(p.homeFlagUrl)}<span class="tn">${esc(p.homeTeam)}</span></div><div class="vs">vs</div><div class="team">${STATE.context === "club" ? clubCrest(p.awayTeam, p.awayLogoUrl, p.league) : flag(p.awayFlagUrl)}<span class="tn">${esc(p.awayTeam)}</span></div></div>
     <div class="conf-bar"><i class="conf-h" style="width:${h}%"></i><i class="conf-d" style="width:${d}%"></i><i class="conf-a" style="width:${a}%"></i></div>
     <div class="conf-legend"><span>H ${h}%</span><span>D ${d}%</span><span>A ${a}%</span></div>
     <div class="proj">Projected score <b>${esc(p.projectedScore || "—")}</b></div>
@@ -596,7 +597,7 @@ async function renderResults() {
     const pk = p.prediction === "H" ? `${p.homeTeam} win` : p.prediction === "A" ? `${p.awayTeam} win` : p.prediction === "D" ? "Draw" : "result";
     const c = el("article", "card");
     c.innerHTML = `<div class="card-top"><span>${esc(p.matchdayLabel || p.league || "")} · ${esc(p.date || "")}</span>${verdict}</div>
-      <div class="match"><div class="team">${flag(p.homeFlagUrl)}<span class="tn">${esc(p.homeTeam)}</span></div><div class="score">${esc(String(pl.homeGoals))} : ${esc(String(pl.awayGoals))}</div><div class="team">${flag(p.awayFlagUrl)}<span class="tn">${esc(p.awayTeam)}</span></div></div>
+      <div class="match"><div class="team">${intl ? flag(p.homeFlagUrl) : clubCrest(p.homeTeam, p.homeLogoUrl, p.league)}<span class="tn">${esc(p.homeTeam)}</span></div><div class="score">${esc(String(pl.homeGoals))} : ${esc(String(pl.awayGoals))}</div><div class="team">${intl ? flag(p.awayFlagUrl) : clubCrest(p.awayTeam, p.awayLogoUrl, p.league)}<span class="tn">${esc(p.awayTeam)}</span></div></div>
       <div class="proj">Model: <b>${esc(pk)}</b>${p.confidence != null ? ` (${esc(String(p.confidence))}%)` : ""} · proj ${esc(p.projectedScore || "—")}${pl.exactScoreCorrect ? " · exact ✓" : ""}</div>`;
     grid.appendChild(c);
   });
