@@ -22,6 +22,7 @@ const { listTeamTraining, getTeamTraining, appendTeamNote, updateTeamTrainingPro
 const { refreshTheOddsApi } = require("./oddsApiService");
 const { runFixtureBridge, bridgeState } = require("./espnFixtureBridge");
 const { apiFootballStatus } = require("./liveData");
+const { readOrRefreshSportSeason } = require("./multiSportDataService");
 const { refreshApiFootballPlayerStats } = require("./apiFootballPlayerStats");
 const { readJsonWithFallback, repoDataPath } = require("./runtimePaths");
 const { hydrateKnownStoresOnce, persistKnownStores, storageStatus } = require("./supabaseJsonStore");
@@ -528,6 +529,19 @@ async function handleApi(req, res, pathname) {
       });
     }
     return sendJson(res, 200, { teamsByLeague: teamsByLeague(), metrics: model.metrics, hyperparameters: model.hyperparameters, trainedAt: model.trainedAt, feedbackRows: model.feedbackRows || 0, trainingStatus: readTrainingStatus() });
+  }
+
+  const multiSportMatch = pathname.match(/^\/api\/sports\/(baseball|basketball)\/season$/);
+  if (req.method === "GET" && multiSportMatch) {
+    const url = new URL(req.url, `http://${req.headers.host}`);
+    const sport = multiSportMatch[1];
+    const season = url.searchParams.get("season") || (sport === "baseball" ? String(new Date().getUTCFullYear()) : "2025");
+    const refresh = url.searchParams.get("refresh") === "1";
+    try {
+      return sendJson(res, 200, await readOrRefreshSportSeason(sport, season, { refresh }));
+    } catch (error) {
+      return sendJson(res, 502, { error: error.message, sport, season });
+    }
   }
 
   if (req.method === "GET" && pathname === "/api/training-status") {
