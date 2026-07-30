@@ -211,7 +211,7 @@ const sectionAllowed = (id) => { const s = SECTIONS.find((x) => x.id === id); re
 
 function buildNav() {
   const nav = $("#nav"); nav.innerHTML = "";
-  const brand = el("a", "nav-brand", '<span class="nav-brand-mark">SA</span><span>Sportsbooks <b>Analyst</b></span>');
+  const brand = el("a", "nav-brand", '<span class="nav-brand-mark" aria-hidden="true">✦</span><span>Sportsbooks <b>Analyst</b></span>');
   brand.href = "/v2/";
   brand.setAttribute("aria-label", "Sportsbooks Analyst home");
   nav.appendChild(brand);
@@ -298,10 +298,9 @@ async function renderPredictions() {
   const sortOpts = [
     { k: "confidence", l: "Confidence ↓" },
     { k: "date", l: "Date" },
-    { k: intl ? "group" : "league", l: intl ? "Group" : "League" },
   ];
   sortOpts.forEach(({ k, l }) => {
-    const b = el("button", "sort-btn" + (STATE.sortBy === k ? " is-active" : ""), l);
+    const b = el("button", "sort-btn" + (STATE.sortBy === k ? " is-active" : ""), l); b.type = "button";
     b.onclick = () => { STATE.sortBy = k; renderPredictions(); };
     toolbar.appendChild(b);
   });
@@ -342,7 +341,7 @@ function predictionCard(p) {
   card.dataset.pick = p.prediction || "";
   if (num(p.confidence) >= 55) card.classList.add("high-conf");
   card.innerHTML = `
-    <div class="card-top"><span>${esc(p.matchdayLabel || p.league || p.group || "Fixture")}</span><span class="pill ${p.prediction === "D" ? "draw" : "pick"}">${esc(pickLabel)} · ${esc(String(p.confidence ?? ""))}%</span></div>
+    <div class="card-top"><span>${esc(p.matchdayLabel || p.league || p.group || "Fixture")} · ${esc(formatKickoff(p.date, p.kickoffUtc))}</span><span class="pill ${p.prediction === "D" ? "draw" : "pick"}">${esc(pickLabel)} · ${esc(String(p.confidence ?? ""))}%</span></div>
     <div class="match"><div class="team">${STATE.context === "club" ? clubCrest(p.homeTeam, p.homeLogoUrl, p.league) : flag(p.homeFlagUrl)}<span class="tn">${esc(p.homeTeam)}</span></div><div class="vs">vs</div><div class="team">${STATE.context === "club" ? clubCrest(p.awayTeam, p.awayLogoUrl, p.league) : flag(p.awayFlagUrl)}<span class="tn">${esc(p.awayTeam)}</span></div></div>
     <div class="conf-bar"><i class="conf-h" style="width:${h}%"></i><i class="conf-d" style="width:${d}%"></i><i class="conf-a" style="width:${a}%"></i></div>
     <div class="conf-legend"><span>H ${h}%</span><span>D ${d}%</span><span>A ${a}%</span></div>
@@ -351,6 +350,7 @@ function predictionCard(p) {
   return card;
 }
 const oddChip = (l, v, best) => `<div class="odds-chip${best ? " best" : ""}">${l}<b>${v ? esc(v) : "—"}</b></div>`;
+function formatKickoff(date, kickoffUtc) { const parsed = new Date(kickoffUtc || date || ""); return Number.isFinite(parsed.getTime()) ? new Intl.DateTimeFormat(undefined, { month: "short", day: "numeric", hour: "numeric", minute: "2-digit" }).format(parsed) : String(date || "TBD"); }
 
 /* ── Live Now ────────────────────────────────────────────────────────────── */
 async function renderLive() {
