@@ -142,6 +142,20 @@ function applyMotivationAdjustment(probabilities, standingContext) {
   });
 }
 
+// A new league campaign starts with a clean table. Keep long-term quality
+// signals (Elo, head-to-head and squads), but lightly pull the final estimate
+// away from any over-confident carry-over read until the new table has data.
+function applySeasonResetAdjustment(probabilities, standingContext) {
+  if (!standingContext?.seasonReset) return probabilities;
+  const openingWeekPrior = { H: 0.38, D: 0.28, A: 0.34 };
+  const carryOverWeight = 0.94;
+  return normalizeProbabilities({
+    H: probabilities.H * carryOverWeight + openingWeekPrior.H * (1 - carryOverWeight),
+    D: probabilities.D * carryOverWeight + openingWeekPrior.D * (1 - carryOverWeight),
+    A: probabilities.A * carryOverWeight + openingWeekPrior.A * (1 - carryOverWeight),
+  });
+}
+
 function applyDrawCalibration(probabilities, standingContext, features, hasOdds) {
   const f = featureMap(features);
   const home = standingContext?.home || {};
@@ -283,7 +297,11 @@ function buildJudgment({ prediction, probabilities, modelProbabilities, marketPr
   const predictedTeam = labelForResult(prediction, homeTeam, awayTeam);
   const home = standingContext?.home || {};
   const away = standingContext?.away || {};
-  const tableSource = standingContext?.source === "public-standings" ? standingContext.sourceName || "Public standings" : "local season table";
+  const tableSource = standingContext?.source === "public-standings"
+    ? standingContext.sourceName || "Public standings"
+    : standingContext?.source === "season-reset"
+      ? "new-season neutral context"
+      : "local season table";
   const tableLine = `${homeTeam}: ${rankText(home)}, ${Number(home.points || 0)} pts, ${home.note || "No motive note"}; ${awayTeam}: ${rankText(away)}, ${Number(away.points || 0)} pts, ${away.note || "No motive note"}.`;
   const marketLine = marketProbabilities
     ? `Market signal: H ${pct(marketProbabilities.H)}%, D ${pct(marketProbabilities.D)}%, A ${pct(marketProbabilities.A)}% from the provided odds.`
@@ -324,7 +342,8 @@ function predictMatch(input) {
   const hasOdds = hasUsableOdds(odds);
   const vector = buildCurrentFeatureVector(input.league, input.homeTeam, input.awayTeam, odds, input.season || "2025-26");
   const modelProbabilities = predictProba(model, vector.features);
-  const motivationProbabilities = applyMotivationAdjustment(modelProbabilities, vector.standingContext);
+  const seasonResetProbabilities = applySeasonResetAdjustment(modelProbabilities, vector.standingContext);
+  const motivationProbabilities = applyMotivationAdjustment(seasonResetProbabilities, vector.standingContext);
   const drawCalibration = applyDrawCalibration(motivationProbabilities, vector.standingContext, vector.features, hasOdds);
   const marketProbabilities = hasOdds ? marketProbabilitiesFromFeatures(vector.features) : null;
   const contextProbabilities = contextualProbabilities(vector.features, vector.standingContext);

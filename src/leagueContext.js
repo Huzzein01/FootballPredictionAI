@@ -344,12 +344,53 @@ function standingFeaturesFromStatsTable(league, table, homeTeam, awayTeam) {
   return standingFeaturesFromStandings(league, standings, homeTeam, awayTeam);
 }
 
-function currentStandingFeatures(league, fallbackTable, homeTeam, awayTeam) {
+function seasonStartYear(season) {
+  const year = Number(String(season || "").match(/^\d{4}/)?.[0]);
+  return Number.isFinite(year) ? year : 0;
+}
+
+function seasonResetMotivation(team) {
+  return {
+    rank: 0,
+    points: 0,
+    gamesLeft: 0,
+    titleRaceScore: 0,
+    europeRaceScore: 0,
+    relegationBattleScore: 0,
+    securedTitle: 0,
+    securedChampionsLeague: 0,
+    securedEurope: 0,
+    recordMotiveScore: 0,
+    manualNote: "",
+    playerMotives: [],
+    deadRubber: 0,
+    motivationScore: 0,
+    seasonReset: 1,
+    note: "New season reset: previous-season title and table stakes cleared",
+  };
+}
+
+function seasonResetStandingFeatures(homeTeam, awayTeam) {
+  return {
+    features: Array(MOTIVATION_FEATURE_NAMES.length).fill(0),
+    home: { ...seasonResetMotivation(homeTeam), team: homeTeam },
+    away: { ...seasonResetMotivation(awayTeam), team: awayTeam },
+    source: "season-reset",
+    sourceName: "New-season neutral context",
+    updatedAt: "",
+    seasonReset: true,
+  };
+}
+
+function currentStandingFeatures(league, fallbackTable, homeTeam, awayTeam, season = "2025-26") {
   const liveContext = loadLiveLeagueContext();
   const effective = effectiveTables(liveContext);
   const leagueContext = effective?.leagues?.[league];
   const liveStandings = Array.isArray(leagueContext?.standings) && leagueContext.standings.length ? leagueContext.standings : null;
-  if (liveStandings) {
+  const liveSeason = effective?.season || liveContext?.season || "";
+  // A standings snapshot only describes its own campaign. Never carry a prior
+  // champion's secured-title / dead-rubber state into a new fixture season.
+  if (liveStandings && season === liveSeason) {
     return {
       ...standingFeaturesFromStandings(league, liveStandings, homeTeam, awayTeam),
       source: "public-standings",
@@ -357,6 +398,10 @@ function currentStandingFeatures(league, fallbackTable, homeTeam, awayTeam) {
       sourceUrl: leagueContext.sourceUrl || "",
       updatedAt: effective.generatedAt || liveContext.updatedAt || "",
     };
+  }
+  const hasCurrentSeasonMatches = fallbackTable instanceof Map && [...fallbackTable.values()].some((team) => Number(team.games || 0) > 0);
+  if (!hasCurrentSeasonMatches && seasonStartYear(season) > seasonStartYear(liveSeason)) {
+    return seasonResetStandingFeatures(homeTeam, awayTeam);
   }
   return { ...standingFeaturesFromStatsTable(league, fallbackTable, homeTeam, awayTeam), source: "local-season-table" };
 }

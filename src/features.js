@@ -363,7 +363,7 @@ function buildCurrentFeatureVector(league, homeTeamInput, awayTeamInput, odds = 
   const awayTeam = normalizeTeamName(awayTeamInput);
   const { table, eloTable, h2hMap } = currentContextFor(league, season);
 
-  const standingContext = currentStandingFeatures(league, table, homeTeam, awayTeam);
+  const standingContext = currentStandingFeatures(league, table, homeTeam, awayTeam, season);
 
   return {
     homeTeam,
