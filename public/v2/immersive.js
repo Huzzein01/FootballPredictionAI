@@ -671,18 +671,55 @@ async function renderSingle() {
   let teams = [];
   try {
     if (STATE.context === "international") teams = (await api("/api/international/fixtures")).teams || [];
-    else teams = [...new Set(((await api("/api/fixture-predictions")).predictions || []).flatMap((p) => [p.homeTeam, p.awayTeam]))];
+    else {
+      const data = await api(`/api/fixture-predictions?season=${encodeURIComponent(STATE.clubSeason)}`);
+      teams = [...new Set(filterFootballEntries(data.predictions || []).flatMap((p) => [p.homeTeam, p.awayTeam]))];
+    }
     teams = [...new Set(teams)].sort();
   } catch (_) {}
-  const opts = teams.map((t) => `<option>${esc(t)}</option>`).join("");
-  const form = el("div", "single-form");
-  form.innerHTML = `<label>Home<select id="sHome">${opts}</select></label><span class="vs">vs</span><label>Away<select id="sAway">${opts}</select></label>`;
+  const opts = teams.map((t) => `<option value="${esc(t)}">${esc(t)}</option>`).join("");
+  const scope = STATE.context === "club" ? `${STATE.clubSeason} · ${competitionLabel()}` : STATE.internationalSeason;
+  const crest = (team) => STATE.context === "club"
+    ? clubCrest(team, "", selectedLeague())
+    : `<span class="single-team-ball" aria-hidden="true">⚽</span>`;
+  const form = el("section", "single-predictor");
+  form.innerHTML = `
+    <div class="single-predictor-top">
+      <div><span class="single-kicker">Manual matchup</span><p>Choose any two teams from the active data workspace.</p></div>
+      <span class="single-scope">${esc(scope)}</span>
+    </div>
+    <div class="single-form">
+      <label class="single-team-field">
+        <span>Home team</span>
+        <div class="single-select"><span class="single-crest" id="sHomeCrest"></span><select id="sHome" aria-label="Home team">${opts}</select></div>
+      </label>
+      <div class="single-versus" aria-hidden="true">VS</div>
+      <label class="single-team-field">
+        <span>Away team</span>
+        <div class="single-select"><span class="single-crest" id="sAwayCrest"></span><select id="sAway" aria-label="Away team">${opts}</select></div>
+      </label>
+    </div>
+    <div class="single-predictor-actions">
+      <span class="single-note">Uses the current ${STATE.context === "club" ? "club" : "international"} model baseline.</span>
+      <button type="button" class="btn single-submit" id="sPredict" ${teams.length < 2 ? "disabled" : ""}>Generate prediction <span aria-hidden="true">→</span></button>
+    </div>`;
   stage.appendChild(form);
-  const go = el("button", "btn", "Predict ⚡"); go.style.marginTop = "12px"; stage.appendChild(go);
   const result = el("div", "single-result"); stage.appendChild(result);
-  if (teams[1]) $("#sAway", form).selectedIndex = 1;
+  const home = $("#sHome", form), away = $("#sAway", form), go = $("#sPredict", form);
+  if (!teams.length) {
+    form.querySelector(".single-form").innerHTML = `<div class="single-no-teams">No teams are available for this filter. Change the Football filters and try again.</div>`;
+    return;
+  }
+  if (teams[1]) away.selectedIndex = 1;
+  const updateCrests = () => {
+    $("#sHomeCrest", form).innerHTML = crest(home.value);
+    $("#sAwayCrest", form).innerHTML = crest(away.value);
+  };
+  updateCrests();
+  home.addEventListener("change", updateCrests);
+  away.addEventListener("change", updateCrests);
   go.onclick = async () => {
-    const homeTeam = $("#sHome").value, awayTeam = $("#sAway").value;
+    const homeTeam = home.value, awayTeam = away.value;
     if (homeTeam === awayTeam) { result.innerHTML = `<div class="empty">Pick two different teams.</div>`; return; }
     result.innerHTML = `<div class="loading"><div class="spinner"></div><span>Predicting…</span></div>`;
     try {

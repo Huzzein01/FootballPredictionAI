@@ -555,16 +555,62 @@ body {
   background: linear-gradient(90deg, var(--ox), var(--amber));
 }
 
-/* Single predictor form */
+/* Single predictor — a focused matchup builder using the same card language
+   as the prediction grid, rather than a bare form floating in the workspace. */
+.single-predictor {
+  border: 1px solid var(--border); border-top: 4px solid var(--ox);
+  border-radius: var(--radius); background: linear-gradient(135deg, var(--bg-2), oklch(0.97 0.012 250));
+  padding: 22px; box-shadow: 0 14px 30px oklch(0.20 0.06 255 / 0.08);
+}
+.single-predictor-top {
+  display: flex; justify-content: space-between; gap: 18px; align-items: flex-start;
+  padding-bottom: 18px; margin-bottom: 20px; border-bottom: 1px solid var(--border);
+}
+.single-kicker {
+  display: block; color: var(--ox); font-size: 11px; font-weight: 800;
+  text-transform: uppercase; letter-spacing: .12em; margin-bottom: 5px;
+}
+.single-predictor-top p { margin: 0; color: var(--muted); font-size: 13px; }
+.single-scope {
+  align-self: center; padding: 7px 10px; border: 1px solid var(--border);
+  border-radius: 999px; color: var(--ink); font-size: 12px; font-weight: 700;
+  background: var(--bg-2); white-space: nowrap;
+}
 .single-form {
-  display: grid; grid-template-columns: 1fr auto 1fr;
-  gap: 12px; align-items: end; max-width: 620px;
+  display: grid; grid-template-columns: minmax(0, 1fr) 48px minmax(0, 1fr);
+  gap: 16px; align-items: end;
 }
-.single-form .vs {
-  font-family: var(--display); font-size: 18px; color: var(--muted);
-  padding-bottom: 10px; font-weight: 600;
+.single-team-field { display: grid; gap: 7px; color: var(--muted); font-size: 11px; font-weight: 800; text-transform: uppercase; letter-spacing: .08em; }
+.single-select {
+  display: flex; align-items: center; gap: 10px; min-width: 0; padding: 7px 10px;
+  border: 1px solid var(--border); border-radius: 10px; background: var(--bg-2);
+  transition: border-color .2s, box-shadow .2s;
 }
+.single-select:focus-within { border-color: var(--ox); box-shadow: 0 0 0 3px oklch(0.63 0.19 260 / .14); }
+.single-select select {
+  min-width: 0; flex: 1; appearance: auto; border: 0; outline: 0;
+  background: transparent; color: var(--ink); font: inherit; font-size: 15px; font-weight: 700; padding: 8px 0;
+}
+.single-crest { flex: 0 0 38px; width: 38px; height: 38px; display: grid; place-items: center; border-radius: 9px; background: oklch(0.94 0.02 250); overflow: hidden; }
+.single-crest .flag { width: 32px; height: 32px; object-fit: contain; padding: 1px; }
+.single-team-ball { font-size: 23px; line-height: 1; }
+.single-versus { display: grid; place-items: center; width: 48px; height: 48px; margin-bottom: 1px; border-radius: 50%; background: var(--ink); color: white; font-family: var(--display); font-size: 13px; font-weight: 800; letter-spacing: .08em; }
+.single-predictor-actions { display: flex; justify-content: space-between; gap: 16px; align-items: center; margin-top: 20px; }
+.single-note { color: var(--muted); font-size: 12px; }
+.single-submit { min-width: 190px; background: var(--ox); color: white; }
+.single-submit:hover { background: var(--ox-hi); }
+.single-submit:disabled { cursor: not-allowed; opacity: .55; }
+.single-no-teams { grid-column: 1 / -1; padding: 18px; border: 1px dashed var(--border); border-radius: 10px; color: var(--muted); text-align: center; }
 .single-result { margin-top: 18px; }
+
+@media (max-width: 720px) {
+  .single-predictor { padding: 16px; }
+  .single-predictor-top, .single-predictor-actions { align-items: stretch; flex-direction: column; }
+  .single-scope { align-self: flex-start; white-space: normal; }
+  .single-form { grid-template-columns: 1fr; gap: 12px; }
+  .single-versus { justify-self: center; margin: -1px 0; }
+  .single-submit { width: 100%; }
+}
 
 /* ===========================================================================
    GSAP ENTRY STATE — cards start invisible (opacity 0) for animation
