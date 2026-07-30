@@ -76,7 +76,7 @@ function buildNav() {
   classic.title = "Open the classic interface";
   classic.addEventListener("click", () => window.location.assign("/classic/"));
   const sportLinks = [
-    { label: "Football", href: "/v2/", active: true },
+    { label: "Football", href: "/football/", active: true },
     { label: "Baseball", href: "/baseball/" },
     { label: "Basketball", href: "/basketball/" },
   ];
