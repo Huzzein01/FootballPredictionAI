@@ -109,6 +109,17 @@ function buildNav() {
   classic.title = "Open the classic interface";
   classic.addEventListener("click", () => window.location.assign("/classic/"));
   nav.appendChild(classic);
+  const sportLinks = [
+    { label: "Football", href: "/v2/", active: true },
+    { label: "Baseball", href: "/baseball/" },
+    { label: "Basketball", href: "/basketball/" },
+  ];
+  sportLinks.forEach((sport) => {
+    const link = el("a", "nav-btn nav-sport" + (sport.active ? " is-active" : ""), esc(sport.label));
+    link.href = sport.href;
+    if (sport.active) link.setAttribute("aria-current", "page");
+    nav.appendChild(link);
+  });
   SECTIONS.filter((s) => !s.intl || STATE.context === "international").forEach((s) => {
     const b = el("button", "nav-btn" + (s.id === STATE.section ? " is-active" : ""), esc(s.label));
     b.addEventListener("click", () => { STATE.section = s.id; buildNav(); renderSection(); });

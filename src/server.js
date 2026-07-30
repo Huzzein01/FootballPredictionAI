@@ -1206,6 +1206,8 @@ const server = http.createServer(async (req, res) => {
     let requested = url.pathname === "/" ? "v2/index.html" : url.pathname.slice(1);
     if (url.pathname === "/v2" || url.pathname === "/v2/") requested = "v2/index.html";
     if (url.pathname === "/classic" || url.pathname === "/classic/") requested = "index.html";
+    if (url.pathname === "/baseball" || url.pathname === "/baseball/") requested = "baseball/index.html";
+    if (url.pathname === "/basketball" || url.pathname === "/basketball/") requested = "basketball/index.html";
     const filePath = path.resolve(PUBLIC_DIR, requested);
     if (!filePath.startsWith(PUBLIC_DIR) || !fs.existsSync(filePath)) {
       res.writeHead(404, { "Content-Type": "text/plain" });
