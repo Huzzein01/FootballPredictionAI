@@ -38,6 +38,7 @@ const seasonFor = () => STATE.context === "international" ? "2026 World Cup" : "
 /* ── Boot ────────────────────────────────────────────────────────────────── */
 function bootApp() {
   buildNav();
+  buildSectionNav();
   bindContextSwitch();
   positionCtxGlow();
   renderSection();
@@ -54,7 +55,7 @@ function bindContextSwitch() {
       positionCtxGlow();
       $("#heroSub").textContent = STATE.context === "international" ? "2026 World Cup · data-led prediction dashboard" : "Club football · data-led prediction dashboard";
       if (!sectionAllowed(STATE.section)) STATE.section = "predictions";
-      buildNav(); renderSection(); refreshHeroStats();
+      buildSectionNav(); renderSection(); refreshHeroStats();
     });
   });
 }
@@ -70,8 +71,6 @@ function buildNav() {
   brand.href = "/v2/";
   brand.setAttribute("aria-label", "Sportsbooks Analyst home");
   nav.appendChild(brand);
-  // Keep the mode switch first so it stays reachable when the section nav
-  // overflows on smaller screens.
   const classic = el("button", "nav-btn nav-ui-toggle", "Classic UI");
   classic.title = "Open the classic interface";
   classic.addEventListener("click", () => window.location.assign("/classic/"));
@@ -88,9 +87,15 @@ function buildNav() {
   });
   nav.appendChild(el("span", "nav-divider", ""));
   nav.appendChild(classic);
+}
+
+function buildSectionNav() {
+  const nav = $("#sectionNav");
+  if (!nav) return;
+  nav.innerHTML = "";
   SECTIONS.filter((s) => !s.intl || STATE.context === "international").forEach((s) => {
-    const b = el("button", "nav-btn" + (s.id === STATE.section ? " is-active" : ""), esc(s.label));
-    b.addEventListener("click", () => { STATE.section = s.id; buildNav(); renderSection(); });
+    const b = el("button", "feature-tab" + (s.id === STATE.section ? " active" : ""), esc(s.label));
+    b.addEventListener("click", () => { STATE.section = s.id; buildSectionNav(); renderSection(); });
     nav.appendChild(b);
   });
 }

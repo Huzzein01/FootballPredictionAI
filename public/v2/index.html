@@ -7,8 +7,8 @@
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@600;700;800&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet" />
-  <link rel="stylesheet" href="/v2/immersive.css?v=9" />
-  <link rel="stylesheet" href="/v2/immersive-2.css?v=9" />
+  <link rel="stylesheet" href="/v2/immersive.css?v=10" />
+  <link rel="stylesheet" href="/v2/immersive-2.css?v=10" />
 </head>
 <body>
 
@@ -85,6 +85,7 @@
 
   <!-- ── Dashboard shell ── -->
   <div id="app" class="app">
+    <nav class="nav" id="nav" aria-label="Sports"></nav>
     <header class="hero">
       <!-- Immersive looping stadium scene -->
       <div class="hero-scene" id="heroScene" aria-hidden="true">
@@ -153,6 +154,7 @@
         <div class="hero-title">
           <span class="hero-logo">⚽</span>
           <div>
+            <p class="hero-eyebrow">Sport workspace · Football</p>
             <h1>Football</h1>
             <p id="heroSub" class="hero-sub">2026 World Cup · data-led prediction dashboard</p>
           </div>
@@ -168,11 +170,11 @@
       <div class="hero-stats" id="heroStats" aria-live="polite"></div>
     </header>
 
-    <nav class="nav" id="nav" aria-label="Sections"></nav>
+    <nav class="feature-nav" id="sectionNav" aria-label="Football features"></nav>
     <main class="stage" id="stage" aria-live="polite"></main>
     <footer class="foot"><span id="footStatus">Live data · ESPN + FIFA ranking · auto-trained</span></footer>
   </div>
 
-  <script src="/v2/immersive.js?v=9"></script>
+  <script src="/v2/immersive.js?v=10"></script>
 </body>
 </html>

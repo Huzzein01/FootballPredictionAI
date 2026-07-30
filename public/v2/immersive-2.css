@@ -221,6 +221,7 @@ body {
 .hero-logo { display: grid; place-items: center; width: 48px; height: 48px; font-size: 25px; background: rgb(255 255 255 / 12%); border: 1px solid rgb(255 255 255 / 25%); border-radius: 12px; }
 .hero-title h1 { color: #fff; font-size: clamp(28px, 4vw, 40px); letter-spacing: -.025em; }
 .hero-sub { color: #dbeaff; font-size: 13px; }
+.hero-eyebrow { margin: 0 0 7px; color: #cce4ff; font-size: 11px; font-weight: 800; letter-spacing: .12em; text-transform: uppercase; }
 .ctx-switch { background: rgb(2 21 52 / 35%); border-color: rgb(255 255 255 / 24%); border-radius: 999px; }
 .ctx-btn { color: #d8e8ff; border-radius: 999px; }
 .ctx-btn.is-active { background: #fff; color: #0a55bd; }
@@ -230,6 +231,33 @@ body {
 .hero-stat span { color: #d7e7ff; }
 .hero-stat b.good, .hero-stat b.gold { color: #bce3ff; }
 .hero-stats::before { background: rgb(255 255 255 / 24%); }
+
+/* Football follows the same sport-workspace hierarchy as Baseball and Basketball. */
+.feature-nav {
+  display: flex;
+  width: min(1280px, calc(100% - 40px));
+  gap: 0;
+  overflow-x: auto;
+  margin: 22px auto 0;
+  padding: 0 10px;
+  background: #061d42;
+  border-radius: 10px;
+  scrollbar-width: none;
+}
+.feature-nav::-webkit-scrollbar { display: none; }
+.feature-tab {
+  flex: 0 0 auto;
+  min-height: 49px;
+  padding: 0 15px;
+  border: 0;
+  border-bottom: 3px solid transparent;
+  background: transparent;
+  color: #d8e8ff;
+  font: 700 13px Inter, sans-serif;
+  cursor: pointer;
+}
+.feature-tab:hover, .feature-tab.active { color: #fff; border-bottom-color: #fff; background: rgb(255 255 255 / 8%); }
+.hero-stats { display: none; }
 
 .stage {
   width: min(1280px, calc(100% - 40px));
@@ -268,7 +296,7 @@ body {
 
 @media (max-width: 720px) {
   .nav { min-height: 54px; padding: 0 12px; }.nav-brand { margin-right: 8px; font-size: 16px; }.nav-brand-mark { width: 25px; height: 29px; }.nav-btn { min-height: 54px; padding: 0 10px; font-size: 12px; }.nav-divider { display: none; }
-  .hero, .stage, .foot { width: min(100% - 24px, 1280px); }.hero { margin-top: 14px; }.stage { padding: 17px; }
+  .hero, .stage, .foot, .feature-nav { width: min(100% - 24px, 1280px); }.hero { margin-top: 14px; }.stage { padding: 17px; }.feature-nav { margin-top:14px; }
 }
 
 /* ===========================================================================
