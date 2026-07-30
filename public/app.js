@@ -5,6 +5,7 @@ const form = document.querySelector("#predictForm");
 const output = document.querySelector("#predictionOutput");
 const ledgerBody = document.querySelector("#ledgerBody");
 const fixtureLedgerSyncStatus = document.querySelector("#fixtureLedgerSyncStatus");
+const immersiveUiToggle = document.querySelector("#immersiveUiToggle");
 const syncEspnResultsButton = document.querySelector("#syncEspnResultsButton");
 const teamList = document.querySelector("#teamList");
 const appContextToggle = document.querySelector("#appContextToggle");
@@ -820,6 +821,10 @@ function selectedSeason() {
 
 function isCurrentClubSeason() {
   return !isInternationalMode() && selectedSeason() === "2025-26";
+}
+
+function hasClubFixtureFeed() {
+  return !isInternationalMode() && ["2025-26", "2026-27"].includes(selectedSeason());
 }
 
 function hasCurrentInternationalFixtures() {
@@ -4103,7 +4108,7 @@ async function refreshFixtureBoard() {
     resetInternationalSummary();
     return;
   }
-  if (!isCurrentClubSeason()) {
+  if (!hasClubFixtureFeed()) {
     fixturePredictions = [];
     trackAllButton.disabled = true;
     boardLeagueFilter.innerHTML = `<option value="All">All leagues</option>`;
@@ -4122,7 +4127,7 @@ async function refreshFixtureBoard() {
   trackAllButton.disabled = false;
   const previousLeague = boardLeagueFilter.value;
   const previousDate = boardDateFilter.value;
-  const data = await api("/api/fixture-predictions");
+  const data = await api(`/api/fixture-predictions?season=${encodeURIComponent(selectedSeason())}`);
   fixturePredictions = data.predictions;
   const refreshState = data.liveRefresh?.running
     ? "Predictions are updating — refresh in a moment for the latest."
@@ -4203,14 +4208,14 @@ function setBoardDate(dateStr) {
 }
 
 async function recheckPredictionOdds() {
-  if (isInternationalMode() || !isCurrentClubSeason()) {
-    setBoardMessage("Odds refresh is available for the current club fixture board.", "info");
+  if (isInternationalMode() || !hasClubFixtureFeed()) {
+    setBoardMessage("Odds refresh is available for the imported club fixture boards.", "info");
     return;
   }
   if (recheckOddsButton) recheckOddsButton.disabled = true;
   setBoardMessage("Rechecking ESPN fixtures and sportsbook odds...", "info");
   try {
-    await api("/api/fixtures/espn-refresh", { method: "POST", body: JSON.stringify({}) });
+    await api("/api/fixtures/espn-refresh", { method: "POST", body: JSON.stringify({ season: selectedSeason() }) });
     await api("/api/odds/refresh", { method: "POST", body: JSON.stringify({}) });
     await refreshFixtureBoard();
     const withOdds = fixturePredictions.filter((prediction) => prediction.hasOdds).length;
@@ -5126,6 +5131,7 @@ async function loadAppData() {
 
 async function init() {
   try {
+    immersiveUiToggle?.addEventListener("click", () => window.location.assign("/v2/"));
     initTheme();
     initContextMode();
     initTutor();

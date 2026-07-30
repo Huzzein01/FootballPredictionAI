@@ -28,6 +28,9 @@ const USER_AGENT = "Mozilla/5.0 FootballPredictionAI world-cup-sync";
 const WC_RESULTS_PATH = mutableDataPath("international", "world_cup_results.json");
 const WC_PLAYER_STATS_PATH = mutableDataPath("international", "processed", "wc2026_live_player_stats.json");
 const RESULTS_TTL_MS = 2 * 60 * 1000;
+// The scoreboards API accepts a date range. Use the whole tournament rather
+// than a rolling window so a post-tournament sync retains every result.
+const WORLD_CUP_DATE_WINDOW = "20260601-20260731";
 
 function readWorldCupResults() {
   return readJsonWithFallback(WC_RESULTS_PATH, null, { results: [] });
@@ -66,12 +69,11 @@ function resultMatchesFixture(result, fixture) {
  * Fetch latest World Cup results from ESPN, auto-track + auto-settle
  * predictions, refresh the training summary, schedule retraining.
  */
-async function refreshWorldCupResults({ force = false, daysBack = 6, daysForward = 1 } = {}) {
+async function refreshWorldCupResults({ force = false, dateWindow = WORLD_CUP_DATE_WINDOW } = {}) {
   const cached = readWorldCupResults();
   if (!force && snapshotIsFresh(cached, RESULTS_TTL_MS)) return { ...cached, cached: true };
 
-  const window = dateRange(daysBack, daysForward);
-  const sourceUrl = `https://site.api.espn.com/apis/site/v2/sports/soccer/${WC_SLUG}/scoreboard?dates=${window}&limit=200`;
+  const sourceUrl = `https://site.api.espn.com/apis/site/v2/sports/soccer/${WC_SLUG}/scoreboard?dates=${dateWindow}&limit=300`;
   let events = [];
   let fetchError = null;
   try {
@@ -159,7 +161,7 @@ async function refreshWorldCupResults({ force = false, daysBack = 6, daysForward
     updatedAt: new Date().toISOString(),
     source: "ESPN public event scoreboard API (FIFA World Cup)",
     sourceUrl,
-    dateWindow: window,
+    dateWindow,
     fetched: fetched.length,
     completedCount: completed.length,
     settled: settled.length,
