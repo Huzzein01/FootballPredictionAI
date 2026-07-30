@@ -51,6 +51,7 @@ function bootApp() {
   bindContextSwitch();
   bindSeasonSwitch();
   bindCompetitionFilter();
+  bindFilterPanel();
   positionCtxGlow();
   renderSection();
   refreshHeroStats();
@@ -67,6 +68,7 @@ function bindContextSwitch() {
       updateSeasonSwitch();
       updateCompetitionSwitch();
       updateHeroSubtitle();
+      updateFilterSummary();
       if (!sectionAllowed(STATE.section)) STATE.section = "predictions";
       buildSectionNav(); renderSection(); refreshHeroStats();
     });
@@ -94,11 +96,13 @@ function bindSeasonSwitch() {
     }
     STATE.matchday = "all";
     updateHeroSubtitle();
+    updateFilterSummary();
     renderSection();
     refreshHeroStats();
   });
   updateSeasonSwitch();
   updateHeroSubtitle();
+  updateFilterSummary();
 }
 function updateSeasonSwitch() {
   const select = $("#clubSeasonSwitch");
@@ -124,6 +128,7 @@ function bindCompetitionFilter() {
     localStorage.setItem("football-competition-type", STATE.competitionType);
     localStorage.setItem("football-competitions", JSON.stringify(STATE.competitions));
     updateCompetitionSwitch();
+    updateFilterSummary();
     renderSection();
   });
   updateCompetitionSwitch();
@@ -150,8 +155,30 @@ function updateCompetitionSwitch() {
     if (!STATE.competitions.length) STATE.competitions = [allName];
     localStorage.setItem("football-competitions", JSON.stringify(STATE.competitions));
     updateCompetitionSwitch();
+    updateFilterSummary();
     renderSection();
   }));
+}
+function bindFilterPanel() {
+  const button = $("#filterToggle");
+  const panel = $("#filterPanel");
+  if (!button || !panel) return;
+  button.addEventListener("click", () => {
+    panel.hidden = !panel.hidden;
+    button.setAttribute("aria-expanded", String(!panel.hidden));
+  });
+  document.addEventListener("click", (event) => {
+    if (!panel.hidden && !panel.contains(event.target) && !button.contains(event.target)) {
+      panel.hidden = true;
+      button.setAttribute("aria-expanded", "false");
+    }
+  });
+}
+function updateFilterSummary() {
+  const summary = $("#filterSummary");
+  if (!summary) return;
+  const mode = STATE.context === "international" ? "International" : "Club";
+  summary.textContent = STATE.context === "international" ? `${mode} · ${STATE.internationalSeason}` : `${mode} · ${STATE.clubSeason} · ${competitionLabel()}`;
 }
 function isCompetitionEntry(entry) {
   return KNOCKOUT_COMPETITIONS.has(String(entry?.league || entry?.competition || ""));

@@ -160,26 +160,19 @@
           </div>
         </div>
         <div class="hero-controls">
-          <div class="ctx-switch" id="ctxSwitch" role="tablist" aria-label="Mode">
-            <button class="ctx-btn" data-ctx="club" type="button">Club</button>
-            <button class="ctx-btn is-active" data-ctx="international" type="button">International</button>
-            <span class="ctx-glow"></span>
-          </div>
-          <label class="season-switch" for="clubSeasonSwitch">
-            <span>Season</span>
-            <select id="clubSeasonSwitch" aria-label="Club season"></select>
-          </label>
-          <label class="competition-switch" id="competitionSwitch">
-            <span>Browse</span>
-            <select id="competitionType" aria-label="Football category">
-              <option value="league">Leagues</option>
-              <option value="competition">Competitions</option>
-            </select>
-            <details class="competition-picker" id="competitionPicker">
-              <summary id="competitionSummary">All Leagues</summary>
-              <div id="competitionOptions" class="competition-options" role="group" aria-label="Choose leagues or competitions"></div>
-            </details>
-          </label>
+          <button class="filter-toggle" id="filterToggle" type="button" aria-expanded="false" aria-controls="filterPanel">Filters <span id="filterSummary"></span></button>
+          <section class="filter-panel" id="filterPanel" hidden aria-label="Football filters">
+            <div class="filter-field"><span>Mode</span><div class="ctx-switch" id="ctxSwitch" role="tablist" aria-label="Mode">
+              <button class="ctx-btn" data-ctx="club" type="button">Club</button>
+              <button class="ctx-btn is-active" data-ctx="international" type="button">International</button>
+              <span class="ctx-glow"></span>
+            </div></div>
+            <label class="filter-field season-switch" for="clubSeasonSwitch"><span>Season</span><select id="clubSeasonSwitch" aria-label="Club season"></select></label>
+            <label class="filter-field competition-switch" id="competitionSwitch"><span>Browse</span><select id="competitionType" aria-label="Football category">
+              <option value="league">Leagues</option><option value="competition">Competitions</option>
+            </select></label>
+            <div class="filter-field competition-switch" id="competitionPicker"><span>Selection</span><details class="competition-picker"><summary id="competitionSummary">All Leagues</summary><div id="competitionOptions" class="competition-options" role="group" aria-label="Choose leagues or competitions"></div></details></div>
+          </section>
         </div>
       </div>
       <div class="hero-stats" id="heroStats" aria-live="polite"></div>
