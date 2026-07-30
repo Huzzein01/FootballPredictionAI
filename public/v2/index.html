@@ -156,15 +156,19 @@
           <div>
             <p class="hero-eyebrow">Sport workspace · Football</p>
             <h1>Football</h1>
-            <p id="heroSub" class="hero-sub">2026 World Cup · data-led prediction dashboard</p>
+            <p id="heroSub" class="hero-sub">International football · data-led prediction dashboard</p>
           </div>
         </div>
         <div class="hero-controls">
           <div class="ctx-switch" id="ctxSwitch" role="tablist" aria-label="Mode">
             <button class="ctx-btn" data-ctx="club" type="button">Club</button>
-            <button class="ctx-btn is-active" data-ctx="international" type="button">World Cup</button>
+            <button class="ctx-btn is-active" data-ctx="international" type="button">International</button>
             <span class="ctx-glow"></span>
           </div>
+          <label class="season-switch" for="clubSeasonSwitch">
+            <span>Season</span>
+            <select id="clubSeasonSwitch" aria-label="Club season"></select>
+          </label>
         </div>
       </div>
       <div class="hero-stats" id="heroStats" aria-live="polite"></div>

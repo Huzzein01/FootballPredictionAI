@@ -12,9 +12,12 @@ async function api(path, opts) { const r = await fetch(path, opts); if (!r.ok) t
 
 const STATE = {
   context: "international", section: "predictions", matchday: "all",
-  sortBy: "confidence", clubSeason: "2026-27",
+  sortBy: "confidence", clubSeason: "2026-27", internationalSeason: "2026 World Cup",
   liveTimer: null, goalWatch: null, liveScores: {}, parlayRisk: "safe",
 };
+
+const CLUB_SEASONS = ["2026-27", "2025-26", "2024-25", "2023-24", "2022-23", "2021-22", "2020-21"];
+const INTERNATIONAL_SEASONS = ["2026 World Cup", "2022 World Cup", "2018 World Cup"];
 
 const SECTIONS = [
   { id: "predictions", label: "Predictions" },
@@ -33,13 +36,15 @@ const SECTIONS = [
 
 const flag = (url) => url ? `<img class="flag" src="${esc(url)}" alt="" loading="lazy" onerror="this.style.visibility='hidden'">` : `<span class="flag"></span>`;
 const stat = (b, s, cls = "") => `<div class="hero-stat"><b class="${cls}">${esc(b)}</b><span>${esc(s)}</span></div>`;
-const seasonFor = () => STATE.context === "international" ? "2026 World Cup" : "2025-26";
+const seasonFor = () => STATE.context === "international" ? STATE.internationalSeason : STATE.clubSeason;
+const isCurrentInternationalSeason = () => STATE.internationalSeason === "2026 World Cup";
 
 /* ── Boot ────────────────────────────────────────────────────────────────── */
 function bootApp() {
   buildNav();
   buildSectionNav();
   bindContextSwitch();
+  bindSeasonSwitch();
   positionCtxGlow();
   renderSection();
   refreshHeroStats();
@@ -53,11 +58,48 @@ function bindContextSwitch() {
       document.documentElement.dataset.context = STATE.context;
       $("#ctxSwitch").querySelectorAll(".ctx-btn").forEach((b) => b.classList.toggle("is-active", b === btn));
       positionCtxGlow();
-      $("#heroSub").textContent = STATE.context === "international" ? "2026 World Cup · data-led prediction dashboard" : "Club football · data-led prediction dashboard";
+      updateSeasonSwitch();
+      updateHeroSubtitle();
       if (!sectionAllowed(STATE.section)) STATE.section = "predictions";
       buildSectionNav(); renderSection(); refreshHeroStats();
     });
   });
+}
+function updateHeroSubtitle() {
+  $("#heroSub").textContent = STATE.context === "international"
+    ? `International football · ${STATE.internationalSeason}`
+    : `Club football · ${STATE.clubSeason} season`;
+}
+function bindSeasonSwitch() {
+  const select = $("#clubSeasonSwitch");
+  if (!select) return;
+  const savedClub = localStorage.getItem("football-club-season");
+  const savedInternational = localStorage.getItem("football-international-season");
+  if (CLUB_SEASONS.includes(savedClub)) STATE.clubSeason = savedClub;
+  if (INTERNATIONAL_SEASONS.includes(savedInternational)) STATE.internationalSeason = savedInternational;
+  select.addEventListener("change", () => {
+    if (STATE.context === "international") {
+      STATE.internationalSeason = select.value;
+      localStorage.setItem("football-international-season", select.value);
+    } else {
+      STATE.clubSeason = select.value;
+      localStorage.setItem("football-club-season", select.value);
+    }
+    STATE.matchday = "all";
+    updateHeroSubtitle();
+    renderSection();
+    refreshHeroStats();
+  });
+  updateSeasonSwitch();
+  updateHeroSubtitle();
+}
+function updateSeasonSwitch() {
+  const select = $("#clubSeasonSwitch");
+  if (!select) return;
+  const options = STATE.context === "international" ? INTERNATIONAL_SEASONS : CLUB_SEASONS;
+  const selected = seasonFor();
+  select.innerHTML = options.map((season) => `<option value="${esc(season)}">${esc(season)}</option>`).join("");
+  select.value = selected;
 }
 function positionCtxGlow() {
   const active = $("#ctxSwitch .ctx-btn.is-active"), glow = $(".ctx-glow");
@@ -125,6 +167,10 @@ async function refreshHeroStats() {
 function renderSection() {
   if (STATE.liveTimer) { clearInterval(STATE.liveTimer); STATE.liveTimer = null; }
   $("#stage").innerHTML = `<div class="loading"><div class="spinner"></div><span>Loading…</span></div>`;
+  if (STATE.context === "international" && !isCurrentInternationalSeason()) {
+    $("#stage").innerHTML = `<div class="empty"><b>${esc(STATE.internationalSeason)}</b> is available as historical context. Its fixtures and model cards will appear here after that tournament's verified data feed is imported.</div>`;
+    return;
+  }
   const map = { predictions: renderPredictions, live: renderLive, parlays: renderParlays, slip: renderSlip,
     teams: renderTeams, players: renderPlayers, futures: renderFutures, tables: renderTables,
     results: renderResults, training: renderTraining, fixtures: renderFixtures, single: renderSingle };
@@ -157,18 +203,6 @@ async function renderPredictions() {
     b.onclick = () => { STATE.sortBy = k; renderPredictions(); };
     toolbar.appendChild(b);
   });
-  if (!intl) {
-    const wrap = el("label", "season-lbl", "Season ");
-    const sel = el("select", "season-pick");
-    ["2026-27", "2025-26", "2024-25", "2023-24"].forEach((s) => {
-      const o = document.createElement("option"); o.value = s; o.textContent = s;
-      if (s === STATE.clubSeason) o.selected = true;
-      sel.appendChild(o);
-    });
-    sel.onchange = () => { STATE.clubSeason = sel.value; renderPredictions(); };
-    wrap.appendChild(sel);
-    toolbar.appendChild(wrap);
-  }
   stage.appendChild(toolbar);
 
   // ── Matchday filter (international only) ──────────────────────────────────
@@ -443,7 +477,7 @@ async function renderTables() {
 /* ── Results ─────────────────────────────────────────────────────────────── */
 async function renderResults() {
   const intl = STATE.context === "international";
-  const data = await api(intl ? "/api/played-fixtures?context=international" : "/api/played-fixtures?context=club&season=2025-26");
+  const data = await api(intl ? "/api/played-fixtures?context=international" : `/api/played-fixtures?context=club&season=${encodeURIComponent(STATE.clubSeason)}`);
   const preds = (data.predictions || []).filter((p) => p.played);
   const stage = $("#stage"); stage.innerHTML = ""; const s = data.summary || {};
   stage.appendChild(headEl("Results", `${s.total || preds.length} settled · model ${s.correct ?? "—"}/${s.total ?? "—"}${s.exactScores ? " · " + s.exactScores + " exact" : ""}`));

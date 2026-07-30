@@ -225,6 +225,9 @@ body {
 .ctx-switch { background: rgb(2 21 52 / 35%); border-color: rgb(255 255 255 / 24%); border-radius: 999px; }
 .ctx-btn { color: #d8e8ff; border-radius: 999px; }
 .ctx-btn.is-active { background: #fff; color: #0a55bd; }
+.hero-controls { display: flex; align-items: center; gap: 10px; flex-wrap: wrap; }
+.season-switch { display: inline-flex; align-items: center; gap: 7px; padding: 5px 9px 5px 12px; color: #dbeaff; background: rgb(2 21 52 / 35%); border: 1px solid rgb(255 255 255 / 24%); border-radius: 999px; font-size: 11px; font-weight: 800; letter-spacing: .06em; text-transform: uppercase; }
+.season-switch select { min-width: 104px; padding: 5px 22px 5px 7px; color: #0a55bd; background: #fff; border: 0; border-radius: 999px; font: 700 12px Inter, sans-serif; cursor: pointer; }
 .hero-stats { margin-top: 0; background: rgb(255 255 255 / 20%); border: 0; border-radius: 0 0 14px 14px; }
 .hero-stat { background: rgb(0 26 71 / 25%); padding: 13px 20px; }
 .hero-stat b { color: #fff; }
@@ -296,7 +299,7 @@ body {
 
 @media (max-width: 720px) {
   .nav { min-height: 54px; padding: 0 12px; }.nav-brand { margin-right: 8px; font-size: 16px; }.nav-brand-mark { width: 25px; height: 29px; }.nav-btn { min-height: 54px; padding: 0 10px; font-size: 12px; }.nav-divider { display: none; }
-  .hero, .stage, .foot, .feature-nav { width: min(100% - 24px, 1280px); }.hero { margin-top: 14px; }.stage { padding: 17px; }.feature-nav { margin-top:14px; }
+  .hero, .stage, .foot, .feature-nav { width: min(100% - 24px, 1280px); }.hero { margin-top: 14px; }.stage { padding: 17px; }.feature-nav { margin-top:14px; }.hero-controls { width:100%; justify-content:space-between; }.season-switch { padding-left:9px; }
 }
 
 /* ===========================================================================
