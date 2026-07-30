@@ -12,12 +12,17 @@ async function api(path, opts) { const r = await fetch(path, opts); if (!r.ok) t
 
 const STATE = {
   context: "international", section: "predictions", matchday: "all",
-  sortBy: "confidence", clubSeason: "2026-27", internationalSeason: "2026 World Cup",
+  sortBy: "confidence", clubSeason: "2026-27", internationalSeason: "2026 World Cup", competitionType: "league", competition: "All Leagues",
   liveTimer: null, goalWatch: null, liveScores: {}, parlayRisk: "safe",
 };
 
 const CLUB_SEASONS = ["2026-27", "2025-26", "2024-25", "2023-24", "2022-23", "2021-22", "2020-21"];
 const INTERNATIONAL_SEASONS = ["2026 World Cup", "2022 World Cup", "2018 World Cup"];
+const FOOTBALL_CATALOG = {
+  league: ["All Leagues", "EPL", "La Liga", "Bundesliga", "Ligue 1", "Serie A", "Eredivisie", "Primeira Liga", "Scottish Premiership", "Turkish Super Lig", "Belgian Pro League", "Danish Superliga", "Eliteserien", "Allsvenskan", "Swiss Super League"],
+  competition: ["All Competitions", "Champions League", "Europa League", "Conference League", "UEFA Super Cup", "FA Cup", "Carabao Cup", "Copa del Rey", "DFB-Pokal", "Coppa Italia", "Coupe de France"],
+};
+const KNOCKOUT_COMPETITIONS = new Set(FOOTBALL_CATALOG.competition.slice(1));
 
 const SECTIONS = [
   { id: "predictions", label: "Predictions" },
@@ -30,7 +35,7 @@ const SECTIONS = [
   { id: "tables", label: "Tables" },
   { id: "results", label: "Results" },
   { id: "training", label: "Model Training", intl: true },
-  { id: "fixtures", label: "Fixtures", intl: true },
+  { id: "fixtures", label: "Fixtures" },
   { id: "single", label: "Single Predictor" },
 ];
 
@@ -45,6 +50,7 @@ function bootApp() {
   buildSectionNav();
   bindContextSwitch();
   bindSeasonSwitch();
+  bindCompetitionFilter();
   positionCtxGlow();
   renderSection();
   refreshHeroStats();
@@ -59,6 +65,7 @@ function bindContextSwitch() {
       $("#ctxSwitch").querySelectorAll(".ctx-btn").forEach((b) => b.classList.toggle("is-active", b === btn));
       positionCtxGlow();
       updateSeasonSwitch();
+      updateCompetitionSwitch();
       updateHeroSubtitle();
       if (!sectionAllowed(STATE.section)) STATE.section = "predictions";
       buildSectionNav(); renderSection(); refreshHeroStats();
@@ -101,6 +108,59 @@ function updateSeasonSwitch() {
   select.innerHTML = options.map((season) => `<option value="${esc(season)}">${esc(season)}</option>`).join("");
   select.value = selected;
 }
+function bindCompetitionFilter() {
+  const type = $("#competitionType");
+  const select = $("#competitionSelect");
+  if (!type || !select) return;
+  const savedType = localStorage.getItem("football-competition-type");
+  const savedCompetition = localStorage.getItem("football-competition");
+  if (Object.hasOwn(FOOTBALL_CATALOG, savedType)) STATE.competitionType = savedType;
+  if (FOOTBALL_CATALOG[STATE.competitionType].includes(savedCompetition)) STATE.competition = savedCompetition;
+  type.addEventListener("change", () => {
+    STATE.competitionType = type.value;
+    STATE.competition = FOOTBALL_CATALOG[STATE.competitionType][0];
+    localStorage.setItem("football-competition-type", STATE.competitionType);
+    localStorage.setItem("football-competition", STATE.competition);
+    updateCompetitionSwitch();
+    renderSection();
+  });
+  select.addEventListener("change", () => {
+    STATE.competition = select.value;
+    localStorage.setItem("football-competition", STATE.competition);
+    renderSection();
+  });
+  updateCompetitionSwitch();
+}
+function updateCompetitionSwitch() {
+  const wrap = $("#competitionSwitch");
+  const type = $("#competitionType");
+  const select = $("#competitionSelect");
+  if (!wrap || !type || !select) return;
+  const international = STATE.context === "international";
+  wrap.hidden = international;
+  if (international) return;
+  type.value = STATE.competitionType;
+  const options = FOOTBALL_CATALOG[STATE.competitionType];
+  if (!options.includes(STATE.competition)) STATE.competition = options[0];
+  select.innerHTML = options.map((name) => `<option value="${esc(name)}">${esc(name)}</option>`).join("");
+  select.value = STATE.competition;
+}
+function isCompetitionEntry(entry) {
+  return KNOCKOUT_COMPETITIONS.has(String(entry?.league || entry?.competition || ""));
+}
+function filterFootballEntries(entries) {
+  if (STATE.context === "international") return entries;
+  const filtered = (entries || []).filter((entry) => {
+    const isCompetition = isCompetitionEntry(entry);
+    if (STATE.competitionType === "league") {
+      return !isCompetition && (STATE.competition === "All Leagues" || entry.league === STATE.competition);
+    }
+    return isCompetition && (STATE.competition === "All Competitions" || entry.league === STATE.competition);
+  });
+  return filtered;
+}
+function competitionLabel() { return STATE.context === "international" ? "International" : STATE.competition; }
+function selectedLeague() { return STATE.competitionType === "league" && STATE.competition !== "All Leagues" ? STATE.competition : "All"; }
 function positionCtxGlow() {
   const active = $("#ctxSwitch .ctx-btn.is-active"), glow = $(".ctx-glow");
   if (active && glow) { glow.style.left = active.offsetLeft + "px"; glow.style.width = active.offsetWidth + "px"; }
@@ -187,9 +247,9 @@ async function renderPredictions() {
     ? "/api/international/fixture-predictions"
     : `/api/fixture-predictions?season=${encodeURIComponent(STATE.clubSeason)}`;
   const data = await api(url);
-  const preds = data.predictions || [];
+  const preds = filterFootballEntries(data.predictions || []);
   const stage = $("#stage"); stage.innerHTML = "";
-  stage.appendChild(headEl("Upcoming Predictions", `${preds.length} fixtures · model picks, confidence & odds`));
+  stage.appendChild(headEl("Upcoming Predictions", `${preds.length} ${competitionLabel()} fixtures · model picks, confidence & odds`));
 
   // ── Sort + season toolbar ──────────────────────────────────────────────────
   const toolbar = el("div", "pred-toolbar");
@@ -291,7 +351,7 @@ async function renderParlays() {
   const gen = async () => {
     out.innerHTML = `<div class="loading"><div class="spinner"></div><span>Building tickets…</span></div>`;
     const legs = $("#pLegs").value, tickets = $("#pTickets").value;
-    const url = `/api/parlay?context=${STATE.context}&league=${STATE.context === "international" ? "International" : "All"}&legs=${legs}&tickets=${tickets}&type=mixed&riskMode=${STATE.parlayRisk}&generationMode=multi`;
+  const url = `/api/parlay?context=${STATE.context}&league=${STATE.context === "international" ? "International" : encodeURIComponent(selectedLeague())}&legs=${legs}&tickets=${tickets}&type=mixed&riskMode=${STATE.parlayRisk}&generationMode=multi`;
     try {
       const data = await api(url);
       const parlays = data.parlays || [];
@@ -404,7 +464,7 @@ async function renderPlayers() {
 /* ── Futures (+ bracket) ─────────────────────────────────────────────────── */
 async function renderFutures() {
   const intl = STATE.context === "international";
-  const data = await api(`/api/futures?context=${STATE.context}&season=${encodeURIComponent(seasonFor())}&league=${intl ? "International" : "EPL"}`);
+  const data = await api(`/api/futures?context=${STATE.context}&season=${encodeURIComponent(seasonFor())}&league=${intl ? "International" : selectedLeague()}`);
   const stage = $("#stage"); stage.innerHTML = "";
   stage.appendChild(headEl("Futures", data.unavailable ? (data.message || "unavailable") : "winner, top scorer & top assist markets"));
   // Bracket placeholder (filled async so it never blocks the futures picks).
@@ -460,9 +520,15 @@ async function renderTables() {
     });
     stage.appendChild(grid); return;
   }
+  if (STATE.competitionType === "competition") {
+    const stage = $("#stage"); stage.innerHTML = "";
+    stage.appendChild(headEl("Competition workspace", `${competitionLabel()} is a knockout competition`));
+    stage.appendChild(el("div", "empty", "League tables do not apply to knockout competitions. Use Fixtures, Futures, and Results to follow rounds, ties, and tournament outcomes."));
+    return;
+  }
   const data = await api(`/api/league-tables?season=${encodeURIComponent(seasonFor())}`).catch(() => null);
   stage.innerHTML = ""; stage.appendChild(headEl("League Tables", "current standings"));
-  const leagues = data?.leagues ? Object.entries(data.leagues) : [];
+  const leagues = data?.leagues ? Object.entries(data.leagues).filter(([name]) => STATE.competition === "All Leagues" || name === STATE.competition) : [];
   if (!leagues.length) { stage.appendChild(el("div", "empty", "League tables unavailable right now.")); return; }
   const grid = el("div", "grid");
   leagues.forEach(([name, lg]) => {
@@ -478,7 +544,7 @@ async function renderTables() {
 async function renderResults() {
   const intl = STATE.context === "international";
   const data = await api(intl ? "/api/played-fixtures?context=international" : `/api/played-fixtures?context=club&season=${encodeURIComponent(STATE.clubSeason)}`);
-  const preds = (data.predictions || []).filter((p) => p.played);
+  const preds = filterFootballEntries(data.predictions || []).filter((p) => p.played);
   const stage = $("#stage"); stage.innerHTML = ""; const s = data.summary || {};
   stage.appendChild(headEl("Results", `${s.total || preds.length} settled · model ${s.correct ?? "—"}/${s.total ?? "—"}${s.exactScores ? " · " + s.exactScores + " exact" : ""}`));
   if (!preds.length) { stage.appendChild(el("div", "empty", "No completed matches yet — results appear automatically as games finish.")); return; }
@@ -521,6 +587,21 @@ async function renderTraining() {
 
 /* ── International Fixtures ───────────────────────────────────────────────── */
 async function renderFixtures() {
+  if (STATE.context === "club") {
+    const data = await api(`/api/fixture-predictions?season=${encodeURIComponent(STATE.clubSeason)}`);
+    const fixtures = filterFootballEntries(data.predictions || []);
+    const stage = $("#stage"); stage.innerHTML = "";
+    stage.appendChild(headEl("Fixtures", `${fixtures.length} scheduled ${competitionLabel()} matches`));
+    if (!fixtures.length) { stage.appendChild(el("div", "empty", `No ${competitionLabel()} fixtures are available for ${STATE.clubSeason} yet.`)); return; }
+    const grid = el("div", "grid");
+    fixtures.slice(0, 120).forEach((fixture) => {
+      const c = el("article", "card");
+      c.innerHTML = `<div class="card-top"><span>${esc(fixture.league || "")}</span><span>${esc(fixture.date || "")}</span></div><div class="match"><div class="team">${flag(fixture.homeFlagUrl || fixture.homeLogoUrl)}<span class="tn">${esc(fixture.homeTeam)}</span></div><div class="vs">vs</div><div class="team">${flag(fixture.awayFlagUrl || fixture.awayLogoUrl)}<span class="tn">${esc(fixture.awayTeam)}</span></div></div>`;
+      grid.appendChild(c);
+    });
+    stage.appendChild(grid);
+    return;
+  }
   const data = await api("/api/international/fixtures");
   const fixtures = data.fixtures || [];
   const stage = $("#stage"); stage.innerHTML = "";
