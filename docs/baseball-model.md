@@ -32,3 +32,19 @@ to calibrate against an out-of-time holdout, not a hard-coded claim of edge.
 node scripts/train_baseball_model.js data/baseball_training_rows.json
 node --test test/baseballModel.test.js
 ```
+
+## Historical pregame dataset
+
+Create the initial, leakage-safe training set from MLB completed regular-season
+games with:
+
+```sh
+node scripts/build_mlb_pregame_dataset.js --start=2021 --end=2025
+node scripts/train_baseball_model.js data/baseball/mlb_pregame_2021_2025.json
+```
+
+The builder reconstructs team form only from results before a game's first
+pitch. It intentionally does **not** backfill lineups, starters, injuries,
+weather, travel or historical odds from postgame feeds. Those fields may be
+added later only when they come from a source with a verifiable pregame
+timestamp.
