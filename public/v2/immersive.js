@@ -103,15 +103,17 @@ const sectionAllowed = (id) => { const s = SECTIONS.find((x) => x.id === id); re
 
 function buildNav() {
   const nav = $("#nav"); nav.innerHTML = "";
+  // Keep the mode switch first so it stays reachable when the section nav
+  // overflows on smaller screens.
+  const classic = el("button", "nav-btn nav-ui-toggle", "Classic UI");
+  classic.title = "Open the classic interface";
+  classic.addEventListener("click", () => window.location.assign("/classic/"));
+  nav.appendChild(classic);
   SECTIONS.filter((s) => !s.intl || STATE.context === "international").forEach((s) => {
     const b = el("button", "nav-btn" + (s.id === STATE.section ? " is-active" : ""), esc(s.label));
     b.addEventListener("click", () => { STATE.section = s.id; buildNav(); renderSection(); });
     nav.appendChild(b);
   });
-  const classic = el("button", "nav-btn nav-ui-toggle", "Classic UI");
-  classic.title = "Open the classic interface";
-  classic.addEventListener("click", () => window.location.assign("/classic/"));
-  nav.appendChild(classic);
 }
 
 /* ── Hero stats ──────────────────────────────────────────────────────────── */
