@@ -47,9 +47,17 @@ function chronologicalFolds(rows, folds = 4) {
   const ordered = [...rows].sort((a, b) => Date.parse(a.snapshot.firstPitchUtc) - Date.parse(b.snapshot.firstPitchUtc));
   const start = Math.max(8, Math.floor(ordered.length / (folds + 1)));
   const result = [];
-  for (let split = start; split < ordered.length; split += start) {
-    const test = ordered.slice(split, Math.min(split + start, ordered.length));
-    if (test.length) result.push({ train: ordered.slice(0, split), test });
+  const minTestRows = Math.max(8, Math.floor(start / 10));
+  for (let split = start; split < ordered.length;) {
+    // A score from a game at the same first-pitch timestamp is not available
+    // for another game at that instant. Move both boundaries past ties.
+    while (split < ordered.length && ordered[split - 1].snapshot.firstPitchUtc === ordered[split].snapshot.firstPitchUtc) split += 1;
+    let end = Math.min(split + start, ordered.length);
+    while (end < ordered.length && ordered[end - 1].snapshot.firstPitchUtc === ordered[end].snapshot.firstPitchUtc) end += 1;
+    const test = ordered.slice(split, end);
+    if (test.length < minTestRows) break;
+    result.push({ train: ordered.slice(0, split), test });
+    split = end;
   }
   return result;
 }

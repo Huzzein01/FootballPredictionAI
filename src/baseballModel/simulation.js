@@ -13,18 +13,27 @@ function countSample(mean, variance, next) {
   return poisson(gamma(shape, mean / shape, next), next);
 }
 
-function simulateGame({ homeRuns, awayRuns, homeVariance, awayVariance, simulations = 20000, seed = 42 }) {
+function simulateGame({ homeRuns, awayRuns, homeVariance, awayVariance, sharedVariance = 0, simulations = 20000, seed = 42 }) {
   const next = random(seed); let homeWins = 0, ties = 0, totalRuns = 0, homeCover = 0;
+  const scoreCounts = new Map();
   for (let i = 0; i < simulations; i += 1) {
-    const home = countSample(Math.max(0.1, homeRuns), Math.max(homeRuns, homeVariance || homeRuns), next);
-    const away = countSample(Math.max(0.1, awayRuns), Math.max(awayRuns, awayVariance || awayRuns), next);
+    // A shared Gamma game-environment multiplier captures park/weather/game
+    // variance that pushes both offenses in the same direction.
+    const environment = sharedVariance > 0 ? gamma(1 / sharedVariance, sharedVariance, next) : 1;
+    const home = countSample(Math.max(0.1, homeRuns * environment), Math.max(homeRuns * environment, homeVariance || homeRuns), next);
+    const away = countSample(Math.max(0.1, awayRuns * environment), Math.max(awayRuns * environment, awayVariance || awayRuns), next);
     if (home > away) homeWins += 1; else if (home === away) ties += 1;
     if (home - away > 1.5) homeCover += 1;
     totalRuns += home + away;
+    const key = `${home}-${away}`;
+    scoreCounts.set(key, (scoreCounts.get(key) || 0) + 1);
   }
   // Baseball cannot settle tied: allocate extra-inning ties evenly in the
   // absence of a team-specific extra-inning model.
-  return { homeWinProbability: (homeWins + ties / 2) / simulations, awayWinProbability: 1 - (homeWins + ties / 2) / simulations, homeRunLineMinus1_5: homeCover / simulations, expectedTotalRuns: totalRuns / simulations, simulations };
+  const scoreDistribution = [...scoreCounts.entries()]
+    .map(([score, count]) => { const [homeRuns, awayRuns] = score.split("-").map(Number); return { homeRuns, awayRuns, probability: count / simulations }; })
+    .sort((left, right) => right.probability - left.probability || left.homeRuns - right.homeRuns || left.awayRuns - right.awayRuns);
+  return { homeWinProbability: (homeWins + ties / 2) / simulations, awayWinProbability: 1 - (homeWins + ties / 2) / simulations, homeRunLineMinus1_5: homeCover / simulations, expectedTotalRuns: totalRuns / simulations, scoreDistribution, sharedVariance, seed, simulations };
 }
 
 function impliedHomeProbability(odds) {

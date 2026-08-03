@@ -29,6 +29,9 @@ const { readJsonWithFallback, repoDataPath } = require("./runtimePaths");
 const { hydrateKnownStoresOnce, persistKnownStores, storageStatus } = require("./supabaseJsonStore");
 const parlayBacktests = require("./parlayBacktestStore");
 const { projectDomesticCup, CUP_CONFIG } = require("./domesticCupProjection");
+const { createPrediction: createBaseballPrediction, settlePrediction: settleBaseballPrediction, monitoring: baseballMonitoring } = require("./baseballModel/productionService");
+const { ingestSchedulePayload } = require("./baseballModel/featureStore");
+const { collectPregameFeatures } = require("./baseballModel/pregameCollectors");
 
 const PORT = Number(process.env.PORT || 4173);
 const PUBLIC_DIR = path.join(process.cwd(), "public");
@@ -538,6 +541,25 @@ async function handleApi(req, res, pathname) {
     }
     return sendJson(res, 200, { teamsByLeague: teamsByLeague(), metrics: model.metrics, hyperparameters: model.hyperparameters, trainedAt: model.trainedAt, feedbackRows: model.feedbackRows || 0, trainingStatus: readTrainingStatus() });
   }
+  if (req.method === "GET" && pathname === "/api/baseball/monitoring") return sendJson(res, 200, baseballMonitoring());
+  if (req.method === "POST" && pathname === "/api/baseball/jobs/schedule") {
+    const { date = new Date().toISOString().slice(0, 10) } = await readBody(req);
+    if (!/^\d{4}-\d{2}-\d{2}$/.test(date)) return sendJson(res, 400, { error: "date must be YYYY-MM-DD" });
+    const sourceUrl = `https://statsapi.mlb.com/api/v1/schedule?sportId=1&date=${encodeURIComponent(date)}&hydrate=venue,probablePitcher`;
+    const response = await fetch(sourceUrl); if (!response.ok) return sendJson(res, 502, { error: `MLB schedule request failed: ${response.status}` });
+    return sendJson(res, 201, ingestSchedulePayload({ payload: await response.json(), sourceUrl }));
+  }
+  if (req.method === "POST" && pathname === "/api/baseball/jobs/collect-pregame") {
+    const { normalizedSchedule, capturedAt } = await readBody(req);
+    if (!normalizedSchedule?.games) return sendJson(res, 400, { error: "normalizedSchedule.games is required" });
+    return sendJson(res, 201, await collectPregameFeatures({ normalizedSchedule, capturedAt }));
+  }
+  if (req.method === "POST" && pathname === "/api/baseball/predictions") {
+    const body = await readBody(req); const model = JSON.parse(fs.readFileSync(path.join(process.cwd(), "data", "baseball_model.json"), "utf8"));
+    const result = createBaseballPrediction({ snapshot: body.snapshot, model, odds: body.odds, calibration: body.calibration, backtestBet: body.backtestBet }); return sendJson(res, result.status, result);
+  }
+  const baseballSettlement = pathname.match(/^\/api\/baseball\/predictions\/(.+)\/settlement$/);
+  if (req.method === "POST" && baseballSettlement) return sendJson(res, 200, settleBaseballPrediction(decodeURIComponent(baseballSettlement[1]), await readBody(req)));
 
   const multiSportMatch = pathname.match(/^\/api\/sports\/(baseball|basketball)\/season$/);
   if (req.method === "GET" && multiSportMatch) {

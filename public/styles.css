@@ -2596,6 +2596,44 @@ summary {
   margin-top: 14px;
 }
 
+.single-team-field {
+  min-width: 0;
+}
+
+.single-team-input {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.single-team-input input {
+  min-width: 0;
+  flex: 1 1 auto;
+}
+
+.single-team-crest {
+  display: inline-flex;
+  flex: 0 0 auto;
+}
+
+.single-team-crest .team-badge {
+  width: 30px;
+  height: 30px;
+}
+
+.single-team-crest .team-badge img {
+  width: 24px;
+  height: 24px;
+  object-fit: contain;
+}
+
+.single-prediction-teams {
+  display: inline-flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 7px;
+}
+
 .checkline {
   align-items: center;
   grid-template-columns: auto 1fr;
@@ -4723,7 +4761,7 @@ th {
 .bracket-champ-flag {
   width: 40px;
   height: 28px;
-  object-fit: cover;
+  object-fit: contain;
   border-radius: 3px;
   box-shadow: 0 2px 6px rgba(0,0,0,0.3);
 }
@@ -4798,7 +4836,7 @@ th {
 .bracket-flag {
   width: 22px;
   height: 15px;
-  object-fit: cover;
+  object-fit: contain;
   border-radius: 2px;
   flex-shrink: 0;
 }

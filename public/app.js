@@ -9,6 +9,8 @@ const immersiveUiToggle = document.querySelector("#immersiveUiToggle");
 const sportsbooksUiToggle = document.querySelector("#sportsbooksUiToggle");
 const syncEspnResultsButton = document.querySelector("#syncEspnResultsButton");
 const teamList = document.querySelector("#teamList");
+const singleHomeCrest = document.querySelector("#singleHomeCrest");
+const singleAwayCrest = document.querySelector("#singleAwayCrest");
 const appContextToggle = document.querySelector("#appContextToggle");
 const leagueSelect = document.querySelector("#leagueSelect");
 const singleCompetitionSelect = document.querySelector("#singleCompetitionSelect");
@@ -2495,6 +2497,12 @@ function fixtureMiniLine(fixture, leg = null) {
   `;
 }
 
+function refreshSingleTeamCrests() {
+  if (!form) return;
+  if (singleHomeCrest) singleHomeCrest.innerHTML = teamBadge(form.elements.homeTeam.value);
+  if (singleAwayCrest) singleAwayCrest.innerHTML = teamBadge(form.elements.awayTeam.value);
+}
+
 async function api(path, options = {}) {
   const controller = new AbortController();
   const timeout = window.setTimeout(() => controller.abort(), 25000);
@@ -3576,10 +3584,12 @@ function updateTeamList() {
   if (isInternationalMode()) {
     const teams = WORLD_CUP_GROUPS.flatMap((group) => group.teams).filter((team) => !team.includes("Playoff"));
     teamList.innerHTML = teams.map((team) => `<option value="${escapeHtml(team)}"></option>`).join("");
+    refreshSingleTeamCrests();
     return;
   }
   const teams = meta?.teamsByLeague?.[leagueSelect.value] || [];
   teamList.innerHTML = teams.map((team) => `<option value="${escapeHtml(team)}"></option>`).join("");
+  refreshSingleTeamCrests();
 }
 
 function renderPrediction(prediction) {
@@ -3587,7 +3597,7 @@ function renderPrediction(prediction) {
   output.innerHTML = `
     <div class="pick-line">
       <div>
-        <strong>${escapeHtml(displayTeam(prediction.homeTeam))} vs ${escapeHtml(displayTeam(prediction.awayTeam))}</strong>
+        <strong class="single-prediction-teams">${teamLine(prediction.homeTeam)}<span class="versus">vs</span>${teamLine(prediction.awayTeam)}</strong>
         <p class="muted">${escapeHtml(prediction.league)} ${escapeHtml(prediction.season)}</p>
       </div>
       <span class="pick-pill tag-${prediction.prediction}">${escapeHtml(pickText(prediction))} ${prediction.confidence.toFixed(1)}%</span>
@@ -4674,6 +4684,8 @@ syncEspnResultsButton?.addEventListener("click", async () => {
   await refreshLedger();
 });
 leagueSelect.addEventListener("change", updateTeamList);
+form.elements.homeTeam.addEventListener("input", refreshSingleTeamCrests);
+form.elements.awayTeam.addEventListener("input", refreshSingleTeamCrests);
 singleCompetitionSelect?.addEventListener("change", () => {
   if (!isInternationalMode()) return;
   setInternationalSingleDemo();

@@ -11,6 +11,10 @@ function toTime(value) {
   return Number.isFinite(time) ? time : NaN;
 }
 
+function isFiniteScore(value) {
+  return value !== null && value !== "" && value !== undefined && Number.isFinite(Number(value));
+}
+
 function assertPregameSnapshot(snapshot) {
   if (!snapshot || typeof snapshot !== "object") throw new Error("A baseball pregame snapshot is required");
   for (const key of REQUIRED) if (!snapshot[key]) throw new Error(`Snapshot is missing ${key}`);
@@ -24,7 +28,7 @@ function assertPregameSnapshot(snapshot) {
 
 function assertTrainingRow(row) {
   assertPregameSnapshot(row.snapshot);
-  if (!Number.isFinite(Number(row.homeRuns)) || !Number.isFinite(Number(row.awayRuns))) {
+  if (!isFiniteScore(row.homeRuns) || !isFiniteScore(row.awayRuns)) {
     throw new Error("Training rows require settled homeRuns and awayRuns outside the snapshot");
   }
   return true;

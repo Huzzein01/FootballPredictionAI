@@ -22,4 +22,9 @@ test("trains and produces calibrated baseball probabilities", () => {
   assert.equal(prediction.oddsUsed, true);
   assert.ok(prediction.calibrated.homeWinProbability > 0 && prediction.calibrated.homeWinProbability < 1);
   assert.ok(prediction.expectedRuns.home > 0);
+  assert.ok(Math.abs(prediction.model.scoreDistribution.reduce((sum, score) => sum + score.probability, 0) - 1) < 1e-10);
+  assert.equal(prediction.predictionSeed, predictBaseballGame(model, snapshot(22)).predictionSeed);
+  assert.equal(prediction.model.scoreDistribution[0].probability, predictBaseballGame(model, snapshot(22)).model.scoreDistribution[0].probability);
+  assert.equal(prediction.probabilities.marketBlendApplied, false);
+  assert.equal(prediction.probabilities.blendedHomeWin, prediction.probabilities.modelOnlyHomeWin);
 });

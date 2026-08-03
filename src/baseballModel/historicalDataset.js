@@ -33,13 +33,35 @@ function updateState(state, team, scored, allowed, won) {
   state.set(team, line);
 }
 
+// The MLB schedule endpoint can repeat a finalized gamePk after a postponement
+// or continuation. A gamePk is the immutable game identity, so retain its
+// earliest scheduled first pitch and reject conflicting repeats rather than
+// quietly training on the same final score twice.
+function uniqueCompletedGames(games) {
+  const byGamePk = new Map();
+  for (const game of games) {
+    const existing = byGamePk.get(game.gamePk);
+    if (!existing) {
+      byGamePk.set(game.gamePk, game);
+      continue;
+    }
+    const sameOutcome = existing.homeTeam === game.homeTeam
+      && existing.awayTeam === game.awayTeam
+      && existing.homeRuns === game.homeRuns
+      && existing.awayRuns === game.awayRuns;
+    if (!sameOutcome) throw new Error(`Conflicting finalized records for MLB gamePk ${game.gamePk}`);
+    if (Date.parse(game.firstPitchUtc) < Date.parse(existing.firstPitchUtc)) byGamePk.set(game.gamePk, game);
+  }
+  return [...byGamePk.values()];
+}
+
 // Reconstructs a pregame-only row from a chronologically ordered result feed.
 // Game results are used only after a row is emitted, so a target game's score
 // is never available in its own snapshot.
 function reconstructTrainingRows(games) {
-  const completed = (games || [])
+  const completed = uniqueCompletedGames((games || [])
     .filter((game) => game.completed && game.gameType === "R" && game.homeTeam && game.awayTeam && Number.isFinite(game.homeRuns) && Number.isFinite(game.awayRuns) && game.firstPitchUtc)
-    .sort((left, right) => Date.parse(left.firstPitchUtc) - Date.parse(right.firstPitchUtc));
+  ).sort((left, right) => Date.parse(left.firstPitchUtc) - Date.parse(right.firstPitchUtc));
   const teamState = new Map();
   let leagueRuns = 0, leagueTeamGames = 0;
   const rows = [];
@@ -93,4 +115,4 @@ async function buildHistoricalDataset({ startSeason, endSeason, fetchImpl = fetc
   };
 }
 
-module.exports = { fetchMlbSeasonGames, reconstructTrainingRows, buildHistoricalDataset };
+module.exports = { fetchMlbSeasonGames, reconstructTrainingRows, buildHistoricalDataset, uniqueCompletedGames };
