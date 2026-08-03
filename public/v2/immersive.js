@@ -18,6 +18,11 @@ const STATE = {
 
 const CLUB_SEASONS = ["2026-27", "2025-26", "2024-25", "2023-24", "2022-23", "2021-22", "2020-21"];
 const INTERNATIONAL_SEASONS = ["2026 World Cup", "2022 World Cup", "2018 World Cup"];
+const FOOTBALL_SEASON_CALENDAR = [
+  { context: "international", season: "2026 World Cup", starts: "2026-06-11", ends: "2026-07-19", label: "World Cup window" },
+  { context: "club", season: "2026-27", starts: "2026-08-01", ends: "2027-05-31", label: "Club season" },
+  { context: "club", season: "2025-26", starts: "2025-08-01", ends: "2026-05-31", label: "Club season" },
+];
 const FOOTBALL_CATALOG = {
   league: ["All Leagues", "EPL", "La Liga", "Bundesliga", "Ligue 1", "Serie A", "Eredivisie", "Primeira Liga", "Scottish Premiership", "Turkish Super Lig", "Belgian Pro League", "Danish Superliga", "Eliteserien", "Allsvenskan", "Swiss Super League"],
   competition: ["All Competitions", "Champions League", "Europa League", "Conference League", "UEFA Super Cup", "FA Cup", "Carabao Cup", "Copa del Rey", "DFB-Pokal", "Coppa Italia", "Coupe de France"],
@@ -51,11 +56,39 @@ function bootApp() {
   buildSectionNav();
   bindContextSwitch();
   bindSeasonSwitch();
+  applySeasonCalendar();
   bindCompetitionFilter();
   bindFilterPanel();
   positionCtxGlow();
   renderSection();
   refreshHeroStats();
+}
+function dateKey(date = new Date()) { return date.toISOString().slice(0, 10); }
+function calendarEntryFor(date = new Date()) {
+  const today = dateKey(date);
+  return FOOTBALL_SEASON_CALENDAR.find((entry) => entry.starts <= today && today <= entry.ends) || null;
+}
+function applySeasonCalendar(date = new Date()) {
+  const entry = calendarEntryFor(date);
+  if (entry) {
+    STATE.context = entry.context;
+    if (entry.context === "club") STATE.clubSeason = entry.season;
+    else STATE.internationalSeason = entry.season;
+  }
+  document.documentElement.dataset.context = STATE.context;
+  $("#ctxSwitch").querySelectorAll(".ctx-btn").forEach((button) => button.classList.toggle("is-active", button.dataset.ctx === STATE.context));
+  positionCtxGlow();
+  updateSeasonSwitch();
+  updateHeroSubtitle();
+  updateFilterSummary();
+  updateSeasonCalendarStatus(entry);
+}
+function updateSeasonCalendarStatus(entry = calendarEntryFor()) {
+  const status = $("#seasonCalendarStatus");
+  if (!status) return;
+  const modeLabel = STATE.context === "club" ? "Club" : "International";
+  const calendarControlsCurrentMode = entry && entry.context === STATE.context;
+  status.textContent = calendarControlsCurrentMode ? `${modeLabel} · ${entry.label}` : `${modeLabel} · manual selection`;
 }
 
 function bindContextSwitch() {
@@ -70,6 +103,7 @@ function bindContextSwitch() {
       updateCompetitionSwitch();
       updateHeroSubtitle();
       updateFilterSummary();
+      updateSeasonCalendarStatus();
       if (!sectionAllowed(STATE.section)) STATE.section = "predictions";
       buildSectionNav(); renderSection(); refreshHeroStats();
     });
@@ -328,9 +362,22 @@ async function renderPredictions() {
     return (a.league || a.group || "").localeCompare(b.league || b.group || "");
   });
 
-  if (!list.length) { stage.appendChild(el("div", "empty", "No upcoming fixtures for this filter.")); return; }
+  if (!list.length) {
+    stage.appendChild(el("div", "empty", "No upcoming fixtures for this filter."));
+    if (intl) await renderRecentInternationalChampion(stage);
+    return;
+  }
   const grid = el("div", "grid"); list.slice(0, 60).forEach((p) => grid.appendChild(predictionCard(p)));
   stage.appendChild(grid);
+}
+async function renderRecentInternationalChampion(stage) {
+  const champion = await api("/api/international/recent-champion").catch(() => null);
+  if (!champion?.winner) return;
+  const date = new Date(`${champion.date}T12:00:00Z`);
+  const wonOn = Number.isFinite(date.getTime())
+    ? new Intl.DateTimeFormat(undefined, { year: "numeric", month: "long", day: "numeric" }).format(date)
+    : champion.date;
+  stage.appendChild(el("aside", "recent-champion", `<span>Most recent international tournament</span><strong>${esc(champion.winner)} won ${esc(champion.tournament)}</strong><small>${esc(wonOn)} · Final ${esc(champion.score)}</small>`));
 }
 function predictionCard(p) {
   const pickLabel = p.prediction === "H" ? `${p.homeTeam} win` : p.prediction === "A" ? `${p.awayTeam} win` : "Draw";

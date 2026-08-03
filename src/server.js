@@ -1085,6 +1085,24 @@ async function handleApi(req, res, pathname) {
     return sendJson(res, 200, readFriendlyResultsSnapshot() || { results: [], fetched: 0 });
   }
 
+  if (req.method === "GET" && pathname === "/api/international/recent-champion") {
+    const snapshot = readWorldCupResults() || {};
+    const final = [...(snapshot.results || [])]
+      .filter((match) => match.completed && Number.isFinite(Number(match.homeGoals)) && Number.isFinite(Number(match.awayGoals)))
+      .sort((left, right) => String(right.date || "").localeCompare(String(left.date || "")))[0];
+    if (!final || Number(final.homeGoals) === Number(final.awayGoals)) return sendJson(res, 200, { winner: null });
+    const winner = Number(final.homeGoals) > Number(final.awayGoals) ? final.homeTeam : final.awayTeam;
+    const year = String(final.date || "").slice(0, 4);
+    return sendJson(res, 200, {
+      winner,
+      date: final.date,
+      score: `${final.homeTeam} ${final.homeGoals}–${final.awayGoals} ${final.awayTeam}`,
+      tournament: `${final.league || "International tournament"}${year ? ` ${year}` : ""}`,
+      sourceName: final.sourceName || snapshot.source || "",
+      sourceUrl: final.sourceUrl || snapshot.sourceUrl || "",
+    });
+  }
+
   if (req.method === "GET" && pathname === "/api/international/bracket") {
     // Try pre-built cache first (generated at build time for Vercel)
     const cachedPath = path.join(process.cwd(), "data", "cached", "brackets", "international.json");
