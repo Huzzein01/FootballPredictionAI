@@ -2,12 +2,14 @@ const fs = require("fs");
 const path = require("path");
 const { normalizeTeamName } = require("./footballData");
 const { mutableDataPath, readJsonWithFallback, repoDataPath, writeFileIfWritable, writeJson } = require("./runtimePaths");
+const { loadLocalEnv } = require("./localEnv");
+
+loadLocalEnv();
 
 const FIXTURE_PATH = repoDataPath("remaining_fixtures_2025_26_with_odds.csv");
 const LIVE_ODDS_PATH = mutableDataPath("live_odds_snapshot.json");
 const SEEDED_LIVE_ODDS_PATH = repoDataPath("live_odds_snapshot.json");
 const WORLD_CUP_FIXTURES_PATH = repoDataPath("international", "world_cup_2026_fixtures.json");
-const ODDS_API_BASE_URL = "https://api.the-odds-api.com/v4";
 const USER_AGENT = "FootballPredictionAI odds-api-refresh";
 
 const CLUB_SPORT_KEYS = {
@@ -170,11 +172,21 @@ function hasUsableOdds(row) {
 }
 
 function eventSourceUrl(sportKey) {
-  return `https://the-odds-api.com/liveapi/guides/v4/#get-odds`;
+  return `https://theoddsapi.com/quickstart.html#odds`;
+}
+
+function decimalPrice(value) {
+  const price = Number(value);
+  if (!Number.isFinite(price) || price === 0) return null;
+  // Current The Odds API responses can use American odds; legacy responses
+  // already use decimal odds.
+  if (price <= -100) return 1 + 100 / Math.abs(price);
+  if (price >= 100) return 1 + price / 100;
+  return price;
 }
 
 function average(values) {
-  const nums = values.map(Number).filter((value) => Number.isFinite(value) && value > 0);
+  const nums = values.map(decimalPrice).filter((value) => Number.isFinite(value) && value > 0);
   if (!nums.length) return "";
   return (nums.reduce((sum, value) => sum + value, 0) / nums.length).toFixed(2);
 }
@@ -183,8 +195,8 @@ function oddsFromEvent(event) {
   const homePrices = [];
   const drawPrices = [];
   const awayPrices = [];
-  for (const bookmaker of event.bookmakers || []) {
-    const h2h = (bookmaker.markets || []).find((market) => market.key === "h2h");
+  for (const bookmaker of event.bookmakers || event.books || []) {
+    const h2h = (bookmaker.markets || [bookmaker]).find((market) => market.key === "h2h" || market.market === "h2h");
     if (!h2h) continue;
     for (const outcome of h2h.outcomes || []) {
       const outcomeName = normalizeLooseTeamName(outcome.name);
@@ -201,20 +213,34 @@ function oddsFromEvent(event) {
   return hasUsableOdds(odds) ? odds : null;
 }
 
+function oddsApiConfig(apiKey) {
+  const currentProvider = /^toa_/i.test(apiKey) || process.env.ODDS_API_PROVIDER === "current";
+  return currentProvider
+    ? { currentProvider: true, baseUrl: process.env.ODDS_API_BASE_URL || "https://api.theoddsapi.com" }
+    : { currentProvider: false, baseUrl: process.env.ODDS_API_BASE_URL || "https://api.the-odds-api.com/v4" };
+}
+
 async function fetchOddsEvents(sportKey, { daysForward = 120 } = {}) {
   const apiKey = process.env.ODDS_API_KEY || process.env.THE_ODDS_API_KEY || "";
   if (!apiKey) return { sportKey, skipped: true, reason: "Missing ODDS_API_KEY", events: [] };
-  const url = new URL(`${ODDS_API_BASE_URL}/sports/${sportKey}/odds/`);
-  url.searchParams.set("apiKey", apiKey);
-  url.searchParams.set("regions", process.env.ODDS_API_REGIONS || "us");
-  url.searchParams.set("markets", process.env.ODDS_API_MARKETS || "h2h");
-  url.searchParams.set("oddsFormat", "decimal");
-  url.searchParams.set("dateFormat", "iso");
-  url.searchParams.set("commenceTimeFrom", oddsApiIso(new Date()));
+  const config = oddsApiConfig(apiKey);
+  const url = config.currentProvider
+    ? new URL("/odds/", config.baseUrl)
+    : new URL(`/sports/${sportKey}/odds/`, config.baseUrl);
+  if (config.currentProvider) {
+    url.searchParams.set("sport_key", sportKey);
+  } else {
+    url.searchParams.set("apiKey", apiKey);
+    url.searchParams.set("regions", process.env.ODDS_API_REGIONS || "us");
+    url.searchParams.set("markets", process.env.ODDS_API_MARKETS || "h2h");
+    url.searchParams.set("oddsFormat", "decimal");
+    url.searchParams.set("dateFormat", "iso");
+    url.searchParams.set("commenceTimeFrom", oddsApiIso(new Date()));
+  }
   const end = new Date();
   end.setUTCDate(end.getUTCDate() + daysForward);
-  url.searchParams.set("commenceTimeTo", oddsApiIso(end));
-  const response = await fetch(url, { headers: { "user-agent": USER_AGENT } });
+  if (!config.currentProvider) url.searchParams.set("commenceTimeTo", oddsApiIso(end));
+  const response = await fetch(url, { headers: { "user-agent": USER_AGENT, ...(config.currentProvider ? { "x-api-key": apiKey } : {}) } });
   const remaining = response.headers.get("x-requests-remaining") || "";
   const used = response.headers.get("x-requests-used") || "";
   const last = response.headers.get("x-requests-last") || "";
@@ -222,11 +248,12 @@ async function fetchOddsEvents(sportKey, { daysForward = 120 } = {}) {
     const body = await response.text().catch(() => "");
     throw new Error(`The Odds API ${sportKey} failed ${response.status}: ${body.slice(0, 180)}`);
   }
+  const payload = await response.json();
   return {
     sportKey,
     skipped: false,
     quota: { remaining, used, last },
-    events: await response.json(),
+    events: Array.isArray(payload) ? payload : Array.isArray(payload?.data) ? payload.data : [],
   };
 }
 
@@ -235,11 +262,13 @@ async function fetchAvailableSoccerSportKeys() {
   if (!apiKey) return null;
   if (availableSportsCache && Date.now() - availableSportsCacheAt < AVAILABLE_SPORTS_CACHE_MS) return availableSportsCache;
   try {
-    const url = new URL(`${ODDS_API_BASE_URL}/sports/`);
-    url.searchParams.set("apiKey", apiKey);
-    const response = await fetch(url, { headers: { "user-agent": USER_AGENT } });
+    const config = oddsApiConfig(apiKey);
+    const url = new URL("/sports/", config.baseUrl);
+    if (!config.currentProvider) url.searchParams.set("apiKey", apiKey);
+    const response = await fetch(url, { headers: { "user-agent": USER_AGENT, ...(config.currentProvider ? { "x-api-key": apiKey } : {}) } });
     if (!response.ok) return null;
-    const sports = await response.json();
+    const payload = await response.json();
+    const sports = Array.isArray(payload) ? payload : Array.isArray(payload?.data) ? payload.data : [];
     availableSportsCache = new Set(
       sports
         .filter((sport) => sport?.active !== false && String(sport?.key || "").startsWith("soccer_"))
@@ -276,14 +305,14 @@ function indexedEventsBySport(fetchedSports) {
       if (!odds) continue;
       events.push({
         sportKey: sport.sportKey,
-        id: event.id || "",
-        commenceTime: event.commence_time || "",
+        id: event.id || event.event_id || "",
+        commenceTime: event.commence_time || event.start_time || "",
         homeTeam: normalizeLooseTeamName(event.home_team),
         awayTeam: normalizeLooseTeamName(event.away_team),
         rawHomeTeam: event.home_team || "",
         rawAwayTeam: event.away_team || "",
         odds,
-        bookmakerCount: event.bookmakers?.length || 0,
+        bookmakerCount: event.bookmakers?.length || event.books?.length || 0,
       });
     }
   }
@@ -403,6 +432,43 @@ async function refreshTheOddsApi({ force = false, includeClub = true, includeInt
   return snapshot;
 }
 
+// Look up one selected matchup without refreshing every configured football
+// competition. This keeps the Single Predictor's odds check targeted and lets
+// the UI explicitly fall back to user-entered market prices when no book has
+// the matchup yet.
+async function lookupMatchOdds({ homeTeam, awayTeam, context = "club", league = "" } = {}) {
+  if (!homeTeam || !awayTeam) return { found: false, reason: "Choose both teams first." };
+  const apiKey = process.env.ODDS_API_KEY || process.env.THE_ODDS_API_KEY || "";
+  if (!apiKey) return { found: false, reason: "Odds data is not configured." };
+
+  const sportKey = context === "international"
+    ? INTERNATIONAL_SPORT_KEYS[league] || INTERNATIONAL_SPORT_KEYS["2026 World Cup"]
+    : CLUB_SPORT_KEYS[league];
+  if (!sportKey) return { found: false, reason: "No supported odds market is linked to this competition." };
+
+  try {
+    const fetched = await fetchOddsEvents(sportKey, { daysForward: 120 });
+    const targetHome = normalizeLooseTeamName(homeTeam);
+    const targetAway = normalizeLooseTeamName(awayTeam);
+    const event = indexedEventsBySport([fetched]).find((candidate) =>
+      candidate.homeTeam === targetHome && candidate.awayTeam === targetAway
+    );
+    if (!event) return { found: false, reason: "No public market is available for this matchup yet.", sportKey, quota: fetched.quota || null };
+    return {
+      found: true,
+      odds: event.odds,
+      provider: "The Odds API",
+      sportKey,
+      bookmakerCount: event.bookmakerCount,
+      kickoffUtc: event.commenceTime,
+      sourceUrl: eventSourceUrl(sportKey),
+      quota: fetched.quota || null,
+    };
+  } catch (error) {
+    return { found: false, reason: "Odds could not be retrieved right now.", error: error.message };
+  }
+}
+
 function oddsForInternationalFixture(fixture) {
   const snapshot = readLiveOddsSnapshot();
   const matches = snapshot?.international?.fixtures || [];
@@ -419,5 +485,6 @@ module.exports = {
   INTERNATIONAL_SPORT_KEYS,
   LIVE_ODDS_PATH,
   oddsForInternationalFixture,
+  lookupMatchOdds,
   refreshTheOddsApi,
 };

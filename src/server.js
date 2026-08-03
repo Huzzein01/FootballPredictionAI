@@ -19,14 +19,19 @@ const { readResultsSnapshot, refreshEspnFixtures, refreshEspnResults, enrichPred
 const { refreshWorldCupResults, syncWorldCupPlayerStats, readWorldCupResults } = require("./worldCupSync");
 const { listTeamResults, getTeamResults } = require("./teamResultsStore");
 const { listTeamTraining, getTeamTraining, appendTeamNote, updateTeamTrainingProfiles } = require("./teamTrainingStore");
-const { refreshTheOddsApi } = require("./oddsApiService");
+const { refreshTheOddsApi, lookupMatchOdds } = require("./oddsApiService");
 const { runFixtureBridge, bridgeState } = require("./espnFixtureBridge");
 const { apiFootballStatus } = require("./liveData");
+const { readOrRefreshSportSeason } = require("./multiSportDataService");
+const { resolveClubCrest, fallbackSvg } = require("./clubCrestService");
 const { refreshApiFootballPlayerStats } = require("./apiFootballPlayerStats");
 const { readJsonWithFallback, repoDataPath } = require("./runtimePaths");
 const { hydrateKnownStoresOnce, persistKnownStores, storageStatus } = require("./supabaseJsonStore");
 const parlayBacktests = require("./parlayBacktestStore");
 const { projectDomesticCup, CUP_CONFIG } = require("./domesticCupProjection");
+const { createPrediction: createBaseballPrediction, settlePrediction: settleBaseballPrediction, monitoring: baseballMonitoring } = require("./baseballModel/productionService");
+const { ingestSchedulePayload } = require("./baseballModel/featureStore");
+const { collectPregameFeatures } = require("./baseballModel/pregameCollectors");
 
 const PORT = Number(process.env.PORT || 4173);
 const PUBLIC_DIR = path.join(process.cwd(), "public");
@@ -501,6 +506,13 @@ function shouldRefreshApiFootballPlayerSeason(season = "2025-26", forceLive = fa
 }
 
 async function handleApi(req, res, pathname) {
+  if (req.method === "GET" && pathname === "/api/club-crest") {
+    const url = new URL(req.url, `http://${req.headers.host}`);
+    const crest = await resolveClubCrest(url.searchParams.get("team") || "");
+    if (crest) { res.writeHead(302, { Location: crest, "Cache-Control": "public, max-age=604800" }); return res.end(); }
+    res.writeHead(200, { "Content-Type": "image/svg+xml", "Cache-Control": "public, max-age=86400" });
+    return res.end(fallbackSvg(url.searchParams.get("team")));
+  }
   await hydrateKnownStoresOnce();
 
   if (isHostedPrivateApiPath(req, pathname)) {
@@ -529,6 +541,38 @@ async function handleApi(req, res, pathname) {
     }
     return sendJson(res, 200, { teamsByLeague: teamsByLeague(), metrics: model.metrics, hyperparameters: model.hyperparameters, trainedAt: model.trainedAt, feedbackRows: model.feedbackRows || 0, trainingStatus: readTrainingStatus() });
   }
+  if (req.method === "GET" && pathname === "/api/baseball/monitoring") return sendJson(res, 200, baseballMonitoring());
+  if (req.method === "POST" && pathname === "/api/baseball/jobs/schedule") {
+    const { date = new Date().toISOString().slice(0, 10) } = await readBody(req);
+    if (!/^\d{4}-\d{2}-\d{2}$/.test(date)) return sendJson(res, 400, { error: "date must be YYYY-MM-DD" });
+    const sourceUrl = `https://statsapi.mlb.com/api/v1/schedule?sportId=1&date=${encodeURIComponent(date)}&hydrate=venue,probablePitcher`;
+    const response = await fetch(sourceUrl); if (!response.ok) return sendJson(res, 502, { error: `MLB schedule request failed: ${response.status}` });
+    return sendJson(res, 201, ingestSchedulePayload({ payload: await response.json(), sourceUrl }));
+  }
+  if (req.method === "POST" && pathname === "/api/baseball/jobs/collect-pregame") {
+    const { normalizedSchedule, capturedAt } = await readBody(req);
+    if (!normalizedSchedule?.games) return sendJson(res, 400, { error: "normalizedSchedule.games is required" });
+    return sendJson(res, 201, await collectPregameFeatures({ normalizedSchedule, capturedAt }));
+  }
+  if (req.method === "POST" && pathname === "/api/baseball/predictions") {
+    const body = await readBody(req); const model = JSON.parse(fs.readFileSync(path.join(process.cwd(), "data", "baseball_model.json"), "utf8"));
+    const result = createBaseballPrediction({ snapshot: body.snapshot, model, odds: body.odds, calibration: body.calibration, backtestBet: body.backtestBet }); return sendJson(res, result.status, result);
+  }
+  const baseballSettlement = pathname.match(/^\/api\/baseball\/predictions\/(.+)\/settlement$/);
+  if (req.method === "POST" && baseballSettlement) return sendJson(res, 200, settleBaseballPrediction(decodeURIComponent(baseballSettlement[1]), await readBody(req)));
+
+  const multiSportMatch = pathname.match(/^\/api\/sports\/(baseball|basketball)\/season$/);
+  if (req.method === "GET" && multiSportMatch) {
+    const url = new URL(req.url, `http://${req.headers.host}`);
+    const sport = multiSportMatch[1];
+    const season = url.searchParams.get("season") || (sport === "baseball" ? String(new Date().getUTCFullYear()) : "2025");
+    const refresh = url.searchParams.get("refresh") === "1";
+    try {
+      return sendJson(res, 200, await readOrRefreshSportSeason(sport, season, { refresh }));
+    } catch (error) {
+      return sendJson(res, 502, { error: error.message, sport, season });
+    }
+  }
 
   if (req.method === "GET" && pathname === "/api/training-status") {
     return sendJson(res, 200, readTrainingStatus());
@@ -548,6 +592,17 @@ async function handleApi(req, res, pathname) {
     const prediction = predictMatch(body);
     const saved = body.save ? addPrediction(prediction, "manual") : null;
     return sendJson(res, 200, { prediction, saved, summary: summary() });
+  }
+
+  if (req.method === "POST" && pathname === "/api/odds/lookup") {
+    const body = await readBody(req);
+    const result = await lookupMatchOdds({
+      homeTeam: String(body.homeTeam || ""),
+      awayTeam: String(body.awayTeam || ""),
+      context: body.context === "international" ? "international" : "club",
+      league: String(body.league || ""),
+    });
+    return sendJson(res, 200, result);
   }
 
   if (req.method === "GET" && pathname === "/api/backtests") {
@@ -1201,11 +1256,14 @@ const server = http.createServer(async (req, res) => {
     const url = new URL(req.url, `http://${req.headers.host}`);
     if (url.pathname.startsWith("/api/")) return await handleApi(req, res, url.pathname);
 
-    // The immersive front-end is now the default. The root and /v2 both serve
-    // it; the previous dashboard remains reachable at /classic.
-    let requested = url.pathname === "/" ? "v2/index.html" : url.pathname.slice(1);
-    if (url.pathname === "/v2" || url.pathname === "/v2/") requested = "v2/index.html";
-    if (url.pathname === "/classic" || url.pathname === "/classic/") requested = "index.html";
+    // The landing page is intentionally sport-neutral. Sport-specific tools
+    // only appear after a visitor chooses Football, Baseball, or Basketball.
+    let requested = url.pathname === "/" ? "home/index.html" : url.pathname.slice(1);
+    // v2 was the retired immersive football experience. Keep its public URLs
+    // as compatible aliases, but always return the current product landing UI.
+    if (url.pathname === "/v2" || url.pathname.startsWith("/v2/")) requested = "home/index.html";
+    if (url.pathname === "/football" || url.pathname === "/football/") requested = "index.html";
+    if (url.pathname === "/classic" || url.pathname === "/classic/") requested = "home/index.html";
     if (url.pathname === "/baseball" || url.pathname === "/baseball/") requested = "baseball/index.html";
     if (url.pathname === "/basketball" || url.pathname === "/basketball/") requested = "basketball/index.html";
     const filePath = path.resolve(PUBLIC_DIR, requested);

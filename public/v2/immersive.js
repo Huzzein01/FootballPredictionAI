@@ -1,7 +1,6 @@
 /* ===========================================================================
    Football Analyst — immersive front-end (v2)
-   Vanilla SPA: splash, immersive hero, every section wired to /api, and a
-   live goal-celebration overlay that fires when a goal is detected.
+  Data-first sportsbook dashboard wired to the prediction APIs.
    =========================================================================== */
 "use strict";
 
@@ -13,9 +12,17 @@ async function api(path, opts) { const r = await fetch(path, opts); if (!r.ok) t
 
 const STATE = {
   context: "international", section: "predictions", matchday: "all",
-  sortBy: "confidence", clubSeason: "2026-27",
+  sortBy: "confidence", clubSeason: "2026-27", internationalSeason: "2026 World Cup", competitionType: "league", competitions: ["All Leagues"],
   liveTimer: null, goalWatch: null, liveScores: {}, parlayRisk: "safe",
 };
+
+const CLUB_SEASONS = ["2026-27", "2025-26", "2024-25", "2023-24", "2022-23", "2021-22", "2020-21"];
+const INTERNATIONAL_SEASONS = ["2026 World Cup", "2022 World Cup", "2018 World Cup"];
+const FOOTBALL_CATALOG = {
+  league: ["All Leagues", "EPL", "La Liga", "Bundesliga", "Ligue 1", "Serie A", "Eredivisie", "Primeira Liga", "Scottish Premiership", "Turkish Super Lig", "Belgian Pro League", "Danish Superliga", "Eliteserien", "Allsvenskan", "Swiss Super League"],
+  competition: ["All Competitions", "Champions League", "Europa League", "Conference League", "UEFA Super Cup", "FA Cup", "Carabao Cup", "Copa del Rey", "DFB-Pokal", "Coppa Italia", "Coupe de France"],
+};
+const KNOCKOUT_COMPETITIONS = new Set(FOOTBALL_CATALOG.competition.slice(1));
 
 const SECTIONS = [
   { id: "predictions", label: "Predictions" },
@@ -28,57 +35,27 @@ const SECTIONS = [
   { id: "tables", label: "Tables" },
   { id: "results", label: "Results" },
   { id: "training", label: "Model Training", intl: true },
-  { id: "fixtures", label: "Fixtures", intl: true },
+  { id: "fixtures", label: "Fixtures" },
   { id: "single", label: "Single Predictor" },
 ];
 
 const flag = (url) => url ? `<img class="flag" src="${esc(url)}" alt="" loading="lazy" onerror="this.style.visibility='hidden'">` : `<span class="flag"></span>`;
+const clubCrest = (team, supplied, league) => `<img class="flag" src="${esc(supplied || `/api/club-crest?team=${encodeURIComponent(team)}&league=${encodeURIComponent(league || "")}`)}" alt="" loading="lazy" onerror="this.style.visibility='hidden'">`;
 const stat = (b, s, cls = "") => `<div class="hero-stat"><b class="${cls}">${esc(b)}</b><span>${esc(s)}</span></div>`;
-const seasonFor = () => STATE.context === "international" ? "2026 World Cup" : "2025-26";
-
-/* ── Splash ──────────────────────────────────────────────────────────────── */
-function runSplash() {
-  const splash = $("#splash");
-  const ball = $(".ball", splash), net = $(".net", splash), flash = $(".strike-flash", splash);
-  const board = $(".scoreboard", splash), goalText = $(".goal-flash", splash), sbHome = $(".sb-h", splash);
-  const reduce = window.matchMedia && window.matchMedia("(prefers-reduced-motion: reduce)").matches;
-  const T = reduce ? 0.12 : 1;
-  setTimeout(() => board.classList.add("show"), 300 * T);
-  setTimeout(() => { flash.classList.add("fire"); ball.classList.add("go"); }, 1840 * T);
-  setTimeout(() => { net.classList.add("shake"); goalText.classList.add("fire"); sbHome.textContent = "1"; sbHome.classList.add("pop"); }, 2460 * T);
-  setTimeout(endSplash, reduce ? 600 : 3500);
-  $("#skipSplash").addEventListener("click", endSplash, { once: true });
-}
-let splashEnded = false;
-function endSplash() {
-  if (splashEnded) return; splashEnded = true;
-  const splash = $("#splash"); splash.classList.add("lift");
-  setTimeout(() => splash.remove(), 700);
-  $("#app").hidden = false;
-  bootApp();
-}
+const seasonFor = () => STATE.context === "international" ? STATE.internationalSeason : STATE.clubSeason;
+const isCurrentInternationalSeason = () => STATE.internationalSeason === "2026 World Cup";
 
 /* ── Boot ────────────────────────────────────────────────────────────────── */
 function bootApp() {
-  spawnParticles();
   buildNav();
+  buildSectionNav();
   bindContextSwitch();
+  bindSeasonSwitch();
+  bindCompetitionFilter();
+  bindFilterPanel();
   positionCtxGlow();
   renderSection();
   refreshHeroStats();
-  startGoalWatch();
-}
-
-function spawnParticles() {
-  const host = $("#hsParticles"); if (!host) return;
-  for (let i = 0; i < 16; i++) {
-    const p = el("i");
-    p.style.left = Math.random() * 100 + "%";
-    p.style.animationDuration = (6 + Math.random() * 8) + "s";
-    p.style.animationDelay = (Math.random() * 8) + "s";
-    p.style.opacity = (0.2 + Math.random() * 0.5).toFixed(2);
-    host.appendChild(p);
-  }
 }
 
 function bindContextSwitch() {
@@ -89,12 +66,143 @@ function bindContextSwitch() {
       document.documentElement.dataset.context = STATE.context;
       $("#ctxSwitch").querySelectorAll(".ctx-btn").forEach((b) => b.classList.toggle("is-active", b === btn));
       positionCtxGlow();
-      $("#heroSub").textContent = STATE.context === "international" ? "2026 World Cup · immersive prediction engine" : "Club football · immersive prediction engine";
+      updateSeasonSwitch();
+      updateCompetitionSwitch();
+      updateHeroSubtitle();
+      updateFilterSummary();
       if (!sectionAllowed(STATE.section)) STATE.section = "predictions";
-      buildNav(); renderSection(); refreshHeroStats();
+      buildSectionNav(); renderSection(); refreshHeroStats();
     });
   });
 }
+function updateHeroSubtitle() {
+  $("#heroSub").textContent = STATE.context === "international"
+    ? `International football · ${STATE.internationalSeason}`
+    : `Club football · ${STATE.clubSeason} season`;
+}
+function bindSeasonSwitch() {
+  const select = $("#clubSeasonSwitch");
+  if (!select) return;
+  const savedClub = localStorage.getItem("football-club-season");
+  const savedInternational = localStorage.getItem("football-international-season");
+  if (CLUB_SEASONS.includes(savedClub)) STATE.clubSeason = savedClub;
+  if (INTERNATIONAL_SEASONS.includes(savedInternational)) STATE.internationalSeason = savedInternational;
+  select.addEventListener("change", () => {
+    if (STATE.context === "international") {
+      STATE.internationalSeason = select.value;
+      localStorage.setItem("football-international-season", select.value);
+    } else {
+      STATE.clubSeason = select.value;
+      localStorage.setItem("football-club-season", select.value);
+    }
+    STATE.matchday = "all";
+    updateHeroSubtitle();
+    updateFilterSummary();
+    renderSection();
+    refreshHeroStats();
+  });
+  updateSeasonSwitch();
+  updateHeroSubtitle();
+  updateFilterSummary();
+}
+function updateSeasonSwitch() {
+  const select = $("#clubSeasonSwitch");
+  if (!select) return;
+  const options = STATE.context === "international" ? INTERNATIONAL_SEASONS : CLUB_SEASONS;
+  const selected = seasonFor();
+  select.innerHTML = options.map((season) => `<option value="${esc(season)}">${esc(season)}</option>`).join("");
+  select.value = selected;
+}
+function bindCompetitionFilter() {
+  const type = $("#competitionType");
+  const optionsHost = $("#competitionOptions");
+  if (!type || !optionsHost) return;
+  const savedType = localStorage.getItem("football-competition-type");
+  let savedCompetitions = [];
+  try { savedCompetitions = JSON.parse(localStorage.getItem("football-competitions") || "[]"); } catch (_) { savedCompetitions = []; }
+  if (Object.hasOwn(FOOTBALL_CATALOG, savedType)) STATE.competitionType = savedType;
+  const available = FOOTBALL_CATALOG[STATE.competitionType];
+  if (Array.isArray(savedCompetitions) && savedCompetitions.length && savedCompetitions.every((name) => available.includes(name))) STATE.competitions = savedCompetitions;
+  type.addEventListener("change", () => {
+    STATE.competitionType = type.value;
+    STATE.competitions = [FOOTBALL_CATALOG[STATE.competitionType][0]];
+    localStorage.setItem("football-competition-type", STATE.competitionType);
+    localStorage.setItem("football-competitions", JSON.stringify(STATE.competitions));
+    updateCompetitionSwitch();
+    updateFilterSummary();
+    renderSection();
+  });
+  updateCompetitionSwitch();
+}
+function updateCompetitionSwitch() {
+  const wrap = $("#competitionSwitch");
+  const pickerField = $("#competitionPicker");
+  const type = $("#competitionType");
+  const optionsHost = $("#competitionOptions");
+  const summary = $("#competitionSummary");
+  if (!wrap || !pickerField || !type || !optionsHost || !summary) return;
+  const international = STATE.context === "international";
+  wrap.hidden = international;
+  pickerField.hidden = international;
+  if (international) return;
+  type.value = STATE.competitionType;
+  const options = FOOTBALL_CATALOG[STATE.competitionType];
+  const allName = options[0];
+  if (!STATE.competitions.length || STATE.competitions.some((name) => !options.includes(name))) STATE.competitions = [allName];
+  if (STATE.competitions.includes(allName) && STATE.competitions.length > 1) STATE.competitions = [allName];
+  summary.textContent = STATE.competitions.includes(allName) ? allName : `${STATE.competitions.length} selected`;
+  optionsHost.innerHTML = options.map((name) => `<label><input type="checkbox" value="${esc(name)}"${STATE.competitions.includes(name) ? " checked" : ""}> <span>${esc(name)}</span></label>`).join("");
+  optionsHost.querySelectorAll("input").forEach((input) => input.addEventListener("change", () => {
+    const picked = [...optionsHost.querySelectorAll("input:checked")].map((box) => box.value);
+    STATE.competitions = input.value === allName && input.checked ? [allName] : picked.filter((name) => name !== allName);
+    if (!STATE.competitions.length) STATE.competitions = [allName];
+    localStorage.setItem("football-competitions", JSON.stringify(STATE.competitions));
+    updateCompetitionSwitch();
+    updateFilterSummary();
+    renderSection();
+  }));
+}
+function bindFilterPanel() {
+  const button = $("#filterToggle");
+  const panel = $("#filterPanel");
+  if (!button || !panel) return;
+  button.addEventListener("click", () => {
+    panel.hidden = !panel.hidden;
+    button.setAttribute("aria-expanded", String(!panel.hidden));
+  });
+  document.addEventListener("click", (event) => {
+    if (!panel.hidden && !panel.contains(event.target) && !button.contains(event.target)) {
+      panel.hidden = true;
+      button.setAttribute("aria-expanded", "false");
+    }
+  });
+}
+function updateFilterSummary() {
+  const summary = $("#filterSummary");
+  if (!summary) return;
+  const mode = STATE.context === "international" ? "International" : "Club";
+  summary.textContent = STATE.context === "international" ? `${mode} · ${STATE.internationalSeason}` : `${mode} · ${STATE.clubSeason} · ${competitionLabel()}`;
+}
+function isCompetitionEntry(entry) {
+  return KNOCKOUT_COMPETITIONS.has(String(entry?.league || entry?.competition || ""));
+}
+function filterFootballEntries(entries) {
+  if (STATE.context === "international") return entries;
+  const filtered = (entries || []).filter((entry) => {
+    const isCompetition = isCompetitionEntry(entry);
+    if (STATE.competitionType === "league") {
+      return !isCompetition && (STATE.competitions.includes("All Leagues") || STATE.competitions.includes(entry.league));
+    }
+    return isCompetition && (STATE.competitions.includes("All Competitions") || STATE.competitions.includes(entry.league));
+  });
+  return filtered;
+}
+function competitionLabel() {
+  if (STATE.context === "international") return "International";
+  const allName = FOOTBALL_CATALOG[STATE.competitionType][0];
+  return STATE.competitions.includes(allName) ? allName : STATE.competitions.join(", ");
+}
+function selectedLeague() { return STATE.competitionType === "league" && STATE.competitions.length === 1 && STATE.competitions[0] !== "All Leagues" ? STATE.competitions[0] : "All"; }
 function positionCtxGlow() {
   const active = $("#ctxSwitch .ctx-btn.is-active"), glow = $(".ctx-glow");
   if (active && glow) { glow.style.left = active.offsetLeft + "px"; glow.style.width = active.offsetWidth + "px"; }
@@ -103,14 +211,15 @@ const sectionAllowed = (id) => { const s = SECTIONS.find((x) => x.id === id); re
 
 function buildNav() {
   const nav = $("#nav"); nav.innerHTML = "";
-  // Keep the mode switch first so it stays reachable when the section nav
-  // overflows on smaller screens.
+  const brand = el("a", "nav-brand", '<span class="nav-brand-mark" aria-hidden="true">✦</span><span>Sportsbooks <b>Analyst</b></span>');
+  brand.href = "/v2/";
+  brand.setAttribute("aria-label", "Sportsbooks Analyst home");
+  nav.appendChild(brand);
   const classic = el("button", "nav-btn nav-ui-toggle", "Classic UI");
   classic.title = "Open the classic interface";
   classic.addEventListener("click", () => window.location.assign("/classic/"));
-  nav.appendChild(classic);
   const sportLinks = [
-    { label: "Football", href: "/v2/", active: true },
+    { label: "Football", href: "/football/", active: true },
     { label: "Baseball", href: "/baseball/" },
     { label: "Basketball", href: "/basketball/" },
   ];
@@ -120,9 +229,17 @@ function buildNav() {
     if (sport.active) link.setAttribute("aria-current", "page");
     nav.appendChild(link);
   });
+  nav.appendChild(el("span", "nav-divider", ""));
+  nav.appendChild(classic);
+}
+
+function buildSectionNav() {
+  const nav = $("#sectionNav");
+  if (!nav) return;
+  nav.innerHTML = "";
   SECTIONS.filter((s) => !s.intl || STATE.context === "international").forEach((s) => {
-    const b = el("button", "nav-btn" + (s.id === STATE.section ? " is-active" : ""), esc(s.label));
-    b.addEventListener("click", () => { STATE.section = s.id; buildNav(); renderSection(); });
+    const b = el("button", "feature-tab" + (s.id === STATE.section ? " active" : ""), esc(s.label));
+    b.addEventListener("click", () => { STATE.section = s.id; buildSectionNav(); renderSection(); });
     nav.appendChild(b);
   });
 }
@@ -152,6 +269,10 @@ async function refreshHeroStats() {
 function renderSection() {
   if (STATE.liveTimer) { clearInterval(STATE.liveTimer); STATE.liveTimer = null; }
   $("#stage").innerHTML = `<div class="loading"><div class="spinner"></div><span>Loading…</span></div>`;
+  if (STATE.context === "international" && !isCurrentInternationalSeason()) {
+    $("#stage").innerHTML = `<div class="empty"><b>${esc(STATE.internationalSeason)}</b> is available as historical context. Its fixtures and model cards will appear here after that tournament's verified data feed is imported.</div>`;
+    return;
+  }
   const map = { predictions: renderPredictions, live: renderLive, parlays: renderParlays, slip: renderSlip,
     teams: renderTeams, players: renderPlayers, futures: renderFutures, tables: renderTables,
     results: renderResults, training: renderTraining, fixtures: renderFixtures, single: renderSingle };
@@ -168,34 +289,21 @@ async function renderPredictions() {
     ? "/api/international/fixture-predictions"
     : `/api/fixture-predictions?season=${encodeURIComponent(STATE.clubSeason)}`;
   const data = await api(url);
-  const preds = data.predictions || [];
+  const preds = filterFootballEntries(data.predictions || []);
   const stage = $("#stage"); stage.innerHTML = "";
-  stage.appendChild(headEl("Upcoming Predictions", `${preds.length} fixtures · model picks, confidence & odds`));
+  stage.appendChild(headEl("Upcoming Predictions", `${preds.length} ${competitionLabel()} fixtures · model picks, confidence & odds`));
 
   // ── Sort + season toolbar ──────────────────────────────────────────────────
   const toolbar = el("div", "pred-toolbar");
   const sortOpts = [
     { k: "confidence", l: "Confidence ↓" },
     { k: "date", l: "Date" },
-    { k: intl ? "group" : "league", l: intl ? "Group" : "League" },
   ];
   sortOpts.forEach(({ k, l }) => {
-    const b = el("button", "sort-btn" + (STATE.sortBy === k ? " is-active" : ""), l);
+    const b = el("button", "sort-btn" + (STATE.sortBy === k ? " is-active" : ""), l); b.type = "button";
     b.onclick = () => { STATE.sortBy = k; renderPredictions(); };
     toolbar.appendChild(b);
   });
-  if (!intl) {
-    const wrap = el("label", "season-lbl", "Season ");
-    const sel = el("select", "season-pick");
-    ["2026-27", "2025-26", "2024-25", "2023-24"].forEach((s) => {
-      const o = document.createElement("option"); o.value = s; o.textContent = s;
-      if (s === STATE.clubSeason) o.selected = true;
-      sel.appendChild(o);
-    });
-    sel.onchange = () => { STATE.clubSeason = sel.value; renderPredictions(); };
-    wrap.appendChild(sel);
-    toolbar.appendChild(wrap);
-  }
   stage.appendChild(toolbar);
 
   // ── Matchday filter (international only) ──────────────────────────────────
@@ -233,8 +341,8 @@ function predictionCard(p) {
   card.dataset.pick = p.prediction || "";
   if (num(p.confidence) >= 55) card.classList.add("high-conf");
   card.innerHTML = `
-    <div class="card-top"><span>${esc(p.matchdayLabel || p.league || p.group || "Fixture")}</span><span class="pill ${p.prediction === "D" ? "draw" : "pick"}">${esc(pickLabel)} · ${esc(String(p.confidence ?? ""))}%</span></div>
-    <div class="match"><div class="team">${flag(p.homeFlagUrl)}<span class="tn">${esc(p.homeTeam)}</span></div><div class="vs">vs</div><div class="team">${flag(p.awayFlagUrl)}<span class="tn">${esc(p.awayTeam)}</span></div></div>
+    <div class="card-top"><span>${esc(p.matchdayLabel || p.league || p.group || "Fixture")} · ${esc(formatKickoff(p.date, p.kickoffUtc))}</span><span class="pill ${p.prediction === "D" ? "draw" : "pick"}">${esc(pickLabel)} · ${esc(String(p.confidence ?? ""))}%</span></div>
+    <div class="match"><div class="team">${STATE.context === "club" ? clubCrest(p.homeTeam, p.homeLogoUrl, p.league) : flag(p.homeFlagUrl)}<span class="tn">${esc(p.homeTeam)}</span></div><div class="vs">vs</div><div class="team">${STATE.context === "club" ? clubCrest(p.awayTeam, p.awayLogoUrl, p.league) : flag(p.awayFlagUrl)}<span class="tn">${esc(p.awayTeam)}</span></div></div>
     <div class="conf-bar"><i class="conf-h" style="width:${h}%"></i><i class="conf-d" style="width:${d}%"></i><i class="conf-a" style="width:${a}%"></i></div>
     <div class="conf-legend"><span>H ${h}%</span><span>D ${d}%</span><span>A ${a}%</span></div>
     <div class="proj">Projected score <b>${esc(p.projectedScore || "—")}</b></div>
@@ -242,12 +350,12 @@ function predictionCard(p) {
   return card;
 }
 const oddChip = (l, v, best) => `<div class="odds-chip${best ? " best" : ""}">${l}<b>${v ? esc(v) : "—"}</b></div>`;
+function formatKickoff(date, kickoffUtc) { const parsed = new Date(kickoffUtc || date || ""); return Number.isFinite(parsed.getTime()) ? new Intl.DateTimeFormat(undefined, { month: "short", day: "numeric", hour: "numeric", minute: "2-digit" }).format(parsed) : String(date || "TBD"); }
 
 /* ── Live Now ────────────────────────────────────────────────────────────── */
 async function renderLive() {
   const paint = async () => {
     const data = await api("/api/international/live");
-    detectGoals(data.matches || []);
     const stage = $("#stage"); const matches = data.matches || []; stage.innerHTML = "";
     stage.appendChild(headEl("", ""));
     $(".section-head h2", stage).innerHTML = `<span class="live-badge"><span class="live-dot"></span>Live Now</span>`;
@@ -285,7 +393,7 @@ async function renderParlays() {
   const gen = async () => {
     out.innerHTML = `<div class="loading"><div class="spinner"></div><span>Building tickets…</span></div>`;
     const legs = $("#pLegs").value, tickets = $("#pTickets").value;
-    const url = `/api/parlay?context=${STATE.context}&league=${STATE.context === "international" ? "International" : "All"}&legs=${legs}&tickets=${tickets}&type=mixed&riskMode=${STATE.parlayRisk}&generationMode=multi`;
+  const url = `/api/parlay?context=${STATE.context}&league=${STATE.context === "international" ? "International" : encodeURIComponent(selectedLeague())}&legs=${legs}&tickets=${tickets}&type=mixed&riskMode=${STATE.parlayRisk}&generationMode=multi`;
     try {
       const data = await api(url);
       const parlays = data.parlays || [];
@@ -398,7 +506,7 @@ async function renderPlayers() {
 /* ── Futures (+ bracket) ─────────────────────────────────────────────────── */
 async function renderFutures() {
   const intl = STATE.context === "international";
-  const data = await api(`/api/futures?context=${STATE.context}&season=${encodeURIComponent(seasonFor())}&league=${intl ? "International" : "EPL"}`);
+  const data = await api(`/api/futures?context=${STATE.context}&season=${encodeURIComponent(seasonFor())}&league=${intl ? "International" : selectedLeague()}`);
   const stage = $("#stage"); stage.innerHTML = "";
   stage.appendChild(headEl("Futures", data.unavailable ? (data.message || "unavailable") : "winner, top scorer & top assist markets"));
   // Bracket placeholder (filled async so it never blocks the futures picks).
@@ -454,9 +562,15 @@ async function renderTables() {
     });
     stage.appendChild(grid); return;
   }
+  if (STATE.competitionType === "competition") {
+    const stage = $("#stage"); stage.innerHTML = "";
+    stage.appendChild(headEl("Competition workspace", `${competitionLabel()} is a knockout competition`));
+    stage.appendChild(el("div", "empty", "League tables do not apply to knockout competitions. Use Fixtures, Futures, and Results to follow rounds, ties, and tournament outcomes."));
+    return;
+  }
   const data = await api(`/api/league-tables?season=${encodeURIComponent(seasonFor())}`).catch(() => null);
   stage.innerHTML = ""; stage.appendChild(headEl("League Tables", "current standings"));
-  const leagues = data?.leagues ? Object.entries(data.leagues) : [];
+  const leagues = data?.leagues ? Object.entries(data.leagues).filter(([name]) => STATE.competitions.includes("All Leagues") || STATE.competitions.includes(name)) : [];
   if (!leagues.length) { stage.appendChild(el("div", "empty", "League tables unavailable right now.")); return; }
   const grid = el("div", "grid");
   leagues.forEach(([name, lg]) => {
@@ -471,8 +585,8 @@ async function renderTables() {
 /* ── Results ─────────────────────────────────────────────────────────────── */
 async function renderResults() {
   const intl = STATE.context === "international";
-  const data = await api(intl ? "/api/played-fixtures?context=international" : "/api/played-fixtures?context=club&season=2025-26");
-  const preds = (data.predictions || []).filter((p) => p.played);
+  const data = await api(intl ? "/api/played-fixtures?context=international" : `/api/played-fixtures?context=club&season=${encodeURIComponent(STATE.clubSeason)}`);
+  const preds = filterFootballEntries(data.predictions || []).filter((p) => p.played);
   const stage = $("#stage"); stage.innerHTML = ""; const s = data.summary || {};
   stage.appendChild(headEl("Results", `${s.total || preds.length} settled · model ${s.correct ?? "—"}/${s.total ?? "—"}${s.exactScores ? " · " + s.exactScores + " exact" : ""}`));
   if (!preds.length) { stage.appendChild(el("div", "empty", "No completed matches yet — results appear automatically as games finish.")); return; }
@@ -483,7 +597,7 @@ async function renderResults() {
     const pk = p.prediction === "H" ? `${p.homeTeam} win` : p.prediction === "A" ? `${p.awayTeam} win` : p.prediction === "D" ? "Draw" : "result";
     const c = el("article", "card");
     c.innerHTML = `<div class="card-top"><span>${esc(p.matchdayLabel || p.league || "")} · ${esc(p.date || "")}</span>${verdict}</div>
-      <div class="match"><div class="team">${flag(p.homeFlagUrl)}<span class="tn">${esc(p.homeTeam)}</span></div><div class="score">${esc(String(pl.homeGoals))} : ${esc(String(pl.awayGoals))}</div><div class="team">${flag(p.awayFlagUrl)}<span class="tn">${esc(p.awayTeam)}</span></div></div>
+      <div class="match"><div class="team">${intl ? flag(p.homeFlagUrl) : clubCrest(p.homeTeam, p.homeLogoUrl, p.league)}<span class="tn">${esc(p.homeTeam)}</span></div><div class="score">${esc(String(pl.homeGoals))} : ${esc(String(pl.awayGoals))}</div><div class="team">${intl ? flag(p.awayFlagUrl) : clubCrest(p.awayTeam, p.awayLogoUrl, p.league)}<span class="tn">${esc(p.awayTeam)}</span></div></div>
       <div class="proj">Model: <b>${esc(pk)}</b>${p.confidence != null ? ` (${esc(String(p.confidence))}%)` : ""} · proj ${esc(p.projectedScore || "—")}${pl.exactScoreCorrect ? " · exact ✓" : ""}</div>`;
     grid.appendChild(c);
   });
@@ -515,6 +629,21 @@ async function renderTraining() {
 
 /* ── International Fixtures ───────────────────────────────────────────────── */
 async function renderFixtures() {
+  if (STATE.context === "club") {
+    const data = await api(`/api/fixture-predictions?season=${encodeURIComponent(STATE.clubSeason)}`);
+    const fixtures = filterFootballEntries(data.predictions || []);
+    const stage = $("#stage"); stage.innerHTML = "";
+    stage.appendChild(headEl("Fixtures", `${fixtures.length} scheduled ${competitionLabel()} matches`));
+    if (!fixtures.length) { stage.appendChild(el("div", "empty", `No ${competitionLabel()} fixtures are available for ${STATE.clubSeason} yet.`)); return; }
+    const grid = el("div", "grid");
+    fixtures.slice(0, 120).forEach((fixture) => {
+      const c = el("article", "card");
+      c.innerHTML = `<div class="card-top"><span>${esc(fixture.league || "")}</span><span>${esc(fixture.date || "")}</span></div><div class="match"><div class="team">${flag(fixture.homeFlagUrl || fixture.homeLogoUrl)}<span class="tn">${esc(fixture.homeTeam)}</span></div><div class="vs">vs</div><div class="team">${flag(fixture.awayFlagUrl || fixture.awayLogoUrl)}<span class="tn">${esc(fixture.awayTeam)}</span></div></div>`;
+      grid.appendChild(c);
+    });
+    stage.appendChild(grid);
+    return;
+  }
   const data = await api("/api/international/fixtures");
   const fixtures = data.fixtures || [];
   const stage = $("#stage"); stage.innerHTML = "";
@@ -540,161 +669,134 @@ async function renderSingle() {
   const stage = $("#stage"); stage.innerHTML = "";
   stage.appendChild(headEl("Single Predictor", "pick any two teams · instant model projection"));
   let teams = [];
+  const teamInfo = new Map();
+  const rememberTeam = (team, info) => { if (team && !teamInfo.has(team)) teamInfo.set(team, info); };
   try {
-    if (STATE.context === "international") teams = (await api("/api/international/fixtures")).teams || [];
-    else teams = [...new Set(((await api("/api/fixture-predictions")).predictions || []).flatMap((p) => [p.homeTeam, p.awayTeam]))];
+    if (STATE.context === "international") {
+      const data = await api("/api/international/fixtures");
+      teams = data.teams || [];
+      (data.fixtures || []).forEach((fixture) => {
+        rememberTeam(fixture.homeTeam, { flagUrl: fixture.homeFlagUrl, league: seasonFor() });
+        rememberTeam(fixture.awayTeam, { flagUrl: fixture.awayFlagUrl, league: seasonFor() });
+      });
+    }
+    else {
+      const data = await api(`/api/fixture-predictions?season=${encodeURIComponent(STATE.clubSeason)}`);
+      const fixtures = filterFootballEntries(data.predictions || []);
+      teams = [...new Set(fixtures.flatMap((p) => [p.homeTeam, p.awayTeam]))];
+      fixtures.forEach((fixture) => {
+        rememberTeam(fixture.homeTeam, { crestUrl: fixture.homeLogoUrl, league: fixture.league });
+        rememberTeam(fixture.awayTeam, { crestUrl: fixture.awayLogoUrl, league: fixture.league });
+      });
+    }
     teams = [...new Set(teams)].sort();
   } catch (_) {}
-  const opts = teams.map((t) => `<option>${esc(t)}</option>`).join("");
-  const form = el("div", "single-form");
-  form.innerHTML = `<label>Home<select id="sHome">${opts}</select></label><span class="vs">vs</span><label>Away<select id="sAway">${opts}</select></label>`;
+  const opts = teams.map((t) => `<option value="${esc(t)}">${esc(t)}</option>`).join("");
+  const scope = STATE.context === "club" ? `${STATE.clubSeason} · ${competitionLabel()}` : STATE.internationalSeason;
+  const crest = (team) => {
+    const info = teamInfo.get(team) || {};
+    return STATE.context === "club"
+      ? clubCrest(team, info.crestUrl, info.league || selectedLeague())
+      : flag(info.flagUrl);
+  };
+  const form = el("section", "single-predictor");
+  form.innerHTML = `
+    <div class="single-predictor-top">
+      <div><span class="single-kicker">Manual matchup</span><p>Choose any two teams from the active data workspace.</p></div>
+      <span class="single-scope">${esc(scope)}</span>
+    </div>
+    <div class="single-form">
+      <label class="single-team-field">
+        <span>Home team</span>
+        <div class="single-select"><span class="single-crest" id="sHomeCrest"></span><select id="sHome" aria-label="Home team">${opts}</select></div>
+      </label>
+      <div class="single-versus" aria-hidden="true">VS</div>
+      <label class="single-team-field">
+        <span>Away team</span>
+        <div class="single-select"><span class="single-crest" id="sAwayCrest"></span><select id="sAway" aria-label="Away team">${opts}</select></div>
+      </label>
+    </div>
+    <div class="single-predictor-actions">
+      <span class="single-note">Uses the current ${STATE.context === "club" ? "club" : "international"} model baseline.</span>
+      <button type="button" class="btn single-submit" id="sPredict" ${teams.length < 2 ? "disabled" : ""}>Generate prediction <span aria-hidden="true">→</span></button>
+    </div>
+    <div class="single-manual-odds" id="sManualOdds" hidden>
+      <div><b>Market odds unavailable</b><p id="sOddsNotice">Enter decimal 1X2 odds to continue with this prediction.</p></div>
+      <div class="manual-odds-fields">
+        <label>Home <input id="sHomeOdds" inputmode="decimal" type="number" min="1.01" step="0.01" placeholder="2.40"></label>
+        <label>Draw <input id="sDrawOdds" inputmode="decimal" type="number" min="1.01" step="0.01" placeholder="3.50"></label>
+        <label>Away <input id="sAwayOdds" inputmode="decimal" type="number" min="1.01" step="0.01" placeholder="2.90"></label>
+        <button type="button" class="btn single-manual-submit" id="sManualSubmit">Use these odds</button>
+      </div>
+    </div>`;
   stage.appendChild(form);
-  const go = el("button", "btn", "Predict ⚡"); go.style.marginTop = "12px"; stage.appendChild(go);
   const result = el("div", "single-result"); stage.appendChild(result);
-  if (teams[1]) $("#sAway", form).selectedIndex = 1;
-  go.onclick = async () => {
-    const homeTeam = $("#sHome").value, awayTeam = $("#sAway").value;
-    if (homeTeam === awayTeam) { result.innerHTML = `<div class="empty">Pick two different teams.</div>`; return; }
+  const home = $("#sHome", form), away = $("#sAway", form), go = $("#sPredict", form);
+  if (!teams.length) {
+    form.querySelector(".single-form").innerHTML = `<div class="single-no-teams">No teams are available for this filter. Change the Football filters and try again.</div>`;
+    return;
+  }
+  if (teams[1]) away.selectedIndex = 1;
+  const updateCrests = () => {
+    $("#sHomeCrest", form).innerHTML = crest(home.value);
+    $("#sAwayCrest", form).innerHTML = crest(away.value);
+  };
+  updateCrests();
+  home.addEventListener("change", updateCrests);
+  away.addEventListener("change", updateCrests);
+  const predict = async (odds, source = "") => {
+    const homeTeam = home.value, awayTeam = away.value;
+    if (homeTeam === awayTeam) { result.innerHTML = `<div class="empty">Pick two different teams.</div>`; return false; }
     result.innerHTML = `<div class="loading"><div class="spinner"></div><span>Predicting…</span></div>`;
     try {
-      const data = await api("/api/predict", { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify({ homeTeam, awayTeam, context: STATE.context, season: seasonFor() }) });
+      const data = await api("/api/predict", { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify({
+        homeTeam, awayTeam, context: STATE.context, season: seasonFor(),
+        league: STATE.context === "international" ? seasonFor() : (teamInfo.get(homeTeam)?.league || selectedLeague()),
+        homeOdds: odds.homeOdds, drawOdds: odds.drawOdds, awayOdds: odds.awayOdds,
+        oddsSource: source,
+      }) });
       const p = data.prediction || data;
       const pickLabel = p.prediction === "H" ? `${homeTeam} win` : p.prediction === "A" ? `${awayTeam} win` : p.prediction === "D" ? "Draw" : "—";
       const grid = el("div", "grid"); grid.appendChild(predictionCard({ ...p, homeTeam, awayTeam, league: "Single predictor" }));
       result.innerHTML = ""; result.appendChild(grid);
       void pickLabel;
-    } catch (e) { result.innerHTML = `<div class="empty">Prediction unavailable for this matchup (${esc(e.message)}).</div>`; }
+      return true;
+    } catch (e) { result.innerHTML = `<div class="empty">Prediction unavailable for this matchup (${esc(e.message)}).</div>`; return false; }
   };
-}
-
-/* ── Live goal detection + celebration ───────────────────────────────────── */
-function startGoalWatch() {
-  if (STATE.goalWatch) clearInterval(STATE.goalWatch);
-  const poll = async () => {
-    if (STATE.context !== "international" || document.hidden) return;
-    try { const data = await api("/api/international/live"); detectGoals(data.matches || []); } catch (_) {}
-  };
-  poll();
-  STATE.goalWatch = setInterval(poll, 20000);
-}
-function detectGoals(matches) {
-  matches.forEach((m) => {
-    const key = `${m.homeTeam}|${m.awayTeam}`;
-    const h = num(m.homeGoals), a = num(m.awayGoals), total = h + a;
-    const prev = STATE.liveScores[key];
-    if (prev != null && total > prev.total) {
-      const scorer = h > prev.h ? m.homeTeam : a > prev.a ? m.awayTeam : "";
-      fireGoal(scorer, `${m.homeTeam} ${h} – ${a} ${m.awayTeam}`);
+  const manualOdds = $("#sManualOdds", form);
+  go.onclick = async () => {
+    const homeTeam = home.value, awayTeam = away.value;
+    if (homeTeam === awayTeam) { result.innerHTML = `<div class="empty">Pick two different teams.</div>`; return; }
+    manualOdds.hidden = true;
+    go.disabled = true; go.innerHTML = "Checking odds…";
+    const homeLeague = teamInfo.get(homeTeam)?.league;
+    const awayLeague = teamInfo.get(awayTeam)?.league;
+    const league = STATE.context === "international" ? seasonFor() : (homeLeague && homeLeague === awayLeague ? homeLeague : "");
+    try {
+      const lookup = await api("/api/odds/lookup", { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify({ homeTeam, awayTeam, context: STATE.context, league }) });
+      if (lookup.found && lookup.odds) {
+        await predict(lookup.odds, lookup.provider || "The Odds API");
+        return;
+      }
+      $("#sOddsNotice", form).textContent = `${lookup.reason || "No public market is available for this matchup yet."} Enter decimal 1X2 odds to continue.`;
+      manualOdds.hidden = false;
+    } catch (_) {
+      $("#sOddsNotice", form).textContent = "Odds could not be retrieved right now. Enter decimal 1X2 odds to continue.";
+      manualOdds.hidden = false;
+    } finally {
+      go.disabled = false; go.innerHTML = "Generate prediction <span aria-hidden=\"true\">→</span>";
     }
-    STATE.liveScores[key] = { h, a, total };
-  });
-}
-function fireGoal(team, detail) {
-  const ov = $("#goalOverlay"); if (!ov) return;
-  $("#goDetail").textContent = team ? `${team} scores! ${detail}` : detail;
-  // confetti
-  const conf = $("#goConfetti"); conf.innerHTML = "";
-  const colors = ["#7a1a2a", "#b87d20", "#e8a030", "#4a8c4a", "#f0ebe0"];
-  for (let i = 0; i < 60; i++) {
-    const c = el("i");
-    c.style.left = Math.random() * 100 + "%";
-    c.style.background = colors[i % colors.length];
-    c.style.animationDelay = (Math.random() * 0.5) + "s";
-    c.style.transform = `rotate(${Math.random() * 360}deg)`;
-    conf.appendChild(c);
-  }
-  ov.hidden = false; ov.classList.remove("out");
-  // restart SVG animations by reflow
-  ov.querySelectorAll(".go-striker,.go-leg,.go-arm,.go-ball,.go-net,.go-word,.go-detail").forEach((n) => { n.style.animation = "none"; void n.offsetWidth; n.style.animation = ""; });
-  ov.classList.add("show");
-  clearTimeout(fireGoal._t);
-  fireGoal._t = setTimeout(() => {
-    ov.classList.add("out");
-    setTimeout(() => { ov.hidden = true; ov.classList.remove("show", "out"); }, 500);
-  }, 3200);
-}
-window.__testGoal = (t) => fireGoal(t || "Brazil", "Brazil 1 – 0 Croatia");
-
-/* ── GSAP cinematic animations ───────────────────────────────────────────── */
-function initGsapAnimations() {
-  if (!window.gsap) return;
-  const stageEl = document.getElementById("stage");
-  const heroStatsEl = document.getElementById("heroStats");
-  if (!stageEl) return;
-
-  /* Animate numbers (KPI, hero stats) with a counter sweep */
-  function animateNumbers(root) {
-    root.querySelectorAll(".kpi b:not(.gsap-done), .hero-stat b:not(.gsap-done)").forEach((numEl) => {
-      const raw = numEl.textContent.trim();
-      const match = raw.match(/^(\d+(?:\.\d+)?)/);
-      if (!match) return;
-      numEl.classList.add("gsap-done");
-      const target = parseFloat(match[1]);
-      const suffix = raw.slice(match[1].length);
-      const obj = { val: 0 };
-      gsap.to(obj, {
-        val: target, duration: 0.9, delay: 0.15, ease: "power2.out",
-        onUpdate() {
-          numEl.textContent = (Number.isInteger(target) ? Math.round(obj.val) : obj.val.toFixed(1)) + suffix;
-        },
-      });
-    });
-  }
-
-  /* Stage: observe direct children for section changes */
-  let stageTimer;
-  new MutationObserver(() => {
-    clearTimeout(stageTimer);
-    stageTimer = setTimeout(() => {
-      const head = stageEl.querySelector(".section-head:not(.gsap-done)");
-      if (head) {
-        head.classList.add("gsap-done");
-        gsap.fromTo(head,
-          { y: 12, opacity: 0 },
-          { y: 0, opacity: 1, duration: 0.4, ease: "power3.out" }
-        );
-      }
-      const cards = stageEl.querySelectorAll(".card:not(.gsap-done)");
-      if (cards.length) {
-        cards.forEach((c) => c.classList.add("gsap-done"));
-        gsap.fromTo(cards,
-          { y: 20, opacity: 0 },
-          { y: 0, opacity: 1, duration: 0.36, stagger: 0.055, ease: "power3.out", clearProps: "transform,opacity" }
-        );
-      }
-      animateNumbers(stageEl);
-    }, 40);
-  }).observe(stageEl, { childList: true });
-
-  /* Hero stats: separate observer for counter animation */
-  if (heroStatsEl) {
-    new MutationObserver(() => {
-      gsap.fromTo(
-        heroStatsEl.querySelectorAll(".hero-stat"),
-        { opacity: 0, y: 7 },
-        { opacity: 1, y: 0, duration: 0.32, stagger: 0.07, ease: "power3.out", clearProps: "transform,opacity" }
-      );
-      animateNumbers(heroStatsEl);
-    }).observe(heroStatsEl, { childList: true });
-  }
-
-  /* Scroll parallax — hero pitch drifts on scroll */
-  const wrap = document.querySelector(".hs-3d-wrap");
-  if (wrap) {
-    window.addEventListener("scroll", () => {
-      gsap.to(wrap, { y: window.scrollY * 0.18, duration: 0, ease: "none", overwrite: true });
-    }, { passive: true });
-  }
-
-  /* Nav tab switch — fade stage content */
-  document.getElementById("nav").addEventListener("click", () => {
-    gsap.fromTo(stageEl, { opacity: 0.3 }, { opacity: 1, duration: 0.28, ease: "power2.out" });
-  });
+  };
+  $("#sManualSubmit", form).onclick = () => {
+    const odds = { homeOdds: $("#sHomeOdds", form).value, drawOdds: $("#sDrawOdds", form).value, awayOdds: $("#sAwayOdds", form).value };
+    if (!Object.values(odds).every((value) => Number(value) > 1)) {
+      $("#sOddsNotice", form).textContent = "Enter valid decimal odds greater than 1.00 for home, draw, and away.";
+      return;
+    }
+    predict(odds, "User-entered odds");
+  };
 }
 
 /* ── Go ──────────────────────────────────────────────────────────────────── */
-document.addEventListener("DOMContentLoaded", runSplash);
+document.addEventListener("DOMContentLoaded", bootApp);
 window.addEventListener("resize", positionCtxGlow);
-
-/* Init GSAP after GSAP script loads (defer) */
-window.addEventListener("load", initGsapAnimations);

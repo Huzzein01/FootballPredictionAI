@@ -1,0 +1,11 @@
+"use strict";
+const fs = require("fs"); const path = require("path");
+const { fitPlattScaler, selectMarketBlend } = require("../src/baseballModel/calibration");
+const input = process.argv[2]; const output = process.argv[3] || path.join("data", "baseball", "market_calibration.json");
+if (!input) throw new Error("Usage: node scripts/calibrate_baseball_market.js <held-out-observations.json> [output.json]");
+const observations = JSON.parse(fs.readFileSync(input, "utf8"));
+if (!Array.isArray(observations)) throw new Error("Calibration input must be an array of held-out observations");
+const artifact = selectMarketBlend(observations, fitPlattScaler(observations));
+if (!artifact.validated) throw new Error(artifact.reason);
+fs.mkdirSync(path.dirname(output), { recursive: true }); fs.writeFileSync(output, `${JSON.stringify({ ...artifact, createdAt: new Date().toISOString() }, null, 2)}\n`);
+console.log(JSON.stringify({ output, ...artifact }, null, 2));

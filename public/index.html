@@ -74,9 +74,8 @@
     </header>
 
     <nav class="page-nav" aria-label="App sections">
-      <button id="immersiveUiToggle" class="page-tab ui-mode-toggle" type="button" title="Open the immersive interface">Immersive UI</button>
       <span class="sport-nav-label" aria-hidden="true">Sport</span>
-      <a class="page-tab sport-tab is-active" href="/classic/#predictions" aria-current="page">Football</a>
+      <a class="page-tab sport-tab is-active" href="/football/#predictions" aria-current="page">Football</a>
       <a class="page-tab sport-tab" href="/baseball/">Baseball</a>
       <a class="page-tab sport-tab" href="/basketball/">Basketball</a>
       <span class="sport-nav-divider" aria-hidden="true"></span>
@@ -634,13 +633,19 @@
               Fixture date
               <input name="date" type="date">
             </label>
-            <label>
+            <label class="single-team-field">
               Home team
-              <input name="homeTeam" list="teamList" value="Man United" required>
+              <span class="single-team-input">
+                <span id="singleHomeCrest" class="single-team-crest" aria-hidden="true"></span>
+                <input name="homeTeam" list="teamList" value="Man United" required>
+              </span>
             </label>
-            <label>
+            <label class="single-team-field">
               Away team
-              <input name="awayTeam" list="teamList" value="Chelsea" required>
+              <span class="single-team-input">
+                <span id="singleAwayCrest" class="single-team-crest" aria-hidden="true"></span>
+                <input name="awayTeam" list="teamList" value="Chelsea" required>
+              </span>
             </label>
             <label>
               Home odds

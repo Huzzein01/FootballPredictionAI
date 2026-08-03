@@ -1,0 +1,5 @@
+"use strict";
+const { ingestSchedulePayload } = require("../src/baseballModel/featureStore");
+function option(name, fallback = "") { const value = process.argv.find((argument) => argument.startsWith(`--${name}=`)); return value ? value.slice(name.length + 3) : fallback; }
+async function main() { const date = option("date", new Date().toISOString().slice(0, 10)); if (!/^\d{4}-\d{2}-\d{2}$/.test(date)) throw new Error("--date must be YYYY-MM-DD"); const sourceUrl = `https://statsapi.mlb.com/api/v1/schedule?sportId=1&date=${encodeURIComponent(date)}&hydrate=venue,probablePitcher`; const response = await fetch(sourceUrl, { headers: { "user-agent": "SportsbooksAnalyst/1.0 mlb-feature-store" } }); if (!response.ok) throw new Error(`MLB schedule request failed: ${response.status}`); console.log(JSON.stringify(ingestSchedulePayload({ payload: await response.json(), sourceUrl }), null, 2)); }
+if (require.main === module) main().catch((error) => { console.error(error.stack || error.message); process.exitCode = 1; });
