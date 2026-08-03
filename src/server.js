@@ -1256,14 +1256,13 @@ const server = http.createServer(async (req, res) => {
     const url = new URL(req.url, `http://${req.headers.host}`);
     if (url.pathname.startsWith("/api/")) return await handleApi(req, res, url.pathname);
 
-    // The landing page is intentionally sport-neutral. Sport-specific tools
-    // only appear after a visitor chooses Football, Baseball, or Basketball.
-    let requested = url.pathname === "/" ? "home/index.html" : url.pathname.slice(1);
-    // v2 was the retired immersive football experience. Keep its public URLs
-    // as compatible aliases, but always return the current product landing UI.
-    if (url.pathname === "/v2" || url.pathname.startsWith("/v2/")) requested = "home/index.html";
-    if (url.pathname === "/football" || url.pathname === "/football/") requested = "index.html";
-    if (url.pathname === "/classic" || url.pathname === "/classic/") requested = "home/index.html";
+    // Sportsbooks Analyst is the primary product interface. Football opens in
+    // that workspace by default; the former dashboard remains a deliberate
+    // Classic UI option, never the default route.
+    let requested = url.pathname === "/" ? "v2/index.html" : url.pathname.slice(1);
+    if (url.pathname === "/v2" || url.pathname === "/v2/") requested = "v2/index.html";
+    if (url.pathname === "/football" || url.pathname === "/football/") requested = "v2/index.html";
+    if (url.pathname === "/classic" || url.pathname === "/classic/") requested = "index.html";
     if (url.pathname === "/baseball" || url.pathname === "/baseball/") requested = "baseball/index.html";
     if (url.pathname === "/basketball" || url.pathname === "/basketball/") requested = "basketball/index.html";
     const filePath = path.resolve(PUBLIC_DIR, requested);
