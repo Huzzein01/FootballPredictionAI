@@ -5,6 +5,7 @@ const form = document.querySelector("#predictForm");
 const output = document.querySelector("#predictionOutput");
 const ledgerBody = document.querySelector("#ledgerBody");
 const fixtureLedgerSyncStatus = document.querySelector("#fixtureLedgerSyncStatus");
+const sportsbooksUiToggle = document.querySelector("#sportsbooksUiToggle");
 const syncEspnResultsButton = document.querySelector("#syncEspnResultsButton");
 const teamList = document.querySelector("#teamList");
 const singleHomeCrest = document.querySelector("#singleHomeCrest");
@@ -5142,6 +5143,7 @@ async function loadAppData() {
 
 async function init() {
   try {
+    sportsbooksUiToggle?.addEventListener("click", () => window.location.assign("/football/"));
     initTheme();
     initContextMode();
     initTutor();
