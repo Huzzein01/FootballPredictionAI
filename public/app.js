@@ -5,8 +5,6 @@ const form = document.querySelector("#predictForm");
 const output = document.querySelector("#predictionOutput");
 const ledgerBody = document.querySelector("#ledgerBody");
 const fixtureLedgerSyncStatus = document.querySelector("#fixtureLedgerSyncStatus");
-const immersiveUiToggle = document.querySelector("#immersiveUiToggle");
-const sportsbooksUiToggle = document.querySelector("#sportsbooksUiToggle");
 const syncEspnResultsButton = document.querySelector("#syncEspnResultsButton");
 const teamList = document.querySelector("#teamList");
 const singleHomeCrest = document.querySelector("#singleHomeCrest");
@@ -5144,8 +5142,6 @@ async function loadAppData() {
 
 async function init() {
   try {
-    immersiveUiToggle?.addEventListener("click", () => window.location.assign("/v2/"));
-    sportsbooksUiToggle?.addEventListener("click", () => window.location.assign("/v2/"));
     initTheme();
     initContextMode();
     initTutor();
