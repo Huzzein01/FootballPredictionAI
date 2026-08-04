@@ -1,0 +1,1217 @@
+{
+  "contract": "football-team-history-v1",
+  "team": {
+    "name": "Foggia",
+    "slug": "foggia",
+    "primaryLeague": "Coppa Italia",
+    "aliases": []
+  },
+  "requestedCoverage": {
+    "fromYear": 1985,
+    "to": "present",
+    "includes": [
+      "all competitions",
+      "opponents",
+      "scorelines",
+      "league standings",
+      "competition standings"
+    ]
+  },
+  "sourcePlan": [
+    {
+      "rank": 1,
+      "provider": "Official club archive",
+      "url": "",
+      "scope": "club history, competition participation and match reports",
+      "lookupKey": "Foggia",
+      "review": "Verify the club-owned archive URL before collection."
+    },
+    {
+      "rank": 2,
+      "provider": "Official domestic competition / association",
+      "url": "",
+      "scope": "official league fixtures, final tables and cup records",
+      "lookupKey": "Coppa Italia"
+    },
+    {
+      "rank": 3,
+      "provider": "UEFA",
+      "url": "https://www.uefa.com/",
+      "scope": "official European competition appearances, fixtures and standings",
+      "lookupKey": "Foggia"
+    },
+    {
+      "rank": 4,
+      "provider": "RSSSF",
+      "url": "https://www.rsssf.org/",
+      "scope": "historic competitions, tables and cross-checking",
+      "lookupKey": "Foggia"
+    },
+    {
+      "rank": 5,
+      "provider": "worldfootball.net",
+      "url": "https://www.worldfootball.net/",
+      "scope": "club match archive and competition participation cross-check",
+      "lookupKey": "Foggia"
+    }
+  ],
+  "coverage": {
+    "earliestMatch": "1988-08-21",
+    "latestMatch": "1997-05-29",
+    "seasonsWithMatches": [
+      "1988-89",
+      "1989-90",
+      "1990-91",
+      "1991-92",
+      "1992-93",
+      "1993-94",
+      "1994-95",
+      "1995-96",
+      "1996-97"
+    ],
+    "missingSeasons": [
+      "1985-86",
+      "1986-87",
+      "1987-88",
+      "1997-98",
+      "1998-99",
+      "1999-00",
+      "2000-01",
+      "2001-02",
+      "2002-03",
+      "2003-04",
+      "2004-05",
+      "2005-06",
+      "2006-07",
+      "2007-08",
+      "2008-09",
+      "2009-10",
+      "2010-11",
+      "2011-12",
+      "2012-13",
+      "2013-14",
+      "2014-15",
+      "2015-16",
+      "2016-17",
+      "2017-18",
+      "2018-19",
+      "2019-20",
+      "2020-21",
+      "2021-22",
+      "2022-23",
+      "2023-24",
+      "2024-25",
+      "2025-26",
+      "2026-27"
+    ],
+    "competitionScopeVerified": false,
+    "status": "partial"
+  },
+  "matches": [
+    {
+      "id": "rsssf-coppa-italia:2e4f642bb487bff6402ad7557b528c3a11fa3f81fa821789ee187e3f2cac7adc:1988-08-21:Foggia:Catanzaro:home",
+      "date": "1988-08-21",
+      "season": "1988-89",
+      "competition": {
+        "name": "Coppa Italia",
+        "type": "cup",
+        "country": "Italy"
+      },
+      "stage": "FIRST ROUND",
+      "opponent": {
+        "name": "Catanzaro",
+        "slug": "catanzaro"
+      },
+      "venue": "home",
+      "score": {
+        "for": 1,
+        "against": 0
+      },
+      "result": "W",
+      "sources": [
+        {
+          "provider": "RSSSF",
+          "url": "https://www.rsssf.org/tablesi/italcuphistfull.html",
+          "retrievedAt": "2026-08-04T21:32:07.568Z",
+          "rawArtifact": "data/teams/history/normalized/rsssf-coppa-italia-1785879127962.json"
+        }
+      ]
+    },
+    {
+      "id": "rsssf-coppa-italia:2e4f642bb487bff6402ad7557b528c3a11fa3f81fa821789ee187e3f2cac7adc:1988-08-24:Foggia:Torino:home",
+      "date": "1988-08-24",
+      "season": "1988-89",
+      "competition": {
+        "name": "Coppa Italia",
+        "type": "cup",
+        "country": "Italy"
+      },
+      "stage": "FIRST ROUND",
+      "opponent": {
+        "name": "Torino",
+        "slug": "torino"
+      },
+      "venue": "home",
+      "score": {
+        "for": 1,
+        "against": 2
+      },
+      "result": "L",
+      "sources": [
+        {
+          "provider": "RSSSF",
+          "url": "https://www.rsssf.org/tablesi/italcuphistfull.html",
+          "retrievedAt": "2026-08-04T21:32:07.568Z",
+          "rawArtifact": "data/teams/history/normalized/rsssf-coppa-italia-1785879127962.json"
+        }
+      ]
+    },
+    {
+      "id": "rsssf-coppa-italia:2e4f642bb487bff6402ad7557b528c3a11fa3f81fa821789ee187e3f2cac7adc:1988-08-28:Cesena:Foggia*:away",
+      "date": "1988-08-28",
+      "season": "1988-89",
+      "competition": {
+        "name": "Coppa Italia",
+        "type": "cup",
+        "country": "Italy"
+      },
+      "stage": "FIRST ROUND",
+      "opponent": {
+        "name": "Cesena",
+        "slug": "cesena"
+      },
+      "venue": "away",
+      "score": {
+        "for": 1,
+        "against": 3
+      },
+      "result": "L",
+      "sources": [
+        {
+          "provider": "RSSSF",
+          "url": "https://www.rsssf.org/tablesi/italcuphistfull.html",
+          "retrievedAt": "2026-08-04T21:32:07.568Z",
+          "rawArtifact": "data/teams/history/normalized/rsssf-coppa-italia-1785879127962.json"
+        }
+      ]
+    },
+    {
+      "id": "rsssf-coppa-italia:2e4f642bb487bff6402ad7557b528c3a11fa3f81fa821789ee187e3f2cac7adc:1988-08-31:Foggia:Triestina:home",
+      "date": "1988-08-31",
+      "season": "1988-89",
+      "competition": {
+        "name": "Coppa Italia",
+        "type": "cup",
+        "country": "Italy"
+      },
+      "stage": "FIRST ROUND",
+      "opponent": {
+        "name": "Triestina",
+        "slug": "triestina"
+      },
+      "venue": "home",
+      "score": {
+        "for": 1,
+        "against": 0
+      },
+      "result": "W",
+      "sources": [
+        {
+          "provider": "RSSSF",
+          "url": "https://www.rsssf.org/tablesi/italcuphistfull.html",
+          "retrievedAt": "2026-08-04T21:32:07.568Z",
+          "rawArtifact": "data/teams/history/normalized/rsssf-coppa-italia-1785879127962.json"
+        }
+      ]
+    },
+    {
+      "id": "rsssf-coppa-italia:2e4f642bb487bff6402ad7557b528c3a11fa3f81fa821789ee187e3f2cac7adc:1988-09-03:Udinese:Foggia:away",
+      "date": "1988-09-03",
+      "season": "1988-89",
+      "competition": {
+        "name": "Coppa Italia",
+        "type": "cup",
+        "country": "Italy"
+      },
+      "stage": "FIRST ROUND",
+      "opponent": {
+        "name": "Udinese",
+        "slug": "udinese"
+      },
+      "venue": "away",
+      "score": {
+        "for": 1,
+        "against": 2
+      },
+      "result": "L",
+      "sources": [
+        {
+          "provider": "RSSSF",
+          "url": "https://www.rsssf.org/tablesi/italcuphistfull.html",
+          "retrievedAt": "2026-08-04T21:32:07.568Z",
+          "rawArtifact": "data/teams/history/normalized/rsssf-coppa-italia-1785879127962.json"
+        }
+      ]
+    },
+    {
+      "id": "rsssf-coppa-italia:2e4f642bb487bff6402ad7557b528c3a11fa3f81fa821789ee187e3f2cac7adc:1989-08-23:Foggia:Reggina:home",
+      "date": "1989-08-23",
+      "season": "1989-90",
+      "competition": {
+        "name": "Coppa Italia",
+        "type": "cup",
+        "country": "Italy"
+      },
+      "stage": "FIRST ROUND",
+      "opponent": {
+        "name": "Reggina",
+        "slug": "reggina"
+      },
+      "venue": "home",
+      "score": {
+        "for": 0,
+        "against": 1
+      },
+      "result": "L",
+      "sources": [
+        {
+          "provider": "RSSSF",
+          "url": "https://www.rsssf.org/tablesi/italcuphistfull.html",
+          "retrievedAt": "2026-08-04T21:32:07.568Z",
+          "rawArtifact": "data/teams/history/normalized/rsssf-coppa-italia-1785879127962.json"
+        }
+      ]
+    },
+    {
+      "id": "rsssf-coppa-italia:2e4f642bb487bff6402ad7557b528c3a11fa3f81fa821789ee187e3f2cac7adc:1990-08-26:Foggia:Lucchese:home",
+      "date": "1990-08-26",
+      "season": "1990-91",
+      "competition": {
+        "name": "Coppa Italia",
+        "type": "cup",
+        "country": "Italy"
+      },
+      "stage": "Andata",
+      "opponent": {
+        "name": "Lucchese",
+        "slug": "lucchese"
+      },
+      "venue": "home",
+      "score": {
+        "for": 4,
+        "against": 1
+      },
+      "result": "W",
+      "sources": [
+        {
+          "provider": "RSSSF",
+          "url": "https://www.rsssf.org/tablesi/italcuphistfull.html",
+          "retrievedAt": "2026-08-04T21:32:07.568Z",
+          "rawArtifact": "data/teams/history/normalized/rsssf-coppa-italia-1785879127962.json"
+        }
+      ]
+    },
+    {
+      "id": "rsssf-coppa-italia:2e4f642bb487bff6402ad7557b528c3a11fa3f81fa821789ee187e3f2cac7adc:1990-09-02:Lucchese:Foggia:away",
+      "date": "1990-09-02",
+      "season": "1990-91",
+      "competition": {
+        "name": "Coppa Italia",
+        "type": "cup",
+        "country": "Italy"
+      },
+      "stage": "Ritorno",
+      "opponent": {
+        "name": "Lucchese",
+        "slug": "lucchese"
+      },
+      "venue": "away",
+      "score": {
+        "for": 1,
+        "against": 3
+      },
+      "result": "L",
+      "sources": [
+        {
+          "provider": "RSSSF",
+          "url": "https://www.rsssf.org/tablesi/italcuphistfull.html",
+          "retrievedAt": "2026-08-04T21:32:07.568Z",
+          "rawArtifact": "data/teams/history/normalized/rsssf-coppa-italia-1785879127962.json"
+        }
+      ]
+    },
+    {
+      "id": "rsssf-coppa-italia:2e4f642bb487bff6402ad7557b528c3a11fa3f81fa821789ee187e3f2cac7adc:1990-09-05:Roma:Foggia:away",
+      "date": "1990-09-05",
+      "season": "1990-91",
+      "competition": {
+        "name": "Coppa Italia",
+        "type": "cup",
+        "country": "Italy"
+      },
+      "stage": "Andata",
+      "opponent": {
+        "name": "AS Roma",
+        "slug": "as-roma"
+      },
+      "venue": "away",
+      "score": {
+        "for": 0,
+        "against": 1
+      },
+      "result": "L",
+      "sources": [
+        {
+          "provider": "RSSSF",
+          "url": "https://www.rsssf.org/tablesi/italcuphistfull.html",
+          "retrievedAt": "2026-08-04T21:32:07.568Z",
+          "rawArtifact": "data/teams/history/normalized/rsssf-coppa-italia-1785879127962.json"
+        }
+      ]
+    },
+    {
+      "id": "rsssf-coppa-italia:2e4f642bb487bff6402ad7557b528c3a11fa3f81fa821789ee187e3f2cac7adc:1990-09-12:Foggia:Roma:home",
+      "date": "1990-09-12",
+      "season": "1990-91",
+      "competition": {
+        "name": "Coppa Italia",
+        "type": "cup",
+        "country": "Italy"
+      },
+      "stage": "Ritorno",
+      "opponent": {
+        "name": "AS Roma",
+        "slug": "as-roma"
+      },
+      "venue": "home",
+      "score": {
+        "for": 1,
+        "against": 3
+      },
+      "result": "L",
+      "sources": [
+        {
+          "provider": "RSSSF",
+          "url": "https://www.rsssf.org/tablesi/italcuphistfull.html",
+          "retrievedAt": "2026-08-04T21:32:07.568Z",
+          "rawArtifact": "data/teams/history/normalized/rsssf-coppa-italia-1785879127962.json"
+        }
+      ]
+    },
+    {
+      "id": "rsssf-coppa-italia:2e4f642bb487bff6402ad7557b528c3a11fa3f81fa821789ee187e3f2cac7adc:1991-08-28:Pisa:Foggia:away",
+      "date": "1991-08-28",
+      "season": "1991-92",
+      "competition": {
+        "name": "Coppa Italia",
+        "type": "cup",
+        "country": "Italy"
+      },
+      "stage": "Andata",
+      "opponent": {
+        "name": "Pisa",
+        "slug": "pisa"
+      },
+      "venue": "away",
+      "score": {
+        "for": 1,
+        "against": 2
+      },
+      "result": "L",
+      "sources": [
+        {
+          "provider": "RSSSF",
+          "url": "https://www.rsssf.org/tablesi/italcuphistfull.html",
+          "retrievedAt": "2026-08-04T21:32:07.568Z",
+          "rawArtifact": "data/teams/history/normalized/rsssf-coppa-italia-1785879127962.json"
+        }
+      ]
+    },
+    {
+      "id": "rsssf-coppa-italia:2e4f642bb487bff6402ad7557b528c3a11fa3f81fa821789ee187e3f2cac7adc:1991-09-04:Foggia:Pisa:home",
+      "date": "1991-09-04",
+      "season": "1991-92",
+      "competition": {
+        "name": "Coppa Italia",
+        "type": "cup",
+        "country": "Italy"
+      },
+      "stage": "Ritorno",
+      "opponent": {
+        "name": "Pisa",
+        "slug": "pisa"
+      },
+      "venue": "home",
+      "score": {
+        "for": 1,
+        "against": 1
+      },
+      "result": "D",
+      "sources": [
+        {
+          "provider": "RSSSF",
+          "url": "https://www.rsssf.org/tablesi/italcuphistfull.html",
+          "retrievedAt": "2026-08-04T21:32:07.568Z",
+          "rawArtifact": "data/teams/history/normalized/rsssf-coppa-italia-1785879286801.json"
+        }
+      ]
+    },
+    {
+      "id": "rsssf-coppa-italia:2e4f642bb487bff6402ad7557b528c3a11fa3f81fa821789ee187e3f2cac7adc:1991-09-04:Foggia:Pisa%20(2):home",
+      "date": "1991-09-04",
+      "season": "1991-92",
+      "competition": {
+        "name": "Coppa Italia",
+        "type": "cup",
+        "country": "Italy"
+      },
+      "stage": "Ritorno",
+      "opponent": {
+        "name": "Pisa (2)",
+        "slug": "pisa-2"
+      },
+      "venue": "home",
+      "score": {
+        "for": 1,
+        "against": 1
+      },
+      "result": "D",
+      "sources": [
+        {
+          "provider": "RSSSF",
+          "url": "https://www.rsssf.org/tablesi/italcuphistfull.html",
+          "retrievedAt": "2026-08-04T21:32:07.568Z",
+          "rawArtifact": "data/teams/history/normalized/rsssf-coppa-italia-1785879127962.json"
+        }
+      ]
+    },
+    {
+      "id": "rsssf-coppa-italia:2e4f642bb487bff6402ad7557b528c3a11fa3f81fa821789ee187e3f2cac7adc:1992-08-26:Foggia:Pisa:home",
+      "date": "1992-08-26",
+      "season": "1992-93",
+      "competition": {
+        "name": "Coppa Italia",
+        "type": "cup",
+        "country": "Italy"
+      },
+      "stage": "Andata",
+      "opponent": {
+        "name": "Pisa",
+        "slug": "pisa"
+      },
+      "venue": "home",
+      "score": {
+        "for": 1,
+        "against": 0
+      },
+      "result": "W",
+      "sources": [
+        {
+          "provider": "RSSSF",
+          "url": "https://www.rsssf.org/tablesi/italcuphistfull.html",
+          "retrievedAt": "2026-08-04T21:32:07.568Z",
+          "rawArtifact": "data/teams/history/normalized/rsssf-coppa-italia-1785879127962.json"
+        }
+      ]
+    },
+    {
+      "id": "rsssf-coppa-italia:2e4f642bb487bff6402ad7557b528c3a11fa3f81fa821789ee187e3f2cac7adc:1992-09-02:Pisa:Foggia:away",
+      "date": "1992-09-02",
+      "season": "1992-93",
+      "competition": {
+        "name": "Coppa Italia",
+        "type": "cup",
+        "country": "Italy"
+      },
+      "stage": "Ritorno",
+      "opponent": {
+        "name": "Pisa",
+        "slug": "pisa"
+      },
+      "venue": "away",
+      "score": {
+        "for": 2,
+        "against": 2
+      },
+      "result": "D",
+      "sources": [
+        {
+          "provider": "RSSSF",
+          "url": "https://www.rsssf.org/tablesi/italcuphistfull.html",
+          "retrievedAt": "2026-08-04T21:32:07.568Z",
+          "rawArtifact": "data/teams/history/normalized/rsssf-coppa-italia-1785879286801.json"
+        }
+      ]
+    },
+    {
+      "id": "rsssf-coppa-italia:2e4f642bb487bff6402ad7557b528c3a11fa3f81fa821789ee187e3f2cac7adc:1992-10-07:Foggia:Inter:home",
+      "date": "1992-10-07",
+      "season": "1992-93",
+      "competition": {
+        "name": "Coppa Italia",
+        "type": "cup",
+        "country": "Italy"
+      },
+      "stage": "Andata",
+      "opponent": {
+        "name": "Inter Milan",
+        "slug": "inter-milan"
+      },
+      "venue": "home",
+      "score": {
+        "for": 0,
+        "against": 0
+      },
+      "result": "D",
+      "sources": [
+        {
+          "provider": "RSSSF",
+          "url": "https://www.rsssf.org/tablesi/italcuphistfull.html",
+          "retrievedAt": "2026-08-04T21:32:07.568Z",
+          "rawArtifact": "data/teams/history/normalized/rsssf-coppa-italia-1785879286801.json"
+        }
+      ]
+    },
+    {
+      "id": "rsssf-coppa-italia:2e4f642bb487bff6402ad7557b528c3a11fa3f81fa821789ee187e3f2cac7adc:1992-10-07:Foggia:Inter%20(1):home",
+      "date": "1992-10-07",
+      "season": "1992-93",
+      "competition": {
+        "name": "Coppa Italia",
+        "type": "cup",
+        "country": "Italy"
+      },
+      "stage": "Andata",
+      "opponent": {
+        "name": "Inter (1)",
+        "slug": "inter-1"
+      },
+      "venue": "home",
+      "score": {
+        "for": 0,
+        "against": 0
+      },
+      "result": "D",
+      "sources": [
+        {
+          "provider": "RSSSF",
+          "url": "https://www.rsssf.org/tablesi/italcuphistfull.html",
+          "retrievedAt": "2026-08-04T21:32:07.568Z",
+          "rawArtifact": "data/teams/history/normalized/rsssf-coppa-italia-1785879127962.json"
+        }
+      ]
+    },
+    {
+      "id": "rsssf-coppa-italia:2e4f642bb487bff6402ad7557b528c3a11fa3f81fa821789ee187e3f2cac7adc:1992-10-28:Inter:Foggia:away",
+      "date": "1992-10-28",
+      "season": "1992-93",
+      "competition": {
+        "name": "Coppa Italia",
+        "type": "cup",
+        "country": "Italy"
+      },
+      "stage": "Ritorno",
+      "opponent": {
+        "name": "Inter Milan",
+        "slug": "inter-milan"
+      },
+      "venue": "away",
+      "score": {
+        "for": 0,
+        "against": 2
+      },
+      "result": "L",
+      "sources": [
+        {
+          "provider": "RSSSF",
+          "url": "https://www.rsssf.org/tablesi/italcuphistfull.html",
+          "retrievedAt": "2026-08-04T21:32:07.568Z",
+          "rawArtifact": "data/teams/history/normalized/rsssf-coppa-italia-1785879127962.json"
+        }
+      ]
+    },
+    {
+      "id": "rsssf-coppa-italia:2e4f642bb487bff6402ad7557b528c3a11fa3f81fa821789ee187e3f2cac7adc:1993-10-06:Foggia:Triestina:home",
+      "date": "1993-10-06",
+      "season": "1993-94",
+      "competition": {
+        "name": "Coppa Italia",
+        "type": "cup",
+        "country": "Italy"
+      },
+      "stage": "Andata",
+      "opponent": {
+        "name": "Triestina",
+        "slug": "triestina"
+      },
+      "venue": "home",
+      "score": {
+        "for": 2,
+        "against": 2
+      },
+      "result": "D",
+      "sources": [
+        {
+          "provider": "RSSSF",
+          "url": "https://www.rsssf.org/tablesi/italcuphistfull.html",
+          "retrievedAt": "2026-08-04T21:32:07.568Z",
+          "rawArtifact": "data/teams/history/normalized/rsssf-coppa-italia-1785879127962.json"
+        }
+      ]
+    },
+    {
+      "id": "rsssf-coppa-italia:2e4f642bb487bff6402ad7557b528c3a11fa3f81fa821789ee187e3f2cac7adc:1993-10-27:Triestina:Foggia:away",
+      "date": "1993-10-27",
+      "season": "1993-94",
+      "competition": {
+        "name": "Coppa Italia",
+        "type": "cup",
+        "country": "Italy"
+      },
+      "stage": "Ritorno",
+      "opponent": {
+        "name": "Triestina",
+        "slug": "triestina"
+      },
+      "venue": "away",
+      "score": {
+        "for": 4,
+        "against": 0
+      },
+      "result": "W",
+      "sources": [
+        {
+          "provider": "RSSSF",
+          "url": "https://www.rsssf.org/tablesi/italcuphistfull.html",
+          "retrievedAt": "2026-08-04T21:32:07.568Z",
+          "rawArtifact": "data/teams/history/normalized/rsssf-coppa-italia-1785879127962.json"
+        }
+      ]
+    },
+    {
+      "id": "rsssf-coppa-italia:2e4f642bb487bff6402ad7557b528c3a11fa3f81fa821789ee187e3f2cac7adc:1993-12-01:Cesena:Foggia:away",
+      "date": "1993-12-01",
+      "season": "1993-94",
+      "competition": {
+        "name": "Coppa Italia",
+        "type": "cup",
+        "country": "Italy"
+      },
+      "stage": "Andata",
+      "opponent": {
+        "name": "Cesena",
+        "slug": "cesena"
+      },
+      "venue": "away",
+      "score": {
+        "for": 0,
+        "against": 1
+      },
+      "result": "L",
+      "sources": [
+        {
+          "provider": "RSSSF",
+          "url": "https://www.rsssf.org/tablesi/italcuphistfull.html",
+          "retrievedAt": "2026-08-04T21:32:07.568Z",
+          "rawArtifact": "data/teams/history/normalized/rsssf-coppa-italia-1785879127962.json"
+        }
+      ]
+    },
+    {
+      "id": "rsssf-coppa-italia:2e4f642bb487bff6402ad7557b528c3a11fa3f81fa821789ee187e3f2cac7adc:1993-12-15:Foggia:Cesena:home",
+      "date": "1993-12-15",
+      "season": "1993-94",
+      "competition": {
+        "name": "Coppa Italia",
+        "type": "cup",
+        "country": "Italy"
+      },
+      "stage": "Ritorno",
+      "opponent": {
+        "name": "Cesena",
+        "slug": "cesena"
+      },
+      "venue": "home",
+      "score": {
+        "for": 2,
+        "against": 0
+      },
+      "result": "W",
+      "sources": [
+        {
+          "provider": "RSSSF",
+          "url": "https://www.rsssf.org/tablesi/italcuphistfull.html",
+          "retrievedAt": "2026-08-04T21:32:07.568Z",
+          "rawArtifact": "data/teams/history/normalized/rsssf-coppa-italia-1785879127962.json"
+        }
+      ]
+    },
+    {
+      "id": "rsssf-coppa-italia:2e4f642bb487bff6402ad7557b528c3a11fa3f81fa821789ee187e3f2cac7adc:1994-01-04:Foggia:Parma:home",
+      "date": "1994-01-04",
+      "season": "1993-94",
+      "competition": {
+        "name": "Coppa Italia",
+        "type": "cup",
+        "country": "Italy"
+      },
+      "stage": "Andata",
+      "opponent": {
+        "name": "Parma",
+        "slug": "parma"
+      },
+      "venue": "home",
+      "score": {
+        "for": 0,
+        "against": 3
+      },
+      "result": "L",
+      "sources": [
+        {
+          "provider": "RSSSF",
+          "url": "https://www.rsssf.org/tablesi/italcuphistfull.html",
+          "retrievedAt": "2026-08-04T21:32:07.568Z",
+          "rawArtifact": "data/teams/history/normalized/rsssf-coppa-italia-1785879127962.json"
+        }
+      ]
+    },
+    {
+      "id": "rsssf-coppa-italia:2e4f642bb487bff6402ad7557b528c3a11fa3f81fa821789ee187e3f2cac7adc:1994-01-26:Parma:Foggia:away",
+      "date": "1994-01-26",
+      "season": "1993-94",
+      "competition": {
+        "name": "Coppa Italia",
+        "type": "cup",
+        "country": "Italy"
+      },
+      "stage": "Ritorno",
+      "opponent": {
+        "name": "Parma",
+        "slug": "parma"
+      },
+      "venue": "away",
+      "score": {
+        "for": 1,
+        "against": 6
+      },
+      "result": "L",
+      "sources": [
+        {
+          "provider": "RSSSF",
+          "url": "https://www.rsssf.org/tablesi/italcuphistfull.html",
+          "retrievedAt": "2026-08-04T21:32:07.568Z",
+          "rawArtifact": "data/teams/history/normalized/rsssf-coppa-italia-1785879127962.json"
+        }
+      ]
+    },
+    {
+      "id": "rsssf-coppa-italia:2e4f642bb487bff6402ad7557b528c3a11fa3f81fa821789ee187e3f2cac7adc:1994-08-31:Como:Foggia:away",
+      "date": "1994-08-31",
+      "season": "1994-95",
+      "competition": {
+        "name": "Coppa Italia",
+        "type": "cup",
+        "country": "Italy"
+      },
+      "stage": "Andata",
+      "opponent": {
+        "name": "Como",
+        "slug": "como"
+      },
+      "venue": "away",
+      "score": {
+        "for": 2,
+        "against": 0
+      },
+      "result": "W",
+      "sources": [
+        {
+          "provider": "RSSSF",
+          "url": "https://www.rsssf.org/tablesi/italcuphistfull.html",
+          "retrievedAt": "2026-08-04T21:32:07.568Z",
+          "rawArtifact": "data/teams/history/normalized/rsssf-coppa-italia-1785879127962.json"
+        }
+      ]
+    },
+    {
+      "id": "rsssf-coppa-italia:2e4f642bb487bff6402ad7557b528c3a11fa3f81fa821789ee187e3f2cac7adc:1994-09-21:Foggia:Como:home",
+      "date": "1994-09-21",
+      "season": "1994-95",
+      "competition": {
+        "name": "Coppa Italia",
+        "type": "cup",
+        "country": "Italy"
+      },
+      "stage": "Ritorno",
+      "opponent": {
+        "name": "Como",
+        "slug": "como"
+      },
+      "venue": "home",
+      "score": {
+        "for": 5,
+        "against": 0
+      },
+      "result": "W",
+      "sources": [
+        {
+          "provider": "RSSSF",
+          "url": "https://www.rsssf.org/tablesi/italcuphistfull.html",
+          "retrievedAt": "2026-08-04T21:32:07.568Z",
+          "rawArtifact": "data/teams/history/normalized/rsssf-coppa-italia-1785879127962.json"
+        }
+      ]
+    },
+    {
+      "id": "rsssf-coppa-italia:2e4f642bb487bff6402ad7557b528c3a11fa3f81fa821789ee187e3f2cac7adc:1994-10-12:Foggia:Torino:home",
+      "date": "1994-10-12",
+      "season": "1994-95",
+      "competition": {
+        "name": "Coppa Italia",
+        "type": "cup",
+        "country": "Italy"
+      },
+      "stage": "Andata",
+      "opponent": {
+        "name": "Torino",
+        "slug": "torino"
+      },
+      "venue": "home",
+      "score": {
+        "for": 3,
+        "against": 0
+      },
+      "result": "W",
+      "sources": [
+        {
+          "provider": "RSSSF",
+          "url": "https://www.rsssf.org/tablesi/italcuphistfull.html",
+          "retrievedAt": "2026-08-04T21:32:07.568Z",
+          "rawArtifact": "data/teams/history/normalized/rsssf-coppa-italia-1785879127962.json"
+        }
+      ]
+    },
+    {
+      "id": "rsssf-coppa-italia:2e4f642bb487bff6402ad7557b528c3a11fa3f81fa821789ee187e3f2cac7adc:1994-10-26:Torino:Foggia:away",
+      "date": "1994-10-26",
+      "season": "1994-95",
+      "competition": {
+        "name": "Coppa Italia",
+        "type": "cup",
+        "country": "Italy"
+      },
+      "stage": "Ritorno",
+      "opponent": {
+        "name": "Torino",
+        "slug": "torino"
+      },
+      "venue": "away",
+      "score": {
+        "for": 1,
+        "against": 2
+      },
+      "result": "L",
+      "sources": [
+        {
+          "provider": "RSSSF",
+          "url": "https://www.rsssf.org/tablesi/italcuphistfull.html",
+          "retrievedAt": "2026-08-04T21:32:07.568Z",
+          "rawArtifact": "data/teams/history/normalized/rsssf-coppa-italia-1785879127962.json"
+        }
+      ]
+    },
+    {
+      "id": "rsssf-coppa-italia:2e4f642bb487bff6402ad7557b528c3a11fa3f81fa821789ee187e3f2cac7adc:1994-11-30:Inter:Foggia:away",
+      "date": "1994-11-30",
+      "season": "1994-95",
+      "competition": {
+        "name": "Coppa Italia",
+        "type": "cup",
+        "country": "Italy"
+      },
+      "stage": "Andata",
+      "opponent": {
+        "name": "Inter Milan",
+        "slug": "inter-milan"
+      },
+      "venue": "away",
+      "score": {
+        "for": 0,
+        "against": 1
+      },
+      "result": "L",
+      "sources": [
+        {
+          "provider": "RSSSF",
+          "url": "https://www.rsssf.org/tablesi/italcuphistfull.html",
+          "retrievedAt": "2026-08-04T21:32:07.568Z",
+          "rawArtifact": "data/teams/history/normalized/rsssf-coppa-italia-1785879127962.json"
+        }
+      ]
+    },
+    {
+      "id": "rsssf-coppa-italia:2e4f642bb487bff6402ad7557b528c3a11fa3f81fa821789ee187e3f2cac7adc:1994-12-14:Foggia:Inter:home",
+      "date": "1994-12-14",
+      "season": "1994-95",
+      "competition": {
+        "name": "Coppa Italia",
+        "type": "cup",
+        "country": "Italy"
+      },
+      "stage": "Ritorno",
+      "opponent": {
+        "name": "Inter Milan",
+        "slug": "inter-milan"
+      },
+      "venue": "home",
+      "score": {
+        "for": 2,
+        "against": 0
+      },
+      "result": "W",
+      "sources": [
+        {
+          "provider": "RSSSF",
+          "url": "https://www.rsssf.org/tablesi/italcuphistfull.html",
+          "retrievedAt": "2026-08-04T21:32:07.568Z",
+          "rawArtifact": "data/teams/history/normalized/rsssf-coppa-italia-1785879286801.json"
+        }
+      ]
+    },
+    {
+      "id": "rsssf-coppa-italia:2e4f642bb487bff6402ad7557b528c3a11fa3f81fa821789ee187e3f2cac7adc:1994-12-14:Foggia:Inter%20(1):home",
+      "date": "1994-12-14",
+      "season": "1994-95",
+      "competition": {
+        "name": "Coppa Italia",
+        "type": "cup",
+        "country": "Italy"
+      },
+      "stage": "Ritorno",
+      "opponent": {
+        "name": "Inter (1)",
+        "slug": "inter-1"
+      },
+      "venue": "home",
+      "score": {
+        "for": 2,
+        "against": 0
+      },
+      "result": "W",
+      "sources": [
+        {
+          "provider": "RSSSF",
+          "url": "https://www.rsssf.org/tablesi/italcuphistfull.html",
+          "retrievedAt": "2026-08-04T21:32:07.568Z",
+          "rawArtifact": "data/teams/history/normalized/rsssf-coppa-italia-1785879127962.json"
+        }
+      ]
+    },
+    {
+      "id": "rsssf-coppa-italia:2e4f642bb487bff6402ad7557b528c3a11fa3f81fa821789ee187e3f2cac7adc:1995-03-09:Foggia:Parma:home",
+      "date": "1995-03-09",
+      "season": "1994-95",
+      "competition": {
+        "name": "Coppa Italia",
+        "type": "cup",
+        "country": "Italy"
+      },
+      "stage": "Andata",
+      "opponent": {
+        "name": "Parma",
+        "slug": "parma"
+      },
+      "venue": "home",
+      "score": {
+        "for": 1,
+        "against": 1
+      },
+      "result": "D",
+      "sources": [
+        {
+          "provider": "RSSSF",
+          "url": "https://www.rsssf.org/tablesi/italcuphistfull.html",
+          "retrievedAt": "2026-08-04T21:32:07.568Z",
+          "rawArtifact": "data/teams/history/normalized/rsssf-coppa-italia-1785879127962.json"
+        }
+      ]
+    },
+    {
+      "id": "rsssf-coppa-italia:2e4f642bb487bff6402ad7557b528c3a11fa3f81fa821789ee187e3f2cac7adc:1995-04-12:Parma:Foggia:away",
+      "date": "1995-04-12",
+      "season": "1994-95",
+      "competition": {
+        "name": "Coppa Italia",
+        "type": "cup",
+        "country": "Italy"
+      },
+      "stage": "Ritorno",
+      "opponent": {
+        "name": "Parma",
+        "slug": "parma"
+      },
+      "venue": "away",
+      "score": {
+        "for": 1,
+        "against": 3
+      },
+      "result": "L",
+      "sources": [
+        {
+          "provider": "RSSSF",
+          "url": "https://www.rsssf.org/tablesi/italcuphistfull.html",
+          "retrievedAt": "2026-08-04T21:32:07.568Z",
+          "rawArtifact": "data/teams/history/normalized/rsssf-coppa-italia-1785879127962.json"
+        }
+      ]
+    },
+    {
+      "id": "rsssf-coppa-italia:2e4f642bb487bff6402ad7557b528c3a11fa3f81fa821789ee187e3f2cac7adc:1995-08-20:Forl%26igrave%3B:Foggia:away",
+      "date": "1995-08-20",
+      "season": "1995-96",
+      "competition": {
+        "name": "Coppa Italia",
+        "type": "cup",
+        "country": "Italy"
+      },
+      "stage": "FIRST ROUND",
+      "opponent": {
+        "name": "Forl&igrave;",
+        "slug": "forl-and-igrave"
+      },
+      "venue": "away",
+      "score": {
+        "for": 0,
+        "against": 1
+      },
+      "result": "L",
+      "sources": [
+        {
+          "provider": "RSSSF",
+          "url": "https://www.rsssf.org/tablesi/italcuphistfull.html",
+          "retrievedAt": "2026-08-04T21:32:07.568Z",
+          "rawArtifact": "data/teams/history/normalized/rsssf-coppa-italia-1785879127962.json"
+        }
+      ]
+    },
+    {
+      "id": "rsssf-coppa-italia:2e4f642bb487bff6402ad7557b528c3a11fa3f81fa821789ee187e3f2cac7adc:1997-05-29:Cosenza:Foggia:away",
+      "date": "1997-05-29",
+      "season": "1996-97",
+      "competition": {
+        "name": "Coppa Italia",
+        "type": "cup",
+        "country": "Italy"
+      },
+      "stage": "Andata (17/8/1997)",
+      "opponent": {
+        "name": "Cosenza",
+        "slug": "cosenza"
+      },
+      "venue": "away",
+      "score": {
+        "for": 0,
+        "against": 0
+      },
+      "result": "D",
+      "sources": [
+        {
+          "provider": "RSSSF",
+          "url": "https://www.rsssf.org/tablesi/italcuphistfull.html",
+          "retrievedAt": "2026-08-04T21:32:07.568Z",
+          "rawArtifact": "data/teams/history/normalized/rsssf-coppa-italia-1785879127962.json"
+        }
+      ]
+    },
+    {
+      "id": "rsssf-coppa-italia:2e4f642bb487bff6402ad7557b528c3a11fa3f81fa821789ee187e3f2cac7adc:1997-05-29:Foggia:Cosenza:home",
+      "date": "1997-05-29",
+      "season": "1996-97",
+      "competition": {
+        "name": "Coppa Italia",
+        "type": "cup",
+        "country": "Italy"
+      },
+      "stage": "Ritorno (24/8/1997)",
+      "opponent": {
+        "name": "Cosenza",
+        "slug": "cosenza"
+      },
+      "venue": "home",
+      "score": {
+        "for": 3,
+        "against": 2
+      },
+      "result": "W",
+      "sources": [
+        {
+          "provider": "RSSSF",
+          "url": "https://www.rsssf.org/tablesi/italcuphistfull.html",
+          "retrievedAt": "2026-08-04T21:32:07.568Z",
+          "rawArtifact": "data/teams/history/normalized/rsssf-coppa-italia-1785879127962.json"
+        }
+      ]
+    },
+    {
+      "id": "rsssf-coppa-italia:2e4f642bb487bff6402ad7557b528c3a11fa3f81fa821789ee187e3f2cac7adc:1997-05-29:Foggia:Inter:home",
+      "date": "1997-05-29",
+      "season": "1996-97",
+      "competition": {
+        "name": "Coppa Italia",
+        "type": "cup",
+        "country": "Italy"
+      },
+      "stage": "Andata (3/9/1997)",
+      "opponent": {
+        "name": "Inter Milan",
+        "slug": "inter-milan"
+      },
+      "venue": "home",
+      "score": {
+        "for": 0,
+        "against": 1
+      },
+      "result": "L",
+      "sources": [
+        {
+          "provider": "RSSSF",
+          "url": "https://www.rsssf.org/tablesi/italcuphistfull.html",
+          "retrievedAt": "2026-08-04T21:32:07.568Z",
+          "rawArtifact": "data/teams/history/normalized/rsssf-coppa-italia-1785879127962.json"
+        }
+      ]
+    },
+    {
+      "id": "rsssf-coppa-italia:2e4f642bb487bff6402ad7557b528c3a11fa3f81fa821789ee187e3f2cac7adc:1997-05-29:Inter:Foggia:away",
+      "date": "1997-05-29",
+      "season": "1996-97",
+      "competition": {
+        "name": "Coppa Italia",
+        "type": "cup",
+        "country": "Italy"
+      },
+      "stage": "Ritorno (24/9/1997)",
+      "opponent": {
+        "name": "Inter Milan",
+        "slug": "inter-milan"
+      },
+      "venue": "away",
+      "score": {
+        "for": 2,
+        "against": 3
+      },
+      "result": "L",
+      "sources": [
+        {
+          "provider": "RSSSF",
+          "url": "https://www.rsssf.org/tablesi/italcuphistfull.html",
+          "retrievedAt": "2026-08-04T21:32:07.568Z",
+          "rawArtifact": "data/teams/history/normalized/rsssf-coppa-italia-1785879286801.json"
+        }
+      ]
+    }
+  ],
+  "seasonStandings": [],
+  "competitionStandings": [],
+  "updatedAt": "2026-08-04T21:35:07.467Z"
+}

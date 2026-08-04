@@ -1,0 +1,754 @@
+{
+  "contract": "football-team-history-v1",
+  "team": {
+    "name": "Campobasso",
+    "slug": "campobasso",
+    "primaryLeague": "Coppa Italia",
+    "aliases": []
+  },
+  "requestedCoverage": {
+    "fromYear": 1985,
+    "to": "present",
+    "includes": [
+      "all competitions",
+      "opponents",
+      "scorelines",
+      "league standings",
+      "competition standings"
+    ]
+  },
+  "sourcePlan": [
+    {
+      "rank": 1,
+      "provider": "Official club archive",
+      "url": "",
+      "scope": "club history, competition participation and match reports",
+      "lookupKey": "Campobasso",
+      "review": "Verify the club-owned archive URL before collection."
+    },
+    {
+      "rank": 2,
+      "provider": "Official domestic competition / association",
+      "url": "",
+      "scope": "official league fixtures, final tables and cup records",
+      "lookupKey": "Coppa Italia"
+    },
+    {
+      "rank": 3,
+      "provider": "UEFA",
+      "url": "https://www.uefa.com/",
+      "scope": "official European competition appearances, fixtures and standings",
+      "lookupKey": "Campobasso"
+    },
+    {
+      "rank": 4,
+      "provider": "RSSSF",
+      "url": "https://www.rsssf.org/",
+      "scope": "historic competitions, tables and cross-checking",
+      "lookupKey": "Campobasso"
+    },
+    {
+      "rank": 5,
+      "provider": "worldfootball.net",
+      "url": "https://www.worldfootball.net/",
+      "scope": "club match archive and competition participation cross-check",
+      "lookupKey": "Campobasso"
+    }
+  ],
+  "coverage": {
+    "earliestMatch": "1985-02-13",
+    "latestMatch": "1988-09-03",
+    "seasonsWithMatches": [
+      "1984-85",
+      "1985-86",
+      "1986-87",
+      "1987-88",
+      "1988-89"
+    ],
+    "missingSeasons": [
+      "1989-90",
+      "1990-91",
+      "1991-92",
+      "1992-93",
+      "1993-94",
+      "1994-95",
+      "1995-96",
+      "1996-97",
+      "1997-98",
+      "1998-99",
+      "1999-00",
+      "2000-01",
+      "2001-02",
+      "2002-03",
+      "2003-04",
+      "2004-05",
+      "2005-06",
+      "2006-07",
+      "2007-08",
+      "2008-09",
+      "2009-10",
+      "2010-11",
+      "2011-12",
+      "2012-13",
+      "2013-14",
+      "2014-15",
+      "2015-16",
+      "2016-17",
+      "2017-18",
+      "2018-19",
+      "2019-20",
+      "2020-21",
+      "2021-22",
+      "2022-23",
+      "2023-24",
+      "2024-25",
+      "2025-26",
+      "2026-27"
+    ],
+    "competitionScopeVerified": false,
+    "status": "partial"
+  },
+  "matches": [
+    {
+      "id": "rsssf-coppa-italia:2e4f642bb487bff6402ad7557b528c3a11fa3f81fa821789ee187e3f2cac7adc:1985-02-13:Campobasso:Juventus:home",
+      "date": "1985-02-13",
+      "season": "1984-85",
+      "competition": {
+        "name": "Coppa Italia",
+        "type": "cup",
+        "country": "Italy"
+      },
+      "stage": "Andata",
+      "opponent": {
+        "name": "Juventus",
+        "slug": "juventus"
+      },
+      "venue": "home",
+      "score": {
+        "for": 1,
+        "against": 0
+      },
+      "result": "W",
+      "sources": [
+        {
+          "provider": "RSSSF",
+          "url": "https://www.rsssf.org/tablesi/italcuphistfull.html",
+          "retrievedAt": "2026-08-04T21:32:07.568Z",
+          "rawArtifact": "data/teams/history/normalized/rsssf-coppa-italia-1785879127962.json"
+        }
+      ]
+    },
+    {
+      "id": "rsssf-coppa-italia:2e4f642bb487bff6402ad7557b528c3a11fa3f81fa821789ee187e3f2cac7adc:1985-02-27:Juventus:Campobasso:away",
+      "date": "1985-02-27",
+      "season": "1984-85",
+      "competition": {
+        "name": "Coppa Italia",
+        "type": "cup",
+        "country": "Italy"
+      },
+      "stage": "Ritorno",
+      "opponent": {
+        "name": "Juventus",
+        "slug": "juventus"
+      },
+      "venue": "away",
+      "score": {
+        "for": 1,
+        "against": 4
+      },
+      "result": "L",
+      "sources": [
+        {
+          "provider": "RSSSF",
+          "url": "https://www.rsssf.org/tablesi/italcuphistfull.html",
+          "retrievedAt": "2026-08-04T21:32:07.568Z",
+          "rawArtifact": "data/teams/history/normalized/rsssf-coppa-italia-1785879127962.json"
+        }
+      ]
+    },
+    {
+      "id": "rsssf-coppa-italia:2e4f642bb487bff6402ad7557b528c3a11fa3f81fa821789ee187e3f2cac7adc:1985-08-21:Bari:Campobasso:away",
+      "date": "1985-08-21",
+      "season": "1985-86",
+      "competition": {
+        "name": "Coppa Italia",
+        "type": "cup",
+        "country": "Italy"
+      },
+      "stage": "FIRST ROUND",
+      "opponent": {
+        "name": "Bari",
+        "slug": "bari"
+      },
+      "venue": "away",
+      "score": {
+        "for": 0,
+        "against": 1
+      },
+      "result": "L",
+      "sources": [
+        {
+          "provider": "RSSSF",
+          "url": "https://www.rsssf.org/tablesi/italcuphistfull.html",
+          "retrievedAt": "2026-08-04T21:32:07.568Z",
+          "rawArtifact": "data/teams/history/normalized/rsssf-coppa-italia-1785879127962.json"
+        }
+      ]
+    },
+    {
+      "id": "rsssf-coppa-italia:2e4f642bb487bff6402ad7557b528c3a11fa3f81fa821789ee187e3f2cac7adc:1985-08-25:Campobasso:Messina:home",
+      "date": "1985-08-25",
+      "season": "1985-86",
+      "competition": {
+        "name": "Coppa Italia",
+        "type": "cup",
+        "country": "Italy"
+      },
+      "stage": "FIRST ROUND",
+      "opponent": {
+        "name": "Messina",
+        "slug": "messina"
+      },
+      "venue": "home",
+      "score": {
+        "for": 1,
+        "against": 1
+      },
+      "result": "D",
+      "sources": [
+        {
+          "provider": "RSSSF",
+          "url": "https://www.rsssf.org/tablesi/italcuphistfull.html",
+          "retrievedAt": "2026-08-04T21:32:07.568Z",
+          "rawArtifact": "data/teams/history/normalized/rsssf-coppa-italia-1785879127962.json"
+        }
+      ]
+    },
+    {
+      "id": "rsssf-coppa-italia:2e4f642bb487bff6402ad7557b528c3a11fa3f81fa821789ee187e3f2cac7adc:1985-08-28:Catanzaro:Campobasso:away",
+      "date": "1985-08-28",
+      "season": "1985-86",
+      "competition": {
+        "name": "Coppa Italia",
+        "type": "cup",
+        "country": "Italy"
+      },
+      "stage": "FIRST ROUND",
+      "opponent": {
+        "name": "Catanzaro",
+        "slug": "catanzaro"
+      },
+      "venue": "away",
+      "score": {
+        "for": 1,
+        "against": 0
+      },
+      "result": "W",
+      "sources": [
+        {
+          "provider": "RSSSF",
+          "url": "https://www.rsssf.org/tablesi/italcuphistfull.html",
+          "retrievedAt": "2026-08-04T21:32:07.568Z",
+          "rawArtifact": "data/teams/history/normalized/rsssf-coppa-italia-1785879127962.json"
+        }
+      ]
+    },
+    {
+      "id": "rsssf-coppa-italia:2e4f642bb487bff6402ad7557b528c3a11fa3f81fa821789ee187e3f2cac7adc:1985-09-01:Campobasso:Roma:home",
+      "date": "1985-09-01",
+      "season": "1985-86",
+      "competition": {
+        "name": "Coppa Italia",
+        "type": "cup",
+        "country": "Italy"
+      },
+      "stage": "FIRST ROUND",
+      "opponent": {
+        "name": "AS Roma",
+        "slug": "as-roma"
+      },
+      "venue": "home",
+      "score": {
+        "for": 0,
+        "against": 0
+      },
+      "result": "D",
+      "sources": [
+        {
+          "provider": "RSSSF",
+          "url": "https://www.rsssf.org/tablesi/italcuphistfull.html",
+          "retrievedAt": "2026-08-04T21:32:07.568Z",
+          "rawArtifact": "data/teams/history/normalized/rsssf-coppa-italia-1785879127962.json"
+        }
+      ]
+    },
+    {
+      "id": "rsssf-coppa-italia:2e4f642bb487bff6402ad7557b528c3a11fa3f81fa821789ee187e3f2cac7adc:1985-09-04:Campobasso:Ascoli:home",
+      "date": "1985-09-04",
+      "season": "1985-86",
+      "competition": {
+        "name": "Coppa Italia",
+        "type": "cup",
+        "country": "Italy"
+      },
+      "stage": "FIRST ROUND",
+      "opponent": {
+        "name": "Ascoli",
+        "slug": "ascoli"
+      },
+      "venue": "home",
+      "score": {
+        "for": 0,
+        "against": 1
+      },
+      "result": "L",
+      "sources": [
+        {
+          "provider": "RSSSF",
+          "url": "https://www.rsssf.org/tablesi/italcuphistfull.html",
+          "retrievedAt": "2026-08-04T21:32:07.568Z",
+          "rawArtifact": "data/teams/history/normalized/rsssf-coppa-italia-1785879127962.json"
+        }
+      ]
+    },
+    {
+      "id": "rsssf-coppa-italia:2e4f642bb487bff6402ad7557b528c3a11fa3f81fa821789ee187e3f2cac7adc:1986-08-24:Roma:Campobasso:away",
+      "date": "1986-08-24",
+      "season": "1986-87",
+      "competition": {
+        "name": "Coppa Italia",
+        "type": "cup",
+        "country": "Italy"
+      },
+      "stage": "RITORNO (14 giu 1986)",
+      "opponent": {
+        "name": "AS Roma",
+        "slug": "as-roma"
+      },
+      "venue": "away",
+      "score": {
+        "for": 0,
+        "against": 3
+      },
+      "result": "L",
+      "sources": [
+        {
+          "provider": "RSSSF",
+          "url": "https://www.rsssf.org/tablesi/italcuphistfull.html",
+          "retrievedAt": "2026-08-04T21:32:07.568Z",
+          "rawArtifact": "data/teams/history/normalized/rsssf-coppa-italia-1785879127962.json"
+        }
+      ]
+    },
+    {
+      "id": "rsssf-coppa-italia:2e4f642bb487bff6402ad7557b528c3a11fa3f81fa821789ee187e3f2cac7adc:1986-08-27:Campobasso:Verona:home",
+      "date": "1986-08-27",
+      "season": "1986-87",
+      "competition": {
+        "name": "Coppa Italia",
+        "type": "cup",
+        "country": "Italy"
+      },
+      "stage": "RITORNO (14 giu 1986)",
+      "opponent": {
+        "name": "Verona",
+        "slug": "verona"
+      },
+      "venue": "home",
+      "score": {
+        "for": 0,
+        "against": 2
+      },
+      "result": "L",
+      "sources": [
+        {
+          "provider": "RSSSF",
+          "url": "https://www.rsssf.org/tablesi/italcuphistfull.html",
+          "retrievedAt": "2026-08-04T21:32:07.568Z",
+          "rawArtifact": "data/teams/history/normalized/rsssf-coppa-italia-1785879127962.json"
+        }
+      ]
+    },
+    {
+      "id": "rsssf-coppa-italia:2e4f642bb487bff6402ad7557b528c3a11fa3f81fa821789ee187e3f2cac7adc:1986-08-31:Campobasso:Piacenza:home",
+      "date": "1986-08-31",
+      "season": "1986-87",
+      "competition": {
+        "name": "Coppa Italia",
+        "type": "cup",
+        "country": "Italy"
+      },
+      "stage": "RITORNO (14 giu 1986)",
+      "opponent": {
+        "name": "Piacenza",
+        "slug": "piacenza"
+      },
+      "venue": "home",
+      "score": {
+        "for": 0,
+        "against": 0
+      },
+      "result": "D",
+      "sources": [
+        {
+          "provider": "RSSSF",
+          "url": "https://www.rsssf.org/tablesi/italcuphistfull.html",
+          "retrievedAt": "2026-08-04T21:32:07.568Z",
+          "rawArtifact": "data/teams/history/normalized/rsssf-coppa-italia-1785879127962.json"
+        }
+      ]
+    },
+    {
+      "id": "rsssf-coppa-italia:2e4f642bb487bff6402ad7557b528c3a11fa3f81fa821789ee187e3f2cac7adc:1986-09-03:Perugia:Campobasso:away",
+      "date": "1986-09-03",
+      "season": "1986-87",
+      "competition": {
+        "name": "Coppa Italia",
+        "type": "cup",
+        "country": "Italy"
+      },
+      "stage": "RITORNO (14 giu 1986)",
+      "opponent": {
+        "name": "Perugia",
+        "slug": "perugia"
+      },
+      "venue": "away",
+      "score": {
+        "for": 0,
+        "against": 0
+      },
+      "result": "D",
+      "sources": [
+        {
+          "provider": "RSSSF",
+          "url": "https://www.rsssf.org/tablesi/italcuphistfull.html",
+          "retrievedAt": "2026-08-04T21:32:07.568Z",
+          "rawArtifact": "data/teams/history/normalized/rsssf-coppa-italia-1785879127962.json"
+        }
+      ]
+    },
+    {
+      "id": "rsssf-coppa-italia:2e4f642bb487bff6402ad7557b528c3a11fa3f81fa821789ee187e3f2cac7adc:1986-09-07:Campobasso:Bari:home",
+      "date": "1986-09-07",
+      "season": "1986-87",
+      "competition": {
+        "name": "Coppa Italia",
+        "type": "cup",
+        "country": "Italy"
+      },
+      "stage": "RITORNO (14 giu 1986)",
+      "opponent": {
+        "name": "Bari",
+        "slug": "bari"
+      },
+      "venue": "home",
+      "score": {
+        "for": 0,
+        "against": 0
+      },
+      "result": "D",
+      "sources": [
+        {
+          "provider": "RSSSF",
+          "url": "https://www.rsssf.org/tablesi/italcuphistfull.html",
+          "retrievedAt": "2026-08-04T21:32:07.568Z",
+          "rawArtifact": "data/teams/history/normalized/rsssf-coppa-italia-1785879127962.json"
+        }
+      ]
+    },
+    {
+      "id": "rsssf-coppa-italia:2e4f642bb487bff6402ad7557b528c3a11fa3f81fa821789ee187e3f2cac7adc:1987-08-23:Bologna:Campobasso:away",
+      "date": "1987-08-23",
+      "season": "1987-88",
+      "competition": {
+        "name": "Coppa Italia",
+        "type": "cup",
+        "country": "Italy"
+      },
+      "stage": "FIRST ROUND",
+      "opponent": {
+        "name": "Bologna",
+        "slug": "bologna"
+      },
+      "venue": "away",
+      "score": {
+        "for": 0,
+        "against": 2
+      },
+      "result": "L",
+      "sources": [
+        {
+          "provider": "RSSSF",
+          "url": "https://www.rsssf.org/tablesi/italcuphistfull.html",
+          "retrievedAt": "2026-08-04T21:32:07.568Z",
+          "rawArtifact": "data/teams/history/normalized/rsssf-coppa-italia-1785879127962.json"
+        }
+      ]
+    },
+    {
+      "id": "rsssf-coppa-italia:2e4f642bb487bff6402ad7557b528c3a11fa3f81fa821789ee187e3f2cac7adc:1987-08-26:Campobasso:Spal:home",
+      "date": "1987-08-26",
+      "season": "1987-88",
+      "competition": {
+        "name": "Coppa Italia",
+        "type": "cup",
+        "country": "Italy"
+      },
+      "stage": "FIRST ROUND",
+      "opponent": {
+        "name": "Spal",
+        "slug": "spal"
+      },
+      "venue": "home",
+      "score": {
+        "for": 1,
+        "against": 0
+      },
+      "result": "W",
+      "sources": [
+        {
+          "provider": "RSSSF",
+          "url": "https://www.rsssf.org/tablesi/italcuphistfull.html",
+          "retrievedAt": "2026-08-04T21:32:07.568Z",
+          "rawArtifact": "data/teams/history/normalized/rsssf-coppa-italia-1785879127962.json"
+        }
+      ]
+    },
+    {
+      "id": "rsssf-coppa-italia:2e4f642bb487bff6402ad7557b528c3a11fa3f81fa821789ee187e3f2cac7adc:1987-08-30:Campobasso:Cesena:home",
+      "date": "1987-08-30",
+      "season": "1987-88",
+      "competition": {
+        "name": "Coppa Italia",
+        "type": "cup",
+        "country": "Italy"
+      },
+      "stage": "FIRST ROUND",
+      "opponent": {
+        "name": "Cesena",
+        "slug": "cesena"
+      },
+      "venue": "home",
+      "score": {
+        "for": 1,
+        "against": 2
+      },
+      "result": "L",
+      "sources": [
+        {
+          "provider": "RSSSF",
+          "url": "https://www.rsssf.org/tablesi/italcuphistfull.html",
+          "retrievedAt": "2026-08-04T21:32:07.568Z",
+          "rawArtifact": "data/teams/history/normalized/rsssf-coppa-italia-1785879127962.json"
+        }
+      ]
+    },
+    {
+      "id": "rsssf-coppa-italia:2e4f642bb487bff6402ad7557b528c3a11fa3f81fa821789ee187e3f2cac7adc:1987-09-02:Messina:Campobasso*:away",
+      "date": "1987-09-02",
+      "season": "1987-88",
+      "competition": {
+        "name": "Coppa Italia",
+        "type": "cup",
+        "country": "Italy"
+      },
+      "stage": "FIRST ROUND",
+      "opponent": {
+        "name": "Messina",
+        "slug": "messina"
+      },
+      "venue": "away",
+      "score": {
+        "for": 0,
+        "against": 1
+      },
+      "result": "L",
+      "sources": [
+        {
+          "provider": "RSSSF",
+          "url": "https://www.rsssf.org/tablesi/italcuphistfull.html",
+          "retrievedAt": "2026-08-04T21:32:07.568Z",
+          "rawArtifact": "data/teams/history/normalized/rsssf-coppa-italia-1785879127962.json"
+        }
+      ]
+    },
+    {
+      "id": "rsssf-coppa-italia:2e4f642bb487bff6402ad7557b528c3a11fa3f81fa821789ee187e3f2cac7adc:1987-09-06:Verona:Campobasso:away",
+      "date": "1987-09-06",
+      "season": "1987-88",
+      "competition": {
+        "name": "Coppa Italia",
+        "type": "cup",
+        "country": "Italy"
+      },
+      "stage": "FIRST ROUND",
+      "opponent": {
+        "name": "Verona",
+        "slug": "verona"
+      },
+      "venue": "away",
+      "score": {
+        "for": 1,
+        "against": 5
+      },
+      "result": "L",
+      "sources": [
+        {
+          "provider": "RSSSF",
+          "url": "https://www.rsssf.org/tablesi/italcuphistfull.html",
+          "retrievedAt": "2026-08-04T21:32:07.568Z",
+          "rawArtifact": "data/teams/history/normalized/rsssf-coppa-italia-1785879127962.json"
+        }
+      ]
+    },
+    {
+      "id": "rsssf-coppa-italia:2e4f642bb487bff6402ad7557b528c3a11fa3f81fa821789ee187e3f2cac7adc:1988-08-21:Messina:Campobasso*:away",
+      "date": "1988-08-21",
+      "season": "1988-89",
+      "competition": {
+        "name": "Coppa Italia",
+        "type": "cup",
+        "country": "Italy"
+      },
+      "stage": "FIRST ROUND",
+      "opponent": {
+        "name": "Messina",
+        "slug": "messina"
+      },
+      "venue": "away",
+      "score": {
+        "for": 1,
+        "against": 3
+      },
+      "result": "L",
+      "sources": [
+        {
+          "provider": "RSSSF",
+          "url": "https://www.rsssf.org/tablesi/italcuphistfull.html",
+          "retrievedAt": "2026-08-04T21:32:07.568Z",
+          "rawArtifact": "data/teams/history/normalized/rsssf-coppa-italia-1785879127962.json"
+        }
+      ]
+    },
+    {
+      "id": "rsssf-coppa-italia:2e4f642bb487bff6402ad7557b528c3a11fa3f81fa821789ee187e3f2cac7adc:1988-08-24:Campobasso:Pescara:home",
+      "date": "1988-08-24",
+      "season": "1988-89",
+      "competition": {
+        "name": "Coppa Italia",
+        "type": "cup",
+        "country": "Italy"
+      },
+      "stage": "FIRST ROUND",
+      "opponent": {
+        "name": "Pescara",
+        "slug": "pescara"
+      },
+      "venue": "home",
+      "score": {
+        "for": 0,
+        "against": 1
+      },
+      "result": "L",
+      "sources": [
+        {
+          "provider": "RSSSF",
+          "url": "https://www.rsssf.org/tablesi/italcuphistfull.html",
+          "retrievedAt": "2026-08-04T21:32:07.568Z",
+          "rawArtifact": "data/teams/history/normalized/rsssf-coppa-italia-1785879127962.json"
+        }
+      ]
+    },
+    {
+      "id": "rsssf-coppa-italia:2e4f642bb487bff6402ad7557b528c3a11fa3f81fa821789ee187e3f2cac7adc:1988-08-28:Lazio:Campobasso:away",
+      "date": "1988-08-28",
+      "season": "1988-89",
+      "competition": {
+        "name": "Coppa Italia",
+        "type": "cup",
+        "country": "Italy"
+      },
+      "stage": "FIRST ROUND",
+      "opponent": {
+        "name": "Lazio",
+        "slug": "lazio"
+      },
+      "venue": "away",
+      "score": {
+        "for": 0,
+        "against": 2
+      },
+      "result": "L",
+      "sources": [
+        {
+          "provider": "RSSSF",
+          "url": "https://www.rsssf.org/tablesi/italcuphistfull.html",
+          "retrievedAt": "2026-08-04T21:32:07.568Z",
+          "rawArtifact": "data/teams/history/normalized/rsssf-coppa-italia-1785879127962.json"
+        }
+      ]
+    },
+    {
+      "id": "rsssf-coppa-italia:2e4f642bb487bff6402ad7557b528c3a11fa3f81fa821789ee187e3f2cac7adc:1988-08-31:Campobasso:Milan:home",
+      "date": "1988-08-31",
+      "season": "1988-89",
+      "competition": {
+        "name": "Coppa Italia",
+        "type": "cup",
+        "country": "Italy"
+      },
+      "stage": "FIRST ROUND",
+      "opponent": {
+        "name": "AC Milan",
+        "slug": "ac-milan"
+      },
+      "venue": "home",
+      "score": {
+        "for": 1,
+        "against": 3
+      },
+      "result": "L",
+      "sources": [
+        {
+          "provider": "RSSSF",
+          "url": "https://www.rsssf.org/tablesi/italcuphistfull.html",
+          "retrievedAt": "2026-08-04T21:32:07.568Z",
+          "rawArtifact": "data/teams/history/normalized/rsssf-coppa-italia-1785879127962.json"
+        }
+      ]
+    },
+    {
+      "id": "rsssf-coppa-italia:2e4f642bb487bff6402ad7557b528c3a11fa3f81fa821789ee187e3f2cac7adc:1988-09-03:Campobasso:Licata:home",
+      "date": "1988-09-03",
+      "season": "1988-89",
+      "competition": {
+        "name": "Coppa Italia",
+        "type": "cup",
+        "country": "Italy"
+      },
+      "stage": "FIRST ROUND",
+      "opponent": {
+        "name": "Licata",
+        "slug": "licata"
+      },
+      "venue": "home",
+      "score": {
+        "for": 3,
+        "against": 1
+      },
+      "result": "W",
+      "sources": [
+        {
+          "provider": "RSSSF",
+          "url": "https://www.rsssf.org/tablesi/italcuphistfull.html",
+          "retrievedAt": "2026-08-04T21:32:07.568Z",
+          "rawArtifact": "data/teams/history/normalized/rsssf-coppa-italia-1785879127962.json"
+        }
+      ]
+    }
+  ],
+  "seasonStandings": [],
+  "competitionStandings": [],
+  "updatedAt": "2026-08-04T21:34:53.481Z"
+}

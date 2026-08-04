@@ -1,0 +1,1391 @@
+{
+  "contract": "football-team-history-v1",
+  "team": {
+    "name": "Monza",
+    "slug": "monza",
+    "primaryLeague": "Coppa Italia",
+    "aliases": []
+  },
+  "requestedCoverage": {
+    "fromYear": 1985,
+    "to": "present",
+    "includes": [
+      "all competitions",
+      "opponents",
+      "scorelines",
+      "league standings",
+      "competition standings"
+    ]
+  },
+  "sourcePlan": [
+    {
+      "rank": 1,
+      "provider": "Official club archive",
+      "url": "",
+      "scope": "club history, competition participation and match reports",
+      "lookupKey": "Monza",
+      "review": "Verify the club-owned archive URL before collection."
+    },
+    {
+      "rank": 2,
+      "provider": "Official domestic competition / association",
+      "url": "",
+      "scope": "official league fixtures, final tables and cup records",
+      "lookupKey": "Coppa Italia"
+    },
+    {
+      "rank": 3,
+      "provider": "UEFA",
+      "url": "https://www.uefa.com/",
+      "scope": "official European competition appearances, fixtures and standings",
+      "lookupKey": "Monza"
+    },
+    {
+      "rank": 4,
+      "provider": "RSSSF",
+      "url": "https://www.rsssf.org/",
+      "scope": "historic competitions, tables and cross-checking",
+      "lookupKey": "Monza"
+    },
+    {
+      "rank": 5,
+      "provider": "worldfootball.net",
+      "url": "https://www.worldfootball.net/",
+      "scope": "club match archive and competition participation cross-check",
+      "lookupKey": "Monza"
+    }
+  ],
+  "coverage": {
+    "earliestMatch": "1985-08-21",
+    "latestMatch": "1997-05-29",
+    "seasonsWithMatches": [
+      "1985-86",
+      "1986-87",
+      "1987-88",
+      "1988-89",
+      "1989-90",
+      "1990-91",
+      "1991-92",
+      "1992-93",
+      "1993-94",
+      "1994-95",
+      "1995-96",
+      "1996-97"
+    ],
+    "missingSeasons": [
+      "1997-98",
+      "1998-99",
+      "1999-00",
+      "2000-01",
+      "2001-02",
+      "2002-03",
+      "2003-04",
+      "2004-05",
+      "2005-06",
+      "2006-07",
+      "2007-08",
+      "2008-09",
+      "2009-10",
+      "2010-11",
+      "2011-12",
+      "2012-13",
+      "2013-14",
+      "2014-15",
+      "2015-16",
+      "2016-17",
+      "2017-18",
+      "2018-19",
+      "2019-20",
+      "2020-21",
+      "2021-22",
+      "2022-23",
+      "2023-24",
+      "2024-25",
+      "2025-26",
+      "2026-27"
+    ],
+    "competitionScopeVerified": false,
+    "status": "partial"
+  },
+  "matches": [
+    {
+      "id": "rsssf-coppa-italia:2e4f642bb487bff6402ad7557b528c3a11fa3f81fa821789ee187e3f2cac7adc:1985-08-21:Monza:Fiorentina:home",
+      "date": "1985-08-21",
+      "season": "1985-86",
+      "competition": {
+        "name": "Coppa Italia",
+        "type": "cup",
+        "country": "Italy"
+      },
+      "stage": "FIRST ROUND",
+      "opponent": {
+        "name": "Fiorentina",
+        "slug": "fiorentina"
+      },
+      "venue": "home",
+      "score": {
+        "for": 0,
+        "against": 3
+      },
+      "result": "L",
+      "sources": [
+        {
+          "provider": "RSSSF",
+          "url": "https://www.rsssf.org/tablesi/italcuphistfull.html",
+          "retrievedAt": "2026-08-04T21:32:07.568Z",
+          "rawArtifact": "data/teams/history/normalized/rsssf-coppa-italia-1785879127962.json"
+        }
+      ]
+    },
+    {
+      "id": "rsssf-coppa-italia:2e4f642bb487bff6402ad7557b528c3a11fa3f81fa821789ee187e3f2cac7adc:1985-08-25:Monza:Palermo:home",
+      "date": "1985-08-25",
+      "season": "1985-86",
+      "competition": {
+        "name": "Coppa Italia",
+        "type": "cup",
+        "country": "Italy"
+      },
+      "stage": "FIRST ROUND",
+      "opponent": {
+        "name": "Palermo",
+        "slug": "palermo"
+      },
+      "venue": "home",
+      "score": {
+        "for": 3,
+        "against": 0
+      },
+      "result": "W",
+      "sources": [
+        {
+          "provider": "RSSSF",
+          "url": "https://www.rsssf.org/tablesi/italcuphistfull.html",
+          "retrievedAt": "2026-08-04T21:32:07.568Z",
+          "rawArtifact": "data/teams/history/normalized/rsssf-coppa-italia-1785879127962.json"
+        }
+      ]
+    },
+    {
+      "id": "rsssf-coppa-italia:2e4f642bb487bff6402ad7557b528c3a11fa3f81fa821789ee187e3f2cac7adc:1985-08-28:Juventus:Monza:away",
+      "date": "1985-08-28",
+      "season": "1985-86",
+      "competition": {
+        "name": "Coppa Italia",
+        "type": "cup",
+        "country": "Italy"
+      },
+      "stage": "FIRST ROUND",
+      "opponent": {
+        "name": "Juventus",
+        "slug": "juventus"
+      },
+      "venue": "away",
+      "score": {
+        "for": 1,
+        "against": 1
+      },
+      "result": "D",
+      "sources": [
+        {
+          "provider": "RSSSF",
+          "url": "https://www.rsssf.org/tablesi/italcuphistfull.html",
+          "retrievedAt": "2026-08-04T21:32:07.568Z",
+          "rawArtifact": "data/teams/history/normalized/rsssf-coppa-italia-1785879127962.json"
+        }
+      ]
+    },
+    {
+      "id": "rsssf-coppa-italia:2e4f642bb487bff6402ad7557b528c3a11fa3f81fa821789ee187e3f2cac7adc:1985-09-01:Perugia:Monza:away",
+      "date": "1985-09-01",
+      "season": "1985-86",
+      "competition": {
+        "name": "Coppa Italia",
+        "type": "cup",
+        "country": "Italy"
+      },
+      "stage": "FIRST ROUND",
+      "opponent": {
+        "name": "Perugia",
+        "slug": "perugia"
+      },
+      "venue": "away",
+      "score": {
+        "for": 0,
+        "against": 0
+      },
+      "result": "D",
+      "sources": [
+        {
+          "provider": "RSSSF",
+          "url": "https://www.rsssf.org/tablesi/italcuphistfull.html",
+          "retrievedAt": "2026-08-04T21:32:07.568Z",
+          "rawArtifact": "data/teams/history/normalized/rsssf-coppa-italia-1785879127962.json"
+        }
+      ]
+    },
+    {
+      "id": "rsssf-coppa-italia:2e4f642bb487bff6402ad7557b528c3a11fa3f81fa821789ee187e3f2cac7adc:1985-09-04:Monza:Casertana:home",
+      "date": "1985-09-04",
+      "season": "1985-86",
+      "competition": {
+        "name": "Coppa Italia",
+        "type": "cup",
+        "country": "Italy"
+      },
+      "stage": "FIRST ROUND",
+      "opponent": {
+        "name": "Casertana",
+        "slug": "casertana"
+      },
+      "venue": "home",
+      "score": {
+        "for": 2,
+        "against": 1
+      },
+      "result": "W",
+      "sources": [
+        {
+          "provider": "RSSSF",
+          "url": "https://www.rsssf.org/tablesi/italcuphistfull.html",
+          "retrievedAt": "2026-08-04T21:32:07.568Z",
+          "rawArtifact": "data/teams/history/normalized/rsssf-coppa-italia-1785879127962.json"
+        }
+      ]
+    },
+    {
+      "id": "rsssf-coppa-italia:2e4f642bb487bff6402ad7557b528c3a11fa3f81fa821789ee187e3f2cac7adc:1986-08-24:Reggiana:Monza:away",
+      "date": "1986-08-24",
+      "season": "1986-87",
+      "competition": {
+        "name": "Coppa Italia",
+        "type": "cup",
+        "country": "Italy"
+      },
+      "stage": "RITORNO (14 giu 1986)",
+      "opponent": {
+        "name": "Reggiana",
+        "slug": "reggiana"
+      },
+      "venue": "away",
+      "score": {
+        "for": 0,
+        "against": 0
+      },
+      "result": "D",
+      "sources": [
+        {
+          "provider": "RSSSF",
+          "url": "https://www.rsssf.org/tablesi/italcuphistfull.html",
+          "retrievedAt": "2026-08-04T21:32:07.568Z",
+          "rawArtifact": "data/teams/history/normalized/rsssf-coppa-italia-1785879127962.json"
+        }
+      ]
+    },
+    {
+      "id": "rsssf-coppa-italia:2e4f642bb487bff6402ad7557b528c3a11fa3f81fa821789ee187e3f2cac7adc:1986-08-27:Monza:Juventus*:home",
+      "date": "1986-08-27",
+      "season": "1986-87",
+      "competition": {
+        "name": "Coppa Italia",
+        "type": "cup",
+        "country": "Italy"
+      },
+      "stage": "RITORNO (14 giu 1986)",
+      "opponent": {
+        "name": "Juventus*",
+        "slug": "juventus"
+      },
+      "venue": "home",
+      "score": {
+        "for": 0,
+        "against": 1
+      },
+      "result": "L",
+      "sources": [
+        {
+          "provider": "RSSSF",
+          "url": "https://www.rsssf.org/tablesi/italcuphistfull.html",
+          "retrievedAt": "2026-08-04T21:32:07.568Z",
+          "rawArtifact": "data/teams/history/normalized/rsssf-coppa-italia-1785879127962.json"
+        }
+      ]
+    },
+    {
+      "id": "rsssf-coppa-italia:2e4f642bb487bff6402ad7557b528c3a11fa3f81fa821789ee187e3f2cac7adc:1986-08-31:Cremonese:Monza:away",
+      "date": "1986-08-31",
+      "season": "1986-87",
+      "competition": {
+        "name": "Coppa Italia",
+        "type": "cup",
+        "country": "Italy"
+      },
+      "stage": "RITORNO (14 giu 1986)",
+      "opponent": {
+        "name": "Cremonese",
+        "slug": "cremonese"
+      },
+      "venue": "away",
+      "score": {
+        "for": 0,
+        "against": 4
+      },
+      "result": "L",
+      "sources": [
+        {
+          "provider": "RSSSF",
+          "url": "https://www.rsssf.org/tablesi/italcuphistfull.html",
+          "retrievedAt": "2026-08-04T21:32:07.568Z",
+          "rawArtifact": "data/teams/history/normalized/rsssf-coppa-italia-1785879127962.json"
+        }
+      ]
+    },
+    {
+      "id": "rsssf-coppa-italia:2e4f642bb487bff6402ad7557b528c3a11fa3f81fa821789ee187e3f2cac7adc:1986-09-03:Monza:Sampdoria:home",
+      "date": "1986-09-03",
+      "season": "1986-87",
+      "competition": {
+        "name": "Coppa Italia",
+        "type": "cup",
+        "country": "Italy"
+      },
+      "stage": "RITORNO (14 giu 1986)",
+      "opponent": {
+        "name": "Sampdoria",
+        "slug": "sampdoria"
+      },
+      "venue": "home",
+      "score": {
+        "for": 2,
+        "against": 0
+      },
+      "result": "W",
+      "sources": [
+        {
+          "provider": "RSSSF",
+          "url": "https://www.rsssf.org/tablesi/italcuphistfull.html",
+          "retrievedAt": "2026-08-04T21:32:07.568Z",
+          "rawArtifact": "data/teams/history/normalized/rsssf-coppa-italia-1785879127962.json"
+        }
+      ]
+    },
+    {
+      "id": "rsssf-coppa-italia:2e4f642bb487bff6402ad7557b528c3a11fa3f81fa821789ee187e3f2cac7adc:1986-09-07:Lecce:Monza:away",
+      "date": "1986-09-07",
+      "season": "1986-87",
+      "competition": {
+        "name": "Coppa Italia",
+        "type": "cup",
+        "country": "Italy"
+      },
+      "stage": "RITORNO (14 giu 1986)",
+      "opponent": {
+        "name": "Lecce",
+        "slug": "lecce"
+      },
+      "venue": "away",
+      "score": {
+        "for": 0,
+        "against": 2
+      },
+      "result": "L",
+      "sources": [
+        {
+          "provider": "RSSSF",
+          "url": "https://www.rsssf.org/tablesi/italcuphistfull.html",
+          "retrievedAt": "2026-08-04T21:32:07.568Z",
+          "rawArtifact": "data/teams/history/normalized/rsssf-coppa-italia-1785879127962.json"
+        }
+      ]
+    },
+    {
+      "id": "rsssf-coppa-italia:2e4f642bb487bff6402ad7557b528c3a11fa3f81fa821789ee187e3f2cac7adc:1987-08-23:Parma:Monza:away",
+      "date": "1987-08-23",
+      "season": "1987-88",
+      "competition": {
+        "name": "Coppa Italia",
+        "type": "cup",
+        "country": "Italy"
+      },
+      "stage": "FIRST ROUND",
+      "opponent": {
+        "name": "Parma",
+        "slug": "parma"
+      },
+      "venue": "away",
+      "score": {
+        "for": 2,
+        "against": 4
+      },
+      "result": "L",
+      "sources": [
+        {
+          "provider": "RSSSF",
+          "url": "https://www.rsssf.org/tablesi/italcuphistfull.html",
+          "retrievedAt": "2026-08-04T21:32:07.568Z",
+          "rawArtifact": "data/teams/history/normalized/rsssf-coppa-italia-1785879127962.json"
+        }
+      ]
+    },
+    {
+      "id": "rsssf-coppa-italia:2e4f642bb487bff6402ad7557b528c3a11fa3f81fa821789ee187e3f2cac7adc:1987-08-26:Bari:Monza:away",
+      "date": "1987-08-26",
+      "season": "1987-88",
+      "competition": {
+        "name": "Coppa Italia",
+        "type": "cup",
+        "country": "Italy"
+      },
+      "stage": "FIRST ROUND",
+      "opponent": {
+        "name": "Bari",
+        "slug": "bari"
+      },
+      "venue": "away",
+      "score": {
+        "for": 0,
+        "against": 1
+      },
+      "result": "L",
+      "sources": [
+        {
+          "provider": "RSSSF",
+          "url": "https://www.rsssf.org/tablesi/italcuphistfull.html",
+          "retrievedAt": "2026-08-04T21:32:07.568Z",
+          "rawArtifact": "data/teams/history/normalized/rsssf-coppa-italia-1785879127962.json"
+        }
+      ]
+    },
+    {
+      "id": "rsssf-coppa-italia:2e4f642bb487bff6402ad7557b528c3a11fa3f81fa821789ee187e3f2cac7adc:1987-08-30:Monza:Milan:home",
+      "date": "1987-08-30",
+      "season": "1987-88",
+      "competition": {
+        "name": "Coppa Italia",
+        "type": "cup",
+        "country": "Italy"
+      },
+      "stage": "FIRST ROUND",
+      "opponent": {
+        "name": "AC Milan",
+        "slug": "ac-milan"
+      },
+      "venue": "home",
+      "score": {
+        "for": 0,
+        "against": 2
+      },
+      "result": "L",
+      "sources": [
+        {
+          "provider": "RSSSF",
+          "url": "https://www.rsssf.org/tablesi/italcuphistfull.html",
+          "retrievedAt": "2026-08-04T21:32:07.568Z",
+          "rawArtifact": "data/teams/history/normalized/rsssf-coppa-italia-1785879127962.json"
+        }
+      ]
+    },
+    {
+      "id": "rsssf-coppa-italia:2e4f642bb487bff6402ad7557b528c3a11fa3f81fa821789ee187e3f2cac7adc:1987-09-02:Barletta:Monza:away",
+      "date": "1987-09-02",
+      "season": "1987-88",
+      "competition": {
+        "name": "Coppa Italia",
+        "type": "cup",
+        "country": "Italy"
+      },
+      "stage": "FIRST ROUND",
+      "opponent": {
+        "name": "Barletta",
+        "slug": "barletta"
+      },
+      "venue": "away",
+      "score": {
+        "for": 1,
+        "against": 1
+      },
+      "result": "D",
+      "sources": [
+        {
+          "provider": "RSSSF",
+          "url": "https://www.rsssf.org/tablesi/italcuphistfull.html",
+          "retrievedAt": "2026-08-04T21:32:07.568Z",
+          "rawArtifact": "data/teams/history/normalized/rsssf-coppa-italia-1785879127962.json"
+        }
+      ]
+    },
+    {
+      "id": "rsssf-coppa-italia:2e4f642bb487bff6402ad7557b528c3a11fa3f81fa821789ee187e3f2cac7adc:1987-09-06:Monza:Como:home",
+      "date": "1987-09-06",
+      "season": "1987-88",
+      "competition": {
+        "name": "Coppa Italia",
+        "type": "cup",
+        "country": "Italy"
+      },
+      "stage": "FIRST ROUND",
+      "opponent": {
+        "name": "Como",
+        "slug": "como"
+      },
+      "venue": "home",
+      "score": {
+        "for": 0,
+        "against": 3
+      },
+      "result": "L",
+      "sources": [
+        {
+          "provider": "RSSSF",
+          "url": "https://www.rsssf.org/tablesi/italcuphistfull.html",
+          "retrievedAt": "2026-08-04T21:32:07.568Z",
+          "rawArtifact": "data/teams/history/normalized/rsssf-coppa-italia-1785879127962.json"
+        }
+      ]
+    },
+    {
+      "id": "rsssf-coppa-italia:2e4f642bb487bff6402ad7557b528c3a11fa3f81fa821789ee187e3f2cac7adc:1988-08-21:Como:Monza:away",
+      "date": "1988-08-21",
+      "season": "1988-89",
+      "competition": {
+        "name": "Coppa Italia",
+        "type": "cup",
+        "country": "Italy"
+      },
+      "stage": "FIRST ROUND",
+      "opponent": {
+        "name": "Como",
+        "slug": "como"
+      },
+      "venue": "away",
+      "score": {
+        "for": 1,
+        "against": 1
+      },
+      "result": "D",
+      "sources": [
+        {
+          "provider": "RSSSF",
+          "url": "https://www.rsssf.org/tablesi/italcuphistfull.html",
+          "retrievedAt": "2026-08-04T21:32:07.568Z",
+          "rawArtifact": "data/teams/history/normalized/rsssf-coppa-italia-1785879127962.json"
+        }
+      ]
+    },
+    {
+      "id": "rsssf-coppa-italia:2e4f642bb487bff6402ad7557b528c3a11fa3f81fa821789ee187e3f2cac7adc:1988-08-24:Piacenza:Monza:away",
+      "date": "1988-08-24",
+      "season": "1988-89",
+      "competition": {
+        "name": "Coppa Italia",
+        "type": "cup",
+        "country": "Italy"
+      },
+      "stage": "FIRST ROUND",
+      "opponent": {
+        "name": "Piacenza",
+        "slug": "piacenza"
+      },
+      "venue": "away",
+      "score": {
+        "for": 1,
+        "against": 1
+      },
+      "result": "D",
+      "sources": [
+        {
+          "provider": "RSSSF",
+          "url": "https://www.rsssf.org/tablesi/italcuphistfull.html",
+          "retrievedAt": "2026-08-04T21:32:07.568Z",
+          "rawArtifact": "data/teams/history/normalized/rsssf-coppa-italia-1785879127962.json"
+        }
+      ]
+    },
+    {
+      "id": "rsssf-coppa-italia:2e4f642bb487bff6402ad7557b528c3a11fa3f81fa821789ee187e3f2cac7adc:1988-08-28:Monza:Roma:home",
+      "date": "1988-08-28",
+      "season": "1988-89",
+      "competition": {
+        "name": "Coppa Italia",
+        "type": "cup",
+        "country": "Italy"
+      },
+      "stage": "FIRST ROUND",
+      "opponent": {
+        "name": "AS Roma",
+        "slug": "as-roma"
+      },
+      "venue": "home",
+      "score": {
+        "for": 2,
+        "against": 1
+      },
+      "result": "W",
+      "sources": [
+        {
+          "provider": "RSSSF",
+          "url": "https://www.rsssf.org/tablesi/italcuphistfull.html",
+          "retrievedAt": "2026-08-04T21:32:07.568Z",
+          "rawArtifact": "data/teams/history/normalized/rsssf-coppa-italia-1785879127962.json"
+        }
+      ]
+    },
+    {
+      "id": "rsssf-coppa-italia:2e4f642bb487bff6402ad7557b528c3a11fa3f81fa821789ee187e3f2cac7adc:1988-08-31:Monza:Empoli:home",
+      "date": "1988-08-31",
+      "season": "1988-89",
+      "competition": {
+        "name": "Coppa Italia",
+        "type": "cup",
+        "country": "Italy"
+      },
+      "stage": "FIRST ROUND",
+      "opponent": {
+        "name": "Empoli",
+        "slug": "empoli"
+      },
+      "venue": "home",
+      "score": {
+        "for": 1,
+        "against": 0
+      },
+      "result": "W",
+      "sources": [
+        {
+          "provider": "RSSSF",
+          "url": "https://www.rsssf.org/tablesi/italcuphistfull.html",
+          "retrievedAt": "2026-08-04T21:32:07.568Z",
+          "rawArtifact": "data/teams/history/normalized/rsssf-coppa-italia-1785879127962.json"
+        }
+      ]
+    },
+    {
+      "id": "rsssf-coppa-italia:2e4f642bb487bff6402ad7557b528c3a11fa3f81fa821789ee187e3f2cac7adc:1988-09-03:Prato:Monza:away",
+      "date": "1988-09-03",
+      "season": "1988-89",
+      "competition": {
+        "name": "Coppa Italia",
+        "type": "cup",
+        "country": "Italy"
+      },
+      "stage": "FIRST ROUND",
+      "opponent": {
+        "name": "Prato",
+        "slug": "prato"
+      },
+      "venue": "away",
+      "score": {
+        "for": 2,
+        "against": 0
+      },
+      "result": "W",
+      "sources": [
+        {
+          "provider": "RSSSF",
+          "url": "https://www.rsssf.org/tablesi/italcuphistfull.html",
+          "retrievedAt": "2026-08-04T21:32:07.568Z",
+          "rawArtifact": "data/teams/history/normalized/rsssf-coppa-italia-1785879127962.json"
+        }
+      ]
+    },
+    {
+      "id": "rsssf-coppa-italia:2e4f642bb487bff6402ad7557b528c3a11fa3f81fa821789ee187e3f2cac7adc:1988-09-14:Monza:Bari:home",
+      "date": "1988-09-14",
+      "season": "1988-89",
+      "competition": {
+        "name": "Coppa Italia",
+        "type": "cup",
+        "country": "Italy"
+      },
+      "stage": "SECOND ROUND",
+      "opponent": {
+        "name": "Bari",
+        "slug": "bari"
+      },
+      "venue": "home",
+      "score": {
+        "for": 2,
+        "against": 3
+      },
+      "result": "L",
+      "sources": [
+        {
+          "provider": "RSSSF",
+          "url": "https://www.rsssf.org/tablesi/italcuphistfull.html",
+          "retrievedAt": "2026-08-04T21:32:07.568Z",
+          "rawArtifact": "data/teams/history/normalized/rsssf-coppa-italia-1785879127962.json"
+        }
+      ]
+    },
+    {
+      "id": "rsssf-coppa-italia:2e4f642bb487bff6402ad7557b528c3a11fa3f81fa821789ee187e3f2cac7adc:1988-09-21:Monza:Atalanta:home",
+      "date": "1988-09-21",
+      "season": "1988-89",
+      "competition": {
+        "name": "Coppa Italia",
+        "type": "cup",
+        "country": "Italy"
+      },
+      "stage": "SECOND ROUND",
+      "opponent": {
+        "name": "Atalanta",
+        "slug": "atalanta"
+      },
+      "venue": "home",
+      "score": {
+        "for": 1,
+        "against": 2
+      },
+      "result": "L",
+      "sources": [
+        {
+          "provider": "RSSSF",
+          "url": "https://www.rsssf.org/tablesi/italcuphistfull.html",
+          "retrievedAt": "2026-08-04T21:32:07.568Z",
+          "rawArtifact": "data/teams/history/normalized/rsssf-coppa-italia-1785879127962.json"
+        }
+      ]
+    },
+    {
+      "id": "rsssf-coppa-italia:2e4f642bb487bff6402ad7557b528c3a11fa3f81fa821789ee187e3f2cac7adc:1988-09-28:Sampdoria:Monza*:away",
+      "date": "1988-09-28",
+      "season": "1988-89",
+      "competition": {
+        "name": "Coppa Italia",
+        "type": "cup",
+        "country": "Italy"
+      },
+      "stage": "SECOND ROUND",
+      "opponent": {
+        "name": "Sampdoria",
+        "slug": "sampdoria"
+      },
+      "venue": "away",
+      "score": {
+        "for": 0,
+        "against": 3
+      },
+      "result": "L",
+      "sources": [
+        {
+          "provider": "RSSSF",
+          "url": "https://www.rsssf.org/tablesi/italcuphistfull.html",
+          "retrievedAt": "2026-08-04T21:32:07.568Z",
+          "rawArtifact": "data/teams/history/normalized/rsssf-coppa-italia-1785879127962.json"
+        }
+      ]
+    },
+    {
+      "id": "rsssf-coppa-italia:2e4f642bb487bff6402ad7557b528c3a11fa3f81fa821789ee187e3f2cac7adc:1989-08-23:Napoli:Monza:away",
+      "date": "1989-08-23",
+      "season": "1989-90",
+      "competition": {
+        "name": "Coppa Italia",
+        "type": "cup",
+        "country": "Italy"
+      },
+      "stage": "FIRST ROUND",
+      "opponent": {
+        "name": "Napoli",
+        "slug": "napoli"
+      },
+      "venue": "away",
+      "score": {
+        "for": 1,
+        "against": 1
+      },
+      "result": "D",
+      "sources": [
+        {
+          "provider": "RSSSF",
+          "url": "https://www.rsssf.org/tablesi/italcuphistfull.html",
+          "retrievedAt": "2026-08-04T21:32:07.568Z",
+          "rawArtifact": "data/teams/history/normalized/rsssf-coppa-italia-1785879127962.json"
+        }
+      ]
+    },
+    {
+      "id": "rsssf-coppa-italia:2e4f642bb487bff6402ad7557b528c3a11fa3f81fa821789ee187e3f2cac7adc:1990-08-26:Padova:Monza:away",
+      "date": "1990-08-26",
+      "season": "1990-91",
+      "competition": {
+        "name": "Coppa Italia",
+        "type": "cup",
+        "country": "Italy"
+      },
+      "stage": "Andata",
+      "opponent": {
+        "name": "Padova",
+        "slug": "padova"
+      },
+      "venue": "away",
+      "score": {
+        "for": 1,
+        "against": 3
+      },
+      "result": "L",
+      "sources": [
+        {
+          "provider": "RSSSF",
+          "url": "https://www.rsssf.org/tablesi/italcuphistfull.html",
+          "retrievedAt": "2026-08-04T21:32:07.568Z",
+          "rawArtifact": "data/teams/history/normalized/rsssf-coppa-italia-1785879127962.json"
+        }
+      ]
+    },
+    {
+      "id": "rsssf-coppa-italia:2e4f642bb487bff6402ad7557b528c3a11fa3f81fa821789ee187e3f2cac7adc:1990-09-02:Monza:Padova:home",
+      "date": "1990-09-02",
+      "season": "1990-91",
+      "competition": {
+        "name": "Coppa Italia",
+        "type": "cup",
+        "country": "Italy"
+      },
+      "stage": "Ritorno",
+      "opponent": {
+        "name": "Padova",
+        "slug": "padova"
+      },
+      "venue": "home",
+      "score": {
+        "for": 2,
+        "against": 0
+      },
+      "result": "W",
+      "sources": [
+        {
+          "provider": "RSSSF",
+          "url": "https://www.rsssf.org/tablesi/italcuphistfull.html",
+          "retrievedAt": "2026-08-04T21:32:07.568Z",
+          "rawArtifact": "data/teams/history/normalized/rsssf-coppa-italia-1785879127962.json"
+        }
+      ]
+    },
+    {
+      "id": "rsssf-coppa-italia:2e4f642bb487bff6402ad7557b528c3a11fa3f81fa821789ee187e3f2cac7adc:1990-09-05:Monza:Inter:home",
+      "date": "1990-09-05",
+      "season": "1990-91",
+      "competition": {
+        "name": "Coppa Italia",
+        "type": "cup",
+        "country": "Italy"
+      },
+      "stage": "Andata",
+      "opponent": {
+        "name": "Inter Milan",
+        "slug": "inter-milan"
+      },
+      "venue": "home",
+      "score": {
+        "for": 0,
+        "against": 1
+      },
+      "result": "L",
+      "sources": [
+        {
+          "provider": "RSSSF",
+          "url": "https://www.rsssf.org/tablesi/italcuphistfull.html",
+          "retrievedAt": "2026-08-04T21:32:07.568Z",
+          "rawArtifact": "data/teams/history/normalized/rsssf-coppa-italia-1785879127962.json"
+        }
+      ]
+    },
+    {
+      "id": "rsssf-coppa-italia:2e4f642bb487bff6402ad7557b528c3a11fa3f81fa821789ee187e3f2cac7adc:1990-09-12:Inter:Monza*:away",
+      "date": "1990-09-12",
+      "season": "1990-91",
+      "competition": {
+        "name": "Coppa Italia",
+        "type": "cup",
+        "country": "Italy"
+      },
+      "stage": "Ritorno",
+      "opponent": {
+        "name": "Inter Milan",
+        "slug": "inter-milan"
+      },
+      "venue": "away",
+      "score": {
+        "for": 1,
+        "against": 2
+      },
+      "result": "L",
+      "sources": [
+        {
+          "provider": "RSSSF",
+          "url": "https://www.rsssf.org/tablesi/italcuphistfull.html",
+          "retrievedAt": "2026-08-04T21:32:07.568Z",
+          "rawArtifact": "data/teams/history/normalized/rsssf-coppa-italia-1785879127962.json"
+        }
+      ]
+    },
+    {
+      "id": "rsssf-coppa-italia:2e4f642bb487bff6402ad7557b528c3a11fa3f81fa821789ee187e3f2cac7adc:1991-08-21:Pisa:Monza:away",
+      "date": "1991-08-21",
+      "season": "1991-92",
+      "competition": {
+        "name": "Coppa Italia",
+        "type": "cup",
+        "country": "Italy"
+      },
+      "stage": "Andata",
+      "opponent": {
+        "name": "Pisa",
+        "slug": "pisa"
+      },
+      "venue": "away",
+      "score": {
+        "for": 0,
+        "against": 2
+      },
+      "result": "L",
+      "sources": [
+        {
+          "provider": "RSSSF",
+          "url": "https://www.rsssf.org/tablesi/italcuphistfull.html",
+          "retrievedAt": "2026-08-04T21:32:07.568Z",
+          "rawArtifact": "data/teams/history/normalized/rsssf-coppa-italia-1785879286801.json"
+        }
+      ]
+    },
+    {
+      "id": "rsssf-coppa-italia:2e4f642bb487bff6402ad7557b528c3a11fa3f81fa821789ee187e3f2cac7adc:1991-08-25:Monza:Pisa:home",
+      "date": "1991-08-25",
+      "season": "1991-92",
+      "competition": {
+        "name": "Coppa Italia",
+        "type": "cup",
+        "country": "Italy"
+      },
+      "stage": "Ritorno",
+      "opponent": {
+        "name": "Pisa",
+        "slug": "pisa"
+      },
+      "venue": "home",
+      "score": {
+        "for": 0,
+        "against": 1
+      },
+      "result": "L",
+      "sources": [
+        {
+          "provider": "RSSSF",
+          "url": "https://www.rsssf.org/tablesi/italcuphistfull.html",
+          "retrievedAt": "2026-08-04T21:32:07.568Z",
+          "rawArtifact": "data/teams/history/normalized/rsssf-coppa-italia-1785879127962.json"
+        }
+      ]
+    },
+    {
+      "id": "rsssf-coppa-italia:2e4f642bb487bff6402ad7557b528c3a11fa3f81fa821789ee187e3f2cac7adc:1992-08-23:Monza:Bologna:home",
+      "date": "1992-08-23",
+      "season": "1992-93",
+      "competition": {
+        "name": "Coppa Italia",
+        "type": "cup",
+        "country": "Italy"
+      },
+      "stage": "FIRST ROUND",
+      "opponent": {
+        "name": "Bologna",
+        "slug": "bologna"
+      },
+      "venue": "home",
+      "score": {
+        "for": 1,
+        "against": 0
+      },
+      "result": "W",
+      "sources": [
+        {
+          "provider": "RSSSF",
+          "url": "https://www.rsssf.org/tablesi/italcuphistfull.html",
+          "retrievedAt": "2026-08-04T21:32:07.568Z",
+          "rawArtifact": "data/teams/history/normalized/rsssf-coppa-italia-1785879127962.json"
+        }
+      ]
+    },
+    {
+      "id": "rsssf-coppa-italia:2e4f642bb487bff6402ad7557b528c3a11fa3f81fa821789ee187e3f2cac7adc:1992-08-26:Monza:Torino:home",
+      "date": "1992-08-26",
+      "season": "1992-93",
+      "competition": {
+        "name": "Coppa Italia",
+        "type": "cup",
+        "country": "Italy"
+      },
+      "stage": "Andata",
+      "opponent": {
+        "name": "Torino",
+        "slug": "torino"
+      },
+      "venue": "home",
+      "score": {
+        "for": 2,
+        "against": 3
+      },
+      "result": "L",
+      "sources": [
+        {
+          "provider": "RSSSF",
+          "url": "https://www.rsssf.org/tablesi/italcuphistfull.html",
+          "retrievedAt": "2026-08-04T21:32:07.568Z",
+          "rawArtifact": "data/teams/history/normalized/rsssf-coppa-italia-1785879127962.json"
+        }
+      ]
+    },
+    {
+      "id": "rsssf-coppa-italia:2e4f642bb487bff6402ad7557b528c3a11fa3f81fa821789ee187e3f2cac7adc:1992-09-02:Torino:Monza:away",
+      "date": "1992-09-02",
+      "season": "1992-93",
+      "competition": {
+        "name": "Coppa Italia",
+        "type": "cup",
+        "country": "Italy"
+      },
+      "stage": "Ritorno",
+      "opponent": {
+        "name": "Torino",
+        "slug": "torino"
+      },
+      "venue": "away",
+      "score": {
+        "for": 0,
+        "against": 1
+      },
+      "result": "L",
+      "sources": [
+        {
+          "provider": "RSSSF",
+          "url": "https://www.rsssf.org/tablesi/italcuphistfull.html",
+          "retrievedAt": "2026-08-04T21:32:07.568Z",
+          "rawArtifact": "data/teams/history/normalized/rsssf-coppa-italia-1785879127962.json"
+        }
+      ]
+    },
+    {
+      "id": "rsssf-coppa-italia:2e4f642bb487bff6402ad7557b528c3a11fa3f81fa821789ee187e3f2cac7adc:1993-08-22:Monza:Venezia:home",
+      "date": "1993-08-22",
+      "season": "1993-94",
+      "competition": {
+        "name": "Coppa Italia",
+        "type": "cup",
+        "country": "Italy"
+      },
+      "stage": "FIRST ROUND",
+      "opponent": {
+        "name": "Venezia",
+        "slug": "venezia"
+      },
+      "venue": "home",
+      "score": {
+        "for": 1,
+        "against": 2
+      },
+      "result": "L",
+      "sources": [
+        {
+          "provider": "RSSSF",
+          "url": "https://www.rsssf.org/tablesi/italcuphistfull.html",
+          "retrievedAt": "2026-08-04T21:32:07.568Z",
+          "rawArtifact": "data/teams/history/normalized/rsssf-coppa-italia-1785879127962.json"
+        }
+      ]
+    },
+    {
+      "id": "rsssf-coppa-italia:2e4f642bb487bff6402ad7557b528c3a11fa3f81fa821789ee187e3f2cac7adc:1994-08-21:Monza:Venezia:home",
+      "date": "1994-08-21",
+      "season": "1994-95",
+      "competition": {
+        "name": "Coppa Italia",
+        "type": "cup",
+        "country": "Italy"
+      },
+      "stage": "FIRST ROUND",
+      "opponent": {
+        "name": "Venezia",
+        "slug": "venezia"
+      },
+      "venue": "home",
+      "score": {
+        "for": 2,
+        "against": 1
+      },
+      "result": "W",
+      "sources": [
+        {
+          "provider": "RSSSF",
+          "url": "https://www.rsssf.org/tablesi/italcuphistfull.html",
+          "retrievedAt": "2026-08-04T21:32:07.568Z",
+          "rawArtifact": "data/teams/history/normalized/rsssf-coppa-italia-1785879127962.json"
+        }
+      ]
+    },
+    {
+      "id": "rsssf-coppa-italia:2e4f642bb487bff6402ad7557b528c3a11fa3f81fa821789ee187e3f2cac7adc:1994-08-31:Monza:Torino:home",
+      "date": "1994-08-31",
+      "season": "1994-95",
+      "competition": {
+        "name": "Coppa Italia",
+        "type": "cup",
+        "country": "Italy"
+      },
+      "stage": "Andata",
+      "opponent": {
+        "name": "Torino",
+        "slug": "torino"
+      },
+      "venue": "home",
+      "score": {
+        "for": 0,
+        "against": 1
+      },
+      "result": "L",
+      "sources": [
+        {
+          "provider": "RSSSF",
+          "url": "https://www.rsssf.org/tablesi/italcuphistfull.html",
+          "retrievedAt": "2026-08-04T21:32:07.568Z",
+          "rawArtifact": "data/teams/history/normalized/rsssf-coppa-italia-1785879286801.json"
+        }
+      ]
+    },
+    {
+      "id": "rsssf-coppa-italia:2e4f642bb487bff6402ad7557b528c3a11fa3f81fa821789ee187e3f2cac7adc:1994-08-31:Monza:Torino%20(1):home",
+      "date": "1994-08-31",
+      "season": "1994-95",
+      "competition": {
+        "name": "Coppa Italia",
+        "type": "cup",
+        "country": "Italy"
+      },
+      "stage": "Andata",
+      "opponent": {
+        "name": "Torino (1)",
+        "slug": "torino-1"
+      },
+      "venue": "home",
+      "score": {
+        "for": 0,
+        "against": 1
+      },
+      "result": "L",
+      "sources": [
+        {
+          "provider": "RSSSF",
+          "url": "https://www.rsssf.org/tablesi/italcuphistfull.html",
+          "retrievedAt": "2026-08-04T21:32:07.568Z",
+          "rawArtifact": "data/teams/history/normalized/rsssf-coppa-italia-1785879127962.json"
+        }
+      ]
+    },
+    {
+      "id": "rsssf-coppa-italia:2e4f642bb487bff6402ad7557b528c3a11fa3f81fa821789ee187e3f2cac7adc:1994-09-21:Torino:Monza:away",
+      "date": "1994-09-21",
+      "season": "1994-95",
+      "competition": {
+        "name": "Coppa Italia",
+        "type": "cup",
+        "country": "Italy"
+      },
+      "stage": "Ritorno",
+      "opponent": {
+        "name": "Torino",
+        "slug": "torino"
+      },
+      "venue": "away",
+      "score": {
+        "for": 2,
+        "against": 4
+      },
+      "result": "L",
+      "sources": [
+        {
+          "provider": "RSSSF",
+          "url": "https://www.rsssf.org/tablesi/italcuphistfull.html",
+          "retrievedAt": "2026-08-04T21:32:07.568Z",
+          "rawArtifact": "data/teams/history/normalized/rsssf-coppa-italia-1785879127962.json"
+        }
+      ]
+    },
+    {
+      "id": "rsssf-coppa-italia:2e4f642bb487bff6402ad7557b528c3a11fa3f81fa821789ee187e3f2cac7adc:1995-08-20:Monza:Padova:home",
+      "date": "1995-08-20",
+      "season": "1995-96",
+      "competition": {
+        "name": "Coppa Italia",
+        "type": "cup",
+        "country": "Italy"
+      },
+      "stage": "FIRST ROUND",
+      "opponent": {
+        "name": "Padova",
+        "slug": "padova"
+      },
+      "venue": "home",
+      "score": {
+        "for": 0,
+        "against": 2
+      },
+      "result": "L",
+      "sources": [
+        {
+          "provider": "RSSSF",
+          "url": "https://www.rsssf.org/tablesi/italcuphistfull.html",
+          "retrievedAt": "2026-08-04T21:32:07.568Z",
+          "rawArtifact": "data/teams/history/normalized/rsssf-coppa-italia-1785879127962.json"
+        }
+      ]
+    },
+    {
+      "id": "rsssf-coppa-italia:2e4f642bb487bff6402ad7557b528c3a11fa3f81fa821789ee187e3f2cac7adc:1996-08-24:Monza:Padova:home",
+      "date": "1996-08-24",
+      "season": "1996-97",
+      "competition": {
+        "name": "Coppa Italia",
+        "type": "cup",
+        "country": "Italy"
+      },
+      "stage": "First Round",
+      "opponent": {
+        "name": "Padova",
+        "slug": "padova"
+      },
+      "venue": "home",
+      "score": {
+        "for": 1,
+        "against": 0
+      },
+      "result": "W",
+      "sources": [
+        {
+          "provider": "RSSSF",
+          "url": "https://www.rsssf.org/tablesi/italcuphistfull.html",
+          "retrievedAt": "2026-08-04T21:32:07.568Z",
+          "rawArtifact": "data/teams/history/normalized/rsssf-coppa-italia-1785879127962.json"
+        }
+      ]
+    },
+    {
+      "id": "rsssf-coppa-italia:2e4f642bb487bff6402ad7557b528c3a11fa3f81fa821789ee187e3f2cac7adc:1996-09-01:Monza:Napoli:home",
+      "date": "1996-09-01",
+      "season": "1996-97",
+      "competition": {
+        "name": "Coppa Italia",
+        "type": "cup",
+        "country": "Italy"
+      },
+      "stage": "Second Round",
+      "opponent": {
+        "name": "Napoli",
+        "slug": "napoli"
+      },
+      "venue": "home",
+      "score": {
+        "for": 0,
+        "against": 1
+      },
+      "result": "L",
+      "sources": [
+        {
+          "provider": "RSSSF",
+          "url": "https://www.rsssf.org/tablesi/italcuphistfull.html",
+          "retrievedAt": "2026-08-04T21:32:07.568Z",
+          "rawArtifact": "data/teams/history/normalized/rsssf-coppa-italia-1785879127962.json"
+        }
+      ]
+    },
+    {
+      "id": "rsssf-coppa-italia:2e4f642bb487bff6402ad7557b528c3a11fa3f81fa821789ee187e3f2cac7adc:1997-05-29:Genoa:Monza:away",
+      "date": "1997-05-29",
+      "season": "1996-97",
+      "competition": {
+        "name": "Coppa Italia",
+        "type": "cup",
+        "country": "Italy"
+      },
+      "stage": "Ritorno (24/8/1997)",
+      "opponent": {
+        "name": "Genoa",
+        "slug": "genoa"
+      },
+      "venue": "away",
+      "score": {
+        "for": 0,
+        "against": 1
+      },
+      "result": "L",
+      "sources": [
+        {
+          "provider": "RSSSF",
+          "url": "https://www.rsssf.org/tablesi/italcuphistfull.html",
+          "retrievedAt": "2026-08-04T21:32:07.568Z",
+          "rawArtifact": "data/teams/history/normalized/rsssf-coppa-italia-1785879127962.json"
+        }
+      ]
+    },
+    {
+      "id": "rsssf-coppa-italia:2e4f642bb487bff6402ad7557b528c3a11fa3f81fa821789ee187e3f2cac7adc:1997-05-29:Monza:Genoa:home",
+      "date": "1997-05-29",
+      "season": "1996-97",
+      "competition": {
+        "name": "Coppa Italia",
+        "type": "cup",
+        "country": "Italy"
+      },
+      "stage": "Andata (17/8/1997)",
+      "opponent": {
+        "name": "Genoa",
+        "slug": "genoa"
+      },
+      "venue": "home",
+      "score": {
+        "for": 1,
+        "against": 1
+      },
+      "result": "D",
+      "sources": [
+        {
+          "provider": "RSSSF",
+          "url": "https://www.rsssf.org/tablesi/italcuphistfull.html",
+          "retrievedAt": "2026-08-04T21:32:07.568Z",
+          "rawArtifact": "data/teams/history/normalized/rsssf-coppa-italia-1785879286801.json"
+        }
+      ]
+    },
+    {
+      "id": "rsssf-coppa-italia:2e4f642bb487bff6402ad7557b528c3a11fa3f81fa821789ee187e3f2cac7adc:1997-05-29:Monza:Genoa%20(2):home",
+      "date": "1997-05-29",
+      "season": "1996-97",
+      "competition": {
+        "name": "Coppa Italia",
+        "type": "cup",
+        "country": "Italy"
+      },
+      "stage": "Andata (17/8/1997)",
+      "opponent": {
+        "name": "Genoa (2)",
+        "slug": "genoa-2"
+      },
+      "venue": "home",
+      "score": {
+        "for": 1,
+        "against": 1
+      },
+      "result": "D",
+      "sources": [
+        {
+          "provider": "RSSSF",
+          "url": "https://www.rsssf.org/tablesi/italcuphistfull.html",
+          "retrievedAt": "2026-08-04T21:32:07.568Z",
+          "rawArtifact": "data/teams/history/normalized/rsssf-coppa-italia-1785879127962.json"
+        }
+      ]
+    }
+  ],
+  "seasonStandings": [],
+  "competitionStandings": [],
+  "updatedAt": "2026-08-04T21:35:07.852Z"
+}
