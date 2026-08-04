@@ -91,6 +91,7 @@ function contentType(file) {
   if (file.endsWith(".css")) return "text/css";
   if (file.endsWith(".js")) return "text/javascript";
   if (file.endsWith(".html")) return "text/html";
+  if (file.endsWith(".svg")) return "image/svg+xml";
   return "application/octet-stream";
 }
 
@@ -513,6 +514,29 @@ async function handleApi(req, res, pathname) {
     if (crest) { res.writeHead(302, { Location: crest, "Cache-Control": "public, max-age=604800" }); return res.end(); }
     res.writeHead(200, { "Content-Type": "image/svg+xml", "Cache-Control": "public, max-age=86400" });
     return res.end(fallbackSvg(url.searchParams.get("team")));
+  }
+  // Read-only, cache-only summary for the hero. It deliberately avoids any
+  // upstream refresh so a slow provider can never hold the dashboard chrome
+  // in a loading state; the regular fixture endpoints own refresh work.
+  if (req.method === "GET" && pathname === "/api/football/pulse") {
+    const url = new URL(req.url, `http://${req.headers.host}`);
+    const context = url.searchParams.get("context") === "international" ? "international" : "club";
+    const season = url.searchParams.get("season") || "2025-26";
+    const hideFromUpcoming = context === "international" ? hideFromUpcomingPredicate() : null;
+    const predictions = context === "international"
+      ? internationalFixturePredictions().filter((prediction) => !hideFromUpcoming(prediction))
+      : enrichPredictionsWithLiveStatus(remainingFixturePredictions(season));
+    return sendJson(res, 200, {
+      context,
+      season,
+      cachedAt: new Date().toISOString(),
+      predictions,
+      summary: {
+        total: predictions.length,
+        withOdds: predictions.filter((prediction) => prediction.hasOdds).length,
+        modelOnly: predictions.filter((prediction) => !prediction.hasOdds).length,
+      },
+    });
   }
   await hydrateKnownStoresOnce();
 
