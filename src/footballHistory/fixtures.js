@@ -15,10 +15,14 @@ function fixtureKey(row) {
   return [row.date, competitionKey(row.competition?.name), slugifyTeam(row.homeTeam), slugifyTeam(row.awayTeam)].join("|");
 }
 
-function fixtureRows(records, { through } = {}) {
+function fixtureRows(records, { through, onRecord } = {}) {
   const fixtures = new Map();
   const conflicts = [];
-  for (const record of records) for (const match of record.matches || []) {
+  let recordIndex = 0;
+  for (const record of records) {
+    recordIndex += 1;
+    onRecord?.({ recordIndex, team: record.team?.name || "", fixtureCount: fixtures.size, conflictCount: conflicts.length });
+    for (const match of record.matches || []) {
     if (match.venue !== "home" || !isInScopeMatch(match, { through })) continue;
     const row = {
       date: match.date,
@@ -42,6 +46,7 @@ function fixtureRows(records, { through } = {}) {
     }
     existing.sources = [...existing.sources, ...row.sources].filter((source, index, all) => all.findIndex((candidate) => candidate.url === source.url) === index);
     existing.matchIds.push(...row.matchIds);
+  }
   }
   return { fixtures: [...fixtures.values()].map((fixture) => ({ ...fixture, matchIds: [...new Set(fixture.matchIds)].sort() })).sort((a, b) => a.date.localeCompare(b.date) || fixtureKey(a).localeCompare(fixtureKey(b))), conflicts };
 }
