@@ -5,6 +5,7 @@ const { emptyHistory, validateHistory, seasonFromDate } = require("../src/footba
 const { sourcePlan } = require("../src/footballHistory/sources");
 const { tableForMatches } = require("../src/footballHistory/standings");
 const { snapshotFor } = require("../src/footballHistory/training");
+const { stageRank } = require("../src/footballHistory/competitionProgress");
 
 test("team history contract requires attributed, settled historic matches", () => {
   const record = emptyHistory({ team: "Example FC", slug: "example-fc" });
@@ -13,6 +14,11 @@ test("team history contract requires attributed, settled historic matches", () =
   assert.equal(validateHistory(record).valid, true);
   assert.equal(record.coverage.competitionScopeVerified, false);
   assert.equal(seasonFromDate("1985-08-17"), "1985-86");
+});
+
+test("knockout stages preserve progression order without pretending to be tables", () => {
+  assert.ok(stageRank("Final") > stageRank("Quarter-Final"));
+  assert.equal(stageRank("league"), 0);
 });
 
 test("league tables are derived deterministically from recorded home fixtures", () => {
