@@ -14,6 +14,26 @@ The training corpus accepts a match only when it has an individual match date, s
 - `openfootball` publishes CC0 schedule/result datasets for many leagues and tournaments. It is useful to locate gaps and to corroborate dates; retain the repository/version and source file in provenance.
 - Transfermarkt has a date-filtered fixture history view and competition pages, including friendlies. It may be used only after a terms-compliant, authorized collection flow is confirmed. Do not automate logged-in scraping or use it as a source without preserving URL, retrieval time and the exact displayed fixture.
 
+## Per-club resource verification
+
+A provider name or generic home page is **not** a verified resource for a club. The audited registry is deliberately separate from match data, so a URL cannot be inferred from a fuzzy name match or silently applied across several clubs.
+
+Use `npm run report:team-history-sources` to see the exact shortfall. A reviewed import file contains only entries shaped like this:
+
+```json
+{
+  "sources": [{
+    "teamSlug": "1-fc-kaiserslautern",
+    "provider": "Official club archive",
+    "url": "https://example.club/history",
+    "verifiedAt": "2026-08-04",
+    "evidence": "Club-owned archive page identifies the club and exposes its fixture history."
+  }]
+}
+```
+
+Run `npm run import:team-history-sources -- --input=reviewed-sources.json` only after the URL and club identity have been checked. The importer rejects non-HTTPS URLs, duplicate provider/team pairs and unknown team slugs. It never changes fixtures or merges identities.
+
 ## Scope
 
 “Every competition” means every **major** competition for which participation is verified: domestic league, principal national cup, significant domestic league cup/playoff, UEFA club competition (including historical UEFA Cup and Cup Winners' Cup), FIFA/continental club world competition, and dated cross-confederation preseason friendlies involving European and South American clubs. Missing years are excluded until a participation index and dated match source prove them; they are never fabricated.
