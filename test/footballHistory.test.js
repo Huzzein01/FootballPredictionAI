@@ -8,6 +8,7 @@ const { snapshotFor } = require("../src/footballHistory/training");
 const { stageRank } = require("../src/footballHistory/competitionProgress");
 const { isInScopeMatch } = require("../src/footballHistory/scope");
 const { observedParticipation } = require("../src/footballHistory/participation");
+const { fixtureRows } = require("../src/footballHistory/fixtures");
 
 test("team history contract requires attributed, settled historic matches", () => {
   const record = emptyHistory({ team: "Example FC", slug: "example-fc" });
@@ -51,4 +52,16 @@ test("participation index is observed only and groups dated source-backed matche
   assert.equal(rows.length, 1);
   assert.equal(rows[0].datedMatchCount, 2);
   assert.equal(rows[0].firstMatch, "1987-02-14");
+});
+
+test("fixture builder removes source duplicates and refuses score conflicts", () => {
+  const base = { date: "1987-02-14", season: "1986-87", competition: { name: "FA Cup", type: "cup" }, venue: "home", opponent: { name: "Beta", slug: "beta" }, score: { for: 2, against: 1 }, sources: [{ url: "https://example.test/a", retrievedAt: "2026-08-04T00:00:00.000Z" }] };
+  const first = { team: { name: "Alpha" }, matches: [{ ...base, id: "one" }] };
+  const duplicate = { team: { name: "Alpha" }, matches: [{ ...base, id: "two", sources: [{ url: "https://example.test/b", retrievedAt: "2026-08-04T00:00:00.000Z" }] }] };
+  const clean = fixtureRows([first, duplicate]);
+  assert.equal(clean.fixtures.length, 1);
+  assert.equal(clean.fixtures[0].sources.length, 2);
+  assert.equal(clean.conflicts.length, 0);
+  const conflict = fixtureRows([first, { team: { name: "Alpha" }, matches: [{ ...base, id: "three", score: { for: 3, against: 1 } }] }]);
+  assert.equal(conflict.conflicts.length, 1);
 });
