@@ -1,0 +1,1217 @@
+{
+  "contract": "football-team-history-v1",
+  "team": {
+    "name": "Kaunas",
+    "slug": "kaunas",
+    "primaryLeague": "UEFA Cup / UEFA Europa League",
+    "aliases": []
+  },
+  "requestedCoverage": {
+    "fromYear": 1985,
+    "to": "present",
+    "includes": [
+      "all competitions",
+      "opponents",
+      "scorelines",
+      "league standings",
+      "competition standings"
+    ]
+  },
+  "sourcePlan": [
+    {
+      "rank": 1,
+      "provider": "Official club archive",
+      "url": "",
+      "scope": "club history, competition participation and match reports",
+      "lookupKey": "Kaunas",
+      "review": "Verify the club-owned archive URL before collection."
+    },
+    {
+      "rank": 2,
+      "provider": "Official domestic competition / association",
+      "url": "",
+      "scope": "official league fixtures, final tables and cup records",
+      "lookupKey": "UEFA Cup / UEFA Europa League"
+    },
+    {
+      "rank": 3,
+      "provider": "UEFA",
+      "url": "https://www.uefa.com/",
+      "scope": "official European competition appearances, fixtures and standings",
+      "lookupKey": "Kaunas"
+    },
+    {
+      "rank": 4,
+      "provider": "RSSSF",
+      "url": "https://www.rsssf.org/",
+      "scope": "historic competitions, tables and cross-checking",
+      "lookupKey": "Kaunas"
+    },
+    {
+      "rank": 5,
+      "provider": "worldfootball.net",
+      "url": "https://www.worldfootball.net/",
+      "scope": "club match archive and competition participation cross-check",
+      "lookupKey": "Kaunas"
+    }
+  ],
+  "coverage": {
+    "earliestMatch": "1999-08-12",
+    "latestMatch": "2009-07-23",
+    "seasonsWithMatches": [
+      "1999-00",
+      "2000-01",
+      "2001-02",
+      "2002-03",
+      "2003-04",
+      "2004-05",
+      "2005-06",
+      "2006-07",
+      "2007-08",
+      "2008-09",
+      "2009-10"
+    ],
+    "missingSeasons": [
+      "1985-86",
+      "1986-87",
+      "1987-88",
+      "1988-89",
+      "1989-90",
+      "1990-91",
+      "1991-92",
+      "1992-93",
+      "1993-94",
+      "1994-95",
+      "1995-96",
+      "1996-97",
+      "1997-98",
+      "1998-99",
+      "2010-11",
+      "2011-12",
+      "2012-13",
+      "2013-14",
+      "2014-15",
+      "2015-16",
+      "2016-17",
+      "2017-18",
+      "2018-19",
+      "2019-20",
+      "2020-21",
+      "2021-22",
+      "2022-23",
+      "2023-24",
+      "2024-25",
+      "2025-26",
+      "2026-27"
+    ],
+    "competitionScopeVerified": false,
+    "status": "partial"
+  },
+  "matches": [
+    {
+      "id": "uefa:56635:away",
+      "date": "1999-08-12",
+      "season": "1999-00",
+      "competition": {
+        "name": "UEFA Cup / UEFA Europa League",
+        "type": "continental",
+        "country": "Europe"
+      },
+      "stage": "Qualifying round",
+      "opponent": {
+        "name": "M. Tel-Aviv",
+        "slug": "m-tel-aviv"
+      },
+      "venue": "away",
+      "score": {
+        "for": 1,
+        "against": 3
+      },
+      "result": "L",
+      "sources": [
+        {
+          "provider": "UEFA official match API",
+          "url": "https://www.uefa.com/uefachampionsleague/match/56635/",
+          "retrievedAt": "2026-08-04T21:11:10.429Z",
+          "rawArtifact": "data/teams/history/normalized/uefa-1785878005892.json"
+        }
+      ]
+    },
+    {
+      "id": "uefa:56636:home",
+      "date": "1999-08-26",
+      "season": "1999-00",
+      "competition": {
+        "name": "UEFA Cup / UEFA Europa League",
+        "type": "continental",
+        "country": "Europe"
+      },
+      "stage": "Qualifying round",
+      "opponent": {
+        "name": "M. Tel-Aviv",
+        "slug": "m-tel-aviv"
+      },
+      "venue": "home",
+      "score": {
+        "for": 2,
+        "against": 1
+      },
+      "result": "W",
+      "sources": [
+        {
+          "provider": "UEFA official match API",
+          "url": "https://www.uefa.com/uefachampionsleague/match/56636/",
+          "retrievedAt": "2026-08-04T21:11:10.429Z",
+          "rawArtifact": "data/teams/history/normalized/uefa-1785878005892.json"
+        }
+      ]
+    },
+    {
+      "id": "uefa:65167:home",
+      "date": "2000-07-12",
+      "season": "2000-01",
+      "competition": {
+        "name": "UEFA Champions League / European Cup",
+        "type": "continental",
+        "country": "Europe"
+      },
+      "stage": "Main Round",
+      "opponent": {
+        "name": "Brotnjo",
+        "slug": "brotnjo"
+      },
+      "venue": "home",
+      "score": {
+        "for": 4,
+        "against": 0
+      },
+      "result": "W",
+      "sources": [
+        {
+          "provider": "UEFA official match API",
+          "url": "https://www.uefa.com/uefachampionsleague/match/65167/",
+          "retrievedAt": "2026-08-04T21:11:10.969Z",
+          "rawArtifact": "data/teams/history/normalized/uefa-1785878005892.json"
+        }
+      ]
+    },
+    {
+      "id": "uefa:65168:away",
+      "date": "2000-07-19",
+      "season": "2000-01",
+      "competition": {
+        "name": "UEFA Champions League / European Cup",
+        "type": "continental",
+        "country": "Europe"
+      },
+      "stage": "Main Round",
+      "opponent": {
+        "name": "Brotnjo",
+        "slug": "brotnjo"
+      },
+      "venue": "away",
+      "score": {
+        "for": 0,
+        "against": 3
+      },
+      "result": "L",
+      "sources": [
+        {
+          "provider": "UEFA official match API",
+          "url": "https://www.uefa.com/uefachampionsleague/match/65168/",
+          "retrievedAt": "2026-08-04T21:11:10.969Z",
+          "rawArtifact": "data/teams/history/normalized/uefa-1785878005892.json"
+        }
+      ]
+    },
+    {
+      "id": "uefa:65552:away",
+      "date": "2000-07-26",
+      "season": "2000-01",
+      "competition": {
+        "name": "UEFA Champions League / European Cup",
+        "type": "continental",
+        "country": "Europe"
+      },
+      "stage": "Second qualifying round",
+      "opponent": {
+        "name": "Rangers",
+        "slug": "rangers"
+      },
+      "venue": "away",
+      "score": {
+        "for": 1,
+        "against": 4
+      },
+      "result": "L",
+      "sources": [
+        {
+          "provider": "UEFA official match API",
+          "url": "https://www.uefa.com/uefachampionsleague/match/65552/",
+          "retrievedAt": "2026-08-04T21:11:10.969Z",
+          "rawArtifact": "data/teams/history/normalized/uefa-1785878005892.json"
+        }
+      ]
+    },
+    {
+      "id": "uefa:65553:home",
+      "date": "2000-08-02",
+      "season": "2000-01",
+      "competition": {
+        "name": "UEFA Champions League / European Cup",
+        "type": "continental",
+        "country": "Europe"
+      },
+      "stage": "Second qualifying round",
+      "opponent": {
+        "name": "Rangers",
+        "slug": "rangers"
+      },
+      "venue": "home",
+      "score": {
+        "for": 0,
+        "against": 0
+      },
+      "result": "D",
+      "sources": [
+        {
+          "provider": "UEFA official match API",
+          "url": "https://www.uefa.com/uefachampionsleague/match/65553/",
+          "retrievedAt": "2026-08-04T21:11:10.969Z",
+          "rawArtifact": "data/teams/history/normalized/uefa-1785878005892.json"
+        }
+      ]
+    },
+    {
+      "id": "uefa:67824:away",
+      "date": "2001-07-11",
+      "season": "2001-02",
+      "competition": {
+        "name": "UEFA Champions League / European Cup",
+        "type": "continental",
+        "country": "Europe"
+      },
+      "stage": "First qualifying round",
+      "opponent": {
+        "name": "Sloga",
+        "slug": "sloga"
+      },
+      "venue": "away",
+      "score": {
+        "for": 0,
+        "against": 0
+      },
+      "result": "D",
+      "sources": [
+        {
+          "provider": "UEFA official match API",
+          "url": "https://www.uefa.com/uefachampionsleague/match/67824/",
+          "retrievedAt": "2026-08-04T21:11:21.797Z",
+          "rawArtifact": "data/teams/history/normalized/uefa-1785878005892.json"
+        }
+      ]
+    },
+    {
+      "id": "uefa:67825:home",
+      "date": "2001-07-18",
+      "season": "2001-02",
+      "competition": {
+        "name": "UEFA Champions League / European Cup",
+        "type": "continental",
+        "country": "Europe"
+      },
+      "stage": "First qualifying round",
+      "opponent": {
+        "name": "Sloga",
+        "slug": "sloga"
+      },
+      "venue": "home",
+      "score": {
+        "for": 1,
+        "against": 1
+      },
+      "result": "D",
+      "sources": [
+        {
+          "provider": "UEFA official match API",
+          "url": "https://www.uefa.com/uefachampionsleague/match/67825/",
+          "retrievedAt": "2026-08-04T21:11:21.797Z",
+          "rawArtifact": "data/teams/history/normalized/uefa-1785878005892.json"
+        }
+      ]
+    },
+    {
+      "id": "uefa:69692:home",
+      "date": "2002-07-17",
+      "season": "2002-03",
+      "competition": {
+        "name": "UEFA Champions League / European Cup",
+        "type": "continental",
+        "country": "Europe"
+      },
+      "stage": "First qualifying round",
+      "opponent": {
+        "name": "Dinamo City",
+        "slug": "dinamo-city"
+      },
+      "venue": "home",
+      "score": {
+        "for": 2,
+        "against": 3
+      },
+      "result": "L",
+      "sources": [
+        {
+          "provider": "UEFA official match API",
+          "url": "https://www.uefa.com/uefachampionsleague/match/69692/",
+          "retrievedAt": "2026-08-04T21:11:23.334Z",
+          "rawArtifact": "data/teams/history/normalized/uefa-1785878005892.json"
+        }
+      ]
+    },
+    {
+      "id": "uefa:69693:away",
+      "date": "2002-07-24",
+      "season": "2002-03",
+      "competition": {
+        "name": "UEFA Champions League / European Cup",
+        "type": "continental",
+        "country": "Europe"
+      },
+      "stage": "First qualifying round",
+      "opponent": {
+        "name": "Dinamo City",
+        "slug": "dinamo-city"
+      },
+      "venue": "away",
+      "score": {
+        "for": 0,
+        "against": 0
+      },
+      "result": "D",
+      "sources": [
+        {
+          "provider": "UEFA official match API",
+          "url": "https://www.uefa.com/uefachampionsleague/match/69693/",
+          "retrievedAt": "2026-08-04T21:11:23.334Z",
+          "rawArtifact": "data/teams/history/normalized/uefa-1785878005892.json"
+        }
+      ]
+    },
+    {
+      "id": "uefa:71273:away",
+      "date": "2003-07-16",
+      "season": "2003-04",
+      "competition": {
+        "name": "UEFA Champions League / European Cup",
+        "type": "continental",
+        "country": "Europe"
+      },
+      "stage": "First qualifying round",
+      "opponent": {
+        "name": "H. Bóltfelag",
+        "slug": "h-boltfelag"
+      },
+      "venue": "away",
+      "score": {
+        "for": 1,
+        "against": 0
+      },
+      "result": "W",
+      "sources": [
+        {
+          "provider": "UEFA official match API",
+          "url": "https://www.uefa.com/uefachampionsleague/match/71273/",
+          "retrievedAt": "2026-08-04T21:11:24.807Z",
+          "rawArtifact": "data/teams/history/normalized/uefa-1785878005892.json"
+        }
+      ]
+    },
+    {
+      "id": "uefa:71274:home",
+      "date": "2003-07-23",
+      "season": "2003-04",
+      "competition": {
+        "name": "UEFA Champions League / European Cup",
+        "type": "continental",
+        "country": "Europe"
+      },
+      "stage": "First qualifying round",
+      "opponent": {
+        "name": "H. Bóltfelag",
+        "slug": "h-boltfelag"
+      },
+      "venue": "home",
+      "score": {
+        "for": 4,
+        "against": 1
+      },
+      "result": "W",
+      "sources": [
+        {
+          "provider": "UEFA official match API",
+          "url": "https://www.uefa.com/uefachampionsleague/match/71274/",
+          "retrievedAt": "2026-08-04T21:11:24.807Z",
+          "rawArtifact": "data/teams/history/normalized/uefa-1785878005892.json"
+        }
+      ]
+    },
+    {
+      "id": "uefa:72010:home",
+      "date": "2003-07-30",
+      "season": "2003-04",
+      "competition": {
+        "name": "UEFA Champions League / European Cup",
+        "type": "continental",
+        "country": "Europe"
+      },
+      "stage": "Second qualifying round",
+      "opponent": {
+        "name": "Celtic",
+        "slug": "celtic"
+      },
+      "venue": "home",
+      "score": {
+        "for": 0,
+        "against": 4
+      },
+      "result": "L",
+      "sources": [
+        {
+          "provider": "UEFA official match API",
+          "url": "https://www.uefa.com/uefachampionsleague/match/72010/",
+          "retrievedAt": "2026-08-04T21:11:24.807Z",
+          "rawArtifact": "data/teams/history/normalized/uefa-1785878005892.json"
+        }
+      ]
+    },
+    {
+      "id": "uefa:72011:away",
+      "date": "2003-08-06",
+      "season": "2003-04",
+      "competition": {
+        "name": "UEFA Champions League / European Cup",
+        "type": "continental",
+        "country": "Europe"
+      },
+      "stage": "Second qualifying round",
+      "opponent": {
+        "name": "Celtic",
+        "slug": "celtic"
+      },
+      "venue": "away",
+      "score": {
+        "for": 0,
+        "against": 1
+      },
+      "result": "L",
+      "sources": [
+        {
+          "provider": "UEFA official match API",
+          "url": "https://www.uefa.com/uefachampionsleague/match/72011/",
+          "retrievedAt": "2026-08-04T21:11:24.807Z",
+          "rawArtifact": "data/teams/history/normalized/uefa-1785878005892.json"
+        }
+      ]
+    },
+    {
+      "id": "uefa:79018:away",
+      "date": "2004-07-13",
+      "season": "2004-05",
+      "competition": {
+        "name": "UEFA Champions League / European Cup",
+        "type": "continental",
+        "country": "Europe"
+      },
+      "stage": "First qualifying round",
+      "opponent": {
+        "name": "Sliema",
+        "slug": "sliema"
+      },
+      "venue": "away",
+      "score": {
+        "for": 2,
+        "against": 0
+      },
+      "result": "W",
+      "sources": [
+        {
+          "provider": "UEFA official match API",
+          "url": "https://www.uefa.com/uefachampionsleague/match/79018/",
+          "retrievedAt": "2026-08-04T21:11:26.520Z",
+          "rawArtifact": "data/teams/history/normalized/uefa-1785878005892.json"
+        }
+      ]
+    },
+    {
+      "id": "uefa:79019:home",
+      "date": "2004-07-21",
+      "season": "2004-05",
+      "competition": {
+        "name": "UEFA Champions League / European Cup",
+        "type": "continental",
+        "country": "Europe"
+      },
+      "stage": "First qualifying round",
+      "opponent": {
+        "name": "Sliema",
+        "slug": "sliema"
+      },
+      "venue": "home",
+      "score": {
+        "for": 4,
+        "against": 1
+      },
+      "result": "W",
+      "sources": [
+        {
+          "provider": "UEFA official match API",
+          "url": "https://www.uefa.com/uefachampionsleague/match/79019/",
+          "retrievedAt": "2026-08-04T21:11:26.520Z",
+          "rawArtifact": "data/teams/history/normalized/uefa-1785878005892.json"
+        }
+      ]
+    },
+    {
+      "id": "uefa:79246:away",
+      "date": "2004-07-28",
+      "season": "2004-05",
+      "competition": {
+        "name": "UEFA Champions League / European Cup",
+        "type": "continental",
+        "country": "Europe"
+      },
+      "stage": "Second qualifying round",
+      "opponent": {
+        "name": "Djurgården",
+        "slug": "djurgarden"
+      },
+      "venue": "away",
+      "score": {
+        "for": 0,
+        "against": 0
+      },
+      "result": "D",
+      "sources": [
+        {
+          "provider": "UEFA official match API",
+          "url": "https://www.uefa.com/uefachampionsleague/match/79246/",
+          "retrievedAt": "2026-08-04T21:11:26.520Z",
+          "rawArtifact": "data/teams/history/normalized/uefa-1785878005892.json"
+        }
+      ]
+    },
+    {
+      "id": "uefa:79247:home",
+      "date": "2004-08-04",
+      "season": "2004-05",
+      "competition": {
+        "name": "UEFA Champions League / European Cup",
+        "type": "continental",
+        "country": "Europe"
+      },
+      "stage": "Second qualifying round",
+      "opponent": {
+        "name": "Djurgården",
+        "slug": "djurgarden"
+      },
+      "venue": "home",
+      "score": {
+        "for": 0,
+        "against": 2
+      },
+      "result": "L",
+      "sources": [
+        {
+          "provider": "UEFA official match API",
+          "url": "https://www.uefa.com/uefachampionsleague/match/79247/",
+          "retrievedAt": "2026-08-04T21:11:26.520Z",
+          "rawArtifact": "data/teams/history/normalized/uefa-1785878005892.json"
+        }
+      ]
+    },
+    {
+      "id": "uefa:81170:away",
+      "date": "2005-07-13",
+      "season": "2005-06",
+      "competition": {
+        "name": "UEFA Champions League / European Cup",
+        "type": "continental",
+        "country": "Europe"
+      },
+      "stage": "First qualifying round",
+      "opponent": {
+        "name": "H. Bóltfelag",
+        "slug": "h-boltfelag"
+      },
+      "venue": "away",
+      "score": {
+        "for": 4,
+        "against": 2
+      },
+      "result": "W",
+      "sources": [
+        {
+          "provider": "UEFA official match API",
+          "url": "https://www.uefa.com/uefachampionsleague/match/81170/",
+          "retrievedAt": "2026-08-04T21:11:28.097Z",
+          "rawArtifact": "data/teams/history/normalized/uefa-1785878005892.json"
+        }
+      ]
+    },
+    {
+      "id": "uefa:81171:home",
+      "date": "2005-07-19",
+      "season": "2005-06",
+      "competition": {
+        "name": "UEFA Champions League / European Cup",
+        "type": "continental",
+        "country": "Europe"
+      },
+      "stage": "First qualifying round",
+      "opponent": {
+        "name": "H. Bóltfelag",
+        "slug": "h-boltfelag"
+      },
+      "venue": "home",
+      "score": {
+        "for": 4,
+        "against": 0
+      },
+      "result": "W",
+      "sources": [
+        {
+          "provider": "UEFA official match API",
+          "url": "https://www.uefa.com/uefachampionsleague/match/81171/",
+          "retrievedAt": "2026-08-04T21:11:28.097Z",
+          "rawArtifact": "data/teams/history/normalized/uefa-1785878005892.json"
+        }
+      ]
+    },
+    {
+      "id": "uefa:81453:home",
+      "date": "2005-07-26",
+      "season": "2005-06",
+      "competition": {
+        "name": "UEFA Champions League / European Cup",
+        "type": "continental",
+        "country": "Europe"
+      },
+      "stage": "Second qualifying round",
+      "opponent": {
+        "name": "Liverpool",
+        "slug": "liverpool"
+      },
+      "venue": "home",
+      "score": {
+        "for": 1,
+        "against": 3
+      },
+      "result": "L",
+      "sources": [
+        {
+          "provider": "UEFA official match API",
+          "url": "https://www.uefa.com/uefachampionsleague/match/81453/",
+          "retrievedAt": "2026-08-04T21:11:28.097Z",
+          "rawArtifact": "data/teams/history/normalized/uefa-1785878005892.json"
+        }
+      ]
+    },
+    {
+      "id": "uefa:81454:away",
+      "date": "2005-08-02",
+      "season": "2005-06",
+      "competition": {
+        "name": "UEFA Champions League / European Cup",
+        "type": "continental",
+        "country": "Europe"
+      },
+      "stage": "Second qualifying round",
+      "opponent": {
+        "name": "Liverpool",
+        "slug": "liverpool"
+      },
+      "venue": "away",
+      "score": {
+        "for": 0,
+        "against": 2
+      },
+      "result": "L",
+      "sources": [
+        {
+          "provider": "UEFA official match API",
+          "url": "https://www.uefa.com/uefachampionsleague/match/81454/",
+          "retrievedAt": "2026-08-04T21:11:28.097Z",
+          "rawArtifact": "data/teams/history/normalized/uefa-1785878005892.json"
+        }
+      ]
+    },
+    {
+      "id": "uefa:84238:away",
+      "date": "2006-07-13",
+      "season": "2006-07",
+      "competition": {
+        "name": "UEFA Cup / UEFA Europa League",
+        "type": "continental",
+        "country": "Europe"
+      },
+      "stage": "First qualifying round",
+      "opponent": {
+        "name": "Portadown",
+        "slug": "portadown"
+      },
+      "venue": "away",
+      "score": {
+        "for": 3,
+        "against": 1
+      },
+      "result": "W",
+      "sources": [
+        {
+          "provider": "UEFA official match API",
+          "url": "https://www.uefa.com/uefachampionsleague/match/84238/",
+          "retrievedAt": "2026-08-04T21:11:45.264Z",
+          "rawArtifact": "data/teams/history/normalized/uefa-1785878005892.json"
+        }
+      ]
+    },
+    {
+      "id": "uefa:84239:home",
+      "date": "2006-07-27",
+      "season": "2006-07",
+      "competition": {
+        "name": "UEFA Cup / UEFA Europa League",
+        "type": "continental",
+        "country": "Europe"
+      },
+      "stage": "First qualifying round",
+      "opponent": {
+        "name": "Portadown",
+        "slug": "portadown"
+      },
+      "venue": "home",
+      "score": {
+        "for": 1,
+        "against": 0
+      },
+      "result": "W",
+      "sources": [
+        {
+          "provider": "UEFA official match API",
+          "url": "https://www.uefa.com/uefachampionsleague/match/84239/",
+          "retrievedAt": "2026-08-04T21:11:45.264Z",
+          "rawArtifact": "data/teams/history/normalized/uefa-1785878005892.json"
+        }
+      ]
+    },
+    {
+      "id": "uefa:84599:away",
+      "date": "2006-08-10",
+      "season": "2006-07",
+      "competition": {
+        "name": "UEFA Cup / UEFA Europa League",
+        "type": "continental",
+        "country": "Europe"
+      },
+      "stage": "Second qualifying round",
+      "opponent": {
+        "name": "Randers",
+        "slug": "randers"
+      },
+      "venue": "away",
+      "score": {
+        "for": 1,
+        "against": 3
+      },
+      "result": "L",
+      "sources": [
+        {
+          "provider": "UEFA official match API",
+          "url": "https://www.uefa.com/uefachampionsleague/match/84599/",
+          "retrievedAt": "2026-08-04T21:11:45.264Z",
+          "rawArtifact": "data/teams/history/normalized/uefa-1785878005892.json"
+        }
+      ]
+    },
+    {
+      "id": "uefa:84600:home",
+      "date": "2006-08-24",
+      "season": "2006-07",
+      "competition": {
+        "name": "UEFA Cup / UEFA Europa League",
+        "type": "continental",
+        "country": "Europe"
+      },
+      "stage": "Second qualifying round",
+      "opponent": {
+        "name": "Randers",
+        "slug": "randers"
+      },
+      "venue": "home",
+      "score": {
+        "for": 1,
+        "against": 0
+      },
+      "result": "W",
+      "sources": [
+        {
+          "provider": "UEFA official match API",
+          "url": "https://www.uefa.com/uefachampionsleague/match/84600/",
+          "retrievedAt": "2026-08-04T21:11:45.264Z",
+          "rawArtifact": "data/teams/history/normalized/uefa-1785878005892.json"
+        }
+      ]
+    },
+    {
+      "id": "uefa:300998:away",
+      "date": "2007-07-17",
+      "season": "2007-08",
+      "competition": {
+        "name": "UEFA Champions League / European Cup",
+        "type": "continental",
+        "country": "Europe"
+      },
+      "stage": "First qualifying round",
+      "opponent": {
+        "name": "Zeta",
+        "slug": "zeta"
+      },
+      "venue": "away",
+      "score": {
+        "for": 1,
+        "against": 3
+      },
+      "result": "L",
+      "sources": [
+        {
+          "provider": "UEFA official match API",
+          "url": "https://www.uefa.com/uefachampionsleague/match/300998/",
+          "retrievedAt": "2026-08-04T21:11:46.498Z",
+          "rawArtifact": "data/teams/history/normalized/uefa-1785878005892.json"
+        }
+      ]
+    },
+    {
+      "id": "uefa:301012:home",
+      "date": "2007-07-24",
+      "season": "2007-08",
+      "competition": {
+        "name": "UEFA Champions League / European Cup",
+        "type": "continental",
+        "country": "Europe"
+      },
+      "stage": "First qualifying round",
+      "opponent": {
+        "name": "Zeta",
+        "slug": "zeta"
+      },
+      "venue": "home",
+      "score": {
+        "for": 3,
+        "against": 2
+      },
+      "result": "W",
+      "sources": [
+        {
+          "provider": "UEFA official match API",
+          "url": "https://www.uefa.com/uefachampionsleague/match/301012/",
+          "retrievedAt": "2026-08-04T21:11:46.498Z",
+          "rawArtifact": "data/teams/history/normalized/uefa-1785878005892.json"
+        }
+      ]
+    },
+    {
+      "id": "uefa:303471:away",
+      "date": "2008-07-15",
+      "season": "2008-09",
+      "competition": {
+        "name": "UEFA Champions League / European Cup",
+        "type": "continental",
+        "country": "Europe"
+      },
+      "stage": "First qualifying round",
+      "opponent": {
+        "name": "FC Santa Coloma",
+        "slug": "fc-santa-coloma"
+      },
+      "venue": "away",
+      "score": {
+        "for": 4,
+        "against": 1
+      },
+      "result": "W",
+      "sources": [
+        {
+          "provider": "UEFA official match API",
+          "url": "https://www.uefa.com/uefachampionsleague/match/303471/",
+          "retrievedAt": "2026-08-04T21:11:48.853Z",
+          "rawArtifact": "data/teams/history/normalized/uefa-1785878005892.json"
+        }
+      ]
+    },
+    {
+      "id": "uefa:303485:home",
+      "date": "2008-07-22",
+      "season": "2008-09",
+      "competition": {
+        "name": "UEFA Champions League / European Cup",
+        "type": "continental",
+        "country": "Europe"
+      },
+      "stage": "First qualifying round",
+      "opponent": {
+        "name": "FC Santa Coloma",
+        "slug": "fc-santa-coloma"
+      },
+      "venue": "home",
+      "score": {
+        "for": 3,
+        "against": 1
+      },
+      "result": "W",
+      "sources": [
+        {
+          "provider": "UEFA official match API",
+          "url": "https://www.uefa.com/uefachampionsleague/match/303485/",
+          "retrievedAt": "2026-08-04T21:11:48.853Z",
+          "rawArtifact": "data/teams/history/normalized/uefa-1785878005892.json"
+        }
+      ]
+    },
+    {
+      "id": "uefa:303496:away",
+      "date": "2008-07-30",
+      "season": "2008-09",
+      "competition": {
+        "name": "UEFA Champions League / European Cup",
+        "type": "continental",
+        "country": "Europe"
+      },
+      "stage": "Second qualifying round",
+      "opponent": {
+        "name": "Rangers",
+        "slug": "rangers"
+      },
+      "venue": "away",
+      "score": {
+        "for": 0,
+        "against": 0
+      },
+      "result": "D",
+      "sources": [
+        {
+          "provider": "UEFA official match API",
+          "url": "https://www.uefa.com/uefachampionsleague/match/303496/",
+          "retrievedAt": "2026-08-04T21:11:48.853Z",
+          "rawArtifact": "data/teams/history/normalized/uefa-1785878005892.json"
+        }
+      ]
+    },
+    {
+      "id": "uefa:303510:home",
+      "date": "2008-08-05",
+      "season": "2008-09",
+      "competition": {
+        "name": "UEFA Champions League / European Cup",
+        "type": "continental",
+        "country": "Europe"
+      },
+      "stage": "Second qualifying round",
+      "opponent": {
+        "name": "Rangers",
+        "slug": "rangers"
+      },
+      "venue": "home",
+      "score": {
+        "for": 2,
+        "against": 1
+      },
+      "result": "W",
+      "sources": [
+        {
+          "provider": "UEFA official match API",
+          "url": "https://www.uefa.com/uefachampionsleague/match/303510/",
+          "retrievedAt": "2026-08-04T21:11:48.853Z",
+          "rawArtifact": "data/teams/history/normalized/uefa-1785878005892.json"
+        }
+      ]
+    },
+    {
+      "id": "uefa:303816:away",
+      "date": "2008-08-13",
+      "season": "2008-09",
+      "competition": {
+        "name": "UEFA Champions League / European Cup",
+        "type": "continental",
+        "country": "Europe"
+      },
+      "stage": "Third qualifying round",
+      "opponent": {
+        "name": "AaB",
+        "slug": "aab"
+      },
+      "venue": "away",
+      "score": {
+        "for": 0,
+        "against": 2
+      },
+      "result": "L",
+      "sources": [
+        {
+          "provider": "UEFA official match API",
+          "url": "https://www.uefa.com/uefachampionsleague/match/303816/",
+          "retrievedAt": "2026-08-04T21:11:48.853Z",
+          "rawArtifact": "data/teams/history/normalized/uefa-1785878005892.json"
+        }
+      ]
+    },
+    {
+      "id": "uefa:303832:home",
+      "date": "2008-08-27",
+      "season": "2008-09",
+      "competition": {
+        "name": "UEFA Champions League / European Cup",
+        "type": "continental",
+        "country": "Europe"
+      },
+      "stage": "Third qualifying round",
+      "opponent": {
+        "name": "AaB",
+        "slug": "aab"
+      },
+      "venue": "home",
+      "score": {
+        "for": 0,
+        "against": 2
+      },
+      "result": "L",
+      "sources": [
+        {
+          "provider": "UEFA official match API",
+          "url": "https://www.uefa.com/uefachampionsleague/match/303832/",
+          "retrievedAt": "2026-08-04T21:11:48.853Z",
+          "rawArtifact": "data/teams/history/normalized/uefa-1785878005892.json"
+        }
+      ]
+    },
+    {
+      "id": "uefa:303922:away",
+      "date": "2008-09-18",
+      "season": "2008-09",
+      "competition": {
+        "name": "UEFA Cup / UEFA Europa League",
+        "type": "continental",
+        "country": "Europe"
+      },
+      "stage": "First round",
+      "opponent": {
+        "name": "Sampdoria",
+        "slug": "sampdoria"
+      },
+      "venue": "away",
+      "score": {
+        "for": 0,
+        "against": 5
+      },
+      "result": "L",
+      "sources": [
+        {
+          "provider": "UEFA official match API",
+          "url": "https://www.uefa.com/uefachampionsleague/match/303922/",
+          "retrievedAt": "2026-08-04T21:11:50.607Z",
+          "rawArtifact": "data/teams/history/normalized/uefa-1785878005892.json"
+        }
+      ]
+    },
+    {
+      "id": "uefa:303962:home",
+      "date": "2008-10-02",
+      "season": "2008-09",
+      "competition": {
+        "name": "UEFA Cup / UEFA Europa League",
+        "type": "continental",
+        "country": "Europe"
+      },
+      "stage": "First round",
+      "opponent": {
+        "name": "Sampdoria",
+        "slug": "sampdoria"
+      },
+      "venue": "home",
+      "score": {
+        "for": 1,
+        "against": 2
+      },
+      "result": "L",
+      "sources": [
+        {
+          "provider": "UEFA official match API",
+          "url": "https://www.uefa.com/uefachampionsleague/match/303962/",
+          "retrievedAt": "2026-08-04T21:11:50.607Z",
+          "rawArtifact": "data/teams/history/normalized/uefa-1785878005892.json"
+        }
+      ]
+    },
+    {
+      "id": "uefa:2000543:away",
+      "date": "2009-07-16",
+      "season": "2009-10",
+      "competition": {
+        "name": "UEFA Cup / UEFA Europa League",
+        "type": "continental",
+        "country": "Europe"
+      },
+      "stage": "Second qualifying round",
+      "opponent": {
+        "name": "Sloboda Užice",
+        "slug": "sloboda-uzice"
+      },
+      "venue": "away",
+      "score": {
+        "for": 0,
+        "against": 0
+      },
+      "result": "D",
+      "sources": [
+        {
+          "provider": "UEFA official match API",
+          "url": "https://www.uefa.com/uefachampionsleague/match/2000543/",
+          "retrievedAt": "2026-08-04T21:11:54.089Z",
+          "rawArtifact": "data/teams/history/normalized/uefa-1785878005892.json"
+        }
+      ]
+    },
+    {
+      "id": "uefa:2000583:home",
+      "date": "2009-07-23",
+      "season": "2009-10",
+      "competition": {
+        "name": "UEFA Cup / UEFA Europa League",
+        "type": "continental",
+        "country": "Europe"
+      },
+      "stage": "Second qualifying round",
+      "opponent": {
+        "name": "Sloboda Užice",
+        "slug": "sloboda-uzice"
+      },
+      "venue": "home",
+      "score": {
+        "for": 1,
+        "against": 1
+      },
+      "result": "D",
+      "sources": [
+        {
+          "provider": "UEFA official match API",
+          "url": "https://www.uefa.com/uefachampionsleague/match/2000583/",
+          "retrievedAt": "2026-08-04T21:11:54.089Z",
+          "rawArtifact": "data/teams/history/normalized/uefa-1785878005892.json"
+        }
+      ]
+    }
+  ],
+  "seasonStandings": [],
+  "competitionStandings": [],
+  "updatedAt": "2026-08-04T21:14:38.299Z"
+}

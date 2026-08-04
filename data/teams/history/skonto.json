@@ -57,10 +57,13 @@
   ],
   "coverage": {
     "earliestMatch": "1992-08-19",
-    "latestMatch": "2011-07-19",
+    "latestMatch": "2015-07-23",
     "seasonsWithMatches": [
       "1992-93",
       "1993-94",
+      "1994-95",
+      "1995-96",
+      "1996-97",
       "1997-98",
       "1998-99",
       "1999-00",
@@ -70,7 +73,14 @@
       "2003-04",
       "2004-05",
       "2005-06",
-      "2011-12"
+      "2006-07",
+      "2007-08",
+      "2009-10",
+      "2010-11",
+      "2011-12",
+      "2012-13",
+      "2013-14",
+      "2015-16"
     ],
     "missingSeasons": [
       "1985-86",
@@ -80,18 +90,8 @@
       "1989-90",
       "1990-91",
       "1991-92",
-      "1994-95",
-      "1995-96",
-      "1996-97",
-      "2006-07",
-      "2007-08",
       "2008-09",
-      "2009-10",
-      "2010-11",
-      "2012-13",
-      "2013-14",
       "2014-15",
-      "2015-16",
       "2016-17",
       "2017-18",
       "2018-19",
@@ -131,6 +131,35 @@
       "sourceRef": "src:1ac1d16b4d91beda9a2b"
     },
     {
+      "id": "uefa:6199:away",
+      "date": "1992-08-19",
+      "season": "1992-93",
+      "competition": {
+        "name": "UEFA Champions League / European Cup",
+        "type": "continental",
+        "country": "Europe"
+      },
+      "stage": "Preliminary round",
+      "opponent": {
+        "name": "Klaksvík",
+        "slug": "klaksvik"
+      },
+      "venue": "away",
+      "score": {
+        "for": 3,
+        "against": 1
+      },
+      "result": "W",
+      "sources": [
+        {
+          "provider": "UEFA official match API",
+          "url": "https://www.uefa.com/uefachampionsleague/match/6199/",
+          "retrievedAt": "2026-08-04T21:10:50.579Z",
+          "rawArtifact": "data/teams/history/normalized/uefa-1785878005892.json"
+        }
+      ]
+    },
+    {
       "id": "engsoccerdata:ab554db1a8b9bdb3788dd99077b6b6d754d64f09e84cb506bc3442cc323cbaea:1992-09-02:Skonto:KI%20Klaksvik:home",
       "date": "1992-09-02",
       "season": "1992-93",
@@ -153,17 +182,46 @@
       "sourceRef": "src:1ac1d16b4d91beda9a2b"
     },
     {
-      "id": "engsoccerdata:ab554db1a8b9bdb3788dd99077b6b6d754d64f09e84cb506bc3442cc323cbaea:1992-09-16:Lech%20Poznan:Skonto:away",
-      "date": "1992-09-16",
+      "id": "uefa:6200:home",
+      "date": "1992-09-02",
       "season": "1992-93",
       "competition": {
-        "name": "European Champion Clubs' Cup / Champions League",
+        "name": "UEFA Champions League / European Cup",
         "type": "continental",
         "country": "Europe"
       },
-      "stage": "Round1",
+      "stage": "Preliminary round",
       "opponent": {
-        "name": "Lech Poznan",
+        "name": "Klaksvík",
+        "slug": "klaksvik"
+      },
+      "venue": "home",
+      "score": {
+        "for": 3,
+        "against": 0
+      },
+      "result": "W",
+      "sources": [
+        {
+          "provider": "UEFA official match API",
+          "url": "https://www.uefa.com/uefachampionsleague/match/6200/",
+          "retrievedAt": "2026-08-04T21:10:50.579Z",
+          "rawArtifact": "data/teams/history/normalized/uefa-1785878005892.json"
+        }
+      ]
+    },
+    {
+      "id": "uefa:6578:away",
+      "date": "1992-09-16",
+      "season": "1992-93",
+      "competition": {
+        "name": "UEFA Champions League / European Cup",
+        "type": "continental",
+        "country": "Europe"
+      },
+      "stage": "First round",
+      "opponent": {
+        "name": "Lech Poznań",
         "slug": "lech-poznan"
       },
       "venue": "away",
@@ -172,20 +230,28 @@
         "against": 2
       },
       "result": "L",
-      "sourceRef": "src:1ac1d16b4d91beda9a2b"
+      "sourceRef": "src:1ac1d16b4d91beda9a2b",
+      "sources": [
+        {
+          "provider": "UEFA official match API",
+          "url": "https://www.uefa.com/uefachampionsleague/match/6578/",
+          "retrievedAt": "2026-08-04T21:10:50.579Z",
+          "rawArtifact": "data/teams/history/normalized/uefa-1785878005892.json"
+        }
+      ]
     },
     {
-      "id": "engsoccerdata:ab554db1a8b9bdb3788dd99077b6b6d754d64f09e84cb506bc3442cc323cbaea:1992-09-30:Skonto:Lech%20Poznan:home",
+      "id": "uefa:6579:home",
       "date": "1992-09-30",
       "season": "1992-93",
       "competition": {
-        "name": "European Champion Clubs' Cup / Champions League",
+        "name": "UEFA Champions League / European Cup",
         "type": "continental",
         "country": "Europe"
       },
-      "stage": "Round1",
+      "stage": "First round",
       "opponent": {
-        "name": "Lech Poznan",
+        "name": "Lech Poznań",
         "slug": "lech-poznan"
       },
       "venue": "home",
@@ -194,7 +260,15 @@
         "against": 0
       },
       "result": "D",
-      "sourceRef": "src:1ac1d16b4d91beda9a2b"
+      "sourceRef": "src:1ac1d16b4d91beda9a2b",
+      "sources": [
+        {
+          "provider": "UEFA official match API",
+          "url": "https://www.uefa.com/uefachampionsleague/match/6579/",
+          "retrievedAt": "2026-08-04T21:10:50.579Z",
+          "rawArtifact": "data/teams/history/normalized/uefa-1785878005892.json"
+        }
+      ]
     },
     {
       "id": "engsoccerdata:ab554db1a8b9bdb3788dd99077b6b6d754d64f09e84cb506bc3442cc323cbaea:1993-08-18:Skonto:Olimpija%20Ljubljana:home",
@@ -219,6 +293,35 @@
       "sourceRef": "src:1ac1d16b4d91beda9a2b"
     },
     {
+      "id": "uefa:50238:home",
+      "date": "1993-08-18",
+      "season": "1993-94",
+      "competition": {
+        "name": "UEFA Champions League / European Cup",
+        "type": "continental",
+        "country": "Europe"
+      },
+      "stage": "Preliminary round",
+      "opponent": {
+        "name": "Olimpija",
+        "slug": "olimpija"
+      },
+      "venue": "home",
+      "score": {
+        "for": 0,
+        "against": 1
+      },
+      "result": "L",
+      "sources": [
+        {
+          "provider": "UEFA official match API",
+          "url": "https://www.uefa.com/uefachampionsleague/match/50238/",
+          "retrievedAt": "2026-08-04T21:10:51.375Z",
+          "rawArtifact": "data/teams/history/normalized/uefa-1785878005892.json"
+        }
+      ]
+    },
+    {
       "id": "engsoccerdata:ab554db1a8b9bdb3788dd99077b6b6d754d64f09e84cb506bc3442cc323cbaea:1993-09-01:Olimpija%20Ljubljana:Skonto:away",
       "date": "1993-09-01",
       "season": "1993-94",
@@ -241,15 +344,44 @@
       "sourceRef": "src:1ac1d16b4d91beda9a2b"
     },
     {
-      "id": "engsoccerdata:ab554db1a8b9bdb3788dd99077b6b6d754d64f09e84cb506bc3442cc323cbaea:1993-09-15:Skonto:Spartak%20Moskva:home",
-      "date": "1993-09-15",
+      "id": "uefa:50239:away",
+      "date": "1993-09-01",
       "season": "1993-94",
       "competition": {
-        "name": "European Champion Clubs' Cup / Champions League",
+        "name": "UEFA Champions League / European Cup",
         "type": "continental",
         "country": "Europe"
       },
-      "stage": "Round1",
+      "stage": "Preliminary round",
+      "opponent": {
+        "name": "Olimpija",
+        "slug": "olimpija"
+      },
+      "venue": "away",
+      "score": {
+        "for": 1,
+        "against": 0
+      },
+      "result": "W",
+      "sources": [
+        {
+          "provider": "UEFA official match API",
+          "url": "https://www.uefa.com/uefachampionsleague/match/50239/",
+          "retrievedAt": "2026-08-04T21:10:51.375Z",
+          "rawArtifact": "data/teams/history/normalized/uefa-1785878005892.json"
+        }
+      ]
+    },
+    {
+      "id": "uefa:50280:home",
+      "date": "1993-09-15",
+      "season": "1993-94",
+      "competition": {
+        "name": "UEFA Champions League / European Cup",
+        "type": "continental",
+        "country": "Europe"
+      },
+      "stage": "First round",
       "opponent": {
         "name": "Spartak Moskva",
         "slug": "spartak-moskva"
@@ -260,18 +392,26 @@
         "against": 5
       },
       "result": "L",
-      "sourceRef": "src:1ac1d16b4d91beda9a2b"
+      "sourceRef": "src:1ac1d16b4d91beda9a2b",
+      "sources": [
+        {
+          "provider": "UEFA official match API",
+          "url": "https://www.uefa.com/uefachampionsleague/match/50280/",
+          "retrievedAt": "2026-08-04T21:10:51.375Z",
+          "rawArtifact": "data/teams/history/normalized/uefa-1785878005892.json"
+        }
+      ]
     },
     {
-      "id": "engsoccerdata:ab554db1a8b9bdb3788dd99077b6b6d754d64f09e84cb506bc3442cc323cbaea:1993-09-29:Spartak%20Moskva:Skonto:away",
+      "id": "uefa:50281:away",
       "date": "1993-09-29",
       "season": "1993-94",
       "competition": {
-        "name": "European Champion Clubs' Cup / Champions League",
+        "name": "UEFA Champions League / European Cup",
         "type": "continental",
         "country": "Europe"
       },
-      "stage": "Round1",
+      "stage": "First round",
       "opponent": {
         "name": "Spartak Moskva",
         "slug": "spartak-moskva"
@@ -282,18 +422,316 @@
         "against": 4
       },
       "result": "L",
-      "sourceRef": "src:1ac1d16b4d91beda9a2b"
+      "sourceRef": "src:1ac1d16b4d91beda9a2b",
+      "sources": [
+        {
+          "provider": "UEFA official match API",
+          "url": "https://www.uefa.com/uefachampionsleague/match/50281/",
+          "retrievedAt": "2026-08-04T21:10:51.375Z",
+          "rawArtifact": "data/teams/history/normalized/uefa-1785878005892.json"
+        }
+      ]
     },
     {
-      "id": "engsoccerdata:ab554db1a8b9bdb3788dd99077b6b6d754d64f09e84cb506bc3442cc323cbaea:1997-07-23:Valletta:Skonto:away",
-      "date": "1997-07-23",
-      "season": "1997-98",
+      "id": "uefa:51151:home",
+      "date": "1994-08-09",
+      "season": "1994-95",
       "competition": {
-        "name": "European Champion Clubs' Cup / Champions League",
+        "name": "UEFA Cup / UEFA Europa League",
         "type": "continental",
         "country": "Europe"
       },
-      "stage": "Q-1",
+      "stage": "Preliminary round",
+      "opponent": {
+        "name": "Aberdeen",
+        "slug": "aberdeen"
+      },
+      "venue": "home",
+      "score": {
+        "for": 0,
+        "against": 0
+      },
+      "result": "D",
+      "sources": [
+        {
+          "provider": "UEFA official match API",
+          "url": "https://www.uefa.com/uefachampionsleague/match/51151/",
+          "retrievedAt": "2026-08-04T21:10:53.081Z",
+          "rawArtifact": "data/teams/history/normalized/uefa-1785878005892.json"
+        }
+      ]
+    },
+    {
+      "id": "uefa:51152:away",
+      "date": "1994-08-23",
+      "season": "1994-95",
+      "competition": {
+        "name": "UEFA Cup / UEFA Europa League",
+        "type": "continental",
+        "country": "Europe"
+      },
+      "stage": "Preliminary round",
+      "opponent": {
+        "name": "Aberdeen",
+        "slug": "aberdeen"
+      },
+      "venue": "away",
+      "score": {
+        "for": 1,
+        "against": 1
+      },
+      "result": "D",
+      "sources": [
+        {
+          "provider": "UEFA official match API",
+          "url": "https://www.uefa.com/uefachampionsleague/match/51152/",
+          "retrievedAt": "2026-08-04T21:10:53.081Z",
+          "rawArtifact": "data/teams/history/normalized/uefa-1785878005892.json"
+        }
+      ]
+    },
+    {
+      "id": "uefa:51314:away",
+      "date": "1994-09-13",
+      "season": "1994-95",
+      "competition": {
+        "name": "UEFA Cup / UEFA Europa League",
+        "type": "continental",
+        "country": "Europe"
+      },
+      "stage": "First round",
+      "opponent": {
+        "name": "Napoli",
+        "slug": "napoli"
+      },
+      "venue": "away",
+      "score": {
+        "for": 0,
+        "against": 2
+      },
+      "result": "L",
+      "sources": [
+        {
+          "provider": "UEFA official match API",
+          "url": "https://www.uefa.com/uefachampionsleague/match/51314/",
+          "retrievedAt": "2026-08-04T21:10:53.081Z",
+          "rawArtifact": "data/teams/history/normalized/uefa-1785878005892.json"
+        }
+      ]
+    },
+    {
+      "id": "uefa:51315:home",
+      "date": "1994-09-27",
+      "season": "1994-95",
+      "competition": {
+        "name": "UEFA Cup / UEFA Europa League",
+        "type": "continental",
+        "country": "Europe"
+      },
+      "stage": "First round",
+      "opponent": {
+        "name": "Napoli",
+        "slug": "napoli"
+      },
+      "venue": "home",
+      "score": {
+        "for": 0,
+        "against": 1
+      },
+      "result": "L",
+      "sources": [
+        {
+          "provider": "UEFA official match API",
+          "url": "https://www.uefa.com/uefachampionsleague/match/51315/",
+          "retrievedAt": "2026-08-04T21:10:53.081Z",
+          "rawArtifact": "data/teams/history/normalized/uefa-1785878005892.json"
+        }
+      ]
+    },
+    {
+      "id": "uefa:51904:home",
+      "date": "1995-08-08",
+      "season": "1995-96",
+      "competition": {
+        "name": "UEFA Cup / UEFA Europa League",
+        "type": "continental",
+        "country": "Europe"
+      },
+      "stage": "Preliminary round",
+      "opponent": {
+        "name": "Maribor",
+        "slug": "maribor"
+      },
+      "venue": "home",
+      "score": {
+        "for": 1,
+        "against": 0
+      },
+      "result": "W",
+      "sources": [
+        {
+          "provider": "UEFA official match API",
+          "url": "https://www.uefa.com/uefachampionsleague/match/51904/",
+          "retrievedAt": "2026-08-04T21:10:54.164Z",
+          "rawArtifact": "data/teams/history/normalized/uefa-1785878005892.json"
+        }
+      ]
+    },
+    {
+      "id": "uefa:51905:away",
+      "date": "1995-08-22",
+      "season": "1995-96",
+      "competition": {
+        "name": "UEFA Cup / UEFA Europa League",
+        "type": "continental",
+        "country": "Europe"
+      },
+      "stage": "Preliminary round",
+      "opponent": {
+        "name": "Maribor",
+        "slug": "maribor"
+      },
+      "venue": "away",
+      "score": {
+        "for": 0,
+        "against": 2
+      },
+      "result": "L",
+      "sources": [
+        {
+          "provider": "UEFA official match API",
+          "url": "https://www.uefa.com/uefachampionsleague/match/51905/",
+          "retrievedAt": "2026-08-04T21:10:54.164Z",
+          "rawArtifact": "data/teams/history/normalized/uefa-1785878005892.json"
+        }
+      ]
+    },
+    {
+      "id": "uefa:52976:away",
+      "date": "1996-07-17",
+      "season": "1996-97",
+      "competition": {
+        "name": "UEFA Cup / UEFA Europa League",
+        "type": "continental",
+        "country": "Europe"
+      },
+      "stage": "Preliminary round",
+      "opponent": {
+        "name": "Newtown",
+        "slug": "newtown"
+      },
+      "venue": "away",
+      "score": {
+        "for": 4,
+        "against": 1
+      },
+      "result": "W",
+      "sources": [
+        {
+          "provider": "UEFA official match API",
+          "url": "https://www.uefa.com/uefachampionsleague/match/52976/",
+          "retrievedAt": "2026-08-04T21:11:05.495Z",
+          "rawArtifact": "data/teams/history/normalized/uefa-1785878005892.json"
+        }
+      ]
+    },
+    {
+      "id": "uefa:52977:home",
+      "date": "1996-07-24",
+      "season": "1996-97",
+      "competition": {
+        "name": "UEFA Cup / UEFA Europa League",
+        "type": "continental",
+        "country": "Europe"
+      },
+      "stage": "Preliminary round",
+      "opponent": {
+        "name": "Newtown",
+        "slug": "newtown"
+      },
+      "venue": "home",
+      "score": {
+        "for": 3,
+        "against": 0
+      },
+      "result": "W",
+      "sources": [
+        {
+          "provider": "UEFA official match API",
+          "url": "https://www.uefa.com/uefachampionsleague/match/52977/",
+          "retrievedAt": "2026-08-04T21:11:05.495Z",
+          "rawArtifact": "data/teams/history/normalized/uefa-1785878005892.json"
+        }
+      ]
+    },
+    {
+      "id": "uefa:53070:home",
+      "date": "1996-08-06",
+      "season": "1996-97",
+      "competition": {
+        "name": "UEFA Cup / UEFA Europa League",
+        "type": "continental",
+        "country": "Europe"
+      },
+      "stage": "Qualifying round",
+      "opponent": {
+        "name": "Malmö",
+        "slug": "malmo"
+      },
+      "venue": "home",
+      "score": {
+        "for": 0,
+        "against": 3
+      },
+      "result": "L",
+      "sources": [
+        {
+          "provider": "UEFA official match API",
+          "url": "https://www.uefa.com/uefachampionsleague/match/53070/",
+          "retrievedAt": "2026-08-04T21:11:05.495Z",
+          "rawArtifact": "data/teams/history/normalized/uefa-1785878005892.json"
+        }
+      ]
+    },
+    {
+      "id": "uefa:53071:away",
+      "date": "1996-08-20",
+      "season": "1996-97",
+      "competition": {
+        "name": "UEFA Cup / UEFA Europa League",
+        "type": "continental",
+        "country": "Europe"
+      },
+      "stage": "Qualifying round",
+      "opponent": {
+        "name": "Malmö",
+        "slug": "malmo"
+      },
+      "venue": "away",
+      "score": {
+        "for": 1,
+        "against": 1
+      },
+      "result": "D",
+      "sources": [
+        {
+          "provider": "UEFA official match API",
+          "url": "https://www.uefa.com/uefachampionsleague/match/53071/",
+          "retrievedAt": "2026-08-04T21:11:05.495Z",
+          "rawArtifact": "data/teams/history/normalized/uefa-1785878005892.json"
+        }
+      ]
+    },
+    {
+      "id": "uefa:54148:away",
+      "date": "1997-07-23",
+      "season": "1997-98",
+      "competition": {
+        "name": "UEFA Champions League / European Cup",
+        "type": "continental",
+        "country": "Europe"
+      },
+      "stage": "First qualifying round",
       "opponent": {
         "name": "Valletta",
         "slug": "valletta"
@@ -304,18 +742,26 @@
         "against": 1
       },
       "result": "L",
-      "sourceRef": "src:1ac1d16b4d91beda9a2b"
+      "sourceRef": "src:1ac1d16b4d91beda9a2b",
+      "sources": [
+        {
+          "provider": "UEFA official match API",
+          "url": "https://www.uefa.com/uefachampionsleague/match/54148/",
+          "retrievedAt": "2026-08-04T21:11:06.221Z",
+          "rawArtifact": "data/teams/history/normalized/uefa-1785878005892.json"
+        }
+      ]
     },
     {
-      "id": "engsoccerdata:ab554db1a8b9bdb3788dd99077b6b6d754d64f09e84cb506bc3442cc323cbaea:1997-07-30:Skonto:Valletta:home",
+      "id": "uefa:54149:home",
       "date": "1997-07-30",
       "season": "1997-98",
       "competition": {
-        "name": "European Champion Clubs' Cup / Champions League",
+        "name": "UEFA Champions League / European Cup",
         "type": "continental",
         "country": "Europe"
       },
-      "stage": "Q-1",
+      "stage": "First qualifying round",
       "opponent": {
         "name": "Valletta",
         "slug": "valletta"
@@ -326,18 +772,26 @@
         "against": 0
       },
       "result": "W",
-      "sourceRef": "src:1ac1d16b4d91beda9a2b"
+      "sourceRef": "src:1ac1d16b4d91beda9a2b",
+      "sources": [
+        {
+          "provider": "UEFA official match API",
+          "url": "https://www.uefa.com/uefachampionsleague/match/54149/",
+          "retrievedAt": "2026-08-04T21:11:06.221Z",
+          "rawArtifact": "data/teams/history/normalized/uefa-1785878005892.json"
+        }
+      ]
     },
     {
-      "id": "engsoccerdata:ab554db1a8b9bdb3788dd99077b6b6d754d64f09e84cb506bc3442cc323cbaea:1997-08-13:Barcelona:Skonto:away",
+      "id": "uefa:54221:away",
       "date": "1997-08-13",
       "season": "1997-98",
       "competition": {
-        "name": "European Champion Clubs' Cup / Champions League",
+        "name": "UEFA Champions League / European Cup",
         "type": "continental",
         "country": "Europe"
       },
-      "stage": "Q-2",
+      "stage": "Second qualifying round",
       "opponent": {
         "name": "Barcelona",
         "slug": "barcelona"
@@ -348,18 +802,26 @@
         "against": 3
       },
       "result": "L",
-      "sourceRef": "src:1ac1d16b4d91beda9a2b"
+      "sourceRef": "src:1ac1d16b4d91beda9a2b",
+      "sources": [
+        {
+          "provider": "UEFA official match API",
+          "url": "https://www.uefa.com/uefachampionsleague/match/54221/",
+          "retrievedAt": "2026-08-04T21:11:06.221Z",
+          "rawArtifact": "data/teams/history/normalized/uefa-1785878005892.json"
+        }
+      ]
     },
     {
-      "id": "engsoccerdata:ab554db1a8b9bdb3788dd99077b6b6d754d64f09e84cb506bc3442cc323cbaea:1997-08-27:Skonto:Barcelona:home",
+      "id": "uefa:54222:home",
       "date": "1997-08-27",
       "season": "1997-98",
       "competition": {
-        "name": "European Champion Clubs' Cup / Champions League",
+        "name": "UEFA Champions League / European Cup",
         "type": "continental",
         "country": "Europe"
       },
-      "stage": "Q-2",
+      "stage": "Second qualifying round",
       "opponent": {
         "name": "Barcelona",
         "slug": "barcelona"
@@ -370,20 +832,86 @@
         "against": 1
       },
       "result": "L",
-      "sourceRef": "src:1ac1d16b4d91beda9a2b"
+      "sourceRef": "src:1ac1d16b4d91beda9a2b",
+      "sources": [
+        {
+          "provider": "UEFA official match API",
+          "url": "https://www.uefa.com/uefachampionsleague/match/54222/",
+          "retrievedAt": "2026-08-04T21:11:06.221Z",
+          "rawArtifact": "data/teams/history/normalized/uefa-1785878005892.json"
+        }
+      ]
     },
     {
-      "id": "engsoccerdata:ab554db1a8b9bdb3788dd99077b6b6d754d64f09e84cb506bc3442cc323cbaea:1998-07-22:Skonto:Dinamo%20Minsk:home",
-      "date": "1998-07-22",
-      "season": "1998-99",
+      "id": "uefa:54306:away",
+      "date": "1997-09-16",
+      "season": "1997-98",
       "competition": {
-        "name": "European Champion Clubs' Cup / Champions League",
+        "name": "UEFA Cup / UEFA Europa League",
         "type": "continental",
         "country": "Europe"
       },
-      "stage": "Q-1",
+      "stage": "First round",
       "opponent": {
-        "name": "Dinamo Minsk",
+        "name": "Valladolid",
+        "slug": "valladolid"
+      },
+      "venue": "away",
+      "score": {
+        "for": 0,
+        "against": 2
+      },
+      "result": "L",
+      "sources": [
+        {
+          "provider": "UEFA official match API",
+          "url": "https://www.uefa.com/uefachampionsleague/match/54306/",
+          "retrievedAt": "2026-08-04T21:11:07.331Z",
+          "rawArtifact": "data/teams/history/normalized/uefa-1785878005892.json"
+        }
+      ]
+    },
+    {
+      "id": "uefa:54307:home",
+      "date": "1997-09-30",
+      "season": "1997-98",
+      "competition": {
+        "name": "UEFA Cup / UEFA Europa League",
+        "type": "continental",
+        "country": "Europe"
+      },
+      "stage": "First round",
+      "opponent": {
+        "name": "Valladolid",
+        "slug": "valladolid"
+      },
+      "venue": "home",
+      "score": {
+        "for": 1,
+        "against": 0
+      },
+      "result": "W",
+      "sources": [
+        {
+          "provider": "UEFA official match API",
+          "url": "https://www.uefa.com/uefachampionsleague/match/54307/",
+          "retrievedAt": "2026-08-04T21:11:07.331Z",
+          "rawArtifact": "data/teams/history/normalized/uefa-1785878005892.json"
+        }
+      ]
+    },
+    {
+      "id": "uefa:55521:home",
+      "date": "1998-07-22",
+      "season": "1998-99",
+      "competition": {
+        "name": "UEFA Champions League / European Cup",
+        "type": "continental",
+        "country": "Europe"
+      },
+      "stage": "First qualifying round",
+      "opponent": {
+        "name": "Dinamo-Minsk",
         "slug": "dinamo-minsk"
       },
       "venue": "home",
@@ -392,20 +920,28 @@
         "against": 0
       },
       "result": "D",
-      "sourceRef": "src:1ac1d16b4d91beda9a2b"
+      "sourceRef": "src:1ac1d16b4d91beda9a2b",
+      "sources": [
+        {
+          "provider": "UEFA official match API",
+          "url": "https://www.uefa.com/uefachampionsleague/match/55521/",
+          "retrievedAt": "2026-08-04T21:11:07.730Z",
+          "rawArtifact": "data/teams/history/normalized/uefa-1785878005892.json"
+        }
+      ]
     },
     {
-      "id": "engsoccerdata:ab554db1a8b9bdb3788dd99077b6b6d754d64f09e84cb506bc3442cc323cbaea:1998-07-29:Dinamo%20Minsk:Skonto:away",
+      "id": "uefa:55522:away",
       "date": "1998-07-29",
       "season": "1998-99",
       "competition": {
-        "name": "European Champion Clubs' Cup / Champions League",
+        "name": "UEFA Champions League / European Cup",
         "type": "continental",
         "country": "Europe"
       },
-      "stage": "Q-1",
+      "stage": "First qualifying round",
       "opponent": {
-        "name": "Dinamo Minsk",
+        "name": "Dinamo-Minsk",
         "slug": "dinamo-minsk"
       },
       "venue": "away",
@@ -414,18 +950,26 @@
         "against": 1
       },
       "result": "W",
-      "sourceRef": "src:1ac1d16b4d91beda9a2b"
+      "sourceRef": "src:1ac1d16b4d91beda9a2b",
+      "sources": [
+        {
+          "provider": "UEFA official match API",
+          "url": "https://www.uefa.com/uefachampionsleague/match/55522/",
+          "retrievedAt": "2026-08-04T21:11:07.730Z",
+          "rawArtifact": "data/teams/history/normalized/uefa-1785878005892.json"
+        }
+      ]
     },
     {
-      "id": "engsoccerdata:ab554db1a8b9bdb3788dd99077b6b6d754d64f09e84cb506bc3442cc323cbaea:1998-08-12:Internazionale:Skonto:away",
+      "id": "uefa:55595:away",
       "date": "1998-08-12",
       "season": "1998-99",
       "competition": {
-        "name": "European Champion Clubs' Cup / Champions League",
+        "name": "UEFA Champions League / European Cup",
         "type": "continental",
         "country": "Europe"
       },
-      "stage": "Q-2",
+      "stage": "Second qualifying round",
       "opponent": {
         "name": "Inter Milan",
         "slug": "inter-milan"
@@ -436,18 +980,26 @@
         "against": 4
       },
       "result": "L",
-      "sourceRef": "src:1ac1d16b4d91beda9a2b"
+      "sourceRef": "src:1ac1d16b4d91beda9a2b",
+      "sources": [
+        {
+          "provider": "UEFA official match API",
+          "url": "https://www.uefa.com/uefachampionsleague/match/55595/",
+          "retrievedAt": "2026-08-04T21:11:07.730Z",
+          "rawArtifact": "data/teams/history/normalized/uefa-1785878005892.json"
+        }
+      ]
     },
     {
-      "id": "engsoccerdata:ab554db1a8b9bdb3788dd99077b6b6d754d64f09e84cb506bc3442cc323cbaea:1998-08-26:Skonto:Internazionale:home",
+      "id": "uefa:55596:home",
       "date": "1998-08-26",
       "season": "1998-99",
       "competition": {
-        "name": "European Champion Clubs' Cup / Champions League",
+        "name": "UEFA Champions League / European Cup",
         "type": "continental",
         "country": "Europe"
       },
-      "stage": "Q-2",
+      "stage": "Second qualifying round",
       "opponent": {
         "name": "Inter Milan",
         "slug": "inter-milan"
@@ -458,18 +1010,84 @@
         "against": 3
       },
       "result": "L",
-      "sourceRef": "src:1ac1d16b4d91beda9a2b"
+      "sourceRef": "src:1ac1d16b4d91beda9a2b",
+      "sources": [
+        {
+          "provider": "UEFA official match API",
+          "url": "https://www.uefa.com/uefachampionsleague/match/55596/",
+          "retrievedAt": "2026-08-04T21:11:07.730Z",
+          "rawArtifact": "data/teams/history/normalized/uefa-1785878005892.json"
+        }
+      ]
     },
     {
-      "id": "engsoccerdata:ab554db1a8b9bdb3788dd99077b6b6d754d64f09e84cb506bc3442cc323cbaea:1999-07-14:Jeunesse%20Esch:Skonto:away",
-      "date": "1999-07-14",
-      "season": "1999-00",
+      "id": "uefa:55822:away",
+      "date": "1998-09-15",
+      "season": "1998-99",
       "competition": {
-        "name": "European Champion Clubs' Cup / Champions League",
+        "name": "UEFA Cup / UEFA Europa League",
         "type": "continental",
         "country": "Europe"
       },
-      "stage": "Q-1",
+      "stage": "First round",
+      "opponent": {
+        "name": "Dynamo Moscow",
+        "slug": "dynamo-moscow"
+      },
+      "venue": "away",
+      "score": {
+        "for": 2,
+        "against": 2
+      },
+      "result": "D",
+      "sources": [
+        {
+          "provider": "UEFA official match API",
+          "url": "https://www.uefa.com/uefachampionsleague/match/55822/",
+          "retrievedAt": "2026-08-04T21:11:08.613Z",
+          "rawArtifact": "data/teams/history/normalized/uefa-1785878005892.json"
+        }
+      ]
+    },
+    {
+      "id": "uefa:55823:home",
+      "date": "1998-09-29",
+      "season": "1998-99",
+      "competition": {
+        "name": "UEFA Cup / UEFA Europa League",
+        "type": "continental",
+        "country": "Europe"
+      },
+      "stage": "First round",
+      "opponent": {
+        "name": "Dynamo Moscow",
+        "slug": "dynamo-moscow"
+      },
+      "venue": "home",
+      "score": {
+        "for": 2,
+        "against": 3
+      },
+      "result": "L",
+      "sources": [
+        {
+          "provider": "UEFA official match API",
+          "url": "https://www.uefa.com/uefachampionsleague/match/55823/",
+          "retrievedAt": "2026-08-04T21:11:08.613Z",
+          "rawArtifact": "data/teams/history/normalized/uefa-1785878005892.json"
+        }
+      ]
+    },
+    {
+      "id": "uefa:56655:away",
+      "date": "1999-07-14",
+      "season": "1999-00",
+      "competition": {
+        "name": "UEFA Champions League / European Cup",
+        "type": "continental",
+        "country": "Europe"
+      },
+      "stage": "First qualifying round",
       "opponent": {
         "name": "Jeunesse Esch",
         "slug": "jeunesse-esch"
@@ -480,18 +1098,26 @@
         "against": 0
       },
       "result": "W",
-      "sourceRef": "src:1ac1d16b4d91beda9a2b"
+      "sourceRef": "src:1ac1d16b4d91beda9a2b",
+      "sources": [
+        {
+          "provider": "UEFA official match API",
+          "url": "https://www.uefa.com/uefachampionsleague/match/56655/",
+          "retrievedAt": "2026-08-04T21:11:09.332Z",
+          "rawArtifact": "data/teams/history/normalized/uefa-1785878005892.json"
+        }
+      ]
     },
     {
-      "id": "engsoccerdata:ab554db1a8b9bdb3788dd99077b6b6d754d64f09e84cb506bc3442cc323cbaea:1999-07-21:Skonto:Jeunesse%20Esch:home",
+      "id": "uefa:56656:home",
       "date": "1999-07-21",
       "season": "1999-00",
       "competition": {
-        "name": "European Champion Clubs' Cup / Champions League",
+        "name": "UEFA Champions League / European Cup",
         "type": "continental",
         "country": "Europe"
       },
-      "stage": "Q-1",
+      "stage": "First qualifying round",
       "opponent": {
         "name": "Jeunesse Esch",
         "slug": "jeunesse-esch"
@@ -502,20 +1128,28 @@
         "against": 0
       },
       "result": "W",
-      "sourceRef": "src:1ac1d16b4d91beda9a2b"
+      "sourceRef": "src:1ac1d16b4d91beda9a2b",
+      "sources": [
+        {
+          "provider": "UEFA official match API",
+          "url": "https://www.uefa.com/uefachampionsleague/match/56656/",
+          "retrievedAt": "2026-08-04T21:11:09.332Z",
+          "rawArtifact": "data/teams/history/normalized/uefa-1785878005892.json"
+        }
+      ]
     },
     {
-      "id": "engsoccerdata:ab554db1a8b9bdb3788dd99077b6b6d754d64f09e84cb506bc3442cc323cbaea:1999-07-28:Rapid%20Bucuresti:Skonto:away",
+      "id": "uefa:56863:away",
       "date": "1999-07-28",
       "season": "1999-00",
       "competition": {
-        "name": "European Champion Clubs' Cup / Champions League",
+        "name": "UEFA Champions League / European Cup",
         "type": "continental",
         "country": "Europe"
       },
-      "stage": "Q-2",
+      "stage": "Second qualifying round",
       "opponent": {
-        "name": "Rapid Bucuresti",
+        "name": "Rapid Bucureşti",
         "slug": "rapid-bucuresti"
       },
       "venue": "away",
@@ -524,20 +1158,28 @@
         "against": 3
       },
       "result": "D",
-      "sourceRef": "src:1ac1d16b4d91beda9a2b"
+      "sourceRef": "src:1ac1d16b4d91beda9a2b",
+      "sources": [
+        {
+          "provider": "UEFA official match API",
+          "url": "https://www.uefa.com/uefachampionsleague/match/56863/",
+          "retrievedAt": "2026-08-04T21:11:09.332Z",
+          "rawArtifact": "data/teams/history/normalized/uefa-1785878005892.json"
+        }
+      ]
     },
     {
-      "id": "engsoccerdata:ab554db1a8b9bdb3788dd99077b6b6d754d64f09e84cb506bc3442cc323cbaea:1999-08-04:Skonto:Rapid%20Bucuresti:home",
+      "id": "uefa:56864:home",
       "date": "1999-08-04",
       "season": "1999-00",
       "competition": {
-        "name": "European Champion Clubs' Cup / Champions League",
+        "name": "UEFA Champions League / European Cup",
         "type": "continental",
         "country": "Europe"
       },
-      "stage": "Q-2",
+      "stage": "Second qualifying round",
       "opponent": {
-        "name": "Rapid Bucuresti",
+        "name": "Rapid Bucureşti",
         "slug": "rapid-bucuresti"
       },
       "venue": "home",
@@ -546,18 +1188,26 @@
         "against": 1
       },
       "result": "W",
-      "sourceRef": "src:1ac1d16b4d91beda9a2b"
+      "sourceRef": "src:1ac1d16b4d91beda9a2b",
+      "sources": [
+        {
+          "provider": "UEFA official match API",
+          "url": "https://www.uefa.com/uefachampionsleague/match/56864/",
+          "retrievedAt": "2026-08-04T21:11:09.332Z",
+          "rawArtifact": "data/teams/history/normalized/uefa-1785878005892.json"
+        }
+      ]
     },
     {
-      "id": "engsoccerdata:ab554db1a8b9bdb3788dd99077b6b6d754d64f09e84cb506bc3442cc323cbaea:1999-08-11:Chelsea:Skonto:away",
+      "id": "uefa:56892:away",
       "date": "1999-08-11",
       "season": "1999-00",
       "competition": {
-        "name": "European Champion Clubs' Cup / Champions League",
+        "name": "UEFA Champions League / European Cup",
         "type": "continental",
         "country": "Europe"
       },
-      "stage": "Q-3",
+      "stage": "Third qualifying round",
       "opponent": {
         "name": "Chelsea",
         "slug": "chelsea"
@@ -568,18 +1218,26 @@
         "against": 3
       },
       "result": "L",
-      "sourceRef": "src:1ac1d16b4d91beda9a2b"
+      "sourceRef": "src:1ac1d16b4d91beda9a2b",
+      "sources": [
+        {
+          "provider": "UEFA official match API",
+          "url": "https://www.uefa.com/uefachampionsleague/match/56892/",
+          "retrievedAt": "2026-08-04T21:11:09.332Z",
+          "rawArtifact": "data/teams/history/normalized/uefa-1785878005892.json"
+        }
+      ]
     },
     {
-      "id": "engsoccerdata:ab554db1a8b9bdb3788dd99077b6b6d754d64f09e84cb506bc3442cc323cbaea:1999-08-25:Skonto:Chelsea:home",
+      "id": "uefa:56893:home",
       "date": "1999-08-25",
       "season": "1999-00",
       "competition": {
-        "name": "European Champion Clubs' Cup / Champions League",
+        "name": "UEFA Champions League / European Cup",
         "type": "continental",
         "country": "Europe"
       },
-      "stage": "Q-3",
+      "stage": "Third qualifying round",
       "opponent": {
         "name": "Chelsea",
         "slug": "chelsea"
@@ -590,18 +1248,84 @@
         "against": 0
       },
       "result": "D",
-      "sourceRef": "src:1ac1d16b4d91beda9a2b"
+      "sourceRef": "src:1ac1d16b4d91beda9a2b",
+      "sources": [
+        {
+          "provider": "UEFA official match API",
+          "url": "https://www.uefa.com/uefachampionsleague/match/56893/",
+          "retrievedAt": "2026-08-04T21:11:09.332Z",
+          "rawArtifact": "data/teams/history/normalized/uefa-1785878005892.json"
+        }
+      ]
     },
     {
-      "id": "engsoccerdata:ab554db1a8b9bdb3788dd99077b6b6d754d64f09e84cb506bc3442cc323cbaea:2000-07-12:Skonto:Shamkir:home",
-      "date": "2000-07-12",
-      "season": "2000-01",
+      "id": "uefa:56974:home",
+      "date": "1999-09-16",
+      "season": "1999-00",
       "competition": {
-        "name": "European Champion Clubs' Cup / Champions League",
+        "name": "UEFA Cup / UEFA Europa League",
         "type": "continental",
         "country": "Europe"
       },
-      "stage": "Q-1",
+      "stage": "First round",
+      "opponent": {
+        "name": "Widzew",
+        "slug": "widzew"
+      },
+      "venue": "home",
+      "score": {
+        "for": 1,
+        "against": 0
+      },
+      "result": "W",
+      "sources": [
+        {
+          "provider": "UEFA official match API",
+          "url": "https://www.uefa.com/uefachampionsleague/match/56974/",
+          "retrievedAt": "2026-08-04T21:11:10.429Z",
+          "rawArtifact": "data/teams/history/normalized/uefa-1785878005892.json"
+        }
+      ]
+    },
+    {
+      "id": "uefa:56975:away",
+      "date": "1999-09-30",
+      "season": "1999-00",
+      "competition": {
+        "name": "UEFA Cup / UEFA Europa League",
+        "type": "continental",
+        "country": "Europe"
+      },
+      "stage": "First round",
+      "opponent": {
+        "name": "Widzew",
+        "slug": "widzew"
+      },
+      "venue": "away",
+      "score": {
+        "for": 0,
+        "against": 2
+      },
+      "result": "L",
+      "sources": [
+        {
+          "provider": "UEFA official match API",
+          "url": "https://www.uefa.com/uefachampionsleague/match/56975/",
+          "retrievedAt": "2026-08-04T21:11:10.429Z",
+          "rawArtifact": "data/teams/history/normalized/uefa-1785878005892.json"
+        }
+      ]
+    },
+    {
+      "id": "uefa:65175:home",
+      "date": "2000-07-12",
+      "season": "2000-01",
+      "competition": {
+        "name": "UEFA Champions League / European Cup",
+        "type": "continental",
+        "country": "Europe"
+      },
+      "stage": "Main Round",
       "opponent": {
         "name": "Shamkir",
         "slug": "shamkir"
@@ -612,18 +1336,26 @@
         "against": 1
       },
       "result": "W",
-      "sourceRef": "src:1ac1d16b4d91beda9a2b"
+      "sourceRef": "src:1ac1d16b4d91beda9a2b",
+      "sources": [
+        {
+          "provider": "UEFA official match API",
+          "url": "https://www.uefa.com/uefachampionsleague/match/65175/",
+          "retrievedAt": "2026-08-04T21:11:10.969Z",
+          "rawArtifact": "data/teams/history/normalized/uefa-1785878005892.json"
+        }
+      ]
     },
     {
-      "id": "engsoccerdata:ab554db1a8b9bdb3788dd99077b6b6d754d64f09e84cb506bc3442cc323cbaea:2000-07-19:Shamkir:Skonto:away",
+      "id": "uefa:65176:away",
       "date": "2000-07-19",
       "season": "2000-01",
       "competition": {
-        "name": "European Champion Clubs' Cup / Champions League",
+        "name": "UEFA Champions League / European Cup",
         "type": "continental",
         "country": "Europe"
       },
-      "stage": "Q-1",
+      "stage": "Main Round",
       "opponent": {
         "name": "Shamkir",
         "slug": "shamkir"
@@ -631,10 +1363,18 @@
       "venue": "away",
       "score": {
         "for": 1,
-        "against": 2
+        "against": 4
       },
       "result": "L",
-      "sourceRef": "src:1ac1d16b4d91beda9a2b"
+      "sourceRef": "src:1ac1d16b4d91beda9a2b",
+      "sources": [
+        {
+          "provider": "UEFA official match API",
+          "url": "https://www.uefa.com/uefachampionsleague/match/65176/",
+          "retrievedAt": "2026-08-04T21:11:10.969Z",
+          "rawArtifact": "data/teams/history/normalized/uefa-1785878005892.json"
+        }
+      ]
     },
     {
       "id": "engsoccerdata:ab554db1a8b9bdb3788dd99077b6b6d754d64f09e84cb506bc3442cc323cbaea:2001-07-11:F91%20Dudelange:Skonto:away",
@@ -659,6 +1399,35 @@
       "sourceRef": "src:1ac1d16b4d91beda9a2b"
     },
     {
+      "id": "uefa:67834:away",
+      "date": "2001-07-11",
+      "season": "2001-02",
+      "competition": {
+        "name": "UEFA Champions League / European Cup",
+        "type": "continental",
+        "country": "Europe"
+      },
+      "stage": "First qualifying round",
+      "opponent": {
+        "name": "Diddeleng",
+        "slug": "diddeleng"
+      },
+      "venue": "away",
+      "score": {
+        "for": 6,
+        "against": 1
+      },
+      "result": "W",
+      "sources": [
+        {
+          "provider": "UEFA official match API",
+          "url": "https://www.uefa.com/uefachampionsleague/match/67834/",
+          "retrievedAt": "2026-08-04T21:11:21.797Z",
+          "rawArtifact": "data/teams/history/normalized/uefa-1785878005892.json"
+        }
+      ]
+    },
+    {
       "id": "engsoccerdata:ab554db1a8b9bdb3788dd99077b6b6d754d64f09e84cb506bc3442cc323cbaea:2001-07-18:Skonto:F91%20Dudelange:home",
       "date": "2001-07-18",
       "season": "2001-02",
@@ -679,6 +1448,35 @@
       },
       "result": "L",
       "sourceRef": "src:1ac1d16b4d91beda9a2b"
+    },
+    {
+      "id": "uefa:67835:home",
+      "date": "2001-07-18",
+      "season": "2001-02",
+      "competition": {
+        "name": "UEFA Champions League / European Cup",
+        "type": "continental",
+        "country": "Europe"
+      },
+      "stage": "First qualifying round",
+      "opponent": {
+        "name": "Diddeleng",
+        "slug": "diddeleng"
+      },
+      "venue": "home",
+      "score": {
+        "for": 0,
+        "against": 1
+      },
+      "result": "L",
+      "sources": [
+        {
+          "provider": "UEFA official match API",
+          "url": "https://www.uefa.com/uefachampionsleague/match/67835/",
+          "retrievedAt": "2026-08-04T21:11:21.797Z",
+          "rawArtifact": "data/teams/history/normalized/uefa-1785878005892.json"
+        }
+      ]
     },
     {
       "id": "engsoccerdata:ab554db1a8b9bdb3788dd99077b6b6d754d64f09e84cb506bc3442cc323cbaea:2001-07-25:Skonto:Wisla%20Krakow:home",
@@ -703,6 +1501,35 @@
       "sourceRef": "src:1ac1d16b4d91beda9a2b"
     },
     {
+      "id": "uefa:68045:home",
+      "date": "2001-07-25",
+      "season": "2001-02",
+      "competition": {
+        "name": "UEFA Champions League / European Cup",
+        "type": "continental",
+        "country": "Europe"
+      },
+      "stage": "Second qualifying round",
+      "opponent": {
+        "name": "Wisła Kraków",
+        "slug": "wis-a-krakow"
+      },
+      "venue": "home",
+      "score": {
+        "for": 1,
+        "against": 2
+      },
+      "result": "L",
+      "sources": [
+        {
+          "provider": "UEFA official match API",
+          "url": "https://www.uefa.com/uefachampionsleague/match/68045/",
+          "retrievedAt": "2026-08-04T21:11:21.797Z",
+          "rawArtifact": "data/teams/history/normalized/uefa-1785878005892.json"
+        }
+      ]
+    },
+    {
       "id": "engsoccerdata:ab554db1a8b9bdb3788dd99077b6b6d754d64f09e84cb506bc3442cc323cbaea:2001-08-01:Wisla%20Krakow:Skonto:away",
       "date": "2001-08-01",
       "season": "2001-02",
@@ -723,6 +1550,35 @@
       },
       "result": "L",
       "sourceRef": "src:1ac1d16b4d91beda9a2b"
+    },
+    {
+      "id": "uefa:68046:away",
+      "date": "2001-08-01",
+      "season": "2001-02",
+      "competition": {
+        "name": "UEFA Champions League / European Cup",
+        "type": "continental",
+        "country": "Europe"
+      },
+      "stage": "Second qualifying round",
+      "opponent": {
+        "name": "Wisła Kraków",
+        "slug": "wis-a-krakow"
+      },
+      "venue": "away",
+      "score": {
+        "for": 0,
+        "against": 1
+      },
+      "result": "L",
+      "sources": [
+        {
+          "provider": "UEFA official match API",
+          "url": "https://www.uefa.com/uefachampionsleague/match/68046/",
+          "retrievedAt": "2026-08-04T21:11:21.797Z",
+          "rawArtifact": "data/teams/history/normalized/uefa-1785878005892.json"
+        }
+      ]
     },
     {
       "id": "engsoccerdata:ab554db1a8b9bdb3788dd99077b6b6d754d64f09e84cb506bc3442cc323cbaea:2002-07-17:Skonto:Barry%20Town:home",
@@ -747,6 +1603,35 @@
       "sourceRef": "src:1ac1d16b4d91beda9a2b"
     },
     {
+      "id": "uefa:69686:home",
+      "date": "2002-07-17",
+      "season": "2002-03",
+      "competition": {
+        "name": "UEFA Champions League / European Cup",
+        "type": "continental",
+        "country": "Europe"
+      },
+      "stage": "First qualifying round",
+      "opponent": {
+        "name": "Barry",
+        "slug": "barry"
+      },
+      "venue": "home",
+      "score": {
+        "for": 5,
+        "against": 0
+      },
+      "result": "W",
+      "sources": [
+        {
+          "provider": "UEFA official match API",
+          "url": "https://www.uefa.com/uefachampionsleague/match/69686/",
+          "retrievedAt": "2026-08-04T21:11:23.334Z",
+          "rawArtifact": "data/teams/history/normalized/uefa-1785878005892.json"
+        }
+      ]
+    },
+    {
       "id": "engsoccerdata:ab554db1a8b9bdb3788dd99077b6b6d754d64f09e84cb506bc3442cc323cbaea:2002-07-24:Barry%20Town:Skonto:away",
       "date": "2002-07-24",
       "season": "2002-03",
@@ -769,15 +1654,44 @@
       "sourceRef": "src:1ac1d16b4d91beda9a2b"
     },
     {
-      "id": "engsoccerdata:ab554db1a8b9bdb3788dd99077b6b6d754d64f09e84cb506bc3442cc323cbaea:2002-07-31:Skonto:Levski%20Sofia:home",
-      "date": "2002-07-31",
+      "id": "uefa:69687:away",
+      "date": "2002-07-24",
       "season": "2002-03",
       "competition": {
-        "name": "European Champion Clubs' Cup / Champions League",
+        "name": "UEFA Champions League / European Cup",
         "type": "continental",
         "country": "Europe"
       },
-      "stage": "Q-2",
+      "stage": "First qualifying round",
+      "opponent": {
+        "name": "Barry",
+        "slug": "barry"
+      },
+      "venue": "away",
+      "score": {
+        "for": 1,
+        "against": 0
+      },
+      "result": "W",
+      "sources": [
+        {
+          "provider": "UEFA official match API",
+          "url": "https://www.uefa.com/uefachampionsleague/match/69687/",
+          "retrievedAt": "2026-08-04T21:11:23.334Z",
+          "rawArtifact": "data/teams/history/normalized/uefa-1785878005892.json"
+        }
+      ]
+    },
+    {
+      "id": "uefa:69924:home",
+      "date": "2002-07-31",
+      "season": "2002-03",
+      "competition": {
+        "name": "UEFA Champions League / European Cup",
+        "type": "continental",
+        "country": "Europe"
+      },
+      "stage": "Second qualifying round",
       "opponent": {
         "name": "Levski Sofia",
         "slug": "levski-sofia"
@@ -788,18 +1702,26 @@
         "against": 0
       },
       "result": "D",
-      "sourceRef": "src:1ac1d16b4d91beda9a2b"
+      "sourceRef": "src:1ac1d16b4d91beda9a2b",
+      "sources": [
+        {
+          "provider": "UEFA official match API",
+          "url": "https://www.uefa.com/uefachampionsleague/match/69924/",
+          "retrievedAt": "2026-08-04T21:11:23.334Z",
+          "rawArtifact": "data/teams/history/normalized/uefa-1785878005892.json"
+        }
+      ]
     },
     {
-      "id": "engsoccerdata:ab554db1a8b9bdb3788dd99077b6b6d754d64f09e84cb506bc3442cc323cbaea:2002-08-07:Levski%20Sofia:Skonto:away",
+      "id": "uefa:69925:away",
       "date": "2002-08-07",
       "season": "2002-03",
       "competition": {
-        "name": "European Champion Clubs' Cup / Champions League",
+        "name": "UEFA Champions League / European Cup",
         "type": "continental",
         "country": "Europe"
       },
-      "stage": "Q-2",
+      "stage": "Second qualifying round",
       "opponent": {
         "name": "Levski Sofia",
         "slug": "levski-sofia"
@@ -810,7 +1732,15 @@
         "against": 2
       },
       "result": "L",
-      "sourceRef": "src:1ac1d16b4d91beda9a2b"
+      "sourceRef": "src:1ac1d16b4d91beda9a2b",
+      "sources": [
+        {
+          "provider": "UEFA official match API",
+          "url": "https://www.uefa.com/uefachampionsleague/match/69925/",
+          "retrievedAt": "2026-08-04T21:11:23.334Z",
+          "rawArtifact": "data/teams/history/normalized/uefa-1785878005892.json"
+        }
+      ]
     },
     {
       "id": "engsoccerdata:ab554db1a8b9bdb3788dd99077b6b6d754d64f09e84cb506bc3442cc323cbaea:2003-07-16:Sliema%20Wanderers:Skonto:away",
@@ -835,6 +1765,35 @@
       "sourceRef": "src:1ac1d16b4d91beda9a2b"
     },
     {
+      "id": "uefa:71283:away",
+      "date": "2003-07-16",
+      "season": "2003-04",
+      "competition": {
+        "name": "UEFA Champions League / European Cup",
+        "type": "continental",
+        "country": "Europe"
+      },
+      "stage": "First qualifying round",
+      "opponent": {
+        "name": "Sliema",
+        "slug": "sliema"
+      },
+      "venue": "away",
+      "score": {
+        "for": 0,
+        "against": 2
+      },
+      "result": "L",
+      "sources": [
+        {
+          "provider": "UEFA official match API",
+          "url": "https://www.uefa.com/uefachampionsleague/match/71283/",
+          "retrievedAt": "2026-08-04T21:11:24.807Z",
+          "rawArtifact": "data/teams/history/normalized/uefa-1785878005892.json"
+        }
+      ]
+    },
+    {
       "id": "engsoccerdata:ab554db1a8b9bdb3788dd99077b6b6d754d64f09e84cb506bc3442cc323cbaea:2003-07-23:Skonto:Sliema%20Wanderers:home",
       "date": "2003-07-23",
       "season": "2003-04",
@@ -857,15 +1816,44 @@
       "sourceRef": "src:1ac1d16b4d91beda9a2b"
     },
     {
-      "id": "engsoccerdata:ab554db1a8b9bdb3788dd99077b6b6d754d64f09e84cb506bc3442cc323cbaea:2004-07-14:Skonto:Rhyl:home",
-      "date": "2004-07-14",
-      "season": "2004-05",
+      "id": "uefa:71284:home",
+      "date": "2003-07-23",
+      "season": "2003-04",
       "competition": {
-        "name": "European Champion Clubs' Cup / Champions League",
+        "name": "UEFA Champions League / European Cup",
         "type": "continental",
         "country": "Europe"
       },
-      "stage": "Q-1",
+      "stage": "First qualifying round",
+      "opponent": {
+        "name": "Sliema",
+        "slug": "sliema"
+      },
+      "venue": "home",
+      "score": {
+        "for": 3,
+        "against": 1
+      },
+      "result": "W",
+      "sources": [
+        {
+          "provider": "UEFA official match API",
+          "url": "https://www.uefa.com/uefachampionsleague/match/71284/",
+          "retrievedAt": "2026-08-04T21:11:24.807Z",
+          "rawArtifact": "data/teams/history/normalized/uefa-1785878005892.json"
+        }
+      ]
+    },
+    {
+      "id": "uefa:79006:home",
+      "date": "2004-07-14",
+      "season": "2004-05",
+      "competition": {
+        "name": "UEFA Champions League / European Cup",
+        "type": "continental",
+        "country": "Europe"
+      },
+      "stage": "First qualifying round",
       "opponent": {
         "name": "Rhyl",
         "slug": "rhyl"
@@ -876,18 +1864,26 @@
         "against": 0
       },
       "result": "W",
-      "sourceRef": "src:1ac1d16b4d91beda9a2b"
+      "sourceRef": "src:1ac1d16b4d91beda9a2b",
+      "sources": [
+        {
+          "provider": "UEFA official match API",
+          "url": "https://www.uefa.com/uefachampionsleague/match/79006/",
+          "retrievedAt": "2026-08-04T21:11:26.520Z",
+          "rawArtifact": "data/teams/history/normalized/uefa-1785878005892.json"
+        }
+      ]
     },
     {
-      "id": "engsoccerdata:ab554db1a8b9bdb3788dd99077b6b6d754d64f09e84cb506bc3442cc323cbaea:2004-07-21:Rhyl:Skonto:away",
+      "id": "uefa:79007:away",
       "date": "2004-07-21",
       "season": "2004-05",
       "competition": {
-        "name": "European Champion Clubs' Cup / Champions League",
+        "name": "UEFA Champions League / European Cup",
         "type": "continental",
         "country": "Europe"
       },
-      "stage": "Q-1",
+      "stage": "First qualifying round",
       "opponent": {
         "name": "Rhyl",
         "slug": "rhyl"
@@ -898,18 +1894,26 @@
         "against": 1
       },
       "result": "W",
-      "sourceRef": "src:1ac1d16b4d91beda9a2b"
+      "sourceRef": "src:1ac1d16b4d91beda9a2b",
+      "sources": [
+        {
+          "provider": "UEFA official match API",
+          "url": "https://www.uefa.com/uefachampionsleague/match/79007/",
+          "retrievedAt": "2026-08-04T21:11:26.520Z",
+          "rawArtifact": "data/teams/history/normalized/uefa-1785878005892.json"
+        }
+      ]
     },
     {
-      "id": "engsoccerdata:ab554db1a8b9bdb3788dd99077b6b6d754d64f09e84cb506bc3442cc323cbaea:2004-07-28:Skonto:Trabzonspor:home",
+      "id": "uefa:79238:home",
       "date": "2004-07-28",
       "season": "2004-05",
       "competition": {
-        "name": "European Champion Clubs' Cup / Champions League",
+        "name": "UEFA Champions League / European Cup",
         "type": "continental",
         "country": "Europe"
       },
-      "stage": "Q-2",
+      "stage": "Second qualifying round",
       "opponent": {
         "name": "Trabzonspor",
         "slug": "trabzonspor"
@@ -920,18 +1924,26 @@
         "against": 1
       },
       "result": "D",
-      "sourceRef": "src:1ac1d16b4d91beda9a2b"
+      "sourceRef": "src:1ac1d16b4d91beda9a2b",
+      "sources": [
+        {
+          "provider": "UEFA official match API",
+          "url": "https://www.uefa.com/uefachampionsleague/match/79238/",
+          "retrievedAt": "2026-08-04T21:11:26.520Z",
+          "rawArtifact": "data/teams/history/normalized/uefa-1785878005892.json"
+        }
+      ]
     },
     {
-      "id": "engsoccerdata:ab554db1a8b9bdb3788dd99077b6b6d754d64f09e84cb506bc3442cc323cbaea:2004-08-04:Trabzonspor:Skonto:away",
+      "id": "uefa:79239:away",
       "date": "2004-08-04",
       "season": "2004-05",
       "competition": {
-        "name": "European Champion Clubs' Cup / Champions League",
+        "name": "UEFA Champions League / European Cup",
         "type": "continental",
         "country": "Europe"
       },
-      "stage": "Q-2",
+      "stage": "Second qualifying round",
       "opponent": {
         "name": "Trabzonspor",
         "slug": "trabzonspor"
@@ -942,18 +1954,26 @@
         "against": 3
       },
       "result": "L",
-      "sourceRef": "src:1ac1d16b4d91beda9a2b"
+      "sourceRef": "src:1ac1d16b4d91beda9a2b",
+      "sources": [
+        {
+          "provider": "UEFA official match API",
+          "url": "https://www.uefa.com/uefachampionsleague/match/79239/",
+          "retrievedAt": "2026-08-04T21:11:26.520Z",
+          "rawArtifact": "data/teams/history/normalized/uefa-1785878005892.json"
+        }
+      ]
     },
     {
-      "id": "engsoccerdata:ab554db1a8b9bdb3788dd99077b6b6d754d64f09e84cb506bc3442cc323cbaea:2005-07-12:Rabotnicki:Skonto:away",
+      "id": "uefa:81180:away",
       "date": "2005-07-12",
       "season": "2005-06",
       "competition": {
-        "name": "European Champion Clubs' Cup / Champions League",
+        "name": "UEFA Champions League / European Cup",
         "type": "continental",
         "country": "Europe"
       },
-      "stage": "Q-1",
+      "stage": "First qualifying round",
       "opponent": {
         "name": "Rabotnicki",
         "slug": "rabotnicki"
@@ -964,18 +1984,26 @@
         "against": 6
       },
       "result": "L",
-      "sourceRef": "src:1ac1d16b4d91beda9a2b"
+      "sourceRef": "src:1ac1d16b4d91beda9a2b",
+      "sources": [
+        {
+          "provider": "UEFA official match API",
+          "url": "https://www.uefa.com/uefachampionsleague/match/81180/",
+          "retrievedAt": "2026-08-04T21:11:28.097Z",
+          "rawArtifact": "data/teams/history/normalized/uefa-1785878005892.json"
+        }
+      ]
     },
     {
-      "id": "engsoccerdata:ab554db1a8b9bdb3788dd99077b6b6d754d64f09e84cb506bc3442cc323cbaea:2005-07-20:Skonto:Rabotnicki:home",
+      "id": "uefa:81181:home",
       "date": "2005-07-20",
       "season": "2005-06",
       "competition": {
-        "name": "European Champion Clubs' Cup / Champions League",
+        "name": "UEFA Champions League / European Cup",
         "type": "continental",
         "country": "Europe"
       },
-      "stage": "Q-1",
+      "stage": "First qualifying round",
       "opponent": {
         "name": "Rabotnicki",
         "slug": "rabotnicki"
@@ -986,7 +2014,305 @@
         "against": 0
       },
       "result": "W",
-      "sourceRef": "src:1ac1d16b4d91beda9a2b"
+      "sourceRef": "src:1ac1d16b4d91beda9a2b",
+      "sources": [
+        {
+          "provider": "UEFA official match API",
+          "url": "https://www.uefa.com/uefachampionsleague/match/81181/",
+          "retrievedAt": "2026-08-04T21:11:28.097Z",
+          "rawArtifact": "data/teams/history/normalized/uefa-1785878005892.json"
+        }
+      ]
+    },
+    {
+      "id": "uefa:84228:away",
+      "date": "2006-07-13",
+      "season": "2006-07",
+      "competition": {
+        "name": "UEFA Cup / UEFA Europa League",
+        "type": "continental",
+        "country": "Europe"
+      },
+      "stage": "First qualifying round",
+      "opponent": {
+        "name": "Jeunesse Esch",
+        "slug": "jeunesse-esch"
+      },
+      "venue": "away",
+      "score": {
+        "for": 2,
+        "against": 0
+      },
+      "result": "W",
+      "sources": [
+        {
+          "provider": "UEFA official match API",
+          "url": "https://www.uefa.com/uefachampionsleague/match/84228/",
+          "retrievedAt": "2026-08-04T21:11:45.264Z",
+          "rawArtifact": "data/teams/history/normalized/uefa-1785878005892.json"
+        }
+      ]
+    },
+    {
+      "id": "uefa:84229:home",
+      "date": "2006-07-27",
+      "season": "2006-07",
+      "competition": {
+        "name": "UEFA Cup / UEFA Europa League",
+        "type": "continental",
+        "country": "Europe"
+      },
+      "stage": "First qualifying round",
+      "opponent": {
+        "name": "Jeunesse Esch",
+        "slug": "jeunesse-esch"
+      },
+      "venue": "home",
+      "score": {
+        "for": 3,
+        "against": 0
+      },
+      "result": "W",
+      "sources": [
+        {
+          "provider": "UEFA official match API",
+          "url": "https://www.uefa.com/uefachampionsleague/match/84229/",
+          "retrievedAt": "2026-08-04T21:11:45.264Z",
+          "rawArtifact": "data/teams/history/normalized/uefa-1785878005892.json"
+        }
+      ]
+    },
+    {
+      "id": "uefa:84607:away",
+      "date": "2006-08-10",
+      "season": "2006-07",
+      "competition": {
+        "name": "UEFA Cup / UEFA Europa League",
+        "type": "continental",
+        "country": "Europe"
+      },
+      "stage": "Second qualifying round",
+      "opponent": {
+        "name": "Molde",
+        "slug": "molde"
+      },
+      "venue": "away",
+      "score": {
+        "for": 0,
+        "against": 0
+      },
+      "result": "D",
+      "sources": [
+        {
+          "provider": "UEFA official match API",
+          "url": "https://www.uefa.com/uefachampionsleague/match/84607/",
+          "retrievedAt": "2026-08-04T21:11:45.264Z",
+          "rawArtifact": "data/teams/history/normalized/uefa-1785878005892.json"
+        }
+      ]
+    },
+    {
+      "id": "uefa:84608:home",
+      "date": "2006-08-24",
+      "season": "2006-07",
+      "competition": {
+        "name": "UEFA Cup / UEFA Europa League",
+        "type": "continental",
+        "country": "Europe"
+      },
+      "stage": "Second qualifying round",
+      "opponent": {
+        "name": "Molde",
+        "slug": "molde"
+      },
+      "venue": "home",
+      "score": {
+        "for": 1,
+        "against": 2
+      },
+      "result": "L",
+      "sources": [
+        {
+          "provider": "UEFA official match API",
+          "url": "https://www.uefa.com/uefachampionsleague/match/84608/",
+          "retrievedAt": "2026-08-04T21:11:45.264Z",
+          "rawArtifact": "data/teams/history/normalized/uefa-1785878005892.json"
+        }
+      ]
+    },
+    {
+      "id": "uefa:300919:home",
+      "date": "2007-07-19",
+      "season": "2007-08",
+      "competition": {
+        "name": "UEFA Cup / UEFA Europa League",
+        "type": "continental",
+        "country": "Europe"
+      },
+      "stage": "First qualifying round",
+      "opponent": {
+        "name": "Dinamo-Minsk",
+        "slug": "dinamo-minsk"
+      },
+      "venue": "home",
+      "score": {
+        "for": 1,
+        "against": 1
+      },
+      "result": "D",
+      "sources": [
+        {
+          "provider": "UEFA official match API",
+          "url": "https://www.uefa.com/uefachampionsleague/match/300919/",
+          "retrievedAt": "2026-08-04T21:11:48.093Z",
+          "rawArtifact": "data/teams/history/normalized/uefa-1785878005892.json"
+        }
+      ]
+    },
+    {
+      "id": "uefa:300956:away",
+      "date": "2007-08-02",
+      "season": "2007-08",
+      "competition": {
+        "name": "UEFA Cup / UEFA Europa League",
+        "type": "continental",
+        "country": "Europe"
+      },
+      "stage": "First qualifying round",
+      "opponent": {
+        "name": "Dinamo-Minsk",
+        "slug": "dinamo-minsk"
+      },
+      "venue": "away",
+      "score": {
+        "for": 0,
+        "against": 2
+      },
+      "result": "L",
+      "sources": [
+        {
+          "provider": "UEFA official match API",
+          "url": "https://www.uefa.com/uefachampionsleague/match/300956/",
+          "retrievedAt": "2026-08-04T21:11:48.093Z",
+          "rawArtifact": "data/teams/history/normalized/uefa-1785878005892.json"
+        }
+      ]
+    },
+    {
+      "id": "uefa:2000558:home",
+      "date": "2009-07-16",
+      "season": "2009-10",
+      "competition": {
+        "name": "UEFA Cup / UEFA Europa League",
+        "type": "continental",
+        "country": "Europe"
+      },
+      "stage": "Second qualifying round",
+      "opponent": {
+        "name": "Derry",
+        "slug": "derry"
+      },
+      "venue": "home",
+      "score": {
+        "for": 1,
+        "against": 1
+      },
+      "result": "D",
+      "sources": [
+        {
+          "provider": "UEFA official match API",
+          "url": "https://www.uefa.com/uefachampionsleague/match/2000558/",
+          "retrievedAt": "2026-08-04T21:11:54.089Z",
+          "rawArtifact": "data/teams/history/normalized/uefa-1785878005892.json"
+        }
+      ]
+    },
+    {
+      "id": "uefa:2000598:away",
+      "date": "2009-07-23",
+      "season": "2009-10",
+      "competition": {
+        "name": "UEFA Cup / UEFA Europa League",
+        "type": "continental",
+        "country": "Europe"
+      },
+      "stage": "Second qualifying round",
+      "opponent": {
+        "name": "Derry",
+        "slug": "derry"
+      },
+      "venue": "away",
+      "score": {
+        "for": 0,
+        "against": 1
+      },
+      "result": "L",
+      "sources": [
+        {
+          "provider": "UEFA official match API",
+          "url": "https://www.uefa.com/uefachampionsleague/match/2000598/",
+          "retrievedAt": "2026-08-04T21:11:54.089Z",
+          "rawArtifact": "data/teams/history/normalized/uefa-1785878005892.json"
+        }
+      ]
+    },
+    {
+      "id": "uefa:2002463:away",
+      "date": "2010-07-01",
+      "season": "2010-11",
+      "competition": {
+        "name": "UEFA Cup / UEFA Europa League",
+        "type": "continental",
+        "country": "Europe"
+      },
+      "stage": "First qualifying round",
+      "opponent": {
+        "name": "Portadown",
+        "slug": "portadown"
+      },
+      "venue": "away",
+      "score": {
+        "for": 1,
+        "against": 1
+      },
+      "result": "D",
+      "sources": [
+        {
+          "provider": "UEFA official match API",
+          "url": "https://www.uefa.com/uefachampionsleague/match/2002463/",
+          "retrievedAt": "2026-08-04T21:12:07.450Z",
+          "rawArtifact": "data/teams/history/normalized/uefa-1785878005892.json"
+        }
+      ]
+    },
+    {
+      "id": "uefa:2002488:home",
+      "date": "2010-07-08",
+      "season": "2010-11",
+      "competition": {
+        "name": "UEFA Cup / UEFA Europa League",
+        "type": "continental",
+        "country": "Europe"
+      },
+      "stage": "First qualifying round",
+      "opponent": {
+        "name": "Portadown",
+        "slug": "portadown"
+      },
+      "venue": "home",
+      "score": {
+        "for": 0,
+        "against": 1
+      },
+      "result": "L",
+      "sources": [
+        {
+          "provider": "UEFA official match API",
+          "url": "https://www.uefa.com/uefachampionsleague/match/2002488/",
+          "retrievedAt": "2026-08-04T21:12:07.450Z",
+          "rawArtifact": "data/teams/history/normalized/uefa-1785878005892.json"
+        }
+      ]
     },
     {
       "id": "engsoccerdata:ab554db1a8b9bdb3788dd99077b6b6d754d64f09e84cb506bc3442cc323cbaea:2011-07-13:Skonto:Wisla%20Krakow:home",
@@ -1011,6 +2337,35 @@
       "sourceRef": "src:1ac1d16b4d91beda9a2b"
     },
     {
+      "id": "uefa:2007500:home",
+      "date": "2011-07-13",
+      "season": "2011-12",
+      "competition": {
+        "name": "UEFA Champions League / European Cup",
+        "type": "continental",
+        "country": "Europe"
+      },
+      "stage": "Second qualifying round",
+      "opponent": {
+        "name": "Wisła Kraków",
+        "slug": "wis-a-krakow"
+      },
+      "venue": "home",
+      "score": {
+        "for": 0,
+        "against": 1
+      },
+      "result": "L",
+      "sources": [
+        {
+          "provider": "UEFA official match API",
+          "url": "https://www.uefa.com/uefachampionsleague/match/2007500/",
+          "retrievedAt": "2026-08-04T21:12:08.117Z",
+          "rawArtifact": "data/teams/history/normalized/uefa-1785878005892.json"
+        }
+      ]
+    },
+    {
       "id": "engsoccerdata:ab554db1a8b9bdb3788dd99077b6b6d754d64f09e84cb506bc3442cc323cbaea:2011-07-19:Wisla%20Krakow:Skonto:away",
       "date": "2011-07-19",
       "season": "2011-12",
@@ -1031,6 +2386,325 @@
       },
       "result": "L",
       "sourceRef": "src:1ac1d16b4d91beda9a2b"
+    },
+    {
+      "id": "uefa:2007517:away",
+      "date": "2011-07-19",
+      "season": "2011-12",
+      "competition": {
+        "name": "UEFA Champions League / European Cup",
+        "type": "continental",
+        "country": "Europe"
+      },
+      "stage": "Second qualifying round",
+      "opponent": {
+        "name": "Wisła Kraków",
+        "slug": "wis-a-krakow"
+      },
+      "venue": "away",
+      "score": {
+        "for": 0,
+        "against": 2
+      },
+      "result": "L",
+      "sources": [
+        {
+          "provider": "UEFA official match API",
+          "url": "https://www.uefa.com/uefachampionsleague/match/2007517/",
+          "retrievedAt": "2026-08-04T21:12:08.117Z",
+          "rawArtifact": "data/teams/history/normalized/uefa-1785878005892.json"
+        }
+      ]
+    },
+    {
+      "id": "uefa:2009693:away",
+      "date": "2012-07-19",
+      "season": "2012-13",
+      "competition": {
+        "name": "UEFA Cup / UEFA Europa League",
+        "type": "continental",
+        "country": "Europe"
+      },
+      "stage": "Second qualifying round",
+      "opponent": {
+        "name": "Hajduk Split",
+        "slug": "hajduk-split"
+      },
+      "venue": "away",
+      "score": {
+        "for": 0,
+        "against": 2
+      },
+      "result": "L",
+      "sources": [
+        {
+          "provider": "UEFA official match API",
+          "url": "https://www.uefa.com/uefachampionsleague/match/2009693/",
+          "retrievedAt": "2026-08-04T21:12:12.078Z",
+          "rawArtifact": "data/teams/history/normalized/uefa-1785878005892.json"
+        }
+      ]
+    },
+    {
+      "id": "uefa:2009733:home",
+      "date": "2012-07-26",
+      "season": "2012-13",
+      "competition": {
+        "name": "UEFA Cup / UEFA Europa League",
+        "type": "continental",
+        "country": "Europe"
+      },
+      "stage": "Second qualifying round",
+      "opponent": {
+        "name": "Hajduk Split",
+        "slug": "hajduk-split"
+      },
+      "venue": "home",
+      "score": {
+        "for": 1,
+        "against": 0
+      },
+      "result": "W",
+      "sources": [
+        {
+          "provider": "UEFA official match API",
+          "url": "https://www.uefa.com/uefachampionsleague/match/2009733/",
+          "retrievedAt": "2026-08-04T21:12:12.078Z",
+          "rawArtifact": "data/teams/history/normalized/uefa-1785878005892.json"
+        }
+      ]
+    },
+    {
+      "id": "uefa:2012224:away",
+      "date": "2013-07-04",
+      "season": "2013-14",
+      "competition": {
+        "name": "UEFA Cup / UEFA Europa League",
+        "type": "continental",
+        "country": "Europe"
+      },
+      "stage": "First qualifying round",
+      "opponent": {
+        "name": "Tiraspol",
+        "slug": "tiraspol"
+      },
+      "venue": "away",
+      "score": {
+        "for": 1,
+        "against": 0
+      },
+      "result": "W",
+      "sources": [
+        {
+          "provider": "UEFA official match API",
+          "url": "https://www.uefa.com/uefachampionsleague/match/2012224/",
+          "retrievedAt": "2026-08-04T21:12:15.046Z",
+          "rawArtifact": "data/teams/history/normalized/uefa-1785878005892.json"
+        }
+      ]
+    },
+    {
+      "id": "uefa:2012263:home",
+      "date": "2013-07-11",
+      "season": "2013-14",
+      "competition": {
+        "name": "UEFA Cup / UEFA Europa League",
+        "type": "continental",
+        "country": "Europe"
+      },
+      "stage": "First qualifying round",
+      "opponent": {
+        "name": "Tiraspol",
+        "slug": "tiraspol"
+      },
+      "venue": "home",
+      "score": {
+        "for": 0,
+        "against": 1
+      },
+      "result": "L",
+      "sources": [
+        {
+          "provider": "UEFA official match API",
+          "url": "https://www.uefa.com/uefachampionsleague/match/2012263/",
+          "retrievedAt": "2026-08-04T21:12:15.046Z",
+          "rawArtifact": "data/teams/history/normalized/uefa-1785878005892.json"
+        }
+      ]
+    },
+    {
+      "id": "uefa:2012286:home",
+      "date": "2013-07-18",
+      "season": "2013-14",
+      "competition": {
+        "name": "UEFA Cup / UEFA Europa League",
+        "type": "continental",
+        "country": "Europe"
+      },
+      "stage": "Second qualifying round",
+      "opponent": {
+        "name": "Liberec",
+        "slug": "liberec"
+      },
+      "venue": "home",
+      "score": {
+        "for": 2,
+        "against": 1
+      },
+      "result": "W",
+      "sources": [
+        {
+          "provider": "UEFA official match API",
+          "url": "https://www.uefa.com/uefachampionsleague/match/2012286/",
+          "retrievedAt": "2026-08-04T21:12:15.046Z",
+          "rawArtifact": "data/teams/history/normalized/uefa-1785878005892.json"
+        }
+      ]
+    },
+    {
+      "id": "uefa:2012326:away",
+      "date": "2013-07-25",
+      "season": "2013-14",
+      "competition": {
+        "name": "UEFA Cup / UEFA Europa League",
+        "type": "continental",
+        "country": "Europe"
+      },
+      "stage": "Second qualifying round",
+      "opponent": {
+        "name": "Liberec",
+        "slug": "liberec"
+      },
+      "venue": "away",
+      "score": {
+        "for": 0,
+        "against": 1
+      },
+      "result": "L",
+      "sources": [
+        {
+          "provider": "UEFA official match API",
+          "url": "https://www.uefa.com/uefachampionsleague/match/2012326/",
+          "retrievedAt": "2026-08-04T21:12:15.046Z",
+          "rawArtifact": "data/teams/history/normalized/uefa-1785878005892.json"
+        }
+      ]
+    },
+    {
+      "id": "uefa:2017085:home",
+      "date": "2015-07-02",
+      "season": "2015-16",
+      "competition": {
+        "name": "UEFA Cup / UEFA Europa League",
+        "type": "continental",
+        "country": "Europe"
+      },
+      "stage": "First qualifying round",
+      "opponent": {
+        "name": "St. Patrick's",
+        "slug": "st-patrick-s"
+      },
+      "venue": "home",
+      "score": {
+        "for": 2,
+        "against": 1
+      },
+      "result": "W",
+      "sources": [
+        {
+          "provider": "UEFA official match API",
+          "url": "https://www.uefa.com/uefachampionsleague/match/2017085/",
+          "retrievedAt": "2026-08-04T21:12:31.773Z",
+          "rawArtifact": "data/teams/history/normalized/uefa-1785878005892.json"
+        }
+      ]
+    },
+    {
+      "id": "uefa:2017136:away",
+      "date": "2015-07-09",
+      "season": "2015-16",
+      "competition": {
+        "name": "UEFA Cup / UEFA Europa League",
+        "type": "continental",
+        "country": "Europe"
+      },
+      "stage": "First qualifying round",
+      "opponent": {
+        "name": "St. Patrick's",
+        "slug": "st-patrick-s"
+      },
+      "venue": "away",
+      "score": {
+        "for": 2,
+        "against": 0
+      },
+      "result": "W",
+      "sources": [
+        {
+          "provider": "UEFA official match API",
+          "url": "https://www.uefa.com/uefachampionsleague/match/2017136/",
+          "retrievedAt": "2026-08-04T21:12:31.773Z",
+          "rawArtifact": "data/teams/history/normalized/uefa-1785878005892.json"
+        }
+      ]
+    },
+    {
+      "id": "uefa:2016769:home",
+      "date": "2015-07-16",
+      "season": "2015-16",
+      "competition": {
+        "name": "UEFA Cup / UEFA Europa League",
+        "type": "continental",
+        "country": "Europe"
+      },
+      "stage": "Second qualifying round",
+      "opponent": {
+        "name": "Debrecen",
+        "slug": "debrecen"
+      },
+      "venue": "home",
+      "score": {
+        "for": 2,
+        "against": 2
+      },
+      "result": "D",
+      "sources": [
+        {
+          "provider": "UEFA official match API",
+          "url": "https://www.uefa.com/uefachampionsleague/match/2016769/",
+          "retrievedAt": "2026-08-04T21:12:31.773Z",
+          "rawArtifact": "data/teams/history/normalized/uefa-1785878005892.json"
+        }
+      ]
+    },
+    {
+      "id": "uefa:2016802:away",
+      "date": "2015-07-23",
+      "season": "2015-16",
+      "competition": {
+        "name": "UEFA Cup / UEFA Europa League",
+        "type": "continental",
+        "country": "Europe"
+      },
+      "stage": "Second qualifying round",
+      "opponent": {
+        "name": "Debrecen",
+        "slug": "debrecen"
+      },
+      "venue": "away",
+      "score": {
+        "for": 2,
+        "against": 9
+      },
+      "result": "L",
+      "sources": [
+        {
+          "provider": "UEFA official match API",
+          "url": "https://www.uefa.com/uefachampionsleague/match/2016802/",
+          "retrievedAt": "2026-08-04T21:12:31.773Z",
+          "rawArtifact": "data/teams/history/normalized/uefa-1785878005892.json"
+        }
+      ]
     }
   ],
   "seasonStandings": [],
@@ -1228,5 +2902,5 @@
       "basis": "derived from source-attributed recorded matches"
     }
   ],
-  "updatedAt": "2026-08-04T20:33:29.640Z"
+  "updatedAt": "2026-08-04T21:14:24.199Z"
 }

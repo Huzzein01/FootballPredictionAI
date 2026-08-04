@@ -1,0 +1,753 @@
+{
+  "contract": "football-team-history-v1",
+  "team": {
+    "name": "Riteriai",
+    "slug": "riteriai",
+    "primaryLeague": "UEFA Cup / UEFA Europa League",
+    "aliases": []
+  },
+  "requestedCoverage": {
+    "fromYear": 1985,
+    "to": "present",
+    "includes": [
+      "all competitions",
+      "opponents",
+      "scorelines",
+      "league standings",
+      "competition standings"
+    ]
+  },
+  "sourcePlan": [
+    {
+      "rank": 1,
+      "provider": "Official club archive",
+      "url": "",
+      "scope": "club history, competition participation and match reports",
+      "lookupKey": "Riteriai",
+      "review": "Verify the club-owned archive URL before collection."
+    },
+    {
+      "rank": 2,
+      "provider": "Official domestic competition / association",
+      "url": "",
+      "scope": "official league fixtures, final tables and cup records",
+      "lookupKey": "UEFA Cup / UEFA Europa League"
+    },
+    {
+      "rank": 3,
+      "provider": "UEFA",
+      "url": "https://www.uefa.com/",
+      "scope": "official European competition appearances, fixtures and standings",
+      "lookupKey": "Riteriai"
+    },
+    {
+      "rank": 4,
+      "provider": "RSSSF",
+      "url": "https://www.rsssf.org/",
+      "scope": "historic competitions, tables and cross-checking",
+      "lookupKey": "Riteriai"
+    },
+    {
+      "rank": 5,
+      "provider": "worldfootball.net",
+      "url": "https://www.worldfootball.net/",
+      "scope": "club match archive and competition participation cross-check",
+      "lookupKey": "Riteriai"
+    }
+  ],
+  "coverage": {
+    "earliestMatch": "2015-07-02",
+    "latestMatch": "2020-09-17",
+    "seasonsWithMatches": [
+      "2015-16",
+      "2016-17",
+      "2017-18",
+      "2018-19",
+      "2019-20",
+      "2020-21"
+    ],
+    "missingSeasons": [
+      "1985-86",
+      "1986-87",
+      "1987-88",
+      "1988-89",
+      "1989-90",
+      "1990-91",
+      "1991-92",
+      "1992-93",
+      "1993-94",
+      "1994-95",
+      "1995-96",
+      "1996-97",
+      "1997-98",
+      "1998-99",
+      "1999-00",
+      "2000-01",
+      "2001-02",
+      "2002-03",
+      "2003-04",
+      "2004-05",
+      "2005-06",
+      "2006-07",
+      "2007-08",
+      "2008-09",
+      "2009-10",
+      "2010-11",
+      "2011-12",
+      "2012-13",
+      "2013-14",
+      "2014-15",
+      "2021-22",
+      "2022-23",
+      "2023-24",
+      "2024-25",
+      "2025-26",
+      "2026-27"
+    ],
+    "competitionScopeVerified": false,
+    "status": "partial"
+  },
+  "matches": [
+    {
+      "id": "uefa:2017104:home",
+      "date": "2015-07-02",
+      "season": "2015-16",
+      "competition": {
+        "name": "UEFA Cup / UEFA Europa League",
+        "type": "continental",
+        "country": "Europe"
+      },
+      "stage": "First qualifying round",
+      "opponent": {
+        "name": "H. Bóltfelag",
+        "slug": "h-boltfelag"
+      },
+      "venue": "home",
+      "score": {
+        "for": 3,
+        "against": 0
+      },
+      "result": "W",
+      "sources": [
+        {
+          "provider": "UEFA official match API",
+          "url": "https://www.uefa.com/uefachampionsleague/match/2017104/",
+          "retrievedAt": "2026-08-04T21:12:31.773Z",
+          "rawArtifact": "data/teams/history/normalized/uefa-1785878005892.json"
+        }
+      ]
+    },
+    {
+      "id": "uefa:2017155:away",
+      "date": "2015-07-09",
+      "season": "2015-16",
+      "competition": {
+        "name": "UEFA Cup / UEFA Europa League",
+        "type": "continental",
+        "country": "Europe"
+      },
+      "stage": "First qualifying round",
+      "opponent": {
+        "name": "H. Bóltfelag",
+        "slug": "h-boltfelag"
+      },
+      "venue": "away",
+      "score": {
+        "for": 4,
+        "against": 1
+      },
+      "result": "W",
+      "sources": [
+        {
+          "provider": "UEFA official match API",
+          "url": "https://www.uefa.com/uefachampionsleague/match/2017155/",
+          "retrievedAt": "2026-08-04T21:12:31.773Z",
+          "rawArtifact": "data/teams/history/normalized/uefa-1785878005892.json"
+        }
+      ]
+    },
+    {
+      "id": "uefa:2016762:away",
+      "date": "2015-07-16",
+      "season": "2015-16",
+      "competition": {
+        "name": "UEFA Cup / UEFA Europa League",
+        "type": "continental",
+        "country": "Europe"
+      },
+      "stage": "Second qualifying round",
+      "opponent": {
+        "name": "Apollon",
+        "slug": "apollon"
+      },
+      "venue": "away",
+      "score": {
+        "for": 0,
+        "against": 4
+      },
+      "result": "L",
+      "sources": [
+        {
+          "provider": "UEFA official match API",
+          "url": "https://www.uefa.com/uefachampionsleague/match/2016762/",
+          "retrievedAt": "2026-08-04T21:12:31.773Z",
+          "rawArtifact": "data/teams/history/normalized/uefa-1785878005892.json"
+        }
+      ]
+    },
+    {
+      "id": "uefa:2016795:home",
+      "date": "2015-07-23",
+      "season": "2015-16",
+      "competition": {
+        "name": "UEFA Cup / UEFA Europa League",
+        "type": "continental",
+        "country": "Europe"
+      },
+      "stage": "Second qualifying round",
+      "opponent": {
+        "name": "Apollon",
+        "slug": "apollon"
+      },
+      "venue": "home",
+      "score": {
+        "for": 0,
+        "against": 0
+      },
+      "result": "D",
+      "sources": [
+        {
+          "provider": "UEFA official match API",
+          "url": "https://www.uefa.com/uefachampionsleague/match/2016795/",
+          "retrievedAt": "2026-08-04T21:12:31.773Z",
+          "rawArtifact": "data/teams/history/normalized/uefa-1785878005892.json"
+        }
+      ]
+    },
+    {
+      "id": "uefa:2019979:home",
+      "date": "2016-06-30",
+      "season": "2015-16",
+      "competition": {
+        "name": "UEFA Cup / UEFA Europa League",
+        "type": "continental",
+        "country": "Europe"
+      },
+      "stage": "First qualifying round",
+      "opponent": {
+        "name": "Kalju",
+        "slug": "kalju"
+      },
+      "venue": "home",
+      "score": {
+        "for": 2,
+        "against": 1
+      },
+      "result": "W",
+      "sources": [
+        {
+          "provider": "UEFA official match API",
+          "url": "https://www.uefa.com/uefachampionsleague/match/2019979/",
+          "retrievedAt": "2026-08-04T21:12:34.014Z",
+          "rawArtifact": "data/teams/history/normalized/uefa-1785878005892.json"
+        }
+      ]
+    },
+    {
+      "id": "uefa:2020031:away",
+      "date": "2016-07-07",
+      "season": "2016-17",
+      "competition": {
+        "name": "UEFA Cup / UEFA Europa League",
+        "type": "continental",
+        "country": "Europe"
+      },
+      "stage": "First qualifying round",
+      "opponent": {
+        "name": "Kalju",
+        "slug": "kalju"
+      },
+      "venue": "away",
+      "score": {
+        "for": 1,
+        "against": 4
+      },
+      "result": "L",
+      "sources": [
+        {
+          "provider": "UEFA official match API",
+          "url": "https://www.uefa.com/uefachampionsleague/match/2020031/",
+          "retrievedAt": "2026-08-04T21:12:34.014Z",
+          "rawArtifact": "data/teams/history/normalized/uefa-1785878005892.json"
+        }
+      ]
+    },
+    {
+      "id": "uefa:2021747:away",
+      "date": "2017-06-29",
+      "season": "2016-17",
+      "competition": {
+        "name": "UEFA Cup / UEFA Europa League",
+        "type": "continental",
+        "country": "Europe"
+      },
+      "stage": "First qualifying round",
+      "opponent": {
+        "name": "St Johnstone",
+        "slug": "st-johnstone"
+      },
+      "venue": "away",
+      "score": {
+        "for": 2,
+        "against": 1
+      },
+      "result": "W",
+      "sources": [
+        {
+          "provider": "UEFA official match API",
+          "url": "https://www.uefa.com/uefachampionsleague/match/2021747/",
+          "retrievedAt": "2026-08-04T21:12:37.373Z",
+          "rawArtifact": "data/teams/history/normalized/uefa-1785878005892.json"
+        }
+      ]
+    },
+    {
+      "id": "uefa:2021798:home",
+      "date": "2017-07-06",
+      "season": "2017-18",
+      "competition": {
+        "name": "UEFA Cup / UEFA Europa League",
+        "type": "continental",
+        "country": "Europe"
+      },
+      "stage": "First qualifying round",
+      "opponent": {
+        "name": "St Johnstone",
+        "slug": "st-johnstone"
+      },
+      "venue": "home",
+      "score": {
+        "for": 1,
+        "against": 0
+      },
+      "result": "W",
+      "sources": [
+        {
+          "provider": "UEFA official match API",
+          "url": "https://www.uefa.com/uefachampionsleague/match/2021798/",
+          "retrievedAt": "2026-08-04T21:12:37.373Z",
+          "rawArtifact": "data/teams/history/normalized/uefa-1785878005892.json"
+        }
+      ]
+    },
+    {
+      "id": "uefa:2021826:away",
+      "date": "2017-07-13",
+      "season": "2017-18",
+      "competition": {
+        "name": "UEFA Cup / UEFA Europa League",
+        "type": "continental",
+        "country": "Europe"
+      },
+      "stage": "Second qualifying round",
+      "opponent": {
+        "name": "Norrköping",
+        "slug": "norrkoping"
+      },
+      "venue": "away",
+      "score": {
+        "for": 1,
+        "against": 2
+      },
+      "result": "L",
+      "sources": [
+        {
+          "provider": "UEFA official match API",
+          "url": "https://www.uefa.com/uefachampionsleague/match/2021826/",
+          "retrievedAt": "2026-08-04T21:12:37.373Z",
+          "rawArtifact": "data/teams/history/normalized/uefa-1785878005892.json"
+        }
+      ]
+    },
+    {
+      "id": "uefa:2021866:home",
+      "date": "2017-07-20",
+      "season": "2017-18",
+      "competition": {
+        "name": "UEFA Cup / UEFA Europa League",
+        "type": "continental",
+        "country": "Europe"
+      },
+      "stage": "Second qualifying round",
+      "opponent": {
+        "name": "Norrköping",
+        "slug": "norrkoping"
+      },
+      "venue": "home",
+      "score": {
+        "for": 2,
+        "against": 1
+      },
+      "result": "W",
+      "sources": [
+        {
+          "provider": "UEFA official match API",
+          "url": "https://www.uefa.com/uefachampionsleague/match/2021866/",
+          "retrievedAt": "2026-08-04T21:12:37.373Z",
+          "rawArtifact": "data/teams/history/normalized/uefa-1785878005892.json"
+        }
+      ]
+    },
+    {
+      "id": "uefa:2021895:home",
+      "date": "2017-07-27",
+      "season": "2017-18",
+      "competition": {
+        "name": "UEFA Cup / UEFA Europa League",
+        "type": "continental",
+        "country": "Europe"
+      },
+      "stage": "Third qualifying round",
+      "opponent": {
+        "name": "Shkëndija",
+        "slug": "shkendija"
+      },
+      "venue": "home",
+      "score": {
+        "for": 2,
+        "against": 1
+      },
+      "result": "W",
+      "sources": [
+        {
+          "provider": "UEFA official match API",
+          "url": "https://www.uefa.com/uefachampionsleague/match/2021895/",
+          "retrievedAt": "2026-08-04T21:12:37.373Z",
+          "rawArtifact": "data/teams/history/normalized/uefa-1785878005892.json"
+        }
+      ]
+    },
+    {
+      "id": "uefa:2021924:away",
+      "date": "2017-08-03",
+      "season": "2017-18",
+      "competition": {
+        "name": "UEFA Cup / UEFA Europa League",
+        "type": "continental",
+        "country": "Europe"
+      },
+      "stage": "Third qualifying round",
+      "opponent": {
+        "name": "Shkëndija",
+        "slug": "shkendija"
+      },
+      "venue": "away",
+      "score": {
+        "for": 0,
+        "against": 3
+      },
+      "result": "L",
+      "sources": [
+        {
+          "provider": "UEFA official match API",
+          "url": "https://www.uefa.com/uefachampionsleague/match/2021924/",
+          "retrievedAt": "2026-08-04T21:12:37.373Z",
+          "rawArtifact": "data/teams/history/normalized/uefa-1785878005892.json"
+        }
+      ]
+    },
+    {
+      "id": "uefa:2024538:away",
+      "date": "2018-06-28",
+      "season": "2017-18",
+      "competition": {
+        "name": "UEFA Cup / UEFA Europa League",
+        "type": "continental",
+        "country": "Europe"
+      },
+      "stage": "Preliminary round",
+      "opponent": {
+        "name": "Cefn Druids",
+        "slug": "cefn-druids"
+      },
+      "venue": "away",
+      "score": {
+        "for": 1,
+        "against": 1
+      },
+      "result": "D",
+      "sources": [
+        {
+          "provider": "UEFA official match API",
+          "url": "https://www.uefa.com/uefachampionsleague/match/2024538/",
+          "retrievedAt": "2026-08-04T21:12:40.264Z",
+          "rawArtifact": "data/teams/history/normalized/uefa-1785878005892.json"
+        }
+      ]
+    },
+    {
+      "id": "uefa:2024544:home",
+      "date": "2018-07-05",
+      "season": "2018-19",
+      "competition": {
+        "name": "UEFA Cup / UEFA Europa League",
+        "type": "continental",
+        "country": "Europe"
+      },
+      "stage": "Preliminary round",
+      "opponent": {
+        "name": "Cefn Druids",
+        "slug": "cefn-druids"
+      },
+      "venue": "home",
+      "score": {
+        "for": 1,
+        "against": 0
+      },
+      "result": "W",
+      "sources": [
+        {
+          "provider": "UEFA official match API",
+          "url": "https://www.uefa.com/uefachampionsleague/match/2024544/",
+          "retrievedAt": "2026-08-04T21:12:40.264Z",
+          "rawArtifact": "data/teams/history/normalized/uefa-1785878005892.json"
+        }
+      ]
+    },
+    {
+      "id": "uefa:2024689:home",
+      "date": "2018-07-12",
+      "season": "2018-19",
+      "competition": {
+        "name": "UEFA Cup / UEFA Europa League",
+        "type": "continental",
+        "country": "Europe"
+      },
+      "stage": "First qualifying round",
+      "opponent": {
+        "name": "Irtysh",
+        "slug": "irtysh"
+      },
+      "venue": "home",
+      "score": {
+        "for": 0,
+        "against": 0
+      },
+      "result": "D",
+      "sources": [
+        {
+          "provider": "UEFA official match API",
+          "url": "https://www.uefa.com/uefachampionsleague/match/2024689/",
+          "retrievedAt": "2026-08-04T21:12:40.264Z",
+          "rawArtifact": "data/teams/history/normalized/uefa-1785878005892.json"
+        }
+      ]
+    },
+    {
+      "id": "uefa:2024736:away",
+      "date": "2018-07-19",
+      "season": "2018-19",
+      "competition": {
+        "name": "UEFA Cup / UEFA Europa League",
+        "type": "continental",
+        "country": "Europe"
+      },
+      "stage": "First qualifying round",
+      "opponent": {
+        "name": "Irtysh",
+        "slug": "irtysh"
+      },
+      "venue": "away",
+      "score": {
+        "for": 1,
+        "against": 0
+      },
+      "result": "W",
+      "sources": [
+        {
+          "provider": "UEFA official match API",
+          "url": "https://www.uefa.com/uefachampionsleague/match/2024736/",
+          "retrievedAt": "2026-08-04T21:12:40.264Z",
+          "rawArtifact": "data/teams/history/normalized/uefa-1785878005892.json"
+        }
+      ]
+    },
+    {
+      "id": "uefa:2024802:away",
+      "date": "2018-07-26",
+      "season": "2018-19",
+      "competition": {
+        "name": "UEFA Cup / UEFA Europa League",
+        "type": "continental",
+        "country": "Europe"
+      },
+      "stage": "Second qualifying round",
+      "opponent": {
+        "name": "Partizan",
+        "slug": "partizan"
+      },
+      "venue": "away",
+      "score": {
+        "for": 0,
+        "against": 1
+      },
+      "result": "L",
+      "sources": [
+        {
+          "provider": "UEFA official match API",
+          "url": "https://www.uefa.com/uefachampionsleague/match/2024802/",
+          "retrievedAt": "2026-08-04T21:12:40.264Z",
+          "rawArtifact": "data/teams/history/normalized/uefa-1785878005892.json"
+        }
+      ]
+    },
+    {
+      "id": "uefa:2024848:home",
+      "date": "2018-08-02",
+      "season": "2018-19",
+      "competition": {
+        "name": "UEFA Cup / UEFA Europa League",
+        "type": "continental",
+        "country": "Europe"
+      },
+      "stage": "Second qualifying round",
+      "opponent": {
+        "name": "Partizan",
+        "slug": "partizan"
+      },
+      "venue": "home",
+      "score": {
+        "for": 1,
+        "against": 1
+      },
+      "result": "D",
+      "sources": [
+        {
+          "provider": "UEFA official match API",
+          "url": "https://www.uefa.com/uefachampionsleague/match/2024848/",
+          "retrievedAt": "2026-08-04T21:12:40.264Z",
+          "rawArtifact": "data/teams/history/normalized/uefa-1785878005892.json"
+        }
+      ]
+    },
+    {
+      "id": "uefa:2027568:home",
+      "date": "2019-07-11",
+      "season": "2019-20",
+      "competition": {
+        "name": "UEFA Cup / UEFA Europa League",
+        "type": "continental",
+        "country": "Europe"
+      },
+      "stage": "First qualifying round",
+      "opponent": {
+        "name": "Klaksvík",
+        "slug": "klaksvik"
+      },
+      "venue": "home",
+      "score": {
+        "for": 1,
+        "against": 1
+      },
+      "result": "D",
+      "sources": [
+        {
+          "provider": "UEFA official match API",
+          "url": "https://www.uefa.com/uefachampionsleague/match/2027568/",
+          "retrievedAt": "2026-08-04T21:12:42.838Z",
+          "rawArtifact": "data/teams/history/normalized/uefa-1785878005892.json"
+        }
+      ]
+    },
+    {
+      "id": "uefa:2027615:away",
+      "date": "2019-07-16",
+      "season": "2019-20",
+      "competition": {
+        "name": "UEFA Cup / UEFA Europa League",
+        "type": "continental",
+        "country": "Europe"
+      },
+      "stage": "First qualifying round",
+      "opponent": {
+        "name": "Klaksvík",
+        "slug": "klaksvik"
+      },
+      "venue": "away",
+      "score": {
+        "for": 0,
+        "against": 0
+      },
+      "result": "D",
+      "sources": [
+        {
+          "provider": "UEFA official match API",
+          "url": "https://www.uefa.com/uefachampionsleague/match/2027615/",
+          "retrievedAt": "2026-08-04T21:12:42.838Z",
+          "rawArtifact": "data/teams/history/normalized/uefa-1785878005892.json"
+        }
+      ]
+    },
+    {
+      "id": "uefa:2030259:home",
+      "date": "2020-08-25",
+      "season": "2020-21",
+      "competition": {
+        "name": "UEFA Cup / UEFA Europa League",
+        "type": "continental",
+        "country": "Europe"
+      },
+      "stage": "First qualifying round",
+      "opponent": {
+        "name": "Derry",
+        "slug": "derry"
+      },
+      "venue": "home",
+      "score": {
+        "for": 3,
+        "against": 2
+      },
+      "result": "W",
+      "sources": [
+        {
+          "provider": "UEFA official match API",
+          "url": "https://www.uefa.com/uefachampionsleague/match/2030259/",
+          "retrievedAt": "2026-08-04T21:12:53.804Z",
+          "rawArtifact": "data/teams/history/normalized/uefa-1785878005892.json"
+        }
+      ]
+    },
+    {
+      "id": "uefa:2030350:home",
+      "date": "2020-09-17",
+      "season": "2020-21",
+      "competition": {
+        "name": "UEFA Cup / UEFA Europa League",
+        "type": "continental",
+        "country": "Europe"
+      },
+      "stage": "Second qualifying round",
+      "opponent": {
+        "name": "Liberec",
+        "slug": "liberec"
+      },
+      "venue": "home",
+      "score": {
+        "for": 1,
+        "against": 5
+      },
+      "result": "L",
+      "sources": [
+        {
+          "provider": "UEFA official match API",
+          "url": "https://www.uefa.com/uefachampionsleague/match/2030350/",
+          "retrievedAt": "2026-08-04T21:12:53.804Z",
+          "rawArtifact": "data/teams/history/normalized/uefa-1785878005892.json"
+        }
+      ]
+    }
+  ],
+  "seasonStandings": [],
+  "competitionStandings": [],
+  "updatedAt": "2026-08-04T21:14:51.145Z"
+}

@@ -1,0 +1,5016 @@
+{
+  "contract": "football-team-history-v1",
+  "team": {
+    "name": "Qarabağ",
+    "slug": "qarabag",
+    "primaryLeague": "UEFA Cup Winners' Cup",
+    "aliases": []
+  },
+  "requestedCoverage": {
+    "fromYear": 1985,
+    "to": "present",
+    "includes": [
+      "all competitions",
+      "opponents",
+      "scorelines",
+      "league standings",
+      "competition standings"
+    ]
+  },
+  "sourcePlan": [
+    {
+      "rank": 1,
+      "provider": "Official club archive",
+      "url": "",
+      "scope": "club history, competition participation and match reports",
+      "lookupKey": "Qarabağ",
+      "review": "Verify the club-owned archive URL before collection."
+    },
+    {
+      "rank": 2,
+      "provider": "Official domestic competition / association",
+      "url": "",
+      "scope": "official league fixtures, final tables and cup records",
+      "lookupKey": "UEFA Cup Winners' Cup"
+    },
+    {
+      "rank": 3,
+      "provider": "UEFA",
+      "url": "https://www.uefa.com/",
+      "scope": "official European competition appearances, fixtures and standings",
+      "lookupKey": "Qarabağ"
+    },
+    {
+      "rank": 4,
+      "provider": "RSSSF",
+      "url": "https://www.rsssf.org/",
+      "scope": "historic competitions, tables and cross-checking",
+      "lookupKey": "Qarabağ"
+    },
+    {
+      "rank": 5,
+      "provider": "worldfootball.net",
+      "url": "https://www.worldfootball.net/",
+      "scope": "club match archive and competition participation cross-check",
+      "lookupKey": "Qarabağ"
+    }
+  ],
+  "coverage": {
+    "earliestMatch": "1996-08-08",
+    "latestMatch": "2025-01-30",
+    "seasonsWithMatches": [
+      "1996-97",
+      "1997-98",
+      "1998-99",
+      "2004-05",
+      "2006-07",
+      "2009-10",
+      "2010-11",
+      "2011-12",
+      "2013-14",
+      "2014-15",
+      "2015-16",
+      "2016-17",
+      "2017-18",
+      "2018-19",
+      "2019-20",
+      "2020-21",
+      "2022-23",
+      "2023-24",
+      "2024-25"
+    ],
+    "missingSeasons": [
+      "1985-86",
+      "1986-87",
+      "1987-88",
+      "1988-89",
+      "1989-90",
+      "1990-91",
+      "1991-92",
+      "1992-93",
+      "1993-94",
+      "1994-95",
+      "1995-96",
+      "1999-00",
+      "2000-01",
+      "2001-02",
+      "2002-03",
+      "2003-04",
+      "2005-06",
+      "2007-08",
+      "2008-09",
+      "2012-13",
+      "2021-22",
+      "2025-26",
+      "2026-27"
+    ],
+    "competitionScopeVerified": false,
+    "status": "partial"
+  },
+  "matches": [
+    {
+      "id": "uefa:52942:home",
+      "date": "1996-08-08",
+      "season": "1996-97",
+      "competition": {
+        "name": "UEFA Cup Winners' Cup",
+        "type": "continental",
+        "country": "Europe"
+      },
+      "stage": "Qualifying round",
+      "opponent": {
+        "name": "MYPA",
+        "slug": "mypa"
+      },
+      "venue": "home",
+      "score": {
+        "for": 0,
+        "against": 1
+      },
+      "result": "L",
+      "sources": [
+        {
+          "provider": "UEFA official match API",
+          "url": "https://www.uefa.com/uefachampionsleague/match/52942/",
+          "retrievedAt": "2026-08-04T21:11:06.591Z",
+          "rawArtifact": "data/teams/history/normalized/uefa-1785878005892.json"
+        }
+      ]
+    },
+    {
+      "id": "uefa:52943:away",
+      "date": "1996-08-22",
+      "season": "1996-97",
+      "competition": {
+        "name": "UEFA Cup Winners' Cup",
+        "type": "continental",
+        "country": "Europe"
+      },
+      "stage": "Qualifying round",
+      "opponent": {
+        "name": "MYPA",
+        "slug": "mypa"
+      },
+      "venue": "away",
+      "score": {
+        "for": 1,
+        "against": 1
+      },
+      "result": "D",
+      "sources": [
+        {
+          "provider": "UEFA official match API",
+          "url": "https://www.uefa.com/uefachampionsleague/match/52943/",
+          "retrievedAt": "2026-08-04T21:11:06.591Z",
+          "rawArtifact": "data/teams/history/normalized/uefa-1785878005892.json"
+        }
+      ]
+    },
+    {
+      "id": "uefa:54178:away",
+      "date": "1997-07-23",
+      "season": "1997-98",
+      "competition": {
+        "name": "UEFA Cup / UEFA Europa League",
+        "type": "continental",
+        "country": "Europe"
+      },
+      "stage": "First qualifying round",
+      "opponent": {
+        "name": "Jablonec",
+        "slug": "jablonec"
+      },
+      "venue": "away",
+      "score": {
+        "for": 0,
+        "against": 5
+      },
+      "result": "L",
+      "sources": [
+        {
+          "provider": "UEFA official match API",
+          "url": "https://www.uefa.com/uefachampionsleague/match/54178/",
+          "retrievedAt": "2026-08-04T21:11:07.331Z",
+          "rawArtifact": "data/teams/history/normalized/uefa-1785878005892.json"
+        }
+      ]
+    },
+    {
+      "id": "uefa:54179:home",
+      "date": "1997-07-30",
+      "season": "1997-98",
+      "competition": {
+        "name": "UEFA Cup / UEFA Europa League",
+        "type": "continental",
+        "country": "Europe"
+      },
+      "stage": "First qualifying round",
+      "opponent": {
+        "name": "Jablonec",
+        "slug": "jablonec"
+      },
+      "venue": "home",
+      "score": {
+        "for": 0,
+        "against": 3
+      },
+      "result": "L",
+      "sources": [
+        {
+          "provider": "UEFA official match API",
+          "url": "https://www.uefa.com/uefachampionsleague/match/54179/",
+          "retrievedAt": "2026-08-04T21:11:07.331Z",
+          "rawArtifact": "data/teams/history/normalized/uefa-1785878005892.json"
+        }
+      ]
+    },
+    {
+      "id": "uefa:55463:away",
+      "date": "1998-08-13",
+      "season": "1998-99",
+      "competition": {
+        "name": "UEFA Cup Winners' Cup",
+        "type": "continental",
+        "country": "Europe"
+      },
+      "stage": "Qualifying round",
+      "opponent": {
+        "name": "Copenhagen",
+        "slug": "copenhagen"
+      },
+      "venue": "away",
+      "score": {
+        "for": 0,
+        "against": 6
+      },
+      "result": "L",
+      "sources": [
+        {
+          "provider": "UEFA official match API",
+          "url": "https://www.uefa.com/uefachampionsleague/match/55463/",
+          "retrievedAt": "2026-08-04T21:11:09.679Z",
+          "rawArtifact": "data/teams/history/normalized/uefa-1785878005892.json"
+        }
+      ]
+    },
+    {
+      "id": "uefa:55464:home",
+      "date": "1998-08-27",
+      "season": "1998-99",
+      "competition": {
+        "name": "UEFA Cup Winners' Cup",
+        "type": "continental",
+        "country": "Europe"
+      },
+      "stage": "Qualifying round",
+      "opponent": {
+        "name": "Copenhagen",
+        "slug": "copenhagen"
+      },
+      "venue": "home",
+      "score": {
+        "for": 0,
+        "against": 4
+      },
+      "result": "L",
+      "sources": [
+        {
+          "provider": "UEFA official match API",
+          "url": "https://www.uefa.com/uefachampionsleague/match/55464/",
+          "retrievedAt": "2026-08-04T21:11:09.679Z",
+          "rawArtifact": "data/teams/history/normalized/uefa-1785878005892.json"
+        }
+      ]
+    },
+    {
+      "id": "uefa:79050:away",
+      "date": "2004-07-15",
+      "season": "2004-05",
+      "competition": {
+        "name": "UEFA Cup / UEFA Europa League",
+        "type": "continental",
+        "country": "Europe"
+      },
+      "stage": "First qualifying round",
+      "opponent": {
+        "name": "Dukla Banská Bystrica",
+        "slug": "dukla-banska-bystrica"
+      },
+      "venue": "away",
+      "score": {
+        "for": 0,
+        "against": 3
+      },
+      "result": "L",
+      "sources": [
+        {
+          "provider": "UEFA official match API",
+          "url": "https://www.uefa.com/uefachampionsleague/match/79050/",
+          "retrievedAt": "2026-08-04T21:11:27.542Z",
+          "rawArtifact": "data/teams/history/normalized/uefa-1785878005892.json"
+        }
+      ]
+    },
+    {
+      "id": "uefa:79051:home",
+      "date": "2004-07-29",
+      "season": "2004-05",
+      "competition": {
+        "name": "UEFA Cup / UEFA Europa League",
+        "type": "continental",
+        "country": "Europe"
+      },
+      "stage": "First qualifying round",
+      "opponent": {
+        "name": "Dukla Banská Bystrica",
+        "slug": "dukla-banska-bystrica"
+      },
+      "venue": "home",
+      "score": {
+        "for": 0,
+        "against": 1
+      },
+      "result": "L",
+      "sources": [
+        {
+          "provider": "UEFA official match API",
+          "url": "https://www.uefa.com/uefachampionsleague/match/79051/",
+          "retrievedAt": "2026-08-04T21:11:27.542Z",
+          "rawArtifact": "data/teams/history/normalized/uefa-1785878005892.json"
+        }
+      ]
+    },
+    {
+      "id": "uefa:84252:away",
+      "date": "2006-07-13",
+      "season": "2006-07",
+      "competition": {
+        "name": "UEFA Cup / UEFA Europa League",
+        "type": "continental",
+        "country": "Europe"
+      },
+      "stage": "First qualifying round",
+      "opponent": {
+        "name": "Zimbru",
+        "slug": "zimbru"
+      },
+      "venue": "away",
+      "score": {
+        "for": 1,
+        "against": 1
+      },
+      "result": "D",
+      "sources": [
+        {
+          "provider": "UEFA official match API",
+          "url": "https://www.uefa.com/uefachampionsleague/match/84252/",
+          "retrievedAt": "2026-08-04T21:11:45.264Z",
+          "rawArtifact": "data/teams/history/normalized/uefa-1785878005892.json"
+        }
+      ]
+    },
+    {
+      "id": "uefa:84253:home",
+      "date": "2006-07-27",
+      "season": "2006-07",
+      "competition": {
+        "name": "UEFA Cup / UEFA Europa League",
+        "type": "continental",
+        "country": "Europe"
+      },
+      "stage": "First qualifying round",
+      "opponent": {
+        "name": "Zimbru",
+        "slug": "zimbru"
+      },
+      "venue": "home",
+      "score": {
+        "for": 1,
+        "against": 2
+      },
+      "result": "L",
+      "sources": [
+        {
+          "provider": "UEFA official match API",
+          "url": "https://www.uefa.com/uefachampionsleague/match/84253/",
+          "retrievedAt": "2026-08-04T21:11:45.264Z",
+          "rawArtifact": "data/teams/history/normalized/uefa-1785878005892.json"
+        }
+      ]
+    },
+    {
+      "id": "uefa:2000539:away",
+      "date": "2009-07-16",
+      "season": "2009-10",
+      "competition": {
+        "name": "UEFA Cup / UEFA Europa League",
+        "type": "continental",
+        "country": "Europe"
+      },
+      "stage": "Second qualifying round",
+      "opponent": {
+        "name": "Rosenborg",
+        "slug": "rosenborg"
+      },
+      "venue": "away",
+      "score": {
+        "for": 0,
+        "against": 0
+      },
+      "result": "D",
+      "sources": [
+        {
+          "provider": "UEFA official match API",
+          "url": "https://www.uefa.com/uefachampionsleague/match/2000539/",
+          "retrievedAt": "2026-08-04T21:11:54.089Z",
+          "rawArtifact": "data/teams/history/normalized/uefa-1785878005892.json"
+        }
+      ]
+    },
+    {
+      "id": "uefa:2000579:home",
+      "date": "2009-07-23",
+      "season": "2009-10",
+      "competition": {
+        "name": "UEFA Cup / UEFA Europa League",
+        "type": "continental",
+        "country": "Europe"
+      },
+      "stage": "Second qualifying round",
+      "opponent": {
+        "name": "Rosenborg",
+        "slug": "rosenborg"
+      },
+      "venue": "home",
+      "score": {
+        "for": 1,
+        "against": 0
+      },
+      "result": "W",
+      "sources": [
+        {
+          "provider": "UEFA official match API",
+          "url": "https://www.uefa.com/uefachampionsleague/match/2000579/",
+          "retrievedAt": "2026-08-04T21:11:54.089Z",
+          "rawArtifact": "data/teams/history/normalized/uefa-1785878005892.json"
+        }
+      ]
+    },
+    {
+      "id": "uefa:2000630:away",
+      "date": "2009-07-30",
+      "season": "2009-10",
+      "competition": {
+        "name": "UEFA Cup / UEFA Europa League",
+        "type": "continental",
+        "country": "Europe"
+      },
+      "stage": "Third qualifying round",
+      "opponent": {
+        "name": "Honka",
+        "slug": "honka"
+      },
+      "venue": "away",
+      "score": {
+        "for": 1,
+        "against": 0
+      },
+      "result": "W",
+      "sources": [
+        {
+          "provider": "UEFA official match API",
+          "url": "https://www.uefa.com/uefachampionsleague/match/2000630/",
+          "retrievedAt": "2026-08-04T21:11:54.089Z",
+          "rawArtifact": "data/teams/history/normalized/uefa-1785878005892.json"
+        }
+      ]
+    },
+    {
+      "id": "uefa:2000665:home",
+      "date": "2009-08-06",
+      "season": "2009-10",
+      "competition": {
+        "name": "UEFA Cup / UEFA Europa League",
+        "type": "continental",
+        "country": "Europe"
+      },
+      "stage": "Third qualifying round",
+      "opponent": {
+        "name": "Honka",
+        "slug": "honka"
+      },
+      "venue": "home",
+      "score": {
+        "for": 2,
+        "against": 1
+      },
+      "result": "W",
+      "sources": [
+        {
+          "provider": "UEFA official match API",
+          "url": "https://www.uefa.com/uefachampionsleague/match/2000665/",
+          "retrievedAt": "2026-08-04T21:11:54.089Z",
+          "rawArtifact": "data/teams/history/normalized/uefa-1785878005892.json"
+        }
+      ]
+    },
+    {
+      "id": "uefa:2000700:away",
+      "date": "2009-08-20",
+      "season": "2009-10",
+      "competition": {
+        "name": "UEFA Cup / UEFA Europa League",
+        "type": "continental",
+        "country": "Europe"
+      },
+      "stage": "Play-offs",
+      "opponent": {
+        "name": "Twente",
+        "slug": "twente"
+      },
+      "venue": "away",
+      "score": {
+        "for": 1,
+        "against": 3
+      },
+      "result": "L",
+      "sources": [
+        {
+          "provider": "UEFA official match API",
+          "url": "https://www.uefa.com/uefachampionsleague/match/2000700/",
+          "retrievedAt": "2026-08-04T21:11:54.089Z",
+          "rawArtifact": "data/teams/history/normalized/uefa-1785878005892.json"
+        }
+      ]
+    },
+    {
+      "id": "uefa:2000737:home",
+      "date": "2009-08-27",
+      "season": "2009-10",
+      "competition": {
+        "name": "UEFA Cup / UEFA Europa League",
+        "type": "continental",
+        "country": "Europe"
+      },
+      "stage": "Play-offs",
+      "opponent": {
+        "name": "Twente",
+        "slug": "twente"
+      },
+      "venue": "home",
+      "score": {
+        "for": 0,
+        "against": 0
+      },
+      "result": "D",
+      "sources": [
+        {
+          "provider": "UEFA official match API",
+          "url": "https://www.uefa.com/uefachampionsleague/match/2000737/",
+          "retrievedAt": "2026-08-04T21:11:54.089Z",
+          "rawArtifact": "data/teams/history/normalized/uefa-1785878005892.json"
+        }
+      ]
+    },
+    {
+      "id": "uefa:2002580:home",
+      "date": "2010-07-01",
+      "season": "2010-11",
+      "competition": {
+        "name": "UEFA Cup / UEFA Europa League",
+        "type": "continental",
+        "country": "Europe"
+      },
+      "stage": "First qualifying round",
+      "opponent": {
+        "name": "Metalurg Skopje",
+        "slug": "metalurg-skopje"
+      },
+      "venue": "home",
+      "score": {
+        "for": 4,
+        "against": 1
+      },
+      "result": "W",
+      "sources": [
+        {
+          "provider": "UEFA official match API",
+          "url": "https://www.uefa.com/uefachampionsleague/match/2002580/",
+          "retrievedAt": "2026-08-04T21:12:07.450Z",
+          "rawArtifact": "data/teams/history/normalized/uefa-1785878005892.json"
+        }
+      ]
+    },
+    {
+      "id": "uefa:2002581:away",
+      "date": "2010-07-08",
+      "season": "2010-11",
+      "competition": {
+        "name": "UEFA Cup / UEFA Europa League",
+        "type": "continental",
+        "country": "Europe"
+      },
+      "stage": "First qualifying round",
+      "opponent": {
+        "name": "Metalurg Skopje",
+        "slug": "metalurg-skopje"
+      },
+      "venue": "away",
+      "score": {
+        "for": 1,
+        "against": 1
+      },
+      "result": "D",
+      "sources": [
+        {
+          "provider": "UEFA official match API",
+          "url": "https://www.uefa.com/uefachampionsleague/match/2002581/",
+          "retrievedAt": "2026-08-04T21:12:07.450Z",
+          "rawArtifact": "data/teams/history/normalized/uefa-1785878005892.json"
+        }
+      ]
+    },
+    {
+      "id": "uefa:2002570:away",
+      "date": "2010-07-15",
+      "season": "2010-11",
+      "competition": {
+        "name": "UEFA Cup / UEFA Europa League",
+        "type": "continental",
+        "country": "Europe"
+      },
+      "stage": "Second qualifying round",
+      "opponent": {
+        "name": "Portadown",
+        "slug": "portadown"
+      },
+      "venue": "away",
+      "score": {
+        "for": 2,
+        "against": 1
+      },
+      "result": "W",
+      "sources": [
+        {
+          "provider": "UEFA official match API",
+          "url": "https://www.uefa.com/uefachampionsleague/match/2002570/",
+          "retrievedAt": "2026-08-04T21:12:07.450Z",
+          "rawArtifact": "data/teams/history/normalized/uefa-1785878005892.json"
+        }
+      ]
+    },
+    {
+      "id": "uefa:2002530:home",
+      "date": "2010-07-22",
+      "season": "2010-11",
+      "competition": {
+        "name": "UEFA Cup / UEFA Europa League",
+        "type": "continental",
+        "country": "Europe"
+      },
+      "stage": "Second qualifying round",
+      "opponent": {
+        "name": "Portadown",
+        "slug": "portadown"
+      },
+      "venue": "home",
+      "score": {
+        "for": 1,
+        "against": 1
+      },
+      "result": "D",
+      "sources": [
+        {
+          "provider": "UEFA official match API",
+          "url": "https://www.uefa.com/uefachampionsleague/match/2002530/",
+          "retrievedAt": "2026-08-04T21:12:07.450Z",
+          "rawArtifact": "data/teams/history/normalized/uefa-1785878005892.json"
+        }
+      ]
+    },
+    {
+      "id": "uefa:2002763:away",
+      "date": "2010-07-29",
+      "season": "2010-11",
+      "competition": {
+        "name": "UEFA Cup / UEFA Europa League",
+        "type": "continental",
+        "country": "Europe"
+      },
+      "stage": "Third qualifying round",
+      "opponent": {
+        "name": "Wisła Kraków",
+        "slug": "wis-a-krakow"
+      },
+      "venue": "away",
+      "score": {
+        "for": 1,
+        "against": 0
+      },
+      "result": "W",
+      "sources": [
+        {
+          "provider": "UEFA official match API",
+          "url": "https://www.uefa.com/uefachampionsleague/match/2002763/",
+          "retrievedAt": "2026-08-04T21:12:07.450Z",
+          "rawArtifact": "data/teams/history/normalized/uefa-1785878005892.json"
+        }
+      ]
+    },
+    {
+      "id": "uefa:2002798:home",
+      "date": "2010-08-05",
+      "season": "2010-11",
+      "competition": {
+        "name": "UEFA Cup / UEFA Europa League",
+        "type": "continental",
+        "country": "Europe"
+      },
+      "stage": "Third qualifying round",
+      "opponent": {
+        "name": "Wisła Kraków",
+        "slug": "wis-a-krakow"
+      },
+      "venue": "home",
+      "score": {
+        "for": 3,
+        "against": 2
+      },
+      "result": "W",
+      "sources": [
+        {
+          "provider": "UEFA official match API",
+          "url": "https://www.uefa.com/uefachampionsleague/match/2002798/",
+          "retrievedAt": "2026-08-04T21:12:07.450Z",
+          "rawArtifact": "data/teams/history/normalized/uefa-1785878005892.json"
+        }
+      ]
+    },
+    {
+      "id": "uefa:2003077:away",
+      "date": "2010-08-19",
+      "season": "2010-11",
+      "competition": {
+        "name": "UEFA Cup / UEFA Europa League",
+        "type": "continental",
+        "country": "Europe"
+      },
+      "stage": "Play-offs",
+      "opponent": {
+        "name": "B. Dortmund",
+        "slug": "b-dortmund"
+      },
+      "venue": "away",
+      "score": {
+        "for": 0,
+        "against": 4
+      },
+      "result": "L",
+      "sources": [
+        {
+          "provider": "UEFA official match API",
+          "url": "https://www.uefa.com/uefachampionsleague/match/2003077/",
+          "retrievedAt": "2026-08-04T21:12:07.450Z",
+          "rawArtifact": "data/teams/history/normalized/uefa-1785878005892.json"
+        }
+      ]
+    },
+    {
+      "id": "uefa:2003114:home",
+      "date": "2010-08-26",
+      "season": "2010-11",
+      "competition": {
+        "name": "UEFA Cup / UEFA Europa League",
+        "type": "continental",
+        "country": "Europe"
+      },
+      "stage": "Play-offs",
+      "opponent": {
+        "name": "B. Dortmund",
+        "slug": "b-dortmund"
+      },
+      "venue": "home",
+      "score": {
+        "for": 0,
+        "against": 1
+      },
+      "result": "L",
+      "sources": [
+        {
+          "provider": "UEFA official match API",
+          "url": "https://www.uefa.com/uefachampionsleague/match/2003114/",
+          "retrievedAt": "2026-08-04T21:12:07.450Z",
+          "rawArtifact": "data/teams/history/normalized/uefa-1785878005892.json"
+        }
+      ]
+    },
+    {
+      "id": "uefa:2007009:away",
+      "date": "2011-06-30",
+      "season": "2010-11",
+      "competition": {
+        "name": "UEFA Cup / UEFA Europa League",
+        "type": "continental",
+        "country": "Europe"
+      },
+      "stage": "First qualifying round",
+      "opponent": {
+        "name": "Banga",
+        "slug": "banga"
+      },
+      "venue": "away",
+      "score": {
+        "for": 4,
+        "against": 0
+      },
+      "result": "W",
+      "sources": [
+        {
+          "provider": "UEFA official match API",
+          "url": "https://www.uefa.com/uefachampionsleague/match/2007009/",
+          "retrievedAt": "2026-08-04T21:12:09.791Z",
+          "rawArtifact": "data/teams/history/normalized/uefa-1785878005892.json"
+        }
+      ]
+    },
+    {
+      "id": "uefa:2007034:home",
+      "date": "2011-07-07",
+      "season": "2011-12",
+      "competition": {
+        "name": "UEFA Cup / UEFA Europa League",
+        "type": "continental",
+        "country": "Europe"
+      },
+      "stage": "First qualifying round",
+      "opponent": {
+        "name": "Banga",
+        "slug": "banga"
+      },
+      "venue": "home",
+      "score": {
+        "for": 3,
+        "against": 0
+      },
+      "result": "W",
+      "sources": [
+        {
+          "provider": "UEFA official match API",
+          "url": "https://www.uefa.com/uefachampionsleague/match/2007034/",
+          "retrievedAt": "2026-08-04T21:12:09.791Z",
+          "rawArtifact": "data/teams/history/normalized/uefa-1785878005892.json"
+        }
+      ]
+    },
+    {
+      "id": "uefa:2007086:away",
+      "date": "2011-07-14",
+      "season": "2011-12",
+      "competition": {
+        "name": "UEFA Cup / UEFA Europa League",
+        "type": "continental",
+        "country": "Europe"
+      },
+      "stage": "Second qualifying round",
+      "opponent": {
+        "name": "EB/Streymur",
+        "slug": "eb-streymur"
+      },
+      "venue": "away",
+      "score": {
+        "for": 1,
+        "against": 1
+      },
+      "result": "D",
+      "sources": [
+        {
+          "provider": "UEFA official match API",
+          "url": "https://www.uefa.com/uefachampionsleague/match/2007086/",
+          "retrievedAt": "2026-08-04T21:12:09.791Z",
+          "rawArtifact": "data/teams/history/normalized/uefa-1785878005892.json"
+        }
+      ]
+    },
+    {
+      "id": "uefa:2007126:home",
+      "date": "2011-07-21",
+      "season": "2011-12",
+      "competition": {
+        "name": "UEFA Cup / UEFA Europa League",
+        "type": "continental",
+        "country": "Europe"
+      },
+      "stage": "Second qualifying round",
+      "opponent": {
+        "name": "EB/Streymur",
+        "slug": "eb-streymur"
+      },
+      "venue": "home",
+      "score": {
+        "for": 0,
+        "against": 0
+      },
+      "result": "D",
+      "sources": [
+        {
+          "provider": "UEFA official match API",
+          "url": "https://www.uefa.com/uefachampionsleague/match/2007126/",
+          "retrievedAt": "2026-08-04T21:12:09.791Z",
+          "rawArtifact": "data/teams/history/normalized/uefa-1785878005892.json"
+        }
+      ]
+    },
+    {
+      "id": "uefa:2007153:away",
+      "date": "2011-07-28",
+      "season": "2011-12",
+      "competition": {
+        "name": "UEFA Cup / UEFA Europa League",
+        "type": "continental",
+        "country": "Europe"
+      },
+      "stage": "Third qualifying round",
+      "opponent": {
+        "name": "Club Brugge",
+        "slug": "club-brugge"
+      },
+      "venue": "away",
+      "score": {
+        "for": 1,
+        "against": 4
+      },
+      "result": "L",
+      "sources": [
+        {
+          "provider": "UEFA official match API",
+          "url": "https://www.uefa.com/uefachampionsleague/match/2007153/",
+          "retrievedAt": "2026-08-04T21:12:09.791Z",
+          "rawArtifact": "data/teams/history/normalized/uefa-1785878005892.json"
+        }
+      ]
+    },
+    {
+      "id": "uefa:2007188:home",
+      "date": "2011-08-04",
+      "season": "2011-12",
+      "competition": {
+        "name": "UEFA Cup / UEFA Europa League",
+        "type": "continental",
+        "country": "Europe"
+      },
+      "stage": "Third qualifying round",
+      "opponent": {
+        "name": "Club Brugge",
+        "slug": "club-brugge"
+      },
+      "venue": "home",
+      "score": {
+        "for": 1,
+        "against": 0
+      },
+      "result": "W",
+      "sources": [
+        {
+          "provider": "UEFA official match API",
+          "url": "https://www.uefa.com/uefachampionsleague/match/2007188/",
+          "retrievedAt": "2026-08-04T21:12:09.791Z",
+          "rawArtifact": "data/teams/history/normalized/uefa-1785878005892.json"
+        }
+      ]
+    },
+    {
+      "id": "uefa:2012205:away",
+      "date": "2013-07-02",
+      "season": "2013-14",
+      "competition": {
+        "name": "UEFA Cup / UEFA Europa League",
+        "type": "continental",
+        "country": "Europe"
+      },
+      "stage": "First qualifying round",
+      "opponent": {
+        "name": "Metalurg Skopje",
+        "slug": "metalurg-skopje"
+      },
+      "venue": "away",
+      "score": {
+        "for": 1,
+        "against": 0
+      },
+      "result": "W",
+      "sources": [
+        {
+          "provider": "UEFA official match API",
+          "url": "https://www.uefa.com/uefachampionsleague/match/2012205/",
+          "retrievedAt": "2026-08-04T21:12:15.046Z",
+          "rawArtifact": "data/teams/history/normalized/uefa-1785878005892.json"
+        }
+      ]
+    },
+    {
+      "id": "uefa:2012244:home",
+      "date": "2013-07-11",
+      "season": "2013-14",
+      "competition": {
+        "name": "UEFA Cup / UEFA Europa League",
+        "type": "continental",
+        "country": "Europe"
+      },
+      "stage": "First qualifying round",
+      "opponent": {
+        "name": "Metalurg Skopje",
+        "slug": "metalurg-skopje"
+      },
+      "venue": "home",
+      "score": {
+        "for": 1,
+        "against": 0
+      },
+      "result": "W",
+      "sources": [
+        {
+          "provider": "UEFA official match API",
+          "url": "https://www.uefa.com/uefachampionsleague/match/2012244/",
+          "retrievedAt": "2026-08-04T21:12:15.046Z",
+          "rawArtifact": "data/teams/history/normalized/uefa-1785878005892.json"
+        }
+      ]
+    },
+    {
+      "id": "uefa:2012307:home",
+      "date": "2013-07-18",
+      "season": "2013-14",
+      "competition": {
+        "name": "UEFA Cup / UEFA Europa League",
+        "type": "continental",
+        "country": "Europe"
+      },
+      "stage": "Second qualifying round",
+      "opponent": {
+        "name": "Piast",
+        "slug": "piast"
+      },
+      "venue": "home",
+      "score": {
+        "for": 2,
+        "against": 1
+      },
+      "result": "W",
+      "sources": [
+        {
+          "provider": "UEFA official match API",
+          "url": "https://www.uefa.com/uefachampionsleague/match/2012307/",
+          "retrievedAt": "2026-08-04T21:12:15.046Z",
+          "rawArtifact": "data/teams/history/normalized/uefa-1785878005892.json"
+        }
+      ]
+    },
+    {
+      "id": "uefa:2012347:away",
+      "date": "2013-07-25",
+      "season": "2013-14",
+      "competition": {
+        "name": "UEFA Cup / UEFA Europa League",
+        "type": "continental",
+        "country": "Europe"
+      },
+      "stage": "Second qualifying round",
+      "opponent": {
+        "name": "Piast",
+        "slug": "piast"
+      },
+      "venue": "away",
+      "score": {
+        "for": 2,
+        "against": 2
+      },
+      "result": "D",
+      "sources": [
+        {
+          "provider": "UEFA official match API",
+          "url": "https://www.uefa.com/uefachampionsleague/match/2012347/",
+          "retrievedAt": "2026-08-04T21:12:15.046Z",
+          "rawArtifact": "data/teams/history/normalized/uefa-1785878005892.json"
+        }
+      ]
+    },
+    {
+      "id": "uefa:2012376:home",
+      "date": "2013-08-01",
+      "season": "2013-14",
+      "competition": {
+        "name": "UEFA Cup / UEFA Europa League",
+        "type": "continental",
+        "country": "Europe"
+      },
+      "stage": "Third qualifying round",
+      "opponent": {
+        "name": "Gefle",
+        "slug": "gefle"
+      },
+      "venue": "home",
+      "score": {
+        "for": 1,
+        "against": 0
+      },
+      "result": "W",
+      "sources": [
+        {
+          "provider": "UEFA official match API",
+          "url": "https://www.uefa.com/uefachampionsleague/match/2012376/",
+          "retrievedAt": "2026-08-04T21:12:15.046Z",
+          "rawArtifact": "data/teams/history/normalized/uefa-1785878005892.json"
+        }
+      ]
+    },
+    {
+      "id": "uefa:2012405:away",
+      "date": "2013-08-08",
+      "season": "2013-14",
+      "competition": {
+        "name": "UEFA Cup / UEFA Europa League",
+        "type": "continental",
+        "country": "Europe"
+      },
+      "stage": "Third qualifying round",
+      "opponent": {
+        "name": "Gefle",
+        "slug": "gefle"
+      },
+      "venue": "away",
+      "score": {
+        "for": 2,
+        "against": 0
+      },
+      "result": "W",
+      "sources": [
+        {
+          "provider": "UEFA official match API",
+          "url": "https://www.uefa.com/uefachampionsleague/match/2012405/",
+          "retrievedAt": "2026-08-04T21:12:15.046Z",
+          "rawArtifact": "data/teams/history/normalized/uefa-1785878005892.json"
+        }
+      ]
+    },
+    {
+      "id": "uefa:2012427:home",
+      "date": "2013-08-22",
+      "season": "2013-14",
+      "competition": {
+        "name": "UEFA Cup / UEFA Europa League",
+        "type": "continental",
+        "country": "Europe"
+      },
+      "stage": "Play-offs",
+      "opponent": {
+        "name": "Frankfurt",
+        "slug": "frankfurt"
+      },
+      "venue": "home",
+      "score": {
+        "for": 0,
+        "against": 2
+      },
+      "result": "L",
+      "sources": [
+        {
+          "provider": "UEFA official match API",
+          "url": "https://www.uefa.com/uefachampionsleague/match/2012427/",
+          "retrievedAt": "2026-08-04T21:12:15.046Z",
+          "rawArtifact": "data/teams/history/normalized/uefa-1785878005892.json"
+        }
+      ]
+    },
+    {
+      "id": "uefa:2012458:away",
+      "date": "2013-08-29",
+      "season": "2013-14",
+      "competition": {
+        "name": "UEFA Cup / UEFA Europa League",
+        "type": "continental",
+        "country": "Europe"
+      },
+      "stage": "Play-offs",
+      "opponent": {
+        "name": "Frankfurt",
+        "slug": "frankfurt"
+      },
+      "venue": "away",
+      "score": {
+        "for": 1,
+        "against": 2
+      },
+      "result": "L",
+      "sources": [
+        {
+          "provider": "UEFA official match API",
+          "url": "https://www.uefa.com/uefachampionsleague/match/2012458/",
+          "retrievedAt": "2026-08-04T21:12:15.046Z",
+          "rawArtifact": "data/teams/history/normalized/uefa-1785878005892.json"
+        }
+      ]
+    },
+    {
+      "id": "uefa:2014148:away",
+      "date": "2014-07-15",
+      "season": "2014-15",
+      "competition": {
+        "name": "UEFA Champions League / European Cup",
+        "type": "continental",
+        "country": "Europe"
+      },
+      "stage": "Second qualifying round",
+      "opponent": {
+        "name": "Valletta",
+        "slug": "valletta"
+      },
+      "venue": "away",
+      "score": {
+        "for": 1,
+        "against": 0
+      },
+      "result": "W",
+      "sources": [
+        {
+          "provider": "UEFA official match API",
+          "url": "https://www.uefa.com/uefachampionsleague/match/2014148/",
+          "retrievedAt": "2026-08-04T21:12:16.003Z",
+          "rawArtifact": "data/teams/history/normalized/uefa-1785878005892.json"
+        }
+      ]
+    },
+    {
+      "id": "uefa:2014165:home",
+      "date": "2014-07-22",
+      "season": "2014-15",
+      "competition": {
+        "name": "UEFA Champions League / European Cup",
+        "type": "continental",
+        "country": "Europe"
+      },
+      "stage": "Second qualifying round",
+      "opponent": {
+        "name": "Valletta",
+        "slug": "valletta"
+      },
+      "venue": "home",
+      "score": {
+        "for": 4,
+        "against": 0
+      },
+      "result": "W",
+      "sources": [
+        {
+          "provider": "UEFA official match API",
+          "url": "https://www.uefa.com/uefachampionsleague/match/2014165/",
+          "retrievedAt": "2026-08-04T21:12:16.003Z",
+          "rawArtifact": "data/teams/history/normalized/uefa-1785878005892.json"
+        }
+      ]
+    },
+    {
+      "id": "uefa:2014167:home",
+      "date": "2014-07-30",
+      "season": "2014-15",
+      "competition": {
+        "name": "UEFA Champions League / European Cup",
+        "type": "continental",
+        "country": "Europe"
+      },
+      "stage": "Third qualifying round",
+      "opponent": {
+        "name": "Salzburg",
+        "slug": "salzburg"
+      },
+      "venue": "home",
+      "score": {
+        "for": 2,
+        "against": 1
+      },
+      "result": "W",
+      "sources": [
+        {
+          "provider": "UEFA official match API",
+          "url": "https://www.uefa.com/uefachampionsleague/match/2014167/",
+          "retrievedAt": "2026-08-04T21:12:16.003Z",
+          "rawArtifact": "data/teams/history/normalized/uefa-1785878005892.json"
+        }
+      ]
+    },
+    {
+      "id": "uefa:2014182:away",
+      "date": "2014-08-06",
+      "season": "2014-15",
+      "competition": {
+        "name": "UEFA Champions League / European Cup",
+        "type": "continental",
+        "country": "Europe"
+      },
+      "stage": "Third qualifying round",
+      "opponent": {
+        "name": "Salzburg",
+        "slug": "salzburg"
+      },
+      "venue": "away",
+      "score": {
+        "for": 0,
+        "against": 2
+      },
+      "result": "L",
+      "sources": [
+        {
+          "provider": "UEFA official match API",
+          "url": "https://www.uefa.com/uefachampionsleague/match/2014182/",
+          "retrievedAt": "2026-08-04T21:12:16.003Z",
+          "rawArtifact": "data/teams/history/normalized/uefa-1785878005892.json"
+        }
+      ]
+    },
+    {
+      "id": "uefa:2015125:home",
+      "date": "2014-08-21",
+      "season": "2014-15",
+      "competition": {
+        "name": "UEFA Cup / UEFA Europa League",
+        "type": "continental",
+        "country": "Europe"
+      },
+      "stage": "Play-offs",
+      "opponent": {
+        "name": "Twente",
+        "slug": "twente"
+      },
+      "venue": "home",
+      "score": {
+        "for": 0,
+        "against": 0
+      },
+      "result": "D",
+      "sources": [
+        {
+          "provider": "UEFA official match API",
+          "url": "https://www.uefa.com/uefachampionsleague/match/2015125/",
+          "retrievedAt": "2026-08-04T21:12:18.667Z",
+          "rawArtifact": "data/teams/history/normalized/uefa-1785878005892.json"
+        }
+      ]
+    },
+    {
+      "id": "uefa:2015156:away",
+      "date": "2014-08-28",
+      "season": "2014-15",
+      "competition": {
+        "name": "UEFA Cup / UEFA Europa League",
+        "type": "continental",
+        "country": "Europe"
+      },
+      "stage": "Play-offs",
+      "opponent": {
+        "name": "Twente",
+        "slug": "twente"
+      },
+      "venue": "away",
+      "score": {
+        "for": 1,
+        "against": 1
+      },
+      "result": "D",
+      "sources": [
+        {
+          "provider": "UEFA official match API",
+          "url": "https://www.uefa.com/uefachampionsleague/match/2015156/",
+          "retrievedAt": "2026-08-04T21:12:18.667Z",
+          "rawArtifact": "data/teams/history/normalized/uefa-1785878005892.json"
+        }
+      ]
+    },
+    {
+      "id": "uefa:2014442:home",
+      "date": "2014-09-18",
+      "season": "2014-15",
+      "competition": {
+        "name": "UEFA Cup / UEFA Europa League",
+        "type": "continental",
+        "country": "Europe"
+      },
+      "stage": "Group stage",
+      "opponent": {
+        "name": "St-Étienne",
+        "slug": "st-etienne"
+      },
+      "venue": "home",
+      "score": {
+        "for": 0,
+        "against": 0
+      },
+      "result": "D",
+      "sources": [
+        {
+          "provider": "UEFA official match API",
+          "url": "https://www.uefa.com/uefachampionsleague/match/2014442/",
+          "retrievedAt": "2026-08-04T21:12:18.667Z",
+          "rawArtifact": "data/teams/history/normalized/uefa-1785878005892.json"
+        }
+      ]
+    },
+    {
+      "id": "uefa:2014466:away",
+      "date": "2014-10-02",
+      "season": "2014-15",
+      "competition": {
+        "name": "UEFA Cup / UEFA Europa League",
+        "type": "continental",
+        "country": "Europe"
+      },
+      "stage": "Group stage",
+      "opponent": {
+        "name": "Inter Milan",
+        "slug": "inter-milan"
+      },
+      "venue": "away",
+      "score": {
+        "for": 0,
+        "against": 2
+      },
+      "result": "L",
+      "sources": [
+        {
+          "provider": "UEFA official match API",
+          "url": "https://www.uefa.com/uefachampionsleague/match/2014466/",
+          "retrievedAt": "2026-08-04T21:12:18.667Z",
+          "rawArtifact": "data/teams/history/normalized/uefa-1785878005892.json"
+        }
+      ]
+    },
+    {
+      "id": "uefa:2014490:away",
+      "date": "2014-10-23",
+      "season": "2014-15",
+      "competition": {
+        "name": "UEFA Cup / UEFA Europa League",
+        "type": "continental",
+        "country": "Europe"
+      },
+      "stage": "Group stage",
+      "opponent": {
+        "name": "Dnipro",
+        "slug": "dnipro"
+      },
+      "venue": "away",
+      "score": {
+        "for": 1,
+        "against": 0
+      },
+      "result": "W",
+      "sources": [
+        {
+          "provider": "UEFA official match API",
+          "url": "https://www.uefa.com/uefachampionsleague/match/2014490/",
+          "retrievedAt": "2026-08-04T21:12:18.667Z",
+          "rawArtifact": "data/teams/history/normalized/uefa-1785878005892.json"
+        }
+      ]
+    },
+    {
+      "id": "uefa:2014514:home",
+      "date": "2014-11-06",
+      "season": "2014-15",
+      "competition": {
+        "name": "UEFA Cup / UEFA Europa League",
+        "type": "continental",
+        "country": "Europe"
+      },
+      "stage": "Group stage",
+      "opponent": {
+        "name": "Dnipro",
+        "slug": "dnipro"
+      },
+      "venue": "home",
+      "score": {
+        "for": 1,
+        "against": 2
+      },
+      "result": "L",
+      "sources": [
+        {
+          "provider": "UEFA official match API",
+          "url": "https://www.uefa.com/uefachampionsleague/match/2014514/",
+          "retrievedAt": "2026-08-04T21:12:18.667Z",
+          "rawArtifact": "data/teams/history/normalized/uefa-1785878005892.json"
+        }
+      ]
+    },
+    {
+      "id": "uefa:2014538:away",
+      "date": "2014-11-27",
+      "season": "2014-15",
+      "competition": {
+        "name": "UEFA Cup / UEFA Europa League",
+        "type": "continental",
+        "country": "Europe"
+      },
+      "stage": "Group stage",
+      "opponent": {
+        "name": "St-Étienne",
+        "slug": "st-etienne"
+      },
+      "venue": "away",
+      "score": {
+        "for": 1,
+        "against": 1
+      },
+      "result": "D",
+      "sources": [
+        {
+          "provider": "UEFA official match API",
+          "url": "https://www.uefa.com/uefachampionsleague/match/2014538/",
+          "retrievedAt": "2026-08-04T21:12:18.667Z",
+          "rawArtifact": "data/teams/history/normalized/uefa-1785878005892.json"
+        }
+      ]
+    },
+    {
+      "id": "uefa:2014562:home",
+      "date": "2014-12-11",
+      "season": "2014-15",
+      "competition": {
+        "name": "UEFA Cup / UEFA Europa League",
+        "type": "continental",
+        "country": "Europe"
+      },
+      "stage": "Group stage",
+      "opponent": {
+        "name": "Inter Milan",
+        "slug": "inter-milan"
+      },
+      "venue": "home",
+      "score": {
+        "for": 0,
+        "against": 0
+      },
+      "result": "D",
+      "sources": [
+        {
+          "provider": "UEFA official match API",
+          "url": "https://www.uefa.com/uefachampionsleague/match/2014562/",
+          "retrievedAt": "2026-08-04T21:12:18.667Z",
+          "rawArtifact": "data/teams/history/normalized/uefa-1785878005892.json"
+        }
+      ]
+    },
+    {
+      "id": "uefa:2015583:home",
+      "date": "2015-07-15",
+      "season": "2015-16",
+      "competition": {
+        "name": "UEFA Champions League / European Cup",
+        "type": "continental",
+        "country": "Europe"
+      },
+      "stage": "Second qualifying round",
+      "opponent": {
+        "name": "Rudar Pljevlja",
+        "slug": "rudar-pljevlja"
+      },
+      "venue": "home",
+      "score": {
+        "for": 0,
+        "against": 0
+      },
+      "result": "D",
+      "sources": [
+        {
+          "provider": "UEFA official match API",
+          "url": "https://www.uefa.com/uefachampionsleague/match/2015583/",
+          "retrievedAt": "2026-08-04T21:12:30.009Z",
+          "rawArtifact": "data/teams/history/normalized/uefa-1785878005892.json"
+        }
+      ]
+    },
+    {
+      "id": "uefa:2015600:away",
+      "date": "2015-07-22",
+      "season": "2015-16",
+      "competition": {
+        "name": "UEFA Champions League / European Cup",
+        "type": "continental",
+        "country": "Europe"
+      },
+      "stage": "Second qualifying round",
+      "opponent": {
+        "name": "Rudar Pljevlja",
+        "slug": "rudar-pljevlja"
+      },
+      "venue": "away",
+      "score": {
+        "for": 1,
+        "against": 0
+      },
+      "result": "W",
+      "sources": [
+        {
+          "provider": "UEFA official match API",
+          "url": "https://www.uefa.com/uefachampionsleague/match/2015600/",
+          "retrievedAt": "2026-08-04T21:12:30.009Z",
+          "rawArtifact": "data/teams/history/normalized/uefa-1785878005892.json"
+        }
+      ]
+    },
+    {
+      "id": "uefa:2015618:away",
+      "date": "2015-07-29",
+      "season": "2015-16",
+      "competition": {
+        "name": "UEFA Champions League / European Cup",
+        "type": "continental",
+        "country": "Europe"
+      },
+      "stage": "Third qualifying round",
+      "opponent": {
+        "name": "Celtic",
+        "slug": "celtic"
+      },
+      "venue": "away",
+      "score": {
+        "for": 0,
+        "against": 1
+      },
+      "result": "L",
+      "sources": [
+        {
+          "provider": "UEFA official match API",
+          "url": "https://www.uefa.com/uefachampionsleague/match/2015618/",
+          "retrievedAt": "2026-08-04T21:12:30.009Z",
+          "rawArtifact": "data/teams/history/normalized/uefa-1785878005892.json"
+        }
+      ]
+    },
+    {
+      "id": "uefa:2015633:home",
+      "date": "2015-08-05",
+      "season": "2015-16",
+      "competition": {
+        "name": "UEFA Champions League / European Cup",
+        "type": "continental",
+        "country": "Europe"
+      },
+      "stage": "Third qualifying round",
+      "opponent": {
+        "name": "Celtic",
+        "slug": "celtic"
+      },
+      "venue": "home",
+      "score": {
+        "for": 0,
+        "against": 0
+      },
+      "result": "D",
+      "sources": [
+        {
+          "provider": "UEFA official match API",
+          "url": "https://www.uefa.com/uefachampionsleague/match/2015633/",
+          "retrievedAt": "2026-08-04T21:12:30.009Z",
+          "rawArtifact": "data/teams/history/normalized/uefa-1785878005892.json"
+        }
+      ]
+    },
+    {
+      "id": "uefa:2018030:away",
+      "date": "2015-08-20",
+      "season": "2015-16",
+      "competition": {
+        "name": "UEFA Cup / UEFA Europa League",
+        "type": "continental",
+        "country": "Europe"
+      },
+      "stage": "Play-offs",
+      "opponent": {
+        "name": "Young Boys",
+        "slug": "young-boys"
+      },
+      "venue": "away",
+      "score": {
+        "for": 1,
+        "against": 0
+      },
+      "result": "W",
+      "sources": [
+        {
+          "provider": "UEFA official match API",
+          "url": "https://www.uefa.com/uefachampionsleague/match/2018030/",
+          "retrievedAt": "2026-08-04T21:12:31.773Z",
+          "rawArtifact": "data/teams/history/normalized/uefa-1785878005892.json"
+        }
+      ]
+    },
+    {
+      "id": "uefa:2018052:home",
+      "date": "2015-08-27",
+      "season": "2015-16",
+      "competition": {
+        "name": "UEFA Cup / UEFA Europa League",
+        "type": "continental",
+        "country": "Europe"
+      },
+      "stage": "Play-offs",
+      "opponent": {
+        "name": "Young Boys",
+        "slug": "young-boys"
+      },
+      "venue": "home",
+      "score": {
+        "for": 3,
+        "against": 0
+      },
+      "result": "W",
+      "sources": [
+        {
+          "provider": "UEFA official match API",
+          "url": "https://www.uefa.com/uefachampionsleague/match/2018052/",
+          "retrievedAt": "2026-08-04T21:12:31.773Z",
+          "rawArtifact": "data/teams/history/normalized/uefa-1785878005892.json"
+        }
+      ]
+    },
+    {
+      "id": "uefa:2016942:away",
+      "date": "2015-09-17",
+      "season": "2015-16",
+      "competition": {
+        "name": "UEFA Cup / UEFA Europa League",
+        "type": "continental",
+        "country": "Europe"
+      },
+      "stage": "Group stage",
+      "opponent": {
+        "name": "Tottenham",
+        "slug": "tottenham"
+      },
+      "venue": "away",
+      "score": {
+        "for": 1,
+        "against": 3
+      },
+      "result": "L",
+      "sources": [
+        {
+          "provider": "UEFA official match API",
+          "url": "https://www.uefa.com/uefachampionsleague/match/2016942/",
+          "retrievedAt": "2026-08-04T21:12:31.773Z",
+          "rawArtifact": "data/teams/history/normalized/uefa-1785878005892.json"
+        }
+      ]
+    },
+    {
+      "id": "uefa:2016965:home",
+      "date": "2015-10-01",
+      "season": "2015-16",
+      "competition": {
+        "name": "UEFA Cup / UEFA Europa League",
+        "type": "continental",
+        "country": "Europe"
+      },
+      "stage": "Group stage",
+      "opponent": {
+        "name": "Anderlecht",
+        "slug": "anderlecht"
+      },
+      "venue": "home",
+      "score": {
+        "for": 1,
+        "against": 0
+      },
+      "result": "W",
+      "sources": [
+        {
+          "provider": "UEFA official match API",
+          "url": "https://www.uefa.com/uefachampionsleague/match/2016965/",
+          "retrievedAt": "2026-08-04T21:12:31.773Z",
+          "rawArtifact": "data/teams/history/normalized/uefa-1785878005892.json"
+        }
+      ]
+    },
+    {
+      "id": "uefa:2016989:away",
+      "date": "2015-10-22",
+      "season": "2015-16",
+      "competition": {
+        "name": "UEFA Cup / UEFA Europa League",
+        "type": "continental",
+        "country": "Europe"
+      },
+      "stage": "Group stage",
+      "opponent": {
+        "name": "Monaco",
+        "slug": "monaco"
+      },
+      "venue": "away",
+      "score": {
+        "for": 0,
+        "against": 1
+      },
+      "result": "L",
+      "sources": [
+        {
+          "provider": "UEFA official match API",
+          "url": "https://www.uefa.com/uefachampionsleague/match/2016989/",
+          "retrievedAt": "2026-08-04T21:12:31.773Z",
+          "rawArtifact": "data/teams/history/normalized/uefa-1785878005892.json"
+        }
+      ]
+    },
+    {
+      "id": "uefa:2017013:home",
+      "date": "2015-11-05",
+      "season": "2015-16",
+      "competition": {
+        "name": "UEFA Cup / UEFA Europa League",
+        "type": "continental",
+        "country": "Europe"
+      },
+      "stage": "Group stage",
+      "opponent": {
+        "name": "Monaco",
+        "slug": "monaco"
+      },
+      "venue": "home",
+      "score": {
+        "for": 1,
+        "against": 1
+      },
+      "result": "D",
+      "sources": [
+        {
+          "provider": "UEFA official match API",
+          "url": "https://www.uefa.com/uefachampionsleague/match/2017013/",
+          "retrievedAt": "2026-08-04T21:12:31.773Z",
+          "rawArtifact": "data/teams/history/normalized/uefa-1785878005892.json"
+        }
+      ]
+    },
+    {
+      "id": "uefa:2017038:home",
+      "date": "2015-11-26",
+      "season": "2015-16",
+      "competition": {
+        "name": "UEFA Cup / UEFA Europa League",
+        "type": "continental",
+        "country": "Europe"
+      },
+      "stage": "Group stage",
+      "opponent": {
+        "name": "Tottenham",
+        "slug": "tottenham"
+      },
+      "venue": "home",
+      "score": {
+        "for": 0,
+        "against": 1
+      },
+      "result": "L",
+      "sources": [
+        {
+          "provider": "UEFA official match API",
+          "url": "https://www.uefa.com/uefachampionsleague/match/2017038/",
+          "retrievedAt": "2026-08-04T21:12:31.773Z",
+          "rawArtifact": "data/teams/history/normalized/uefa-1785878005892.json"
+        }
+      ]
+    },
+    {
+      "id": "uefa:2017061:away",
+      "date": "2015-12-10",
+      "season": "2015-16",
+      "competition": {
+        "name": "UEFA Cup / UEFA Europa League",
+        "type": "continental",
+        "country": "Europe"
+      },
+      "stage": "Group stage",
+      "opponent": {
+        "name": "Anderlecht",
+        "slug": "anderlecht"
+      },
+      "venue": "away",
+      "score": {
+        "for": 1,
+        "against": 2
+      },
+      "result": "L",
+      "sources": [
+        {
+          "provider": "UEFA official match API",
+          "url": "https://www.uefa.com/uefachampionsleague/match/2017061/",
+          "retrievedAt": "2026-08-04T21:12:31.773Z",
+          "rawArtifact": "data/teams/history/normalized/uefa-1785878005892.json"
+        }
+      ]
+    },
+    {
+      "id": "uefa:2020150:home",
+      "date": "2016-07-12",
+      "season": "2016-17",
+      "competition": {
+        "name": "UEFA Champions League / European Cup",
+        "type": "continental",
+        "country": "Europe"
+      },
+      "stage": "Second qualifying round",
+      "opponent": {
+        "name": "Diddeleng",
+        "slug": "diddeleng"
+      },
+      "venue": "home",
+      "score": {
+        "for": 2,
+        "against": 0
+      },
+      "result": "W",
+      "sources": [
+        {
+          "provider": "UEFA official match API",
+          "url": "https://www.uefa.com/uefachampionsleague/match/2020150/",
+          "retrievedAt": "2026-08-04T21:12:32.485Z",
+          "rawArtifact": "data/teams/history/normalized/uefa-1785878005892.json"
+        }
+      ]
+    },
+    {
+      "id": "uefa:2020167:away",
+      "date": "2016-07-20",
+      "season": "2016-17",
+      "competition": {
+        "name": "UEFA Champions League / European Cup",
+        "type": "continental",
+        "country": "Europe"
+      },
+      "stage": "Second qualifying round",
+      "opponent": {
+        "name": "Diddeleng",
+        "slug": "diddeleng"
+      },
+      "venue": "away",
+      "score": {
+        "for": 1,
+        "against": 1
+      },
+      "result": "D",
+      "sources": [
+        {
+          "provider": "UEFA official match API",
+          "url": "https://www.uefa.com/uefachampionsleague/match/2020167/",
+          "retrievedAt": "2026-08-04T21:12:32.485Z",
+          "rawArtifact": "data/teams/history/normalized/uefa-1785878005892.json"
+        }
+      ]
+    },
+    {
+      "id": "uefa:2020342:away",
+      "date": "2016-07-26",
+      "season": "2016-17",
+      "competition": {
+        "name": "UEFA Champions League / European Cup",
+        "type": "continental",
+        "country": "Europe"
+      },
+      "stage": "Third qualifying round",
+      "opponent": {
+        "name": "Viktoria Plzeň",
+        "slug": "viktoria-plzen"
+      },
+      "venue": "away",
+      "score": {
+        "for": 0,
+        "against": 0
+      },
+      "result": "D",
+      "sources": [
+        {
+          "provider": "UEFA official match API",
+          "url": "https://www.uefa.com/uefachampionsleague/match/2020342/",
+          "retrievedAt": "2026-08-04T21:12:32.485Z",
+          "rawArtifact": "data/teams/history/normalized/uefa-1785878005892.json"
+        }
+      ]
+    },
+    {
+      "id": "uefa:2020357:home",
+      "date": "2016-08-02",
+      "season": "2016-17",
+      "competition": {
+        "name": "UEFA Champions League / European Cup",
+        "type": "continental",
+        "country": "Europe"
+      },
+      "stage": "Third qualifying round",
+      "opponent": {
+        "name": "Viktoria Plzeň",
+        "slug": "viktoria-plzen"
+      },
+      "venue": "home",
+      "score": {
+        "for": 1,
+        "against": 1
+      },
+      "result": "D",
+      "sources": [
+        {
+          "provider": "UEFA official match API",
+          "url": "https://www.uefa.com/uefachampionsleague/match/2020357/",
+          "retrievedAt": "2026-08-04T21:12:32.485Z",
+          "rawArtifact": "data/teams/history/normalized/uefa-1785878005892.json"
+        }
+      ]
+    },
+    {
+      "id": "uefa:2020455:away",
+      "date": "2016-08-18",
+      "season": "2016-17",
+      "competition": {
+        "name": "UEFA Cup / UEFA Europa League",
+        "type": "continental",
+        "country": "Europe"
+      },
+      "stage": "Play-offs",
+      "opponent": {
+        "name": "IFK Göteborg",
+        "slug": "ifk-goteborg"
+      },
+      "venue": "away",
+      "score": {
+        "for": 0,
+        "against": 1
+      },
+      "result": "L",
+      "sources": [
+        {
+          "provider": "UEFA official match API",
+          "url": "https://www.uefa.com/uefachampionsleague/match/2020455/",
+          "retrievedAt": "2026-08-04T21:12:34.014Z",
+          "rawArtifact": "data/teams/history/normalized/uefa-1785878005892.json"
+        }
+      ]
+    },
+    {
+      "id": "uefa:2020477:home",
+      "date": "2016-08-25",
+      "season": "2016-17",
+      "competition": {
+        "name": "UEFA Cup / UEFA Europa League",
+        "type": "continental",
+        "country": "Europe"
+      },
+      "stage": "Play-offs",
+      "opponent": {
+        "name": "IFK Göteborg",
+        "slug": "ifk-goteborg"
+      },
+      "venue": "home",
+      "score": {
+        "for": 3,
+        "against": 0
+      },
+      "result": "W",
+      "sources": [
+        {
+          "provider": "UEFA official match API",
+          "url": "https://www.uefa.com/uefachampionsleague/match/2020477/",
+          "retrievedAt": "2026-08-04T21:12:34.014Z",
+          "rawArtifact": "data/teams/history/normalized/uefa-1785878005892.json"
+        }
+      ]
+    },
+    {
+      "id": "uefa:2019396:home",
+      "date": "2016-09-15",
+      "season": "2016-17",
+      "competition": {
+        "name": "UEFA Cup / UEFA Europa League",
+        "type": "continental",
+        "country": "Europe"
+      },
+      "stage": "Group stage",
+      "opponent": {
+        "name": "Liberec",
+        "slug": "liberec"
+      },
+      "venue": "home",
+      "score": {
+        "for": 2,
+        "against": 2
+      },
+      "result": "D",
+      "sources": [
+        {
+          "provider": "UEFA official match API",
+          "url": "https://www.uefa.com/uefachampionsleague/match/2019396/",
+          "retrievedAt": "2026-08-04T21:12:34.014Z",
+          "rawArtifact": "data/teams/history/normalized/uefa-1785878005892.json"
+        }
+      ]
+    },
+    {
+      "id": "uefa:2019420:away",
+      "date": "2016-09-29",
+      "season": "2016-17",
+      "competition": {
+        "name": "UEFA Cup / UEFA Europa League",
+        "type": "continental",
+        "country": "Europe"
+      },
+      "stage": "Group stage",
+      "opponent": {
+        "name": "Fiorentina",
+        "slug": "fiorentina"
+      },
+      "venue": "away",
+      "score": {
+        "for": 1,
+        "against": 5
+      },
+      "result": "L",
+      "sources": [
+        {
+          "provider": "UEFA official match API",
+          "url": "https://www.uefa.com/uefachampionsleague/match/2019420/",
+          "retrievedAt": "2026-08-04T21:12:34.014Z",
+          "rawArtifact": "data/teams/history/normalized/uefa-1785878005892.json"
+        }
+      ]
+    },
+    {
+      "id": "uefa:2019445:home",
+      "date": "2016-10-20",
+      "season": "2016-17",
+      "competition": {
+        "name": "UEFA Cup / UEFA Europa League",
+        "type": "continental",
+        "country": "Europe"
+      },
+      "stage": "Group stage",
+      "opponent": {
+        "name": "PAOK",
+        "slug": "paok"
+      },
+      "venue": "home",
+      "score": {
+        "for": 2,
+        "against": 0
+      },
+      "result": "W",
+      "sources": [
+        {
+          "provider": "UEFA official match API",
+          "url": "https://www.uefa.com/uefachampionsleague/match/2019445/",
+          "retrievedAt": "2026-08-04T21:12:34.014Z",
+          "rawArtifact": "data/teams/history/normalized/uefa-1785878005892.json"
+        }
+      ]
+    },
+    {
+      "id": "uefa:2019469:away",
+      "date": "2016-11-03",
+      "season": "2016-17",
+      "competition": {
+        "name": "UEFA Cup / UEFA Europa League",
+        "type": "continental",
+        "country": "Europe"
+      },
+      "stage": "Group stage",
+      "opponent": {
+        "name": "PAOK",
+        "slug": "paok"
+      },
+      "venue": "away",
+      "score": {
+        "for": 1,
+        "against": 0
+      },
+      "result": "W",
+      "sources": [
+        {
+          "provider": "UEFA official match API",
+          "url": "https://www.uefa.com/uefachampionsleague/match/2019469/",
+          "retrievedAt": "2026-08-04T21:12:34.014Z",
+          "rawArtifact": "data/teams/history/normalized/uefa-1785878005892.json"
+        }
+      ]
+    },
+    {
+      "id": "uefa:2019492:away",
+      "date": "2016-11-24",
+      "season": "2016-17",
+      "competition": {
+        "name": "UEFA Cup / UEFA Europa League",
+        "type": "continental",
+        "country": "Europe"
+      },
+      "stage": "Group stage",
+      "opponent": {
+        "name": "Liberec",
+        "slug": "liberec"
+      },
+      "venue": "away",
+      "score": {
+        "for": 0,
+        "against": 3
+      },
+      "result": "L",
+      "sources": [
+        {
+          "provider": "UEFA official match API",
+          "url": "https://www.uefa.com/uefachampionsleague/match/2019492/",
+          "retrievedAt": "2026-08-04T21:12:34.014Z",
+          "rawArtifact": "data/teams/history/normalized/uefa-1785878005892.json"
+        }
+      ]
+    },
+    {
+      "id": "uefa:2019516:home",
+      "date": "2016-12-08",
+      "season": "2016-17",
+      "competition": {
+        "name": "UEFA Cup / UEFA Europa League",
+        "type": "continental",
+        "country": "Europe"
+      },
+      "stage": "Group stage",
+      "opponent": {
+        "name": "Fiorentina",
+        "slug": "fiorentina"
+      },
+      "venue": "home",
+      "score": {
+        "for": 1,
+        "against": 2
+      },
+      "result": "L",
+      "sources": [
+        {
+          "provider": "UEFA official match API",
+          "url": "https://www.uefa.com/uefachampionsleague/match/2019516/",
+          "retrievedAt": "2026-08-04T21:12:34.014Z",
+          "rawArtifact": "data/teams/history/normalized/uefa-1785878005892.json"
+        }
+      ]
+    },
+    {
+      "id": "uefa:2021505:home",
+      "date": "2017-07-11",
+      "season": "2017-18",
+      "competition": {
+        "name": "UEFA Champions League / European Cup",
+        "type": "continental",
+        "country": "Europe"
+      },
+      "stage": "Second qualifying round",
+      "opponent": {
+        "name": "Samtredia",
+        "slug": "samtredia"
+      },
+      "venue": "home",
+      "score": {
+        "for": 5,
+        "against": 0
+      },
+      "result": "W",
+      "sources": [
+        {
+          "provider": "UEFA official match API",
+          "url": "https://www.uefa.com/uefachampionsleague/match/2021505/",
+          "retrievedAt": "2026-08-04T21:12:34.911Z",
+          "rawArtifact": "data/teams/history/normalized/uefa-1785878005892.json"
+        }
+      ]
+    },
+    {
+      "id": "uefa:2021522:away",
+      "date": "2017-07-18",
+      "season": "2017-18",
+      "competition": {
+        "name": "UEFA Champions League / European Cup",
+        "type": "continental",
+        "country": "Europe"
+      },
+      "stage": "Second qualifying round",
+      "opponent": {
+        "name": "Samtredia",
+        "slug": "samtredia"
+      },
+      "venue": "away",
+      "score": {
+        "for": 1,
+        "against": 0
+      },
+      "result": "W",
+      "sources": [
+        {
+          "provider": "UEFA official match API",
+          "url": "https://www.uefa.com/uefachampionsleague/match/2021522/",
+          "retrievedAt": "2026-08-04T21:12:34.911Z",
+          "rawArtifact": "data/teams/history/normalized/uefa-1785878005892.json"
+        }
+      ]
+    },
+    {
+      "id": "uefa:2021545:home",
+      "date": "2017-07-25",
+      "season": "2017-18",
+      "competition": {
+        "name": "UEFA Champions League / European Cup",
+        "type": "continental",
+        "country": "Europe"
+      },
+      "stage": "Third qualifying round",
+      "opponent": {
+        "name": "Sheriff",
+        "slug": "sheriff"
+      },
+      "venue": "home",
+      "score": {
+        "for": 0,
+        "against": 0
+      },
+      "result": "D",
+      "sources": [
+        {
+          "provider": "UEFA official match API",
+          "url": "https://www.uefa.com/uefachampionsleague/match/2021545/",
+          "retrievedAt": "2026-08-04T21:12:34.911Z",
+          "rawArtifact": "data/teams/history/normalized/uefa-1785878005892.json"
+        }
+      ]
+    },
+    {
+      "id": "uefa:2021560:away",
+      "date": "2017-08-01",
+      "season": "2017-18",
+      "competition": {
+        "name": "UEFA Champions League / European Cup",
+        "type": "continental",
+        "country": "Europe"
+      },
+      "stage": "Third qualifying round",
+      "opponent": {
+        "name": "Sheriff",
+        "slug": "sheriff"
+      },
+      "venue": "away",
+      "score": {
+        "for": 2,
+        "against": 1
+      },
+      "result": "W",
+      "sources": [
+        {
+          "provider": "UEFA official match API",
+          "url": "https://www.uefa.com/uefachampionsleague/match/2021560/",
+          "retrievedAt": "2026-08-04T21:12:34.911Z",
+          "rawArtifact": "data/teams/history/normalized/uefa-1785878005892.json"
+        }
+      ]
+    },
+    {
+      "id": "uefa:2021567:home",
+      "date": "2017-08-15",
+      "season": "2017-18",
+      "competition": {
+        "name": "UEFA Champions League / European Cup",
+        "type": "continental",
+        "country": "Europe"
+      },
+      "stage": "Play-offs",
+      "opponent": {
+        "name": "Copenhagen",
+        "slug": "copenhagen"
+      },
+      "venue": "home",
+      "score": {
+        "for": 1,
+        "against": 0
+      },
+      "result": "W",
+      "sources": [
+        {
+          "provider": "UEFA official match API",
+          "url": "https://www.uefa.com/uefachampionsleague/match/2021567/",
+          "retrievedAt": "2026-08-04T21:12:34.911Z",
+          "rawArtifact": "data/teams/history/normalized/uefa-1785878005892.json"
+        }
+      ]
+    },
+    {
+      "id": "uefa:2021582:away",
+      "date": "2017-08-23",
+      "season": "2017-18",
+      "competition": {
+        "name": "UEFA Champions League / European Cup",
+        "type": "continental",
+        "country": "Europe"
+      },
+      "stage": "Play-offs",
+      "opponent": {
+        "name": "Copenhagen",
+        "slug": "copenhagen"
+      },
+      "venue": "away",
+      "score": {
+        "for": 1,
+        "against": 2
+      },
+      "result": "L",
+      "sources": [
+        {
+          "provider": "UEFA official match API",
+          "url": "https://www.uefa.com/uefachampionsleague/match/2021582/",
+          "retrievedAt": "2026-08-04T21:12:34.911Z",
+          "rawArtifact": "data/teams/history/normalized/uefa-1785878005892.json"
+        }
+      ]
+    },
+    {
+      "id": "uefa:2021591:away",
+      "date": "2017-09-12",
+      "season": "2017-18",
+      "competition": {
+        "name": "UEFA Champions League / European Cup",
+        "type": "continental",
+        "country": "Europe"
+      },
+      "stage": "Group stage",
+      "opponent": {
+        "name": "Chelsea",
+        "slug": "chelsea"
+      },
+      "venue": "away",
+      "score": {
+        "for": 0,
+        "against": 6
+      },
+      "result": "L",
+      "sources": [
+        {
+          "provider": "UEFA official match API",
+          "url": "https://www.uefa.com/uefachampionsleague/match/2021591/",
+          "retrievedAt": "2026-08-04T21:12:34.911Z",
+          "rawArtifact": "data/teams/history/normalized/uefa-1785878005892.json"
+        }
+      ]
+    },
+    {
+      "id": "uefa:2021616:home",
+      "date": "2017-09-27",
+      "season": "2017-18",
+      "competition": {
+        "name": "UEFA Champions League / European Cup",
+        "type": "continental",
+        "country": "Europe"
+      },
+      "stage": "Group stage",
+      "opponent": {
+        "name": "AS Roma",
+        "slug": "as-roma"
+      },
+      "venue": "home",
+      "score": {
+        "for": 1,
+        "against": 2
+      },
+      "result": "L",
+      "sources": [
+        {
+          "provider": "UEFA official match API",
+          "url": "https://www.uefa.com/uefachampionsleague/match/2021616/",
+          "retrievedAt": "2026-08-04T21:12:34.911Z",
+          "rawArtifact": "data/teams/history/normalized/uefa-1785878005892.json"
+        }
+      ]
+    },
+    {
+      "id": "uefa:2021631:home",
+      "date": "2017-10-18",
+      "season": "2017-18",
+      "competition": {
+        "name": "UEFA Champions League / European Cup",
+        "type": "continental",
+        "country": "Europe"
+      },
+      "stage": "Group stage",
+      "opponent": {
+        "name": "Atleti",
+        "slug": "atleti"
+      },
+      "venue": "home",
+      "score": {
+        "for": 0,
+        "against": 0
+      },
+      "result": "D",
+      "sources": [
+        {
+          "provider": "UEFA official match API",
+          "url": "https://www.uefa.com/uefachampionsleague/match/2021631/",
+          "retrievedAt": "2026-08-04T21:12:34.911Z",
+          "rawArtifact": "data/teams/history/normalized/uefa-1785878005892.json"
+        }
+      ]
+    },
+    {
+      "id": "uefa:2021639:away",
+      "date": "2017-10-31",
+      "season": "2017-18",
+      "competition": {
+        "name": "UEFA Champions League / European Cup",
+        "type": "continental",
+        "country": "Europe"
+      },
+      "stage": "Group stage",
+      "opponent": {
+        "name": "Atleti",
+        "slug": "atleti"
+      },
+      "venue": "away",
+      "score": {
+        "for": 1,
+        "against": 1
+      },
+      "result": "D",
+      "sources": [
+        {
+          "provider": "UEFA official match API",
+          "url": "https://www.uefa.com/uefachampionsleague/match/2021639/",
+          "retrievedAt": "2026-08-04T21:12:34.911Z",
+          "rawArtifact": "data/teams/history/normalized/uefa-1785878005892.json"
+        }
+      ]
+    },
+    {
+      "id": "uefa:2021663:home",
+      "date": "2017-11-22",
+      "season": "2017-18",
+      "competition": {
+        "name": "UEFA Champions League / European Cup",
+        "type": "continental",
+        "country": "Europe"
+      },
+      "stage": "Group stage",
+      "opponent": {
+        "name": "Chelsea",
+        "slug": "chelsea"
+      },
+      "venue": "home",
+      "score": {
+        "for": 0,
+        "against": 4
+      },
+      "result": "L",
+      "sources": [
+        {
+          "provider": "UEFA official match API",
+          "url": "https://www.uefa.com/uefachampionsleague/match/2021663/",
+          "retrievedAt": "2026-08-04T21:12:34.911Z",
+          "rawArtifact": "data/teams/history/normalized/uefa-1785878005892.json"
+        }
+      ]
+    },
+    {
+      "id": "uefa:2021672:away",
+      "date": "2017-12-05",
+      "season": "2017-18",
+      "competition": {
+        "name": "UEFA Champions League / European Cup",
+        "type": "continental",
+        "country": "Europe"
+      },
+      "stage": "Group stage",
+      "opponent": {
+        "name": "AS Roma",
+        "slug": "as-roma"
+      },
+      "venue": "away",
+      "score": {
+        "for": 0,
+        "against": 1
+      },
+      "result": "L",
+      "sources": [
+        {
+          "provider": "UEFA official match API",
+          "url": "https://www.uefa.com/uefachampionsleague/match/2021672/",
+          "retrievedAt": "2026-08-04T21:12:34.911Z",
+          "rawArtifact": "data/teams/history/normalized/uefa-1785878005892.json"
+        }
+      ]
+    },
+    {
+      "id": "uefa:2024596:away",
+      "date": "2018-07-11",
+      "season": "2018-19",
+      "competition": {
+        "name": "UEFA Champions League / European Cup",
+        "type": "continental",
+        "country": "Europe"
+      },
+      "stage": "First qualifying round",
+      "opponent": {
+        "name": "Olimpija",
+        "slug": "olimpija"
+      },
+      "venue": "away",
+      "score": {
+        "for": 1,
+        "against": 0
+      },
+      "result": "W",
+      "sources": [
+        {
+          "provider": "UEFA official match API",
+          "url": "https://www.uefa.com/uefachampionsleague/match/2024596/",
+          "retrievedAt": "2026-08-04T21:12:38.275Z",
+          "rawArtifact": "data/teams/history/normalized/uefa-1785878005892.json"
+        }
+      ]
+    },
+    {
+      "id": "uefa:2024612:home",
+      "date": "2018-07-18",
+      "season": "2018-19",
+      "competition": {
+        "name": "UEFA Champions League / European Cup",
+        "type": "continental",
+        "country": "Europe"
+      },
+      "stage": "First qualifying round",
+      "opponent": {
+        "name": "Olimpija",
+        "slug": "olimpija"
+      },
+      "venue": "home",
+      "score": {
+        "for": 0,
+        "against": 0
+      },
+      "result": "D",
+      "sources": [
+        {
+          "provider": "UEFA official match API",
+          "url": "https://www.uefa.com/uefachampionsleague/match/2024612/",
+          "retrievedAt": "2026-08-04T21:12:38.275Z",
+          "rawArtifact": "data/teams/history/normalized/uefa-1785878005892.json"
+        }
+      ]
+    },
+    {
+      "id": "uefa:2024627:away",
+      "date": "2018-07-25",
+      "season": "2018-19",
+      "competition": {
+        "name": "UEFA Champions League / European Cup",
+        "type": "continental",
+        "country": "Europe"
+      },
+      "stage": "Second qualifying round",
+      "opponent": {
+        "name": "Kukës",
+        "slug": "kukes"
+      },
+      "venue": "away",
+      "score": {
+        "for": 0,
+        "against": 0
+      },
+      "result": "D",
+      "sources": [
+        {
+          "provider": "UEFA official match API",
+          "url": "https://www.uefa.com/uefachampionsleague/match/2024627/",
+          "retrievedAt": "2026-08-04T21:12:38.275Z",
+          "rawArtifact": "data/teams/history/normalized/uefa-1785878005892.json"
+        }
+      ]
+    },
+    {
+      "id": "uefa:2024639:home",
+      "date": "2018-08-01",
+      "season": "2018-19",
+      "competition": {
+        "name": "UEFA Champions League / European Cup",
+        "type": "continental",
+        "country": "Europe"
+      },
+      "stage": "Second qualifying round",
+      "opponent": {
+        "name": "Kukës",
+        "slug": "kukes"
+      },
+      "venue": "home",
+      "score": {
+        "for": 3,
+        "against": 0
+      },
+      "result": "W",
+      "sources": [
+        {
+          "provider": "UEFA official match API",
+          "url": "https://www.uefa.com/uefachampionsleague/match/2024639/",
+          "retrievedAt": "2026-08-04T21:12:38.275Z",
+          "rawArtifact": "data/teams/history/normalized/uefa-1785878005892.json"
+        }
+      ]
+    },
+    {
+      "id": "uefa:2025310:home",
+      "date": "2018-08-07",
+      "season": "2018-19",
+      "competition": {
+        "name": "UEFA Champions League / European Cup",
+        "type": "continental",
+        "country": "Europe"
+      },
+      "stage": "Third qualifying round",
+      "opponent": {
+        "name": "BATE",
+        "slug": "bate"
+      },
+      "venue": "home",
+      "score": {
+        "for": 0,
+        "against": 1
+      },
+      "result": "L",
+      "sources": [
+        {
+          "provider": "UEFA official match API",
+          "url": "https://www.uefa.com/uefachampionsleague/match/2025310/",
+          "retrievedAt": "2026-08-04T21:12:38.275Z",
+          "rawArtifact": "data/teams/history/normalized/uefa-1785878005892.json"
+        }
+      ]
+    },
+    {
+      "id": "uefa:2025320:away",
+      "date": "2018-08-14",
+      "season": "2018-19",
+      "competition": {
+        "name": "UEFA Champions League / European Cup",
+        "type": "continental",
+        "country": "Europe"
+      },
+      "stage": "Third qualifying round",
+      "opponent": {
+        "name": "BATE",
+        "slug": "bate"
+      },
+      "venue": "away",
+      "score": {
+        "for": 1,
+        "against": 1
+      },
+      "result": "D",
+      "sources": [
+        {
+          "provider": "UEFA official match API",
+          "url": "https://www.uefa.com/uefachampionsleague/match/2025320/",
+          "retrievedAt": "2026-08-04T21:12:38.275Z",
+          "rawArtifact": "data/teams/history/normalized/uefa-1785878005892.json"
+        }
+      ]
+    },
+    {
+      "id": "uefa:2025423:away",
+      "date": "2018-08-23",
+      "season": "2018-19",
+      "competition": {
+        "name": "UEFA Cup / UEFA Europa League",
+        "type": "continental",
+        "country": "Europe"
+      },
+      "stage": "Play-offs",
+      "opponent": {
+        "name": "Sheriff",
+        "slug": "sheriff"
+      },
+      "venue": "away",
+      "score": {
+        "for": 0,
+        "against": 1
+      },
+      "result": "L",
+      "sources": [
+        {
+          "provider": "UEFA official match API",
+          "url": "https://www.uefa.com/uefachampionsleague/match/2025423/",
+          "retrievedAt": "2026-08-04T21:12:40.264Z",
+          "rawArtifact": "data/teams/history/normalized/uefa-1785878005892.json"
+        }
+      ]
+    },
+    {
+      "id": "uefa:2025444:home",
+      "date": "2018-08-30",
+      "season": "2018-19",
+      "competition": {
+        "name": "UEFA Cup / UEFA Europa League",
+        "type": "continental",
+        "country": "Europe"
+      },
+      "stage": "Play-offs",
+      "opponent": {
+        "name": "Sheriff",
+        "slug": "sheriff"
+      },
+      "venue": "home",
+      "score": {
+        "for": 3,
+        "against": 0
+      },
+      "result": "W",
+      "sources": [
+        {
+          "provider": "UEFA official match API",
+          "url": "https://www.uefa.com/uefachampionsleague/match/2025444/",
+          "retrievedAt": "2026-08-04T21:12:40.264Z",
+          "rawArtifact": "data/teams/history/normalized/uefa-1785878005892.json"
+        }
+      ]
+    },
+    {
+      "id": "uefa:2025157:away",
+      "date": "2018-09-20",
+      "season": "2018-19",
+      "competition": {
+        "name": "UEFA Cup / UEFA Europa League",
+        "type": "continental",
+        "country": "Europe"
+      },
+      "stage": "Group stage",
+      "opponent": {
+        "name": "Sporting CP",
+        "slug": "sporting-cp"
+      },
+      "venue": "away",
+      "score": {
+        "for": 0,
+        "against": 2
+      },
+      "result": "L",
+      "sources": [
+        {
+          "provider": "UEFA official match API",
+          "url": "https://www.uefa.com/uefachampionsleague/match/2025157/",
+          "retrievedAt": "2026-08-04T21:12:40.264Z",
+          "rawArtifact": "data/teams/history/normalized/uefa-1785878005892.json"
+        }
+      ]
+    },
+    {
+      "id": "uefa:2025194:home",
+      "date": "2018-10-04",
+      "season": "2018-19",
+      "competition": {
+        "name": "UEFA Cup / UEFA Europa League",
+        "type": "continental",
+        "country": "Europe"
+      },
+      "stage": "Group stage",
+      "opponent": {
+        "name": "Arsenal",
+        "slug": "arsenal"
+      },
+      "venue": "home",
+      "score": {
+        "for": 0,
+        "against": 3
+      },
+      "result": "L",
+      "sources": [
+        {
+          "provider": "UEFA official match API",
+          "url": "https://www.uefa.com/uefachampionsleague/match/2025194/",
+          "retrievedAt": "2026-08-04T21:12:40.264Z",
+          "rawArtifact": "data/teams/history/normalized/uefa-1785878005892.json"
+        }
+      ]
+    },
+    {
+      "id": "uefa:2025217:home",
+      "date": "2018-10-25",
+      "season": "2018-19",
+      "competition": {
+        "name": "UEFA Cup / UEFA Europa League",
+        "type": "continental",
+        "country": "Europe"
+      },
+      "stage": "Group stage",
+      "opponent": {
+        "name": "Vorskla Poltava",
+        "slug": "vorskla-poltava"
+      },
+      "venue": "home",
+      "score": {
+        "for": 0,
+        "against": 1
+      },
+      "result": "L",
+      "sources": [
+        {
+          "provider": "UEFA official match API",
+          "url": "https://www.uefa.com/uefachampionsleague/match/2025217/",
+          "retrievedAt": "2026-08-04T21:12:40.264Z",
+          "rawArtifact": "data/teams/history/normalized/uefa-1785878005892.json"
+        }
+      ]
+    },
+    {
+      "id": "uefa:2025229:away",
+      "date": "2018-11-08",
+      "season": "2018-19",
+      "competition": {
+        "name": "UEFA Cup / UEFA Europa League",
+        "type": "continental",
+        "country": "Europe"
+      },
+      "stage": "Group stage",
+      "opponent": {
+        "name": "Vorskla Poltava",
+        "slug": "vorskla-poltava"
+      },
+      "venue": "away",
+      "score": {
+        "for": 1,
+        "against": 0
+      },
+      "result": "W",
+      "sources": [
+        {
+          "provider": "UEFA official match API",
+          "url": "https://www.uefa.com/uefachampionsleague/match/2025229/",
+          "retrievedAt": "2026-08-04T21:12:40.264Z",
+          "rawArtifact": "data/teams/history/normalized/uefa-1785878005892.json"
+        }
+      ]
+    },
+    {
+      "id": "uefa:2025265:home",
+      "date": "2018-11-29",
+      "season": "2018-19",
+      "competition": {
+        "name": "UEFA Cup / UEFA Europa League",
+        "type": "continental",
+        "country": "Europe"
+      },
+      "stage": "Group stage",
+      "opponent": {
+        "name": "Sporting CP",
+        "slug": "sporting-cp"
+      },
+      "venue": "home",
+      "score": {
+        "for": 1,
+        "against": 6
+      },
+      "result": "L",
+      "sources": [
+        {
+          "provider": "UEFA official match API",
+          "url": "https://www.uefa.com/uefachampionsleague/match/2025265/",
+          "retrievedAt": "2026-08-04T21:12:40.264Z",
+          "rawArtifact": "data/teams/history/normalized/uefa-1785878005892.json"
+        }
+      ]
+    },
+    {
+      "id": "uefa:2025278:away",
+      "date": "2018-12-13",
+      "season": "2018-19",
+      "competition": {
+        "name": "UEFA Cup / UEFA Europa League",
+        "type": "continental",
+        "country": "Europe"
+      },
+      "stage": "Group stage",
+      "opponent": {
+        "name": "Arsenal",
+        "slug": "arsenal"
+      },
+      "venue": "away",
+      "score": {
+        "for": 0,
+        "against": 1
+      },
+      "result": "L",
+      "sources": [
+        {
+          "provider": "UEFA official match API",
+          "url": "https://www.uefa.com/uefachampionsleague/match/2025278/",
+          "retrievedAt": "2026-08-04T21:12:40.264Z",
+          "rawArtifact": "data/teams/history/normalized/uefa-1785878005892.json"
+        }
+      ]
+    },
+    {
+      "id": "uefa:2026937:away",
+      "date": "2019-07-10",
+      "season": "2019-20",
+      "competition": {
+        "name": "UEFA Champions League / European Cup",
+        "type": "continental",
+        "country": "Europe"
+      },
+      "stage": "First qualifying round",
+      "opponent": {
+        "name": "Partizani",
+        "slug": "partizani"
+      },
+      "venue": "away",
+      "score": {
+        "for": 0,
+        "against": 0
+      },
+      "result": "D",
+      "sources": [
+        {
+          "provider": "UEFA official match API",
+          "url": "https://www.uefa.com/uefachampionsleague/match/2026937/",
+          "retrievedAt": "2026-08-04T21:12:40.902Z",
+          "rawArtifact": "data/teams/history/normalized/uefa-1785878005892.json"
+        }
+      ]
+    },
+    {
+      "id": "uefa:2026954:home",
+      "date": "2019-07-17",
+      "season": "2019-20",
+      "competition": {
+        "name": "UEFA Champions League / European Cup",
+        "type": "continental",
+        "country": "Europe"
+      },
+      "stage": "First qualifying round",
+      "opponent": {
+        "name": "Partizani",
+        "slug": "partizani"
+      },
+      "venue": "home",
+      "score": {
+        "for": 2,
+        "against": 0
+      },
+      "result": "W",
+      "sources": [
+        {
+          "provider": "UEFA official match API",
+          "url": "https://www.uefa.com/uefachampionsleague/match/2026954/",
+          "retrievedAt": "2026-08-04T21:12:40.902Z",
+          "rawArtifact": "data/teams/history/normalized/uefa-1785878005892.json"
+        }
+      ]
+    },
+    {
+      "id": "uefa:2026970:away",
+      "date": "2019-07-24",
+      "season": "2019-20",
+      "competition": {
+        "name": "UEFA Champions League / European Cup",
+        "type": "continental",
+        "country": "Europe"
+      },
+      "stage": "Second qualifying round",
+      "opponent": {
+        "name": "Dundalk",
+        "slug": "dundalk"
+      },
+      "venue": "away",
+      "score": {
+        "for": 1,
+        "against": 1
+      },
+      "result": "D",
+      "sources": [
+        {
+          "provider": "UEFA official match API",
+          "url": "https://www.uefa.com/uefachampionsleague/match/2026970/",
+          "retrievedAt": "2026-08-04T21:12:40.902Z",
+          "rawArtifact": "data/teams/history/normalized/uefa-1785878005892.json"
+        }
+      ]
+    },
+    {
+      "id": "uefa:2026983:home",
+      "date": "2019-07-31",
+      "season": "2019-20",
+      "competition": {
+        "name": "UEFA Champions League / European Cup",
+        "type": "continental",
+        "country": "Europe"
+      },
+      "stage": "Second qualifying round",
+      "opponent": {
+        "name": "Dundalk",
+        "slug": "dundalk"
+      },
+      "venue": "home",
+      "score": {
+        "for": 3,
+        "against": 0
+      },
+      "result": "W",
+      "sources": [
+        {
+          "provider": "UEFA official match API",
+          "url": "https://www.uefa.com/uefachampionsleague/match/2026983/",
+          "retrievedAt": "2026-08-04T21:12:40.902Z",
+          "rawArtifact": "data/teams/history/normalized/uefa-1785878005892.json"
+        }
+      ]
+    },
+    {
+      "id": "uefa:2026993:away",
+      "date": "2019-08-06",
+      "season": "2019-20",
+      "competition": {
+        "name": "UEFA Champions League / European Cup",
+        "type": "continental",
+        "country": "Europe"
+      },
+      "stage": "Third qualifying round",
+      "opponent": {
+        "name": "APOEL",
+        "slug": "apoel"
+      },
+      "venue": "away",
+      "score": {
+        "for": 2,
+        "against": 1
+      },
+      "result": "W",
+      "sources": [
+        {
+          "provider": "UEFA official match API",
+          "url": "https://www.uefa.com/uefachampionsleague/match/2026993/",
+          "retrievedAt": "2026-08-04T21:12:40.902Z",
+          "rawArtifact": "data/teams/history/normalized/uefa-1785878005892.json"
+        }
+      ]
+    },
+    {
+      "id": "uefa:2027003:home",
+      "date": "2019-08-13",
+      "season": "2019-20",
+      "competition": {
+        "name": "UEFA Champions League / European Cup",
+        "type": "continental",
+        "country": "Europe"
+      },
+      "stage": "Third qualifying round",
+      "opponent": {
+        "name": "APOEL",
+        "slug": "apoel"
+      },
+      "venue": "home",
+      "score": {
+        "for": 0,
+        "against": 2
+      },
+      "result": "L",
+      "sources": [
+        {
+          "provider": "UEFA official match API",
+          "url": "https://www.uefa.com/uefachampionsleague/match/2027003/",
+          "retrievedAt": "2026-08-04T21:12:40.902Z",
+          "rawArtifact": "data/teams/history/normalized/uefa-1785878005892.json"
+        }
+      ]
+    },
+    {
+      "id": "uefa:2028121:away",
+      "date": "2019-08-22",
+      "season": "2019-20",
+      "competition": {
+        "name": "UEFA Cup / UEFA Europa League",
+        "type": "continental",
+        "country": "Europe"
+      },
+      "stage": "Play-offs",
+      "opponent": {
+        "name": "Linfield",
+        "slug": "linfield"
+      },
+      "venue": "away",
+      "score": {
+        "for": 2,
+        "against": 3
+      },
+      "result": "L",
+      "sources": [
+        {
+          "provider": "UEFA official match API",
+          "url": "https://www.uefa.com/uefachampionsleague/match/2028121/",
+          "retrievedAt": "2026-08-04T21:12:42.838Z",
+          "rawArtifact": "data/teams/history/normalized/uefa-1785878005892.json"
+        }
+      ]
+    },
+    {
+      "id": "uefa:2028142:home",
+      "date": "2019-08-29",
+      "season": "2019-20",
+      "competition": {
+        "name": "UEFA Cup / UEFA Europa League",
+        "type": "continental",
+        "country": "Europe"
+      },
+      "stage": "Play-offs",
+      "opponent": {
+        "name": "Linfield",
+        "slug": "linfield"
+      },
+      "venue": "home",
+      "score": {
+        "for": 2,
+        "against": 1
+      },
+      "result": "W",
+      "sources": [
+        {
+          "provider": "UEFA official match API",
+          "url": "https://www.uefa.com/uefachampionsleague/match/2028142/",
+          "retrievedAt": "2026-08-04T21:12:42.838Z",
+          "rawArtifact": "data/teams/history/normalized/uefa-1785878005892.json"
+        }
+      ]
+    },
+    {
+      "id": "uefa:2027777:home",
+      "date": "2019-09-19",
+      "season": "2019-20",
+      "competition": {
+        "name": "UEFA Cup / UEFA Europa League",
+        "type": "continental",
+        "country": "Europe"
+      },
+      "stage": "Group stage",
+      "opponent": {
+        "name": "Sevilla",
+        "slug": "sevilla"
+      },
+      "venue": "home",
+      "score": {
+        "for": 0,
+        "against": 3
+      },
+      "result": "L",
+      "sources": [
+        {
+          "provider": "UEFA official match API",
+          "url": "https://www.uefa.com/uefachampionsleague/match/2027777/",
+          "retrievedAt": "2026-08-04T21:12:42.838Z",
+          "rawArtifact": "data/teams/history/normalized/uefa-1785878005892.json"
+        }
+      ]
+    },
+    {
+      "id": "uefa:2027813:away",
+      "date": "2019-10-03",
+      "season": "2019-20",
+      "competition": {
+        "name": "UEFA Cup / UEFA Europa League",
+        "type": "continental",
+        "country": "Europe"
+      },
+      "stage": "Group stage",
+      "opponent": {
+        "name": "Diddeleng",
+        "slug": "diddeleng"
+      },
+      "venue": "away",
+      "score": {
+        "for": 4,
+        "against": 1
+      },
+      "result": "W",
+      "sources": [
+        {
+          "provider": "UEFA official match API",
+          "url": "https://www.uefa.com/uefachampionsleague/match/2027813/",
+          "retrievedAt": "2026-08-04T21:12:42.838Z",
+          "rawArtifact": "data/teams/history/normalized/uefa-1785878005892.json"
+        }
+      ]
+    },
+    {
+      "id": "uefa:2027838:home",
+      "date": "2019-10-24",
+      "season": "2019-20",
+      "competition": {
+        "name": "UEFA Cup / UEFA Europa League",
+        "type": "continental",
+        "country": "Europe"
+      },
+      "stage": "Group stage",
+      "opponent": {
+        "name": "APOEL",
+        "slug": "apoel"
+      },
+      "venue": "home",
+      "score": {
+        "for": 2,
+        "against": 2
+      },
+      "result": "D",
+      "sources": [
+        {
+          "provider": "UEFA official match API",
+          "url": "https://www.uefa.com/uefachampionsleague/match/2027838/",
+          "retrievedAt": "2026-08-04T21:12:42.838Z",
+          "rawArtifact": "data/teams/history/normalized/uefa-1785878005892.json"
+        }
+      ]
+    },
+    {
+      "id": "uefa:2027850:away",
+      "date": "2019-11-07",
+      "season": "2019-20",
+      "competition": {
+        "name": "UEFA Cup / UEFA Europa League",
+        "type": "continental",
+        "country": "Europe"
+      },
+      "stage": "Group stage",
+      "opponent": {
+        "name": "APOEL",
+        "slug": "apoel"
+      },
+      "venue": "away",
+      "score": {
+        "for": 1,
+        "against": 2
+      },
+      "result": "L",
+      "sources": [
+        {
+          "provider": "UEFA official match API",
+          "url": "https://www.uefa.com/uefachampionsleague/match/2027850/",
+          "retrievedAt": "2026-08-04T21:12:42.838Z",
+          "rawArtifact": "data/teams/history/normalized/uefa-1785878005892.json"
+        }
+      ]
+    },
+    {
+      "id": "uefa:2027885:away",
+      "date": "2019-11-28",
+      "season": "2019-20",
+      "competition": {
+        "name": "UEFA Cup / UEFA Europa League",
+        "type": "continental",
+        "country": "Europe"
+      },
+      "stage": "Group stage",
+      "opponent": {
+        "name": "Sevilla",
+        "slug": "sevilla"
+      },
+      "venue": "away",
+      "score": {
+        "for": 0,
+        "against": 2
+      },
+      "result": "L",
+      "sources": [
+        {
+          "provider": "UEFA official match API",
+          "url": "https://www.uefa.com/uefachampionsleague/match/2027885/",
+          "retrievedAt": "2026-08-04T21:12:42.838Z",
+          "rawArtifact": "data/teams/history/normalized/uefa-1785878005892.json"
+        }
+      ]
+    },
+    {
+      "id": "uefa:2027897:home",
+      "date": "2019-12-12",
+      "season": "2019-20",
+      "competition": {
+        "name": "UEFA Cup / UEFA Europa League",
+        "type": "continental",
+        "country": "Europe"
+      },
+      "stage": "Group stage",
+      "opponent": {
+        "name": "Diddeleng",
+        "slug": "diddeleng"
+      },
+      "venue": "home",
+      "score": {
+        "for": 1,
+        "against": 1
+      },
+      "result": "D",
+      "sources": [
+        {
+          "provider": "UEFA official match API",
+          "url": "https://www.uefa.com/uefachampionsleague/match/2027897/",
+          "retrievedAt": "2026-08-04T21:12:42.838Z",
+          "rawArtifact": "data/teams/history/normalized/uefa-1785878005892.json"
+        }
+      ]
+    },
+    {
+      "id": "uefa:2030241:home",
+      "date": "2020-08-18",
+      "season": "2020-21",
+      "competition": {
+        "name": "UEFA Champions League / European Cup",
+        "type": "continental",
+        "country": "Europe"
+      },
+      "stage": "First qualifying round",
+      "opponent": {
+        "name": "Sileks",
+        "slug": "sileks"
+      },
+      "venue": "home",
+      "score": {
+        "for": 4,
+        "against": 0
+      },
+      "result": "W",
+      "sources": [
+        {
+          "provider": "UEFA official match API",
+          "url": "https://www.uefa.com/uefachampionsleague/match/2030241/",
+          "retrievedAt": "2026-08-04T21:12:52.514Z",
+          "rawArtifact": "data/teams/history/normalized/uefa-1785878005892.json"
+        }
+      ]
+    },
+    {
+      "id": "uefa:2030311:home",
+      "date": "2020-08-26",
+      "season": "2020-21",
+      "competition": {
+        "name": "UEFA Champions League / European Cup",
+        "type": "continental",
+        "country": "Europe"
+      },
+      "stage": "Second qualifying round",
+      "opponent": {
+        "name": "Sheriff",
+        "slug": "sheriff"
+      },
+      "venue": "home",
+      "score": {
+        "for": 2,
+        "against": 1
+      },
+      "result": "W",
+      "sources": [
+        {
+          "provider": "UEFA official match API",
+          "url": "https://www.uefa.com/uefachampionsleague/match/2030311/",
+          "retrievedAt": "2026-08-04T21:12:52.514Z",
+          "rawArtifact": "data/teams/history/normalized/uefa-1785878005892.json"
+        }
+      ]
+    },
+    {
+      "id": "uefa:2030320:home",
+      "date": "2020-09-16",
+      "season": "2020-21",
+      "competition": {
+        "name": "UEFA Champions League / European Cup",
+        "type": "continental",
+        "country": "Europe"
+      },
+      "stage": "Third qualifying round",
+      "opponent": {
+        "name": "Molde",
+        "slug": "molde"
+      },
+      "venue": "home",
+      "score": {
+        "for": 0,
+        "against": 0
+      },
+      "result": "D",
+      "sources": [
+        {
+          "provider": "UEFA official match API",
+          "url": "https://www.uefa.com/uefachampionsleague/match/2030320/",
+          "retrievedAt": "2026-08-04T21:12:52.514Z",
+          "rawArtifact": "data/teams/history/normalized/uefa-1785878005892.json"
+        }
+      ]
+    },
+    {
+      "id": "uefa:2030558:away",
+      "date": "2020-10-01",
+      "season": "2020-21",
+      "competition": {
+        "name": "UEFA Cup / UEFA Europa League",
+        "type": "continental",
+        "country": "Europe"
+      },
+      "stage": "Play-offs",
+      "opponent": {
+        "name": "Legia Warszawa",
+        "slug": "legia-warszawa"
+      },
+      "venue": "away",
+      "score": {
+        "for": 3,
+        "against": 0
+      },
+      "result": "W",
+      "sources": [
+        {
+          "provider": "UEFA official match API",
+          "url": "https://www.uefa.com/uefachampionsleague/match/2030558/",
+          "retrievedAt": "2026-08-04T21:12:53.804Z",
+          "rawArtifact": "data/teams/history/normalized/uefa-1785878005892.json"
+        }
+      ]
+    },
+    {
+      "id": "uefa:2029722:away",
+      "date": "2020-10-22",
+      "season": "2020-21",
+      "competition": {
+        "name": "UEFA Cup / UEFA Europa League",
+        "type": "continental",
+        "country": "Europe"
+      },
+      "stage": "Group stage",
+      "opponent": {
+        "name": "M. Tel-Aviv",
+        "slug": "m-tel-aviv"
+      },
+      "venue": "away",
+      "score": {
+        "for": 0,
+        "against": 1
+      },
+      "result": "L",
+      "sources": [
+        {
+          "provider": "UEFA official match API",
+          "url": "https://www.uefa.com/uefachampionsleague/match/2029722/",
+          "retrievedAt": "2026-08-04T21:12:53.804Z",
+          "rawArtifact": "data/teams/history/normalized/uefa-1785878005892.json"
+        }
+      ]
+    },
+    {
+      "id": "uefa:2029733:home",
+      "date": "2020-10-29",
+      "season": "2020-21",
+      "competition": {
+        "name": "UEFA Cup / UEFA Europa League",
+        "type": "continental",
+        "country": "Europe"
+      },
+      "stage": "Group stage",
+      "opponent": {
+        "name": "Villarreal",
+        "slug": "villarreal"
+      },
+      "venue": "home",
+      "score": {
+        "for": 1,
+        "against": 3
+      },
+      "result": "L",
+      "sources": [
+        {
+          "provider": "UEFA official match API",
+          "url": "https://www.uefa.com/uefachampionsleague/match/2029733/",
+          "retrievedAt": "2026-08-04T21:12:53.804Z",
+          "rawArtifact": "data/teams/history/normalized/uefa-1785878005892.json"
+        }
+      ]
+    },
+    {
+      "id": "uefa:2029757:away",
+      "date": "2020-11-05",
+      "season": "2020-21",
+      "competition": {
+        "name": "UEFA Cup / UEFA Europa League",
+        "type": "continental",
+        "country": "Europe"
+      },
+      "stage": "Group stage",
+      "opponent": {
+        "name": "Sivasspor",
+        "slug": "sivasspor"
+      },
+      "venue": "away",
+      "score": {
+        "for": 0,
+        "against": 2
+      },
+      "result": "L",
+      "sources": [
+        {
+          "provider": "UEFA official match API",
+          "url": "https://www.uefa.com/uefachampionsleague/match/2029757/",
+          "retrievedAt": "2026-08-04T21:12:53.804Z",
+          "rawArtifact": "data/teams/history/normalized/uefa-1785878005892.json"
+        }
+      ]
+    },
+    {
+      "id": "uefa:2029793:home",
+      "date": "2020-11-26",
+      "season": "2020-21",
+      "competition": {
+        "name": "UEFA Cup / UEFA Europa League",
+        "type": "continental",
+        "country": "Europe"
+      },
+      "stage": "Group stage",
+      "opponent": {
+        "name": "Sivasspor",
+        "slug": "sivasspor"
+      },
+      "venue": "home",
+      "score": {
+        "for": 2,
+        "against": 3
+      },
+      "result": "L",
+      "sources": [
+        {
+          "provider": "UEFA official match API",
+          "url": "https://www.uefa.com/uefachampionsleague/match/2029793/",
+          "retrievedAt": "2026-08-04T21:12:53.804Z",
+          "rawArtifact": "data/teams/history/normalized/uefa-1785878005892.json"
+        }
+      ]
+    },
+    {
+      "id": "uefa:2029806:home",
+      "date": "2020-12-03",
+      "season": "2020-21",
+      "competition": {
+        "name": "UEFA Cup / UEFA Europa League",
+        "type": "continental",
+        "country": "Europe"
+      },
+      "stage": "Group stage",
+      "opponent": {
+        "name": "M. Tel-Aviv",
+        "slug": "m-tel-aviv"
+      },
+      "venue": "home",
+      "score": {
+        "for": 1,
+        "against": 1
+      },
+      "result": "D",
+      "sources": [
+        {
+          "provider": "UEFA official match API",
+          "url": "https://www.uefa.com/uefachampionsleague/match/2029806/",
+          "retrievedAt": "2026-08-04T21:12:53.804Z",
+          "rawArtifact": "data/teams/history/normalized/uefa-1785878005892.json"
+        }
+      ]
+    },
+    {
+      "id": "uefa:2034957:away",
+      "date": "2022-07-05",
+      "season": "2022-23",
+      "competition": {
+        "name": "UEFA Champions League / European Cup",
+        "type": "continental",
+        "country": "Europe"
+      },
+      "stage": "First qualifying round",
+      "opponent": {
+        "name": "Lech Poznań",
+        "slug": "lech-poznan"
+      },
+      "venue": "away",
+      "score": {
+        "for": 0,
+        "against": 1
+      },
+      "result": "L",
+      "sources": [
+        {
+          "provider": "UEFA official match API",
+          "url": "https://www.uefa.com/uefachampionsleague/match/2034957/",
+          "retrievedAt": "2026-08-04T21:12:57.093Z",
+          "rawArtifact": "data/teams/history/normalized/uefa-1785878005892.json"
+        }
+      ]
+    },
+    {
+      "id": "uefa:2034972:home",
+      "date": "2022-07-12",
+      "season": "2022-23",
+      "competition": {
+        "name": "UEFA Champions League / European Cup",
+        "type": "continental",
+        "country": "Europe"
+      },
+      "stage": "First qualifying round",
+      "opponent": {
+        "name": "Lech Poznań",
+        "slug": "lech-poznan"
+      },
+      "venue": "home",
+      "score": {
+        "for": 5,
+        "against": 1
+      },
+      "result": "W",
+      "sources": [
+        {
+          "provider": "UEFA official match API",
+          "url": "https://www.uefa.com/uefachampionsleague/match/2034972/",
+          "retrievedAt": "2026-08-04T21:12:57.093Z",
+          "rawArtifact": "data/teams/history/normalized/uefa-1785878005892.json"
+        }
+      ]
+    },
+    {
+      "id": "uefa:2035038:home",
+      "date": "2022-07-19",
+      "season": "2022-23",
+      "competition": {
+        "name": "UEFA Champions League / European Cup",
+        "type": "continental",
+        "country": "Europe"
+      },
+      "stage": "Second qualifying round",
+      "opponent": {
+        "name": "Zürich",
+        "slug": "zurich"
+      },
+      "venue": "home",
+      "score": {
+        "for": 3,
+        "against": 2
+      },
+      "result": "W",
+      "sources": [
+        {
+          "provider": "UEFA official match API",
+          "url": "https://www.uefa.com/uefachampionsleague/match/2035038/",
+          "retrievedAt": "2026-08-04T21:12:57.093Z",
+          "rawArtifact": "data/teams/history/normalized/uefa-1785878005892.json"
+        }
+      ]
+    },
+    {
+      "id": "uefa:2035050:away",
+      "date": "2022-07-27",
+      "season": "2022-23",
+      "competition": {
+        "name": "UEFA Champions League / European Cup",
+        "type": "continental",
+        "country": "Europe"
+      },
+      "stage": "Second qualifying round",
+      "opponent": {
+        "name": "Zürich",
+        "slug": "zurich"
+      },
+      "venue": "away",
+      "score": {
+        "for": 2,
+        "against": 2
+      },
+      "result": "D",
+      "sources": [
+        {
+          "provider": "UEFA official match API",
+          "url": "https://www.uefa.com/uefachampionsleague/match/2035050/",
+          "retrievedAt": "2026-08-04T21:12:57.093Z",
+          "rawArtifact": "data/teams/history/normalized/uefa-1785878005892.json"
+        }
+      ]
+    },
+    {
+      "id": "uefa:2035375:home",
+      "date": "2022-08-03",
+      "season": "2022-23",
+      "competition": {
+        "name": "UEFA Champions League / European Cup",
+        "type": "continental",
+        "country": "Europe"
+      },
+      "stage": "Third qualifying round",
+      "opponent": {
+        "name": "Ferencváros",
+        "slug": "ferencvaros"
+      },
+      "venue": "home",
+      "score": {
+        "for": 1,
+        "against": 1
+      },
+      "result": "D",
+      "sources": [
+        {
+          "provider": "UEFA official match API",
+          "url": "https://www.uefa.com/uefachampionsleague/match/2035375/",
+          "retrievedAt": "2026-08-04T21:12:57.093Z",
+          "rawArtifact": "data/teams/history/normalized/uefa-1785878005892.json"
+        }
+      ]
+    },
+    {
+      "id": "uefa:2035385:away",
+      "date": "2022-08-09",
+      "season": "2022-23",
+      "competition": {
+        "name": "UEFA Champions League / European Cup",
+        "type": "continental",
+        "country": "Europe"
+      },
+      "stage": "Third qualifying round",
+      "opponent": {
+        "name": "Ferencváros",
+        "slug": "ferencvaros"
+      },
+      "venue": "away",
+      "score": {
+        "for": 3,
+        "against": 1
+      },
+      "result": "W",
+      "sources": [
+        {
+          "provider": "UEFA official match API",
+          "url": "https://www.uefa.com/uefachampionsleague/match/2035385/",
+          "retrievedAt": "2026-08-04T21:12:57.093Z",
+          "rawArtifact": "data/teams/history/normalized/uefa-1785878005892.json"
+        }
+      ]
+    },
+    {
+      "id": "uefa:2035480:home",
+      "date": "2022-08-17",
+      "season": "2022-23",
+      "competition": {
+        "name": "UEFA Champions League / European Cup",
+        "type": "continental",
+        "country": "Europe"
+      },
+      "stage": "Play-offs",
+      "opponent": {
+        "name": "Viktoria Plzeň",
+        "slug": "viktoria-plzen"
+      },
+      "venue": "home",
+      "score": {
+        "for": 0,
+        "against": 0
+      },
+      "result": "D",
+      "sources": [
+        {
+          "provider": "UEFA official match API",
+          "url": "https://www.uefa.com/uefachampionsleague/match/2035480/",
+          "retrievedAt": "2026-08-04T21:12:57.093Z",
+          "rawArtifact": "data/teams/history/normalized/uefa-1785878005892.json"
+        }
+      ]
+    },
+    {
+      "id": "uefa:2035486:away",
+      "date": "2022-08-23",
+      "season": "2022-23",
+      "competition": {
+        "name": "UEFA Champions League / European Cup",
+        "type": "continental",
+        "country": "Europe"
+      },
+      "stage": "Play-offs",
+      "opponent": {
+        "name": "Viktoria Plzeň",
+        "slug": "viktoria-plzen"
+      },
+      "venue": "away",
+      "score": {
+        "for": 1,
+        "against": 2
+      },
+      "result": "L",
+      "sources": [
+        {
+          "provider": "UEFA official match API",
+          "url": "https://www.uefa.com/uefachampionsleague/match/2035486/",
+          "retrievedAt": "2026-08-04T21:12:57.093Z",
+          "rawArtifact": "data/teams/history/normalized/uefa-1785878005892.json"
+        }
+      ]
+    },
+    {
+      "id": "uefa:2036002:away",
+      "date": "2022-09-08",
+      "season": "2022-23",
+      "competition": {
+        "name": "UEFA Cup / UEFA Europa League",
+        "type": "continental",
+        "country": "Europe"
+      },
+      "stage": "Group stage",
+      "opponent": {
+        "name": "Freiburg",
+        "slug": "freiburg"
+      },
+      "venue": "away",
+      "score": {
+        "for": 1,
+        "against": 2
+      },
+      "result": "L",
+      "sources": [
+        {
+          "provider": "UEFA official match API",
+          "url": "https://www.uefa.com/uefachampionsleague/match/2036002/",
+          "retrievedAt": "2026-08-04T21:12:57.722Z",
+          "rawArtifact": "data/teams/history/normalized/uefa-1785878005892.json"
+        }
+      ]
+    },
+    {
+      "id": "uefa:2036004:home",
+      "date": "2022-09-15",
+      "season": "2022-23",
+      "competition": {
+        "name": "UEFA Cup / UEFA Europa League",
+        "type": "continental",
+        "country": "Europe"
+      },
+      "stage": "Group stage",
+      "opponent": {
+        "name": "Nantes",
+        "slug": "nantes"
+      },
+      "venue": "home",
+      "score": {
+        "for": 3,
+        "against": 0
+      },
+      "result": "W",
+      "sources": [
+        {
+          "provider": "UEFA official match API",
+          "url": "https://www.uefa.com/uefachampionsleague/match/2036004/",
+          "retrievedAt": "2026-08-04T21:12:57.722Z",
+          "rawArtifact": "data/teams/history/normalized/uefa-1785878005892.json"
+        }
+      ]
+    },
+    {
+      "id": "uefa:2036005:away",
+      "date": "2022-10-06",
+      "season": "2022-23",
+      "competition": {
+        "name": "UEFA Cup / UEFA Europa League",
+        "type": "continental",
+        "country": "Europe"
+      },
+      "stage": "Group stage",
+      "opponent": {
+        "name": "Olympiacos",
+        "slug": "olympiacos"
+      },
+      "venue": "away",
+      "score": {
+        "for": 3,
+        "against": 0
+      },
+      "result": "W",
+      "sources": [
+        {
+          "provider": "UEFA official match API",
+          "url": "https://www.uefa.com/uefachampionsleague/match/2036005/",
+          "retrievedAt": "2026-08-04T21:12:57.722Z",
+          "rawArtifact": "data/teams/history/normalized/uefa-1785878005892.json"
+        }
+      ]
+    },
+    {
+      "id": "uefa:2036008:home",
+      "date": "2022-10-13",
+      "season": "2022-23",
+      "competition": {
+        "name": "UEFA Cup / UEFA Europa League",
+        "type": "continental",
+        "country": "Europe"
+      },
+      "stage": "Group stage",
+      "opponent": {
+        "name": "Olympiacos",
+        "slug": "olympiacos"
+      },
+      "venue": "home",
+      "score": {
+        "for": 0,
+        "against": 0
+      },
+      "result": "D",
+      "sources": [
+        {
+          "provider": "UEFA official match API",
+          "url": "https://www.uefa.com/uefachampionsleague/match/2036008/",
+          "retrievedAt": "2026-08-04T21:12:57.722Z",
+          "rawArtifact": "data/teams/history/normalized/uefa-1785878005892.json"
+        }
+      ]
+    },
+    {
+      "id": "uefa:2036010:away",
+      "date": "2022-10-27",
+      "season": "2022-23",
+      "competition": {
+        "name": "UEFA Cup / UEFA Europa League",
+        "type": "continental",
+        "country": "Europe"
+      },
+      "stage": "Group stage",
+      "opponent": {
+        "name": "Nantes",
+        "slug": "nantes"
+      },
+      "venue": "away",
+      "score": {
+        "for": 1,
+        "against": 2
+      },
+      "result": "L",
+      "sources": [
+        {
+          "provider": "UEFA official match API",
+          "url": "https://www.uefa.com/uefachampionsleague/match/2036010/",
+          "retrievedAt": "2026-08-04T21:12:57.722Z",
+          "rawArtifact": "data/teams/history/normalized/uefa-1785878005892.json"
+        }
+      ]
+    },
+    {
+      "id": "uefa:2036011:home",
+      "date": "2022-11-03",
+      "season": "2022-23",
+      "competition": {
+        "name": "UEFA Cup / UEFA Europa League",
+        "type": "continental",
+        "country": "Europe"
+      },
+      "stage": "Group stage",
+      "opponent": {
+        "name": "Freiburg",
+        "slug": "freiburg"
+      },
+      "venue": "home",
+      "score": {
+        "for": 1,
+        "against": 1
+      },
+      "result": "D",
+      "sources": [
+        {
+          "provider": "UEFA official match API",
+          "url": "https://www.uefa.com/uefachampionsleague/match/2036011/",
+          "retrievedAt": "2026-08-04T21:12:57.722Z",
+          "rawArtifact": "data/teams/history/normalized/uefa-1785878005892.json"
+        }
+      ]
+    },
+    {
+      "id": "uefa:2038364:away",
+      "date": "2023-07-11",
+      "season": "2023-24",
+      "competition": {
+        "name": "UEFA Champions League / European Cup",
+        "type": "continental",
+        "country": "Europe"
+      },
+      "stage": "First qualifying round",
+      "opponent": {
+        "name": "L. Red Imps",
+        "slug": "l-red-imps"
+      },
+      "venue": "away",
+      "score": {
+        "for": 2,
+        "against": 1
+      },
+      "result": "W",
+      "sources": [
+        {
+          "provider": "UEFA official match API",
+          "url": "https://www.uefa.com/uefachampionsleague/match/2038364/",
+          "retrievedAt": "2026-08-04T21:12:58.460Z",
+          "rawArtifact": "data/teams/history/normalized/uefa-1785878005892.json"
+        }
+      ]
+    },
+    {
+      "id": "uefa:2038379:home",
+      "date": "2023-07-19",
+      "season": "2023-24",
+      "competition": {
+        "name": "UEFA Champions League / European Cup",
+        "type": "continental",
+        "country": "Europe"
+      },
+      "stage": "First qualifying round",
+      "opponent": {
+        "name": "L. Red Imps",
+        "slug": "l-red-imps"
+      },
+      "venue": "home",
+      "score": {
+        "for": 4,
+        "against": 0
+      },
+      "result": "W",
+      "sources": [
+        {
+          "provider": "UEFA official match API",
+          "url": "https://www.uefa.com/uefachampionsleague/match/2038379/",
+          "retrievedAt": "2026-08-04T21:12:58.460Z",
+          "rawArtifact": "data/teams/history/normalized/uefa-1785878005892.json"
+        }
+      ]
+    },
+    {
+      "id": "uefa:2038598:away",
+      "date": "2023-07-26",
+      "season": "2023-24",
+      "competition": {
+        "name": "UEFA Champions League / European Cup",
+        "type": "continental",
+        "country": "Europe"
+      },
+      "stage": "Second qualifying round",
+      "opponent": {
+        "name": "Raków",
+        "slug": "rakow"
+      },
+      "venue": "away",
+      "score": {
+        "for": 2,
+        "against": 3
+      },
+      "result": "L",
+      "sources": [
+        {
+          "provider": "UEFA official match API",
+          "url": "https://www.uefa.com/uefachampionsleague/match/2038598/",
+          "retrievedAt": "2026-08-04T21:12:58.460Z",
+          "rawArtifact": "data/teams/history/normalized/uefa-1785878005892.json"
+        }
+      ]
+    },
+    {
+      "id": "uefa:2038610:home",
+      "date": "2023-08-02",
+      "season": "2023-24",
+      "competition": {
+        "name": "UEFA Champions League / European Cup",
+        "type": "continental",
+        "country": "Europe"
+      },
+      "stage": "Second qualifying round",
+      "opponent": {
+        "name": "Raków",
+        "slug": "rakow"
+      },
+      "venue": "home",
+      "score": {
+        "for": 1,
+        "against": 1
+      },
+      "result": "D",
+      "sources": [
+        {
+          "provider": "UEFA official match API",
+          "url": "https://www.uefa.com/uefachampionsleague/match/2038610/",
+          "retrievedAt": "2026-08-04T21:12:58.460Z",
+          "rawArtifact": "data/teams/history/normalized/uefa-1785878005892.json"
+        }
+      ]
+    },
+    {
+      "id": "uefa:2038919:home",
+      "date": "2023-08-10",
+      "season": "2023-24",
+      "competition": {
+        "name": "UEFA Cup / UEFA Europa League",
+        "type": "continental",
+        "country": "Europe"
+      },
+      "stage": "Third qualifying round",
+      "opponent": {
+        "name": "HJK",
+        "slug": "hjk"
+      },
+      "venue": "home",
+      "score": {
+        "for": 2,
+        "against": 1
+      },
+      "result": "W",
+      "sources": [
+        {
+          "provider": "UEFA official match API",
+          "url": "https://www.uefa.com/uefachampionsleague/match/2038919/",
+          "retrievedAt": "2026-08-04T21:12:59.099Z",
+          "rawArtifact": "data/teams/history/normalized/uefa-1785878005892.json"
+        }
+      ]
+    },
+    {
+      "id": "uefa:2038926:away",
+      "date": "2023-08-17",
+      "season": "2023-24",
+      "competition": {
+        "name": "UEFA Cup / UEFA Europa League",
+        "type": "continental",
+        "country": "Europe"
+      },
+      "stage": "Third qualifying round",
+      "opponent": {
+        "name": "HJK",
+        "slug": "hjk"
+      },
+      "venue": "away",
+      "score": {
+        "for": 2,
+        "against": 1
+      },
+      "result": "W",
+      "sources": [
+        {
+          "provider": "UEFA official match API",
+          "url": "https://www.uefa.com/uefachampionsleague/match/2038926/",
+          "retrievedAt": "2026-08-04T21:12:59.099Z",
+          "rawArtifact": "data/teams/history/normalized/uefa-1785878005892.json"
+        }
+      ]
+    },
+    {
+      "id": "uefa:2039030:away",
+      "date": "2023-08-24",
+      "season": "2023-24",
+      "competition": {
+        "name": "UEFA Cup / UEFA Europa League",
+        "type": "continental",
+        "country": "Europe"
+      },
+      "stage": "Play-offs",
+      "opponent": {
+        "name": "Olimpija",
+        "slug": "olimpija"
+      },
+      "venue": "away",
+      "score": {
+        "for": 2,
+        "against": 0
+      },
+      "result": "W",
+      "sources": [
+        {
+          "provider": "UEFA official match API",
+          "url": "https://www.uefa.com/uefachampionsleague/match/2039030/",
+          "retrievedAt": "2026-08-04T21:12:59.099Z",
+          "rawArtifact": "data/teams/history/normalized/uefa-1785878005892.json"
+        }
+      ]
+    },
+    {
+      "id": "uefa:2039040:home",
+      "date": "2023-08-31",
+      "season": "2023-24",
+      "competition": {
+        "name": "UEFA Cup / UEFA Europa League",
+        "type": "continental",
+        "country": "Europe"
+      },
+      "stage": "Play-offs",
+      "opponent": {
+        "name": "Olimpija",
+        "slug": "olimpija"
+      },
+      "venue": "home",
+      "score": {
+        "for": 1,
+        "against": 1
+      },
+      "result": "D",
+      "sources": [
+        {
+          "provider": "UEFA official match API",
+          "url": "https://www.uefa.com/uefachampionsleague/match/2039040/",
+          "retrievedAt": "2026-08-04T21:12:59.099Z",
+          "rawArtifact": "data/teams/history/normalized/uefa-1785878005892.json"
+        }
+      ]
+    },
+    {
+      "id": "uefa:2039201:home",
+      "date": "2023-09-21",
+      "season": "2023-24",
+      "competition": {
+        "name": "UEFA Cup / UEFA Europa League",
+        "type": "continental",
+        "country": "Europe"
+      },
+      "stage": "Group stage",
+      "opponent": {
+        "name": "Molde",
+        "slug": "molde"
+      },
+      "venue": "home",
+      "score": {
+        "for": 1,
+        "against": 0
+      },
+      "result": "W",
+      "sources": [
+        {
+          "provider": "UEFA official match API",
+          "url": "https://www.uefa.com/uefachampionsleague/match/2039201/",
+          "retrievedAt": "2026-08-04T21:12:59.099Z",
+          "rawArtifact": "data/teams/history/normalized/uefa-1785878005892.json"
+        }
+      ]
+    },
+    {
+      "id": "uefa:2039225:away",
+      "date": "2023-10-05",
+      "season": "2023-24",
+      "competition": {
+        "name": "UEFA Cup / UEFA Europa League",
+        "type": "continental",
+        "country": "Europe"
+      },
+      "stage": "Group stage",
+      "opponent": {
+        "name": "Häcken",
+        "slug": "hacken"
+      },
+      "venue": "away",
+      "score": {
+        "for": 1,
+        "against": 0
+      },
+      "result": "W",
+      "sources": [
+        {
+          "provider": "UEFA official match API",
+          "url": "https://www.uefa.com/uefachampionsleague/match/2039225/",
+          "retrievedAt": "2026-08-04T21:12:59.099Z",
+          "rawArtifact": "data/teams/history/normalized/uefa-1785878005892.json"
+        }
+      ]
+    },
+    {
+      "id": "uefa:2039241:away",
+      "date": "2023-10-26",
+      "season": "2023-24",
+      "competition": {
+        "name": "UEFA Cup / UEFA Europa League",
+        "type": "continental",
+        "country": "Europe"
+      },
+      "stage": "Group stage",
+      "opponent": {
+        "name": "Leverkusen",
+        "slug": "leverkusen"
+      },
+      "venue": "away",
+      "score": {
+        "for": 1,
+        "against": 5
+      },
+      "result": "L",
+      "sources": [
+        {
+          "provider": "UEFA official match API",
+          "url": "https://www.uefa.com/uefachampionsleague/match/2039241/",
+          "retrievedAt": "2026-08-04T21:12:59.099Z",
+          "rawArtifact": "data/teams/history/normalized/uefa-1785878005892.json"
+        }
+      ]
+    },
+    {
+      "id": "uefa:2039249:home",
+      "date": "2023-11-09",
+      "season": "2023-24",
+      "competition": {
+        "name": "UEFA Cup / UEFA Europa League",
+        "type": "continental",
+        "country": "Europe"
+      },
+      "stage": "Group stage",
+      "opponent": {
+        "name": "Leverkusen",
+        "slug": "leverkusen"
+      },
+      "venue": "home",
+      "score": {
+        "for": 0,
+        "against": 1
+      },
+      "result": "L",
+      "sources": [
+        {
+          "provider": "UEFA official match API",
+          "url": "https://www.uefa.com/uefachampionsleague/match/2039249/",
+          "retrievedAt": "2026-08-04T21:12:59.099Z",
+          "rawArtifact": "data/teams/history/normalized/uefa-1785878005892.json"
+        }
+      ]
+    },
+    {
+      "id": "uefa:2039272:away",
+      "date": "2023-11-30",
+      "season": "2023-24",
+      "competition": {
+        "name": "UEFA Cup / UEFA Europa League",
+        "type": "continental",
+        "country": "Europe"
+      },
+      "stage": "Group stage",
+      "opponent": {
+        "name": "Molde",
+        "slug": "molde"
+      },
+      "venue": "away",
+      "score": {
+        "for": 2,
+        "against": 2
+      },
+      "result": "D",
+      "sources": [
+        {
+          "provider": "UEFA official match API",
+          "url": "https://www.uefa.com/uefachampionsleague/match/2039272/",
+          "retrievedAt": "2026-08-04T21:12:59.099Z",
+          "rawArtifact": "data/teams/history/normalized/uefa-1785878005892.json"
+        }
+      ]
+    },
+    {
+      "id": "uefa:2039281:home",
+      "date": "2023-12-14",
+      "season": "2023-24",
+      "competition": {
+        "name": "UEFA Cup / UEFA Europa League",
+        "type": "continental",
+        "country": "Europe"
+      },
+      "stage": "Group stage",
+      "opponent": {
+        "name": "Häcken",
+        "slug": "hacken"
+      },
+      "venue": "home",
+      "score": {
+        "for": 2,
+        "against": 1
+      },
+      "result": "W",
+      "sources": [
+        {
+          "provider": "UEFA official match API",
+          "url": "https://www.uefa.com/uefachampionsleague/match/2039281/",
+          "retrievedAt": "2026-08-04T21:12:59.099Z",
+          "rawArtifact": "data/teams/history/normalized/uefa-1785878005892.json"
+        }
+      ]
+    },
+    {
+      "id": "uefa:2039937:away",
+      "date": "2024-02-15",
+      "season": "2023-24",
+      "competition": {
+        "name": "UEFA Cup / UEFA Europa League",
+        "type": "continental",
+        "country": "Europe"
+      },
+      "stage": "KO play-offs",
+      "opponent": {
+        "name": "Braga",
+        "slug": "braga"
+      },
+      "venue": "away",
+      "score": {
+        "for": 4,
+        "against": 2
+      },
+      "result": "W",
+      "sources": [
+        {
+          "provider": "UEFA official match API",
+          "url": "https://www.uefa.com/uefachampionsleague/match/2039937/",
+          "retrievedAt": "2026-08-04T21:12:59.099Z",
+          "rawArtifact": "data/teams/history/normalized/uefa-1785878005892.json"
+        }
+      ]
+    },
+    {
+      "id": "uefa:2039941:home",
+      "date": "2024-02-22",
+      "season": "2023-24",
+      "competition": {
+        "name": "UEFA Cup / UEFA Europa League",
+        "type": "continental",
+        "country": "Europe"
+      },
+      "stage": "KO play-offs",
+      "opponent": {
+        "name": "Braga",
+        "slug": "braga"
+      },
+      "venue": "home",
+      "score": {
+        "for": 2,
+        "against": 3
+      },
+      "result": "L",
+      "sources": [
+        {
+          "provider": "UEFA official match API",
+          "url": "https://www.uefa.com/uefachampionsleague/match/2039941/",
+          "retrievedAt": "2026-08-04T21:12:59.099Z",
+          "rawArtifact": "data/teams/history/normalized/uefa-1785878005892.json"
+        }
+      ]
+    },
+    {
+      "id": "uefa:2040317:home",
+      "date": "2024-03-07",
+      "season": "2023-24",
+      "competition": {
+        "name": "UEFA Cup / UEFA Europa League",
+        "type": "continental",
+        "country": "Europe"
+      },
+      "stage": "Round of 16",
+      "opponent": {
+        "name": "Leverkusen",
+        "slug": "leverkusen"
+      },
+      "venue": "home",
+      "score": {
+        "for": 2,
+        "against": 2
+      },
+      "result": "D",
+      "sources": [
+        {
+          "provider": "UEFA official match API",
+          "url": "https://www.uefa.com/uefachampionsleague/match/2040317/",
+          "retrievedAt": "2026-08-04T21:12:59.099Z",
+          "rawArtifact": "data/teams/history/normalized/uefa-1785878005892.json"
+        }
+      ]
+    },
+    {
+      "id": "uefa:2040325:away",
+      "date": "2024-03-14",
+      "season": "2023-24",
+      "competition": {
+        "name": "UEFA Cup / UEFA Europa League",
+        "type": "continental",
+        "country": "Europe"
+      },
+      "stage": "Round of 16",
+      "opponent": {
+        "name": "Leverkusen",
+        "slug": "leverkusen"
+      },
+      "venue": "away",
+      "score": {
+        "for": 2,
+        "against": 3
+      },
+      "result": "L",
+      "sources": [
+        {
+          "provider": "UEFA official match API",
+          "url": "https://www.uefa.com/uefachampionsleague/match/2040325/",
+          "retrievedAt": "2026-08-04T21:12:59.099Z",
+          "rawArtifact": "data/teams/history/normalized/uefa-1785878005892.json"
+        }
+      ]
+    },
+    {
+      "id": "uefa:2041067:away",
+      "date": "2024-07-23",
+      "season": "2024-25",
+      "competition": {
+        "name": "UEFA Champions League / European Cup",
+        "type": "continental",
+        "country": "Europe"
+      },
+      "stage": "Second qualifying round",
+      "opponent": {
+        "name": "L. Red Imps",
+        "slug": "l-red-imps"
+      },
+      "venue": "away",
+      "score": {
+        "for": 2,
+        "against": 0
+      },
+      "result": "W",
+      "sources": [
+        {
+          "provider": "UEFA official match API",
+          "url": "https://www.uefa.com/uefachampionsleague/match/2041067/",
+          "retrievedAt": "2026-08-04T21:13:00.222Z",
+          "rawArtifact": "data/teams/history/normalized/uefa-1785878005892.json"
+        }
+      ]
+    },
+    {
+      "id": "uefa:2041081:home",
+      "date": "2024-07-30",
+      "season": "2024-25",
+      "competition": {
+        "name": "UEFA Champions League / European Cup",
+        "type": "continental",
+        "country": "Europe"
+      },
+      "stage": "Second qualifying round",
+      "opponent": {
+        "name": "L. Red Imps",
+        "slug": "l-red-imps"
+      },
+      "venue": "home",
+      "score": {
+        "for": 5,
+        "against": 0
+      },
+      "result": "W",
+      "sources": [
+        {
+          "provider": "UEFA official match API",
+          "url": "https://www.uefa.com/uefachampionsleague/match/2041081/",
+          "retrievedAt": "2026-08-04T21:13:00.222Z",
+          "rawArtifact": "data/teams/history/normalized/uefa-1785878005892.json"
+        }
+      ]
+    },
+    {
+      "id": "uefa:2041679:home",
+      "date": "2024-08-06",
+      "season": "2024-25",
+      "competition": {
+        "name": "UEFA Champions League / European Cup",
+        "type": "continental",
+        "country": "Europe"
+      },
+      "stage": "Third qualifying round",
+      "opponent": {
+        "name": "Ludogorets",
+        "slug": "ludogorets"
+      },
+      "venue": "home",
+      "score": {
+        "for": 1,
+        "against": 2
+      },
+      "result": "L",
+      "sources": [
+        {
+          "provider": "UEFA official match API",
+          "url": "https://www.uefa.com/uefachampionsleague/match/2041679/",
+          "retrievedAt": "2026-08-04T21:13:00.222Z",
+          "rawArtifact": "data/teams/history/normalized/uefa-1785878005892.json"
+        }
+      ]
+    },
+    {
+      "id": "uefa:2041689:away",
+      "date": "2024-08-13",
+      "season": "2024-25",
+      "competition": {
+        "name": "UEFA Champions League / European Cup",
+        "type": "continental",
+        "country": "Europe"
+      },
+      "stage": "Third qualifying round",
+      "opponent": {
+        "name": "Ludogorets",
+        "slug": "ludogorets"
+      },
+      "venue": "away",
+      "score": {
+        "for": 7,
+        "against": 2
+      },
+      "result": "W",
+      "sources": [
+        {
+          "provider": "UEFA official match API",
+          "url": "https://www.uefa.com/uefachampionsleague/match/2041689/",
+          "retrievedAt": "2026-08-04T21:13:00.222Z",
+          "rawArtifact": "data/teams/history/normalized/uefa-1785878005892.json"
+        }
+      ]
+    },
+    {
+      "id": "uefa:2041868:away",
+      "date": "2024-08-20",
+      "season": "2024-25",
+      "competition": {
+        "name": "UEFA Champions League / European Cup",
+        "type": "continental",
+        "country": "Europe"
+      },
+      "stage": "Play-offs",
+      "opponent": {
+        "name": "GNK Dinamo",
+        "slug": "gnk-dinamo"
+      },
+      "venue": "away",
+      "score": {
+        "for": 0,
+        "against": 3
+      },
+      "result": "L",
+      "sources": [
+        {
+          "provider": "UEFA official match API",
+          "url": "https://www.uefa.com/uefachampionsleague/match/2041868/",
+          "retrievedAt": "2026-08-04T21:13:00.222Z",
+          "rawArtifact": "data/teams/history/normalized/uefa-1785878005892.json"
+        }
+      ]
+    },
+    {
+      "id": "uefa:2041878:home",
+      "date": "2024-08-28",
+      "season": "2024-25",
+      "competition": {
+        "name": "UEFA Champions League / European Cup",
+        "type": "continental",
+        "country": "Europe"
+      },
+      "stage": "Play-offs",
+      "opponent": {
+        "name": "GNK Dinamo",
+        "slug": "gnk-dinamo"
+      },
+      "venue": "home",
+      "score": {
+        "for": 0,
+        "against": 2
+      },
+      "result": "L",
+      "sources": [
+        {
+          "provider": "UEFA official match API",
+          "url": "https://www.uefa.com/uefachampionsleague/match/2041878/",
+          "retrievedAt": "2026-08-04T21:13:00.222Z",
+          "rawArtifact": "data/teams/history/normalized/uefa-1785878005892.json"
+        }
+      ]
+    },
+    {
+      "id": "uefa:2042091:away",
+      "date": "2024-09-26",
+      "season": "2024-25",
+      "competition": {
+        "name": "UEFA Cup / UEFA Europa League",
+        "type": "continental",
+        "country": "Europe"
+      },
+      "stage": "League phase",
+      "opponent": {
+        "name": "Tottenham",
+        "slug": "tottenham"
+      },
+      "venue": "away",
+      "score": {
+        "for": 0,
+        "against": 3
+      },
+      "result": "L",
+      "sources": [
+        {
+          "provider": "UEFA official match API",
+          "url": "https://www.uefa.com/uefachampionsleague/match/2042091/",
+          "retrievedAt": "2026-08-04T21:13:01.222Z",
+          "rawArtifact": "data/teams/history/normalized/uefa-1785878005892.json"
+        }
+      ]
+    },
+    {
+      "id": "uefa:2042106:home",
+      "date": "2024-10-03",
+      "season": "2024-25",
+      "competition": {
+        "name": "UEFA Cup / UEFA Europa League",
+        "type": "continental",
+        "country": "Europe"
+      },
+      "stage": "League phase",
+      "opponent": {
+        "name": "Malmö",
+        "slug": "malmo"
+      },
+      "venue": "home",
+      "score": {
+        "for": 1,
+        "against": 2
+      },
+      "result": "L",
+      "sources": [
+        {
+          "provider": "UEFA official match API",
+          "url": "https://www.uefa.com/uefachampionsleague/match/2042106/",
+          "retrievedAt": "2026-08-04T21:13:01.222Z",
+          "rawArtifact": "data/teams/history/normalized/uefa-1785878005892.json"
+        }
+      ]
+    },
+    {
+      "id": "uefa:2042127:home",
+      "date": "2024-10-24",
+      "season": "2024-25",
+      "competition": {
+        "name": "UEFA Cup / UEFA Europa League",
+        "type": "continental",
+        "country": "Europe"
+      },
+      "stage": "League phase",
+      "opponent": {
+        "name": "Ajax",
+        "slug": "ajax"
+      },
+      "venue": "home",
+      "score": {
+        "for": 0,
+        "against": 3
+      },
+      "result": "L",
+      "sources": [
+        {
+          "provider": "UEFA official match API",
+          "url": "https://www.uefa.com/uefachampionsleague/match/2042127/",
+          "retrievedAt": "2026-08-04T21:13:01.222Z",
+          "rawArtifact": "data/teams/history/normalized/uefa-1785878005892.json"
+        }
+      ]
+    },
+    {
+      "id": "uefa:2042142:away",
+      "date": "2024-11-07",
+      "season": "2024-25",
+      "competition": {
+        "name": "UEFA Cup / UEFA Europa League",
+        "type": "continental",
+        "country": "Europe"
+      },
+      "stage": "League phase",
+      "opponent": {
+        "name": "Bodø/Glimt",
+        "slug": "bod-glimt"
+      },
+      "venue": "away",
+      "score": {
+        "for": 2,
+        "against": 1
+      },
+      "result": "W",
+      "sources": [
+        {
+          "provider": "UEFA official match API",
+          "url": "https://www.uefa.com/uefachampionsleague/match/2042142/",
+          "retrievedAt": "2026-08-04T21:13:01.222Z",
+          "rawArtifact": "data/teams/history/normalized/uefa-1785878005892.json"
+        }
+      ]
+    },
+    {
+      "id": "uefa:2042159:home",
+      "date": "2024-11-28",
+      "season": "2024-25",
+      "competition": {
+        "name": "UEFA Cup / UEFA Europa League",
+        "type": "continental",
+        "country": "Europe"
+      },
+      "stage": "League phase",
+      "opponent": {
+        "name": "Lyon",
+        "slug": "lyon"
+      },
+      "venue": "home",
+      "score": {
+        "for": 1,
+        "against": 4
+      },
+      "result": "L",
+      "sources": [
+        {
+          "provider": "UEFA official match API",
+          "url": "https://www.uefa.com/uefachampionsleague/match/2042159/",
+          "retrievedAt": "2026-08-04T21:13:01.222Z",
+          "rawArtifact": "data/teams/history/normalized/uefa-1785878005892.json"
+        }
+      ]
+    },
+    {
+      "id": "uefa:2042186:away",
+      "date": "2024-12-12",
+      "season": "2024-25",
+      "competition": {
+        "name": "UEFA Cup / UEFA Europa League",
+        "type": "continental",
+        "country": "Europe"
+      },
+      "stage": "League phase",
+      "opponent": {
+        "name": "Elfsborg",
+        "slug": "elfsborg"
+      },
+      "venue": "away",
+      "score": {
+        "for": 0,
+        "against": 1
+      },
+      "result": "L",
+      "sources": [
+        {
+          "provider": "UEFA official match API",
+          "url": "https://www.uefa.com/uefachampionsleague/match/2042186/",
+          "retrievedAt": "2026-08-04T21:13:01.222Z",
+          "rawArtifact": "data/teams/history/normalized/uefa-1785878005892.json"
+        }
+      ]
+    },
+    {
+      "id": "uefa:2042196:home",
+      "date": "2025-01-23",
+      "season": "2024-25",
+      "competition": {
+        "name": "UEFA Cup / UEFA Europa League",
+        "type": "continental",
+        "country": "Europe"
+      },
+      "stage": "League phase",
+      "opponent": {
+        "name": "FCSB",
+        "slug": "fcsb"
+      },
+      "venue": "home",
+      "score": {
+        "for": 2,
+        "against": 3
+      },
+      "result": "L",
+      "sources": [
+        {
+          "provider": "UEFA official match API",
+          "url": "https://www.uefa.com/uefachampionsleague/match/2042196/",
+          "retrievedAt": "2026-08-04T21:13:01.222Z",
+          "rawArtifact": "data/teams/history/normalized/uefa-1785878005892.json"
+        }
+      ]
+    },
+    {
+      "id": "uefa:2042212:away",
+      "date": "2025-01-30",
+      "season": "2024-25",
+      "competition": {
+        "name": "UEFA Cup / UEFA Europa League",
+        "type": "continental",
+        "country": "Europe"
+      },
+      "stage": "League phase",
+      "opponent": {
+        "name": "Olympiacos",
+        "slug": "olympiacos"
+      },
+      "venue": "away",
+      "score": {
+        "for": 0,
+        "against": 3
+      },
+      "result": "L",
+      "sources": [
+        {
+          "provider": "UEFA official match API",
+          "url": "https://www.uefa.com/uefachampionsleague/match/2042212/",
+          "retrievedAt": "2026-08-04T21:13:01.222Z",
+          "rawArtifact": "data/teams/history/normalized/uefa-1785878005892.json"
+        }
+      ]
+    }
+  ],
+  "seasonStandings": [],
+  "competitionStandings": [],
+  "updatedAt": "2026-08-04T21:14:35.332Z"
+}

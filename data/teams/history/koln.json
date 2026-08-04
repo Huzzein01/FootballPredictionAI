@@ -1,0 +1,1333 @@
+{
+  "contract": "football-team-history-v1",
+  "team": {
+    "name": "Köln",
+    "slug": "koln",
+    "primaryLeague": "UEFA Cup / UEFA Europa League",
+    "aliases": []
+  },
+  "requestedCoverage": {
+    "fromYear": 1985,
+    "to": "present",
+    "includes": [
+      "all competitions",
+      "opponents",
+      "scorelines",
+      "league standings",
+      "competition standings"
+    ]
+  },
+  "sourcePlan": [
+    {
+      "rank": 1,
+      "provider": "Official club archive",
+      "url": "",
+      "scope": "club history, competition participation and match reports",
+      "lookupKey": "Köln",
+      "review": "Verify the club-owned archive URL before collection."
+    },
+    {
+      "rank": 2,
+      "provider": "Official domestic competition / association",
+      "url": "",
+      "scope": "official league fixtures, final tables and cup records",
+      "lookupKey": "UEFA Cup / UEFA Europa League"
+    },
+    {
+      "rank": 3,
+      "provider": "UEFA",
+      "url": "https://www.uefa.com/",
+      "scope": "official European competition appearances, fixtures and standings",
+      "lookupKey": "Köln"
+    },
+    {
+      "rank": 4,
+      "provider": "RSSSF",
+      "url": "https://www.rsssf.org/",
+      "scope": "historic competitions, tables and cross-checking",
+      "lookupKey": "Köln"
+    },
+    {
+      "rank": 5,
+      "provider": "worldfootball.net",
+      "url": "https://www.worldfootball.net/",
+      "scope": "club match archive and competition participation cross-check",
+      "lookupKey": "Köln"
+    }
+  ],
+  "coverage": {
+    "earliestMatch": "1985-09-18",
+    "latestMatch": "2017-12-07",
+    "seasonsWithMatches": [
+      "1985-86",
+      "1988-89",
+      "1989-90",
+      "1990-91",
+      "1992-93",
+      "2017-18"
+    ],
+    "missingSeasons": [
+      "1986-87",
+      "1987-88",
+      "1991-92",
+      "1993-94",
+      "1994-95",
+      "1995-96",
+      "1996-97",
+      "1997-98",
+      "1998-99",
+      "1999-00",
+      "2000-01",
+      "2001-02",
+      "2002-03",
+      "2003-04",
+      "2004-05",
+      "2005-06",
+      "2006-07",
+      "2007-08",
+      "2008-09",
+      "2009-10",
+      "2010-11",
+      "2011-12",
+      "2012-13",
+      "2013-14",
+      "2014-15",
+      "2015-16",
+      "2016-17",
+      "2018-19",
+      "2019-20",
+      "2020-21",
+      "2021-22",
+      "2022-23",
+      "2023-24",
+      "2024-25",
+      "2025-26",
+      "2026-27"
+    ],
+    "competitionScopeVerified": false,
+    "status": "partial"
+  },
+  "matches": [
+    {
+      "id": "uefa:67509:home",
+      "date": "1985-09-18",
+      "season": "1985-86",
+      "competition": {
+        "name": "UEFA Cup / UEFA Europa League",
+        "type": "continental",
+        "country": "Europe"
+      },
+      "stage": "First round",
+      "opponent": {
+        "name": "Sporting Gijón",
+        "slug": "sporting-gijon"
+      },
+      "venue": "home",
+      "score": {
+        "for": 0,
+        "against": 0
+      },
+      "result": "D",
+      "sources": [
+        {
+          "provider": "UEFA official match API",
+          "url": "https://www.uefa.com/uefachampionsleague/match/67509/",
+          "retrievedAt": "2026-08-04T21:08:13.342Z",
+          "rawArtifact": "data/teams/history/normalized/uefa-1785878005892.json"
+        }
+      ]
+    },
+    {
+      "id": "uefa:67510:away",
+      "date": "1985-10-02",
+      "season": "1985-86",
+      "competition": {
+        "name": "UEFA Cup / UEFA Europa League",
+        "type": "continental",
+        "country": "Europe"
+      },
+      "stage": "First round",
+      "opponent": {
+        "name": "Sporting Gijón",
+        "slug": "sporting-gijon"
+      },
+      "venue": "away",
+      "score": {
+        "for": 2,
+        "against": 1
+      },
+      "result": "W",
+      "sources": [
+        {
+          "provider": "UEFA official match API",
+          "url": "https://www.uefa.com/uefachampionsleague/match/67510/",
+          "retrievedAt": "2026-08-04T21:08:13.342Z",
+          "rawArtifact": "data/teams/history/normalized/uefa-1785878005892.json"
+        }
+      ]
+    },
+    {
+      "id": "uefa:67551:home",
+      "date": "1985-10-23",
+      "season": "1985-86",
+      "competition": {
+        "name": "UEFA Cup / UEFA Europa League",
+        "type": "continental",
+        "country": "Europe"
+      },
+      "stage": "Second round",
+      "opponent": {
+        "name": "Bohemians Praha",
+        "slug": "bohemians-praha"
+      },
+      "venue": "home",
+      "score": {
+        "for": 4,
+        "against": 0
+      },
+      "result": "W",
+      "sources": [
+        {
+          "provider": "UEFA official match API",
+          "url": "https://www.uefa.com/uefachampionsleague/match/67551/",
+          "retrievedAt": "2026-08-04T21:08:13.342Z",
+          "rawArtifact": "data/teams/history/normalized/uefa-1785878005892.json"
+        }
+      ]
+    },
+    {
+      "id": "uefa:67552:away",
+      "date": "1985-11-06",
+      "season": "1985-86",
+      "competition": {
+        "name": "UEFA Cup / UEFA Europa League",
+        "type": "continental",
+        "country": "Europe"
+      },
+      "stage": "Second round",
+      "opponent": {
+        "name": "Bohemians Praha",
+        "slug": "bohemians-praha"
+      },
+      "venue": "away",
+      "score": {
+        "for": 4,
+        "against": 2
+      },
+      "result": "W",
+      "sources": [
+        {
+          "provider": "UEFA official match API",
+          "url": "https://www.uefa.com/uefachampionsleague/match/67552/",
+          "retrievedAt": "2026-08-04T21:08:13.342Z",
+          "rawArtifact": "data/teams/history/normalized/uefa-1785878005892.json"
+        }
+      ]
+    },
+    {
+      "id": "uefa:67581:away",
+      "date": "1985-11-27",
+      "season": "1985-86",
+      "competition": {
+        "name": "UEFA Cup / UEFA Europa League",
+        "type": "continental",
+        "country": "Europe"
+      },
+      "stage": "Third round",
+      "opponent": {
+        "name": "Hammarby",
+        "slug": "hammarby"
+      },
+      "venue": "away",
+      "score": {
+        "for": 1,
+        "against": 2
+      },
+      "result": "L",
+      "sources": [
+        {
+          "provider": "UEFA official match API",
+          "url": "https://www.uefa.com/uefachampionsleague/match/67581/",
+          "retrievedAt": "2026-08-04T21:08:13.342Z",
+          "rawArtifact": "data/teams/history/normalized/uefa-1785878005892.json"
+        }
+      ]
+    },
+    {
+      "id": "uefa:67582:home",
+      "date": "1985-12-11",
+      "season": "1985-86",
+      "competition": {
+        "name": "UEFA Cup / UEFA Europa League",
+        "type": "continental",
+        "country": "Europe"
+      },
+      "stage": "Third round",
+      "opponent": {
+        "name": "Hammarby",
+        "slug": "hammarby"
+      },
+      "venue": "home",
+      "score": {
+        "for": 3,
+        "against": 1
+      },
+      "result": "W",
+      "sources": [
+        {
+          "provider": "UEFA official match API",
+          "url": "https://www.uefa.com/uefachampionsleague/match/67582/",
+          "retrievedAt": "2026-08-04T21:08:13.342Z",
+          "rawArtifact": "data/teams/history/normalized/uefa-1785878005892.json"
+        }
+      ]
+    },
+    {
+      "id": "uefa:67589:away",
+      "date": "1986-03-04",
+      "season": "1985-86",
+      "competition": {
+        "name": "UEFA Cup / UEFA Europa League",
+        "type": "continental",
+        "country": "Europe"
+      },
+      "stage": "Quarter-finals",
+      "opponent": {
+        "name": "Sporting CP",
+        "slug": "sporting-cp"
+      },
+      "venue": "away",
+      "score": {
+        "for": 1,
+        "against": 1
+      },
+      "result": "D",
+      "sources": [
+        {
+          "provider": "UEFA official match API",
+          "url": "https://www.uefa.com/uefachampionsleague/match/67589/",
+          "retrievedAt": "2026-08-04T21:08:13.342Z",
+          "rawArtifact": "data/teams/history/normalized/uefa-1785878005892.json"
+        }
+      ]
+    },
+    {
+      "id": "uefa:67590:home",
+      "date": "1986-03-19",
+      "season": "1985-86",
+      "competition": {
+        "name": "UEFA Cup / UEFA Europa League",
+        "type": "continental",
+        "country": "Europe"
+      },
+      "stage": "Quarter-finals",
+      "opponent": {
+        "name": "Sporting CP",
+        "slug": "sporting-cp"
+      },
+      "venue": "home",
+      "score": {
+        "for": 2,
+        "against": 0
+      },
+      "result": "W",
+      "sources": [
+        {
+          "provider": "UEFA official match API",
+          "url": "https://www.uefa.com/uefachampionsleague/match/67590/",
+          "retrievedAt": "2026-08-04T21:08:13.342Z",
+          "rawArtifact": "data/teams/history/normalized/uefa-1785878005892.json"
+        }
+      ]
+    },
+    {
+      "id": "uefa:67597:home",
+      "date": "1986-04-02",
+      "season": "1985-86",
+      "competition": {
+        "name": "UEFA Cup / UEFA Europa League",
+        "type": "continental",
+        "country": "Europe"
+      },
+      "stage": "Semi-finals",
+      "opponent": {
+        "name": "Waregem",
+        "slug": "waregem"
+      },
+      "venue": "home",
+      "score": {
+        "for": 4,
+        "against": 0
+      },
+      "result": "W",
+      "sources": [
+        {
+          "provider": "UEFA official match API",
+          "url": "https://www.uefa.com/uefachampionsleague/match/67597/",
+          "retrievedAt": "2026-08-04T21:08:13.342Z",
+          "rawArtifact": "data/teams/history/normalized/uefa-1785878005892.json"
+        }
+      ]
+    },
+    {
+      "id": "uefa:67598:away",
+      "date": "1986-04-16",
+      "season": "1985-86",
+      "competition": {
+        "name": "UEFA Cup / UEFA Europa League",
+        "type": "continental",
+        "country": "Europe"
+      },
+      "stage": "Semi-finals",
+      "opponent": {
+        "name": "Waregem",
+        "slug": "waregem"
+      },
+      "venue": "away",
+      "score": {
+        "for": 3,
+        "against": 3
+      },
+      "result": "D",
+      "sources": [
+        {
+          "provider": "UEFA official match API",
+          "url": "https://www.uefa.com/uefachampionsleague/match/67598/",
+          "retrievedAt": "2026-08-04T21:08:13.342Z",
+          "rawArtifact": "data/teams/history/normalized/uefa-1785878005892.json"
+        }
+      ]
+    },
+    {
+      "id": "uefa:67601:away",
+      "date": "1986-04-30",
+      "season": "1985-86",
+      "competition": {
+        "name": "UEFA Cup / UEFA Europa League",
+        "type": "continental",
+        "country": "Europe"
+      },
+      "stage": "Final",
+      "opponent": {
+        "name": "Real Madrid",
+        "slug": "real-madrid"
+      },
+      "venue": "away",
+      "score": {
+        "for": 1,
+        "against": 5
+      },
+      "result": "L",
+      "sources": [
+        {
+          "provider": "UEFA official match API",
+          "url": "https://www.uefa.com/uefachampionsleague/match/67601/",
+          "retrievedAt": "2026-08-04T21:08:13.342Z",
+          "rawArtifact": "data/teams/history/normalized/uefa-1785878005892.json"
+        }
+      ]
+    },
+    {
+      "id": "uefa:67602:home",
+      "date": "1986-05-06",
+      "season": "1985-86",
+      "competition": {
+        "name": "UEFA Cup / UEFA Europa League",
+        "type": "continental",
+        "country": "Europe"
+      },
+      "stage": "Final",
+      "opponent": {
+        "name": "Real Madrid",
+        "slug": "real-madrid"
+      },
+      "venue": "home",
+      "score": {
+        "for": 2,
+        "against": 0
+      },
+      "result": "W",
+      "sources": [
+        {
+          "provider": "UEFA official match API",
+          "url": "https://www.uefa.com/uefachampionsleague/match/67602/",
+          "retrievedAt": "2026-08-04T21:08:13.342Z",
+          "rawArtifact": "data/teams/history/normalized/uefa-1785878005892.json"
+        }
+      ]
+    },
+    {
+      "id": "uefa:108:away",
+      "date": "1988-09-06",
+      "season": "1988-89",
+      "competition": {
+        "name": "UEFA Cup / UEFA Europa League",
+        "type": "continental",
+        "country": "Europe"
+      },
+      "stage": "First round",
+      "opponent": {
+        "name": "Antwerp",
+        "slug": "antwerp"
+      },
+      "venue": "away",
+      "score": {
+        "for": 4,
+        "against": 2
+      },
+      "result": "W",
+      "sources": [
+        {
+          "provider": "UEFA official match API",
+          "url": "https://www.uefa.com/uefachampionsleague/match/108/",
+          "retrievedAt": "2026-08-04T21:10:38.303Z",
+          "rawArtifact": "data/teams/history/normalized/uefa-1785878005892.json"
+        }
+      ]
+    },
+    {
+      "id": "uefa:109:home",
+      "date": "1988-10-12",
+      "season": "1988-89",
+      "competition": {
+        "name": "UEFA Cup / UEFA Europa League",
+        "type": "continental",
+        "country": "Europe"
+      },
+      "stage": "First round",
+      "opponent": {
+        "name": "Antwerp",
+        "slug": "antwerp"
+      },
+      "venue": "home",
+      "score": {
+        "for": 2,
+        "against": 1
+      },
+      "result": "W",
+      "sources": [
+        {
+          "provider": "UEFA official match API",
+          "url": "https://www.uefa.com/uefachampionsleague/match/109/",
+          "retrievedAt": "2026-08-04T21:10:38.303Z",
+          "rawArtifact": "data/teams/history/normalized/uefa-1785878005892.json"
+        }
+      ]
+    },
+    {
+      "id": "uefa:347:home",
+      "date": "1988-10-26",
+      "season": "1988-89",
+      "competition": {
+        "name": "UEFA Cup / UEFA Europa League",
+        "type": "continental",
+        "country": "Europe"
+      },
+      "stage": "Second round",
+      "opponent": {
+        "name": "Rangers",
+        "slug": "rangers"
+      },
+      "venue": "home",
+      "score": {
+        "for": 2,
+        "against": 0
+      },
+      "result": "W",
+      "sources": [
+        {
+          "provider": "UEFA official match API",
+          "url": "https://www.uefa.com/uefachampionsleague/match/347/",
+          "retrievedAt": "2026-08-04T21:10:38.303Z",
+          "rawArtifact": "data/teams/history/normalized/uefa-1785878005892.json"
+        }
+      ]
+    },
+    {
+      "id": "uefa:348:away",
+      "date": "1988-11-09",
+      "season": "1988-89",
+      "competition": {
+        "name": "UEFA Cup / UEFA Europa League",
+        "type": "continental",
+        "country": "Europe"
+      },
+      "stage": "Second round",
+      "opponent": {
+        "name": "Rangers",
+        "slug": "rangers"
+      },
+      "venue": "away",
+      "score": {
+        "for": 1,
+        "against": 1
+      },
+      "result": "D",
+      "sources": [
+        {
+          "provider": "UEFA official match API",
+          "url": "https://www.uefa.com/uefachampionsleague/match/348/",
+          "retrievedAt": "2026-08-04T21:10:38.303Z",
+          "rawArtifact": "data/teams/history/normalized/uefa-1785878005892.json"
+        }
+      ]
+    },
+    {
+      "id": "uefa:373:away",
+      "date": "1988-11-23",
+      "season": "1988-89",
+      "competition": {
+        "name": "UEFA Cup / UEFA Europa League",
+        "type": "continental",
+        "country": "Europe"
+      },
+      "stage": "Third round",
+      "opponent": {
+        "name": "Real Sociedad",
+        "slug": "real-sociedad"
+      },
+      "venue": "away",
+      "score": {
+        "for": 0,
+        "against": 1
+      },
+      "result": "L",
+      "sources": [
+        {
+          "provider": "UEFA official match API",
+          "url": "https://www.uefa.com/uefachampionsleague/match/373/",
+          "retrievedAt": "2026-08-04T21:10:38.303Z",
+          "rawArtifact": "data/teams/history/normalized/uefa-1785878005892.json"
+        }
+      ]
+    },
+    {
+      "id": "uefa:374:home",
+      "date": "1988-12-07",
+      "season": "1988-89",
+      "competition": {
+        "name": "UEFA Cup / UEFA Europa League",
+        "type": "continental",
+        "country": "Europe"
+      },
+      "stage": "Third round",
+      "opponent": {
+        "name": "Real Sociedad",
+        "slug": "real-sociedad"
+      },
+      "venue": "home",
+      "score": {
+        "for": 2,
+        "against": 2
+      },
+      "result": "D",
+      "sources": [
+        {
+          "provider": "UEFA official match API",
+          "url": "https://www.uefa.com/uefachampionsleague/match/374/",
+          "retrievedAt": "2026-08-04T21:10:38.303Z",
+          "rawArtifact": "data/teams/history/normalized/uefa-1785878005892.json"
+        }
+      ]
+    },
+    {
+      "id": "uefa:1143:home",
+      "date": "1989-09-13",
+      "season": "1989-90",
+      "competition": {
+        "name": "UEFA Cup / UEFA Europa League",
+        "type": "continental",
+        "country": "Europe"
+      },
+      "stage": "First round",
+      "opponent": {
+        "name": "Nitra",
+        "slug": "nitra"
+      },
+      "venue": "home",
+      "score": {
+        "for": 4,
+        "against": 1
+      },
+      "result": "W",
+      "sources": [
+        {
+          "provider": "UEFA official match API",
+          "url": "https://www.uefa.com/uefachampionsleague/match/1143/",
+          "retrievedAt": "2026-08-04T21:10:38.916Z",
+          "rawArtifact": "data/teams/history/normalized/uefa-1785878005892.json"
+        }
+      ]
+    },
+    {
+      "id": "uefa:1144:away",
+      "date": "1989-09-27",
+      "season": "1989-90",
+      "competition": {
+        "name": "UEFA Cup / UEFA Europa League",
+        "type": "continental",
+        "country": "Europe"
+      },
+      "stage": "First round",
+      "opponent": {
+        "name": "Nitra",
+        "slug": "nitra"
+      },
+      "venue": "away",
+      "score": {
+        "for": 1,
+        "against": 0
+      },
+      "result": "W",
+      "sources": [
+        {
+          "provider": "UEFA official match API",
+          "url": "https://www.uefa.com/uefachampionsleague/match/1144/",
+          "retrievedAt": "2026-08-04T21:10:38.916Z",
+          "rawArtifact": "data/teams/history/normalized/uefa-1785878005892.json"
+        }
+      ]
+    },
+    {
+      "id": "uefa:1786:home",
+      "date": "1989-10-18",
+      "season": "1989-90",
+      "competition": {
+        "name": "UEFA Cup / UEFA Europa League",
+        "type": "continental",
+        "country": "Europe"
+      },
+      "stage": "Second round",
+      "opponent": {
+        "name": "Spartak Moskva",
+        "slug": "spartak-moskva"
+      },
+      "venue": "home",
+      "score": {
+        "for": 3,
+        "against": 1
+      },
+      "result": "W",
+      "sources": [
+        {
+          "provider": "UEFA official match API",
+          "url": "https://www.uefa.com/uefachampionsleague/match/1786/",
+          "retrievedAt": "2026-08-04T21:10:38.916Z",
+          "rawArtifact": "data/teams/history/normalized/uefa-1785878005892.json"
+        }
+      ]
+    },
+    {
+      "id": "uefa:1787:away",
+      "date": "1989-11-01",
+      "season": "1989-90",
+      "competition": {
+        "name": "UEFA Cup / UEFA Europa League",
+        "type": "continental",
+        "country": "Europe"
+      },
+      "stage": "Second round",
+      "opponent": {
+        "name": "Spartak Moskva",
+        "slug": "spartak-moskva"
+      },
+      "venue": "away",
+      "score": {
+        "for": 0,
+        "against": 0
+      },
+      "result": "D",
+      "sources": [
+        {
+          "provider": "UEFA official match API",
+          "url": "https://www.uefa.com/uefachampionsleague/match/1787/",
+          "retrievedAt": "2026-08-04T21:10:38.916Z",
+          "rawArtifact": "data/teams/history/normalized/uefa-1785878005892.json"
+        }
+      ]
+    },
+    {
+      "id": "uefa:2447:away",
+      "date": "1989-11-22",
+      "season": "1989-90",
+      "competition": {
+        "name": "UEFA Cup / UEFA Europa League",
+        "type": "continental",
+        "country": "Europe"
+      },
+      "stage": "Third round",
+      "opponent": {
+        "name": "Crvena Zvezda",
+        "slug": "crvena-zvezda"
+      },
+      "venue": "away",
+      "score": {
+        "for": 0,
+        "against": 2
+      },
+      "result": "L",
+      "sources": [
+        {
+          "provider": "UEFA official match API",
+          "url": "https://www.uefa.com/uefachampionsleague/match/2447/",
+          "retrievedAt": "2026-08-04T21:10:38.916Z",
+          "rawArtifact": "data/teams/history/normalized/uefa-1785878005892.json"
+        }
+      ]
+    },
+    {
+      "id": "uefa:2448:home",
+      "date": "1989-12-06",
+      "season": "1989-90",
+      "competition": {
+        "name": "UEFA Cup / UEFA Europa League",
+        "type": "continental",
+        "country": "Europe"
+      },
+      "stage": "Third round",
+      "opponent": {
+        "name": "Crvena Zvezda",
+        "slug": "crvena-zvezda"
+      },
+      "venue": "home",
+      "score": {
+        "for": 3,
+        "against": 0
+      },
+      "result": "W",
+      "sources": [
+        {
+          "provider": "UEFA official match API",
+          "url": "https://www.uefa.com/uefachampionsleague/match/2448/",
+          "retrievedAt": "2026-08-04T21:10:38.916Z",
+          "rawArtifact": "data/teams/history/normalized/uefa-1785878005892.json"
+        }
+      ]
+    },
+    {
+      "id": "uefa:2473:home",
+      "date": "1990-03-06",
+      "season": "1989-90",
+      "competition": {
+        "name": "UEFA Cup / UEFA Europa League",
+        "type": "continental",
+        "country": "Europe"
+      },
+      "stage": "Quarter-finals",
+      "opponent": {
+        "name": "Antwerp",
+        "slug": "antwerp"
+      },
+      "venue": "home",
+      "score": {
+        "for": 2,
+        "against": 0
+      },
+      "result": "W",
+      "sources": [
+        {
+          "provider": "UEFA official match API",
+          "url": "https://www.uefa.com/uefachampionsleague/match/2473/",
+          "retrievedAt": "2026-08-04T21:10:38.916Z",
+          "rawArtifact": "data/teams/history/normalized/uefa-1785878005892.json"
+        }
+      ]
+    },
+    {
+      "id": "uefa:2474:away",
+      "date": "1990-03-20",
+      "season": "1989-90",
+      "competition": {
+        "name": "UEFA Cup / UEFA Europa League",
+        "type": "continental",
+        "country": "Europe"
+      },
+      "stage": "Quarter-finals",
+      "opponent": {
+        "name": "Antwerp",
+        "slug": "antwerp"
+      },
+      "venue": "away",
+      "score": {
+        "for": 0,
+        "against": 0
+      },
+      "result": "D",
+      "sources": [
+        {
+          "provider": "UEFA official match API",
+          "url": "https://www.uefa.com/uefachampionsleague/match/2474/",
+          "retrievedAt": "2026-08-04T21:10:38.916Z",
+          "rawArtifact": "data/teams/history/normalized/uefa-1785878005892.json"
+        }
+      ]
+    },
+    {
+      "id": "uefa:2707:away",
+      "date": "1990-04-04",
+      "season": "1989-90",
+      "competition": {
+        "name": "UEFA Cup / UEFA Europa League",
+        "type": "continental",
+        "country": "Europe"
+      },
+      "stage": "Semi-finals",
+      "opponent": {
+        "name": "Juventus",
+        "slug": "juventus"
+      },
+      "venue": "away",
+      "score": {
+        "for": 2,
+        "against": 3
+      },
+      "result": "L",
+      "sources": [
+        {
+          "provider": "UEFA official match API",
+          "url": "https://www.uefa.com/uefachampionsleague/match/2707/",
+          "retrievedAt": "2026-08-04T21:10:38.916Z",
+          "rawArtifact": "data/teams/history/normalized/uefa-1785878005892.json"
+        }
+      ]
+    },
+    {
+      "id": "uefa:2708:home",
+      "date": "1990-04-18",
+      "season": "1989-90",
+      "competition": {
+        "name": "UEFA Cup / UEFA Europa League",
+        "type": "continental",
+        "country": "Europe"
+      },
+      "stage": "Semi-finals",
+      "opponent": {
+        "name": "Juventus",
+        "slug": "juventus"
+      },
+      "venue": "home",
+      "score": {
+        "for": 0,
+        "against": 0
+      },
+      "result": "D",
+      "sources": [
+        {
+          "provider": "UEFA official match API",
+          "url": "https://www.uefa.com/uefachampionsleague/match/2708/",
+          "retrievedAt": "2026-08-04T21:10:38.916Z",
+          "rawArtifact": "data/teams/history/normalized/uefa-1785878005892.json"
+        }
+      ]
+    },
+    {
+      "id": "uefa:3114:away",
+      "date": "1990-09-19",
+      "season": "1990-91",
+      "competition": {
+        "name": "UEFA Cup / UEFA Europa League",
+        "type": "continental",
+        "country": "Europe"
+      },
+      "stage": "First round",
+      "opponent": {
+        "name": "Norrköping",
+        "slug": "norrkoping"
+      },
+      "venue": "away",
+      "score": {
+        "for": 0,
+        "against": 0
+      },
+      "result": "D",
+      "sources": [
+        {
+          "provider": "UEFA official match API",
+          "url": "https://www.uefa.com/uefachampionsleague/match/3114/",
+          "retrievedAt": "2026-08-04T21:10:39.477Z",
+          "rawArtifact": "data/teams/history/normalized/uefa-1785878005892.json"
+        }
+      ]
+    },
+    {
+      "id": "uefa:3115:home",
+      "date": "1990-10-03",
+      "season": "1990-91",
+      "competition": {
+        "name": "UEFA Cup / UEFA Europa League",
+        "type": "continental",
+        "country": "Europe"
+      },
+      "stage": "First round",
+      "opponent": {
+        "name": "Norrköping",
+        "slug": "norrkoping"
+      },
+      "venue": "home",
+      "score": {
+        "for": 3,
+        "against": 1
+      },
+      "result": "W",
+      "sources": [
+        {
+          "provider": "UEFA official match API",
+          "url": "https://www.uefa.com/uefachampionsleague/match/3115/",
+          "retrievedAt": "2026-08-04T21:10:39.477Z",
+          "rawArtifact": "data/teams/history/normalized/uefa-1785878005892.json"
+        }
+      ]
+    },
+    {
+      "id": "uefa:3266:home",
+      "date": "1990-10-24",
+      "season": "1990-91",
+      "competition": {
+        "name": "UEFA Cup / UEFA Europa League",
+        "type": "continental",
+        "country": "Europe"
+      },
+      "stage": "Second round",
+      "opponent": {
+        "name": "Senica",
+        "slug": "senica"
+      },
+      "venue": "home",
+      "score": {
+        "for": 0,
+        "against": 1
+      },
+      "result": "L",
+      "sources": [
+        {
+          "provider": "UEFA official match API",
+          "url": "https://www.uefa.com/uefachampionsleague/match/3266/",
+          "retrievedAt": "2026-08-04T21:10:39.477Z",
+          "rawArtifact": "data/teams/history/normalized/uefa-1785878005892.json"
+        }
+      ]
+    },
+    {
+      "id": "uefa:3267:away",
+      "date": "1990-11-06",
+      "season": "1990-91",
+      "competition": {
+        "name": "UEFA Cup / UEFA Europa League",
+        "type": "continental",
+        "country": "Europe"
+      },
+      "stage": "Second round",
+      "opponent": {
+        "name": "Senica",
+        "slug": "senica"
+      },
+      "venue": "away",
+      "score": {
+        "for": 2,
+        "against": 0
+      },
+      "result": "W",
+      "sources": [
+        {
+          "provider": "UEFA official match API",
+          "url": "https://www.uefa.com/uefachampionsleague/match/3267/",
+          "retrievedAt": "2026-08-04T21:10:39.477Z",
+          "rawArtifact": "data/teams/history/normalized/uefa-1785878005892.json"
+        }
+      ]
+    },
+    {
+      "id": "uefa:3304:home",
+      "date": "1990-11-28",
+      "season": "1990-91",
+      "competition": {
+        "name": "UEFA Cup / UEFA Europa League",
+        "type": "continental",
+        "country": "Europe"
+      },
+      "stage": "Third round",
+      "opponent": {
+        "name": "Atalanta",
+        "slug": "atalanta"
+      },
+      "venue": "home",
+      "score": {
+        "for": 1,
+        "against": 1
+      },
+      "result": "D",
+      "sources": [
+        {
+          "provider": "UEFA official match API",
+          "url": "https://www.uefa.com/uefachampionsleague/match/3304/",
+          "retrievedAt": "2026-08-04T21:10:39.477Z",
+          "rawArtifact": "data/teams/history/normalized/uefa-1785878005892.json"
+        }
+      ]
+    },
+    {
+      "id": "uefa:3305:away",
+      "date": "1990-12-12",
+      "season": "1990-91",
+      "competition": {
+        "name": "UEFA Cup / UEFA Europa League",
+        "type": "continental",
+        "country": "Europe"
+      },
+      "stage": "Third round",
+      "opponent": {
+        "name": "Atalanta",
+        "slug": "atalanta"
+      },
+      "venue": "away",
+      "score": {
+        "for": 0,
+        "against": 1
+      },
+      "result": "L",
+      "sources": [
+        {
+          "provider": "UEFA official match API",
+          "url": "https://www.uefa.com/uefachampionsleague/match/3305/",
+          "retrievedAt": "2026-08-04T21:10:39.477Z",
+          "rawArtifact": "data/teams/history/normalized/uefa-1785878005892.json"
+        }
+      ]
+    },
+    {
+      "id": "uefa:6149:home",
+      "date": "1992-09-15",
+      "season": "1992-93",
+      "competition": {
+        "name": "UEFA Cup / UEFA Europa League",
+        "type": "continental",
+        "country": "Europe"
+      },
+      "stage": "First round",
+      "opponent": {
+        "name": "Celtic",
+        "slug": "celtic"
+      },
+      "venue": "home",
+      "score": {
+        "for": 2,
+        "against": 0
+      },
+      "result": "W",
+      "sources": [
+        {
+          "provider": "UEFA official match API",
+          "url": "https://www.uefa.com/uefachampionsleague/match/6149/",
+          "retrievedAt": "2026-08-04T21:10:51.153Z",
+          "rawArtifact": "data/teams/history/normalized/uefa-1785878005892.json"
+        }
+      ]
+    },
+    {
+      "id": "uefa:6150:away",
+      "date": "1992-09-30",
+      "season": "1992-93",
+      "competition": {
+        "name": "UEFA Cup / UEFA Europa League",
+        "type": "continental",
+        "country": "Europe"
+      },
+      "stage": "First round",
+      "opponent": {
+        "name": "Celtic",
+        "slug": "celtic"
+      },
+      "venue": "away",
+      "score": {
+        "for": 0,
+        "against": 3
+      },
+      "result": "L",
+      "sources": [
+        {
+          "provider": "UEFA official match API",
+          "url": "https://www.uefa.com/uefachampionsleague/match/6150/",
+          "retrievedAt": "2026-08-04T21:10:51.153Z",
+          "rawArtifact": "data/teams/history/normalized/uefa-1785878005892.json"
+        }
+      ]
+    },
+    {
+      "id": "uefa:2022029:away",
+      "date": "2017-09-14",
+      "season": "2017-18",
+      "competition": {
+        "name": "UEFA Cup / UEFA Europa League",
+        "type": "continental",
+        "country": "Europe"
+      },
+      "stage": "Group stage",
+      "opponent": {
+        "name": "Arsenal",
+        "slug": "arsenal"
+      },
+      "venue": "away",
+      "score": {
+        "for": 1,
+        "against": 3
+      },
+      "result": "L",
+      "sources": [
+        {
+          "provider": "UEFA official match API",
+          "url": "https://www.uefa.com/uefachampionsleague/match/2022029/",
+          "retrievedAt": "2026-08-04T21:12:37.373Z",
+          "rawArtifact": "data/teams/history/normalized/uefa-1785878005892.json"
+        }
+      ]
+    },
+    {
+      "id": "uefa:2022052:home",
+      "date": "2017-09-28",
+      "season": "2017-18",
+      "competition": {
+        "name": "UEFA Cup / UEFA Europa League",
+        "type": "continental",
+        "country": "Europe"
+      },
+      "stage": "Group stage",
+      "opponent": {
+        "name": "Crvena Zvezda",
+        "slug": "crvena-zvezda"
+      },
+      "venue": "home",
+      "score": {
+        "for": 0,
+        "against": 1
+      },
+      "result": "L",
+      "sources": [
+        {
+          "provider": "UEFA official match API",
+          "url": "https://www.uefa.com/uefachampionsleague/match/2022052/",
+          "retrievedAt": "2026-08-04T21:12:37.373Z",
+          "rawArtifact": "data/teams/history/normalized/uefa-1785878005892.json"
+        }
+      ]
+    },
+    {
+      "id": "uefa:2022076:away",
+      "date": "2017-10-19",
+      "season": "2017-18",
+      "competition": {
+        "name": "UEFA Cup / UEFA Europa League",
+        "type": "continental",
+        "country": "Europe"
+      },
+      "stage": "Group stage",
+      "opponent": {
+        "name": "BATE",
+        "slug": "bate"
+      },
+      "venue": "away",
+      "score": {
+        "for": 0,
+        "against": 1
+      },
+      "result": "L",
+      "sources": [
+        {
+          "provider": "UEFA official match API",
+          "url": "https://www.uefa.com/uefachampionsleague/match/2022076/",
+          "retrievedAt": "2026-08-04T21:12:37.373Z",
+          "rawArtifact": "data/teams/history/normalized/uefa-1785878005892.json"
+        }
+      ]
+    },
+    {
+      "id": "uefa:2022100:home",
+      "date": "2017-11-02",
+      "season": "2017-18",
+      "competition": {
+        "name": "UEFA Cup / UEFA Europa League",
+        "type": "continental",
+        "country": "Europe"
+      },
+      "stage": "Group stage",
+      "opponent": {
+        "name": "BATE",
+        "slug": "bate"
+      },
+      "venue": "home",
+      "score": {
+        "for": 5,
+        "against": 2
+      },
+      "result": "W",
+      "sources": [
+        {
+          "provider": "UEFA official match API",
+          "url": "https://www.uefa.com/uefachampionsleague/match/2022100/",
+          "retrievedAt": "2026-08-04T21:12:37.373Z",
+          "rawArtifact": "data/teams/history/normalized/uefa-1785878005892.json"
+        }
+      ]
+    },
+    {
+      "id": "uefa:2022125:home",
+      "date": "2017-11-23",
+      "season": "2017-18",
+      "competition": {
+        "name": "UEFA Cup / UEFA Europa League",
+        "type": "continental",
+        "country": "Europe"
+      },
+      "stage": "Group stage",
+      "opponent": {
+        "name": "Arsenal",
+        "slug": "arsenal"
+      },
+      "venue": "home",
+      "score": {
+        "for": 1,
+        "against": 0
+      },
+      "result": "W",
+      "sources": [
+        {
+          "provider": "UEFA official match API",
+          "url": "https://www.uefa.com/uefachampionsleague/match/2022125/",
+          "retrievedAt": "2026-08-04T21:12:37.373Z",
+          "rawArtifact": "data/teams/history/normalized/uefa-1785878005892.json"
+        }
+      ]
+    },
+    {
+      "id": "uefa:2022148:away",
+      "date": "2017-12-07",
+      "season": "2017-18",
+      "competition": {
+        "name": "UEFA Cup / UEFA Europa League",
+        "type": "continental",
+        "country": "Europe"
+      },
+      "stage": "Group stage",
+      "opponent": {
+        "name": "Crvena Zvezda",
+        "slug": "crvena-zvezda"
+      },
+      "venue": "away",
+      "score": {
+        "for": 0,
+        "against": 1
+      },
+      "result": "L",
+      "sources": [
+        {
+          "provider": "UEFA official match API",
+          "url": "https://www.uefa.com/uefachampionsleague/match/2022148/",
+          "retrievedAt": "2026-08-04T21:12:37.373Z",
+          "rawArtifact": "data/teams/history/normalized/uefa-1785878005892.json"
+        }
+      ]
+    }
+  ],
+  "seasonStandings": [],
+  "competitionStandings": [],
+  "updatedAt": "2026-08-04T21:13:53.337Z"
+}

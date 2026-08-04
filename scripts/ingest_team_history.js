@@ -6,6 +6,14 @@ const { slugifyTeam, resultCode } = require("../src/teamResultsStore");
 const { canonicalHistoricalName } = require("../src/footballHistory/identity");
 const { ensureHistory, writeHistory, rebuildCoverage } = require("../src/footballHistory/store");
 const { seasonFromDate } = require("../src/footballHistory/schema");
+function competitionKey(name) {
+  const value = String(name || "").toLowerCase();
+  if (value.includes("champion") || value.includes("european cup")) return "uefa-champions-league";
+  if (value.includes("cup winners")) return "uefa-cup-winners-cup";
+  if (value.includes("europa") || value.includes("uefa cup")) return "uefa-cup";
+  return value.replace(/[^a-z0-9]+/g, "-").replace(/^-|-$/g, "");
+}
+function fixtureKey(match) { return [match.date, competitionKey(match.competition?.name), match.opponent?.slug, match.venue].join("|"); }
 const input = process.argv.find((arg) => arg.startsWith("--input="))?.slice(8);
 if (!input) throw new Error("Usage: node scripts/ingest_team_history.js --input=normalized-history.json");
 const artifact = JSON.parse(fs.readFileSync(input, "utf8"));
@@ -24,8 +32,13 @@ for (const group of byTeam.values()) {
   const { record } = ensureHistory({ team: group.team, league: group.league });
   for (const item of group.items) {
   const match = { id: item.id || `external:${item.date}:${slugifyTeam(item.team)}:${slugifyTeam(item.opponent)}:${item.competition.name}`, date: item.date, season: item.season || seasonFromDate(item.date), competition: { name: item.competition.name, type: item.competition.type || "unknown", country: item.competition.country || "" }, stage: item.stage || "", opponent: { name: item.opponent, slug: slugifyTeam(item.opponent) }, venue: item.venue || "neutral", score: { for: Number(item.score.for), against: Number(item.score.against) }, result: resultCode(item.score.for, item.score.against), sources: [{ provider: item.source.provider || "external", url: item.source.url, retrievedAt: item.source.retrievedAt || new Date().toISOString(), rawArtifact: input }] };
-    const index = record.matches.findIndex((candidate) => candidate.id === match.id);
-    if (index < 0) { record.matches.push(match); inserted += 1; } else record.matches[index] = match;
+    const index = record.matches.findIndex((candidate) => candidate.id === match.id || fixtureKey(candidate) === fixtureKey(match));
+    if (index < 0) { record.matches.push(match); inserted += 1; }
+    else {
+      const existing = record.matches[index];
+      const sources = [...(existing.sources || []), ...match.sources].filter((source, sourceIndex, list) => list.findIndex((candidate) => candidate.url === source.url) === sourceIndex);
+      record.matches[index] = { ...existing, ...match, sources };
+    }
   }
   record.matches.sort((a, b) => a.date.localeCompare(b.date) || a.id.localeCompare(b.id));
   rebuildCoverage(record); record.updatedAt = new Date().toISOString(); writeHistory(record);

@@ -17,3 +17,7 @@ The training corpus accepts a match only when it has an individual match date, s
 ## Scope
 
 “Every competition” means every **major** competition for which participation is verified: domestic league, principal national cup, significant domestic league cup/playoff, UEFA club competition (including historical UEFA Cup and Cup Winners' Cup), FIFA/continental club world competition, and dated cross-confederation preseason friendlies involving European and South American clubs. Missing years are excluded until a participation index and dated match source prove them; they are never fabricated.
+
+## UEFA collection implementation
+
+`npm run collect:uefa-history -- --from=1985 --to=2025` uses UEFA's public match endpoint for competition IDs 1 (European Cup/Champions League), 2 (Cup Winners' Cup), and 14 (UEFA Cup/Europa League). It stores a manifest containing the exact requests, hashes and retrieval times. The API payload cache is intentionally ignored by Git because it contains large player-event data that can be regenerated from those public requests. Run `npm run normalize:uefa-history`, then review and use `npm run ingest:team-history -- --input=...` to apply the cleaned team-perspective artifact.

@@ -56,11 +56,13 @@
     }
   ],
   "coverage": {
-    "earliestMatch": "2000-07-12",
-    "latestMatch": "2001-07-18",
+    "earliestMatch": "1999-08-12",
+    "latestMatch": "2004-07-29",
     "seasonsWithMatches": [
+      "1999-00",
       "2000-01",
-      "2001-02"
+      "2001-02",
+      "2004-05"
     ],
     "missingSeasons": [
       "1985-86",
@@ -77,10 +79,8 @@
       "1996-97",
       "1997-98",
       "1998-99",
-      "1999-00",
       "2002-03",
       "2003-04",
-      "2004-05",
       "2005-06",
       "2006-07",
       "2007-08",
@@ -109,15 +109,73 @@
   },
   "matches": [
     {
-      "id": "engsoccerdata:ab554db1a8b9bdb3788dd99077b6b6d754d64f09e84cb506bc3442cc323cbaea:2000-07-12:Skonto:Shamkir:away",
-      "date": "2000-07-12",
-      "season": "2000-01",
+      "id": "uefa:56587:away",
+      "date": "1999-08-12",
+      "season": "1999-00",
       "competition": {
-        "name": "European Champion Clubs' Cup / Champions League",
+        "name": "UEFA Cup / UEFA Europa League",
         "type": "continental",
         "country": "Europe"
       },
-      "stage": "Q-1",
+      "stage": "Qualifying round",
+      "opponent": {
+        "name": "Kryvbas",
+        "slug": "kryvbas"
+      },
+      "venue": "away",
+      "score": {
+        "for": 0,
+        "against": 3
+      },
+      "result": "L",
+      "sources": [
+        {
+          "provider": "UEFA official match API",
+          "url": "https://www.uefa.com/uefachampionsleague/match/56587/",
+          "retrievedAt": "2026-08-04T21:11:10.429Z",
+          "rawArtifact": "data/teams/history/normalized/uefa-1785878005892.json"
+        }
+      ]
+    },
+    {
+      "id": "uefa:56588:home",
+      "date": "1999-08-24",
+      "season": "1999-00",
+      "competition": {
+        "name": "UEFA Cup / UEFA Europa League",
+        "type": "continental",
+        "country": "Europe"
+      },
+      "stage": "Qualifying round",
+      "opponent": {
+        "name": "Kryvbas",
+        "slug": "kryvbas"
+      },
+      "venue": "home",
+      "score": {
+        "for": 0,
+        "against": 2
+      },
+      "result": "L",
+      "sources": [
+        {
+          "provider": "UEFA official match API",
+          "url": "https://www.uefa.com/uefachampionsleague/match/56588/",
+          "retrievedAt": "2026-08-04T21:11:10.429Z",
+          "rawArtifact": "data/teams/history/normalized/uefa-1785878005892.json"
+        }
+      ]
+    },
+    {
+      "id": "uefa:65175:away",
+      "date": "2000-07-12",
+      "season": "2000-01",
+      "competition": {
+        "name": "UEFA Champions League / European Cup",
+        "type": "continental",
+        "country": "Europe"
+      },
+      "stage": "Main Round",
       "opponent": {
         "name": "Skonto",
         "slug": "skonto"
@@ -128,40 +186,56 @@
         "against": 2
       },
       "result": "L",
-      "sourceRef": "src:1ac1d16b4d91beda9a2b"
+      "sourceRef": "src:1ac1d16b4d91beda9a2b",
+      "sources": [
+        {
+          "provider": "UEFA official match API",
+          "url": "https://www.uefa.com/uefachampionsleague/match/65175/",
+          "retrievedAt": "2026-08-04T21:11:10.969Z",
+          "rawArtifact": "data/teams/history/normalized/uefa-1785878005892.json"
+        }
+      ]
     },
     {
-      "id": "engsoccerdata:ab554db1a8b9bdb3788dd99077b6b6d754d64f09e84cb506bc3442cc323cbaea:2000-07-19:Shamkir:Skonto:home",
+      "id": "uefa:65176:home",
       "date": "2000-07-19",
       "season": "2000-01",
       "competition": {
-        "name": "European Champion Clubs' Cup / Champions League",
+        "name": "UEFA Champions League / European Cup",
         "type": "continental",
         "country": "Europe"
       },
-      "stage": "Q-1",
+      "stage": "Main Round",
       "opponent": {
         "name": "Skonto",
         "slug": "skonto"
       },
       "venue": "home",
       "score": {
-        "for": 2,
+        "for": 4,
         "against": 1
       },
       "result": "W",
-      "sourceRef": "src:1ac1d16b4d91beda9a2b"
+      "sourceRef": "src:1ac1d16b4d91beda9a2b",
+      "sources": [
+        {
+          "provider": "UEFA official match API",
+          "url": "https://www.uefa.com/uefachampionsleague/match/65176/",
+          "retrievedAt": "2026-08-04T21:11:10.969Z",
+          "rawArtifact": "data/teams/history/normalized/uefa-1785878005892.json"
+        }
+      ]
     },
     {
-      "id": "engsoccerdata:ab554db1a8b9bdb3788dd99077b6b6d754d64f09e84cb506bc3442cc323cbaea:2000-07-26:Slavia%20Praha:Shamkir:away",
+      "id": "uefa:65546:away",
       "date": "2000-07-26",
       "season": "2000-01",
       "competition": {
-        "name": "European Champion Clubs' Cup / Champions League",
+        "name": "UEFA Champions League / European Cup",
         "type": "continental",
         "country": "Europe"
       },
-      "stage": "Q-2",
+      "stage": "Second qualifying round",
       "opponent": {
         "name": "Slavia Praha",
         "slug": "slavia-praha"
@@ -172,18 +246,26 @@
         "against": 1
       },
       "result": "L",
-      "sourceRef": "src:1ac1d16b4d91beda9a2b"
+      "sourceRef": "src:1ac1d16b4d91beda9a2b",
+      "sources": [
+        {
+          "provider": "UEFA official match API",
+          "url": "https://www.uefa.com/uefachampionsleague/match/65546/",
+          "retrievedAt": "2026-08-04T21:11:10.969Z",
+          "rawArtifact": "data/teams/history/normalized/uefa-1785878005892.json"
+        }
+      ]
     },
     {
-      "id": "engsoccerdata:ab554db1a8b9bdb3788dd99077b6b6d754d64f09e84cb506bc3442cc323cbaea:2000-08-02:Shamkir:Slavia%20Praha:home",
+      "id": "uefa:65547:home",
       "date": "2000-08-02",
       "season": "2000-01",
       "competition": {
-        "name": "European Champion Clubs' Cup / Champions League",
+        "name": "UEFA Champions League / European Cup",
         "type": "continental",
         "country": "Europe"
       },
-      "stage": "Q-2",
+      "stage": "Second qualifying round",
       "opponent": {
         "name": "Slavia Praha",
         "slug": "slavia-praha"
@@ -194,7 +276,15 @@
         "against": 4
       },
       "result": "L",
-      "sourceRef": "src:1ac1d16b4d91beda9a2b"
+      "sourceRef": "src:1ac1d16b4d91beda9a2b",
+      "sources": [
+        {
+          "provider": "UEFA official match API",
+          "url": "https://www.uefa.com/uefachampionsleague/match/65547/",
+          "retrievedAt": "2026-08-04T21:11:10.969Z",
+          "rawArtifact": "data/teams/history/normalized/uefa-1785878005892.json"
+        }
+      ]
     },
     {
       "id": "engsoccerdata:ab554db1a8b9bdb3788dd99077b6b6d754d64f09e84cb506bc3442cc323cbaea:2001-07-11:Barry%20Town:Shamkir:away",
@@ -219,6 +309,35 @@
       "sourceRef": "src:1ac1d16b4d91beda9a2b"
     },
     {
+      "id": "uefa:67830:away",
+      "date": "2001-07-11",
+      "season": "2001-02",
+      "competition": {
+        "name": "UEFA Champions League / European Cup",
+        "type": "continental",
+        "country": "Europe"
+      },
+      "stage": "First qualifying round",
+      "opponent": {
+        "name": "Barry",
+        "slug": "barry"
+      },
+      "venue": "away",
+      "score": {
+        "for": 0,
+        "against": 2
+      },
+      "result": "L",
+      "sources": [
+        {
+          "provider": "UEFA official match API",
+          "url": "https://www.uefa.com/uefachampionsleague/match/67830/",
+          "retrievedAt": "2026-08-04T21:11:21.797Z",
+          "rawArtifact": "data/teams/history/normalized/uefa-1785878005892.json"
+        }
+      ]
+    },
+    {
       "id": "engsoccerdata:ab554db1a8b9bdb3788dd99077b6b6d754d64f09e84cb506bc3442cc323cbaea:2001-07-18:Shamkir:Barry%20Town:home",
       "date": "2001-07-18",
       "season": "2001-02",
@@ -239,6 +358,93 @@
       },
       "result": "L",
       "sourceRef": "src:1ac1d16b4d91beda9a2b"
+    },
+    {
+      "id": "uefa:67831:home",
+      "date": "2001-07-18",
+      "season": "2001-02",
+      "competition": {
+        "name": "UEFA Champions League / European Cup",
+        "type": "continental",
+        "country": "Europe"
+      },
+      "stage": "First qualifying round",
+      "opponent": {
+        "name": "Barry",
+        "slug": "barry"
+      },
+      "venue": "home",
+      "score": {
+        "for": 0,
+        "against": 1
+      },
+      "result": "L",
+      "sources": [
+        {
+          "provider": "UEFA official match API",
+          "url": "https://www.uefa.com/uefachampionsleague/match/67831/",
+          "retrievedAt": "2026-08-04T21:11:21.797Z",
+          "rawArtifact": "data/teams/history/normalized/uefa-1785878005892.json"
+        }
+      ]
+    },
+    {
+      "id": "uefa:79040:away",
+      "date": "2004-07-15",
+      "season": "2004-05",
+      "competition": {
+        "name": "UEFA Cup / UEFA Europa League",
+        "type": "continental",
+        "country": "Europe"
+      },
+      "stage": "First qualifying round",
+      "opponent": {
+        "name": "Metalurgi Rustavi",
+        "slug": "metalurgi-rustavi"
+      },
+      "venue": "away",
+      "score": {
+        "for": 0,
+        "against": 1
+      },
+      "result": "L",
+      "sources": [
+        {
+          "provider": "UEFA official match API",
+          "url": "https://www.uefa.com/uefachampionsleague/match/79040/",
+          "retrievedAt": "2026-08-04T21:11:27.542Z",
+          "rawArtifact": "data/teams/history/normalized/uefa-1785878005892.json"
+        }
+      ]
+    },
+    {
+      "id": "uefa:79041:home",
+      "date": "2004-07-29",
+      "season": "2004-05",
+      "competition": {
+        "name": "UEFA Cup / UEFA Europa League",
+        "type": "continental",
+        "country": "Europe"
+      },
+      "stage": "First qualifying round",
+      "opponent": {
+        "name": "Metalurgi Rustavi",
+        "slug": "metalurgi-rustavi"
+      },
+      "venue": "home",
+      "score": {
+        "for": 1,
+        "against": 4
+      },
+      "result": "L",
+      "sources": [
+        {
+          "provider": "UEFA official match API",
+          "url": "https://www.uefa.com/uefachampionsleague/match/79041/",
+          "retrievedAt": "2026-08-04T21:11:27.542Z",
+          "rawArtifact": "data/teams/history/normalized/uefa-1785878005892.json"
+        }
+      ]
     }
   ],
   "seasonStandings": [],
@@ -276,5 +482,5 @@
       "basis": "derived from source-attributed recorded matches"
     }
   ],
-  "updatedAt": "2026-08-04T20:33:29.466Z"
+  "updatedAt": "2026-08-04T21:14:38.304Z"
 }
