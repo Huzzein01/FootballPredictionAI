@@ -1,0 +1,11 @@
+"use strict";
+const fs = require("fs");
+const path = require("path");
+const { historyDir, readHistory } = require("../src/footballHistory/store");
+const { snapshotFor } = require("../src/footballHistory/training");
+const cutoff = process.argv.find((arg) => arg.startsWith("--cutoff="))?.slice(9);
+if (!/^\d{4}-\d{2}-\d{2}$/.test(cutoff || "")) throw new Error("Usage: node scripts/build_team_history_snapshots.js --cutoff=YYYY-MM-DD");
+const snapshots = fs.readdirSync(historyDir()).filter((file) => file.endsWith(".json") && file !== "_index.json").map((file) => readHistory(path.basename(file, ".json"))).map((record) => snapshotFor(record, cutoff)).filter(Boolean);
+const output = path.join("data", "teams", "history", "snapshots", `${cutoff}.json`);
+fs.mkdirSync(path.dirname(output), { recursive: true }); fs.writeFileSync(output, JSON.stringify({ contract: "football-team-pregame-snapshot-batch-v1", cutoff, snapshotCount: snapshots.length, snapshots }, null, 2) + "\n");
+console.log(JSON.stringify({ output, cutoff, snapshotCount: snapshots.length }, null, 2));
