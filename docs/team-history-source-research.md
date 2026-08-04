@@ -41,3 +41,9 @@ Run `npm run import:team-history-sources -- --input=reviewed-sources.json` only 
 ## UEFA collection implementation
 
 `npm run collect:uefa-history -- --from=1985 --to=2025` uses UEFA's public match endpoint for competition IDs 1 (European Cup/Champions League), 2 (Cup Winners' Cup), and 14 (UEFA Cup/Europa League). It stores a manifest containing the exact requests, hashes and retrieval times. The API payload cache is intentionally ignored by Git because it contains large player-event data that can be regenerated from those public requests. Run `npm run normalize:uefa-history`, then review and use `npm run ingest:team-history -- --input=...` to apply the cleaned team-perspective artifact.
+
+## Confirmed domestic-cup route: DFB-Pokal
+
+The official [DFB Datencenter season schedule](https://datencenter.dfb.de/competitions/dfb-pokal/seasons/1985-1986?datacenter_name=datencenter) contains individual fixture dates, home/away clubs and settled scores from the 1985–86 season. That makes it a valid first-party route for Germany’s main domestic cup, including lower-league opponents who entered the competition.
+
+Run `npm run collect:dfb-pokal-history -- --from=1985 --to=2025`, then `npm run normalize:dfb-pokal-history`. Review the resulting normalized artifact before `npm run ingest:team-history -- --input=...`. The collector saves source URLs, retrieval times, hashes and raw artifacts; it does not substitute a round date range for an individual match date.
