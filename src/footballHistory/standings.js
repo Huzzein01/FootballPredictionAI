@@ -17,7 +17,7 @@ function tableForMatches(matches) {
 }
 function rebuildLeagueStandings() {
   const files = fs.readdirSync(historyDir()).filter((file) => file.endsWith(".json") && file !== "_index.json");
-  const records = files.map((file) => readHistory(file.slice(0, -5))).filter(Boolean);
+  const records = files.map((file) => readHistory(file.slice(0, -5))).filter((record) => record?.contract === "football-team-history-v1");
   const groups = new Map();
   for (const record of records) for (const match of record.matches || []) {
     if (match.competition?.type !== "league" || match.venue !== "home") continue;

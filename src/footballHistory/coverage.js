@@ -5,7 +5,7 @@ const { MIN_YEAR } = require("./schema");
 
 function coverageReport() {
   const files = fs.readdirSync(historyDir()).filter((file) => file.endsWith(".json") && file !== "_index.json");
-  const records = files.map((file) => readHistory(file.slice(0, -5))).filter(Boolean);
+  const records = files.map((file) => readHistory(file.slice(0, -5))).filter((record) => record?.contract === "football-team-history-v1");
   const withHistoricCoverage = records.filter((record) => {
     const earliest = record.coverage?.earliestMatch || "";
     const year = Number(earliest.slice(0, 4));
