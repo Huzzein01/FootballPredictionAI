@@ -9,11 +9,17 @@ const el = (tag, cls, html) => { const n = document.createElement(tag); if (cls)
 const esc = (s) => String(s ?? "").replace(/[&<>"']/g, (c) => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" }[c]));
 const num = (v, d = 0) => { const n = Number(v); return Number.isFinite(n) ? n : d; };
 async function api(path, opts) { const r = await fetch(path, opts); if (!r.ok) throw new Error(`${r.status}`); return r.json(); }
+async function apiWithTimeout(path, timeoutMs = 8_000) {
+  const controller = new AbortController();
+  const timer = window.setTimeout(() => controller.abort(), timeoutMs);
+  try { return await api(path, { signal: controller.signal }); }
+  finally { clearTimeout(timer); }
+}
 
 const STATE = {
   context: "international", section: "predictions", matchday: "all",
   sortBy: "confidence", clubSeason: "2026-27", internationalSeason: "2026 World Cup", competitionType: "league", competitions: ["All Leagues"],
-  liveTimer: null, goalWatch: null, contextTimer: null, liveScores: {}, parlayRisk: "safe",
+  liveTimer: null, goalWatch: null, contextTimer: null, pulseTimer: null, liveScores: {}, parlayRisk: "safe",
 };
 
 const CLUB_SEASONS = ["2026-27", "2025-26", "2024-25", "2023-24", "2022-23", "2021-22", "2020-21"];
@@ -98,9 +104,9 @@ function bindContextSwitch() {
   });
 }
 function updateHeroSubtitle() {
-  $("#heroSub").textContent = STATE.context === "international"
-    ? `International football · ${STATE.internationalSeason}`
-    : `Club football · ${STATE.clubSeason} season`;
+  // Mode and season are already communicated by the filter summary; leaving
+  // this line empty keeps the hero focused on the current sport.
+  $("#heroSub").hidden = true;
 }
 function bindSeasonSwitch() {
   const select = $("#clubSeasonSwitch");
@@ -233,8 +239,8 @@ const sectionAllowed = (id) => { const s = SECTIONS.find((x) => x.id === id); re
 
 function buildNav() {
   const nav = $("#nav"); nav.innerHTML = "";
-  const brand = el("a", "nav-brand", '<span class="nav-brand-mark" aria-hidden="true">✦</span><span>Sportsbooks <b>Analyst</b></span>');
-  brand.href = "/v2/";
+  const brand = el("a", "nav-brand", '<img class="nav-brand-mark" src="/brand/prediction-weave.svg" alt=""><span>Sportsbooks <b>Analyst</b></span>');
+  brand.href = "/home/";
   brand.setAttribute("aria-label", "Sportsbooks Analyst home");
   nav.appendChild(brand);
   const classic = el("button", "nav-btn nav-ui-toggle", "Classic UI");
@@ -266,25 +272,67 @@ function buildSectionNav() {
   });
 }
 
-/* ── Hero stats ──────────────────────────────────────────────────────────── */
+/* ── Analyst Pulse ─────────────────────────────────────────────────────────
+   The hero rotates on shared 30-minute boundaries, never with fabricated
+   values. Every panel is calculated from the current prediction feed and
+   model metadata already used by this workspace. */
+const PULSE_INTERVAL_MS = 30 * 60_000;
+const shortDateTime = (value) => {
+  const date = new Date(value || "");
+  return Number.isFinite(date.getTime())
+    ? new Intl.DateTimeFormat(undefined, { month: "short", day: "numeric", hour: "numeric", minute: "2-digit" }).format(date)
+    : "Unavailable";
+};
+const predictionPick = (prediction) => prediction.prediction === "H"
+  ? `${prediction.homeTeam} win`
+  : prediction.prediction === "A" ? `${prediction.awayTeam} win` : "Draw";
+function pulsePanel(label, title, detail, metrics = []) {
+  return `<div class="pulse-head"><span>Analyst Pulse · ${esc(label)}</span><small>Refreshes every 30 min</small></div>
+    <div class="pulse-body"><div><strong>${esc(title)}</strong><p>${esc(detail)}</p></div>
+    <div class="pulse-metrics">${metrics.map(([value, caption]) => `<span><b>${esc(value)}</b>${esc(caption)}</span>`).join("")}</div></div>`;
+}
 async function refreshHeroStats() {
   const host = $("#heroStats");
-  host.innerHTML = stat("—", "loading");
+  const context = STATE.context;
+  const season = seasonFor();
+  host.innerHTML = `<div class="pulse-head"><span>Analyst Pulse</span><small>Loading current data…</small></div>`;
   try {
-    if (STATE.context === "international") {
-      const [acc, res] = await Promise.all([
-        api("/api/international/training-accuracy").catch(() => null),
-        api("/api/played-fixtures?context=international").catch(() => null),
-      ]);
-      const hi = acc?.latest?.highConfidenceAccuracy != null ? Math.round(acc.latest.highConfidenceAccuracy * 100) + "%" : "—";
-      const md = acc?.latest?.currentMatchday || acc?.live?.currentMatchday || 1;
-      const s = res?.summary || {};
-      host.innerHTML = stat(hi, "High-conf accuracy", "good") + stat("MD " + md, "Current matchday")
-        + stat(s.total ?? 0, "Matches settled") + stat(s.total ? `${s.correct}/${s.total}` : "—", "Model record");
-    } else {
-      host.innerHTML = stat("Club", "Mode") + stat("Live", "ESPN feed") + stat("Auto", "Retraining") + stat("⚽", "Predictions");
-    }
-  } catch (_) { host.innerHTML = stat("—", "stats unavailable"); }
+    const predictionPath = `/api/football/pulse?context=${encodeURIComponent(context)}&season=${encodeURIComponent(season)}`;
+    const [predictionData, meta] = await Promise.all([
+      apiWithTimeout(predictionPath),
+      apiWithTimeout("/api/meta").catch(() => null),
+    ]);
+    if (context !== STATE.context || season !== seasonFor()) return;
+    const predictions = filterFootballEntries(predictionData.predictions || [])
+      .sort((a, b) => (a.date || "").localeCompare(b.date || ""));
+    const summary = predictionData.summary || {};
+    const best = [...predictions].sort((a, b) => num(b.confidence) - num(a.confidence))[0];
+    const competitions = new Map();
+    predictions.forEach((prediction) => {
+      const name = prediction.league || prediction.group || "Uncategorised";
+      competitions.set(name, (competitions.get(name) || 0) + 1);
+    });
+    const leadingCompetition = [...competitions.entries()].sort((a, b) => b[1] - a[1])[0];
+    const slate = [...predictions].sort((a, b) => num(b.confidence) - num(a.confidence)).slice(0, 3);
+    const slateText = slate.length
+      ? slate.map((prediction) => `${prediction.homeTeam} vs ${prediction.awayTeam}`).join(" · ")
+      : "No upcoming fixtures match the active filters.";
+    const slides = [
+      best
+        ? pulsePanel("Featured prediction", `${best.homeTeam} vs ${best.awayTeam}`, `${predictionPick(best)} · projected ${best.projectedScore || "score unavailable"}`, [[`${Math.round(num(best.confidence))}%`, "confidence"], [formatKickoff(best.date, best.kickoffUtc), "kickoff"]])
+        : pulsePanel("Featured prediction", "No featured fixture", "No upcoming fixture is available for the active filters.", [["0", "fixtures"]]),
+      pulsePanel("Model health", `${context === "international" ? "International" : "Club"} model active`, `Last trained ${shortDateTime(meta?.trainedAt)}.`, [[String(summary.total ?? predictions.length), "upcoming"], [String(summary.withOdds ?? 0), "market-backed"], [context === "international" ? "International" : "Club", "mode"]]),
+      pulsePanel("Competition pulse", leadingCompetition ? `${leadingCompetition[0]} leads the current slate` : "No active competitions", leadingCompetition ? `${leadingCompetition[1]} upcoming fixture${leadingCompetition[1] === 1 ? "" : "s"} in the active filter.` : "Change the filters to broaden the slate.", [[String(competitions.size), "competitions"], [String(predictions.length), "fixtures"]]),
+      pulsePanel("Daily slate", slate.length ? `${slate.length} highest-confidence fixtures` : "Daily slate unavailable", slateText, slate.length ? [[`${Math.round(num(slate[0].confidence))}%`, "top confidence"], [slate[0].league || slate[0].group || "Fixture", "leading market"]] : [["—", "top confidence"]]),
+    ];
+    const slot = Math.floor(Date.now() / PULSE_INTERVAL_MS) % slides.length;
+    host.innerHTML = slides[slot];
+    if (STATE.pulseTimer) clearTimeout(STATE.pulseTimer);
+    const untilNextSlot = PULSE_INTERVAL_MS - (Date.now() % PULSE_INTERVAL_MS) + 100;
+    STATE.pulseTimer = window.setTimeout(refreshHeroStats, untilNextSlot);
+  } catch (_) {
+    host.innerHTML = pulsePanel("Analyst Pulse", "Data temporarily unavailable", "The current prediction feed could not be read. Try again shortly.", []);
+  }
 }
 
 /* ── Router ──────────────────────────────────────────────────────────────── */
