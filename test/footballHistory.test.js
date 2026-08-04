@@ -7,6 +7,7 @@ const { tableForMatches } = require("../src/footballHistory/standings");
 const { snapshotFor } = require("../src/footballHistory/training");
 const { stageRank } = require("../src/footballHistory/competitionProgress");
 const { isInScopeMatch } = require("../src/footballHistory/scope");
+const { observedParticipation } = require("../src/footballHistory/participation");
 
 test("team history contract requires attributed, settled historic matches", () => {
   const record = emptyHistory({ team: "Example FC", slug: "example-fc" });
@@ -42,4 +43,12 @@ test("historical training accepts available dated major records without requirin
   assert.equal(isInScopeMatch({ ...major, date: "1984-12-31" }), false);
   assert.equal(isInScopeMatch({ ...major, competition: { name: "Friendly", type: "friendly" } }), false);
   assert.equal(isInScopeMatch({ ...major, competition: { name: "Friendly", type: "friendly", preseason: true, opponentConfederation: "South America" } }), true);
+});
+
+test("participation index is observed only and groups dated source-backed matches", () => {
+  const match = { id: "m1", date: "1987-02-14", season: "1986-87", competition: { name: "FA Cup", type: "cup", country: "England" }, score: { for: 1, against: 0 }, sources: [{ url: "https://example.test/m", retrievedAt: "2026-08-04T00:00:00.000Z" }] };
+  const rows = observedParticipation({ matches: [match, { ...match, id: "m2", date: "1987-03-01" }, { ...match, id: "old", date: "1984-12-31" }] });
+  assert.equal(rows.length, 1);
+  assert.equal(rows[0].datedMatchCount, 2);
+  assert.equal(rows[0].firstMatch, "1987-02-14");
 });
