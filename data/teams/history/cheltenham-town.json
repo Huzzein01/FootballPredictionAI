@@ -1,0 +1,719 @@
+{
+  "contract": "football-team-history-v1",
+  "team": {
+    "name": "Cheltenham Town",
+    "slug": "cheltenham-town",
+    "primaryLeague": "Third Division",
+    "aliases": []
+  },
+  "requestedCoverage": {
+    "fromYear": 1985,
+    "to": "present",
+    "includes": [
+      "all competitions",
+      "opponents",
+      "scorelines",
+      "league standings",
+      "competition standings"
+    ]
+  },
+  "sourcePlan": [
+    {
+      "rank": 1,
+      "provider": "Official club archive",
+      "url": "",
+      "scope": "club history, competition participation and match reports",
+      "lookupKey": "Cheltenham Town",
+      "review": "Verify the club-owned archive URL before collection."
+    },
+    {
+      "rank": 2,
+      "provider": "Official domestic competition / association",
+      "url": "",
+      "scope": "official league fixtures, final tables and cup records",
+      "lookupKey": "Third Division"
+    },
+    {
+      "rank": 3,
+      "provider": "UEFA",
+      "url": "https://www.uefa.com/",
+      "scope": "official European competition appearances, fixtures and standings",
+      "lookupKey": "Cheltenham Town"
+    },
+    {
+      "rank": 4,
+      "provider": "RSSSF",
+      "url": "https://www.rsssf.org/",
+      "scope": "historic competitions, tables and cross-checking",
+      "lookupKey": "Cheltenham Town"
+    },
+    {
+      "rank": 5,
+      "provider": "worldfootball.net",
+      "url": "https://www.worldfootball.net/",
+      "scope": "club match archive and competition participation cross-check",
+      "lookupKey": "Cheltenham Town"
+    }
+  ],
+  "coverage": {
+    "earliestMatch": "",
+    "latestMatch": "",
+    "seasonsWithMatches": [],
+    "missingSeasons": [],
+    "competitionScopeVerified": false,
+    "status": "not-collected"
+  },
+  "matches": [],
+  "seasonStandings": [
+    {
+      "season": "1999-00",
+      "competition": {
+        "name": "Third Division",
+        "type": "league",
+        "country": "England",
+        "tier": 4
+      },
+      "position": 8,
+      "team": "Cheltenham Town",
+      "played": 46,
+      "won": 20,
+      "drawn": 10,
+      "lost": 16,
+      "goalsFor": 50,
+      "goalsAgainst": 42,
+      "points": 70,
+      "basis": "published final table",
+      "sources": [
+        {
+          "provider": "jfjelstul/englishfootball",
+          "url": "https://raw.githubusercontent.com/jfjelstul/englishfootball/master/data-csv/standings.csv",
+          "retrievedAt": "2026-08-04T20:17:57.981Z",
+          "rawArtifact": "data/teams/history/raw/englishfootball/f2facfcf258e01b2ab58341f76bab6c278681567f4ab981c9532c136fa7a7241.csv"
+        }
+      ]
+    },
+    {
+      "season": "2000-01",
+      "competition": {
+        "name": "Third Division",
+        "type": "league",
+        "country": "England",
+        "tier": 4
+      },
+      "position": 9,
+      "team": "Cheltenham Town",
+      "played": 46,
+      "won": 18,
+      "drawn": 14,
+      "lost": 14,
+      "goalsFor": 59,
+      "goalsAgainst": 52,
+      "points": 68,
+      "basis": "published final table",
+      "sources": [
+        {
+          "provider": "jfjelstul/englishfootball",
+          "url": "https://raw.githubusercontent.com/jfjelstul/englishfootball/master/data-csv/standings.csv",
+          "retrievedAt": "2026-08-04T20:17:57.981Z",
+          "rawArtifact": "data/teams/history/raw/englishfootball/f2facfcf258e01b2ab58341f76bab6c278681567f4ab981c9532c136fa7a7241.csv"
+        }
+      ]
+    },
+    {
+      "season": "2001-02",
+      "competition": {
+        "name": "Third Division",
+        "type": "league",
+        "country": "England",
+        "tier": 4
+      },
+      "position": 4,
+      "team": "Cheltenham Town",
+      "played": 46,
+      "won": 21,
+      "drawn": 15,
+      "lost": 10,
+      "goalsFor": 66,
+      "goalsAgainst": 49,
+      "points": 78,
+      "basis": "published final table",
+      "sources": [
+        {
+          "provider": "jfjelstul/englishfootball",
+          "url": "https://raw.githubusercontent.com/jfjelstul/englishfootball/master/data-csv/standings.csv",
+          "retrievedAt": "2026-08-04T20:17:57.981Z",
+          "rawArtifact": "data/teams/history/raw/englishfootball/f2facfcf258e01b2ab58341f76bab6c278681567f4ab981c9532c136fa7a7241.csv"
+        }
+      ]
+    },
+    {
+      "season": "2002-03",
+      "competition": {
+        "name": "Second Division",
+        "type": "league",
+        "country": "England",
+        "tier": 3
+      },
+      "position": 21,
+      "team": "Cheltenham Town",
+      "played": 46,
+      "won": 10,
+      "drawn": 18,
+      "lost": 18,
+      "goalsFor": 53,
+      "goalsAgainst": 68,
+      "points": 48,
+      "basis": "published final table",
+      "sources": [
+        {
+          "provider": "jfjelstul/englishfootball",
+          "url": "https://raw.githubusercontent.com/jfjelstul/englishfootball/master/data-csv/standings.csv",
+          "retrievedAt": "2026-08-04T20:17:57.981Z",
+          "rawArtifact": "data/teams/history/raw/englishfootball/f2facfcf258e01b2ab58341f76bab6c278681567f4ab981c9532c136fa7a7241.csv"
+        }
+      ]
+    },
+    {
+      "season": "2003-04",
+      "competition": {
+        "name": "Third Division",
+        "type": "league",
+        "country": "England",
+        "tier": 4
+      },
+      "position": 14,
+      "team": "Cheltenham Town",
+      "played": 46,
+      "won": 14,
+      "drawn": 14,
+      "lost": 18,
+      "goalsFor": 57,
+      "goalsAgainst": 71,
+      "points": 56,
+      "basis": "published final table",
+      "sources": [
+        {
+          "provider": "jfjelstul/englishfootball",
+          "url": "https://raw.githubusercontent.com/jfjelstul/englishfootball/master/data-csv/standings.csv",
+          "retrievedAt": "2026-08-04T20:17:57.981Z",
+          "rawArtifact": "data/teams/history/raw/englishfootball/f2facfcf258e01b2ab58341f76bab6c278681567f4ab981c9532c136fa7a7241.csv"
+        }
+      ]
+    },
+    {
+      "season": "2004-05",
+      "competition": {
+        "name": "League Two",
+        "type": "league",
+        "country": "England",
+        "tier": 4
+      },
+      "position": 14,
+      "team": "Cheltenham Town",
+      "played": 46,
+      "won": 16,
+      "drawn": 12,
+      "lost": 18,
+      "goalsFor": 51,
+      "goalsAgainst": 54,
+      "points": 60,
+      "basis": "published final table",
+      "sources": [
+        {
+          "provider": "jfjelstul/englishfootball",
+          "url": "https://raw.githubusercontent.com/jfjelstul/englishfootball/master/data-csv/standings.csv",
+          "retrievedAt": "2026-08-04T20:17:57.981Z",
+          "rawArtifact": "data/teams/history/raw/englishfootball/f2facfcf258e01b2ab58341f76bab6c278681567f4ab981c9532c136fa7a7241.csv"
+        }
+      ]
+    },
+    {
+      "season": "2005-06",
+      "competition": {
+        "name": "League Two",
+        "type": "league",
+        "country": "England",
+        "tier": 4
+      },
+      "position": 5,
+      "team": "Cheltenham Town",
+      "played": 46,
+      "won": 19,
+      "drawn": 15,
+      "lost": 12,
+      "goalsFor": 65,
+      "goalsAgainst": 53,
+      "points": 72,
+      "basis": "published final table",
+      "sources": [
+        {
+          "provider": "jfjelstul/englishfootball",
+          "url": "https://raw.githubusercontent.com/jfjelstul/englishfootball/master/data-csv/standings.csv",
+          "retrievedAt": "2026-08-04T20:17:57.981Z",
+          "rawArtifact": "data/teams/history/raw/englishfootball/f2facfcf258e01b2ab58341f76bab6c278681567f4ab981c9532c136fa7a7241.csv"
+        }
+      ]
+    },
+    {
+      "season": "2006-07",
+      "competition": {
+        "name": "League One",
+        "type": "league",
+        "country": "England",
+        "tier": 3
+      },
+      "position": 17,
+      "team": "Cheltenham Town",
+      "played": 46,
+      "won": 15,
+      "drawn": 9,
+      "lost": 22,
+      "goalsFor": 49,
+      "goalsAgainst": 61,
+      "points": 54,
+      "basis": "published final table",
+      "sources": [
+        {
+          "provider": "jfjelstul/englishfootball",
+          "url": "https://raw.githubusercontent.com/jfjelstul/englishfootball/master/data-csv/standings.csv",
+          "retrievedAt": "2026-08-04T20:17:57.981Z",
+          "rawArtifact": "data/teams/history/raw/englishfootball/f2facfcf258e01b2ab58341f76bab6c278681567f4ab981c9532c136fa7a7241.csv"
+        }
+      ]
+    },
+    {
+      "season": "2007-08",
+      "competition": {
+        "name": "League One",
+        "type": "league",
+        "country": "England",
+        "tier": 3
+      },
+      "position": 19,
+      "team": "Cheltenham Town",
+      "played": 46,
+      "won": 13,
+      "drawn": 12,
+      "lost": 21,
+      "goalsFor": 42,
+      "goalsAgainst": 64,
+      "points": 51,
+      "basis": "published final table",
+      "sources": [
+        {
+          "provider": "jfjelstul/englishfootball",
+          "url": "https://raw.githubusercontent.com/jfjelstul/englishfootball/master/data-csv/standings.csv",
+          "retrievedAt": "2026-08-04T20:17:57.981Z",
+          "rawArtifact": "data/teams/history/raw/englishfootball/f2facfcf258e01b2ab58341f76bab6c278681567f4ab981c9532c136fa7a7241.csv"
+        }
+      ]
+    },
+    {
+      "season": "2008-09",
+      "competition": {
+        "name": "League One",
+        "type": "league",
+        "country": "England",
+        "tier": 3
+      },
+      "position": 23,
+      "team": "Cheltenham Town",
+      "played": 46,
+      "won": 9,
+      "drawn": 12,
+      "lost": 25,
+      "goalsFor": 51,
+      "goalsAgainst": 91,
+      "points": 39,
+      "basis": "published final table",
+      "sources": [
+        {
+          "provider": "jfjelstul/englishfootball",
+          "url": "https://raw.githubusercontent.com/jfjelstul/englishfootball/master/data-csv/standings.csv",
+          "retrievedAt": "2026-08-04T20:17:57.981Z",
+          "rawArtifact": "data/teams/history/raw/englishfootball/f2facfcf258e01b2ab58341f76bab6c278681567f4ab981c9532c136fa7a7241.csv"
+        }
+      ]
+    },
+    {
+      "season": "2009-10",
+      "competition": {
+        "name": "League Two",
+        "type": "league",
+        "country": "England",
+        "tier": 4
+      },
+      "position": 22,
+      "team": "Cheltenham Town",
+      "played": 46,
+      "won": 10,
+      "drawn": 18,
+      "lost": 18,
+      "goalsFor": 54,
+      "goalsAgainst": 71,
+      "points": 48,
+      "basis": "published final table",
+      "sources": [
+        {
+          "provider": "jfjelstul/englishfootball",
+          "url": "https://raw.githubusercontent.com/jfjelstul/englishfootball/master/data-csv/standings.csv",
+          "retrievedAt": "2026-08-04T20:17:57.981Z",
+          "rawArtifact": "data/teams/history/raw/englishfootball/f2facfcf258e01b2ab58341f76bab6c278681567f4ab981c9532c136fa7a7241.csv"
+        }
+      ]
+    },
+    {
+      "season": "2010-11",
+      "competition": {
+        "name": "League Two",
+        "type": "league",
+        "country": "England",
+        "tier": 4
+      },
+      "position": 17,
+      "team": "Cheltenham Town",
+      "played": 46,
+      "won": 13,
+      "drawn": 13,
+      "lost": 20,
+      "goalsFor": 56,
+      "goalsAgainst": 77,
+      "points": 52,
+      "basis": "published final table",
+      "sources": [
+        {
+          "provider": "jfjelstul/englishfootball",
+          "url": "https://raw.githubusercontent.com/jfjelstul/englishfootball/master/data-csv/standings.csv",
+          "retrievedAt": "2026-08-04T20:17:57.981Z",
+          "rawArtifact": "data/teams/history/raw/englishfootball/f2facfcf258e01b2ab58341f76bab6c278681567f4ab981c9532c136fa7a7241.csv"
+        }
+      ]
+    },
+    {
+      "season": "2011-12",
+      "competition": {
+        "name": "League Two",
+        "type": "league",
+        "country": "England",
+        "tier": 4
+      },
+      "position": 6,
+      "team": "Cheltenham Town",
+      "played": 46,
+      "won": 23,
+      "drawn": 8,
+      "lost": 15,
+      "goalsFor": 66,
+      "goalsAgainst": 50,
+      "points": 77,
+      "basis": "published final table",
+      "sources": [
+        {
+          "provider": "jfjelstul/englishfootball",
+          "url": "https://raw.githubusercontent.com/jfjelstul/englishfootball/master/data-csv/standings.csv",
+          "retrievedAt": "2026-08-04T20:17:57.981Z",
+          "rawArtifact": "data/teams/history/raw/englishfootball/f2facfcf258e01b2ab58341f76bab6c278681567f4ab981c9532c136fa7a7241.csv"
+        }
+      ]
+    },
+    {
+      "season": "2012-13",
+      "competition": {
+        "name": "League Two",
+        "type": "league",
+        "country": "England",
+        "tier": 4
+      },
+      "position": 5,
+      "team": "Cheltenham Town",
+      "played": 46,
+      "won": 20,
+      "drawn": 15,
+      "lost": 11,
+      "goalsFor": 58,
+      "goalsAgainst": 51,
+      "points": 75,
+      "basis": "published final table",
+      "sources": [
+        {
+          "provider": "jfjelstul/englishfootball",
+          "url": "https://raw.githubusercontent.com/jfjelstul/englishfootball/master/data-csv/standings.csv",
+          "retrievedAt": "2026-08-04T20:17:57.981Z",
+          "rawArtifact": "data/teams/history/raw/englishfootball/f2facfcf258e01b2ab58341f76bab6c278681567f4ab981c9532c136fa7a7241.csv"
+        }
+      ]
+    },
+    {
+      "season": "2013-14",
+      "competition": {
+        "name": "League Two",
+        "type": "league",
+        "country": "England",
+        "tier": 4
+      },
+      "position": 17,
+      "team": "Cheltenham Town",
+      "played": 46,
+      "won": 13,
+      "drawn": 16,
+      "lost": 17,
+      "goalsFor": 53,
+      "goalsAgainst": 63,
+      "points": 55,
+      "basis": "published final table",
+      "sources": [
+        {
+          "provider": "jfjelstul/englishfootball",
+          "url": "https://raw.githubusercontent.com/jfjelstul/englishfootball/master/data-csv/standings.csv",
+          "retrievedAt": "2026-08-04T20:17:57.981Z",
+          "rawArtifact": "data/teams/history/raw/englishfootball/f2facfcf258e01b2ab58341f76bab6c278681567f4ab981c9532c136fa7a7241.csv"
+        }
+      ]
+    },
+    {
+      "season": "2014-15",
+      "competition": {
+        "name": "League Two",
+        "type": "league",
+        "country": "England",
+        "tier": 4
+      },
+      "position": 23,
+      "team": "Cheltenham Town",
+      "played": 46,
+      "won": 9,
+      "drawn": 14,
+      "lost": 23,
+      "goalsFor": 40,
+      "goalsAgainst": 67,
+      "points": 41,
+      "basis": "published final table",
+      "sources": [
+        {
+          "provider": "jfjelstul/englishfootball",
+          "url": "https://raw.githubusercontent.com/jfjelstul/englishfootball/master/data-csv/standings.csv",
+          "retrievedAt": "2026-08-04T20:17:57.981Z",
+          "rawArtifact": "data/teams/history/raw/englishfootball/f2facfcf258e01b2ab58341f76bab6c278681567f4ab981c9532c136fa7a7241.csv"
+        }
+      ]
+    },
+    {
+      "season": "2016-17",
+      "competition": {
+        "name": "League Two",
+        "type": "league",
+        "country": "England",
+        "tier": 4
+      },
+      "position": 21,
+      "team": "Cheltenham Town",
+      "played": 46,
+      "won": 12,
+      "drawn": 14,
+      "lost": 20,
+      "goalsFor": 49,
+      "goalsAgainst": 69,
+      "points": 50,
+      "basis": "published final table",
+      "sources": [
+        {
+          "provider": "jfjelstul/englishfootball",
+          "url": "https://raw.githubusercontent.com/jfjelstul/englishfootball/master/data-csv/standings.csv",
+          "retrievedAt": "2026-08-04T20:17:57.981Z",
+          "rawArtifact": "data/teams/history/raw/englishfootball/f2facfcf258e01b2ab58341f76bab6c278681567f4ab981c9532c136fa7a7241.csv"
+        }
+      ]
+    },
+    {
+      "season": "2017-18",
+      "competition": {
+        "name": "League Two",
+        "type": "league",
+        "country": "England",
+        "tier": 4
+      },
+      "position": 17,
+      "team": "Cheltenham Town",
+      "played": 46,
+      "won": 13,
+      "drawn": 12,
+      "lost": 21,
+      "goalsFor": 67,
+      "goalsAgainst": 73,
+      "points": 51,
+      "basis": "published final table",
+      "sources": [
+        {
+          "provider": "jfjelstul/englishfootball",
+          "url": "https://raw.githubusercontent.com/jfjelstul/englishfootball/master/data-csv/standings.csv",
+          "retrievedAt": "2026-08-04T20:17:57.981Z",
+          "rawArtifact": "data/teams/history/raw/englishfootball/f2facfcf258e01b2ab58341f76bab6c278681567f4ab981c9532c136fa7a7241.csv"
+        }
+      ]
+    },
+    {
+      "season": "2018-19",
+      "competition": {
+        "name": "League Two",
+        "type": "league",
+        "country": "England",
+        "tier": 4
+      },
+      "position": 16,
+      "team": "Cheltenham Town",
+      "played": 46,
+      "won": 15,
+      "drawn": 12,
+      "lost": 19,
+      "goalsFor": 57,
+      "goalsAgainst": 68,
+      "points": 57,
+      "basis": "published final table",
+      "sources": [
+        {
+          "provider": "jfjelstul/englishfootball",
+          "url": "https://raw.githubusercontent.com/jfjelstul/englishfootball/master/data-csv/standings.csv",
+          "retrievedAt": "2026-08-04T20:17:57.981Z",
+          "rawArtifact": "data/teams/history/raw/englishfootball/f2facfcf258e01b2ab58341f76bab6c278681567f4ab981c9532c136fa7a7241.csv"
+        }
+      ]
+    },
+    {
+      "season": "2019-20",
+      "competition": {
+        "name": "League Two",
+        "type": "league",
+        "country": "England",
+        "tier": 4
+      },
+      "position": 4,
+      "team": "Cheltenham Town",
+      "played": 36,
+      "won": 17,
+      "drawn": 13,
+      "lost": 6,
+      "goalsFor": 52,
+      "goalsAgainst": 27,
+      "points": 64,
+      "basis": "published final table",
+      "sources": [
+        {
+          "provider": "jfjelstul/englishfootball",
+          "url": "https://raw.githubusercontent.com/jfjelstul/englishfootball/master/data-csv/standings.csv",
+          "retrievedAt": "2026-08-04T20:17:57.981Z",
+          "rawArtifact": "data/teams/history/raw/englishfootball/f2facfcf258e01b2ab58341f76bab6c278681567f4ab981c9532c136fa7a7241.csv"
+        }
+      ]
+    },
+    {
+      "season": "2020-21",
+      "competition": {
+        "name": "League Two",
+        "type": "league",
+        "country": "England",
+        "tier": 4
+      },
+      "position": 1,
+      "team": "Cheltenham Town",
+      "played": 46,
+      "won": 24,
+      "drawn": 10,
+      "lost": 12,
+      "goalsFor": 61,
+      "goalsAgainst": 39,
+      "points": 82,
+      "basis": "published final table",
+      "sources": [
+        {
+          "provider": "jfjelstul/englishfootball",
+          "url": "https://raw.githubusercontent.com/jfjelstul/englishfootball/master/data-csv/standings.csv",
+          "retrievedAt": "2026-08-04T20:17:57.981Z",
+          "rawArtifact": "data/teams/history/raw/englishfootball/f2facfcf258e01b2ab58341f76bab6c278681567f4ab981c9532c136fa7a7241.csv"
+        }
+      ]
+    },
+    {
+      "season": "2021-22",
+      "competition": {
+        "name": "League One",
+        "type": "league",
+        "country": "England",
+        "tier": 3
+      },
+      "position": 15,
+      "team": "Cheltenham Town",
+      "played": 46,
+      "won": 13,
+      "drawn": 17,
+      "lost": 16,
+      "goalsFor": 66,
+      "goalsAgainst": 80,
+      "points": 56,
+      "basis": "published final table",
+      "sources": [
+        {
+          "provider": "jfjelstul/englishfootball",
+          "url": "https://raw.githubusercontent.com/jfjelstul/englishfootball/master/data-csv/standings.csv",
+          "retrievedAt": "2026-08-04T20:17:57.981Z",
+          "rawArtifact": "data/teams/history/raw/englishfootball/f2facfcf258e01b2ab58341f76bab6c278681567f4ab981c9532c136fa7a7241.csv"
+        }
+      ]
+    },
+    {
+      "season": "2022-23",
+      "competition": {
+        "name": "League One",
+        "type": "league",
+        "country": "England",
+        "tier": 3
+      },
+      "position": 16,
+      "team": "Cheltenham Town",
+      "played": 46,
+      "won": 14,
+      "drawn": 12,
+      "lost": 20,
+      "goalsFor": 45,
+      "goalsAgainst": 61,
+      "points": 54,
+      "basis": "published final table",
+      "sources": [
+        {
+          "provider": "jfjelstul/englishfootball",
+          "url": "https://raw.githubusercontent.com/jfjelstul/englishfootball/master/data-csv/standings.csv",
+          "retrievedAt": "2026-08-04T20:17:57.981Z",
+          "rawArtifact": "data/teams/history/raw/englishfootball/f2facfcf258e01b2ab58341f76bab6c278681567f4ab981c9532c136fa7a7241.csv"
+        }
+      ]
+    },
+    {
+      "season": "2023-24",
+      "competition": {
+        "name": "League One",
+        "type": "league",
+        "country": "England",
+        "tier": 3
+      },
+      "position": 21,
+      "team": "Cheltenham Town",
+      "played": 46,
+      "won": 12,
+      "drawn": 8,
+      "lost": 26,
+      "goalsFor": 41,
+      "goalsAgainst": 65,
+      "points": 44,
+      "basis": "published final table",
+      "sources": [
+        {
+          "provider": "jfjelstul/englishfootball",
+          "url": "https://raw.githubusercontent.com/jfjelstul/englishfootball/master/data-csv/standings.csv",
+          "retrievedAt": "2026-08-04T20:17:57.981Z",
+          "rawArtifact": "data/teams/history/raw/englishfootball/f2facfcf258e01b2ab58341f76bab6c278681567f4ab981c9532c136fa7a7241.csv"
+        }
+      ]
+    }
+  ],
+  "competitionStandings": [],
+  "updatedAt": "2026-08-04T20:18:06.621Z"
+}

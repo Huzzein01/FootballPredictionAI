@@ -1,0 +1,611 @@
+{
+  "contract": "football-team-history-v1",
+  "team": {
+    "name": "Milton Keynes Dons",
+    "slug": "milton-keynes-dons",
+    "primaryLeague": "League One",
+    "aliases": []
+  },
+  "requestedCoverage": {
+    "fromYear": 1985,
+    "to": "present",
+    "includes": [
+      "all competitions",
+      "opponents",
+      "scorelines",
+      "league standings",
+      "competition standings"
+    ]
+  },
+  "sourcePlan": [
+    {
+      "rank": 1,
+      "provider": "Official club archive",
+      "url": "",
+      "scope": "club history, competition participation and match reports",
+      "lookupKey": "Milton Keynes Dons",
+      "review": "Verify the club-owned archive URL before collection."
+    },
+    {
+      "rank": 2,
+      "provider": "Official domestic competition / association",
+      "url": "",
+      "scope": "official league fixtures, final tables and cup records",
+      "lookupKey": "League One"
+    },
+    {
+      "rank": 3,
+      "provider": "UEFA",
+      "url": "https://www.uefa.com/",
+      "scope": "official European competition appearances, fixtures and standings",
+      "lookupKey": "Milton Keynes Dons"
+    },
+    {
+      "rank": 4,
+      "provider": "RSSSF",
+      "url": "https://www.rsssf.org/",
+      "scope": "historic competitions, tables and cross-checking",
+      "lookupKey": "Milton Keynes Dons"
+    },
+    {
+      "rank": 5,
+      "provider": "worldfootball.net",
+      "url": "https://www.worldfootball.net/",
+      "scope": "club match archive and competition participation cross-check",
+      "lookupKey": "Milton Keynes Dons"
+    }
+  ],
+  "coverage": {
+    "earliestMatch": "",
+    "latestMatch": "",
+    "seasonsWithMatches": [],
+    "missingSeasons": [],
+    "competitionScopeVerified": false,
+    "status": "not-collected"
+  },
+  "matches": [],
+  "seasonStandings": [
+    {
+      "season": "2004-05",
+      "competition": {
+        "name": "League One",
+        "type": "league",
+        "country": "England",
+        "tier": 3
+      },
+      "position": 20,
+      "team": "Milton Keynes Dons",
+      "played": 46,
+      "won": 12,
+      "drawn": 15,
+      "lost": 19,
+      "goalsFor": 54,
+      "goalsAgainst": 68,
+      "points": 51,
+      "basis": "published final table",
+      "sources": [
+        {
+          "provider": "jfjelstul/englishfootball",
+          "url": "https://raw.githubusercontent.com/jfjelstul/englishfootball/master/data-csv/standings.csv",
+          "retrievedAt": "2026-08-04T20:17:57.981Z",
+          "rawArtifact": "data/teams/history/raw/englishfootball/f2facfcf258e01b2ab58341f76bab6c278681567f4ab981c9532c136fa7a7241.csv"
+        }
+      ]
+    },
+    {
+      "season": "2005-06",
+      "competition": {
+        "name": "League One",
+        "type": "league",
+        "country": "England",
+        "tier": 3
+      },
+      "position": 22,
+      "team": "Milton Keynes Dons",
+      "played": 46,
+      "won": 12,
+      "drawn": 14,
+      "lost": 20,
+      "goalsFor": 45,
+      "goalsAgainst": 66,
+      "points": 50,
+      "basis": "published final table",
+      "sources": [
+        {
+          "provider": "jfjelstul/englishfootball",
+          "url": "https://raw.githubusercontent.com/jfjelstul/englishfootball/master/data-csv/standings.csv",
+          "retrievedAt": "2026-08-04T20:17:57.981Z",
+          "rawArtifact": "data/teams/history/raw/englishfootball/f2facfcf258e01b2ab58341f76bab6c278681567f4ab981c9532c136fa7a7241.csv"
+        }
+      ]
+    },
+    {
+      "season": "2006-07",
+      "competition": {
+        "name": "League Two",
+        "type": "league",
+        "country": "England",
+        "tier": 4
+      },
+      "position": 4,
+      "team": "Milton Keynes Dons",
+      "played": 46,
+      "won": 25,
+      "drawn": 9,
+      "lost": 12,
+      "goalsFor": 76,
+      "goalsAgainst": 58,
+      "points": 84,
+      "basis": "published final table",
+      "sources": [
+        {
+          "provider": "jfjelstul/englishfootball",
+          "url": "https://raw.githubusercontent.com/jfjelstul/englishfootball/master/data-csv/standings.csv",
+          "retrievedAt": "2026-08-04T20:17:57.981Z",
+          "rawArtifact": "data/teams/history/raw/englishfootball/f2facfcf258e01b2ab58341f76bab6c278681567f4ab981c9532c136fa7a7241.csv"
+        }
+      ]
+    },
+    {
+      "season": "2007-08",
+      "competition": {
+        "name": "League Two",
+        "type": "league",
+        "country": "England",
+        "tier": 4
+      },
+      "position": 1,
+      "team": "Milton Keynes Dons",
+      "played": 46,
+      "won": 29,
+      "drawn": 10,
+      "lost": 7,
+      "goalsFor": 82,
+      "goalsAgainst": 37,
+      "points": 97,
+      "basis": "published final table",
+      "sources": [
+        {
+          "provider": "jfjelstul/englishfootball",
+          "url": "https://raw.githubusercontent.com/jfjelstul/englishfootball/master/data-csv/standings.csv",
+          "retrievedAt": "2026-08-04T20:17:57.981Z",
+          "rawArtifact": "data/teams/history/raw/englishfootball/f2facfcf258e01b2ab58341f76bab6c278681567f4ab981c9532c136fa7a7241.csv"
+        }
+      ]
+    },
+    {
+      "season": "2008-09",
+      "competition": {
+        "name": "League One",
+        "type": "league",
+        "country": "England",
+        "tier": 3
+      },
+      "position": 3,
+      "team": "Milton Keynes Dons",
+      "played": 46,
+      "won": 26,
+      "drawn": 9,
+      "lost": 11,
+      "goalsFor": 83,
+      "goalsAgainst": 47,
+      "points": 87,
+      "basis": "published final table",
+      "sources": [
+        {
+          "provider": "jfjelstul/englishfootball",
+          "url": "https://raw.githubusercontent.com/jfjelstul/englishfootball/master/data-csv/standings.csv",
+          "retrievedAt": "2026-08-04T20:17:57.981Z",
+          "rawArtifact": "data/teams/history/raw/englishfootball/f2facfcf258e01b2ab58341f76bab6c278681567f4ab981c9532c136fa7a7241.csv"
+        }
+      ]
+    },
+    {
+      "season": "2009-10",
+      "competition": {
+        "name": "League One",
+        "type": "league",
+        "country": "England",
+        "tier": 3
+      },
+      "position": 12,
+      "team": "Milton Keynes Dons",
+      "played": 46,
+      "won": 17,
+      "drawn": 9,
+      "lost": 20,
+      "goalsFor": 60,
+      "goalsAgainst": 68,
+      "points": 60,
+      "basis": "published final table",
+      "sources": [
+        {
+          "provider": "jfjelstul/englishfootball",
+          "url": "https://raw.githubusercontent.com/jfjelstul/englishfootball/master/data-csv/standings.csv",
+          "retrievedAt": "2026-08-04T20:17:57.981Z",
+          "rawArtifact": "data/teams/history/raw/englishfootball/f2facfcf258e01b2ab58341f76bab6c278681567f4ab981c9532c136fa7a7241.csv"
+        }
+      ]
+    },
+    {
+      "season": "2010-11",
+      "competition": {
+        "name": "League One",
+        "type": "league",
+        "country": "England",
+        "tier": 3
+      },
+      "position": 5,
+      "team": "Milton Keynes Dons",
+      "played": 46,
+      "won": 23,
+      "drawn": 8,
+      "lost": 15,
+      "goalsFor": 67,
+      "goalsAgainst": 60,
+      "points": 77,
+      "basis": "published final table",
+      "sources": [
+        {
+          "provider": "jfjelstul/englishfootball",
+          "url": "https://raw.githubusercontent.com/jfjelstul/englishfootball/master/data-csv/standings.csv",
+          "retrievedAt": "2026-08-04T20:17:57.981Z",
+          "rawArtifact": "data/teams/history/raw/englishfootball/f2facfcf258e01b2ab58341f76bab6c278681567f4ab981c9532c136fa7a7241.csv"
+        }
+      ]
+    },
+    {
+      "season": "2011-12",
+      "competition": {
+        "name": "League One",
+        "type": "league",
+        "country": "England",
+        "tier": 3
+      },
+      "position": 5,
+      "team": "Milton Keynes Dons",
+      "played": 46,
+      "won": 22,
+      "drawn": 14,
+      "lost": 10,
+      "goalsFor": 84,
+      "goalsAgainst": 47,
+      "points": 80,
+      "basis": "published final table",
+      "sources": [
+        {
+          "provider": "jfjelstul/englishfootball",
+          "url": "https://raw.githubusercontent.com/jfjelstul/englishfootball/master/data-csv/standings.csv",
+          "retrievedAt": "2026-08-04T20:17:57.981Z",
+          "rawArtifact": "data/teams/history/raw/englishfootball/f2facfcf258e01b2ab58341f76bab6c278681567f4ab981c9532c136fa7a7241.csv"
+        }
+      ]
+    },
+    {
+      "season": "2012-13",
+      "competition": {
+        "name": "League One",
+        "type": "league",
+        "country": "England",
+        "tier": 3
+      },
+      "position": 8,
+      "team": "Milton Keynes Dons",
+      "played": 46,
+      "won": 19,
+      "drawn": 13,
+      "lost": 14,
+      "goalsFor": 62,
+      "goalsAgainst": 45,
+      "points": 70,
+      "basis": "published final table",
+      "sources": [
+        {
+          "provider": "jfjelstul/englishfootball",
+          "url": "https://raw.githubusercontent.com/jfjelstul/englishfootball/master/data-csv/standings.csv",
+          "retrievedAt": "2026-08-04T20:17:57.981Z",
+          "rawArtifact": "data/teams/history/raw/englishfootball/f2facfcf258e01b2ab58341f76bab6c278681567f4ab981c9532c136fa7a7241.csv"
+        }
+      ]
+    },
+    {
+      "season": "2013-14",
+      "competition": {
+        "name": "League One",
+        "type": "league",
+        "country": "England",
+        "tier": 3
+      },
+      "position": 10,
+      "team": "Milton Keynes Dons",
+      "played": 46,
+      "won": 17,
+      "drawn": 9,
+      "lost": 20,
+      "goalsFor": 63,
+      "goalsAgainst": 65,
+      "points": 60,
+      "basis": "published final table",
+      "sources": [
+        {
+          "provider": "jfjelstul/englishfootball",
+          "url": "https://raw.githubusercontent.com/jfjelstul/englishfootball/master/data-csv/standings.csv",
+          "retrievedAt": "2026-08-04T20:17:57.981Z",
+          "rawArtifact": "data/teams/history/raw/englishfootball/f2facfcf258e01b2ab58341f76bab6c278681567f4ab981c9532c136fa7a7241.csv"
+        }
+      ]
+    },
+    {
+      "season": "2014-15",
+      "competition": {
+        "name": "League One",
+        "type": "league",
+        "country": "England",
+        "tier": 3
+      },
+      "position": 2,
+      "team": "Milton Keynes Dons",
+      "played": 46,
+      "won": 27,
+      "drawn": 10,
+      "lost": 9,
+      "goalsFor": 101,
+      "goalsAgainst": 44,
+      "points": 91,
+      "basis": "published final table",
+      "sources": [
+        {
+          "provider": "jfjelstul/englishfootball",
+          "url": "https://raw.githubusercontent.com/jfjelstul/englishfootball/master/data-csv/standings.csv",
+          "retrievedAt": "2026-08-04T20:17:57.981Z",
+          "rawArtifact": "data/teams/history/raw/englishfootball/f2facfcf258e01b2ab58341f76bab6c278681567f4ab981c9532c136fa7a7241.csv"
+        }
+      ]
+    },
+    {
+      "season": "2015-16",
+      "competition": {
+        "name": "Championship",
+        "type": "league",
+        "country": "England",
+        "tier": 2
+      },
+      "position": 23,
+      "team": "Milton Keynes Dons",
+      "played": 46,
+      "won": 9,
+      "drawn": 12,
+      "lost": 25,
+      "goalsFor": 39,
+      "goalsAgainst": 69,
+      "points": 39,
+      "basis": "published final table",
+      "sources": [
+        {
+          "provider": "jfjelstul/englishfootball",
+          "url": "https://raw.githubusercontent.com/jfjelstul/englishfootball/master/data-csv/standings.csv",
+          "retrievedAt": "2026-08-04T20:17:57.981Z",
+          "rawArtifact": "data/teams/history/raw/englishfootball/f2facfcf258e01b2ab58341f76bab6c278681567f4ab981c9532c136fa7a7241.csv"
+        }
+      ]
+    },
+    {
+      "season": "2016-17",
+      "competition": {
+        "name": "League One",
+        "type": "league",
+        "country": "England",
+        "tier": 3
+      },
+      "position": 12,
+      "team": "Milton Keynes Dons",
+      "played": 46,
+      "won": 16,
+      "drawn": 13,
+      "lost": 17,
+      "goalsFor": 60,
+      "goalsAgainst": 58,
+      "points": 61,
+      "basis": "published final table",
+      "sources": [
+        {
+          "provider": "jfjelstul/englishfootball",
+          "url": "https://raw.githubusercontent.com/jfjelstul/englishfootball/master/data-csv/standings.csv",
+          "retrievedAt": "2026-08-04T20:17:57.981Z",
+          "rawArtifact": "data/teams/history/raw/englishfootball/f2facfcf258e01b2ab58341f76bab6c278681567f4ab981c9532c136fa7a7241.csv"
+        }
+      ]
+    },
+    {
+      "season": "2017-18",
+      "competition": {
+        "name": "League One",
+        "type": "league",
+        "country": "England",
+        "tier": 3
+      },
+      "position": 23,
+      "team": "Milton Keynes Dons",
+      "played": 46,
+      "won": 11,
+      "drawn": 12,
+      "lost": 23,
+      "goalsFor": 43,
+      "goalsAgainst": 69,
+      "points": 45,
+      "basis": "published final table",
+      "sources": [
+        {
+          "provider": "jfjelstul/englishfootball",
+          "url": "https://raw.githubusercontent.com/jfjelstul/englishfootball/master/data-csv/standings.csv",
+          "retrievedAt": "2026-08-04T20:17:57.981Z",
+          "rawArtifact": "data/teams/history/raw/englishfootball/f2facfcf258e01b2ab58341f76bab6c278681567f4ab981c9532c136fa7a7241.csv"
+        }
+      ]
+    },
+    {
+      "season": "2018-19",
+      "competition": {
+        "name": "League Two",
+        "type": "league",
+        "country": "England",
+        "tier": 4
+      },
+      "position": 3,
+      "team": "Milton Keynes Dons",
+      "played": 46,
+      "won": 23,
+      "drawn": 10,
+      "lost": 13,
+      "goalsFor": 71,
+      "goalsAgainst": 49,
+      "points": 79,
+      "basis": "published final table",
+      "sources": [
+        {
+          "provider": "jfjelstul/englishfootball",
+          "url": "https://raw.githubusercontent.com/jfjelstul/englishfootball/master/data-csv/standings.csv",
+          "retrievedAt": "2026-08-04T20:17:57.981Z",
+          "rawArtifact": "data/teams/history/raw/englishfootball/f2facfcf258e01b2ab58341f76bab6c278681567f4ab981c9532c136fa7a7241.csv"
+        }
+      ]
+    },
+    {
+      "season": "2019-20",
+      "competition": {
+        "name": "League One",
+        "type": "league",
+        "country": "England",
+        "tier": 3
+      },
+      "position": 19,
+      "team": "Milton Keynes Dons",
+      "played": 35,
+      "won": 10,
+      "drawn": 7,
+      "lost": 18,
+      "goalsFor": 36,
+      "goalsAgainst": 47,
+      "points": 37,
+      "basis": "published final table",
+      "sources": [
+        {
+          "provider": "jfjelstul/englishfootball",
+          "url": "https://raw.githubusercontent.com/jfjelstul/englishfootball/master/data-csv/standings.csv",
+          "retrievedAt": "2026-08-04T20:17:57.981Z",
+          "rawArtifact": "data/teams/history/raw/englishfootball/f2facfcf258e01b2ab58341f76bab6c278681567f4ab981c9532c136fa7a7241.csv"
+        }
+      ]
+    },
+    {
+      "season": "2020-21",
+      "competition": {
+        "name": "League One",
+        "type": "league",
+        "country": "England",
+        "tier": 3
+      },
+      "position": 13,
+      "team": "Milton Keynes Dons",
+      "played": 46,
+      "won": 18,
+      "drawn": 11,
+      "lost": 17,
+      "goalsFor": 64,
+      "goalsAgainst": 62,
+      "points": 65,
+      "basis": "published final table",
+      "sources": [
+        {
+          "provider": "jfjelstul/englishfootball",
+          "url": "https://raw.githubusercontent.com/jfjelstul/englishfootball/master/data-csv/standings.csv",
+          "retrievedAt": "2026-08-04T20:17:57.981Z",
+          "rawArtifact": "data/teams/history/raw/englishfootball/f2facfcf258e01b2ab58341f76bab6c278681567f4ab981c9532c136fa7a7241.csv"
+        }
+      ]
+    },
+    {
+      "season": "2021-22",
+      "competition": {
+        "name": "League One",
+        "type": "league",
+        "country": "England",
+        "tier": 3
+      },
+      "position": 3,
+      "team": "Milton Keynes Dons",
+      "played": 46,
+      "won": 26,
+      "drawn": 11,
+      "lost": 9,
+      "goalsFor": 78,
+      "goalsAgainst": 44,
+      "points": 89,
+      "basis": "published final table",
+      "sources": [
+        {
+          "provider": "jfjelstul/englishfootball",
+          "url": "https://raw.githubusercontent.com/jfjelstul/englishfootball/master/data-csv/standings.csv",
+          "retrievedAt": "2026-08-04T20:17:57.981Z",
+          "rawArtifact": "data/teams/history/raw/englishfootball/f2facfcf258e01b2ab58341f76bab6c278681567f4ab981c9532c136fa7a7241.csv"
+        }
+      ]
+    },
+    {
+      "season": "2022-23",
+      "competition": {
+        "name": "League One",
+        "type": "league",
+        "country": "England",
+        "tier": 3
+      },
+      "position": 21,
+      "team": "Milton Keynes Dons",
+      "played": 46,
+      "won": 11,
+      "drawn": 12,
+      "lost": 23,
+      "goalsFor": 44,
+      "goalsAgainst": 66,
+      "points": 45,
+      "basis": "published final table",
+      "sources": [
+        {
+          "provider": "jfjelstul/englishfootball",
+          "url": "https://raw.githubusercontent.com/jfjelstul/englishfootball/master/data-csv/standings.csv",
+          "retrievedAt": "2026-08-04T20:17:57.981Z",
+          "rawArtifact": "data/teams/history/raw/englishfootball/f2facfcf258e01b2ab58341f76bab6c278681567f4ab981c9532c136fa7a7241.csv"
+        }
+      ]
+    },
+    {
+      "season": "2023-24",
+      "competition": {
+        "name": "League Two",
+        "type": "league",
+        "country": "England",
+        "tier": 4
+      },
+      "position": 4,
+      "team": "Milton Keynes Dons",
+      "played": 46,
+      "won": 23,
+      "drawn": 9,
+      "lost": 14,
+      "goalsFor": 83,
+      "goalsAgainst": 68,
+      "points": 78,
+      "basis": "published final table",
+      "sources": [
+        {
+          "provider": "jfjelstul/englishfootball",
+          "url": "https://raw.githubusercontent.com/jfjelstul/englishfootball/master/data-csv/standings.csv",
+          "retrievedAt": "2026-08-04T20:17:57.981Z",
+          "rawArtifact": "data/teams/history/raw/englishfootball/f2facfcf258e01b2ab58341f76bab6c278681567f4ab981c9532c136fa7a7241.csv"
+        }
+      ]
+    }
+  ],
+  "competitionStandings": [],
+  "updatedAt": "2026-08-04T20:18:06.625Z"
+}

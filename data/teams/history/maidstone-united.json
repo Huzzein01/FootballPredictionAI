@@ -1,0 +1,179 @@
+{
+  "contract": "football-team-history-v1",
+  "team": {
+    "name": "Maidstone United",
+    "slug": "maidstone-united",
+    "primaryLeague": "Fourth Division",
+    "aliases": []
+  },
+  "requestedCoverage": {
+    "fromYear": 1985,
+    "to": "present",
+    "includes": [
+      "all competitions",
+      "opponents",
+      "scorelines",
+      "league standings",
+      "competition standings"
+    ]
+  },
+  "sourcePlan": [
+    {
+      "rank": 1,
+      "provider": "Official club archive",
+      "url": "",
+      "scope": "club history, competition participation and match reports",
+      "lookupKey": "Maidstone United",
+      "review": "Verify the club-owned archive URL before collection."
+    },
+    {
+      "rank": 2,
+      "provider": "Official domestic competition / association",
+      "url": "",
+      "scope": "official league fixtures, final tables and cup records",
+      "lookupKey": "Fourth Division"
+    },
+    {
+      "rank": 3,
+      "provider": "UEFA",
+      "url": "https://www.uefa.com/",
+      "scope": "official European competition appearances, fixtures and standings",
+      "lookupKey": "Maidstone United"
+    },
+    {
+      "rank": 4,
+      "provider": "RSSSF",
+      "url": "https://www.rsssf.org/",
+      "scope": "historic competitions, tables and cross-checking",
+      "lookupKey": "Maidstone United"
+    },
+    {
+      "rank": 5,
+      "provider": "worldfootball.net",
+      "url": "https://www.worldfootball.net/",
+      "scope": "club match archive and competition participation cross-check",
+      "lookupKey": "Maidstone United"
+    }
+  ],
+  "coverage": {
+    "earliestMatch": "",
+    "latestMatch": "",
+    "seasonsWithMatches": [],
+    "missingSeasons": [],
+    "competitionScopeVerified": false,
+    "status": "not-collected"
+  },
+  "matches": [],
+  "seasonStandings": [
+    {
+      "season": "1989-90",
+      "competition": {
+        "name": "Fourth Division",
+        "type": "league",
+        "country": "England",
+        "tier": 4
+      },
+      "position": 5,
+      "team": "Maidstone United",
+      "played": 46,
+      "won": 22,
+      "drawn": 7,
+      "lost": 17,
+      "goalsFor": 77,
+      "goalsAgainst": 61,
+      "points": 73,
+      "basis": "published final table",
+      "sources": [
+        {
+          "provider": "jfjelstul/englishfootball",
+          "url": "https://raw.githubusercontent.com/jfjelstul/englishfootball/master/data-csv/standings.csv",
+          "retrievedAt": "2026-08-04T20:17:57.981Z",
+          "rawArtifact": "data/teams/history/raw/englishfootball/f2facfcf258e01b2ab58341f76bab6c278681567f4ab981c9532c136fa7a7241.csv"
+        }
+      ]
+    },
+    {
+      "season": "1990-91",
+      "competition": {
+        "name": "Fourth Division",
+        "type": "league",
+        "country": "England",
+        "tier": 4
+      },
+      "position": 19,
+      "team": "Maidstone United",
+      "played": 46,
+      "won": 13,
+      "drawn": 12,
+      "lost": 21,
+      "goalsFor": 66,
+      "goalsAgainst": 71,
+      "points": 51,
+      "basis": "published final table",
+      "sources": [
+        {
+          "provider": "jfjelstul/englishfootball",
+          "url": "https://raw.githubusercontent.com/jfjelstul/englishfootball/master/data-csv/standings.csv",
+          "retrievedAt": "2026-08-04T20:17:57.981Z",
+          "rawArtifact": "data/teams/history/raw/englishfootball/f2facfcf258e01b2ab58341f76bab6c278681567f4ab981c9532c136fa7a7241.csv"
+        }
+      ]
+    },
+    {
+      "season": "1991-92",
+      "competition": {
+        "name": "Fourth Division",
+        "type": "league",
+        "country": "England",
+        "tier": 4
+      },
+      "position": 18,
+      "team": "Maidstone United",
+      "played": 42,
+      "won": 8,
+      "drawn": 18,
+      "lost": 16,
+      "goalsFor": 45,
+      "goalsAgainst": 56,
+      "points": 42,
+      "basis": "published final table",
+      "sources": [
+        {
+          "provider": "jfjelstul/englishfootball",
+          "url": "https://raw.githubusercontent.com/jfjelstul/englishfootball/master/data-csv/standings.csv",
+          "retrievedAt": "2026-08-04T20:17:57.981Z",
+          "rawArtifact": "data/teams/history/raw/englishfootball/f2facfcf258e01b2ab58341f76bab6c278681567f4ab981c9532c136fa7a7241.csv"
+        }
+      ]
+    },
+    {
+      "season": "1992-93",
+      "competition": {
+        "name": "Third Division",
+        "type": "league",
+        "country": "England",
+        "tier": 4
+      },
+      "position": 23,
+      "team": "Maidstone United",
+      "played": 0,
+      "won": 0,
+      "drawn": 0,
+      "lost": 0,
+      "goalsFor": 0,
+      "goalsAgainst": 0,
+      "points": 0,
+      "basis": "published final table",
+      "sources": [
+        {
+          "provider": "jfjelstul/englishfootball",
+          "url": "https://raw.githubusercontent.com/jfjelstul/englishfootball/master/data-csv/standings.csv",
+          "retrievedAt": "2026-08-04T20:17:57.981Z",
+          "rawArtifact": "data/teams/history/raw/englishfootball/f2facfcf258e01b2ab58341f76bab6c278681567f4ab981c9532c136fa7a7241.csv"
+        }
+      ]
+    }
+  ],
+  "competitionStandings": [],
+  "updatedAt": "2026-08-04T20:17:59.876Z"
+}
