@@ -1,0 +1,423 @@
+{
+  "contract": "football-team-history-v1",
+  "team": {
+    "name": "Flora Tallinn",
+    "slug": "flora-tallinn",
+    "primaryLeague": "European Champion Clubs' Cup / Champions League",
+    "aliases": []
+  },
+  "requestedCoverage": {
+    "fromYear": 1985,
+    "to": "present",
+    "includes": [
+      "all competitions",
+      "opponents",
+      "scorelines",
+      "league standings",
+      "competition standings"
+    ]
+  },
+  "sourcePlan": [
+    {
+      "rank": 1,
+      "provider": "Official club archive",
+      "url": "",
+      "scope": "club history, competition participation and match reports",
+      "lookupKey": "Flora Tallinn",
+      "review": "Verify the club-owned archive URL before collection."
+    },
+    {
+      "rank": 2,
+      "provider": "Official domestic competition / association",
+      "url": "",
+      "scope": "official league fixtures, final tables and cup records",
+      "lookupKey": "European Champion Clubs' Cup / Champions League"
+    },
+    {
+      "rank": 3,
+      "provider": "UEFA",
+      "url": "https://www.uefa.com/",
+      "scope": "official European competition appearances, fixtures and standings",
+      "lookupKey": "Flora Tallinn"
+    },
+    {
+      "rank": 4,
+      "provider": "RSSSF",
+      "url": "https://www.rsssf.org/",
+      "scope": "historic competitions, tables and cross-checking",
+      "lookupKey": "Flora Tallinn"
+    },
+    {
+      "rank": 5,
+      "provider": "worldfootball.net",
+      "url": "https://www.worldfootball.net/",
+      "scope": "club match archive and competition participation cross-check",
+      "lookupKey": "Flora Tallinn"
+    }
+  ],
+  "coverage": {
+    "earliestMatch": "1998-07-22",
+    "latestMatch": "2012-07-24",
+    "seasonsWithMatches": [
+      "1998-99",
+      "1999-00",
+      "2002-03",
+      "2003-04",
+      "2004-05",
+      "2011-12",
+      "2012-13"
+    ],
+    "missingSeasons": [
+      "1985-86",
+      "1986-87",
+      "1987-88",
+      "1988-89",
+      "1989-90",
+      "1990-91",
+      "1991-92",
+      "1992-93",
+      "1993-94",
+      "1994-95",
+      "1995-96",
+      "1996-97",
+      "1997-98",
+      "2000-01",
+      "2001-02",
+      "2005-06",
+      "2006-07",
+      "2007-08",
+      "2008-09",
+      "2009-10",
+      "2010-11",
+      "2013-14",
+      "2014-15",
+      "2015-16",
+      "2016-17",
+      "2017-18",
+      "2018-19",
+      "2019-20",
+      "2020-21",
+      "2021-22",
+      "2022-23",
+      "2023-24",
+      "2024-25",
+      "2025-26",
+      "2026-27"
+    ],
+    "competitionScopeVerified": false,
+    "status": "partial"
+  },
+  "matches": [
+    {
+      "id": "engsoccerdata:ab554db1a8b9bdb3788dd99077b6b6d754d64f09e84cb506bc3442cc323cbaea:1998-07-22:Steaua%20Bucuresti:Flora%20Tallinn:away",
+      "date": "1998-07-22",
+      "season": "1998-99",
+      "competition": {
+        "name": "European Champion Clubs' Cup / Champions League",
+        "type": "continental",
+        "country": "Europe"
+      },
+      "stage": "Q-1",
+      "opponent": {
+        "name": "Steaua Bucuresti",
+        "slug": "steaua-bucuresti"
+      },
+      "venue": "away",
+      "score": {
+        "for": 1,
+        "against": 4
+      },
+      "result": "L",
+      "sourceRef": "src:67ae7b04ff231f035a73"
+    },
+    {
+      "id": "engsoccerdata:ab554db1a8b9bdb3788dd99077b6b6d754d64f09e84cb506bc3442cc323cbaea:1998-07-29:Flora%20Tallinn:Steaua%20Bucuresti:home",
+      "date": "1998-07-29",
+      "season": "1998-99",
+      "competition": {
+        "name": "European Champion Clubs' Cup / Champions League",
+        "type": "continental",
+        "country": "Europe"
+      },
+      "stage": "Q-1",
+      "opponent": {
+        "name": "Steaua Bucuresti",
+        "slug": "steaua-bucuresti"
+      },
+      "venue": "home",
+      "score": {
+        "for": 3,
+        "against": 1
+      },
+      "result": "W",
+      "sourceRef": "src:67ae7b04ff231f035a73"
+    },
+    {
+      "id": "engsoccerdata:ab554db1a8b9bdb3788dd99077b6b6d754d64f09e84cb506bc3442cc323cbaea:1999-07-14:Partizan%20Belgrade:Flora%20Tallinn:away",
+      "date": "1999-07-14",
+      "season": "1999-00",
+      "competition": {
+        "name": "European Champion Clubs' Cup / Champions League",
+        "type": "continental",
+        "country": "Europe"
+      },
+      "stage": "Q-1",
+      "opponent": {
+        "name": "Partizan Belgrade",
+        "slug": "partizan-belgrade"
+      },
+      "venue": "away",
+      "score": {
+        "for": 0,
+        "against": 6
+      },
+      "result": "L",
+      "sourceRef": "src:67ae7b04ff231f035a73"
+    },
+    {
+      "id": "engsoccerdata:ab554db1a8b9bdb3788dd99077b6b6d754d64f09e84cb506bc3442cc323cbaea:1999-07-21:Flora%20Tallinn:Partizan%20Belgrade:home",
+      "date": "1999-07-21",
+      "season": "1999-00",
+      "competition": {
+        "name": "European Champion Clubs' Cup / Champions League",
+        "type": "continental",
+        "country": "Europe"
+      },
+      "stage": "Q-1",
+      "opponent": {
+        "name": "Partizan Belgrade",
+        "slug": "partizan-belgrade"
+      },
+      "venue": "home",
+      "score": {
+        "for": 1,
+        "against": 4
+      },
+      "result": "L",
+      "sourceRef": "src:67ae7b04ff231f035a73"
+    },
+    {
+      "id": "engsoccerdata:ab554db1a8b9bdb3788dd99077b6b6d754d64f09e84cb506bc3442cc323cbaea:2002-07-17:Flora%20Tallinn:APOEL%20Nikosia:home",
+      "date": "2002-07-17",
+      "season": "2002-03",
+      "competition": {
+        "name": "European Champion Clubs' Cup / Champions League",
+        "type": "continental",
+        "country": "Europe"
+      },
+      "stage": "Q-1",
+      "opponent": {
+        "name": "APOEL Nikosia",
+        "slug": "apoel-nikosia"
+      },
+      "venue": "home",
+      "score": {
+        "for": 0,
+        "against": 0
+      },
+      "result": "D",
+      "sourceRef": "src:67ae7b04ff231f035a73"
+    },
+    {
+      "id": "engsoccerdata:ab554db1a8b9bdb3788dd99077b6b6d754d64f09e84cb506bc3442cc323cbaea:2002-07-24:APOEL%20Nikosia:Flora%20Tallinn:away",
+      "date": "2002-07-24",
+      "season": "2002-03",
+      "competition": {
+        "name": "European Champion Clubs' Cup / Champions League",
+        "type": "continental",
+        "country": "Europe"
+      },
+      "stage": "Q-1",
+      "opponent": {
+        "name": "APOEL Nikosia",
+        "slug": "apoel-nikosia"
+      },
+      "venue": "away",
+      "score": {
+        "for": 0,
+        "against": 1
+      },
+      "result": "L",
+      "sourceRef": "src:67ae7b04ff231f035a73"
+    },
+    {
+      "id": "engsoccerdata:ab554db1a8b9bdb3788dd99077b6b6d754d64f09e84cb506bc3442cc323cbaea:2003-07-16:Sheriff%20Tiraspol:Flora%20Tallinn:away",
+      "date": "2003-07-16",
+      "season": "2003-04",
+      "competition": {
+        "name": "European Champion Clubs' Cup / Champions League",
+        "type": "continental",
+        "country": "Europe"
+      },
+      "stage": "Q-1",
+      "opponent": {
+        "name": "Sheriff Tiraspol",
+        "slug": "sheriff-tiraspol"
+      },
+      "venue": "away",
+      "score": {
+        "for": 0,
+        "against": 1
+      },
+      "result": "L",
+      "sourceRef": "src:67ae7b04ff231f035a73"
+    },
+    {
+      "id": "engsoccerdata:ab554db1a8b9bdb3788dd99077b6b6d754d64f09e84cb506bc3442cc323cbaea:2003-07-23:Flora%20Tallinn:Sheriff%20Tiraspol:home",
+      "date": "2003-07-23",
+      "season": "2003-04",
+      "competition": {
+        "name": "European Champion Clubs' Cup / Champions League",
+        "type": "continental",
+        "country": "Europe"
+      },
+      "stage": "Q-1",
+      "opponent": {
+        "name": "Sheriff Tiraspol",
+        "slug": "sheriff-tiraspol"
+      },
+      "venue": "home",
+      "score": {
+        "for": 1,
+        "against": 1
+      },
+      "result": "D",
+      "sourceRef": "src:67ae7b04ff231f035a73"
+    },
+    {
+      "id": "engsoccerdata:ab554db1a8b9bdb3788dd99077b6b6d754d64f09e84cb506bc3442cc323cbaea:2004-07-14:Flora%20Tallinn:HNK%20Gorica:home",
+      "date": "2004-07-14",
+      "season": "2004-05",
+      "competition": {
+        "name": "European Champion Clubs' Cup / Champions League",
+        "type": "continental",
+        "country": "Europe"
+      },
+      "stage": "Q-1",
+      "opponent": {
+        "name": "HNK Gorica",
+        "slug": "hnk-gorica"
+      },
+      "venue": "home",
+      "score": {
+        "for": 2,
+        "against": 4
+      },
+      "result": "L",
+      "sourceRef": "src:67ae7b04ff231f035a73"
+    },
+    {
+      "id": "engsoccerdata:ab554db1a8b9bdb3788dd99077b6b6d754d64f09e84cb506bc3442cc323cbaea:2004-07-21:HNK%20Gorica:Flora%20Tallinn:away",
+      "date": "2004-07-21",
+      "season": "2004-05",
+      "competition": {
+        "name": "European Champion Clubs' Cup / Champions League",
+        "type": "continental",
+        "country": "Europe"
+      },
+      "stage": "Q-1",
+      "opponent": {
+        "name": "HNK Gorica",
+        "slug": "hnk-gorica"
+      },
+      "venue": "away",
+      "score": {
+        "for": 1,
+        "against": 3
+      },
+      "result": "L",
+      "sourceRef": "src:67ae7b04ff231f035a73"
+    },
+    {
+      "id": "engsoccerdata:ab554db1a8b9bdb3788dd99077b6b6d754d64f09e84cb506bc3442cc323cbaea:2011-07-12:Shamrock%20Rovers:Flora%20Tallinn:away",
+      "date": "2011-07-12",
+      "season": "2011-12",
+      "competition": {
+        "name": "European Champion Clubs' Cup / Champions League",
+        "type": "continental",
+        "country": "Europe"
+      },
+      "stage": "Q-2",
+      "opponent": {
+        "name": "Shamrock Rovers",
+        "slug": "shamrock-rovers"
+      },
+      "venue": "away",
+      "score": {
+        "for": 0,
+        "against": 1
+      },
+      "result": "L",
+      "sourceRef": "src:67ae7b04ff231f035a73"
+    },
+    {
+      "id": "engsoccerdata:ab554db1a8b9bdb3788dd99077b6b6d754d64f09e84cb506bc3442cc323cbaea:2011-07-19:Flora%20Tallinn:Shamrock%20Rovers:home",
+      "date": "2011-07-19",
+      "season": "2011-12",
+      "competition": {
+        "name": "European Champion Clubs' Cup / Champions League",
+        "type": "continental",
+        "country": "Europe"
+      },
+      "stage": "Q-2",
+      "opponent": {
+        "name": "Shamrock Rovers",
+        "slug": "shamrock-rovers"
+      },
+      "venue": "home",
+      "score": {
+        "for": 0,
+        "against": 0
+      },
+      "result": "D",
+      "sourceRef": "src:67ae7b04ff231f035a73"
+    },
+    {
+      "id": "engsoccerdata:ab554db1a8b9bdb3788dd99077b6b6d754d64f09e84cb506bc3442cc323cbaea:2012-07-17:Flora%20Tallinn:Basel:home",
+      "date": "2012-07-17",
+      "season": "2012-13",
+      "competition": {
+        "name": "European Champion Clubs' Cup / Champions League",
+        "type": "continental",
+        "country": "Europe"
+      },
+      "stage": "Q-2",
+      "opponent": {
+        "name": "Basel",
+        "slug": "basel"
+      },
+      "venue": "home",
+      "score": {
+        "for": 0,
+        "against": 2
+      },
+      "result": "L",
+      "sourceRef": "src:67ae7b04ff231f035a73"
+    },
+    {
+      "id": "engsoccerdata:ab554db1a8b9bdb3788dd99077b6b6d754d64f09e84cb506bc3442cc323cbaea:2012-07-24:Basel:Flora%20Tallinn:away",
+      "date": "2012-07-24",
+      "season": "2012-13",
+      "competition": {
+        "name": "European Champion Clubs' Cup / Champions League",
+        "type": "continental",
+        "country": "Europe"
+      },
+      "stage": "Q-2",
+      "opponent": {
+        "name": "Basel",
+        "slug": "basel"
+      },
+      "venue": "away",
+      "score": {
+        "for": 0,
+        "against": 3
+      },
+      "result": "L",
+      "sourceRef": "src:67ae7b04ff231f035a73"
+    }
+  ],
+  "seasonStandings": [],
+  "competitionStandings": [],
+  "updatedAt": "2026-08-04T20:25:03.831Z"
+}

@@ -1,0 +1,970 @@
+{
+  "contract": "football-team-history-v1",
+  "team": {
+    "name": "US Valenciennes-Anzin",
+    "slug": "us-valenciennes-anzin",
+    "primaryLeague": "French League 1",
+    "aliases": []
+  },
+  "requestedCoverage": {
+    "fromYear": 1985,
+    "to": "present",
+    "includes": [
+      "all competitions",
+      "opponents",
+      "scorelines",
+      "league standings",
+      "competition standings"
+    ]
+  },
+  "sourcePlan": [
+    {
+      "rank": 1,
+      "provider": "Official club archive",
+      "url": "",
+      "scope": "club history, competition participation and match reports",
+      "lookupKey": "US Valenciennes-Anzin",
+      "review": "Verify the club-owned archive URL before collection."
+    },
+    {
+      "rank": 2,
+      "provider": "Official domestic competition / association",
+      "url": "",
+      "scope": "official league fixtures, final tables and cup records",
+      "lookupKey": "French League 1"
+    },
+    {
+      "rank": 3,
+      "provider": "UEFA",
+      "url": "https://www.uefa.com/",
+      "scope": "official European competition appearances, fixtures and standings",
+      "lookupKey": "US Valenciennes-Anzin"
+    },
+    {
+      "rank": 4,
+      "provider": "RSSSF",
+      "url": "https://www.rsssf.org/",
+      "scope": "historic competitions, tables and cross-checking",
+      "lookupKey": "US Valenciennes-Anzin"
+    },
+    {
+      "rank": 5,
+      "provider": "worldfootball.net",
+      "url": "https://www.worldfootball.net/",
+      "scope": "club match archive and competition participation cross-check",
+      "lookupKey": "US Valenciennes-Anzin"
+    }
+  ],
+  "coverage": {
+    "earliestMatch": "1992-08-08",
+    "latestMatch": "1993-06-02",
+    "seasonsWithMatches": [
+      "1992-93"
+    ],
+    "missingSeasons": [
+      "1985-86",
+      "1986-87",
+      "1987-88",
+      "1988-89",
+      "1989-90",
+      "1990-91",
+      "1991-92",
+      "1993-94",
+      "1994-95",
+      "1995-96",
+      "1996-97",
+      "1997-98",
+      "1998-99",
+      "1999-00",
+      "2000-01",
+      "2001-02",
+      "2002-03",
+      "2003-04",
+      "2004-05",
+      "2005-06",
+      "2006-07",
+      "2007-08",
+      "2008-09",
+      "2009-10",
+      "2010-11",
+      "2011-12",
+      "2012-13",
+      "2013-14",
+      "2014-15",
+      "2015-16",
+      "2016-17",
+      "2017-18",
+      "2018-19",
+      "2019-20",
+      "2020-21",
+      "2021-22",
+      "2022-23",
+      "2023-24",
+      "2024-25",
+      "2025-26",
+      "2026-27"
+    ],
+    "competitionScopeVerified": false,
+    "status": "partial"
+  },
+  "matches": [
+    {
+      "id": "engsoccerdata:86d9593d16709b202258a5cf23622966d86873fe4a5eec770e2de26cabcfce7f:1992-08-08:FC%20Sochaux:US%20Valenciennes-Anzin:away",
+      "date": "1992-08-08",
+      "season": "1992-93",
+      "competition": {
+        "name": "French League 1",
+        "type": "league",
+        "country": "France"
+      },
+      "stage": "",
+      "opponent": {
+        "name": "FC Sochaux",
+        "slug": "fc-sochaux"
+      },
+      "venue": "away",
+      "score": {
+        "for": 1,
+        "against": 2
+      },
+      "result": "L",
+      "sourceRef": "src:03d425d9cbe291775ec3"
+    },
+    {
+      "id": "engsoccerdata:86d9593d16709b202258a5cf23622966d86873fe4a5eec770e2de26cabcfce7f:1992-08-15:US%20Valenciennes-Anzin:RC%20Strasbourg:home",
+      "date": "1992-08-15",
+      "season": "1992-93",
+      "competition": {
+        "name": "French League 1",
+        "type": "league",
+        "country": "France"
+      },
+      "stage": "",
+      "opponent": {
+        "name": "RC Strasbourg",
+        "slug": "rc-strasbourg"
+      },
+      "venue": "home",
+      "score": {
+        "for": 1,
+        "against": 2
+      },
+      "result": "L",
+      "sourceRef": "src:03d425d9cbe291775ec3"
+    },
+    {
+      "id": "engsoccerdata:86d9593d16709b202258a5cf23622966d86873fe4a5eec770e2de26cabcfce7f:1992-08-22:SM%20Caen:US%20Valenciennes-Anzin:away",
+      "date": "1992-08-22",
+      "season": "1992-93",
+      "competition": {
+        "name": "French League 1",
+        "type": "league",
+        "country": "France"
+      },
+      "stage": "",
+      "opponent": {
+        "name": "SM Caen",
+        "slug": "sm-caen"
+      },
+      "venue": "away",
+      "score": {
+        "for": 0,
+        "against": 3
+      },
+      "result": "L",
+      "sourceRef": "src:03d425d9cbe291775ec3"
+    },
+    {
+      "id": "engsoccerdata:86d9593d16709b202258a5cf23622966d86873fe4a5eec770e2de26cabcfce7f:1992-08-29:US%20Valenciennes-Anzin:Lille%20OSC:home",
+      "date": "1992-08-29",
+      "season": "1992-93",
+      "competition": {
+        "name": "French League 1",
+        "type": "league",
+        "country": "France"
+      },
+      "stage": "",
+      "opponent": {
+        "name": "Lille OSC",
+        "slug": "lille-osc"
+      },
+      "venue": "home",
+      "score": {
+        "for": 0,
+        "against": 1
+      },
+      "result": "L",
+      "sourceRef": "src:03d425d9cbe291775ec3"
+    },
+    {
+      "id": "engsoccerdata:86d9593d16709b202258a5cf23622966d86873fe4a5eec770e2de26cabcfce7f:1992-09-02:Montpellier%20HSC:US%20Valenciennes-Anzin:away",
+      "date": "1992-09-02",
+      "season": "1992-93",
+      "competition": {
+        "name": "French League 1",
+        "type": "league",
+        "country": "France"
+      },
+      "stage": "",
+      "opponent": {
+        "name": "Montpellier HSC",
+        "slug": "montpellier-hsc"
+      },
+      "venue": "away",
+      "score": {
+        "for": 3,
+        "against": 1
+      },
+      "result": "W",
+      "sourceRef": "src:03d425d9cbe291775ec3"
+    },
+    {
+      "id": "engsoccerdata:86d9593d16709b202258a5cf23622966d86873fe4a5eec770e2de26cabcfce7f:1992-09-12:Paris%20Saint-Germain:US%20Valenciennes-Anzin:away",
+      "date": "1992-09-12",
+      "season": "1992-93",
+      "competition": {
+        "name": "French League 1",
+        "type": "league",
+        "country": "France"
+      },
+      "stage": "",
+      "opponent": {
+        "name": "Paris SG",
+        "slug": "paris-sg"
+      },
+      "venue": "away",
+      "score": {
+        "for": 0,
+        "against": 2
+      },
+      "result": "L",
+      "sourceRef": "src:03d425d9cbe291775ec3"
+    },
+    {
+      "id": "engsoccerdata:86d9593d16709b202258a5cf23622966d86873fe4a5eec770e2de26cabcfce7f:1992-09-19:US%20Valenciennes-Anzin:Olympique%20Lyon:home",
+      "date": "1992-09-19",
+      "season": "1992-93",
+      "competition": {
+        "name": "French League 1",
+        "type": "league",
+        "country": "France"
+      },
+      "stage": "",
+      "opponent": {
+        "name": "Olympique Lyon",
+        "slug": "olympique-lyon"
+      },
+      "venue": "home",
+      "score": {
+        "for": 0,
+        "against": 0
+      },
+      "result": "D",
+      "sourceRef": "src:03d425d9cbe291775ec3"
+    },
+    {
+      "id": "engsoccerdata:86d9593d16709b202258a5cf23622966d86873fe4a5eec770e2de26cabcfce7f:1992-09-25:FC%20Metz:US%20Valenciennes-Anzin:away",
+      "date": "1992-09-25",
+      "season": "1992-93",
+      "competition": {
+        "name": "French League 1",
+        "type": "league",
+        "country": "France"
+      },
+      "stage": "",
+      "opponent": {
+        "name": "FC Metz",
+        "slug": "fc-metz"
+      },
+      "venue": "away",
+      "score": {
+        "for": 0,
+        "against": 0
+      },
+      "result": "D",
+      "sourceRef": "src:03d425d9cbe291775ec3"
+    },
+    {
+      "id": "engsoccerdata:86d9593d16709b202258a5cf23622966d86873fe4a5eec770e2de26cabcfce7f:1992-10-03:US%20Valenciennes-Anzin:Toulouse%20FC:home",
+      "date": "1992-10-03",
+      "season": "1992-93",
+      "competition": {
+        "name": "French League 1",
+        "type": "league",
+        "country": "France"
+      },
+      "stage": "",
+      "opponent": {
+        "name": "Toulouse FC",
+        "slug": "toulouse-fc"
+      },
+      "venue": "home",
+      "score": {
+        "for": 1,
+        "against": 1
+      },
+      "result": "D",
+      "sourceRef": "src:03d425d9cbe291775ec3"
+    },
+    {
+      "id": "engsoccerdata:86d9593d16709b202258a5cf23622966d86873fe4a5eec770e2de26cabcfce7f:1992-10-07:Sporting%20Toulon%20Var:US%20Valenciennes-Anzin:away",
+      "date": "1992-10-07",
+      "season": "1992-93",
+      "competition": {
+        "name": "French League 1",
+        "type": "league",
+        "country": "France"
+      },
+      "stage": "",
+      "opponent": {
+        "name": "Sporting Toulon Var",
+        "slug": "sporting-toulon-var"
+      },
+      "venue": "away",
+      "score": {
+        "for": 2,
+        "against": 1
+      },
+      "result": "W",
+      "sourceRef": "src:03d425d9cbe291775ec3"
+    },
+    {
+      "id": "engsoccerdata:86d9593d16709b202258a5cf23622966d86873fe4a5eec770e2de26cabcfce7f:1992-10-17:US%20Valenciennes-Anzin:Le%20Havre%20AC:home",
+      "date": "1992-10-17",
+      "season": "1992-93",
+      "competition": {
+        "name": "French League 1",
+        "type": "league",
+        "country": "France"
+      },
+      "stage": "",
+      "opponent": {
+        "name": "Le Havre AC",
+        "slug": "le-havre-ac"
+      },
+      "venue": "home",
+      "score": {
+        "for": 4,
+        "against": 1
+      },
+      "result": "W",
+      "sourceRef": "src:03d425d9cbe291775ec3"
+    },
+    {
+      "id": "engsoccerdata:86d9593d16709b202258a5cf23622966d86873fe4a5eec770e2de26cabcfce7f:1992-10-24:Nimes%20Olympique:US%20Valenciennes-Anzin:away",
+      "date": "1992-10-24",
+      "season": "1992-93",
+      "competition": {
+        "name": "French League 1",
+        "type": "league",
+        "country": "France"
+      },
+      "stage": "",
+      "opponent": {
+        "name": "Nimes Olympique",
+        "slug": "nimes-olympique"
+      },
+      "venue": "away",
+      "score": {
+        "for": 1,
+        "against": 2
+      },
+      "result": "L",
+      "sourceRef": "src:03d425d9cbe291775ec3"
+    },
+    {
+      "id": "engsoccerdata:86d9593d16709b202258a5cf23622966d86873fe4a5eec770e2de26cabcfce7f:1992-10-30:US%20Valenciennes-Anzin:AJ%20Auxerre:home",
+      "date": "1992-10-30",
+      "season": "1992-93",
+      "competition": {
+        "name": "French League 1",
+        "type": "league",
+        "country": "France"
+      },
+      "stage": "",
+      "opponent": {
+        "name": "AJ Auxerre",
+        "slug": "aj-auxerre"
+      },
+      "venue": "home",
+      "score": {
+        "for": 3,
+        "against": 3
+      },
+      "result": "D",
+      "sourceRef": "src:03d425d9cbe291775ec3"
+    },
+    {
+      "id": "engsoccerdata:86d9593d16709b202258a5cf23622966d86873fe4a5eec770e2de26cabcfce7f:1992-11-07:RC%20Lens:US%20Valenciennes-Anzin:away",
+      "date": "1992-11-07",
+      "season": "1992-93",
+      "competition": {
+        "name": "French League 1",
+        "type": "league",
+        "country": "France"
+      },
+      "stage": "",
+      "opponent": {
+        "name": "RC Lens",
+        "slug": "rc-lens"
+      },
+      "venue": "away",
+      "score": {
+        "for": 1,
+        "against": 2
+      },
+      "result": "L",
+      "sourceRef": "src:03d425d9cbe291775ec3"
+    },
+    {
+      "id": "engsoccerdata:86d9593d16709b202258a5cf23622966d86873fe4a5eec770e2de26cabcfce7f:1992-11-20:US%20Valenciennes-Anzin:AS%20Monaco:home",
+      "date": "1992-11-20",
+      "season": "1992-93",
+      "competition": {
+        "name": "French League 1",
+        "type": "league",
+        "country": "France"
+      },
+      "stage": "",
+      "opponent": {
+        "name": "AS Monaco",
+        "slug": "as-monaco"
+      },
+      "venue": "home",
+      "score": {
+        "for": 1,
+        "against": 1
+      },
+      "result": "D",
+      "sourceRef": "src:03d425d9cbe291775ec3"
+    },
+    {
+      "id": "engsoccerdata:86d9593d16709b202258a5cf23622966d86873fe4a5eec770e2de26cabcfce7f:1992-11-28:Girondins%20Bordeaux:US%20Valenciennes-Anzin:away",
+      "date": "1992-11-28",
+      "season": "1992-93",
+      "competition": {
+        "name": "French League 1",
+        "type": "league",
+        "country": "France"
+      },
+      "stage": "",
+      "opponent": {
+        "name": "Girondins Bordeaux",
+        "slug": "girondins-bordeaux"
+      },
+      "venue": "away",
+      "score": {
+        "for": 0,
+        "against": 3
+      },
+      "result": "L",
+      "sourceRef": "src:03d425d9cbe291775ec3"
+    },
+    {
+      "id": "engsoccerdata:86d9593d16709b202258a5cf23622966d86873fe4a5eec770e2de26cabcfce7f:1992-12-04:US%20Valenciennes-Anzin:FC%20Nantes:home",
+      "date": "1992-12-04",
+      "season": "1992-93",
+      "competition": {
+        "name": "French League 1",
+        "type": "league",
+        "country": "France"
+      },
+      "stage": "",
+      "opponent": {
+        "name": "FC Nantes",
+        "slug": "fc-nantes"
+      },
+      "venue": "home",
+      "score": {
+        "for": 1,
+        "against": 1
+      },
+      "result": "D",
+      "sourceRef": "src:03d425d9cbe291775ec3"
+    },
+    {
+      "id": "engsoccerdata:86d9593d16709b202258a5cf23622966d86873fe4a5eec770e2de26cabcfce7f:1992-12-12:Olympique%20Marseille:US%20Valenciennes-Anzin:away",
+      "date": "1992-12-12",
+      "season": "1992-93",
+      "competition": {
+        "name": "French League 1",
+        "type": "league",
+        "country": "France"
+      },
+      "stage": "",
+      "opponent": {
+        "name": "Olympique Marseille",
+        "slug": "olympique-marseille"
+      },
+      "venue": "away",
+      "score": {
+        "for": 1,
+        "against": 2
+      },
+      "result": "L",
+      "sourceRef": "src:03d425d9cbe291775ec3"
+    },
+    {
+      "id": "engsoccerdata:86d9593d16709b202258a5cf23622966d86873fe4a5eec770e2de26cabcfce7f:1992-12-19:US%20Valenciennes-Anzin:AS%20Saint-Etienne:home",
+      "date": "1992-12-19",
+      "season": "1992-93",
+      "competition": {
+        "name": "French League 1",
+        "type": "league",
+        "country": "France"
+      },
+      "stage": "",
+      "opponent": {
+        "name": "AS Saint-Etienne",
+        "slug": "as-saint-etienne"
+      },
+      "venue": "home",
+      "score": {
+        "for": 0,
+        "against": 0
+      },
+      "result": "D",
+      "sourceRef": "src:03d425d9cbe291775ec3"
+    },
+    {
+      "id": "engsoccerdata:86d9593d16709b202258a5cf23622966d86873fe4a5eec770e2de26cabcfce7f:1993-01-09:RC%20Strasbourg:US%20Valenciennes-Anzin:away",
+      "date": "1993-01-09",
+      "season": "1992-93",
+      "competition": {
+        "name": "French League 1",
+        "type": "league",
+        "country": "France"
+      },
+      "stage": "",
+      "opponent": {
+        "name": "RC Strasbourg",
+        "slug": "rc-strasbourg"
+      },
+      "venue": "away",
+      "score": {
+        "for": 0,
+        "against": 0
+      },
+      "result": "D",
+      "sourceRef": "src:03d425d9cbe291775ec3"
+    },
+    {
+      "id": "engsoccerdata:86d9593d16709b202258a5cf23622966d86873fe4a5eec770e2de26cabcfce7f:1993-01-16:US%20Valenciennes-Anzin:SM%20Caen:home",
+      "date": "1993-01-16",
+      "season": "1992-93",
+      "competition": {
+        "name": "French League 1",
+        "type": "league",
+        "country": "France"
+      },
+      "stage": "",
+      "opponent": {
+        "name": "SM Caen",
+        "slug": "sm-caen"
+      },
+      "venue": "home",
+      "score": {
+        "for": 3,
+        "against": 2
+      },
+      "result": "W",
+      "sourceRef": "src:03d425d9cbe291775ec3"
+    },
+    {
+      "id": "engsoccerdata:86d9593d16709b202258a5cf23622966d86873fe4a5eec770e2de26cabcfce7f:1993-01-23:Lille%20OSC:US%20Valenciennes-Anzin:away",
+      "date": "1993-01-23",
+      "season": "1992-93",
+      "competition": {
+        "name": "French League 1",
+        "type": "league",
+        "country": "France"
+      },
+      "stage": "",
+      "opponent": {
+        "name": "Lille OSC",
+        "slug": "lille-osc"
+      },
+      "venue": "away",
+      "score": {
+        "for": 2,
+        "against": 1
+      },
+      "result": "W",
+      "sourceRef": "src:03d425d9cbe291775ec3"
+    },
+    {
+      "id": "engsoccerdata:86d9593d16709b202258a5cf23622966d86873fe4a5eec770e2de26cabcfce7f:1993-01-30:US%20Valenciennes-Anzin:Montpellier%20HSC:home",
+      "date": "1993-01-30",
+      "season": "1992-93",
+      "competition": {
+        "name": "French League 1",
+        "type": "league",
+        "country": "France"
+      },
+      "stage": "",
+      "opponent": {
+        "name": "Montpellier HSC",
+        "slug": "montpellier-hsc"
+      },
+      "venue": "home",
+      "score": {
+        "for": 1,
+        "against": 3
+      },
+      "result": "L",
+      "sourceRef": "src:03d425d9cbe291775ec3"
+    },
+    {
+      "id": "engsoccerdata:86d9593d16709b202258a5cf23622966d86873fe4a5eec770e2de26cabcfce7f:1993-02-06:US%20Valenciennes-Anzin:Paris%20Saint-Germain:home",
+      "date": "1993-02-06",
+      "season": "1992-93",
+      "competition": {
+        "name": "French League 1",
+        "type": "league",
+        "country": "France"
+      },
+      "stage": "",
+      "opponent": {
+        "name": "Paris SG",
+        "slug": "paris-sg"
+      },
+      "venue": "home",
+      "score": {
+        "for": 1,
+        "against": 1
+      },
+      "result": "D",
+      "sourceRef": "src:03d425d9cbe291775ec3"
+    },
+    {
+      "id": "engsoccerdata:86d9593d16709b202258a5cf23622966d86873fe4a5eec770e2de26cabcfce7f:1993-02-10:Olympique%20Lyon:US%20Valenciennes-Anzin:away",
+      "date": "1993-02-10",
+      "season": "1992-93",
+      "competition": {
+        "name": "French League 1",
+        "type": "league",
+        "country": "France"
+      },
+      "stage": "",
+      "opponent": {
+        "name": "Olympique Lyon",
+        "slug": "olympique-lyon"
+      },
+      "venue": "away",
+      "score": {
+        "for": 1,
+        "against": 2
+      },
+      "result": "L",
+      "sourceRef": "src:03d425d9cbe291775ec3"
+    },
+    {
+      "id": "engsoccerdata:86d9593d16709b202258a5cf23622966d86873fe4a5eec770e2de26cabcfce7f:1993-02-21:US%20Valenciennes-Anzin:FC%20Metz:home",
+      "date": "1993-02-21",
+      "season": "1992-93",
+      "competition": {
+        "name": "French League 1",
+        "type": "league",
+        "country": "France"
+      },
+      "stage": "",
+      "opponent": {
+        "name": "FC Metz",
+        "slug": "fc-metz"
+      },
+      "venue": "home",
+      "score": {
+        "for": 0,
+        "against": 2
+      },
+      "result": "L",
+      "sourceRef": "src:03d425d9cbe291775ec3"
+    },
+    {
+      "id": "engsoccerdata:86d9593d16709b202258a5cf23622966d86873fe4a5eec770e2de26cabcfce7f:1993-02-26:Toulouse%20FC:US%20Valenciennes-Anzin:away",
+      "date": "1993-02-26",
+      "season": "1992-93",
+      "competition": {
+        "name": "French League 1",
+        "type": "league",
+        "country": "France"
+      },
+      "stage": "",
+      "opponent": {
+        "name": "Toulouse FC",
+        "slug": "toulouse-fc"
+      },
+      "venue": "away",
+      "score": {
+        "for": 2,
+        "against": 1
+      },
+      "result": "W",
+      "sourceRef": "src:03d425d9cbe291775ec3"
+    },
+    {
+      "id": "engsoccerdata:86d9593d16709b202258a5cf23622966d86873fe4a5eec770e2de26cabcfce7f:1993-03-12:US%20Valenciennes-Anzin:Sporting%20Toulon%20Var:home",
+      "date": "1993-03-12",
+      "season": "1992-93",
+      "competition": {
+        "name": "French League 1",
+        "type": "league",
+        "country": "France"
+      },
+      "stage": "",
+      "opponent": {
+        "name": "Sporting Toulon Var",
+        "slug": "sporting-toulon-var"
+      },
+      "venue": "home",
+      "score": {
+        "for": 3,
+        "against": 1
+      },
+      "result": "W",
+      "sourceRef": "src:03d425d9cbe291775ec3"
+    },
+    {
+      "id": "engsoccerdata:86d9593d16709b202258a5cf23622966d86873fe4a5eec770e2de26cabcfce7f:1993-03-20:Le%20Havre%20AC:US%20Valenciennes-Anzin:away",
+      "date": "1993-03-20",
+      "season": "1992-93",
+      "competition": {
+        "name": "French League 1",
+        "type": "league",
+        "country": "France"
+      },
+      "stage": "",
+      "opponent": {
+        "name": "Le Havre AC",
+        "slug": "le-havre-ac"
+      },
+      "venue": "away",
+      "score": {
+        "for": 0,
+        "against": 0
+      },
+      "result": "D",
+      "sourceRef": "src:03d425d9cbe291775ec3"
+    },
+    {
+      "id": "engsoccerdata:86d9593d16709b202258a5cf23622966d86873fe4a5eec770e2de26cabcfce7f:1993-04-02:US%20Valenciennes-Anzin:Nimes%20Olympique:home",
+      "date": "1993-04-02",
+      "season": "1992-93",
+      "competition": {
+        "name": "French League 1",
+        "type": "league",
+        "country": "France"
+      },
+      "stage": "",
+      "opponent": {
+        "name": "Nimes Olympique",
+        "slug": "nimes-olympique"
+      },
+      "venue": "home",
+      "score": {
+        "for": 1,
+        "against": 1
+      },
+      "result": "D",
+      "sourceRef": "src:03d425d9cbe291775ec3"
+    },
+    {
+      "id": "engsoccerdata:86d9593d16709b202258a5cf23622966d86873fe4a5eec770e2de26cabcfce7f:1993-04-10:AJ%20Auxerre:US%20Valenciennes-Anzin:away",
+      "date": "1993-04-10",
+      "season": "1992-93",
+      "competition": {
+        "name": "French League 1",
+        "type": "league",
+        "country": "France"
+      },
+      "stage": "",
+      "opponent": {
+        "name": "AJ Auxerre",
+        "slug": "aj-auxerre"
+      },
+      "venue": "away",
+      "score": {
+        "for": 2,
+        "against": 3
+      },
+      "result": "L",
+      "sourceRef": "src:03d425d9cbe291775ec3"
+    },
+    {
+      "id": "engsoccerdata:86d9593d16709b202258a5cf23622966d86873fe4a5eec770e2de26cabcfce7f:1993-04-14:US%20Valenciennes-Anzin:RC%20Lens:home",
+      "date": "1993-04-14",
+      "season": "1992-93",
+      "competition": {
+        "name": "French League 1",
+        "type": "league",
+        "country": "France"
+      },
+      "stage": "",
+      "opponent": {
+        "name": "RC Lens",
+        "slug": "rc-lens"
+      },
+      "venue": "home",
+      "score": {
+        "for": 0,
+        "against": 2
+      },
+      "result": "L",
+      "sourceRef": "src:03d425d9cbe291775ec3"
+    },
+    {
+      "id": "engsoccerdata:86d9593d16709b202258a5cf23622966d86873fe4a5eec770e2de26cabcfce7f:1993-05-01:AS%20Monaco:US%20Valenciennes-Anzin:away",
+      "date": "1993-05-01",
+      "season": "1992-93",
+      "competition": {
+        "name": "French League 1",
+        "type": "league",
+        "country": "France"
+      },
+      "stage": "",
+      "opponent": {
+        "name": "AS Monaco",
+        "slug": "as-monaco"
+      },
+      "venue": "away",
+      "score": {
+        "for": 1,
+        "against": 2
+      },
+      "result": "L",
+      "sourceRef": "src:03d425d9cbe291775ec3"
+    },
+    {
+      "id": "engsoccerdata:86d9593d16709b202258a5cf23622966d86873fe4a5eec770e2de26cabcfce7f:1993-05-08:US%20Valenciennes-Anzin:Girondins%20Bordeaux:home",
+      "date": "1993-05-08",
+      "season": "1992-93",
+      "competition": {
+        "name": "French League 1",
+        "type": "league",
+        "country": "France"
+      },
+      "stage": "",
+      "opponent": {
+        "name": "Girondins Bordeaux",
+        "slug": "girondins-bordeaux"
+      },
+      "venue": "home",
+      "score": {
+        "for": 1,
+        "against": 0
+      },
+      "result": "W",
+      "sourceRef": "src:03d425d9cbe291775ec3"
+    },
+    {
+      "id": "engsoccerdata:86d9593d16709b202258a5cf23622966d86873fe4a5eec770e2de26cabcfce7f:1993-05-15:FC%20Nantes:US%20Valenciennes-Anzin:away",
+      "date": "1993-05-15",
+      "season": "1992-93",
+      "competition": {
+        "name": "French League 1",
+        "type": "league",
+        "country": "France"
+      },
+      "stage": "",
+      "opponent": {
+        "name": "FC Nantes",
+        "slug": "fc-nantes"
+      },
+      "venue": "away",
+      "score": {
+        "for": 1,
+        "against": 3
+      },
+      "result": "L",
+      "sourceRef": "src:03d425d9cbe291775ec3"
+    },
+    {
+      "id": "engsoccerdata:86d9593d16709b202258a5cf23622966d86873fe4a5eec770e2de26cabcfce7f:1993-05-20:US%20Valenciennes-Anzin:Olympique%20Marseille:home",
+      "date": "1993-05-20",
+      "season": "1992-93",
+      "competition": {
+        "name": "French League 1",
+        "type": "league",
+        "country": "France"
+      },
+      "stage": "",
+      "opponent": {
+        "name": "Olympique Marseille",
+        "slug": "olympique-marseille"
+      },
+      "venue": "home",
+      "score": {
+        "for": 0,
+        "against": 0
+      },
+      "result": "D",
+      "sourceRef": "src:03d425d9cbe291775ec3"
+    },
+    {
+      "id": "engsoccerdata:86d9593d16709b202258a5cf23622966d86873fe4a5eec770e2de26cabcfce7f:1993-05-29:AS%20Saint-Etienne:US%20Valenciennes-Anzin:away",
+      "date": "1993-05-29",
+      "season": "1992-93",
+      "competition": {
+        "name": "French League 1",
+        "type": "league",
+        "country": "France"
+      },
+      "stage": "",
+      "opponent": {
+        "name": "AS Saint-Etienne",
+        "slug": "as-saint-etienne"
+      },
+      "venue": "away",
+      "score": {
+        "for": 2,
+        "against": 4
+      },
+      "result": "L",
+      "sourceRef": "src:03d425d9cbe291775ec3"
+    },
+    {
+      "id": "engsoccerdata:86d9593d16709b202258a5cf23622966d86873fe4a5eec770e2de26cabcfce7f:1993-06-02:US%20Valenciennes-Anzin:FC%20Sochaux:home",
+      "date": "1993-06-02",
+      "season": "1992-93",
+      "competition": {
+        "name": "French League 1",
+        "type": "league",
+        "country": "France"
+      },
+      "stage": "",
+      "opponent": {
+        "name": "FC Sochaux",
+        "slug": "fc-sochaux"
+      },
+      "venue": "home",
+      "score": {
+        "for": 1,
+        "against": 0
+      },
+      "result": "W",
+      "sourceRef": "src:03d425d9cbe291775ec3"
+    }
+  ],
+  "seasonStandings": [
+    {
+      "season": "1992-93",
+      "competition": {
+        "name": "French League 1",
+        "type": "league",
+        "country": "France"
+      },
+      "position": 17,
+      "team": "US Valenciennes-Anzin",
+      "played": 38,
+      "won": 9,
+      "drawn": 12,
+      "lost": 17,
+      "goalsFor": 42,
+      "goalsAgainst": 56,
+      "points": 39,
+      "basis": "derived from recorded completed home fixtures"
+    }
+  ],
+  "competitionStandings": [],
+  "updatedAt": "2026-08-04T20:25:08.492Z"
+}

@@ -3,6 +3,7 @@
 // first; this keeps retrieval, cleaning, and model training reproducible.
 const fs = require("fs");
 const { slugifyTeam, resultCode } = require("../src/teamResultsStore");
+const { canonicalHistoricalName } = require("../src/footballHistory/identity");
 const { ensureHistory, writeHistory, rebuildCoverage } = require("../src/footballHistory/store");
 const { seasonFromDate } = require("../src/footballHistory/schema");
 const input = process.argv.find((arg) => arg.startsWith("--input="))?.slice(8);
@@ -13,9 +14,11 @@ let inserted = 0;
 const byTeam = new Map();
 for (const item of artifact.matches) {
   if (!item.team || !item.opponent || !item.date || !item.competition || !item.score || !item.source?.url) throw new Error(`Invalid normalized match: ${JSON.stringify(item).slice(0, 200)}`);
-  const slug = slugifyTeam(item.team);
-  if (!byTeam.has(slug)) byTeam.set(slug, { team: item.team, league: item.competition.name, items: [] });
-  byTeam.get(slug).items.push(item);
+  const team = canonicalHistoricalName(item.team); const opponent = canonicalHistoricalName(item.opponent);
+  const normalized = { ...item, team, opponent };
+  const slug = slugifyTeam(team);
+  if (!byTeam.has(slug)) byTeam.set(slug, { team, league: item.competition.name, items: [] });
+  byTeam.get(slug).items.push(normalized);
 }
 for (const group of byTeam.values()) {
   const { record } = ensureHistory({ team: group.team, league: group.league });

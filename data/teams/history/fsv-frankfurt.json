@@ -1,0 +1,7010 @@
+{
+  "contract": "football-team-history-v1",
+  "team": {
+    "name": "FSV Frankfurt",
+    "slug": "fsv-frankfurt",
+    "primaryLeague": "German League 2",
+    "aliases": []
+  },
+  "requestedCoverage": {
+    "fromYear": 1985,
+    "to": "present",
+    "includes": [
+      "all competitions",
+      "opponents",
+      "scorelines",
+      "league standings",
+      "competition standings"
+    ]
+  },
+  "sourcePlan": [
+    {
+      "rank": 1,
+      "provider": "Official club archive",
+      "url": "",
+      "scope": "club history, competition participation and match reports",
+      "lookupKey": "FSV Frankfurt",
+      "review": "Verify the club-owned archive URL before collection."
+    },
+    {
+      "rank": 2,
+      "provider": "Official domestic competition / association",
+      "url": "",
+      "scope": "official league fixtures, final tables and cup records",
+      "lookupKey": "German League 2"
+    },
+    {
+      "rank": 3,
+      "provider": "UEFA",
+      "url": "https://www.uefa.com/",
+      "scope": "official European competition appearances, fixtures and standings",
+      "lookupKey": "FSV Frankfurt"
+    },
+    {
+      "rank": 4,
+      "provider": "RSSSF",
+      "url": "https://www.rsssf.org/",
+      "scope": "historic competitions, tables and cross-checking",
+      "lookupKey": "FSV Frankfurt"
+    },
+    {
+      "rank": 5,
+      "provider": "worldfootball.net",
+      "url": "https://www.worldfootball.net/",
+      "scope": "club match archive and competition participation cross-check",
+      "lookupKey": "FSV Frankfurt"
+    }
+  ],
+  "coverage": {
+    "earliestMatch": "1994-08-21",
+    "latestMatch": "2016-05-15",
+    "seasonsWithMatches": [
+      "1994-95",
+      "2008-09",
+      "2009-10",
+      "2010-11",
+      "2011-12",
+      "2012-13",
+      "2013-14",
+      "2014-15",
+      "2015-16"
+    ],
+    "missingSeasons": [
+      "1985-86",
+      "1986-87",
+      "1987-88",
+      "1988-89",
+      "1989-90",
+      "1990-91",
+      "1991-92",
+      "1992-93",
+      "1993-94",
+      "1995-96",
+      "1996-97",
+      "1997-98",
+      "1998-99",
+      "1999-00",
+      "2000-01",
+      "2001-02",
+      "2002-03",
+      "2003-04",
+      "2004-05",
+      "2005-06",
+      "2006-07",
+      "2007-08",
+      "2016-17",
+      "2017-18",
+      "2018-19",
+      "2019-20",
+      "2020-21",
+      "2021-22",
+      "2022-23",
+      "2023-24",
+      "2024-25",
+      "2025-26",
+      "2026-27"
+    ],
+    "competitionScopeVerified": false,
+    "status": "partial"
+  },
+  "matches": [
+    {
+      "id": "engsoccerdata:e955aef5dabb62909d584ae3ba77c994078d031976b52241aebff190bf67d931:1994-08-21:FSV%20Zwickau:FSV%20Frankfurt:away",
+      "date": "1994-08-21",
+      "season": "1994-95",
+      "competition": {
+        "name": "German League 2",
+        "type": "league",
+        "country": "Germany"
+      },
+      "stage": "",
+      "opponent": {
+        "name": "FSV Zwickau",
+        "slug": "fsv-zwickau"
+      },
+      "venue": "away",
+      "score": {
+        "for": 2,
+        "against": 2
+      },
+      "result": "D",
+      "sourceRef": "src:7a747e9c754f773a8198"
+    },
+    {
+      "id": "engsoccerdata:e955aef5dabb62909d584ae3ba77c994078d031976b52241aebff190bf67d931:1994-08-24:FSV%20Frankfurt:Fortuna%20Koln:home",
+      "date": "1994-08-24",
+      "season": "1994-95",
+      "competition": {
+        "name": "German League 2",
+        "type": "league",
+        "country": "Germany"
+      },
+      "stage": "",
+      "opponent": {
+        "name": "Fortuna Koln",
+        "slug": "fortuna-koln"
+      },
+      "venue": "home",
+      "score": {
+        "for": 0,
+        "against": 5
+      },
+      "result": "L",
+      "sourceRef": "src:7a747e9c754f773a8198"
+    },
+    {
+      "id": "engsoccerdata:e955aef5dabb62909d584ae3ba77c994078d031976b52241aebff190bf67d931:1994-08-27:FSV%20Frankfurt:FC%2008%20Homburg:home",
+      "date": "1994-08-27",
+      "season": "1994-95",
+      "competition": {
+        "name": "German League 2",
+        "type": "league",
+        "country": "Germany"
+      },
+      "stage": "",
+      "opponent": {
+        "name": "FC 08 Homburg",
+        "slug": "fc-08-homburg"
+      },
+      "venue": "home",
+      "score": {
+        "for": 1,
+        "against": 2
+      },
+      "result": "L",
+      "sourceRef": "src:7a747e9c754f773a8198"
+    },
+    {
+      "id": "engsoccerdata:e955aef5dabb62909d584ae3ba77c994078d031976b52241aebff190bf67d931:1994-09-02:VfL%20Wolfsburg:FSV%20Frankfurt:away",
+      "date": "1994-09-02",
+      "season": "1994-95",
+      "competition": {
+        "name": "German League 2",
+        "type": "league",
+        "country": "Germany"
+      },
+      "stage": "",
+      "opponent": {
+        "name": "VfL Wolfsburg",
+        "slug": "vfl-wolfsburg"
+      },
+      "venue": "away",
+      "score": {
+        "for": 1,
+        "against": 4
+      },
+      "result": "L",
+      "sourceRef": "src:7a747e9c754f773a8198"
+    },
+    {
+      "id": "engsoccerdata:e955aef5dabb62909d584ae3ba77c994078d031976b52241aebff190bf67d931:1994-09-18:FSV%20Frankfurt:Hansa%20Rostock:home",
+      "date": "1994-09-18",
+      "season": "1994-95",
+      "competition": {
+        "name": "German League 2",
+        "type": "league",
+        "country": "Germany"
+      },
+      "stage": "",
+      "opponent": {
+        "name": "Hansa Rostock",
+        "slug": "hansa-rostock"
+      },
+      "venue": "home",
+      "score": {
+        "for": 1,
+        "against": 1
+      },
+      "result": "D",
+      "sourceRef": "src:7a747e9c754f773a8198"
+    },
+    {
+      "id": "engsoccerdata:e955aef5dabb62909d584ae3ba77c994078d031976b52241aebff190bf67d931:1994-09-24:Waldhof%20Mannheim:FSV%20Frankfurt:away",
+      "date": "1994-09-24",
+      "season": "1994-95",
+      "competition": {
+        "name": "German League 2",
+        "type": "league",
+        "country": "Germany"
+      },
+      "stage": "",
+      "opponent": {
+        "name": "Waldhof Mannheim",
+        "slug": "waldhof-mannheim"
+      },
+      "venue": "away",
+      "score": {
+        "for": 2,
+        "against": 3
+      },
+      "result": "L",
+      "sourceRef": "src:7a747e9c754f773a8198"
+    },
+    {
+      "id": "engsoccerdata:e955aef5dabb62909d584ae3ba77c994078d031976b52241aebff190bf67d931:1994-10-01:FSV%20Frankfurt:SV%20Meppen:home",
+      "date": "1994-10-01",
+      "season": "1994-95",
+      "competition": {
+        "name": "German League 2",
+        "type": "league",
+        "country": "Germany"
+      },
+      "stage": "",
+      "opponent": {
+        "name": "SV Meppen",
+        "slug": "sv-meppen"
+      },
+      "venue": "home",
+      "score": {
+        "for": 1,
+        "against": 3
+      },
+      "result": "L",
+      "sourceRef": "src:7a747e9c754f773a8198"
+    },
+    {
+      "id": "engsoccerdata:e955aef5dabb62909d584ae3ba77c994078d031976b52241aebff190bf67d931:1994-10-08:VfB%20Leipzig:FSV%20Frankfurt:away",
+      "date": "1994-10-08",
+      "season": "1994-95",
+      "competition": {
+        "name": "German League 2",
+        "type": "league",
+        "country": "Germany"
+      },
+      "stage": "",
+      "opponent": {
+        "name": "VfB Leipzig",
+        "slug": "vfb-leipzig"
+      },
+      "venue": "away",
+      "score": {
+        "for": 0,
+        "against": 3
+      },
+      "result": "L",
+      "sourceRef": "src:7a747e9c754f773a8198"
+    },
+    {
+      "id": "engsoccerdata:e955aef5dabb62909d584ae3ba77c994078d031976b52241aebff190bf67d931:1994-10-16:FSV%20Frankfurt:Fortuna%20Dusseldorf:home",
+      "date": "1994-10-16",
+      "season": "1994-95",
+      "competition": {
+        "name": "German League 2",
+        "type": "league",
+        "country": "Germany"
+      },
+      "stage": "",
+      "opponent": {
+        "name": "Fortuna Dusseldorf",
+        "slug": "fortuna-dusseldorf"
+      },
+      "venue": "home",
+      "score": {
+        "for": 1,
+        "against": 2
+      },
+      "result": "L",
+      "sourceRef": "src:7a747e9c754f773a8198"
+    },
+    {
+      "id": "engsoccerdata:e955aef5dabb62909d584ae3ba77c994078d031976b52241aebff190bf67d931:1994-10-22:Chemnitzer%20FC:FSV%20Frankfurt:away",
+      "date": "1994-10-22",
+      "season": "1994-95",
+      "competition": {
+        "name": "German League 2",
+        "type": "league",
+        "country": "Germany"
+      },
+      "stage": "",
+      "opponent": {
+        "name": "Chemnitzer FC",
+        "slug": "chemnitzer-fc"
+      },
+      "venue": "away",
+      "score": {
+        "for": 2,
+        "against": 4
+      },
+      "result": "L",
+      "sourceRef": "src:7a747e9c754f773a8198"
+    },
+    {
+      "id": "engsoccerdata:e955aef5dabb62909d584ae3ba77c994078d031976b52241aebff190bf67d931:1994-10-30:FSV%20Frankfurt:1.%20FC%20Saarbrucken:home",
+      "date": "1994-10-30",
+      "season": "1994-95",
+      "competition": {
+        "name": "German League 2",
+        "type": "league",
+        "country": "Germany"
+      },
+      "stage": "",
+      "opponent": {
+        "name": "1. FC Saarbrucken",
+        "slug": "1-fc-saarbrucken"
+      },
+      "venue": "home",
+      "score": {
+        "for": 0,
+        "against": 3
+      },
+      "result": "L",
+      "sourceRef": "src:7a747e9c754f773a8198"
+    },
+    {
+      "id": "engsoccerdata:e955aef5dabb62909d584ae3ba77c994078d031976b52241aebff190bf67d931:1994-11-05:SG%20Wattenscheid%2009:FSV%20Frankfurt:away",
+      "date": "1994-11-05",
+      "season": "1994-95",
+      "competition": {
+        "name": "German League 2",
+        "type": "league",
+        "country": "Germany"
+      },
+      "stage": "",
+      "opponent": {
+        "name": "SG Wattenscheid 09",
+        "slug": "sg-wattenscheid-09"
+      },
+      "venue": "away",
+      "score": {
+        "for": 2,
+        "against": 6
+      },
+      "result": "L",
+      "sourceRef": "src:7a747e9c754f773a8198"
+    },
+    {
+      "id": "engsoccerdata:e955aef5dabb62909d584ae3ba77c994078d031976b52241aebff190bf67d931:1994-11-13:FSV%20Frankfurt:Hannover%2096:home",
+      "date": "1994-11-13",
+      "season": "1994-95",
+      "competition": {
+        "name": "German League 2",
+        "type": "league",
+        "country": "Germany"
+      },
+      "stage": "",
+      "opponent": {
+        "name": "Hannover 96",
+        "slug": "hannover-96"
+      },
+      "venue": "home",
+      "score": {
+        "for": 1,
+        "against": 1
+      },
+      "result": "D",
+      "sourceRef": "src:7a747e9c754f773a8198"
+    },
+    {
+      "id": "engsoccerdata:e955aef5dabb62909d584ae3ba77c994078d031976b52241aebff190bf67d931:1994-11-20:1.%20FC%20Nurnberg:FSV%20Frankfurt:away",
+      "date": "1994-11-20",
+      "season": "1994-95",
+      "competition": {
+        "name": "German League 2",
+        "type": "league",
+        "country": "Germany"
+      },
+      "stage": "",
+      "opponent": {
+        "name": "1. FC Nurnberg",
+        "slug": "1-fc-nurnberg"
+      },
+      "venue": "away",
+      "score": {
+        "for": 1,
+        "against": 3
+      },
+      "result": "L",
+      "sourceRef": "src:7a747e9c754f773a8198"
+    },
+    {
+      "id": "engsoccerdata:e955aef5dabb62909d584ae3ba77c994078d031976b52241aebff190bf67d931:1994-11-27:FSV%20Frankfurt:Hertha%20BSC:home",
+      "date": "1994-11-27",
+      "season": "1994-95",
+      "competition": {
+        "name": "German League 2",
+        "type": "league",
+        "country": "Germany"
+      },
+      "stage": "",
+      "opponent": {
+        "name": "Hertha BSC",
+        "slug": "hertha-bsc"
+      },
+      "venue": "home",
+      "score": {
+        "for": 1,
+        "against": 3
+      },
+      "result": "L",
+      "sourceRef": "src:7a747e9c754f773a8198"
+    },
+    {
+      "id": "engsoccerdata:e955aef5dabb62909d584ae3ba77c994078d031976b52241aebff190bf67d931:1994-12-04:FC%20St.%20Pauli:FSV%20Frankfurt:away",
+      "date": "1994-12-04",
+      "season": "1994-95",
+      "competition": {
+        "name": "German League 2",
+        "type": "league",
+        "country": "Germany"
+      },
+      "stage": "",
+      "opponent": {
+        "name": "FC St. Pauli",
+        "slug": "fc-st-pauli"
+      },
+      "venue": "away",
+      "score": {
+        "for": 0,
+        "against": 3
+      },
+      "result": "L",
+      "sourceRef": "src:7a747e9c754f773a8198"
+    },
+    {
+      "id": "engsoccerdata:e955aef5dabb62909d584ae3ba77c994078d031976b52241aebff190bf67d931:1994-12-11:FSV%20Frankfurt:1.%20FSV%20Mainz%2005:home",
+      "date": "1994-12-11",
+      "season": "1994-95",
+      "competition": {
+        "name": "German League 2",
+        "type": "league",
+        "country": "Germany"
+      },
+      "stage": "",
+      "opponent": {
+        "name": "1. FSV Mainz 05",
+        "slug": "1-fsv-mainz-05"
+      },
+      "venue": "home",
+      "score": {
+        "for": 1,
+        "against": 4
+      },
+      "result": "L",
+      "sourceRef": "src:7a747e9c754f773a8198"
+    },
+    {
+      "id": "engsoccerdata:e955aef5dabb62909d584ae3ba77c994078d031976b52241aebff190bf67d931:1995-02-19:FSV%20Frankfurt:FSV%20Zwickau:home",
+      "date": "1995-02-19",
+      "season": "1994-95",
+      "competition": {
+        "name": "German League 2",
+        "type": "league",
+        "country": "Germany"
+      },
+      "stage": "",
+      "opponent": {
+        "name": "FSV Zwickau",
+        "slug": "fsv-zwickau"
+      },
+      "venue": "home",
+      "score": {
+        "for": 3,
+        "against": 0
+      },
+      "result": "W",
+      "sourceRef": "src:7a747e9c754f773a8198"
+    },
+    {
+      "id": "engsoccerdata:e955aef5dabb62909d584ae3ba77c994078d031976b52241aebff190bf67d931:1995-02-25:Fortuna%20Koln:FSV%20Frankfurt:away",
+      "date": "1995-02-25",
+      "season": "1994-95",
+      "competition": {
+        "name": "German League 2",
+        "type": "league",
+        "country": "Germany"
+      },
+      "stage": "",
+      "opponent": {
+        "name": "Fortuna Koln",
+        "slug": "fortuna-koln"
+      },
+      "venue": "away",
+      "score": {
+        "for": 2,
+        "against": 6
+      },
+      "result": "L",
+      "sourceRef": "src:7a747e9c754f773a8198"
+    },
+    {
+      "id": "engsoccerdata:e955aef5dabb62909d584ae3ba77c994078d031976b52241aebff190bf67d931:1995-03-05:FC%2008%20Homburg:FSV%20Frankfurt:away",
+      "date": "1995-03-05",
+      "season": "1994-95",
+      "competition": {
+        "name": "German League 2",
+        "type": "league",
+        "country": "Germany"
+      },
+      "stage": "",
+      "opponent": {
+        "name": "FC 08 Homburg",
+        "slug": "fc-08-homburg"
+      },
+      "venue": "away",
+      "score": {
+        "for": 1,
+        "against": 4
+      },
+      "result": "L",
+      "sourceRef": "src:7a747e9c754f773a8198"
+    },
+    {
+      "id": "engsoccerdata:e955aef5dabb62909d584ae3ba77c994078d031976b52241aebff190bf67d931:1995-03-11:FSV%20Frankfurt:VfL%20Wolfsburg:home",
+      "date": "1995-03-11",
+      "season": "1994-95",
+      "competition": {
+        "name": "German League 2",
+        "type": "league",
+        "country": "Germany"
+      },
+      "stage": "",
+      "opponent": {
+        "name": "VfL Wolfsburg",
+        "slug": "vfl-wolfsburg"
+      },
+      "venue": "home",
+      "score": {
+        "for": 1,
+        "against": 2
+      },
+      "result": "L",
+      "sourceRef": "src:7a747e9c754f773a8198"
+    },
+    {
+      "id": "engsoccerdata:e955aef5dabb62909d584ae3ba77c994078d031976b52241aebff190bf67d931:1995-03-18:Hansa%20Rostock:FSV%20Frankfurt:away",
+      "date": "1995-03-18",
+      "season": "1994-95",
+      "competition": {
+        "name": "German League 2",
+        "type": "league",
+        "country": "Germany"
+      },
+      "stage": "",
+      "opponent": {
+        "name": "Hansa Rostock",
+        "slug": "hansa-rostock"
+      },
+      "venue": "away",
+      "score": {
+        "for": 2,
+        "against": 4
+      },
+      "result": "L",
+      "sourceRef": "src:7a747e9c754f773a8198"
+    },
+    {
+      "id": "engsoccerdata:e955aef5dabb62909d584ae3ba77c994078d031976b52241aebff190bf67d931:1995-03-25:FSV%20Frankfurt:Waldhof%20Mannheim:home",
+      "date": "1995-03-25",
+      "season": "1994-95",
+      "competition": {
+        "name": "German League 2",
+        "type": "league",
+        "country": "Germany"
+      },
+      "stage": "",
+      "opponent": {
+        "name": "Waldhof Mannheim",
+        "slug": "waldhof-mannheim"
+      },
+      "venue": "home",
+      "score": {
+        "for": 0,
+        "against": 3
+      },
+      "result": "L",
+      "sourceRef": "src:7a747e9c754f773a8198"
+    },
+    {
+      "id": "engsoccerdata:e955aef5dabb62909d584ae3ba77c994078d031976b52241aebff190bf67d931:1995-04-02:SV%20Meppen:FSV%20Frankfurt:away",
+      "date": "1995-04-02",
+      "season": "1994-95",
+      "competition": {
+        "name": "German League 2",
+        "type": "league",
+        "country": "Germany"
+      },
+      "stage": "",
+      "opponent": {
+        "name": "SV Meppen",
+        "slug": "sv-meppen"
+      },
+      "venue": "away",
+      "score": {
+        "for": 2,
+        "against": 2
+      },
+      "result": "D",
+      "sourceRef": "src:7a747e9c754f773a8198"
+    },
+    {
+      "id": "engsoccerdata:e955aef5dabb62909d584ae3ba77c994078d031976b52241aebff190bf67d931:1995-04-08:FSV%20Frankfurt:VfB%20Leipzig:home",
+      "date": "1995-04-08",
+      "season": "1994-95",
+      "competition": {
+        "name": "German League 2",
+        "type": "league",
+        "country": "Germany"
+      },
+      "stage": "",
+      "opponent": {
+        "name": "VfB Leipzig",
+        "slug": "vfb-leipzig"
+      },
+      "venue": "home",
+      "score": {
+        "for": 1,
+        "against": 1
+      },
+      "result": "D",
+      "sourceRef": "src:7a747e9c754f773a8198"
+    },
+    {
+      "id": "engsoccerdata:e955aef5dabb62909d584ae3ba77c994078d031976b52241aebff190bf67d931:1995-04-13:Fortuna%20Dusseldorf:FSV%20Frankfurt:away",
+      "date": "1995-04-13",
+      "season": "1994-95",
+      "competition": {
+        "name": "German League 2",
+        "type": "league",
+        "country": "Germany"
+      },
+      "stage": "",
+      "opponent": {
+        "name": "Fortuna Dusseldorf",
+        "slug": "fortuna-dusseldorf"
+      },
+      "venue": "away",
+      "score": {
+        "for": 2,
+        "against": 2
+      },
+      "result": "D",
+      "sourceRef": "src:7a747e9c754f773a8198"
+    },
+    {
+      "id": "engsoccerdata:e955aef5dabb62909d584ae3ba77c994078d031976b52241aebff190bf67d931:1995-04-22:FSV%20Frankfurt:Chemnitzer%20FC:home",
+      "date": "1995-04-22",
+      "season": "1994-95",
+      "competition": {
+        "name": "German League 2",
+        "type": "league",
+        "country": "Germany"
+      },
+      "stage": "",
+      "opponent": {
+        "name": "Chemnitzer FC",
+        "slug": "chemnitzer-fc"
+      },
+      "venue": "home",
+      "score": {
+        "for": 2,
+        "against": 1
+      },
+      "result": "W",
+      "sourceRef": "src:7a747e9c754f773a8198"
+    },
+    {
+      "id": "engsoccerdata:e955aef5dabb62909d584ae3ba77c994078d031976b52241aebff190bf67d931:1995-04-29:1.%20FC%20Saarbrucken:FSV%20Frankfurt:away",
+      "date": "1995-04-29",
+      "season": "1994-95",
+      "competition": {
+        "name": "German League 2",
+        "type": "league",
+        "country": "Germany"
+      },
+      "stage": "",
+      "opponent": {
+        "name": "1. FC Saarbrucken",
+        "slug": "1-fc-saarbrucken"
+      },
+      "venue": "away",
+      "score": {
+        "for": 1,
+        "against": 2
+      },
+      "result": "L",
+      "sourceRef": "src:7a747e9c754f773a8198"
+    },
+    {
+      "id": "engsoccerdata:e955aef5dabb62909d584ae3ba77c994078d031976b52241aebff190bf67d931:1995-05-06:FSV%20Frankfurt:SG%20Wattenscheid%2009:home",
+      "date": "1995-05-06",
+      "season": "1994-95",
+      "competition": {
+        "name": "German League 2",
+        "type": "league",
+        "country": "Germany"
+      },
+      "stage": "",
+      "opponent": {
+        "name": "SG Wattenscheid 09",
+        "slug": "sg-wattenscheid-09"
+      },
+      "venue": "home",
+      "score": {
+        "for": 1,
+        "against": 5
+      },
+      "result": "L",
+      "sourceRef": "src:7a747e9c754f773a8198"
+    },
+    {
+      "id": "engsoccerdata:e955aef5dabb62909d584ae3ba77c994078d031976b52241aebff190bf67d931:1995-05-14:Hannover%2096:FSV%20Frankfurt:away",
+      "date": "1995-05-14",
+      "season": "1994-95",
+      "competition": {
+        "name": "German League 2",
+        "type": "league",
+        "country": "Germany"
+      },
+      "stage": "",
+      "opponent": {
+        "name": "Hannover 96",
+        "slug": "hannover-96"
+      },
+      "venue": "away",
+      "score": {
+        "for": 0,
+        "against": 7
+      },
+      "result": "L",
+      "sourceRef": "src:7a747e9c754f773a8198"
+    },
+    {
+      "id": "engsoccerdata:e955aef5dabb62909d584ae3ba77c994078d031976b52241aebff190bf67d931:1995-05-20:FSV%20Frankfurt:1.%20FC%20Nurnberg:home",
+      "date": "1995-05-20",
+      "season": "1994-95",
+      "competition": {
+        "name": "German League 2",
+        "type": "league",
+        "country": "Germany"
+      },
+      "stage": "",
+      "opponent": {
+        "name": "1. FC Nurnberg",
+        "slug": "1-fc-nurnberg"
+      },
+      "venue": "home",
+      "score": {
+        "for": 1,
+        "against": 2
+      },
+      "result": "L",
+      "sourceRef": "src:7a747e9c754f773a8198"
+    },
+    {
+      "id": "engsoccerdata:e955aef5dabb62909d584ae3ba77c994078d031976b52241aebff190bf67d931:1995-05-27:Hertha%20BSC:FSV%20Frankfurt:away",
+      "date": "1995-05-27",
+      "season": "1994-95",
+      "competition": {
+        "name": "German League 2",
+        "type": "league",
+        "country": "Germany"
+      },
+      "stage": "",
+      "opponent": {
+        "name": "Hertha BSC",
+        "slug": "hertha-bsc"
+      },
+      "venue": "away",
+      "score": {
+        "for": 1,
+        "against": 0
+      },
+      "result": "W",
+      "sourceRef": "src:7a747e9c754f773a8198"
+    },
+    {
+      "id": "engsoccerdata:e955aef5dabb62909d584ae3ba77c994078d031976b52241aebff190bf67d931:1995-06-11:FSV%20Frankfurt:FC%20St.%20Pauli:home",
+      "date": "1995-06-11",
+      "season": "1994-95",
+      "competition": {
+        "name": "German League 2",
+        "type": "league",
+        "country": "Germany"
+      },
+      "stage": "",
+      "opponent": {
+        "name": "FC St. Pauli",
+        "slug": "fc-st-pauli"
+      },
+      "venue": "home",
+      "score": {
+        "for": 1,
+        "against": 3
+      },
+      "result": "L",
+      "sourceRef": "src:7a747e9c754f773a8198"
+    },
+    {
+      "id": "engsoccerdata:e955aef5dabb62909d584ae3ba77c994078d031976b52241aebff190bf67d931:1995-06-18:1.%20FSV%20Mainz%2005:FSV%20Frankfurt:away",
+      "date": "1995-06-18",
+      "season": "1994-95",
+      "competition": {
+        "name": "German League 2",
+        "type": "league",
+        "country": "Germany"
+      },
+      "stage": "",
+      "opponent": {
+        "name": "1. FSV Mainz 05",
+        "slug": "1-fsv-mainz-05"
+      },
+      "venue": "away",
+      "score": {
+        "for": 1,
+        "against": 7
+      },
+      "result": "L",
+      "sourceRef": "src:7a747e9c754f773a8198"
+    },
+    {
+      "id": "engsoccerdata:e955aef5dabb62909d584ae3ba77c994078d031976b52241aebff190bf67d931:2008-08-17:Rot%20Weiss%20Ahlen:FSV%20Frankfurt:away",
+      "date": "2008-08-17",
+      "season": "2008-09",
+      "competition": {
+        "name": "German League 2",
+        "type": "league",
+        "country": "Germany"
+      },
+      "stage": "",
+      "opponent": {
+        "name": "Rot Weiss Ahlen",
+        "slug": "rot-weiss-ahlen"
+      },
+      "venue": "away",
+      "score": {
+        "for": 1,
+        "against": 2
+      },
+      "result": "L",
+      "sourceRef": "src:7a747e9c754f773a8198"
+    },
+    {
+      "id": "engsoccerdata:e955aef5dabb62909d584ae3ba77c994078d031976b52241aebff190bf67d931:2008-08-22:FSV%20Frankfurt:TuS%20Koblenz:home",
+      "date": "2008-08-22",
+      "season": "2008-09",
+      "competition": {
+        "name": "German League 2",
+        "type": "league",
+        "country": "Germany"
+      },
+      "stage": "",
+      "opponent": {
+        "name": "TuS Koblenz",
+        "slug": "tus-koblenz"
+      },
+      "venue": "home",
+      "score": {
+        "for": 0,
+        "against": 0
+      },
+      "result": "D",
+      "sourceRef": "src:7a747e9c754f773a8198"
+    },
+    {
+      "id": "engsoccerdata:e955aef5dabb62909d584ae3ba77c994078d031976b52241aebff190bf67d931:2008-08-31:FSV%20Frankfurt:SpVgg%20Greuther%20Furth:home",
+      "date": "2008-08-31",
+      "season": "2008-09",
+      "competition": {
+        "name": "German League 2",
+        "type": "league",
+        "country": "Germany"
+      },
+      "stage": "",
+      "opponent": {
+        "name": "SpVgg Greuther Furth",
+        "slug": "spvgg-greuther-furth"
+      },
+      "venue": "home",
+      "score": {
+        "for": 1,
+        "against": 1
+      },
+      "result": "D",
+      "sourceRef": "src:7a747e9c754f773a8198"
+    },
+    {
+      "id": "engsoccerdata:e955aef5dabb62909d584ae3ba77c994078d031976b52241aebff190bf67d931:2008-09-14:VfL%20Osnabruck:FSV%20Frankfurt:away",
+      "date": "2008-09-14",
+      "season": "2008-09",
+      "competition": {
+        "name": "German League 2",
+        "type": "league",
+        "country": "Germany"
+      },
+      "stage": "",
+      "opponent": {
+        "name": "VfL Osnabruck",
+        "slug": "vfl-osnabruck"
+      },
+      "venue": "away",
+      "score": {
+        "for": 2,
+        "against": 3
+      },
+      "result": "L",
+      "sourceRef": "src:7a747e9c754f773a8198"
+    },
+    {
+      "id": "engsoccerdata:e955aef5dabb62909d584ae3ba77c994078d031976b52241aebff190bf67d931:2008-09-21:FSV%20Frankfurt:Rot-Weiss%20Oberhausen:home",
+      "date": "2008-09-21",
+      "season": "2008-09",
+      "competition": {
+        "name": "German League 2",
+        "type": "league",
+        "country": "Germany"
+      },
+      "stage": "",
+      "opponent": {
+        "name": "Rot-Weiss Oberhausen",
+        "slug": "rot-weiss-oberhausen"
+      },
+      "venue": "home",
+      "score": {
+        "for": 3,
+        "against": 1
+      },
+      "result": "W",
+      "sourceRef": "src:7a747e9c754f773a8198"
+    },
+    {
+      "id": "engsoccerdata:e955aef5dabb62909d584ae3ba77c994078d031976b52241aebff190bf67d931:2008-09-28:1.%20FC%20Kaiserslautern:FSV%20Frankfurt:away",
+      "date": "2008-09-28",
+      "season": "2008-09",
+      "competition": {
+        "name": "German League 2",
+        "type": "league",
+        "country": "Germany"
+      },
+      "stage": "",
+      "opponent": {
+        "name": "1. FC Kaiserslautern",
+        "slug": "1-fc-kaiserslautern"
+      },
+      "venue": "away",
+      "score": {
+        "for": 1,
+        "against": 2
+      },
+      "result": "L",
+      "sourceRef": "src:7a747e9c754f773a8198"
+    },
+    {
+      "id": "engsoccerdata:e955aef5dabb62909d584ae3ba77c994078d031976b52241aebff190bf67d931:2008-10-03:FSV%20Frankfurt:1860%20Munchen:home",
+      "date": "2008-10-03",
+      "season": "2008-09",
+      "competition": {
+        "name": "German League 2",
+        "type": "league",
+        "country": "Germany"
+      },
+      "stage": "",
+      "opponent": {
+        "name": "1860 Munchen",
+        "slug": "1860-munchen"
+      },
+      "venue": "home",
+      "score": {
+        "for": 0,
+        "against": 3
+      },
+      "result": "L",
+      "sourceRef": "src:7a747e9c754f773a8198"
+    },
+    {
+      "id": "engsoccerdata:e955aef5dabb62909d584ae3ba77c994078d031976b52241aebff190bf67d931:2008-10-19:SV%20Wehen%20Wiesbaden:FSV%20Frankfurt:away",
+      "date": "2008-10-19",
+      "season": "2008-09",
+      "competition": {
+        "name": "German League 2",
+        "type": "league",
+        "country": "Germany"
+      },
+      "stage": "",
+      "opponent": {
+        "name": "SV Wehen Wiesbaden",
+        "slug": "sv-wehen-wiesbaden"
+      },
+      "venue": "away",
+      "score": {
+        "for": 1,
+        "against": 3
+      },
+      "result": "L",
+      "sourceRef": "src:7a747e9c754f773a8198"
+    },
+    {
+      "id": "engsoccerdata:e955aef5dabb62909d584ae3ba77c994078d031976b52241aebff190bf67d931:2008-10-24:FSV%20Frankfurt:Hansa%20Rostock:home",
+      "date": "2008-10-24",
+      "season": "2008-09",
+      "competition": {
+        "name": "German League 2",
+        "type": "league",
+        "country": "Germany"
+      },
+      "stage": "",
+      "opponent": {
+        "name": "Hansa Rostock",
+        "slug": "hansa-rostock"
+      },
+      "venue": "home",
+      "score": {
+        "for": 0,
+        "against": 0
+      },
+      "result": "D",
+      "sourceRef": "src:7a747e9c754f773a8198"
+    },
+    {
+      "id": "engsoccerdata:e955aef5dabb62909d584ae3ba77c994078d031976b52241aebff190bf67d931:2008-10-28:FC%20Augsburg:FSV%20Frankfurt:away",
+      "date": "2008-10-28",
+      "season": "2008-09",
+      "competition": {
+        "name": "German League 2",
+        "type": "league",
+        "country": "Germany"
+      },
+      "stage": "",
+      "opponent": {
+        "name": "FC Augsburg",
+        "slug": "fc-augsburg"
+      },
+      "venue": "away",
+      "score": {
+        "for": 2,
+        "against": 2
+      },
+      "result": "D",
+      "sourceRef": "src:7a747e9c754f773a8198"
+    },
+    {
+      "id": "engsoccerdata:e955aef5dabb62909d584ae3ba77c994078d031976b52241aebff190bf67d931:2008-10-31:FSV%20Frankfurt:Alemannia%20Aachen:home",
+      "date": "2008-10-31",
+      "season": "2008-09",
+      "competition": {
+        "name": "German League 2",
+        "type": "league",
+        "country": "Germany"
+      },
+      "stage": "",
+      "opponent": {
+        "name": "Alemannia Aachen",
+        "slug": "alemannia-aachen"
+      },
+      "venue": "home",
+      "score": {
+        "for": 0,
+        "against": 3
+      },
+      "result": "L",
+      "sourceRef": "src:7a747e9c754f773a8198"
+    },
+    {
+      "id": "engsoccerdata:e955aef5dabb62909d584ae3ba77c994078d031976b52241aebff190bf67d931:2008-11-07:1.%20FC%20Nurnberg:FSV%20Frankfurt:away",
+      "date": "2008-11-07",
+      "season": "2008-09",
+      "competition": {
+        "name": "German League 2",
+        "type": "league",
+        "country": "Germany"
+      },
+      "stage": "",
+      "opponent": {
+        "name": "1. FC Nurnberg",
+        "slug": "1-fc-nurnberg"
+      },
+      "venue": "away",
+      "score": {
+        "for": 0,
+        "against": 0
+      },
+      "result": "D",
+      "sourceRef": "src:7a747e9c754f773a8198"
+    },
+    {
+      "id": "engsoccerdata:e955aef5dabb62909d584ae3ba77c994078d031976b52241aebff190bf67d931:2008-11-16:FSV%20Frankfurt:SC%20Freiburg:home",
+      "date": "2008-11-16",
+      "season": "2008-09",
+      "competition": {
+        "name": "German League 2",
+        "type": "league",
+        "country": "Germany"
+      },
+      "stage": "",
+      "opponent": {
+        "name": "SC Freiburg",
+        "slug": "sc-freiburg"
+      },
+      "venue": "home",
+      "score": {
+        "for": 1,
+        "against": 2
+      },
+      "result": "L",
+      "sourceRef": "src:7a747e9c754f773a8198"
+    },
+    {
+      "id": "engsoccerdata:e955aef5dabb62909d584ae3ba77c994078d031976b52241aebff190bf67d931:2008-11-21:MSV%20Duisburg:FSV%20Frankfurt:away",
+      "date": "2008-11-21",
+      "season": "2008-09",
+      "competition": {
+        "name": "German League 2",
+        "type": "league",
+        "country": "Germany"
+      },
+      "stage": "",
+      "opponent": {
+        "name": "MSV Duisburg",
+        "slug": "msv-duisburg"
+      },
+      "venue": "away",
+      "score": {
+        "for": 0,
+        "against": 0
+      },
+      "result": "D",
+      "sourceRef": "src:7a747e9c754f773a8198"
+    },
+    {
+      "id": "engsoccerdata:e955aef5dabb62909d584ae3ba77c994078d031976b52241aebff190bf67d931:2008-12-01:FSV%20Frankfurt:1.%20FSV%20Mainz%2005:home",
+      "date": "2008-12-01",
+      "season": "2008-09",
+      "competition": {
+        "name": "German League 2",
+        "type": "league",
+        "country": "Germany"
+      },
+      "stage": "",
+      "opponent": {
+        "name": "1. FSV Mainz 05",
+        "slug": "1-fsv-mainz-05"
+      },
+      "venue": "home",
+      "score": {
+        "for": 1,
+        "against": 4
+      },
+      "result": "L",
+      "sourceRef": "src:7a747e9c754f773a8198"
+    },
+    {
+      "id": "engsoccerdata:e955aef5dabb62909d584ae3ba77c994078d031976b52241aebff190bf67d931:2008-12-05:FC%20Ingolstadt%2004:FSV%20Frankfurt:away",
+      "date": "2008-12-05",
+      "season": "2008-09",
+      "competition": {
+        "name": "German League 2",
+        "type": "league",
+        "country": "Germany"
+      },
+      "stage": "",
+      "opponent": {
+        "name": "FC Ingolstadt 04",
+        "slug": "fc-ingolstadt-04"
+      },
+      "venue": "away",
+      "score": {
+        "for": 1,
+        "against": 1
+      },
+      "result": "D",
+      "sourceRef": "src:7a747e9c754f773a8198"
+    },
+    {
+      "id": "engsoccerdata:e955aef5dabb62909d584ae3ba77c994078d031976b52241aebff190bf67d931:2008-12-12:FSV%20Frankfurt:FC%20St.%20Pauli:home",
+      "date": "2008-12-12",
+      "season": "2008-09",
+      "competition": {
+        "name": "German League 2",
+        "type": "league",
+        "country": "Germany"
+      },
+      "stage": "",
+      "opponent": {
+        "name": "FC St. Pauli",
+        "slug": "fc-st-pauli"
+      },
+      "venue": "home",
+      "score": {
+        "for": 1,
+        "against": 0
+      },
+      "result": "W",
+      "sourceRef": "src:7a747e9c754f773a8198"
+    },
+    {
+      "id": "engsoccerdata:e955aef5dabb62909d584ae3ba77c994078d031976b52241aebff190bf67d931:2009-02-01:FSV%20Frankfurt:Rot%20Weiss%20Ahlen:home",
+      "date": "2009-02-01",
+      "season": "2008-09",
+      "competition": {
+        "name": "German League 2",
+        "type": "league",
+        "country": "Germany"
+      },
+      "stage": "",
+      "opponent": {
+        "name": "Rot Weiss Ahlen",
+        "slug": "rot-weiss-ahlen"
+      },
+      "venue": "home",
+      "score": {
+        "for": 4,
+        "against": 0
+      },
+      "result": "W",
+      "sourceRef": "src:7a747e9c754f773a8198"
+    },
+    {
+      "id": "engsoccerdata:e955aef5dabb62909d584ae3ba77c994078d031976b52241aebff190bf67d931:2009-02-06:TuS%20Koblenz:FSV%20Frankfurt:away",
+      "date": "2009-02-06",
+      "season": "2008-09",
+      "competition": {
+        "name": "German League 2",
+        "type": "league",
+        "country": "Germany"
+      },
+      "stage": "",
+      "opponent": {
+        "name": "TuS Koblenz",
+        "slug": "tus-koblenz"
+      },
+      "venue": "away",
+      "score": {
+        "for": 3,
+        "against": 1
+      },
+      "result": "W",
+      "sourceRef": "src:7a747e9c754f773a8198"
+    },
+    {
+      "id": "engsoccerdata:e955aef5dabb62909d584ae3ba77c994078d031976b52241aebff190bf67d931:2009-02-13:SpVgg%20Greuther%20Furth:FSV%20Frankfurt:away",
+      "date": "2009-02-13",
+      "season": "2008-09",
+      "competition": {
+        "name": "German League 2",
+        "type": "league",
+        "country": "Germany"
+      },
+      "stage": "",
+      "opponent": {
+        "name": "SpVgg Greuther Furth",
+        "slug": "spvgg-greuther-furth"
+      },
+      "venue": "away",
+      "score": {
+        "for": 0,
+        "against": 0
+      },
+      "result": "D",
+      "sourceRef": "src:7a747e9c754f773a8198"
+    },
+    {
+      "id": "engsoccerdata:e955aef5dabb62909d584ae3ba77c994078d031976b52241aebff190bf67d931:2009-02-22:FSV%20Frankfurt:VfL%20Osnabruck:home",
+      "date": "2009-02-22",
+      "season": "2008-09",
+      "competition": {
+        "name": "German League 2",
+        "type": "league",
+        "country": "Germany"
+      },
+      "stage": "",
+      "opponent": {
+        "name": "VfL Osnabruck",
+        "slug": "vfl-osnabruck"
+      },
+      "venue": "home",
+      "score": {
+        "for": 1,
+        "against": 0
+      },
+      "result": "W",
+      "sourceRef": "src:7a747e9c754f773a8198"
+    },
+    {
+      "id": "engsoccerdata:e955aef5dabb62909d584ae3ba77c994078d031976b52241aebff190bf67d931:2009-03-01:Rot-Weiss%20Oberhausen:FSV%20Frankfurt:away",
+      "date": "2009-03-01",
+      "season": "2008-09",
+      "competition": {
+        "name": "German League 2",
+        "type": "league",
+        "country": "Germany"
+      },
+      "stage": "",
+      "opponent": {
+        "name": "Rot-Weiss Oberhausen",
+        "slug": "rot-weiss-oberhausen"
+      },
+      "venue": "away",
+      "score": {
+        "for": 0,
+        "against": 2
+      },
+      "result": "L",
+      "sourceRef": "src:7a747e9c754f773a8198"
+    },
+    {
+      "id": "engsoccerdata:e955aef5dabb62909d584ae3ba77c994078d031976b52241aebff190bf67d931:2009-03-06:FSV%20Frankfurt:1.%20FC%20Kaiserslautern:home",
+      "date": "2009-03-06",
+      "season": "2008-09",
+      "competition": {
+        "name": "German League 2",
+        "type": "league",
+        "country": "Germany"
+      },
+      "stage": "",
+      "opponent": {
+        "name": "1. FC Kaiserslautern",
+        "slug": "1-fc-kaiserslautern"
+      },
+      "venue": "home",
+      "score": {
+        "for": 1,
+        "against": 0
+      },
+      "result": "W",
+      "sourceRef": "src:7a747e9c754f773a8198"
+    },
+    {
+      "id": "engsoccerdata:e955aef5dabb62909d584ae3ba77c994078d031976b52241aebff190bf67d931:2009-03-13:1860%20Munchen:FSV%20Frankfurt:away",
+      "date": "2009-03-13",
+      "season": "2008-09",
+      "competition": {
+        "name": "German League 2",
+        "type": "league",
+        "country": "Germany"
+      },
+      "stage": "",
+      "opponent": {
+        "name": "1860 Munchen",
+        "slug": "1860-munchen"
+      },
+      "venue": "away",
+      "score": {
+        "for": 1,
+        "against": 1
+      },
+      "result": "D",
+      "sourceRef": "src:7a747e9c754f773a8198"
+    },
+    {
+      "id": "engsoccerdata:e955aef5dabb62909d584ae3ba77c994078d031976b52241aebff190bf67d931:2009-03-20:FSV%20Frankfurt:SV%20Wehen%20Wiesbaden:home",
+      "date": "2009-03-20",
+      "season": "2008-09",
+      "competition": {
+        "name": "German League 2",
+        "type": "league",
+        "country": "Germany"
+      },
+      "stage": "",
+      "opponent": {
+        "name": "SV Wehen Wiesbaden",
+        "slug": "sv-wehen-wiesbaden"
+      },
+      "venue": "home",
+      "score": {
+        "for": 2,
+        "against": 1
+      },
+      "result": "W",
+      "sourceRef": "src:7a747e9c754f773a8198"
+    },
+    {
+      "id": "engsoccerdata:e955aef5dabb62909d584ae3ba77c994078d031976b52241aebff190bf67d931:2009-04-05:Hansa%20Rostock:FSV%20Frankfurt:away",
+      "date": "2009-04-05",
+      "season": "2008-09",
+      "competition": {
+        "name": "German League 2",
+        "type": "league",
+        "country": "Germany"
+      },
+      "stage": "",
+      "opponent": {
+        "name": "Hansa Rostock",
+        "slug": "hansa-rostock"
+      },
+      "venue": "away",
+      "score": {
+        "for": 0,
+        "against": 2
+      },
+      "result": "L",
+      "sourceRef": "src:7a747e9c754f773a8198"
+    },
+    {
+      "id": "engsoccerdata:e955aef5dabb62909d584ae3ba77c994078d031976b52241aebff190bf67d931:2009-04-12:FSV%20Frankfurt:FC%20Augsburg:home",
+      "date": "2009-04-12",
+      "season": "2008-09",
+      "competition": {
+        "name": "German League 2",
+        "type": "league",
+        "country": "Germany"
+      },
+      "stage": "",
+      "opponent": {
+        "name": "FC Augsburg",
+        "slug": "fc-augsburg"
+      },
+      "venue": "home",
+      "score": {
+        "for": 2,
+        "against": 1
+      },
+      "result": "W",
+      "sourceRef": "src:7a747e9c754f773a8198"
+    },
+    {
+      "id": "engsoccerdata:e955aef5dabb62909d584ae3ba77c994078d031976b52241aebff190bf67d931:2009-04-19:Alemannia%20Aachen:FSV%20Frankfurt:away",
+      "date": "2009-04-19",
+      "season": "2008-09",
+      "competition": {
+        "name": "German League 2",
+        "type": "league",
+        "country": "Germany"
+      },
+      "stage": "",
+      "opponent": {
+        "name": "Alemannia Aachen",
+        "slug": "alemannia-aachen"
+      },
+      "venue": "away",
+      "score": {
+        "for": 0,
+        "against": 2
+      },
+      "result": "L",
+      "sourceRef": "src:7a747e9c754f773a8198"
+    },
+    {
+      "id": "engsoccerdata:e955aef5dabb62909d584ae3ba77c994078d031976b52241aebff190bf67d931:2009-04-26:FSV%20Frankfurt:1.%20FC%20Nurnberg:home",
+      "date": "2009-04-26",
+      "season": "2008-09",
+      "competition": {
+        "name": "German League 2",
+        "type": "league",
+        "country": "Germany"
+      },
+      "stage": "",
+      "opponent": {
+        "name": "1. FC Nurnberg",
+        "slug": "1-fc-nurnberg"
+      },
+      "venue": "home",
+      "score": {
+        "for": 2,
+        "against": 1
+      },
+      "result": "W",
+      "sourceRef": "src:7a747e9c754f773a8198"
+    },
+    {
+      "id": "engsoccerdata:e955aef5dabb62909d584ae3ba77c994078d031976b52241aebff190bf67d931:2009-05-03:SC%20Freiburg:FSV%20Frankfurt:away",
+      "date": "2009-05-03",
+      "season": "2008-09",
+      "competition": {
+        "name": "German League 2",
+        "type": "league",
+        "country": "Germany"
+      },
+      "stage": "",
+      "opponent": {
+        "name": "SC Freiburg",
+        "slug": "sc-freiburg"
+      },
+      "venue": "away",
+      "score": {
+        "for": 1,
+        "against": 4
+      },
+      "result": "L",
+      "sourceRef": "src:7a747e9c754f773a8198"
+    },
+    {
+      "id": "engsoccerdata:e955aef5dabb62909d584ae3ba77c994078d031976b52241aebff190bf67d931:2009-05-08:FSV%20Frankfurt:MSV%20Duisburg:home",
+      "date": "2009-05-08",
+      "season": "2008-09",
+      "competition": {
+        "name": "German League 2",
+        "type": "league",
+        "country": "Germany"
+      },
+      "stage": "",
+      "opponent": {
+        "name": "MSV Duisburg",
+        "slug": "msv-duisburg"
+      },
+      "venue": "home",
+      "score": {
+        "for": 0,
+        "against": 0
+      },
+      "result": "D",
+      "sourceRef": "src:7a747e9c754f773a8198"
+    },
+    {
+      "id": "engsoccerdata:e955aef5dabb62909d584ae3ba77c994078d031976b52241aebff190bf67d931:2009-05-13:1.%20FSV%20Mainz%2005:FSV%20Frankfurt:away",
+      "date": "2009-05-13",
+      "season": "2008-09",
+      "competition": {
+        "name": "German League 2",
+        "type": "league",
+        "country": "Germany"
+      },
+      "stage": "",
+      "opponent": {
+        "name": "1. FSV Mainz 05",
+        "slug": "1-fsv-mainz-05"
+      },
+      "venue": "away",
+      "score": {
+        "for": 1,
+        "against": 2
+      },
+      "result": "L",
+      "sourceRef": "src:7a747e9c754f773a8198"
+    },
+    {
+      "id": "engsoccerdata:e955aef5dabb62909d584ae3ba77c994078d031976b52241aebff190bf67d931:2009-05-17:FSV%20Frankfurt:FC%20Ingolstadt%2004:home",
+      "date": "2009-05-17",
+      "season": "2008-09",
+      "competition": {
+        "name": "German League 2",
+        "type": "league",
+        "country": "Germany"
+      },
+      "stage": "",
+      "opponent": {
+        "name": "FC Ingolstadt 04",
+        "slug": "fc-ingolstadt-04"
+      },
+      "venue": "home",
+      "score": {
+        "for": 1,
+        "against": 1
+      },
+      "result": "D",
+      "sourceRef": "src:7a747e9c754f773a8198"
+    },
+    {
+      "id": "engsoccerdata:e955aef5dabb62909d584ae3ba77c994078d031976b52241aebff190bf67d931:2009-05-24:FC%20St.%20Pauli:FSV%20Frankfurt:away",
+      "date": "2009-05-24",
+      "season": "2008-09",
+      "competition": {
+        "name": "German League 2",
+        "type": "league",
+        "country": "Germany"
+      },
+      "stage": "",
+      "opponent": {
+        "name": "FC St. Pauli",
+        "slug": "fc-st-pauli"
+      },
+      "venue": "away",
+      "score": {
+        "for": 0,
+        "against": 2
+      },
+      "result": "L",
+      "sourceRef": "src:7a747e9c754f773a8198"
+    },
+    {
+      "id": "engsoccerdata:e955aef5dabb62909d584ae3ba77c994078d031976b52241aebff190bf67d931:2009-08-09:FSV%20Frankfurt:MSV%20Duisburg:home",
+      "date": "2009-08-09",
+      "season": "2009-10",
+      "competition": {
+        "name": "German League 2",
+        "type": "league",
+        "country": "Germany"
+      },
+      "stage": "",
+      "opponent": {
+        "name": "MSV Duisburg",
+        "slug": "msv-duisburg"
+      },
+      "venue": "home",
+      "score": {
+        "for": 1,
+        "against": 2
+      },
+      "result": "L",
+      "sourceRef": "src:7a747e9c754f773a8198"
+    },
+    {
+      "id": "engsoccerdata:e955aef5dabb62909d584ae3ba77c994078d031976b52241aebff190bf67d931:2009-08-14:SpVgg%20Greuther%20Furth:FSV%20Frankfurt:away",
+      "date": "2009-08-14",
+      "season": "2009-10",
+      "competition": {
+        "name": "German League 2",
+        "type": "league",
+        "country": "Germany"
+      },
+      "stage": "",
+      "opponent": {
+        "name": "SpVgg Greuther Furth",
+        "slug": "spvgg-greuther-furth"
+      },
+      "venue": "away",
+      "score": {
+        "for": 0,
+        "against": 4
+      },
+      "result": "L",
+      "sourceRef": "src:7a747e9c754f773a8198"
+    },
+    {
+      "id": "engsoccerdata:e955aef5dabb62909d584ae3ba77c994078d031976b52241aebff190bf67d931:2009-08-21:FSV%20Frankfurt:SC%20Paderborn%2007:home",
+      "date": "2009-08-21",
+      "season": "2009-10",
+      "competition": {
+        "name": "German League 2",
+        "type": "league",
+        "country": "Germany"
+      },
+      "stage": "",
+      "opponent": {
+        "name": "SC Paderborn 07",
+        "slug": "sc-paderborn-07"
+      },
+      "venue": "home",
+      "score": {
+        "for": 0,
+        "against": 0
+      },
+      "result": "D",
+      "sourceRef": "src:7a747e9c754f773a8198"
+    },
+    {
+      "id": "engsoccerdata:e955aef5dabb62909d584ae3ba77c994078d031976b52241aebff190bf67d931:2009-08-30:Alemannia%20Aachen:FSV%20Frankfurt:away",
+      "date": "2009-08-30",
+      "season": "2009-10",
+      "competition": {
+        "name": "German League 2",
+        "type": "league",
+        "country": "Germany"
+      },
+      "stage": "",
+      "opponent": {
+        "name": "Alemannia Aachen",
+        "slug": "alemannia-aachen"
+      },
+      "venue": "away",
+      "score": {
+        "for": 0,
+        "against": 3
+      },
+      "result": "L",
+      "sourceRef": "src:7a747e9c754f773a8198"
+    },
+    {
+      "id": "engsoccerdata:e955aef5dabb62909d584ae3ba77c994078d031976b52241aebff190bf67d931:2009-09-13:FSV%20Frankfurt:FC%20St.%20Pauli:home",
+      "date": "2009-09-13",
+      "season": "2009-10",
+      "competition": {
+        "name": "German League 2",
+        "type": "league",
+        "country": "Germany"
+      },
+      "stage": "",
+      "opponent": {
+        "name": "FC St. Pauli",
+        "slug": "fc-st-pauli"
+      },
+      "venue": "home",
+      "score": {
+        "for": 2,
+        "against": 3
+      },
+      "result": "L",
+      "sourceRef": "src:7a747e9c754f773a8198"
+    },
+    {
+      "id": "engsoccerdata:e955aef5dabb62909d584ae3ba77c994078d031976b52241aebff190bf67d931:2009-09-18:Karlsruher%20SC:FSV%20Frankfurt:away",
+      "date": "2009-09-18",
+      "season": "2009-10",
+      "competition": {
+        "name": "German League 2",
+        "type": "league",
+        "country": "Germany"
+      },
+      "stage": "",
+      "opponent": {
+        "name": "Karlsruher SC",
+        "slug": "karlsruher-sc"
+      },
+      "venue": "away",
+      "score": {
+        "for": 0,
+        "against": 2
+      },
+      "result": "L",
+      "sourceRef": "src:7a747e9c754f773a8198"
+    },
+    {
+      "id": "engsoccerdata:e955aef5dabb62909d584ae3ba77c994078d031976b52241aebff190bf67d931:2009-09-25:Energie%20Cottbus:FSV%20Frankfurt:away",
+      "date": "2009-09-25",
+      "season": "2009-10",
+      "competition": {
+        "name": "German League 2",
+        "type": "league",
+        "country": "Germany"
+      },
+      "stage": "",
+      "opponent": {
+        "name": "Energie Cottbus",
+        "slug": "energie-cottbus"
+      },
+      "venue": "away",
+      "score": {
+        "for": 0,
+        "against": 3
+      },
+      "result": "L",
+      "sourceRef": "src:7a747e9c754f773a8198"
+    },
+    {
+      "id": "engsoccerdata:e955aef5dabb62909d584ae3ba77c994078d031976b52241aebff190bf67d931:2009-10-04:FSV%20Frankfurt:1.%20FC%20Kaiserslautern:home",
+      "date": "2009-10-04",
+      "season": "2009-10",
+      "competition": {
+        "name": "German League 2",
+        "type": "league",
+        "country": "Germany"
+      },
+      "stage": "",
+      "opponent": {
+        "name": "1. FC Kaiserslautern",
+        "slug": "1-fc-kaiserslautern"
+      },
+      "venue": "home",
+      "score": {
+        "for": 1,
+        "against": 1
+      },
+      "result": "D",
+      "sourceRef": "src:7a747e9c754f773a8198"
+    },
+    {
+      "id": "engsoccerdata:e955aef5dabb62909d584ae3ba77c994078d031976b52241aebff190bf67d931:2009-10-18:Fortuna%20Dusseldorf:FSV%20Frankfurt:away",
+      "date": "2009-10-18",
+      "season": "2009-10",
+      "competition": {
+        "name": "German League 2",
+        "type": "league",
+        "country": "Germany"
+      },
+      "stage": "",
+      "opponent": {
+        "name": "Fortuna Dusseldorf",
+        "slug": "fortuna-dusseldorf"
+      },
+      "venue": "away",
+      "score": {
+        "for": 1,
+        "against": 4
+      },
+      "result": "L",
+      "sourceRef": "src:7a747e9c754f773a8198"
+    },
+    {
+      "id": "engsoccerdata:e955aef5dabb62909d584ae3ba77c994078d031976b52241aebff190bf67d931:2009-10-24:FSV%20Frankfurt:1860%20Munchen:home",
+      "date": "2009-10-24",
+      "season": "2009-10",
+      "competition": {
+        "name": "German League 2",
+        "type": "league",
+        "country": "Germany"
+      },
+      "stage": "",
+      "opponent": {
+        "name": "1860 Munchen",
+        "slug": "1860-munchen"
+      },
+      "venue": "home",
+      "score": {
+        "for": 3,
+        "against": 2
+      },
+      "result": "W",
+      "sourceRef": "src:7a747e9c754f773a8198"
+    },
+    {
+      "id": "engsoccerdata:e955aef5dabb62909d584ae3ba77c994078d031976b52241aebff190bf67d931:2009-10-30:1.%20FC%20Union%20Berlin:FSV%20Frankfurt:away",
+      "date": "2009-10-30",
+      "season": "2009-10",
+      "competition": {
+        "name": "German League 2",
+        "type": "league",
+        "country": "Germany"
+      },
+      "stage": "",
+      "opponent": {
+        "name": "Union Berlin",
+        "slug": "union-berlin"
+      },
+      "venue": "away",
+      "score": {
+        "for": 0,
+        "against": 1
+      },
+      "result": "L",
+      "sourceRef": "src:7a747e9c754f773a8198"
+    },
+    {
+      "id": "engsoccerdata:e955aef5dabb62909d584ae3ba77c994078d031976b52241aebff190bf67d931:2009-11-07:FSV%20Frankfurt:Arminia%20Bielefeld:home",
+      "date": "2009-11-07",
+      "season": "2009-10",
+      "competition": {
+        "name": "German League 2",
+        "type": "league",
+        "country": "Germany"
+      },
+      "stage": "",
+      "opponent": {
+        "name": "Arminia Bielefeld",
+        "slug": "arminia-bielefeld"
+      },
+      "venue": "home",
+      "score": {
+        "for": 0,
+        "against": 0
+      },
+      "result": "D",
+      "sourceRef": "src:7a747e9c754f773a8198"
+    },
+    {
+      "id": "engsoccerdata:e955aef5dabb62909d584ae3ba77c994078d031976b52241aebff190bf67d931:2009-11-21:Rot-Weiss%20Oberhausen:FSV%20Frankfurt:away",
+      "date": "2009-11-21",
+      "season": "2009-10",
+      "competition": {
+        "name": "German League 2",
+        "type": "league",
+        "country": "Germany"
+      },
+      "stage": "",
+      "opponent": {
+        "name": "Rot-Weiss Oberhausen",
+        "slug": "rot-weiss-oberhausen"
+      },
+      "venue": "away",
+      "score": {
+        "for": 3,
+        "against": 1
+      },
+      "result": "W",
+      "sourceRef": "src:7a747e9c754f773a8198"
+    },
+    {
+      "id": "engsoccerdata:e955aef5dabb62909d584ae3ba77c994078d031976b52241aebff190bf67d931:2009-11-27:FSV%20Frankfurt:Hansa%20Rostock:home",
+      "date": "2009-11-27",
+      "season": "2009-10",
+      "competition": {
+        "name": "German League 2",
+        "type": "league",
+        "country": "Germany"
+      },
+      "stage": "",
+      "opponent": {
+        "name": "Hansa Rostock",
+        "slug": "hansa-rostock"
+      },
+      "venue": "home",
+      "score": {
+        "for": 0,
+        "against": 1
+      },
+      "result": "L",
+      "sourceRef": "src:7a747e9c754f773a8198"
+    },
+    {
+      "id": "engsoccerdata:e955aef5dabb62909d584ae3ba77c994078d031976b52241aebff190bf67d931:2009-12-04:FC%20Augsburg:FSV%20Frankfurt:away",
+      "date": "2009-12-04",
+      "season": "2009-10",
+      "competition": {
+        "name": "German League 2",
+        "type": "league",
+        "country": "Germany"
+      },
+      "stage": "",
+      "opponent": {
+        "name": "FC Augsburg",
+        "slug": "fc-augsburg"
+      },
+      "venue": "away",
+      "score": {
+        "for": 0,
+        "against": 2
+      },
+      "result": "L",
+      "sourceRef": "src:7a747e9c754f773a8198"
+    },
+    {
+      "id": "engsoccerdata:e955aef5dabb62909d584ae3ba77c994078d031976b52241aebff190bf67d931:2009-12-12:FSV%20Frankfurt:Rot%20Weiss%20Ahlen:home",
+      "date": "2009-12-12",
+      "season": "2009-10",
+      "competition": {
+        "name": "German League 2",
+        "type": "league",
+        "country": "Germany"
+      },
+      "stage": "",
+      "opponent": {
+        "name": "Rot Weiss Ahlen",
+        "slug": "rot-weiss-ahlen"
+      },
+      "venue": "home",
+      "score": {
+        "for": 0,
+        "against": 0
+      },
+      "result": "D",
+      "sourceRef": "src:7a747e9c754f773a8198"
+    },
+    {
+      "id": "engsoccerdata:e955aef5dabb62909d584ae3ba77c994078d031976b52241aebff190bf67d931:2009-12-18:TuS%20Koblenz:FSV%20Frankfurt:away",
+      "date": "2009-12-18",
+      "season": "2009-10",
+      "competition": {
+        "name": "German League 2",
+        "type": "league",
+        "country": "Germany"
+      },
+      "stage": "",
+      "opponent": {
+        "name": "TuS Koblenz",
+        "slug": "tus-koblenz"
+      },
+      "venue": "away",
+      "score": {
+        "for": 1,
+        "against": 0
+      },
+      "result": "W",
+      "sourceRef": "src:7a747e9c754f773a8198"
+    },
+    {
+      "id": "engsoccerdata:e955aef5dabb62909d584ae3ba77c994078d031976b52241aebff190bf67d931:2010-01-17:MSV%20Duisburg:FSV%20Frankfurt:away",
+      "date": "2010-01-17",
+      "season": "2009-10",
+      "competition": {
+        "name": "German League 2",
+        "type": "league",
+        "country": "Germany"
+      },
+      "stage": "",
+      "opponent": {
+        "name": "MSV Duisburg",
+        "slug": "msv-duisburg"
+      },
+      "venue": "away",
+      "score": {
+        "for": 0,
+        "against": 5
+      },
+      "result": "L",
+      "sourceRef": "src:7a747e9c754f773a8198"
+    },
+    {
+      "id": "engsoccerdata:e955aef5dabb62909d584ae3ba77c994078d031976b52241aebff190bf67d931:2010-01-22:FSV%20Frankfurt:SpVgg%20Greuther%20Furth:home",
+      "date": "2010-01-22",
+      "season": "2009-10",
+      "competition": {
+        "name": "German League 2",
+        "type": "league",
+        "country": "Germany"
+      },
+      "stage": "",
+      "opponent": {
+        "name": "SpVgg Greuther Furth",
+        "slug": "spvgg-greuther-furth"
+      },
+      "venue": "home",
+      "score": {
+        "for": 0,
+        "against": 5
+      },
+      "result": "L",
+      "sourceRef": "src:7a747e9c754f773a8198"
+    },
+    {
+      "id": "engsoccerdata:e955aef5dabb62909d584ae3ba77c994078d031976b52241aebff190bf67d931:2010-01-31:SC%20Paderborn%2007:FSV%20Frankfurt:away",
+      "date": "2010-01-31",
+      "season": "2009-10",
+      "competition": {
+        "name": "German League 2",
+        "type": "league",
+        "country": "Germany"
+      },
+      "stage": "",
+      "opponent": {
+        "name": "SC Paderborn 07",
+        "slug": "sc-paderborn-07"
+      },
+      "venue": "away",
+      "score": {
+        "for": 2,
+        "against": 0
+      },
+      "result": "W",
+      "sourceRef": "src:7a747e9c754f773a8198"
+    },
+    {
+      "id": "engsoccerdata:e955aef5dabb62909d584ae3ba77c994078d031976b52241aebff190bf67d931:2010-02-07:FSV%20Frankfurt:Alemannia%20Aachen:home",
+      "date": "2010-02-07",
+      "season": "2009-10",
+      "competition": {
+        "name": "German League 2",
+        "type": "league",
+        "country": "Germany"
+      },
+      "stage": "",
+      "opponent": {
+        "name": "Alemannia Aachen",
+        "slug": "alemannia-aachen"
+      },
+      "venue": "home",
+      "score": {
+        "for": 1,
+        "against": 1
+      },
+      "result": "D",
+      "sourceRef": "src:7a747e9c754f773a8198"
+    },
+    {
+      "id": "engsoccerdata:e955aef5dabb62909d584ae3ba77c994078d031976b52241aebff190bf67d931:2010-02-12:FC%20St.%20Pauli:FSV%20Frankfurt:away",
+      "date": "2010-02-12",
+      "season": "2009-10",
+      "competition": {
+        "name": "German League 2",
+        "type": "league",
+        "country": "Germany"
+      },
+      "stage": "",
+      "opponent": {
+        "name": "FC St. Pauli",
+        "slug": "fc-st-pauli"
+      },
+      "venue": "away",
+      "score": {
+        "for": 0,
+        "against": 0
+      },
+      "result": "D",
+      "sourceRef": "src:7a747e9c754f773a8198"
+    },
+    {
+      "id": "engsoccerdata:e955aef5dabb62909d584ae3ba77c994078d031976b52241aebff190bf67d931:2010-02-21:FSV%20Frankfurt:Karlsruher%20SC:home",
+      "date": "2010-02-21",
+      "season": "2009-10",
+      "competition": {
+        "name": "German League 2",
+        "type": "league",
+        "country": "Germany"
+      },
+      "stage": "",
+      "opponent": {
+        "name": "Karlsruher SC",
+        "slug": "karlsruher-sc"
+      },
+      "venue": "home",
+      "score": {
+        "for": 2,
+        "against": 1
+      },
+      "result": "W",
+      "sourceRef": "src:7a747e9c754f773a8198"
+    },
+    {
+      "id": "engsoccerdata:e955aef5dabb62909d584ae3ba77c994078d031976b52241aebff190bf67d931:2010-02-26:FSV%20Frankfurt:Energie%20Cottbus:home",
+      "date": "2010-02-26",
+      "season": "2009-10",
+      "competition": {
+        "name": "German League 2",
+        "type": "league",
+        "country": "Germany"
+      },
+      "stage": "",
+      "opponent": {
+        "name": "Energie Cottbus",
+        "slug": "energie-cottbus"
+      },
+      "venue": "home",
+      "score": {
+        "for": 0,
+        "against": 0
+      },
+      "result": "D",
+      "sourceRef": "src:7a747e9c754f773a8198"
+    },
+    {
+      "id": "engsoccerdata:e955aef5dabb62909d584ae3ba77c994078d031976b52241aebff190bf67d931:2010-03-06:1.%20FC%20Kaiserslautern:FSV%20Frankfurt:away",
+      "date": "2010-03-06",
+      "season": "2009-10",
+      "competition": {
+        "name": "German League 2",
+        "type": "league",
+        "country": "Germany"
+      },
+      "stage": "",
+      "opponent": {
+        "name": "1. FC Kaiserslautern",
+        "slug": "1-fc-kaiserslautern"
+      },
+      "venue": "away",
+      "score": {
+        "for": 1,
+        "against": 1
+      },
+      "result": "D",
+      "sourceRef": "src:7a747e9c754f773a8198"
+    },
+    {
+      "id": "engsoccerdata:e955aef5dabb62909d584ae3ba77c994078d031976b52241aebff190bf67d931:2010-03-13:FSV%20Frankfurt:Fortuna%20Dusseldorf:home",
+      "date": "2010-03-13",
+      "season": "2009-10",
+      "competition": {
+        "name": "German League 2",
+        "type": "league",
+        "country": "Germany"
+      },
+      "stage": "",
+      "opponent": {
+        "name": "Fortuna Dusseldorf",
+        "slug": "fortuna-dusseldorf"
+      },
+      "venue": "home",
+      "score": {
+        "for": 2,
+        "against": 0
+      },
+      "result": "W",
+      "sourceRef": "src:7a747e9c754f773a8198"
+    },
+    {
+      "id": "engsoccerdata:e955aef5dabb62909d584ae3ba77c994078d031976b52241aebff190bf67d931:2010-03-21:1860%20Munchen:FSV%20Frankfurt:away",
+      "date": "2010-03-21",
+      "season": "2009-10",
+      "competition": {
+        "name": "German League 2",
+        "type": "league",
+        "country": "Germany"
+      },
+      "stage": "",
+      "opponent": {
+        "name": "1860 Munchen",
+        "slug": "1860-munchen"
+      },
+      "venue": "away",
+      "score": {
+        "for": 1,
+        "against": 2
+      },
+      "result": "L",
+      "sourceRef": "src:7a747e9c754f773a8198"
+    },
+    {
+      "id": "engsoccerdata:e955aef5dabb62909d584ae3ba77c994078d031976b52241aebff190bf67d931:2010-03-26:FSV%20Frankfurt:1.%20FC%20Union%20Berlin:home",
+      "date": "2010-03-26",
+      "season": "2009-10",
+      "competition": {
+        "name": "German League 2",
+        "type": "league",
+        "country": "Germany"
+      },
+      "stage": "",
+      "opponent": {
+        "name": "Union Berlin",
+        "slug": "union-berlin"
+      },
+      "venue": "home",
+      "score": {
+        "for": 2,
+        "against": 1
+      },
+      "result": "W",
+      "sourceRef": "src:7a747e9c754f773a8198"
+    },
+    {
+      "id": "engsoccerdata:e955aef5dabb62909d584ae3ba77c994078d031976b52241aebff190bf67d931:2010-04-04:Arminia%20Bielefeld:FSV%20Frankfurt:away",
+      "date": "2010-04-04",
+      "season": "2009-10",
+      "competition": {
+        "name": "German League 2",
+        "type": "league",
+        "country": "Germany"
+      },
+      "stage": "",
+      "opponent": {
+        "name": "Arminia Bielefeld",
+        "slug": "arminia-bielefeld"
+      },
+      "venue": "away",
+      "score": {
+        "for": 1,
+        "against": 2
+      },
+      "result": "L",
+      "sourceRef": "src:7a747e9c754f773a8198"
+    },
+    {
+      "id": "engsoccerdata:e955aef5dabb62909d584ae3ba77c994078d031976b52241aebff190bf67d931:2010-04-11:FSV%20Frankfurt:Rot-Weiss%20Oberhausen:home",
+      "date": "2010-04-11",
+      "season": "2009-10",
+      "competition": {
+        "name": "German League 2",
+        "type": "league",
+        "country": "Germany"
+      },
+      "stage": "",
+      "opponent": {
+        "name": "Rot-Weiss Oberhausen",
+        "slug": "rot-weiss-oberhausen"
+      },
+      "venue": "home",
+      "score": {
+        "for": 1,
+        "against": 0
+      },
+      "result": "W",
+      "sourceRef": "src:7a747e9c754f773a8198"
+    },
+    {
+      "id": "engsoccerdata:e955aef5dabb62909d584ae3ba77c994078d031976b52241aebff190bf67d931:2010-04-17:Hansa%20Rostock:FSV%20Frankfurt:away",
+      "date": "2010-04-17",
+      "season": "2009-10",
+      "competition": {
+        "name": "German League 2",
+        "type": "league",
+        "country": "Germany"
+      },
+      "stage": "",
+      "opponent": {
+        "name": "Hansa Rostock",
+        "slug": "hansa-rostock"
+      },
+      "venue": "away",
+      "score": {
+        "for": 2,
+        "against": 1
+      },
+      "result": "W",
+      "sourceRef": "src:7a747e9c754f773a8198"
+    },
+    {
+      "id": "engsoccerdata:e955aef5dabb62909d584ae3ba77c994078d031976b52241aebff190bf67d931:2010-04-25:FSV%20Frankfurt:FC%20Augsburg:home",
+      "date": "2010-04-25",
+      "season": "2009-10",
+      "competition": {
+        "name": "German League 2",
+        "type": "league",
+        "country": "Germany"
+      },
+      "stage": "",
+      "opponent": {
+        "name": "FC Augsburg",
+        "slug": "fc-augsburg"
+      },
+      "venue": "home",
+      "score": {
+        "for": 1,
+        "against": 1
+      },
+      "result": "D",
+      "sourceRef": "src:7a747e9c754f773a8198"
+    },
+    {
+      "id": "engsoccerdata:e955aef5dabb62909d584ae3ba77c994078d031976b52241aebff190bf67d931:2010-05-02:Rot%20Weiss%20Ahlen:FSV%20Frankfurt:away",
+      "date": "2010-05-02",
+      "season": "2009-10",
+      "competition": {
+        "name": "German League 2",
+        "type": "league",
+        "country": "Germany"
+      },
+      "stage": "",
+      "opponent": {
+        "name": "Rot Weiss Ahlen",
+        "slug": "rot-weiss-ahlen"
+      },
+      "venue": "away",
+      "score": {
+        "for": 0,
+        "against": 0
+      },
+      "result": "D",
+      "sourceRef": "src:7a747e9c754f773a8198"
+    },
+    {
+      "id": "engsoccerdata:e955aef5dabb62909d584ae3ba77c994078d031976b52241aebff190bf67d931:2010-05-09:FSV%20Frankfurt:TuS%20Koblenz:home",
+      "date": "2010-05-09",
+      "season": "2009-10",
+      "competition": {
+        "name": "German League 2",
+        "type": "league",
+        "country": "Germany"
+      },
+      "stage": "",
+      "opponent": {
+        "name": "TuS Koblenz",
+        "slug": "tus-koblenz"
+      },
+      "venue": "home",
+      "score": {
+        "for": 1,
+        "against": 1
+      },
+      "result": "D",
+      "sourceRef": "src:7a747e9c754f773a8198"
+    },
+    {
+      "id": "engsoccerdata:e955aef5dabb62909d584ae3ba77c994078d031976b52241aebff190bf67d931:2010-08-20:FSV%20Frankfurt:Arminia%20Bielefeld:home",
+      "date": "2010-08-20",
+      "season": "2010-11",
+      "competition": {
+        "name": "German League 2",
+        "type": "league",
+        "country": "Germany"
+      },
+      "stage": "",
+      "opponent": {
+        "name": "Arminia Bielefeld",
+        "slug": "arminia-bielefeld"
+      },
+      "venue": "home",
+      "score": {
+        "for": 2,
+        "against": 1
+      },
+      "result": "W",
+      "sourceRef": "src:7a747e9c754f773a8198"
+    },
+    {
+      "id": "engsoccerdata:e955aef5dabb62909d584ae3ba77c994078d031976b52241aebff190bf67d931:2010-08-27:Rot-Weiss%20Oberhausen:FSV%20Frankfurt:away",
+      "date": "2010-08-27",
+      "season": "2010-11",
+      "competition": {
+        "name": "German League 2",
+        "type": "league",
+        "country": "Germany"
+      },
+      "stage": "",
+      "opponent": {
+        "name": "Rot-Weiss Oberhausen",
+        "slug": "rot-weiss-oberhausen"
+      },
+      "venue": "away",
+      "score": {
+        "for": 0,
+        "against": 1
+      },
+      "result": "L",
+      "sourceRef": "src:7a747e9c754f773a8198"
+    },
+    {
+      "id": "engsoccerdata:e955aef5dabb62909d584ae3ba77c994078d031976b52241aebff190bf67d931:2010-09-11:FSV%20Frankfurt:Fortuna%20Dusseldorf:home",
+      "date": "2010-09-11",
+      "season": "2010-11",
+      "competition": {
+        "name": "German League 2",
+        "type": "league",
+        "country": "Germany"
+      },
+      "stage": "",
+      "opponent": {
+        "name": "Fortuna Dusseldorf",
+        "slug": "fortuna-dusseldorf"
+      },
+      "venue": "home",
+      "score": {
+        "for": 1,
+        "against": 0
+      },
+      "result": "W",
+      "sourceRef": "src:7a747e9c754f773a8198"
+    },
+    {
+      "id": "engsoccerdata:e955aef5dabb62909d584ae3ba77c994078d031976b52241aebff190bf67d931:2010-09-17:SpVgg%20Greuther%20Furth:FSV%20Frankfurt:away",
+      "date": "2010-09-17",
+      "season": "2010-11",
+      "competition": {
+        "name": "German League 2",
+        "type": "league",
+        "country": "Germany"
+      },
+      "stage": "",
+      "opponent": {
+        "name": "SpVgg Greuther Furth",
+        "slug": "spvgg-greuther-furth"
+      },
+      "venue": "away",
+      "score": {
+        "for": 0,
+        "against": 1
+      },
+      "result": "L",
+      "sourceRef": "src:7a747e9c754f773a8198"
+    },
+    {
+      "id": "engsoccerdata:e955aef5dabb62909d584ae3ba77c994078d031976b52241aebff190bf67d931:2010-09-21:FSV%20Frankfurt:Alemannia%20Aachen:home",
+      "date": "2010-09-21",
+      "season": "2010-11",
+      "competition": {
+        "name": "German League 2",
+        "type": "league",
+        "country": "Germany"
+      },
+      "stage": "",
+      "opponent": {
+        "name": "Alemannia Aachen",
+        "slug": "alemannia-aachen"
+      },
+      "venue": "home",
+      "score": {
+        "for": 1,
+        "against": 3
+      },
+      "result": "L",
+      "sourceRef": "src:7a747e9c754f773a8198"
+    },
+    {
+      "id": "engsoccerdata:e955aef5dabb62909d584ae3ba77c994078d031976b52241aebff190bf67d931:2010-09-24:Karlsruher%20SC:FSV%20Frankfurt:away",
+      "date": "2010-09-24",
+      "season": "2010-11",
+      "competition": {
+        "name": "German League 2",
+        "type": "league",
+        "country": "Germany"
+      },
+      "stage": "",
+      "opponent": {
+        "name": "Karlsruher SC",
+        "slug": "karlsruher-sc"
+      },
+      "venue": "away",
+      "score": {
+        "for": 2,
+        "against": 0
+      },
+      "result": "W",
+      "sourceRef": "src:7a747e9c754f773a8198"
+    },
+    {
+      "id": "engsoccerdata:e955aef5dabb62909d584ae3ba77c994078d031976b52241aebff190bf67d931:2010-10-03:FSV%20Frankfurt:Energie%20Cottbus:home",
+      "date": "2010-10-03",
+      "season": "2010-11",
+      "competition": {
+        "name": "German League 2",
+        "type": "league",
+        "country": "Germany"
+      },
+      "stage": "",
+      "opponent": {
+        "name": "Energie Cottbus",
+        "slug": "energie-cottbus"
+      },
+      "venue": "home",
+      "score": {
+        "for": 3,
+        "against": 2
+      },
+      "result": "W",
+      "sourceRef": "src:7a747e9c754f773a8198"
+    },
+    {
+      "id": "engsoccerdata:e955aef5dabb62909d584ae3ba77c994078d031976b52241aebff190bf67d931:2010-10-16:FSV%20Frankfurt:Hertha%20BSC:home",
+      "date": "2010-10-16",
+      "season": "2010-11",
+      "competition": {
+        "name": "German League 2",
+        "type": "league",
+        "country": "Germany"
+      },
+      "stage": "",
+      "opponent": {
+        "name": "Hertha BSC",
+        "slug": "hertha-bsc"
+      },
+      "venue": "home",
+      "score": {
+        "for": 0,
+        "against": 1
+      },
+      "result": "L",
+      "sourceRef": "src:7a747e9c754f773a8198"
+    },
+    {
+      "id": "engsoccerdata:e955aef5dabb62909d584ae3ba77c994078d031976b52241aebff190bf67d931:2010-10-23:FC%20Ingolstadt%2004:FSV%20Frankfurt:away",
+      "date": "2010-10-23",
+      "season": "2010-11",
+      "competition": {
+        "name": "German League 2",
+        "type": "league",
+        "country": "Germany"
+      },
+      "stage": "",
+      "opponent": {
+        "name": "FC Ingolstadt 04",
+        "slug": "fc-ingolstadt-04"
+      },
+      "venue": "away",
+      "score": {
+        "for": 1,
+        "against": 0
+      },
+      "result": "W",
+      "sourceRef": "src:7a747e9c754f773a8198"
+    },
+    {
+      "id": "engsoccerdata:e955aef5dabb62909d584ae3ba77c994078d031976b52241aebff190bf67d931:2010-10-29:FSV%20Frankfurt:SC%20Paderborn%2007:home",
+      "date": "2010-10-29",
+      "season": "2010-11",
+      "competition": {
+        "name": "German League 2",
+        "type": "league",
+        "country": "Germany"
+      },
+      "stage": "",
+      "opponent": {
+        "name": "SC Paderborn 07",
+        "slug": "sc-paderborn-07"
+      },
+      "venue": "home",
+      "score": {
+        "for": 2,
+        "against": 0
+      },
+      "result": "W",
+      "sourceRef": "src:7a747e9c754f773a8198"
+    },
+    {
+      "id": "engsoccerdata:e955aef5dabb62909d584ae3ba77c994078d031976b52241aebff190bf67d931:2010-11-05:VfL%20Bochum:FSV%20Frankfurt:away",
+      "date": "2010-11-05",
+      "season": "2010-11",
+      "competition": {
+        "name": "German League 2",
+        "type": "league",
+        "country": "Germany"
+      },
+      "stage": "",
+      "opponent": {
+        "name": "VfL Bochum",
+        "slug": "vfl-bochum"
+      },
+      "venue": "away",
+      "score": {
+        "for": 0,
+        "against": 1
+      },
+      "result": "L",
+      "sourceRef": "src:7a747e9c754f773a8198"
+    },
+    {
+      "id": "engsoccerdata:e955aef5dabb62909d584ae3ba77c994078d031976b52241aebff190bf67d931:2010-11-13:FSV%20Frankfurt:1.%20FC%20Union%20Berlin:home",
+      "date": "2010-11-13",
+      "season": "2010-11",
+      "competition": {
+        "name": "German League 2",
+        "type": "league",
+        "country": "Germany"
+      },
+      "stage": "",
+      "opponent": {
+        "name": "Union Berlin",
+        "slug": "union-berlin"
+      },
+      "venue": "home",
+      "score": {
+        "for": 2,
+        "against": 1
+      },
+      "result": "W",
+      "sourceRef": "src:7a747e9c754f773a8198"
+    },
+    {
+      "id": "engsoccerdata:e955aef5dabb62909d584ae3ba77c994078d031976b52241aebff190bf67d931:2010-11-21:1860%20Munchen:FSV%20Frankfurt:away",
+      "date": "2010-11-21",
+      "season": "2010-11",
+      "competition": {
+        "name": "German League 2",
+        "type": "league",
+        "country": "Germany"
+      },
+      "stage": "",
+      "opponent": {
+        "name": "1860 Munchen",
+        "slug": "1860-munchen"
+      },
+      "venue": "away",
+      "score": {
+        "for": 3,
+        "against": 3
+      },
+      "result": "D",
+      "sourceRef": "src:7a747e9c754f773a8198"
+    },
+    {
+      "id": "engsoccerdata:e955aef5dabb62909d584ae3ba77c994078d031976b52241aebff190bf67d931:2010-11-26:FSV%20Frankfurt:VfL%20Osnabruck:home",
+      "date": "2010-11-26",
+      "season": "2010-11",
+      "competition": {
+        "name": "German League 2",
+        "type": "league",
+        "country": "Germany"
+      },
+      "stage": "",
+      "opponent": {
+        "name": "VfL Osnabruck",
+        "slug": "vfl-osnabruck"
+      },
+      "venue": "home",
+      "score": {
+        "for": 4,
+        "against": 1
+      },
+      "result": "W",
+      "sourceRef": "src:7a747e9c754f773a8198"
+    },
+    {
+      "id": "engsoccerdata:e955aef5dabb62909d584ae3ba77c994078d031976b52241aebff190bf67d931:2010-12-03:MSV%20Duisburg:FSV%20Frankfurt:away",
+      "date": "2010-12-03",
+      "season": "2010-11",
+      "competition": {
+        "name": "German League 2",
+        "type": "league",
+        "country": "Germany"
+      },
+      "stage": "",
+      "opponent": {
+        "name": "MSV Duisburg",
+        "slug": "msv-duisburg"
+      },
+      "venue": "away",
+      "score": {
+        "for": 3,
+        "against": 1
+      },
+      "result": "W",
+      "sourceRef": "src:7a747e9c754f773a8198"
+    },
+    {
+      "id": "engsoccerdata:e955aef5dabb62909d584ae3ba77c994078d031976b52241aebff190bf67d931:2010-12-11:FSV%20Frankfurt:FC%20Augsburg:home",
+      "date": "2010-12-11",
+      "season": "2010-11",
+      "competition": {
+        "name": "German League 2",
+        "type": "league",
+        "country": "Germany"
+      },
+      "stage": "",
+      "opponent": {
+        "name": "FC Augsburg",
+        "slug": "fc-augsburg"
+      },
+      "venue": "home",
+      "score": {
+        "for": 1,
+        "against": 2
+      },
+      "result": "L",
+      "sourceRef": "src:7a747e9c754f773a8198"
+    },
+    {
+      "id": "engsoccerdata:e955aef5dabb62909d584ae3ba77c994078d031976b52241aebff190bf67d931:2011-01-16:Arminia%20Bielefeld:FSV%20Frankfurt:away",
+      "date": "2011-01-16",
+      "season": "2010-11",
+      "competition": {
+        "name": "German League 2",
+        "type": "league",
+        "country": "Germany"
+      },
+      "stage": "",
+      "opponent": {
+        "name": "Arminia Bielefeld",
+        "slug": "arminia-bielefeld"
+      },
+      "venue": "away",
+      "score": {
+        "for": 1,
+        "against": 1
+      },
+      "result": "D",
+      "sourceRef": "src:7a747e9c754f773a8198"
+    },
+    {
+      "id": "engsoccerdata:e955aef5dabb62909d584ae3ba77c994078d031976b52241aebff190bf67d931:2011-01-23:FSV%20Frankfurt:Rot-Weiss%20Oberhausen:home",
+      "date": "2011-01-23",
+      "season": "2010-11",
+      "competition": {
+        "name": "German League 2",
+        "type": "league",
+        "country": "Germany"
+      },
+      "stage": "",
+      "opponent": {
+        "name": "Rot-Weiss Oberhausen",
+        "slug": "rot-weiss-oberhausen"
+      },
+      "venue": "home",
+      "score": {
+        "for": 4,
+        "against": 0
+      },
+      "result": "W",
+      "sourceRef": "src:7a747e9c754f773a8198"
+    },
+    {
+      "id": "engsoccerdata:e955aef5dabb62909d584ae3ba77c994078d031976b52241aebff190bf67d931:2011-01-28:Fortuna%20Dusseldorf:FSV%20Frankfurt:away",
+      "date": "2011-01-28",
+      "season": "2010-11",
+      "competition": {
+        "name": "German League 2",
+        "type": "league",
+        "country": "Germany"
+      },
+      "stage": "",
+      "opponent": {
+        "name": "Fortuna Dusseldorf",
+        "slug": "fortuna-dusseldorf"
+      },
+      "venue": "away",
+      "score": {
+        "for": 0,
+        "against": 6
+      },
+      "result": "L",
+      "sourceRef": "src:7a747e9c754f773a8198"
+    },
+    {
+      "id": "engsoccerdata:e955aef5dabb62909d584ae3ba77c994078d031976b52241aebff190bf67d931:2011-02-01:Erzgebirge%20Aue:FSV%20Frankfurt:away",
+      "date": "2011-02-01",
+      "season": "2010-11",
+      "competition": {
+        "name": "German League 2",
+        "type": "league",
+        "country": "Germany"
+      },
+      "stage": "",
+      "opponent": {
+        "name": "Erzgebirge Aue",
+        "slug": "erzgebirge-aue"
+      },
+      "venue": "away",
+      "score": {
+        "for": 1,
+        "against": 3
+      },
+      "result": "L",
+      "sourceRef": "src:7a747e9c754f773a8198"
+    },
+    {
+      "id": "engsoccerdata:e955aef5dabb62909d584ae3ba77c994078d031976b52241aebff190bf67d931:2011-02-04:FSV%20Frankfurt:SpVgg%20Greuther%20Furth:home",
+      "date": "2011-02-04",
+      "season": "2010-11",
+      "competition": {
+        "name": "German League 2",
+        "type": "league",
+        "country": "Germany"
+      },
+      "stage": "",
+      "opponent": {
+        "name": "SpVgg Greuther Furth",
+        "slug": "spvgg-greuther-furth"
+      },
+      "venue": "home",
+      "score": {
+        "for": 0,
+        "against": 0
+      },
+      "result": "D",
+      "sourceRef": "src:7a747e9c754f773a8198"
+    },
+    {
+      "id": "engsoccerdata:e955aef5dabb62909d584ae3ba77c994078d031976b52241aebff190bf67d931:2011-02-12:Alemannia%20Aachen:FSV%20Frankfurt:away",
+      "date": "2011-02-12",
+      "season": "2010-11",
+      "competition": {
+        "name": "German League 2",
+        "type": "league",
+        "country": "Germany"
+      },
+      "stage": "",
+      "opponent": {
+        "name": "Alemannia Aachen",
+        "slug": "alemannia-aachen"
+      },
+      "venue": "away",
+      "score": {
+        "for": 1,
+        "against": 2
+      },
+      "result": "L",
+      "sourceRef": "src:7a747e9c754f773a8198"
+    },
+    {
+      "id": "engsoccerdata:e955aef5dabb62909d584ae3ba77c994078d031976b52241aebff190bf67d931:2011-02-20:FSV%20Frankfurt:Karlsruher%20SC:home",
+      "date": "2011-02-20",
+      "season": "2010-11",
+      "competition": {
+        "name": "German League 2",
+        "type": "league",
+        "country": "Germany"
+      },
+      "stage": "",
+      "opponent": {
+        "name": "Karlsruher SC",
+        "slug": "karlsruher-sc"
+      },
+      "venue": "home",
+      "score": {
+        "for": 1,
+        "against": 2
+      },
+      "result": "L",
+      "sourceRef": "src:7a747e9c754f773a8198"
+    },
+    {
+      "id": "engsoccerdata:e955aef5dabb62909d584ae3ba77c994078d031976b52241aebff190bf67d931:2011-02-25:Energie%20Cottbus:FSV%20Frankfurt:away",
+      "date": "2011-02-25",
+      "season": "2010-11",
+      "competition": {
+        "name": "German League 2",
+        "type": "league",
+        "country": "Germany"
+      },
+      "stage": "",
+      "opponent": {
+        "name": "Energie Cottbus",
+        "slug": "energie-cottbus"
+      },
+      "venue": "away",
+      "score": {
+        "for": 1,
+        "against": 2
+      },
+      "result": "L",
+      "sourceRef": "src:7a747e9c754f773a8198"
+    },
+    {
+      "id": "engsoccerdata:e955aef5dabb62909d584ae3ba77c994078d031976b52241aebff190bf67d931:2011-03-04:Hertha%20BSC:FSV%20Frankfurt:away",
+      "date": "2011-03-04",
+      "season": "2010-11",
+      "competition": {
+        "name": "German League 2",
+        "type": "league",
+        "country": "Germany"
+      },
+      "stage": "",
+      "opponent": {
+        "name": "Hertha BSC",
+        "slug": "hertha-bsc"
+      },
+      "venue": "away",
+      "score": {
+        "for": 1,
+        "against": 3
+      },
+      "result": "L",
+      "sourceRef": "src:7a747e9c754f773a8198"
+    },
+    {
+      "id": "engsoccerdata:e955aef5dabb62909d584ae3ba77c994078d031976b52241aebff190bf67d931:2011-03-11:FSV%20Frankfurt:FC%20Ingolstadt%2004:home",
+      "date": "2011-03-11",
+      "season": "2010-11",
+      "competition": {
+        "name": "German League 2",
+        "type": "league",
+        "country": "Germany"
+      },
+      "stage": "",
+      "opponent": {
+        "name": "FC Ingolstadt 04",
+        "slug": "fc-ingolstadt-04"
+      },
+      "venue": "home",
+      "score": {
+        "for": 1,
+        "against": 2
+      },
+      "result": "L",
+      "sourceRef": "src:7a747e9c754f773a8198"
+    },
+    {
+      "id": "engsoccerdata:e955aef5dabb62909d584ae3ba77c994078d031976b52241aebff190bf67d931:2011-03-20:SC%20Paderborn%2007:FSV%20Frankfurt:away",
+      "date": "2011-03-20",
+      "season": "2010-11",
+      "competition": {
+        "name": "German League 2",
+        "type": "league",
+        "country": "Germany"
+      },
+      "stage": "",
+      "opponent": {
+        "name": "SC Paderborn 07",
+        "slug": "sc-paderborn-07"
+      },
+      "venue": "away",
+      "score": {
+        "for": 2,
+        "against": 2
+      },
+      "result": "D",
+      "sourceRef": "src:7a747e9c754f773a8198"
+    },
+    {
+      "id": "engsoccerdata:e955aef5dabb62909d584ae3ba77c994078d031976b52241aebff190bf67d931:2011-04-04:FSV%20Frankfurt:VfL%20Bochum:home",
+      "date": "2011-04-04",
+      "season": "2010-11",
+      "competition": {
+        "name": "German League 2",
+        "type": "league",
+        "country": "Germany"
+      },
+      "stage": "",
+      "opponent": {
+        "name": "VfL Bochum",
+        "slug": "vfl-bochum"
+      },
+      "venue": "home",
+      "score": {
+        "for": 0,
+        "against": 1
+      },
+      "result": "L",
+      "sourceRef": "src:7a747e9c754f773a8198"
+    },
+    {
+      "id": "engsoccerdata:e955aef5dabb62909d584ae3ba77c994078d031976b52241aebff190bf67d931:2011-04-10:1.%20FC%20Union%20Berlin:FSV%20Frankfurt:away",
+      "date": "2011-04-10",
+      "season": "2010-11",
+      "competition": {
+        "name": "German League 2",
+        "type": "league",
+        "country": "Germany"
+      },
+      "stage": "",
+      "opponent": {
+        "name": "Union Berlin",
+        "slug": "union-berlin"
+      },
+      "venue": "away",
+      "score": {
+        "for": 0,
+        "against": 2
+      },
+      "result": "L",
+      "sourceRef": "src:7a747e9c754f773a8198"
+    },
+    {
+      "id": "engsoccerdata:e955aef5dabb62909d584ae3ba77c994078d031976b52241aebff190bf67d931:2011-04-15:FSV%20Frankfurt:1860%20Munchen:home",
+      "date": "2011-04-15",
+      "season": "2010-11",
+      "competition": {
+        "name": "German League 2",
+        "type": "league",
+        "country": "Germany"
+      },
+      "stage": "",
+      "opponent": {
+        "name": "1860 Munchen",
+        "slug": "1860-munchen"
+      },
+      "venue": "home",
+      "score": {
+        "for": 2,
+        "against": 1
+      },
+      "result": "W",
+      "sourceRef": "src:7a747e9c754f773a8198"
+    },
+    {
+      "id": "engsoccerdata:e955aef5dabb62909d584ae3ba77c994078d031976b52241aebff190bf67d931:2011-04-21:VfL%20Osnabruck:FSV%20Frankfurt:away",
+      "date": "2011-04-21",
+      "season": "2010-11",
+      "competition": {
+        "name": "German League 2",
+        "type": "league",
+        "country": "Germany"
+      },
+      "stage": "",
+      "opponent": {
+        "name": "VfL Osnabruck",
+        "slug": "vfl-osnabruck"
+      },
+      "venue": "away",
+      "score": {
+        "for": 1,
+        "against": 1
+      },
+      "result": "D",
+      "sourceRef": "src:7a747e9c754f773a8198"
+    },
+    {
+      "id": "engsoccerdata:e955aef5dabb62909d584ae3ba77c994078d031976b52241aebff190bf67d931:2011-04-30:FSV%20Frankfurt:MSV%20Duisburg:home",
+      "date": "2011-04-30",
+      "season": "2010-11",
+      "competition": {
+        "name": "German League 2",
+        "type": "league",
+        "country": "Germany"
+      },
+      "stage": "",
+      "opponent": {
+        "name": "MSV Duisburg",
+        "slug": "msv-duisburg"
+      },
+      "venue": "home",
+      "score": {
+        "for": 0,
+        "against": 4
+      },
+      "result": "L",
+      "sourceRef": "src:7a747e9c754f773a8198"
+    },
+    {
+      "id": "engsoccerdata:e955aef5dabb62909d584ae3ba77c994078d031976b52241aebff190bf67d931:2011-05-08:FC%20Augsburg:FSV%20Frankfurt:away",
+      "date": "2011-05-08",
+      "season": "2010-11",
+      "competition": {
+        "name": "German League 2",
+        "type": "league",
+        "country": "Germany"
+      },
+      "stage": "",
+      "opponent": {
+        "name": "FC Augsburg",
+        "slug": "fc-augsburg"
+      },
+      "venue": "away",
+      "score": {
+        "for": 1,
+        "against": 2
+      },
+      "result": "L",
+      "sourceRef": "src:7a747e9c754f773a8198"
+    },
+    {
+      "id": "engsoccerdata:e955aef5dabb62909d584ae3ba77c994078d031976b52241aebff190bf67d931:2011-05-15:FSV%20Frankfurt:Erzgebirge%20Aue:home",
+      "date": "2011-05-15",
+      "season": "2010-11",
+      "competition": {
+        "name": "German League 2",
+        "type": "league",
+        "country": "Germany"
+      },
+      "stage": "",
+      "opponent": {
+        "name": "Erzgebirge Aue",
+        "slug": "erzgebirge-aue"
+      },
+      "venue": "home",
+      "score": {
+        "for": 0,
+        "against": 2
+      },
+      "result": "L",
+      "sourceRef": "src:7a747e9c754f773a8198"
+    },
+    {
+      "id": "engsoccerdata:e955aef5dabb62909d584ae3ba77c994078d031976b52241aebff190bf67d931:2011-07-15:FSV%20Frankfurt:1.%20FC%20Union%20Berlin:home",
+      "date": "2011-07-15",
+      "season": "2011-12",
+      "competition": {
+        "name": "German League 2",
+        "type": "league",
+        "country": "Germany"
+      },
+      "stage": "",
+      "opponent": {
+        "name": "Union Berlin",
+        "slug": "union-berlin"
+      },
+      "venue": "home",
+      "score": {
+        "for": 1,
+        "against": 1
+      },
+      "result": "D",
+      "sourceRef": "src:7a747e9c754f773a8198"
+    },
+    {
+      "id": "engsoccerdata:e955aef5dabb62909d584ae3ba77c994078d031976b52241aebff190bf67d931:2011-07-22:VfL%20Bochum:FSV%20Frankfurt:away",
+      "date": "2011-07-22",
+      "season": "2011-12",
+      "competition": {
+        "name": "German League 2",
+        "type": "league",
+        "country": "Germany"
+      },
+      "stage": "",
+      "opponent": {
+        "name": "VfL Bochum",
+        "slug": "vfl-bochum"
+      },
+      "venue": "away",
+      "score": {
+        "for": 0,
+        "against": 1
+      },
+      "result": "L",
+      "sourceRef": "src:7a747e9c754f773a8198"
+    },
+    {
+      "id": "engsoccerdata:e955aef5dabb62909d584ae3ba77c994078d031976b52241aebff190bf67d931:2011-08-07:FSV%20Frankfurt:MSV%20Duisburg:home",
+      "date": "2011-08-07",
+      "season": "2011-12",
+      "competition": {
+        "name": "German League 2",
+        "type": "league",
+        "country": "Germany"
+      },
+      "stage": "",
+      "opponent": {
+        "name": "MSV Duisburg",
+        "slug": "msv-duisburg"
+      },
+      "venue": "home",
+      "score": {
+        "for": 0,
+        "against": 0
+      },
+      "result": "D",
+      "sourceRef": "src:7a747e9c754f773a8198"
+    },
+    {
+      "id": "engsoccerdata:e955aef5dabb62909d584ae3ba77c994078d031976b52241aebff190bf67d931:2011-08-14:FC%20Ingolstadt%2004:FSV%20Frankfurt:away",
+      "date": "2011-08-14",
+      "season": "2011-12",
+      "competition": {
+        "name": "German League 2",
+        "type": "league",
+        "country": "Germany"
+      },
+      "stage": "",
+      "opponent": {
+        "name": "FC Ingolstadt 04",
+        "slug": "fc-ingolstadt-04"
+      },
+      "venue": "away",
+      "score": {
+        "for": 1,
+        "against": 1
+      },
+      "result": "D",
+      "sourceRef": "src:7a747e9c754f773a8198"
+    },
+    {
+      "id": "engsoccerdata:e955aef5dabb62909d584ae3ba77c994078d031976b52241aebff190bf67d931:2011-08-21:FSV%20Frankfurt:Eintracht%20Frankfurt:home",
+      "date": "2011-08-21",
+      "season": "2011-12",
+      "competition": {
+        "name": "German League 2",
+        "type": "league",
+        "country": "Germany"
+      },
+      "stage": "",
+      "opponent": {
+        "name": "Eintracht Frankfurt",
+        "slug": "eintracht-frankfurt"
+      },
+      "venue": "home",
+      "score": {
+        "for": 0,
+        "against": 4
+      },
+      "result": "L",
+      "sourceRef": "src:7a747e9c754f773a8198"
+    },
+    {
+      "id": "engsoccerdata:e955aef5dabb62909d584ae3ba77c994078d031976b52241aebff190bf67d931:2011-08-27:Karlsruher%20SC:FSV%20Frankfurt:away",
+      "date": "2011-08-27",
+      "season": "2011-12",
+      "competition": {
+        "name": "German League 2",
+        "type": "league",
+        "country": "Germany"
+      },
+      "stage": "",
+      "opponent": {
+        "name": "Karlsruher SC",
+        "slug": "karlsruher-sc"
+      },
+      "venue": "away",
+      "score": {
+        "for": 4,
+        "against": 0
+      },
+      "result": "W",
+      "sourceRef": "src:7a747e9c754f773a8198"
+    },
+    {
+      "id": "engsoccerdata:e955aef5dabb62909d584ae3ba77c994078d031976b52241aebff190bf67d931:2011-09-11:FSV%20Frankfurt:Erzgebirge%20Aue:home",
+      "date": "2011-09-11",
+      "season": "2011-12",
+      "competition": {
+        "name": "German League 2",
+        "type": "league",
+        "country": "Germany"
+      },
+      "stage": "",
+      "opponent": {
+        "name": "Erzgebirge Aue",
+        "slug": "erzgebirge-aue"
+      },
+      "venue": "home",
+      "score": {
+        "for": 1,
+        "against": 1
+      },
+      "result": "D",
+      "sourceRef": "src:7a747e9c754f773a8198"
+    },
+    {
+      "id": "engsoccerdata:e955aef5dabb62909d584ae3ba77c994078d031976b52241aebff190bf67d931:2011-09-18:1860%20Munchen:FSV%20Frankfurt:away",
+      "date": "2011-09-18",
+      "season": "2011-12",
+      "competition": {
+        "name": "German League 2",
+        "type": "league",
+        "country": "Germany"
+      },
+      "stage": "",
+      "opponent": {
+        "name": "1860 Munchen",
+        "slug": "1860-munchen"
+      },
+      "venue": "away",
+      "score": {
+        "for": 0,
+        "against": 4
+      },
+      "result": "L",
+      "sourceRef": "src:7a747e9c754f773a8198"
+    },
+    {
+      "id": "engsoccerdata:e955aef5dabb62909d584ae3ba77c994078d031976b52241aebff190bf67d931:2011-09-23:FSV%20Frankfurt:Eintracht%20Braunschweig:home",
+      "date": "2011-09-23",
+      "season": "2011-12",
+      "competition": {
+        "name": "German League 2",
+        "type": "league",
+        "country": "Germany"
+      },
+      "stage": "",
+      "opponent": {
+        "name": "Eintracht Braunschweig",
+        "slug": "eintracht-braunschweig"
+      },
+      "venue": "home",
+      "score": {
+        "for": 1,
+        "against": 1
+      },
+      "result": "D",
+      "sourceRef": "src:7a747e9c754f773a8198"
+    },
+    {
+      "id": "engsoccerdata:e955aef5dabb62909d584ae3ba77c994078d031976b52241aebff190bf67d931:2011-09-30:Alemannia%20Aachen:FSV%20Frankfurt:away",
+      "date": "2011-09-30",
+      "season": "2011-12",
+      "competition": {
+        "name": "German League 2",
+        "type": "league",
+        "country": "Germany"
+      },
+      "stage": "",
+      "opponent": {
+        "name": "Alemannia Aachen",
+        "slug": "alemannia-aachen"
+      },
+      "venue": "away",
+      "score": {
+        "for": 3,
+        "against": 1
+      },
+      "result": "W",
+      "sourceRef": "src:7a747e9c754f773a8198"
+    },
+    {
+      "id": "engsoccerdata:e955aef5dabb62909d584ae3ba77c994078d031976b52241aebff190bf67d931:2011-10-16:FSV%20Frankfurt:Energie%20Cottbus:home",
+      "date": "2011-10-16",
+      "season": "2011-12",
+      "competition": {
+        "name": "German League 2",
+        "type": "league",
+        "country": "Germany"
+      },
+      "stage": "",
+      "opponent": {
+        "name": "Energie Cottbus",
+        "slug": "energie-cottbus"
+      },
+      "venue": "home",
+      "score": {
+        "for": 0,
+        "against": 1
+      },
+      "result": "L",
+      "sourceRef": "src:7a747e9c754f773a8198"
+    },
+    {
+      "id": "engsoccerdata:e955aef5dabb62909d584ae3ba77c994078d031976b52241aebff190bf67d931:2011-10-23:FC%20St.%20Pauli:FSV%20Frankfurt:away",
+      "date": "2011-10-23",
+      "season": "2011-12",
+      "competition": {
+        "name": "German League 2",
+        "type": "league",
+        "country": "Germany"
+      },
+      "stage": "",
+      "opponent": {
+        "name": "FC St. Pauli",
+        "slug": "fc-st-pauli"
+      },
+      "venue": "away",
+      "score": {
+        "for": 1,
+        "against": 2
+      },
+      "result": "L",
+      "sourceRef": "src:7a747e9c754f773a8198"
+    },
+    {
+      "id": "engsoccerdata:e955aef5dabb62909d584ae3ba77c994078d031976b52241aebff190bf67d931:2011-10-30:FSV%20Frankfurt:Fortuna%20Dusseldorf:home",
+      "date": "2011-10-30",
+      "season": "2011-12",
+      "competition": {
+        "name": "German League 2",
+        "type": "league",
+        "country": "Germany"
+      },
+      "stage": "",
+      "opponent": {
+        "name": "Fortuna Dusseldorf",
+        "slug": "fortuna-dusseldorf"
+      },
+      "venue": "home",
+      "score": {
+        "for": 2,
+        "against": 5
+      },
+      "result": "L",
+      "sourceRef": "src:7a747e9c754f773a8198"
+    },
+    {
+      "id": "engsoccerdata:e955aef5dabb62909d584ae3ba77c994078d031976b52241aebff190bf67d931:2011-11-06:FSV%20Frankfurt:Hansa%20Rostock:home",
+      "date": "2011-11-06",
+      "season": "2011-12",
+      "competition": {
+        "name": "German League 2",
+        "type": "league",
+        "country": "Germany"
+      },
+      "stage": "",
+      "opponent": {
+        "name": "Hansa Rostock",
+        "slug": "hansa-rostock"
+      },
+      "venue": "home",
+      "score": {
+        "for": 0,
+        "against": 0
+      },
+      "result": "D",
+      "sourceRef": "src:7a747e9c754f773a8198"
+    },
+    {
+      "id": "engsoccerdata:e955aef5dabb62909d584ae3ba77c994078d031976b52241aebff190bf67d931:2011-11-20:SpVgg%20Greuther%20Furth:FSV%20Frankfurt:away",
+      "date": "2011-11-20",
+      "season": "2011-12",
+      "competition": {
+        "name": "German League 2",
+        "type": "league",
+        "country": "Germany"
+      },
+      "stage": "",
+      "opponent": {
+        "name": "SpVgg Greuther Furth",
+        "slug": "spvgg-greuther-furth"
+      },
+      "venue": "away",
+      "score": {
+        "for": 0,
+        "against": 4
+      },
+      "result": "L",
+      "sourceRef": "src:7a747e9c754f773a8198"
+    },
+    {
+      "id": "engsoccerdata:e955aef5dabb62909d584ae3ba77c994078d031976b52241aebff190bf67d931:2011-11-25:FSV%20Frankfurt:SC%20Paderborn%2007:home",
+      "date": "2011-11-25",
+      "season": "2011-12",
+      "competition": {
+        "name": "German League 2",
+        "type": "league",
+        "country": "Germany"
+      },
+      "stage": "",
+      "opponent": {
+        "name": "SC Paderborn 07",
+        "slug": "sc-paderborn-07"
+      },
+      "venue": "home",
+      "score": {
+        "for": 2,
+        "against": 2
+      },
+      "result": "D",
+      "sourceRef": "src:7a747e9c754f773a8198"
+    },
+    {
+      "id": "engsoccerdata:e955aef5dabb62909d584ae3ba77c994078d031976b52241aebff190bf67d931:2011-12-04:Dynamo%20Dresden:FSV%20Frankfurt:away",
+      "date": "2011-12-04",
+      "season": "2011-12",
+      "competition": {
+        "name": "German League 2",
+        "type": "league",
+        "country": "Germany"
+      },
+      "stage": "",
+      "opponent": {
+        "name": "Dynamo Dresden",
+        "slug": "dynamo-dresden"
+      },
+      "venue": "away",
+      "score": {
+        "for": 2,
+        "against": 2
+      },
+      "result": "D",
+      "sourceRef": "src:7a747e9c754f773a8198"
+    },
+    {
+      "id": "engsoccerdata:e955aef5dabb62909d584ae3ba77c994078d031976b52241aebff190bf67d931:2011-12-10:1.%20FC%20Union%20Berlin:FSV%20Frankfurt:away",
+      "date": "2011-12-10",
+      "season": "2011-12",
+      "competition": {
+        "name": "German League 2",
+        "type": "league",
+        "country": "Germany"
+      },
+      "stage": "",
+      "opponent": {
+        "name": "Union Berlin",
+        "slug": "union-berlin"
+      },
+      "venue": "away",
+      "score": {
+        "for": 0,
+        "against": 4
+      },
+      "result": "L",
+      "sourceRef": "src:7a747e9c754f773a8198"
+    },
+    {
+      "id": "engsoccerdata:e955aef5dabb62909d584ae3ba77c994078d031976b52241aebff190bf67d931:2011-12-17:FSV%20Frankfurt:VfL%20Bochum:home",
+      "date": "2011-12-17",
+      "season": "2011-12",
+      "competition": {
+        "name": "German League 2",
+        "type": "league",
+        "country": "Germany"
+      },
+      "stage": "",
+      "opponent": {
+        "name": "VfL Bochum",
+        "slug": "vfl-bochum"
+      },
+      "venue": "home",
+      "score": {
+        "for": 0,
+        "against": 2
+      },
+      "result": "L",
+      "sourceRef": "src:7a747e9c754f773a8198"
+    },
+    {
+      "id": "engsoccerdata:e955aef5dabb62909d584ae3ba77c994078d031976b52241aebff190bf67d931:2012-02-03:MSV%20Duisburg:FSV%20Frankfurt:away",
+      "date": "2012-02-03",
+      "season": "2011-12",
+      "competition": {
+        "name": "German League 2",
+        "type": "league",
+        "country": "Germany"
+      },
+      "stage": "",
+      "opponent": {
+        "name": "MSV Duisburg",
+        "slug": "msv-duisburg"
+      },
+      "venue": "away",
+      "score": {
+        "for": 2,
+        "against": 1
+      },
+      "result": "W",
+      "sourceRef": "src:7a747e9c754f773a8198"
+    },
+    {
+      "id": "engsoccerdata:e955aef5dabb62909d584ae3ba77c994078d031976b52241aebff190bf67d931:2012-02-10:FSV%20Frankfurt:FC%20Ingolstadt%2004:home",
+      "date": "2012-02-10",
+      "season": "2011-12",
+      "competition": {
+        "name": "German League 2",
+        "type": "league",
+        "country": "Germany"
+      },
+      "stage": "",
+      "opponent": {
+        "name": "FC Ingolstadt 04",
+        "slug": "fc-ingolstadt-04"
+      },
+      "venue": "home",
+      "score": {
+        "for": 1,
+        "against": 1
+      },
+      "result": "D",
+      "sourceRef": "src:7a747e9c754f773a8198"
+    },
+    {
+      "id": "engsoccerdata:e955aef5dabb62909d584ae3ba77c994078d031976b52241aebff190bf67d931:2012-02-18:Eintracht%20Frankfurt:FSV%20Frankfurt:away",
+      "date": "2012-02-18",
+      "season": "2011-12",
+      "competition": {
+        "name": "German League 2",
+        "type": "league",
+        "country": "Germany"
+      },
+      "stage": "",
+      "opponent": {
+        "name": "Eintracht Frankfurt",
+        "slug": "eintracht-frankfurt"
+      },
+      "venue": "away",
+      "score": {
+        "for": 1,
+        "against": 6
+      },
+      "result": "L",
+      "sourceRef": "src:7a747e9c754f773a8198"
+    },
+    {
+      "id": "engsoccerdata:e955aef5dabb62909d584ae3ba77c994078d031976b52241aebff190bf67d931:2012-02-26:FSV%20Frankfurt:Karlsruher%20SC:home",
+      "date": "2012-02-26",
+      "season": "2011-12",
+      "competition": {
+        "name": "German League 2",
+        "type": "league",
+        "country": "Germany"
+      },
+      "stage": "",
+      "opponent": {
+        "name": "Karlsruher SC",
+        "slug": "karlsruher-sc"
+      },
+      "venue": "home",
+      "score": {
+        "for": 2,
+        "against": 1
+      },
+      "result": "W",
+      "sourceRef": "src:7a747e9c754f773a8198"
+    },
+    {
+      "id": "engsoccerdata:e955aef5dabb62909d584ae3ba77c994078d031976b52241aebff190bf67d931:2012-03-04:Erzgebirge%20Aue:FSV%20Frankfurt:away",
+      "date": "2012-03-04",
+      "season": "2011-12",
+      "competition": {
+        "name": "German League 2",
+        "type": "league",
+        "country": "Germany"
+      },
+      "stage": "",
+      "opponent": {
+        "name": "Erzgebirge Aue",
+        "slug": "erzgebirge-aue"
+      },
+      "venue": "away",
+      "score": {
+        "for": 3,
+        "against": 4
+      },
+      "result": "L",
+      "sourceRef": "src:7a747e9c754f773a8198"
+    },
+    {
+      "id": "engsoccerdata:e955aef5dabb62909d584ae3ba77c994078d031976b52241aebff190bf67d931:2012-03-10:FSV%20Frankfurt:1860%20Munchen:home",
+      "date": "2012-03-10",
+      "season": "2011-12",
+      "competition": {
+        "name": "German League 2",
+        "type": "league",
+        "country": "Germany"
+      },
+      "stage": "",
+      "opponent": {
+        "name": "1860 Munchen",
+        "slug": "1860-munchen"
+      },
+      "venue": "home",
+      "score": {
+        "for": 3,
+        "against": 1
+      },
+      "result": "W",
+      "sourceRef": "src:7a747e9c754f773a8198"
+    },
+    {
+      "id": "engsoccerdata:e955aef5dabb62909d584ae3ba77c994078d031976b52241aebff190bf67d931:2012-03-16:Eintracht%20Braunschweig:FSV%20Frankfurt:away",
+      "date": "2012-03-16",
+      "season": "2011-12",
+      "competition": {
+        "name": "German League 2",
+        "type": "league",
+        "country": "Germany"
+      },
+      "stage": "",
+      "opponent": {
+        "name": "Eintracht Braunschweig",
+        "slug": "eintracht-braunschweig"
+      },
+      "venue": "away",
+      "score": {
+        "for": 0,
+        "against": 0
+      },
+      "result": "D",
+      "sourceRef": "src:7a747e9c754f773a8198"
+    },
+    {
+      "id": "engsoccerdata:e955aef5dabb62909d584ae3ba77c994078d031976b52241aebff190bf67d931:2012-03-23:FSV%20Frankfurt:Alemannia%20Aachen:home",
+      "date": "2012-03-23",
+      "season": "2011-12",
+      "competition": {
+        "name": "German League 2",
+        "type": "league",
+        "country": "Germany"
+      },
+      "stage": "",
+      "opponent": {
+        "name": "Alemannia Aachen",
+        "slug": "alemannia-aachen"
+      },
+      "venue": "home",
+      "score": {
+        "for": 2,
+        "against": 1
+      },
+      "result": "W",
+      "sourceRef": "src:7a747e9c754f773a8198"
+    },
+    {
+      "id": "engsoccerdata:e955aef5dabb62909d584ae3ba77c994078d031976b52241aebff190bf67d931:2012-04-01:Energie%20Cottbus:FSV%20Frankfurt:away",
+      "date": "2012-04-01",
+      "season": "2011-12",
+      "competition": {
+        "name": "German League 2",
+        "type": "league",
+        "country": "Germany"
+      },
+      "stage": "",
+      "opponent": {
+        "name": "Energie Cottbus",
+        "slug": "energie-cottbus"
+      },
+      "venue": "away",
+      "score": {
+        "for": 1,
+        "against": 1
+      },
+      "result": "D",
+      "sourceRef": "src:7a747e9c754f773a8198"
+    },
+    {
+      "id": "engsoccerdata:e955aef5dabb62909d584ae3ba77c994078d031976b52241aebff190bf67d931:2012-04-07:FSV%20Frankfurt:FC%20St.%20Pauli:home",
+      "date": "2012-04-07",
+      "season": "2011-12",
+      "competition": {
+        "name": "German League 2",
+        "type": "league",
+        "country": "Germany"
+      },
+      "stage": "",
+      "opponent": {
+        "name": "FC St. Pauli",
+        "slug": "fc-st-pauli"
+      },
+      "venue": "home",
+      "score": {
+        "for": 3,
+        "against": 3
+      },
+      "result": "D",
+      "sourceRef": "src:7a747e9c754f773a8198"
+    },
+    {
+      "id": "engsoccerdata:e955aef5dabb62909d584ae3ba77c994078d031976b52241aebff190bf67d931:2012-04-10:Fortuna%20Dusseldorf:FSV%20Frankfurt:away",
+      "date": "2012-04-10",
+      "season": "2011-12",
+      "competition": {
+        "name": "German League 2",
+        "type": "league",
+        "country": "Germany"
+      },
+      "stage": "",
+      "opponent": {
+        "name": "Fortuna Dusseldorf",
+        "slug": "fortuna-dusseldorf"
+      },
+      "venue": "away",
+      "score": {
+        "for": 0,
+        "against": 1
+      },
+      "result": "L",
+      "sourceRef": "src:7a747e9c754f773a8198"
+    },
+    {
+      "id": "engsoccerdata:e955aef5dabb62909d584ae3ba77c994078d031976b52241aebff190bf67d931:2012-04-13:Hansa%20Rostock:FSV%20Frankfurt:away",
+      "date": "2012-04-13",
+      "season": "2011-12",
+      "competition": {
+        "name": "German League 2",
+        "type": "league",
+        "country": "Germany"
+      },
+      "stage": "",
+      "opponent": {
+        "name": "Hansa Rostock",
+        "slug": "hansa-rostock"
+      },
+      "venue": "away",
+      "score": {
+        "for": 5,
+        "against": 0
+      },
+      "result": "W",
+      "sourceRef": "src:7a747e9c754f773a8198"
+    },
+    {
+      "id": "engsoccerdata:e955aef5dabb62909d584ae3ba77c994078d031976b52241aebff190bf67d931:2012-04-20:FSV%20Frankfurt:SpVgg%20Greuther%20Furth:home",
+      "date": "2012-04-20",
+      "season": "2011-12",
+      "competition": {
+        "name": "German League 2",
+        "type": "league",
+        "country": "Germany"
+      },
+      "stage": "",
+      "opponent": {
+        "name": "SpVgg Greuther Furth",
+        "slug": "spvgg-greuther-furth"
+      },
+      "venue": "home",
+      "score": {
+        "for": 1,
+        "against": 1
+      },
+      "result": "D",
+      "sourceRef": "src:7a747e9c754f773a8198"
+    },
+    {
+      "id": "engsoccerdata:e955aef5dabb62909d584ae3ba77c994078d031976b52241aebff190bf67d931:2012-04-29:SC%20Paderborn%2007:FSV%20Frankfurt:away",
+      "date": "2012-04-29",
+      "season": "2011-12",
+      "competition": {
+        "name": "German League 2",
+        "type": "league",
+        "country": "Germany"
+      },
+      "stage": "",
+      "opponent": {
+        "name": "SC Paderborn 07",
+        "slug": "sc-paderborn-07"
+      },
+      "venue": "away",
+      "score": {
+        "for": 0,
+        "against": 1
+      },
+      "result": "L",
+      "sourceRef": "src:7a747e9c754f773a8198"
+    },
+    {
+      "id": "engsoccerdata:e955aef5dabb62909d584ae3ba77c994078d031976b52241aebff190bf67d931:2012-05-06:FSV%20Frankfurt:Dynamo%20Dresden:home",
+      "date": "2012-05-06",
+      "season": "2011-12",
+      "competition": {
+        "name": "German League 2",
+        "type": "league",
+        "country": "Germany"
+      },
+      "stage": "",
+      "opponent": {
+        "name": "Dynamo Dresden",
+        "slug": "dynamo-dresden"
+      },
+      "venue": "home",
+      "score": {
+        "for": 1,
+        "against": 1
+      },
+      "result": "D",
+      "sourceRef": "src:7a747e9c754f773a8198"
+    },
+    {
+      "id": "engsoccerdata:e955aef5dabb62909d584ae3ba77c994078d031976b52241aebff190bf67d931:2012-08-05:SV%20Sandhausen:FSV%20Frankfurt:away",
+      "date": "2012-08-05",
+      "season": "2012-13",
+      "competition": {
+        "name": "German League 2",
+        "type": "league",
+        "country": "Germany"
+      },
+      "stage": "",
+      "opponent": {
+        "name": "SV Sandhausen",
+        "slug": "sv-sandhausen"
+      },
+      "venue": "away",
+      "score": {
+        "for": 1,
+        "against": 1
+      },
+      "result": "D",
+      "sourceRef": "src:7a747e9c754f773a8198"
+    },
+    {
+      "id": "engsoccerdata:e955aef5dabb62909d584ae3ba77c994078d031976b52241aebff190bf67d931:2012-08-12:FSV%20Frankfurt:Hertha%20BSC:home",
+      "date": "2012-08-12",
+      "season": "2012-13",
+      "competition": {
+        "name": "German League 2",
+        "type": "league",
+        "country": "Germany"
+      },
+      "stage": "",
+      "opponent": {
+        "name": "Hertha BSC",
+        "slug": "hertha-bsc"
+      },
+      "venue": "home",
+      "score": {
+        "for": 3,
+        "against": 1
+      },
+      "result": "W",
+      "sourceRef": "src:7a747e9c754f773a8198"
+    },
+    {
+      "id": "engsoccerdata:e955aef5dabb62909d584ae3ba77c994078d031976b52241aebff190bf67d931:2012-08-26:FC%20Ingolstadt%2004:FSV%20Frankfurt:away",
+      "date": "2012-08-26",
+      "season": "2012-13",
+      "competition": {
+        "name": "German League 2",
+        "type": "league",
+        "country": "Germany"
+      },
+      "stage": "",
+      "opponent": {
+        "name": "FC Ingolstadt 04",
+        "slug": "fc-ingolstadt-04"
+      },
+      "venue": "away",
+      "score": {
+        "for": 2,
+        "against": 0
+      },
+      "result": "W",
+      "sourceRef": "src:7a747e9c754f773a8198"
+    },
+    {
+      "id": "engsoccerdata:e955aef5dabb62909d584ae3ba77c994078d031976b52241aebff190bf67d931:2012-09-02:FSV%20Frankfurt:Erzgebirge%20Aue:home",
+      "date": "2012-09-02",
+      "season": "2012-13",
+      "competition": {
+        "name": "German League 2",
+        "type": "league",
+        "country": "Germany"
+      },
+      "stage": "",
+      "opponent": {
+        "name": "Erzgebirge Aue",
+        "slug": "erzgebirge-aue"
+      },
+      "venue": "home",
+      "score": {
+        "for": 1,
+        "against": 0
+      },
+      "result": "W",
+      "sourceRef": "src:7a747e9c754f773a8198"
+    },
+    {
+      "id": "engsoccerdata:e955aef5dabb62909d584ae3ba77c994078d031976b52241aebff190bf67d931:2012-09-14:Energie%20Cottbus:FSV%20Frankfurt:away",
+      "date": "2012-09-14",
+      "season": "2012-13",
+      "competition": {
+        "name": "German League 2",
+        "type": "league",
+        "country": "Germany"
+      },
+      "stage": "",
+      "opponent": {
+        "name": "Energie Cottbus",
+        "slug": "energie-cottbus"
+      },
+      "venue": "away",
+      "score": {
+        "for": 2,
+        "against": 2
+      },
+      "result": "D",
+      "sourceRef": "src:7a747e9c754f773a8198"
+    },
+    {
+      "id": "engsoccerdata:e955aef5dabb62909d584ae3ba77c994078d031976b52241aebff190bf67d931:2012-09-21:FSV%20Frankfurt:FC%20St.%20Pauli:home",
+      "date": "2012-09-21",
+      "season": "2012-13",
+      "competition": {
+        "name": "German League 2",
+        "type": "league",
+        "country": "Germany"
+      },
+      "stage": "",
+      "opponent": {
+        "name": "FC St. Pauli",
+        "slug": "fc-st-pauli"
+      },
+      "venue": "home",
+      "score": {
+        "for": 2,
+        "against": 1
+      },
+      "result": "W",
+      "sourceRef": "src:7a747e9c754f773a8198"
+    },
+    {
+      "id": "engsoccerdata:e955aef5dabb62909d584ae3ba77c994078d031976b52241aebff190bf67d931:2012-09-25:1.%20FC%20Koln:FSV%20Frankfurt:away",
+      "date": "2012-09-25",
+      "season": "2012-13",
+      "competition": {
+        "name": "German League 2",
+        "type": "league",
+        "country": "Germany"
+      },
+      "stage": "",
+      "opponent": {
+        "name": "1. FC Koln",
+        "slug": "1-fc-koln"
+      },
+      "venue": "away",
+      "score": {
+        "for": 1,
+        "against": 2
+      },
+      "result": "L",
+      "sourceRef": "src:7a747e9c754f773a8198"
+    },
+    {
+      "id": "engsoccerdata:e955aef5dabb62909d584ae3ba77c994078d031976b52241aebff190bf67d931:2012-09-28:VfR%20Aalen:FSV%20Frankfurt:away",
+      "date": "2012-09-28",
+      "season": "2012-13",
+      "competition": {
+        "name": "German League 2",
+        "type": "league",
+        "country": "Germany"
+      },
+      "stage": "",
+      "opponent": {
+        "name": "VfR Aalen",
+        "slug": "vfr-aalen"
+      },
+      "venue": "away",
+      "score": {
+        "for": 0,
+        "against": 3
+      },
+      "result": "L",
+      "sourceRef": "src:7a747e9c754f773a8198"
+    },
+    {
+      "id": "engsoccerdata:e955aef5dabb62909d584ae3ba77c994078d031976b52241aebff190bf67d931:2012-10-05:FSV%20Frankfurt:SC%20Paderborn%2007:home",
+      "date": "2012-10-05",
+      "season": "2012-13",
+      "competition": {
+        "name": "German League 2",
+        "type": "league",
+        "country": "Germany"
+      },
+      "stage": "",
+      "opponent": {
+        "name": "SC Paderborn 07",
+        "slug": "sc-paderborn-07"
+      },
+      "venue": "home",
+      "score": {
+        "for": 1,
+        "against": 1
+      },
+      "result": "D",
+      "sourceRef": "src:7a747e9c754f773a8198"
+    },
+    {
+      "id": "engsoccerdata:e955aef5dabb62909d584ae3ba77c994078d031976b52241aebff190bf67d931:2012-10-21:1.%20FC%20Union%20Berlin:FSV%20Frankfurt:away",
+      "date": "2012-10-21",
+      "season": "2012-13",
+      "competition": {
+        "name": "German League 2",
+        "type": "league",
+        "country": "Germany"
+      },
+      "stage": "",
+      "opponent": {
+        "name": "Union Berlin",
+        "slug": "union-berlin"
+      },
+      "venue": "away",
+      "score": {
+        "for": 0,
+        "against": 1
+      },
+      "result": "L",
+      "sourceRef": "src:7a747e9c754f773a8198"
+    },
+    {
+      "id": "engsoccerdata:e955aef5dabb62909d584ae3ba77c994078d031976b52241aebff190bf67d931:2012-10-28:FSV%20Frankfurt:Jahn%20Regensburg:home",
+      "date": "2012-10-28",
+      "season": "2012-13",
+      "competition": {
+        "name": "German League 2",
+        "type": "league",
+        "country": "Germany"
+      },
+      "stage": "",
+      "opponent": {
+        "name": "Jahn Regensburg",
+        "slug": "jahn-regensburg"
+      },
+      "venue": "home",
+      "score": {
+        "for": 3,
+        "against": 1
+      },
+      "result": "W",
+      "sourceRef": "src:7a747e9c754f773a8198"
+    },
+    {
+      "id": "engsoccerdata:e955aef5dabb62909d584ae3ba77c994078d031976b52241aebff190bf67d931:2012-11-03:MSV%20Duisburg:FSV%20Frankfurt:away",
+      "date": "2012-11-03",
+      "season": "2012-13",
+      "competition": {
+        "name": "German League 2",
+        "type": "league",
+        "country": "Germany"
+      },
+      "stage": "",
+      "opponent": {
+        "name": "MSV Duisburg",
+        "slug": "msv-duisburg"
+      },
+      "venue": "away",
+      "score": {
+        "for": 2,
+        "against": 1
+      },
+      "result": "W",
+      "sourceRef": "src:7a747e9c754f773a8198"
+    },
+    {
+      "id": "engsoccerdata:e955aef5dabb62909d584ae3ba77c994078d031976b52241aebff190bf67d931:2012-11-11:FSV%20Frankfurt:1860%20Munchen:home",
+      "date": "2012-11-11",
+      "season": "2012-13",
+      "competition": {
+        "name": "German League 2",
+        "type": "league",
+        "country": "Germany"
+      },
+      "stage": "",
+      "opponent": {
+        "name": "1860 Munchen",
+        "slug": "1860-munchen"
+      },
+      "venue": "home",
+      "score": {
+        "for": 0,
+        "against": 1
+      },
+      "result": "L",
+      "sourceRef": "src:7a747e9c754f773a8198"
+    },
+    {
+      "id": "engsoccerdata:e955aef5dabb62909d584ae3ba77c994078d031976b52241aebff190bf67d931:2012-11-16:Dynamo%20Dresden:FSV%20Frankfurt:away",
+      "date": "2012-11-16",
+      "season": "2012-13",
+      "competition": {
+        "name": "German League 2",
+        "type": "league",
+        "country": "Germany"
+      },
+      "stage": "",
+      "opponent": {
+        "name": "Dynamo Dresden",
+        "slug": "dynamo-dresden"
+      },
+      "venue": "away",
+      "score": {
+        "for": 1,
+        "against": 2
+      },
+      "result": "L",
+      "sourceRef": "src:7a747e9c754f773a8198"
+    },
+    {
+      "id": "engsoccerdata:e955aef5dabb62909d584ae3ba77c994078d031976b52241aebff190bf67d931:2012-11-24:FSV%20Frankfurt:1.%20FC%20Kaiserslautern:home",
+      "date": "2012-11-24",
+      "season": "2012-13",
+      "competition": {
+        "name": "German League 2",
+        "type": "league",
+        "country": "Germany"
+      },
+      "stage": "",
+      "opponent": {
+        "name": "1. FC Kaiserslautern",
+        "slug": "1-fc-kaiserslautern"
+      },
+      "venue": "home",
+      "score": {
+        "for": 0,
+        "against": 1
+      },
+      "result": "L",
+      "sourceRef": "src:7a747e9c754f773a8198"
+    },
+    {
+      "id": "engsoccerdata:e955aef5dabb62909d584ae3ba77c994078d031976b52241aebff190bf67d931:2012-11-27:VfL%20Bochum:FSV%20Frankfurt:away",
+      "date": "2012-11-27",
+      "season": "2012-13",
+      "competition": {
+        "name": "German League 2",
+        "type": "league",
+        "country": "Germany"
+      },
+      "stage": "",
+      "opponent": {
+        "name": "VfL Bochum",
+        "slug": "vfl-bochum"
+      },
+      "venue": "away",
+      "score": {
+        "for": 3,
+        "against": 1
+      },
+      "result": "W",
+      "sourceRef": "src:7a747e9c754f773a8198"
+    },
+    {
+      "id": "engsoccerdata:e955aef5dabb62909d584ae3ba77c994078d031976b52241aebff190bf67d931:2012-12-02:FSV%20Frankfurt:Eintracht%20Braunschweig:home",
+      "date": "2012-12-02",
+      "season": "2012-13",
+      "competition": {
+        "name": "German League 2",
+        "type": "league",
+        "country": "Germany"
+      },
+      "stage": "",
+      "opponent": {
+        "name": "Eintracht Braunschweig",
+        "slug": "eintracht-braunschweig"
+      },
+      "venue": "home",
+      "score": {
+        "for": 1,
+        "against": 2
+      },
+      "result": "L",
+      "sourceRef": "src:7a747e9c754f773a8198"
+    },
+    {
+      "id": "engsoccerdata:e955aef5dabb62909d584ae3ba77c994078d031976b52241aebff190bf67d931:2012-12-07:FSV%20Frankfurt:SV%20Sandhausen:home",
+      "date": "2012-12-07",
+      "season": "2012-13",
+      "competition": {
+        "name": "German League 2",
+        "type": "league",
+        "country": "Germany"
+      },
+      "stage": "",
+      "opponent": {
+        "name": "SV Sandhausen",
+        "slug": "sv-sandhausen"
+      },
+      "venue": "home",
+      "score": {
+        "for": 3,
+        "against": 1
+      },
+      "result": "W",
+      "sourceRef": "src:7a747e9c754f773a8198"
+    },
+    {
+      "id": "engsoccerdata:e955aef5dabb62909d584ae3ba77c994078d031976b52241aebff190bf67d931:2012-12-15:Hertha%20BSC:FSV%20Frankfurt:away",
+      "date": "2012-12-15",
+      "season": "2012-13",
+      "competition": {
+        "name": "German League 2",
+        "type": "league",
+        "country": "Germany"
+      },
+      "stage": "",
+      "opponent": {
+        "name": "Hertha BSC",
+        "slug": "hertha-bsc"
+      },
+      "venue": "away",
+      "score": {
+        "for": 1,
+        "against": 2
+      },
+      "result": "L",
+      "sourceRef": "src:7a747e9c754f773a8198"
+    },
+    {
+      "id": "engsoccerdata:e955aef5dabb62909d584ae3ba77c994078d031976b52241aebff190bf67d931:2013-02-03:FSV%20Frankfurt:FC%20Ingolstadt%2004:home",
+      "date": "2013-02-03",
+      "season": "2012-13",
+      "competition": {
+        "name": "German League 2",
+        "type": "league",
+        "country": "Germany"
+      },
+      "stage": "",
+      "opponent": {
+        "name": "FC Ingolstadt 04",
+        "slug": "fc-ingolstadt-04"
+      },
+      "venue": "home",
+      "score": {
+        "for": 0,
+        "against": 2
+      },
+      "result": "L",
+      "sourceRef": "src:7a747e9c754f773a8198"
+    },
+    {
+      "id": "engsoccerdata:e955aef5dabb62909d584ae3ba77c994078d031976b52241aebff190bf67d931:2013-02-08:Erzgebirge%20Aue:FSV%20Frankfurt:away",
+      "date": "2013-02-08",
+      "season": "2012-13",
+      "competition": {
+        "name": "German League 2",
+        "type": "league",
+        "country": "Germany"
+      },
+      "stage": "",
+      "opponent": {
+        "name": "Erzgebirge Aue",
+        "slug": "erzgebirge-aue"
+      },
+      "venue": "away",
+      "score": {
+        "for": 2,
+        "against": 0
+      },
+      "result": "W",
+      "sourceRef": "src:7a747e9c754f773a8198"
+    },
+    {
+      "id": "engsoccerdata:e955aef5dabb62909d584ae3ba77c994078d031976b52241aebff190bf67d931:2013-02-17:FSV%20Frankfurt:Energie%20Cottbus:home",
+      "date": "2013-02-17",
+      "season": "2012-13",
+      "competition": {
+        "name": "German League 2",
+        "type": "league",
+        "country": "Germany"
+      },
+      "stage": "",
+      "opponent": {
+        "name": "Energie Cottbus",
+        "slug": "energie-cottbus"
+      },
+      "venue": "home",
+      "score": {
+        "for": 1,
+        "against": 0
+      },
+      "result": "W",
+      "sourceRef": "src:7a747e9c754f773a8198"
+    },
+    {
+      "id": "engsoccerdata:e955aef5dabb62909d584ae3ba77c994078d031976b52241aebff190bf67d931:2013-02-22:FC%20St.%20Pauli:FSV%20Frankfurt:away",
+      "date": "2013-02-22",
+      "season": "2012-13",
+      "competition": {
+        "name": "German League 2",
+        "type": "league",
+        "country": "Germany"
+      },
+      "stage": "",
+      "opponent": {
+        "name": "FC St. Pauli",
+        "slug": "fc-st-pauli"
+      },
+      "venue": "away",
+      "score": {
+        "for": 0,
+        "against": 3
+      },
+      "result": "L",
+      "sourceRef": "src:7a747e9c754f773a8198"
+    },
+    {
+      "id": "engsoccerdata:e955aef5dabb62909d584ae3ba77c994078d031976b52241aebff190bf67d931:2013-03-03:FSV%20Frankfurt:1.%20FC%20Koln:home",
+      "date": "2013-03-03",
+      "season": "2012-13",
+      "competition": {
+        "name": "German League 2",
+        "type": "league",
+        "country": "Germany"
+      },
+      "stage": "",
+      "opponent": {
+        "name": "1. FC Koln",
+        "slug": "1-fc-koln"
+      },
+      "venue": "home",
+      "score": {
+        "for": 1,
+        "against": 1
+      },
+      "result": "D",
+      "sourceRef": "src:7a747e9c754f773a8198"
+    },
+    {
+      "id": "engsoccerdata:e955aef5dabb62909d584ae3ba77c994078d031976b52241aebff190bf67d931:2013-03-08:FSV%20Frankfurt:VfR%20Aalen:home",
+      "date": "2013-03-08",
+      "season": "2012-13",
+      "competition": {
+        "name": "German League 2",
+        "type": "league",
+        "country": "Germany"
+      },
+      "stage": "",
+      "opponent": {
+        "name": "VfR Aalen",
+        "slug": "vfr-aalen"
+      },
+      "venue": "home",
+      "score": {
+        "for": 6,
+        "against": 1
+      },
+      "result": "W",
+      "sourceRef": "src:7a747e9c754f773a8198"
+    },
+    {
+      "id": "engsoccerdata:e955aef5dabb62909d584ae3ba77c994078d031976b52241aebff190bf67d931:2013-03-15:SC%20Paderborn%2007:FSV%20Frankfurt:away",
+      "date": "2013-03-15",
+      "season": "2012-13",
+      "competition": {
+        "name": "German League 2",
+        "type": "league",
+        "country": "Germany"
+      },
+      "stage": "",
+      "opponent": {
+        "name": "SC Paderborn 07",
+        "slug": "sc-paderborn-07"
+      },
+      "venue": "away",
+      "score": {
+        "for": 0,
+        "against": 3
+      },
+      "result": "L",
+      "sourceRef": "src:7a747e9c754f773a8198"
+    },
+    {
+      "id": "engsoccerdata:e955aef5dabb62909d584ae3ba77c994078d031976b52241aebff190bf67d931:2013-03-31:FSV%20Frankfurt:1.%20FC%20Union%20Berlin:home",
+      "date": "2013-03-31",
+      "season": "2012-13",
+      "competition": {
+        "name": "German League 2",
+        "type": "league",
+        "country": "Germany"
+      },
+      "stage": "",
+      "opponent": {
+        "name": "Union Berlin",
+        "slug": "union-berlin"
+      },
+      "venue": "home",
+      "score": {
+        "for": 3,
+        "against": 0
+      },
+      "result": "W",
+      "sourceRef": "src:7a747e9c754f773a8198"
+    },
+    {
+      "id": "engsoccerdata:e955aef5dabb62909d584ae3ba77c994078d031976b52241aebff190bf67d931:2013-04-06:Jahn%20Regensburg:FSV%20Frankfurt:away",
+      "date": "2013-04-06",
+      "season": "2012-13",
+      "competition": {
+        "name": "German League 2",
+        "type": "league",
+        "country": "Germany"
+      },
+      "stage": "",
+      "opponent": {
+        "name": "Jahn Regensburg",
+        "slug": "jahn-regensburg"
+      },
+      "venue": "away",
+      "score": {
+        "for": 4,
+        "against": 1
+      },
+      "result": "W",
+      "sourceRef": "src:7a747e9c754f773a8198"
+    },
+    {
+      "id": "engsoccerdata:e955aef5dabb62909d584ae3ba77c994078d031976b52241aebff190bf67d931:2013-04-13:FSV%20Frankfurt:MSV%20Duisburg:home",
+      "date": "2013-04-13",
+      "season": "2012-13",
+      "competition": {
+        "name": "German League 2",
+        "type": "league",
+        "country": "Germany"
+      },
+      "stage": "",
+      "opponent": {
+        "name": "MSV Duisburg",
+        "slug": "msv-duisburg"
+      },
+      "venue": "home",
+      "score": {
+        "for": 1,
+        "against": 1
+      },
+      "result": "D",
+      "sourceRef": "src:7a747e9c754f773a8198"
+    },
+    {
+      "id": "engsoccerdata:e955aef5dabb62909d584ae3ba77c994078d031976b52241aebff190bf67d931:2013-04-20:1860%20Munchen:FSV%20Frankfurt:away",
+      "date": "2013-04-20",
+      "season": "2012-13",
+      "competition": {
+        "name": "German League 2",
+        "type": "league",
+        "country": "Germany"
+      },
+      "stage": "",
+      "opponent": {
+        "name": "1860 Munchen",
+        "slug": "1860-munchen"
+      },
+      "venue": "away",
+      "score": {
+        "for": 2,
+        "against": 1
+      },
+      "result": "W",
+      "sourceRef": "src:7a747e9c754f773a8198"
+    },
+    {
+      "id": "engsoccerdata:e955aef5dabb62909d584ae3ba77c994078d031976b52241aebff190bf67d931:2013-04-27:FSV%20Frankfurt:Dynamo%20Dresden:home",
+      "date": "2013-04-27",
+      "season": "2012-13",
+      "competition": {
+        "name": "German League 2",
+        "type": "league",
+        "country": "Germany"
+      },
+      "stage": "",
+      "opponent": {
+        "name": "Dynamo Dresden",
+        "slug": "dynamo-dresden"
+      },
+      "venue": "home",
+      "score": {
+        "for": 3,
+        "against": 1
+      },
+      "result": "W",
+      "sourceRef": "src:7a747e9c754f773a8198"
+    },
+    {
+      "id": "engsoccerdata:e955aef5dabb62909d584ae3ba77c994078d031976b52241aebff190bf67d931:2013-05-05:1.%20FC%20Kaiserslautern:FSV%20Frankfurt:away",
+      "date": "2013-05-05",
+      "season": "2012-13",
+      "competition": {
+        "name": "German League 2",
+        "type": "league",
+        "country": "Germany"
+      },
+      "stage": "",
+      "opponent": {
+        "name": "1. FC Kaiserslautern",
+        "slug": "1-fc-kaiserslautern"
+      },
+      "venue": "away",
+      "score": {
+        "for": 1,
+        "against": 4
+      },
+      "result": "L",
+      "sourceRef": "src:7a747e9c754f773a8198"
+    },
+    {
+      "id": "engsoccerdata:e955aef5dabb62909d584ae3ba77c994078d031976b52241aebff190bf67d931:2013-05-12:FSV%20Frankfurt:VfL%20Bochum:home",
+      "date": "2013-05-12",
+      "season": "2012-13",
+      "competition": {
+        "name": "German League 2",
+        "type": "league",
+        "country": "Germany"
+      },
+      "stage": "",
+      "opponent": {
+        "name": "VfL Bochum",
+        "slug": "vfl-bochum"
+      },
+      "venue": "home",
+      "score": {
+        "for": 2,
+        "against": 1
+      },
+      "result": "W",
+      "sourceRef": "src:7a747e9c754f773a8198"
+    },
+    {
+      "id": "engsoccerdata:e955aef5dabb62909d584ae3ba77c994078d031976b52241aebff190bf67d931:2013-05-19:Eintracht%20Braunschweig:FSV%20Frankfurt:away",
+      "date": "2013-05-19",
+      "season": "2012-13",
+      "competition": {
+        "name": "German League 2",
+        "type": "league",
+        "country": "Germany"
+      },
+      "stage": "",
+      "opponent": {
+        "name": "Eintracht Braunschweig",
+        "slug": "eintracht-braunschweig"
+      },
+      "venue": "away",
+      "score": {
+        "for": 2,
+        "against": 2
+      },
+      "result": "D",
+      "sourceRef": "src:7a747e9c754f773a8198"
+    },
+    {
+      "id": "engsoccerdata:e955aef5dabb62909d584ae3ba77c994078d031976b52241aebff190bf67d931:2013-07-21:FSV%20Frankfurt:Karlsruher%20SC:home",
+      "date": "2013-07-21",
+      "season": "2013-14",
+      "competition": {
+        "name": "German League 2",
+        "type": "league",
+        "country": "Germany"
+      },
+      "stage": "",
+      "opponent": {
+        "name": "Karlsruher SC",
+        "slug": "karlsruher-sc"
+      },
+      "venue": "home",
+      "score": {
+        "for": 0,
+        "against": 1
+      },
+      "result": "L",
+      "sourceRef": "src:7a747e9c754f773a8198"
+    },
+    {
+      "id": "engsoccerdata:e955aef5dabb62909d584ae3ba77c994078d031976b52241aebff190bf67d931:2013-07-28:1860%20Munchen:FSV%20Frankfurt:away",
+      "date": "2013-07-28",
+      "season": "2013-14",
+      "competition": {
+        "name": "German League 2",
+        "type": "league",
+        "country": "Germany"
+      },
+      "stage": "",
+      "opponent": {
+        "name": "1860 Munchen",
+        "slug": "1860-munchen"
+      },
+      "venue": "away",
+      "score": {
+        "for": 1,
+        "against": 2
+      },
+      "result": "L",
+      "sourceRef": "src:7a747e9c754f773a8198"
+    },
+    {
+      "id": "engsoccerdata:e955aef5dabb62909d584ae3ba77c994078d031976b52241aebff190bf67d931:2013-08-09:FSV%20Frankfurt:VfL%20Bochum:home",
+      "date": "2013-08-09",
+      "season": "2013-14",
+      "competition": {
+        "name": "German League 2",
+        "type": "league",
+        "country": "Germany"
+      },
+      "stage": "",
+      "opponent": {
+        "name": "VfL Bochum",
+        "slug": "vfl-bochum"
+      },
+      "venue": "home",
+      "score": {
+        "for": 1,
+        "against": 0
+      },
+      "result": "W",
+      "sourceRef": "src:7a747e9c754f773a8198"
+    },
+    {
+      "id": "engsoccerdata:e955aef5dabb62909d584ae3ba77c994078d031976b52241aebff190bf67d931:2013-08-18:Dynamo%20Dresden:FSV%20Frankfurt:away",
+      "date": "2013-08-18",
+      "season": "2013-14",
+      "competition": {
+        "name": "German League 2",
+        "type": "league",
+        "country": "Germany"
+      },
+      "stage": "",
+      "opponent": {
+        "name": "Dynamo Dresden",
+        "slug": "dynamo-dresden"
+      },
+      "venue": "away",
+      "score": {
+        "for": 3,
+        "against": 0
+      },
+      "result": "W",
+      "sourceRef": "src:7a747e9c754f773a8198"
+    },
+    {
+      "id": "engsoccerdata:e955aef5dabb62909d584ae3ba77c994078d031976b52241aebff190bf67d931:2013-08-25:FSV%20Frankfurt:1.%20FC%20Union%20Berlin:home",
+      "date": "2013-08-25",
+      "season": "2013-14",
+      "competition": {
+        "name": "German League 2",
+        "type": "league",
+        "country": "Germany"
+      },
+      "stage": "",
+      "opponent": {
+        "name": "Union Berlin",
+        "slug": "union-berlin"
+      },
+      "venue": "home",
+      "score": {
+        "for": 1,
+        "against": 1
+      },
+      "result": "D",
+      "sourceRef": "src:7a747e9c754f773a8198"
+    },
+    {
+      "id": "engsoccerdata:e955aef5dabb62909d584ae3ba77c994078d031976b52241aebff190bf67d931:2013-08-30:FSV%20Frankfurt:SpVgg%20Greuther%20Furth:home",
+      "date": "2013-08-30",
+      "season": "2013-14",
+      "competition": {
+        "name": "German League 2",
+        "type": "league",
+        "country": "Germany"
+      },
+      "stage": "",
+      "opponent": {
+        "name": "SpVgg Greuther Furth",
+        "slug": "spvgg-greuther-furth"
+      },
+      "venue": "home",
+      "score": {
+        "for": 1,
+        "against": 1
+      },
+      "result": "D",
+      "sourceRef": "src:7a747e9c754f773a8198"
+    },
+    {
+      "id": "engsoccerdata:e955aef5dabb62909d584ae3ba77c994078d031976b52241aebff190bf67d931:2013-09-14:FC%20St.%20Pauli:FSV%20Frankfurt:away",
+      "date": "2013-09-14",
+      "season": "2013-14",
+      "competition": {
+        "name": "German League 2",
+        "type": "league",
+        "country": "Germany"
+      },
+      "stage": "",
+      "opponent": {
+        "name": "FC St. Pauli",
+        "slug": "fc-st-pauli"
+      },
+      "venue": "away",
+      "score": {
+        "for": 1,
+        "against": 2
+      },
+      "result": "L",
+      "sourceRef": "src:7a747e9c754f773a8198"
+    },
+    {
+      "id": "engsoccerdata:e955aef5dabb62909d584ae3ba77c994078d031976b52241aebff190bf67d931:2013-09-22:FSV%20Frankfurt:FC%20Ingolstadt%2004:home",
+      "date": "2013-09-22",
+      "season": "2013-14",
+      "competition": {
+        "name": "German League 2",
+        "type": "league",
+        "country": "Germany"
+      },
+      "stage": "",
+      "opponent": {
+        "name": "FC Ingolstadt 04",
+        "slug": "fc-ingolstadt-04"
+      },
+      "venue": "home",
+      "score": {
+        "for": 4,
+        "against": 1
+      },
+      "result": "W",
+      "sourceRef": "src:7a747e9c754f773a8198"
+    },
+    {
+      "id": "engsoccerdata:e955aef5dabb62909d584ae3ba77c994078d031976b52241aebff190bf67d931:2013-09-28:Fortuna%20Dusseldorf:FSV%20Frankfurt:away",
+      "date": "2013-09-28",
+      "season": "2013-14",
+      "competition": {
+        "name": "German League 2",
+        "type": "league",
+        "country": "Germany"
+      },
+      "stage": "",
+      "opponent": {
+        "name": "Fortuna Dusseldorf",
+        "slug": "fortuna-dusseldorf"
+      },
+      "venue": "away",
+      "score": {
+        "for": 0,
+        "against": 0
+      },
+      "result": "D",
+      "sourceRef": "src:7a747e9c754f773a8198"
+    },
+    {
+      "id": "engsoccerdata:e955aef5dabb62909d584ae3ba77c994078d031976b52241aebff190bf67d931:2013-10-06:FSV%20Frankfurt:Erzgebirge%20Aue:home",
+      "date": "2013-10-06",
+      "season": "2013-14",
+      "competition": {
+        "name": "German League 2",
+        "type": "league",
+        "country": "Germany"
+      },
+      "stage": "",
+      "opponent": {
+        "name": "Erzgebirge Aue",
+        "slug": "erzgebirge-aue"
+      },
+      "venue": "home",
+      "score": {
+        "for": 3,
+        "against": 1
+      },
+      "result": "W",
+      "sourceRef": "src:7a747e9c754f773a8198"
+    },
+    {
+      "id": "engsoccerdata:e955aef5dabb62909d584ae3ba77c994078d031976b52241aebff190bf67d931:2013-10-18:SC%20Paderborn%2007:FSV%20Frankfurt:away",
+      "date": "2013-10-18",
+      "season": "2013-14",
+      "competition": {
+        "name": "German League 2",
+        "type": "league",
+        "country": "Germany"
+      },
+      "stage": "",
+      "opponent": {
+        "name": "SC Paderborn 07",
+        "slug": "sc-paderborn-07"
+      },
+      "venue": "away",
+      "score": {
+        "for": 2,
+        "against": 4
+      },
+      "result": "L",
+      "sourceRef": "src:7a747e9c754f773a8198"
+    },
+    {
+      "id": "engsoccerdata:e955aef5dabb62909d584ae3ba77c994078d031976b52241aebff190bf67d931:2013-10-26:FSV%20Frankfurt:VfR%20Aalen:home",
+      "date": "2013-10-26",
+      "season": "2013-14",
+      "competition": {
+        "name": "German League 2",
+        "type": "league",
+        "country": "Germany"
+      },
+      "stage": "",
+      "opponent": {
+        "name": "VfR Aalen",
+        "slug": "vfr-aalen"
+      },
+      "venue": "home",
+      "score": {
+        "for": 0,
+        "against": 0
+      },
+      "result": "D",
+      "sourceRef": "src:7a747e9c754f773a8198"
+    },
+    {
+      "id": "engsoccerdata:e955aef5dabb62909d584ae3ba77c994078d031976b52241aebff190bf67d931:2013-11-03:SV%20Sandhausen:FSV%20Frankfurt:away",
+      "date": "2013-11-03",
+      "season": "2013-14",
+      "competition": {
+        "name": "German League 2",
+        "type": "league",
+        "country": "Germany"
+      },
+      "stage": "",
+      "opponent": {
+        "name": "SV Sandhausen",
+        "slug": "sv-sandhausen"
+      },
+      "venue": "away",
+      "score": {
+        "for": 0,
+        "against": 2
+      },
+      "result": "L",
+      "sourceRef": "src:7a747e9c754f773a8198"
+    },
+    {
+      "id": "engsoccerdata:e955aef5dabb62909d584ae3ba77c994078d031976b52241aebff190bf67d931:2013-11-08:FSV%20Frankfurt:1.%20FC%20Kaiserslautern:home",
+      "date": "2013-11-08",
+      "season": "2013-14",
+      "competition": {
+        "name": "German League 2",
+        "type": "league",
+        "country": "Germany"
+      },
+      "stage": "",
+      "opponent": {
+        "name": "1. FC Kaiserslautern",
+        "slug": "1-fc-kaiserslautern"
+      },
+      "venue": "home",
+      "score": {
+        "for": 0,
+        "against": 4
+      },
+      "result": "L",
+      "sourceRef": "src:7a747e9c754f773a8198"
+    },
+    {
+      "id": "engsoccerdata:e955aef5dabb62909d584ae3ba77c994078d031976b52241aebff190bf67d931:2013-11-22:Energie%20Cottbus:FSV%20Frankfurt:away",
+      "date": "2013-11-22",
+      "season": "2013-14",
+      "competition": {
+        "name": "German League 2",
+        "type": "league",
+        "country": "Germany"
+      },
+      "stage": "",
+      "opponent": {
+        "name": "Energie Cottbus",
+        "slug": "energie-cottbus"
+      },
+      "venue": "away",
+      "score": {
+        "for": 4,
+        "against": 1
+      },
+      "result": "W",
+      "sourceRef": "src:7a747e9c754f773a8198"
+    },
+    {
+      "id": "engsoccerdata:e955aef5dabb62909d584ae3ba77c994078d031976b52241aebff190bf67d931:2013-12-02:FSV%20Frankfurt:Arminia%20Bielefeld:home",
+      "date": "2013-12-02",
+      "season": "2013-14",
+      "competition": {
+        "name": "German League 2",
+        "type": "league",
+        "country": "Germany"
+      },
+      "stage": "",
+      "opponent": {
+        "name": "Arminia Bielefeld",
+        "slug": "arminia-bielefeld"
+      },
+      "venue": "home",
+      "score": {
+        "for": 1,
+        "against": 2
+      },
+      "result": "L",
+      "sourceRef": "src:7a747e9c754f773a8198"
+    },
+    {
+      "id": "engsoccerdata:e955aef5dabb62909d584ae3ba77c994078d031976b52241aebff190bf67d931:2013-12-07:1.%20FC%20Koln:FSV%20Frankfurt:away",
+      "date": "2013-12-07",
+      "season": "2013-14",
+      "competition": {
+        "name": "German League 2",
+        "type": "league",
+        "country": "Germany"
+      },
+      "stage": "",
+      "opponent": {
+        "name": "1. FC Koln",
+        "slug": "1-fc-koln"
+      },
+      "venue": "away",
+      "score": {
+        "for": 0,
+        "against": 2
+      },
+      "result": "L",
+      "sourceRef": "src:7a747e9c754f773a8198"
+    },
+    {
+      "id": "engsoccerdata:e955aef5dabb62909d584ae3ba77c994078d031976b52241aebff190bf67d931:2013-12-15:Karlsruher%20SC:FSV%20Frankfurt:away",
+      "date": "2013-12-15",
+      "season": "2013-14",
+      "competition": {
+        "name": "German League 2",
+        "type": "league",
+        "country": "Germany"
+      },
+      "stage": "",
+      "opponent": {
+        "name": "Karlsruher SC",
+        "slug": "karlsruher-sc"
+      },
+      "venue": "away",
+      "score": {
+        "for": 3,
+        "against": 3
+      },
+      "result": "D",
+      "sourceRef": "src:7a747e9c754f773a8198"
+    },
+    {
+      "id": "engsoccerdata:e955aef5dabb62909d584ae3ba77c994078d031976b52241aebff190bf67d931:2013-12-21:FSV%20Frankfurt:1860%20Munchen:home",
+      "date": "2013-12-21",
+      "season": "2013-14",
+      "competition": {
+        "name": "German League 2",
+        "type": "league",
+        "country": "Germany"
+      },
+      "stage": "",
+      "opponent": {
+        "name": "1860 Munchen",
+        "slug": "1860-munchen"
+      },
+      "venue": "home",
+      "score": {
+        "for": 2,
+        "against": 2
+      },
+      "result": "D",
+      "sourceRef": "src:7a747e9c754f773a8198"
+    },
+    {
+      "id": "engsoccerdata:e955aef5dabb62909d584ae3ba77c994078d031976b52241aebff190bf67d931:2014-02-07:VfL%20Bochum:FSV%20Frankfurt:away",
+      "date": "2014-02-07",
+      "season": "2013-14",
+      "competition": {
+        "name": "German League 2",
+        "type": "league",
+        "country": "Germany"
+      },
+      "stage": "",
+      "opponent": {
+        "name": "VfL Bochum",
+        "slug": "vfl-bochum"
+      },
+      "venue": "away",
+      "score": {
+        "for": 2,
+        "against": 1
+      },
+      "result": "W",
+      "sourceRef": "src:7a747e9c754f773a8198"
+    },
+    {
+      "id": "engsoccerdata:e955aef5dabb62909d584ae3ba77c994078d031976b52241aebff190bf67d931:2014-02-15:FSV%20Frankfurt:Dynamo%20Dresden:home",
+      "date": "2014-02-15",
+      "season": "2013-14",
+      "competition": {
+        "name": "German League 2",
+        "type": "league",
+        "country": "Germany"
+      },
+      "stage": "",
+      "opponent": {
+        "name": "Dynamo Dresden",
+        "slug": "dynamo-dresden"
+      },
+      "venue": "home",
+      "score": {
+        "for": 3,
+        "against": 2
+      },
+      "result": "W",
+      "sourceRef": "src:7a747e9c754f773a8198"
+    },
+    {
+      "id": "engsoccerdata:e955aef5dabb62909d584ae3ba77c994078d031976b52241aebff190bf67d931:2014-02-21:1.%20FC%20Union%20Berlin:FSV%20Frankfurt:away",
+      "date": "2014-02-21",
+      "season": "2013-14",
+      "competition": {
+        "name": "German League 2",
+        "type": "league",
+        "country": "Germany"
+      },
+      "stage": "",
+      "opponent": {
+        "name": "Union Berlin",
+        "slug": "union-berlin"
+      },
+      "venue": "away",
+      "score": {
+        "for": 0,
+        "against": 2
+      },
+      "result": "L",
+      "sourceRef": "src:7a747e9c754f773a8198"
+    },
+    {
+      "id": "engsoccerdata:e955aef5dabb62909d584ae3ba77c994078d031976b52241aebff190bf67d931:2014-03-02:SpVgg%20Greuther%20Furth:FSV%20Frankfurt:away",
+      "date": "2014-03-02",
+      "season": "2013-14",
+      "competition": {
+        "name": "German League 2",
+        "type": "league",
+        "country": "Germany"
+      },
+      "stage": "",
+      "opponent": {
+        "name": "SpVgg Greuther Furth",
+        "slug": "spvgg-greuther-furth"
+      },
+      "venue": "away",
+      "score": {
+        "for": 2,
+        "against": 3
+      },
+      "result": "L",
+      "sourceRef": "src:7a747e9c754f773a8198"
+    },
+    {
+      "id": "engsoccerdata:e955aef5dabb62909d584ae3ba77c994078d031976b52241aebff190bf67d931:2014-03-09:FSV%20Frankfurt:FC%20St.%20Pauli:home",
+      "date": "2014-03-09",
+      "season": "2013-14",
+      "competition": {
+        "name": "German League 2",
+        "type": "league",
+        "country": "Germany"
+      },
+      "stage": "",
+      "opponent": {
+        "name": "FC St. Pauli",
+        "slug": "fc-st-pauli"
+      },
+      "venue": "home",
+      "score": {
+        "for": 1,
+        "against": 0
+      },
+      "result": "W",
+      "sourceRef": "src:7a747e9c754f773a8198"
+    },
+    {
+      "id": "engsoccerdata:e955aef5dabb62909d584ae3ba77c994078d031976b52241aebff190bf67d931:2014-03-14:FC%20Ingolstadt%2004:FSV%20Frankfurt:away",
+      "date": "2014-03-14",
+      "season": "2013-14",
+      "competition": {
+        "name": "German League 2",
+        "type": "league",
+        "country": "Germany"
+      },
+      "stage": "",
+      "opponent": {
+        "name": "FC Ingolstadt 04",
+        "slug": "fc-ingolstadt-04"
+      },
+      "venue": "away",
+      "score": {
+        "for": 1,
+        "against": 0
+      },
+      "result": "W",
+      "sourceRef": "src:7a747e9c754f773a8198"
+    },
+    {
+      "id": "engsoccerdata:e955aef5dabb62909d584ae3ba77c994078d031976b52241aebff190bf67d931:2014-03-22:FSV%20Frankfurt:Fortuna%20Dusseldorf:home",
+      "date": "2014-03-22",
+      "season": "2013-14",
+      "competition": {
+        "name": "German League 2",
+        "type": "league",
+        "country": "Germany"
+      },
+      "stage": "",
+      "opponent": {
+        "name": "Fortuna Dusseldorf",
+        "slug": "fortuna-dusseldorf"
+      },
+      "venue": "home",
+      "score": {
+        "for": 0,
+        "against": 0
+      },
+      "result": "D",
+      "sourceRef": "src:7a747e9c754f773a8198"
+    },
+    {
+      "id": "engsoccerdata:e955aef5dabb62909d584ae3ba77c994078d031976b52241aebff190bf67d931:2014-03-26:Erzgebirge%20Aue:FSV%20Frankfurt:away",
+      "date": "2014-03-26",
+      "season": "2013-14",
+      "competition": {
+        "name": "German League 2",
+        "type": "league",
+        "country": "Germany"
+      },
+      "stage": "",
+      "opponent": {
+        "name": "Erzgebirge Aue",
+        "slug": "erzgebirge-aue"
+      },
+      "venue": "away",
+      "score": {
+        "for": 1,
+        "against": 2
+      },
+      "result": "L",
+      "sourceRef": "src:7a747e9c754f773a8198"
+    },
+    {
+      "id": "engsoccerdata:e955aef5dabb62909d584ae3ba77c994078d031976b52241aebff190bf67d931:2014-03-30:FSV%20Frankfurt:SC%20Paderborn%2007:home",
+      "date": "2014-03-30",
+      "season": "2013-14",
+      "competition": {
+        "name": "German League 2",
+        "type": "league",
+        "country": "Germany"
+      },
+      "stage": "",
+      "opponent": {
+        "name": "SC Paderborn 07",
+        "slug": "sc-paderborn-07"
+      },
+      "venue": "home",
+      "score": {
+        "for": 1,
+        "against": 3
+      },
+      "result": "L",
+      "sourceRef": "src:7a747e9c754f773a8198"
+    },
+    {
+      "id": "engsoccerdata:e955aef5dabb62909d584ae3ba77c994078d031976b52241aebff190bf67d931:2014-04-04:VfR%20Aalen:FSV%20Frankfurt:away",
+      "date": "2014-04-04",
+      "season": "2013-14",
+      "competition": {
+        "name": "German League 2",
+        "type": "league",
+        "country": "Germany"
+      },
+      "stage": "",
+      "opponent": {
+        "name": "VfR Aalen",
+        "slug": "vfr-aalen"
+      },
+      "venue": "away",
+      "score": {
+        "for": 1,
+        "against": 2
+      },
+      "result": "L",
+      "sourceRef": "src:7a747e9c754f773a8198"
+    },
+    {
+      "id": "engsoccerdata:e955aef5dabb62909d584ae3ba77c994078d031976b52241aebff190bf67d931:2014-04-13:FSV%20Frankfurt:SV%20Sandhausen:home",
+      "date": "2014-04-13",
+      "season": "2013-14",
+      "competition": {
+        "name": "German League 2",
+        "type": "league",
+        "country": "Germany"
+      },
+      "stage": "",
+      "opponent": {
+        "name": "SV Sandhausen",
+        "slug": "sv-sandhausen"
+      },
+      "venue": "home",
+      "score": {
+        "for": 0,
+        "against": 3
+      },
+      "result": "L",
+      "sourceRef": "src:7a747e9c754f773a8198"
+    },
+    {
+      "id": "engsoccerdata:e955aef5dabb62909d584ae3ba77c994078d031976b52241aebff190bf67d931:2014-04-20:1.%20FC%20Kaiserslautern:FSV%20Frankfurt:away",
+      "date": "2014-04-20",
+      "season": "2013-14",
+      "competition": {
+        "name": "German League 2",
+        "type": "league",
+        "country": "Germany"
+      },
+      "stage": "",
+      "opponent": {
+        "name": "1. FC Kaiserslautern",
+        "slug": "1-fc-kaiserslautern"
+      },
+      "venue": "away",
+      "score": {
+        "for": 2,
+        "against": 3
+      },
+      "result": "L",
+      "sourceRef": "src:7a747e9c754f773a8198"
+    },
+    {
+      "id": "engsoccerdata:e955aef5dabb62909d584ae3ba77c994078d031976b52241aebff190bf67d931:2014-04-26:FSV%20Frankfurt:Energie%20Cottbus:home",
+      "date": "2014-04-26",
+      "season": "2013-14",
+      "competition": {
+        "name": "German League 2",
+        "type": "league",
+        "country": "Germany"
+      },
+      "stage": "",
+      "opponent": {
+        "name": "Energie Cottbus",
+        "slug": "energie-cottbus"
+      },
+      "venue": "home",
+      "score": {
+        "for": 3,
+        "against": 1
+      },
+      "result": "W",
+      "sourceRef": "src:7a747e9c754f773a8198"
+    },
+    {
+      "id": "engsoccerdata:e955aef5dabb62909d584ae3ba77c994078d031976b52241aebff190bf67d931:2014-05-04:Arminia%20Bielefeld:FSV%20Frankfurt:away",
+      "date": "2014-05-04",
+      "season": "2013-14",
+      "competition": {
+        "name": "German League 2",
+        "type": "league",
+        "country": "Germany"
+      },
+      "stage": "",
+      "opponent": {
+        "name": "Arminia Bielefeld",
+        "slug": "arminia-bielefeld"
+      },
+      "venue": "away",
+      "score": {
+        "for": 0,
+        "against": 0
+      },
+      "result": "D",
+      "sourceRef": "src:7a747e9c754f773a8198"
+    },
+    {
+      "id": "engsoccerdata:e955aef5dabb62909d584ae3ba77c994078d031976b52241aebff190bf67d931:2014-05-11:FSV%20Frankfurt:1.%20FC%20Koln:home",
+      "date": "2014-05-11",
+      "season": "2013-14",
+      "competition": {
+        "name": "German League 2",
+        "type": "league",
+        "country": "Germany"
+      },
+      "stage": "",
+      "opponent": {
+        "name": "1. FC Koln",
+        "slug": "1-fc-koln"
+      },
+      "venue": "home",
+      "score": {
+        "for": 2,
+        "against": 0
+      },
+      "result": "W",
+      "sourceRef": "src:7a747e9c754f773a8198"
+    },
+    {
+      "id": "engsoccerdata:e955aef5dabb62909d584ae3ba77c994078d031976b52241aebff190bf67d931:2014-08-03:1.%20FC%20Heidenheim:FSV%20Frankfurt:away",
+      "date": "2014-08-03",
+      "season": "2014-15",
+      "competition": {
+        "name": "German League 2",
+        "type": "league",
+        "country": "Germany"
+      },
+      "stage": "",
+      "opponent": {
+        "name": "Heidenheim",
+        "slug": "heidenheim"
+      },
+      "venue": "away",
+      "score": {
+        "for": 1,
+        "against": 2
+      },
+      "result": "L",
+      "sourceRef": "src:7a747e9c754f773a8198"
+    },
+    {
+      "id": "engsoccerdata:e955aef5dabb62909d584ae3ba77c994078d031976b52241aebff190bf67d931:2014-08-08:FSV%20Frankfurt:Karlsruher%20SC:home",
+      "date": "2014-08-08",
+      "season": "2014-15",
+      "competition": {
+        "name": "German League 2",
+        "type": "league",
+        "country": "Germany"
+      },
+      "stage": "",
+      "opponent": {
+        "name": "Karlsruher SC",
+        "slug": "karlsruher-sc"
+      },
+      "venue": "home",
+      "score": {
+        "for": 2,
+        "against": 3
+      },
+      "result": "L",
+      "sourceRef": "src:7a747e9c754f773a8198"
+    },
+    {
+      "id": "engsoccerdata:e955aef5dabb62909d584ae3ba77c994078d031976b52241aebff190bf67d931:2014-08-23:1.%20FC%20Nurnberg:FSV%20Frankfurt:away",
+      "date": "2014-08-23",
+      "season": "2014-15",
+      "competition": {
+        "name": "German League 2",
+        "type": "league",
+        "country": "Germany"
+      },
+      "stage": "",
+      "opponent": {
+        "name": "1. FC Nurnberg",
+        "slug": "1-fc-nurnberg"
+      },
+      "venue": "away",
+      "score": {
+        "for": 1,
+        "against": 0
+      },
+      "result": "W",
+      "sourceRef": "src:7a747e9c754f773a8198"
+    },
+    {
+      "id": "engsoccerdata:e955aef5dabb62909d584ae3ba77c994078d031976b52241aebff190bf67d931:2014-08-29:FSV%20Frankfurt:RasenBallsport%20Leipzig:home",
+      "date": "2014-08-29",
+      "season": "2014-15",
+      "competition": {
+        "name": "German League 2",
+        "type": "league",
+        "country": "Germany"
+      },
+      "stage": "",
+      "opponent": {
+        "name": "RasenBallsport Leipzig",
+        "slug": "rasenballsport-leipzig"
+      },
+      "venue": "home",
+      "score": {
+        "for": 0,
+        "against": 0
+      },
+      "result": "D",
+      "sourceRef": "src:7a747e9c754f773a8198"
+    },
+    {
+      "id": "engsoccerdata:e955aef5dabb62909d584ae3ba77c994078d031976b52241aebff190bf67d931:2014-09-12:1.%20FC%20Kaiserslautern:FSV%20Frankfurt:away",
+      "date": "2014-09-12",
+      "season": "2014-15",
+      "competition": {
+        "name": "German League 2",
+        "type": "league",
+        "country": "Germany"
+      },
+      "stage": "",
+      "opponent": {
+        "name": "1. FC Kaiserslautern",
+        "slug": "1-fc-kaiserslautern"
+      },
+      "venue": "away",
+      "score": {
+        "for": 0,
+        "against": 1
+      },
+      "result": "L",
+      "sourceRef": "src:7a747e9c754f773a8198"
+    },
+    {
+      "id": "engsoccerdata:e955aef5dabb62909d584ae3ba77c994078d031976b52241aebff190bf67d931:2014-09-20:FSV%20Frankfurt:VfL%20Bochum:home",
+      "date": "2014-09-20",
+      "season": "2014-15",
+      "competition": {
+        "name": "German League 2",
+        "type": "league",
+        "country": "Germany"
+      },
+      "stage": "",
+      "opponent": {
+        "name": "VfL Bochum",
+        "slug": "vfl-bochum"
+      },
+      "venue": "home",
+      "score": {
+        "for": 1,
+        "against": 5
+      },
+      "result": "L",
+      "sourceRef": "src:7a747e9c754f773a8198"
+    },
+    {
+      "id": "engsoccerdata:e955aef5dabb62909d584ae3ba77c994078d031976b52241aebff190bf67d931:2014-09-24:SV%20Darmstadt%2098:FSV%20Frankfurt:away",
+      "date": "2014-09-24",
+      "season": "2014-15",
+      "competition": {
+        "name": "German League 2",
+        "type": "league",
+        "country": "Germany"
+      },
+      "stage": "",
+      "opponent": {
+        "name": "Darmstadt",
+        "slug": "darmstadt"
+      },
+      "venue": "away",
+      "score": {
+        "for": 0,
+        "against": 4
+      },
+      "result": "L",
+      "sourceRef": "src:7a747e9c754f773a8198"
+    },
+    {
+      "id": "engsoccerdata:e955aef5dabb62909d584ae3ba77c994078d031976b52241aebff190bf67d931:2014-09-28:FSV%20Frankfurt:FC%20St.%20Pauli:home",
+      "date": "2014-09-28",
+      "season": "2014-15",
+      "competition": {
+        "name": "German League 2",
+        "type": "league",
+        "country": "Germany"
+      },
+      "stage": "",
+      "opponent": {
+        "name": "FC St. Pauli",
+        "slug": "fc-st-pauli"
+      },
+      "venue": "home",
+      "score": {
+        "for": 3,
+        "against": 3
+      },
+      "result": "D",
+      "sourceRef": "src:7a747e9c754f773a8198"
+    },
+    {
+      "id": "engsoccerdata:e955aef5dabb62909d584ae3ba77c994078d031976b52241aebff190bf67d931:2014-10-05:SV%20Sandhausen:FSV%20Frankfurt:away",
+      "date": "2014-10-05",
+      "season": "2014-15",
+      "competition": {
+        "name": "German League 2",
+        "type": "league",
+        "country": "Germany"
+      },
+      "stage": "",
+      "opponent": {
+        "name": "SV Sandhausen",
+        "slug": "sv-sandhausen"
+      },
+      "venue": "away",
+      "score": {
+        "for": 3,
+        "against": 0
+      },
+      "result": "W",
+      "sourceRef": "src:7a747e9c754f773a8198"
+    },
+    {
+      "id": "engsoccerdata:e955aef5dabb62909d584ae3ba77c994078d031976b52241aebff190bf67d931:2014-10-19:FSV%20Frankfurt:FC%20Ingolstadt%2004:home",
+      "date": "2014-10-19",
+      "season": "2014-15",
+      "competition": {
+        "name": "German League 2",
+        "type": "league",
+        "country": "Germany"
+      },
+      "stage": "",
+      "opponent": {
+        "name": "FC Ingolstadt 04",
+        "slug": "fc-ingolstadt-04"
+      },
+      "venue": "home",
+      "score": {
+        "for": 0,
+        "against": 1
+      },
+      "result": "L",
+      "sourceRef": "src:7a747e9c754f773a8198"
+    },
+    {
+      "id": "engsoccerdata:e955aef5dabb62909d584ae3ba77c994078d031976b52241aebff190bf67d931:2014-10-24:SpVgg%20Greuther%20Furth:FSV%20Frankfurt:away",
+      "date": "2014-10-24",
+      "season": "2014-15",
+      "competition": {
+        "name": "German League 2",
+        "type": "league",
+        "country": "Germany"
+      },
+      "stage": "",
+      "opponent": {
+        "name": "SpVgg Greuther Furth",
+        "slug": "spvgg-greuther-furth"
+      },
+      "venue": "away",
+      "score": {
+        "for": 5,
+        "against": 2
+      },
+      "result": "W",
+      "sourceRef": "src:7a747e9c754f773a8198"
+    },
+    {
+      "id": "engsoccerdata:e955aef5dabb62909d584ae3ba77c994078d031976b52241aebff190bf67d931:2014-11-02:FSV%20Frankfurt:Erzgebirge%20Aue:home",
+      "date": "2014-11-02",
+      "season": "2014-15",
+      "competition": {
+        "name": "German League 2",
+        "type": "league",
+        "country": "Germany"
+      },
+      "stage": "",
+      "opponent": {
+        "name": "Erzgebirge Aue",
+        "slug": "erzgebirge-aue"
+      },
+      "venue": "home",
+      "score": {
+        "for": 1,
+        "against": 1
+      },
+      "result": "D",
+      "sourceRef": "src:7a747e9c754f773a8198"
+    },
+    {
+      "id": "engsoccerdata:e955aef5dabb62909d584ae3ba77c994078d031976b52241aebff190bf67d931:2014-11-07:VfR%20Aalen:FSV%20Frankfurt:away",
+      "date": "2014-11-07",
+      "season": "2014-15",
+      "competition": {
+        "name": "German League 2",
+        "type": "league",
+        "country": "Germany"
+      },
+      "stage": "",
+      "opponent": {
+        "name": "VfR Aalen",
+        "slug": "vfr-aalen"
+      },
+      "venue": "away",
+      "score": {
+        "for": 1,
+        "against": 0
+      },
+      "result": "W",
+      "sourceRef": "src:7a747e9c754f773a8198"
+    },
+    {
+      "id": "engsoccerdata:e955aef5dabb62909d584ae3ba77c994078d031976b52241aebff190bf67d931:2014-11-22:FSV%20Frankfurt:Eintracht%20Braunschweig:home",
+      "date": "2014-11-22",
+      "season": "2014-15",
+      "competition": {
+        "name": "German League 2",
+        "type": "league",
+        "country": "Germany"
+      },
+      "stage": "",
+      "opponent": {
+        "name": "Eintracht Braunschweig",
+        "slug": "eintracht-braunschweig"
+      },
+      "venue": "home",
+      "score": {
+        "for": 0,
+        "against": 3
+      },
+      "result": "L",
+      "sourceRef": "src:7a747e9c754f773a8198"
+    },
+    {
+      "id": "engsoccerdata:e955aef5dabb62909d584ae3ba77c994078d031976b52241aebff190bf67d931:2014-11-30:1860%20Munchen:FSV%20Frankfurt:away",
+      "date": "2014-11-30",
+      "season": "2014-15",
+      "competition": {
+        "name": "German League 2",
+        "type": "league",
+        "country": "Germany"
+      },
+      "stage": "",
+      "opponent": {
+        "name": "1860 Munchen",
+        "slug": "1860-munchen"
+      },
+      "venue": "away",
+      "score": {
+        "for": 2,
+        "against": 0
+      },
+      "result": "W",
+      "sourceRef": "src:7a747e9c754f773a8198"
+    },
+    {
+      "id": "engsoccerdata:e955aef5dabb62909d584ae3ba77c994078d031976b52241aebff190bf67d931:2014-12-07:1.%20FC%20Union%20Berlin:FSV%20Frankfurt:away",
+      "date": "2014-12-07",
+      "season": "2014-15",
+      "competition": {
+        "name": "German League 2",
+        "type": "league",
+        "country": "Germany"
+      },
+      "stage": "",
+      "opponent": {
+        "name": "Union Berlin",
+        "slug": "union-berlin"
+      },
+      "venue": "away",
+      "score": {
+        "for": 1,
+        "against": 2
+      },
+      "result": "L",
+      "sourceRef": "src:7a747e9c754f773a8198"
+    },
+    {
+      "id": "engsoccerdata:e955aef5dabb62909d584ae3ba77c994078d031976b52241aebff190bf67d931:2014-12-13:FSV%20Frankfurt:Fortuna%20Dusseldorf:home",
+      "date": "2014-12-13",
+      "season": "2014-15",
+      "competition": {
+        "name": "German League 2",
+        "type": "league",
+        "country": "Germany"
+      },
+      "stage": "",
+      "opponent": {
+        "name": "Fortuna Dusseldorf",
+        "slug": "fortuna-dusseldorf"
+      },
+      "venue": "home",
+      "score": {
+        "for": 0,
+        "against": 2
+      },
+      "result": "L",
+      "sourceRef": "src:7a747e9c754f773a8198"
+    },
+    {
+      "id": "engsoccerdata:e955aef5dabb62909d584ae3ba77c994078d031976b52241aebff190bf67d931:2014-12-16:FSV%20Frankfurt:1.%20FC%20Heidenheim:home",
+      "date": "2014-12-16",
+      "season": "2014-15",
+      "competition": {
+        "name": "German League 2",
+        "type": "league",
+        "country": "Germany"
+      },
+      "stage": "",
+      "opponent": {
+        "name": "Heidenheim",
+        "slug": "heidenheim"
+      },
+      "venue": "home",
+      "score": {
+        "for": 2,
+        "against": 0
+      },
+      "result": "W",
+      "sourceRef": "src:7a747e9c754f773a8198"
+    },
+    {
+      "id": "engsoccerdata:e955aef5dabb62909d584ae3ba77c994078d031976b52241aebff190bf67d931:2014-12-19:Karlsruher%20SC:FSV%20Frankfurt:away",
+      "date": "2014-12-19",
+      "season": "2014-15",
+      "competition": {
+        "name": "German League 2",
+        "type": "league",
+        "country": "Germany"
+      },
+      "stage": "",
+      "opponent": {
+        "name": "Karlsruher SC",
+        "slug": "karlsruher-sc"
+      },
+      "venue": "away",
+      "score": {
+        "for": 1,
+        "against": 4
+      },
+      "result": "L",
+      "sourceRef": "src:7a747e9c754f773a8198"
+    },
+    {
+      "id": "engsoccerdata:e955aef5dabb62909d584ae3ba77c994078d031976b52241aebff190bf67d931:2015-02-08:FSV%20Frankfurt:1.%20FC%20Nurnberg:home",
+      "date": "2015-02-08",
+      "season": "2014-15",
+      "competition": {
+        "name": "German League 2",
+        "type": "league",
+        "country": "Germany"
+      },
+      "stage": "",
+      "opponent": {
+        "name": "1. FC Nurnberg",
+        "slug": "1-fc-nurnberg"
+      },
+      "venue": "home",
+      "score": {
+        "for": 2,
+        "against": 1
+      },
+      "result": "W",
+      "sourceRef": "src:7a747e9c754f773a8198"
+    },
+    {
+      "id": "engsoccerdata:e955aef5dabb62909d584ae3ba77c994078d031976b52241aebff190bf67d931:2015-02-15:RasenBallsport%20Leipzig:FSV%20Frankfurt:away",
+      "date": "2015-02-15",
+      "season": "2014-15",
+      "competition": {
+        "name": "German League 2",
+        "type": "league",
+        "country": "Germany"
+      },
+      "stage": "",
+      "opponent": {
+        "name": "RasenBallsport Leipzig",
+        "slug": "rasenballsport-leipzig"
+      },
+      "venue": "away",
+      "score": {
+        "for": 1,
+        "against": 0
+      },
+      "result": "W",
+      "sourceRef": "src:7a747e9c754f773a8198"
+    },
+    {
+      "id": "engsoccerdata:e955aef5dabb62909d584ae3ba77c994078d031976b52241aebff190bf67d931:2015-02-22:FSV%20Frankfurt:1.%20FC%20Kaiserslautern:home",
+      "date": "2015-02-22",
+      "season": "2014-15",
+      "competition": {
+        "name": "German League 2",
+        "type": "league",
+        "country": "Germany"
+      },
+      "stage": "",
+      "opponent": {
+        "name": "1. FC Kaiserslautern",
+        "slug": "1-fc-kaiserslautern"
+      },
+      "venue": "home",
+      "score": {
+        "for": 2,
+        "against": 0
+      },
+      "result": "W",
+      "sourceRef": "src:7a747e9c754f773a8198"
+    },
+    {
+      "id": "engsoccerdata:e955aef5dabb62909d584ae3ba77c994078d031976b52241aebff190bf67d931:2015-02-27:VfL%20Bochum:FSV%20Frankfurt:away",
+      "date": "2015-02-27",
+      "season": "2014-15",
+      "competition": {
+        "name": "German League 2",
+        "type": "league",
+        "country": "Germany"
+      },
+      "stage": "",
+      "opponent": {
+        "name": "VfL Bochum",
+        "slug": "vfl-bochum"
+      },
+      "venue": "away",
+      "score": {
+        "for": 3,
+        "against": 3
+      },
+      "result": "D",
+      "sourceRef": "src:7a747e9c754f773a8198"
+    },
+    {
+      "id": "engsoccerdata:e955aef5dabb62909d584ae3ba77c994078d031976b52241aebff190bf67d931:2015-03-08:FSV%20Frankfurt:SV%20Darmstadt%2098:home",
+      "date": "2015-03-08",
+      "season": "2014-15",
+      "competition": {
+        "name": "German League 2",
+        "type": "league",
+        "country": "Germany"
+      },
+      "stage": "",
+      "opponent": {
+        "name": "Darmstadt",
+        "slug": "darmstadt"
+      },
+      "venue": "home",
+      "score": {
+        "for": 1,
+        "against": 1
+      },
+      "result": "D",
+      "sourceRef": "src:7a747e9c754f773a8198"
+    },
+    {
+      "id": "engsoccerdata:e955aef5dabb62909d584ae3ba77c994078d031976b52241aebff190bf67d931:2015-03-14:FC%20St.%20Pauli:FSV%20Frankfurt:away",
+      "date": "2015-03-14",
+      "season": "2014-15",
+      "competition": {
+        "name": "German League 2",
+        "type": "league",
+        "country": "Germany"
+      },
+      "stage": "",
+      "opponent": {
+        "name": "FC St. Pauli",
+        "slug": "fc-st-pauli"
+      },
+      "venue": "away",
+      "score": {
+        "for": 1,
+        "against": 1
+      },
+      "result": "D",
+      "sourceRef": "src:7a747e9c754f773a8198"
+    },
+    {
+      "id": "engsoccerdata:e955aef5dabb62909d584ae3ba77c994078d031976b52241aebff190bf67d931:2015-03-20:FSV%20Frankfurt:SV%20Sandhausen:home",
+      "date": "2015-03-20",
+      "season": "2014-15",
+      "competition": {
+        "name": "German League 2",
+        "type": "league",
+        "country": "Germany"
+      },
+      "stage": "",
+      "opponent": {
+        "name": "SV Sandhausen",
+        "slug": "sv-sandhausen"
+      },
+      "venue": "home",
+      "score": {
+        "for": 1,
+        "against": 1
+      },
+      "result": "D",
+      "sourceRef": "src:7a747e9c754f773a8198"
+    },
+    {
+      "id": "engsoccerdata:e955aef5dabb62909d584ae3ba77c994078d031976b52241aebff190bf67d931:2015-04-05:FC%20Ingolstadt%2004:FSV%20Frankfurt:away",
+      "date": "2015-04-05",
+      "season": "2014-15",
+      "competition": {
+        "name": "German League 2",
+        "type": "league",
+        "country": "Germany"
+      },
+      "stage": "",
+      "opponent": {
+        "name": "FC Ingolstadt 04",
+        "slug": "fc-ingolstadt-04"
+      },
+      "venue": "away",
+      "score": {
+        "for": 0,
+        "against": 2
+      },
+      "result": "L",
+      "sourceRef": "src:7a747e9c754f773a8198"
+    },
+    {
+      "id": "engsoccerdata:e955aef5dabb62909d584ae3ba77c994078d031976b52241aebff190bf67d931:2015-04-11:FSV%20Frankfurt:SpVgg%20Greuther%20Furth:home",
+      "date": "2015-04-11",
+      "season": "2014-15",
+      "competition": {
+        "name": "German League 2",
+        "type": "league",
+        "country": "Germany"
+      },
+      "stage": "",
+      "opponent": {
+        "name": "SpVgg Greuther Furth",
+        "slug": "spvgg-greuther-furth"
+      },
+      "venue": "home",
+      "score": {
+        "for": 1,
+        "against": 1
+      },
+      "result": "D",
+      "sourceRef": "src:7a747e9c754f773a8198"
+    },
+    {
+      "id": "engsoccerdata:e955aef5dabb62909d584ae3ba77c994078d031976b52241aebff190bf67d931:2015-04-19:Erzgebirge%20Aue:FSV%20Frankfurt:away",
+      "date": "2015-04-19",
+      "season": "2014-15",
+      "competition": {
+        "name": "German League 2",
+        "type": "league",
+        "country": "Germany"
+      },
+      "stage": "",
+      "opponent": {
+        "name": "Erzgebirge Aue",
+        "slug": "erzgebirge-aue"
+      },
+      "venue": "away",
+      "score": {
+        "for": 0,
+        "against": 1
+      },
+      "result": "L",
+      "sourceRef": "src:7a747e9c754f773a8198"
+    },
+    {
+      "id": "engsoccerdata:e955aef5dabb62909d584ae3ba77c994078d031976b52241aebff190bf67d931:2015-04-26:FSV%20Frankfurt:VfR%20Aalen:home",
+      "date": "2015-04-26",
+      "season": "2014-15",
+      "competition": {
+        "name": "German League 2",
+        "type": "league",
+        "country": "Germany"
+      },
+      "stage": "",
+      "opponent": {
+        "name": "VfR Aalen",
+        "slug": "vfr-aalen"
+      },
+      "venue": "home",
+      "score": {
+        "for": 1,
+        "against": 1
+      },
+      "result": "D",
+      "sourceRef": "src:7a747e9c754f773a8198"
+    },
+    {
+      "id": "engsoccerdata:e955aef5dabb62909d584ae3ba77c994078d031976b52241aebff190bf67d931:2015-05-02:Eintracht%20Braunschweig:FSV%20Frankfurt:away",
+      "date": "2015-05-02",
+      "season": "2014-15",
+      "competition": {
+        "name": "German League 2",
+        "type": "league",
+        "country": "Germany"
+      },
+      "stage": "",
+      "opponent": {
+        "name": "Eintracht Braunschweig",
+        "slug": "eintracht-braunschweig"
+      },
+      "venue": "away",
+      "score": {
+        "for": 0,
+        "against": 2
+      },
+      "result": "L",
+      "sourceRef": "src:7a747e9c754f773a8198"
+    },
+    {
+      "id": "engsoccerdata:e955aef5dabb62909d584ae3ba77c994078d031976b52241aebff190bf67d931:2015-05-08:FSV%20Frankfurt:1860%20Munchen:home",
+      "date": "2015-05-08",
+      "season": "2014-15",
+      "competition": {
+        "name": "German League 2",
+        "type": "league",
+        "country": "Germany"
+      },
+      "stage": "",
+      "opponent": {
+        "name": "1860 Munchen",
+        "slug": "1860-munchen"
+      },
+      "venue": "home",
+      "score": {
+        "for": 0,
+        "against": 1
+      },
+      "result": "L",
+      "sourceRef": "src:7a747e9c754f773a8198"
+    },
+    {
+      "id": "engsoccerdata:e955aef5dabb62909d584ae3ba77c994078d031976b52241aebff190bf67d931:2015-05-17:FSV%20Frankfurt:1.%20FC%20Union%20Berlin:home",
+      "date": "2015-05-17",
+      "season": "2014-15",
+      "competition": {
+        "name": "German League 2",
+        "type": "league",
+        "country": "Germany"
+      },
+      "stage": "",
+      "opponent": {
+        "name": "Union Berlin",
+        "slug": "union-berlin"
+      },
+      "venue": "home",
+      "score": {
+        "for": 1,
+        "against": 3
+      },
+      "result": "L",
+      "sourceRef": "src:7a747e9c754f773a8198"
+    },
+    {
+      "id": "engsoccerdata:e955aef5dabb62909d584ae3ba77c994078d031976b52241aebff190bf67d931:2015-05-24:Fortuna%20Dusseldorf:FSV%20Frankfurt:away",
+      "date": "2015-05-24",
+      "season": "2014-15",
+      "competition": {
+        "name": "German League 2",
+        "type": "league",
+        "country": "Germany"
+      },
+      "stage": "",
+      "opponent": {
+        "name": "Fortuna Dusseldorf",
+        "slug": "fortuna-dusseldorf"
+      },
+      "venue": "away",
+      "score": {
+        "for": 3,
+        "against": 2
+      },
+      "result": "W",
+      "sourceRef": "src:7a747e9c754f773a8198"
+    },
+    {
+      "id": "engsoccerdata:e955aef5dabb62909d584ae3ba77c994078d031976b52241aebff190bf67d931:2015-07-25:FSV%20Frankfurt:RasenBallsport%20Leipzig:home",
+      "date": "2015-07-25",
+      "season": "2015-16",
+      "competition": {
+        "name": "German League 2",
+        "type": "league",
+        "country": "Germany"
+      },
+      "stage": "",
+      "opponent": {
+        "name": "RasenBallsport Leipzig",
+        "slug": "rasenballsport-leipzig"
+      },
+      "venue": "home",
+      "score": {
+        "for": 0,
+        "against": 1
+      },
+      "result": "L",
+      "sourceRef": "src:7a747e9c754f773a8198"
+    },
+    {
+      "id": "engsoccerdata:e955aef5dabb62909d584ae3ba77c994078d031976b52241aebff190bf67d931:2015-07-31:Arminia%20Bielefeld:FSV%20Frankfurt:away",
+      "date": "2015-07-31",
+      "season": "2015-16",
+      "competition": {
+        "name": "German League 2",
+        "type": "league",
+        "country": "Germany"
+      },
+      "stage": "",
+      "opponent": {
+        "name": "Arminia Bielefeld",
+        "slug": "arminia-bielefeld"
+      },
+      "venue": "away",
+      "score": {
+        "for": 0,
+        "against": 0
+      },
+      "result": "D",
+      "sourceRef": "src:7a747e9c754f773a8198"
+    },
+    {
+      "id": "engsoccerdata:e955aef5dabb62909d584ae3ba77c994078d031976b52241aebff190bf67d931:2015-08-14:FSV%20Frankfurt:Karlsruher%20SC:home",
+      "date": "2015-08-14",
+      "season": "2015-16",
+      "competition": {
+        "name": "German League 2",
+        "type": "league",
+        "country": "Germany"
+      },
+      "stage": "",
+      "opponent": {
+        "name": "Karlsruher SC",
+        "slug": "karlsruher-sc"
+      },
+      "venue": "home",
+      "score": {
+        "for": 1,
+        "against": 2
+      },
+      "result": "L",
+      "sourceRef": "src:7a747e9c754f773a8198"
+    },
+    {
+      "id": "engsoccerdata:e955aef5dabb62909d584ae3ba77c994078d031976b52241aebff190bf67d931:2015-08-21:SpVgg%20Greuther%20Furth:FSV%20Frankfurt:away",
+      "date": "2015-08-21",
+      "season": "2015-16",
+      "competition": {
+        "name": "German League 2",
+        "type": "league",
+        "country": "Germany"
+      },
+      "stage": "",
+      "opponent": {
+        "name": "SpVgg Greuther Furth",
+        "slug": "spvgg-greuther-furth"
+      },
+      "venue": "away",
+      "score": {
+        "for": 2,
+        "against": 0
+      },
+      "result": "W",
+      "sourceRef": "src:7a747e9c754f773a8198"
+    },
+    {
+      "id": "engsoccerdata:e955aef5dabb62909d584ae3ba77c994078d031976b52241aebff190bf67d931:2015-08-30:FSV%20Frankfurt:FC%20St.%20Pauli:home",
+      "date": "2015-08-30",
+      "season": "2015-16",
+      "competition": {
+        "name": "German League 2",
+        "type": "league",
+        "country": "Germany"
+      },
+      "stage": "",
+      "opponent": {
+        "name": "FC St. Pauli",
+        "slug": "fc-st-pauli"
+      },
+      "venue": "home",
+      "score": {
+        "for": 1,
+        "against": 0
+      },
+      "result": "W",
+      "sourceRef": "src:7a747e9c754f773a8198"
+    },
+    {
+      "id": "engsoccerdata:e955aef5dabb62909d584ae3ba77c994078d031976b52241aebff190bf67d931:2015-09-13:FSV%20Frankfurt:Eintracht%20Braunschweig:home",
+      "date": "2015-09-13",
+      "season": "2015-16",
+      "competition": {
+        "name": "German League 2",
+        "type": "league",
+        "country": "Germany"
+      },
+      "stage": "",
+      "opponent": {
+        "name": "Eintracht Braunschweig",
+        "slug": "eintracht-braunschweig"
+      },
+      "venue": "home",
+      "score": {
+        "for": 0,
+        "against": 3
+      },
+      "result": "L",
+      "sourceRef": "src:7a747e9c754f773a8198"
+    },
+    {
+      "id": "engsoccerdata:e955aef5dabb62909d584ae3ba77c994078d031976b52241aebff190bf67d931:2015-09-20:MSV%20Duisburg:FSV%20Frankfurt:away",
+      "date": "2015-09-20",
+      "season": "2015-16",
+      "competition": {
+        "name": "German League 2",
+        "type": "league",
+        "country": "Germany"
+      },
+      "stage": "",
+      "opponent": {
+        "name": "MSV Duisburg",
+        "slug": "msv-duisburg"
+      },
+      "venue": "away",
+      "score": {
+        "for": 1,
+        "against": 0
+      },
+      "result": "W",
+      "sourceRef": "src:7a747e9c754f773a8198"
+    },
+    {
+      "id": "engsoccerdata:e955aef5dabb62909d584ae3ba77c994078d031976b52241aebff190bf67d931:2015-09-23:FSV%20Frankfurt:1.%20FC%20Union%20Berlin:home",
+      "date": "2015-09-23",
+      "season": "2015-16",
+      "competition": {
+        "name": "German League 2",
+        "type": "league",
+        "country": "Germany"
+      },
+      "stage": "",
+      "opponent": {
+        "name": "Union Berlin",
+        "slug": "union-berlin"
+      },
+      "venue": "home",
+      "score": {
+        "for": 3,
+        "against": 2
+      },
+      "result": "W",
+      "sourceRef": "src:7a747e9c754f773a8198"
+    },
+    {
+      "id": "engsoccerdata:e955aef5dabb62909d584ae3ba77c994078d031976b52241aebff190bf67d931:2015-09-27:SC%20Freiburg:FSV%20Frankfurt:away",
+      "date": "2015-09-27",
+      "season": "2015-16",
+      "competition": {
+        "name": "German League 2",
+        "type": "league",
+        "country": "Germany"
+      },
+      "stage": "",
+      "opponent": {
+        "name": "SC Freiburg",
+        "slug": "sc-freiburg"
+      },
+      "venue": "away",
+      "score": {
+        "for": 0,
+        "against": 2
+      },
+      "result": "L",
+      "sourceRef": "src:7a747e9c754f773a8198"
+    },
+    {
+      "id": "engsoccerdata:e955aef5dabb62909d584ae3ba77c994078d031976b52241aebff190bf67d931:2015-10-02:FSV%20Frankfurt:1.%20FC%20Heidenheim:home",
+      "date": "2015-10-02",
+      "season": "2015-16",
+      "competition": {
+        "name": "German League 2",
+        "type": "league",
+        "country": "Germany"
+      },
+      "stage": "",
+      "opponent": {
+        "name": "Heidenheim",
+        "slug": "heidenheim"
+      },
+      "venue": "home",
+      "score": {
+        "for": 0,
+        "against": 4
+      },
+      "result": "L",
+      "sourceRef": "src:7a747e9c754f773a8198"
+    },
+    {
+      "id": "engsoccerdata:e955aef5dabb62909d584ae3ba77c994078d031976b52241aebff190bf67d931:2015-10-17:1.%20FC%20Nurnberg:FSV%20Frankfurt:away",
+      "date": "2015-10-17",
+      "season": "2015-16",
+      "competition": {
+        "name": "German League 2",
+        "type": "league",
+        "country": "Germany"
+      },
+      "stage": "",
+      "opponent": {
+        "name": "1. FC Nurnberg",
+        "slug": "1-fc-nurnberg"
+      },
+      "venue": "away",
+      "score": {
+        "for": 1,
+        "against": 1
+      },
+      "result": "D",
+      "sourceRef": "src:7a747e9c754f773a8198"
+    },
+    {
+      "id": "engsoccerdata:e955aef5dabb62909d584ae3ba77c994078d031976b52241aebff190bf67d931:2015-10-23:FSV%20Frankfurt:VfL%20Bochum:home",
+      "date": "2015-10-23",
+      "season": "2015-16",
+      "competition": {
+        "name": "German League 2",
+        "type": "league",
+        "country": "Germany"
+      },
+      "stage": "",
+      "opponent": {
+        "name": "VfL Bochum",
+        "slug": "vfl-bochum"
+      },
+      "venue": "home",
+      "score": {
+        "for": 3,
+        "against": 2
+      },
+      "result": "W",
+      "sourceRef": "src:7a747e9c754f773a8198"
+    },
+    {
+      "id": "engsoccerdata:e955aef5dabb62909d584ae3ba77c994078d031976b52241aebff190bf67d931:2015-10-31:SC%20Paderborn%2007:FSV%20Frankfurt:away",
+      "date": "2015-10-31",
+      "season": "2015-16",
+      "competition": {
+        "name": "German League 2",
+        "type": "league",
+        "country": "Germany"
+      },
+      "stage": "",
+      "opponent": {
+        "name": "SC Paderborn 07",
+        "slug": "sc-paderborn-07"
+      },
+      "venue": "away",
+      "score": {
+        "for": 1,
+        "against": 1
+      },
+      "result": "D",
+      "sourceRef": "src:7a747e9c754f773a8198"
+    },
+    {
+      "id": "engsoccerdata:e955aef5dabb62909d584ae3ba77c994078d031976b52241aebff190bf67d931:2015-11-06:FSV%20Frankfurt:SV%20Sandhausen:home",
+      "date": "2015-11-06",
+      "season": "2015-16",
+      "competition": {
+        "name": "German League 2",
+        "type": "league",
+        "country": "Germany"
+      },
+      "stage": "",
+      "opponent": {
+        "name": "SV Sandhausen",
+        "slug": "sv-sandhausen"
+      },
+      "venue": "home",
+      "score": {
+        "for": 0,
+        "against": 1
+      },
+      "result": "L",
+      "sourceRef": "src:7a747e9c754f773a8198"
+    },
+    {
+      "id": "engsoccerdata:e955aef5dabb62909d584ae3ba77c994078d031976b52241aebff190bf67d931:2015-11-22:1.%20FC%20Kaiserslautern:FSV%20Frankfurt:away",
+      "date": "2015-11-22",
+      "season": "2015-16",
+      "competition": {
+        "name": "German League 2",
+        "type": "league",
+        "country": "Germany"
+      },
+      "stage": "",
+      "opponent": {
+        "name": "1. FC Kaiserslautern",
+        "slug": "1-fc-kaiserslautern"
+      },
+      "venue": "away",
+      "score": {
+        "for": 1,
+        "against": 1
+      },
+      "result": "D",
+      "sourceRef": "src:7a747e9c754f773a8198"
+    },
+    {
+      "id": "engsoccerdata:e955aef5dabb62909d584ae3ba77c994078d031976b52241aebff190bf67d931:2015-11-29:FSV%20Frankfurt:Fortuna%20Dusseldorf:home",
+      "date": "2015-11-29",
+      "season": "2015-16",
+      "competition": {
+        "name": "German League 2",
+        "type": "league",
+        "country": "Germany"
+      },
+      "stage": "",
+      "opponent": {
+        "name": "Fortuna Dusseldorf",
+        "slug": "fortuna-dusseldorf"
+      },
+      "venue": "home",
+      "score": {
+        "for": 1,
+        "against": 2
+      },
+      "result": "L",
+      "sourceRef": "src:7a747e9c754f773a8198"
+    },
+    {
+      "id": "engsoccerdata:e955aef5dabb62909d584ae3ba77c994078d031976b52241aebff190bf67d931:2015-12-04:1860%20Munchen:FSV%20Frankfurt:away",
+      "date": "2015-12-04",
+      "season": "2015-16",
+      "competition": {
+        "name": "German League 2",
+        "type": "league",
+        "country": "Germany"
+      },
+      "stage": "",
+      "opponent": {
+        "name": "1860 Munchen",
+        "slug": "1860-munchen"
+      },
+      "venue": "away",
+      "score": {
+        "for": 1,
+        "against": 0
+      },
+      "result": "W",
+      "sourceRef": "src:7a747e9c754f773a8198"
+    },
+    {
+      "id": "engsoccerdata:e955aef5dabb62909d584ae3ba77c994078d031976b52241aebff190bf67d931:2015-12-13:RasenBallsport%20Leipzig:FSV%20Frankfurt:away",
+      "date": "2015-12-13",
+      "season": "2015-16",
+      "competition": {
+        "name": "German League 2",
+        "type": "league",
+        "country": "Germany"
+      },
+      "stage": "",
+      "opponent": {
+        "name": "RasenBallsport Leipzig",
+        "slug": "rasenballsport-leipzig"
+      },
+      "venue": "away",
+      "score": {
+        "for": 1,
+        "against": 3
+      },
+      "result": "L",
+      "sourceRef": "src:7a747e9c754f773a8198"
+    },
+    {
+      "id": "engsoccerdata:e955aef5dabb62909d584ae3ba77c994078d031976b52241aebff190bf67d931:2015-12-18:FSV%20Frankfurt:Arminia%20Bielefeld:home",
+      "date": "2015-12-18",
+      "season": "2015-16",
+      "competition": {
+        "name": "German League 2",
+        "type": "league",
+        "country": "Germany"
+      },
+      "stage": "",
+      "opponent": {
+        "name": "Arminia Bielefeld",
+        "slug": "arminia-bielefeld"
+      },
+      "venue": "home",
+      "score": {
+        "for": 1,
+        "against": 2
+      },
+      "result": "L",
+      "sourceRef": "src:7a747e9c754f773a8198"
+    },
+    {
+      "id": "engsoccerdata:e955aef5dabb62909d584ae3ba77c994078d031976b52241aebff190bf67d931:2016-02-07:Karlsruher%20SC:FSV%20Frankfurt:away",
+      "date": "2016-02-07",
+      "season": "2015-16",
+      "competition": {
+        "name": "German League 2",
+        "type": "league",
+        "country": "Germany"
+      },
+      "stage": "",
+      "opponent": {
+        "name": "Karlsruher SC",
+        "slug": "karlsruher-sc"
+      },
+      "venue": "away",
+      "score": {
+        "for": 1,
+        "against": 1
+      },
+      "result": "D",
+      "sourceRef": "src:7a747e9c754f773a8198"
+    },
+    {
+      "id": "engsoccerdata:e955aef5dabb62909d584ae3ba77c994078d031976b52241aebff190bf67d931:2016-02-12:FSV%20Frankfurt:SpVgg%20Greuther%20Furth:home",
+      "date": "2016-02-12",
+      "season": "2015-16",
+      "competition": {
+        "name": "German League 2",
+        "type": "league",
+        "country": "Germany"
+      },
+      "stage": "",
+      "opponent": {
+        "name": "SpVgg Greuther Furth",
+        "slug": "spvgg-greuther-furth"
+      },
+      "venue": "home",
+      "score": {
+        "for": 1,
+        "against": 2
+      },
+      "result": "L",
+      "sourceRef": "src:7a747e9c754f773a8198"
+    },
+    {
+      "id": "engsoccerdata:e955aef5dabb62909d584ae3ba77c994078d031976b52241aebff190bf67d931:2016-02-19:FC%20St.%20Pauli:FSV%20Frankfurt:away",
+      "date": "2016-02-19",
+      "season": "2015-16",
+      "competition": {
+        "name": "German League 2",
+        "type": "league",
+        "country": "Germany"
+      },
+      "stage": "",
+      "opponent": {
+        "name": "FC St. Pauli",
+        "slug": "fc-st-pauli"
+      },
+      "venue": "away",
+      "score": {
+        "for": 3,
+        "against": 1
+      },
+      "result": "W",
+      "sourceRef": "src:7a747e9c754f773a8198"
+    },
+    {
+      "id": "engsoccerdata:e955aef5dabb62909d584ae3ba77c994078d031976b52241aebff190bf67d931:2016-02-28:Eintracht%20Braunschweig:FSV%20Frankfurt:away",
+      "date": "2016-02-28",
+      "season": "2015-16",
+      "competition": {
+        "name": "German League 2",
+        "type": "league",
+        "country": "Germany"
+      },
+      "stage": "",
+      "opponent": {
+        "name": "Eintracht Braunschweig",
+        "slug": "eintracht-braunschweig"
+      },
+      "venue": "away",
+      "score": {
+        "for": 0,
+        "against": 0
+      },
+      "result": "D",
+      "sourceRef": "src:7a747e9c754f773a8198"
+    },
+    {
+      "id": "engsoccerdata:e955aef5dabb62909d584ae3ba77c994078d031976b52241aebff190bf67d931:2016-03-02:FSV%20Frankfurt:MSV%20Duisburg:home",
+      "date": "2016-03-02",
+      "season": "2015-16",
+      "competition": {
+        "name": "German League 2",
+        "type": "league",
+        "country": "Germany"
+      },
+      "stage": "",
+      "opponent": {
+        "name": "MSV Duisburg",
+        "slug": "msv-duisburg"
+      },
+      "venue": "home",
+      "score": {
+        "for": 3,
+        "against": 3
+      },
+      "result": "D",
+      "sourceRef": "src:7a747e9c754f773a8198"
+    },
+    {
+      "id": "engsoccerdata:e955aef5dabb62909d584ae3ba77c994078d031976b52241aebff190bf67d931:2016-03-05:1.%20FC%20Union%20Berlin:FSV%20Frankfurt:away",
+      "date": "2016-03-05",
+      "season": "2015-16",
+      "competition": {
+        "name": "German League 2",
+        "type": "league",
+        "country": "Germany"
+      },
+      "stage": "",
+      "opponent": {
+        "name": "Union Berlin",
+        "slug": "union-berlin"
+      },
+      "venue": "away",
+      "score": {
+        "for": 0,
+        "against": 4
+      },
+      "result": "L",
+      "sourceRef": "src:7a747e9c754f773a8198"
+    },
+    {
+      "id": "engsoccerdata:e955aef5dabb62909d584ae3ba77c994078d031976b52241aebff190bf67d931:2016-03-13:FSV%20Frankfurt:SC%20Freiburg:home",
+      "date": "2016-03-13",
+      "season": "2015-16",
+      "competition": {
+        "name": "German League 2",
+        "type": "league",
+        "country": "Germany"
+      },
+      "stage": "",
+      "opponent": {
+        "name": "SC Freiburg",
+        "slug": "sc-freiburg"
+      },
+      "venue": "home",
+      "score": {
+        "for": 1,
+        "against": 3
+      },
+      "result": "L",
+      "sourceRef": "src:7a747e9c754f773a8198"
+    },
+    {
+      "id": "engsoccerdata:e955aef5dabb62909d584ae3ba77c994078d031976b52241aebff190bf67d931:2016-03-18:1.%20FC%20Heidenheim:FSV%20Frankfurt:away",
+      "date": "2016-03-18",
+      "season": "2015-16",
+      "competition": {
+        "name": "German League 2",
+        "type": "league",
+        "country": "Germany"
+      },
+      "stage": "",
+      "opponent": {
+        "name": "Heidenheim",
+        "slug": "heidenheim"
+      },
+      "venue": "away",
+      "score": {
+        "for": 2,
+        "against": 2
+      },
+      "result": "D",
+      "sourceRef": "src:7a747e9c754f773a8198"
+    },
+    {
+      "id": "engsoccerdata:e955aef5dabb62909d584ae3ba77c994078d031976b52241aebff190bf67d931:2016-04-03:FSV%20Frankfurt:1.%20FC%20Nurnberg:home",
+      "date": "2016-04-03",
+      "season": "2015-16",
+      "competition": {
+        "name": "German League 2",
+        "type": "league",
+        "country": "Germany"
+      },
+      "stage": "",
+      "opponent": {
+        "name": "1. FC Nurnberg",
+        "slug": "1-fc-nurnberg"
+      },
+      "venue": "home",
+      "score": {
+        "for": 0,
+        "against": 3
+      },
+      "result": "L",
+      "sourceRef": "src:7a747e9c754f773a8198"
+    },
+    {
+      "id": "engsoccerdata:e955aef5dabb62909d584ae3ba77c994078d031976b52241aebff190bf67d931:2016-04-09:VfL%20Bochum:FSV%20Frankfurt:away",
+      "date": "2016-04-09",
+      "season": "2015-16",
+      "competition": {
+        "name": "German League 2",
+        "type": "league",
+        "country": "Germany"
+      },
+      "stage": "",
+      "opponent": {
+        "name": "VfL Bochum",
+        "slug": "vfl-bochum"
+      },
+      "venue": "away",
+      "score": {
+        "for": 1,
+        "against": 4
+      },
+      "result": "L",
+      "sourceRef": "src:7a747e9c754f773a8198"
+    },
+    {
+      "id": "engsoccerdata:e955aef5dabb62909d584ae3ba77c994078d031976b52241aebff190bf67d931:2016-04-15:FSV%20Frankfurt:SC%20Paderborn%2007:home",
+      "date": "2016-04-15",
+      "season": "2015-16",
+      "competition": {
+        "name": "German League 2",
+        "type": "league",
+        "country": "Germany"
+      },
+      "stage": "",
+      "opponent": {
+        "name": "SC Paderborn 07",
+        "slug": "sc-paderborn-07"
+      },
+      "venue": "home",
+      "score": {
+        "for": 0,
+        "against": 2
+      },
+      "result": "L",
+      "sourceRef": "src:7a747e9c754f773a8198"
+    },
+    {
+      "id": "engsoccerdata:e955aef5dabb62909d584ae3ba77c994078d031976b52241aebff190bf67d931:2016-04-24:SV%20Sandhausen:FSV%20Frankfurt:away",
+      "date": "2016-04-24",
+      "season": "2015-16",
+      "competition": {
+        "name": "German League 2",
+        "type": "league",
+        "country": "Germany"
+      },
+      "stage": "",
+      "opponent": {
+        "name": "SV Sandhausen",
+        "slug": "sv-sandhausen"
+      },
+      "venue": "away",
+      "score": {
+        "for": 0,
+        "against": 1
+      },
+      "result": "L",
+      "sourceRef": "src:7a747e9c754f773a8198"
+    },
+    {
+      "id": "engsoccerdata:e955aef5dabb62909d584ae3ba77c994078d031976b52241aebff190bf67d931:2016-04-29:FSV%20Frankfurt:1.%20FC%20Kaiserslautern:home",
+      "date": "2016-04-29",
+      "season": "2015-16",
+      "competition": {
+        "name": "German League 2",
+        "type": "league",
+        "country": "Germany"
+      },
+      "stage": "",
+      "opponent": {
+        "name": "1. FC Kaiserslautern",
+        "slug": "1-fc-kaiserslautern"
+      },
+      "venue": "home",
+      "score": {
+        "for": 1,
+        "against": 4
+      },
+      "result": "L",
+      "sourceRef": "src:7a747e9c754f773a8198"
+    },
+    {
+      "id": "engsoccerdata:e955aef5dabb62909d584ae3ba77c994078d031976b52241aebff190bf67d931:2016-05-08:Fortuna%20Dusseldorf:FSV%20Frankfurt:away",
+      "date": "2016-05-08",
+      "season": "2015-16",
+      "competition": {
+        "name": "German League 2",
+        "type": "league",
+        "country": "Germany"
+      },
+      "stage": "",
+      "opponent": {
+        "name": "Fortuna Dusseldorf",
+        "slug": "fortuna-dusseldorf"
+      },
+      "venue": "away",
+      "score": {
+        "for": 0,
+        "against": 1
+      },
+      "result": "L",
+      "sourceRef": "src:7a747e9c754f773a8198"
+    },
+    {
+      "id": "engsoccerdata:e955aef5dabb62909d584ae3ba77c994078d031976b52241aebff190bf67d931:2016-05-15:FSV%20Frankfurt:1860%20Munchen:home",
+      "date": "2016-05-15",
+      "season": "2015-16",
+      "competition": {
+        "name": "German League 2",
+        "type": "league",
+        "country": "Germany"
+      },
+      "stage": "",
+      "opponent": {
+        "name": "1860 Munchen",
+        "slug": "1860-munchen"
+      },
+      "venue": "home",
+      "score": {
+        "for": 2,
+        "against": 1
+      },
+      "result": "W",
+      "sourceRef": "src:7a747e9c754f773a8198"
+    }
+  ],
+  "seasonStandings": [
+    {
+      "season": "1994-95",
+      "competition": {
+        "name": "German League 2",
+        "type": "league",
+        "country": "Germany"
+      },
+      "position": 18,
+      "team": "FSV Frankfurt",
+      "played": 34,
+      "won": 3,
+      "drawn": 6,
+      "lost": 25,
+      "goalsFor": 39,
+      "goalsAgainst": 103,
+      "points": 15,
+      "basis": "derived from recorded completed home fixtures"
+    },
+    {
+      "season": "2008-09",
+      "competition": {
+        "name": "German League 2",
+        "type": "league",
+        "country": "Germany"
+      },
+      "position": 15,
+      "team": "FSV Frankfurt",
+      "played": 34,
+      "won": 9,
+      "drawn": 11,
+      "lost": 14,
+      "goalsFor": 34,
+      "goalsAgainst": 47,
+      "points": 38,
+      "basis": "derived from recorded completed home fixtures"
+    },
+    {
+      "season": "2009-10",
+      "competition": {
+        "name": "German League 2",
+        "type": "league",
+        "country": "Germany"
+      },
+      "position": 15,
+      "team": "FSV Frankfurt",
+      "played": 34,
+      "won": 9,
+      "drawn": 11,
+      "lost": 14,
+      "goalsFor": 29,
+      "goalsAgainst": 50,
+      "points": 38,
+      "basis": "derived from recorded completed home fixtures"
+    },
+    {
+      "season": "2010-11",
+      "competition": {
+        "name": "German League 2",
+        "type": "league",
+        "country": "Germany"
+      },
+      "position": 13,
+      "team": "FSV Frankfurt",
+      "played": 34,
+      "won": 11,
+      "drawn": 5,
+      "lost": 18,
+      "goalsFor": 42,
+      "goalsAgainst": 54,
+      "points": 38,
+      "basis": "derived from recorded completed home fixtures"
+    },
+    {
+      "season": "2011-12",
+      "competition": {
+        "name": "German League 2",
+        "type": "league",
+        "country": "Germany"
+      },
+      "position": 13,
+      "team": "FSV Frankfurt",
+      "played": 34,
+      "won": 7,
+      "drawn": 14,
+      "lost": 13,
+      "goalsFor": 43,
+      "goalsAgainst": 59,
+      "points": 35,
+      "basis": "derived from recorded completed home fixtures"
+    },
+    {
+      "season": "2012-13",
+      "competition": {
+        "name": "German League 2",
+        "type": "league",
+        "country": "Germany"
+      },
+      "position": 4,
+      "team": "FSV Frankfurt",
+      "played": 34,
+      "won": 16,
+      "drawn": 6,
+      "lost": 12,
+      "goalsFor": 55,
+      "goalsAgainst": 45,
+      "points": 54,
+      "basis": "derived from recorded completed home fixtures"
+    },
+    {
+      "season": "2013-14",
+      "competition": {
+        "name": "German League 2",
+        "type": "league",
+        "country": "Germany"
+      },
+      "position": 13,
+      "team": "FSV Frankfurt",
+      "played": 34,
+      "won": 11,
+      "drawn": 8,
+      "lost": 15,
+      "goalsFor": 46,
+      "goalsAgainst": 51,
+      "points": 41,
+      "basis": "derived from recorded completed home fixtures"
+    },
+    {
+      "season": "2014-15",
+      "competition": {
+        "name": "German League 2",
+        "type": "league",
+        "country": "Germany"
+      },
+      "position": 13,
+      "team": "FSV Frankfurt",
+      "played": 34,
+      "won": 10,
+      "drawn": 9,
+      "lost": 15,
+      "goalsFor": 41,
+      "goalsAgainst": 53,
+      "points": 39,
+      "basis": "derived from recorded completed home fixtures"
+    },
+    {
+      "season": "2015-16",
+      "competition": {
+        "name": "German League 2",
+        "type": "league",
+        "country": "Germany"
+      },
+      "position": 17,
+      "team": "FSV Frankfurt",
+      "played": 34,
+      "won": 8,
+      "drawn": 8,
+      "lost": 18,
+      "goalsFor": 33,
+      "goalsAgainst": 59,
+      "points": 32,
+      "basis": "derived from recorded completed home fixtures"
+    }
+  ],
+  "competitionStandings": [],
+  "updatedAt": "2026-08-04T20:25:03.925Z"
+}

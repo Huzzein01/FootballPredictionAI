@@ -1,0 +1,203 @@
+{
+  "contract": "football-team-history-v1",
+  "team": {
+    "name": "AFC Hornchurch",
+    "slug": "afc-hornchurch",
+    "primaryLeague": "FA Cup",
+    "aliases": []
+  },
+  "requestedCoverage": {
+    "fromYear": 1985,
+    "to": "present",
+    "includes": [
+      "all competitions",
+      "opponents",
+      "scorelines",
+      "league standings",
+      "competition standings"
+    ]
+  },
+  "sourcePlan": [
+    {
+      "rank": 1,
+      "provider": "Official club archive",
+      "url": "",
+      "scope": "club history, competition participation and match reports",
+      "lookupKey": "AFC Hornchurch",
+      "review": "Verify the club-owned archive URL before collection."
+    },
+    {
+      "rank": 2,
+      "provider": "Official domestic competition / association",
+      "url": "",
+      "scope": "official league fixtures, final tables and cup records",
+      "lookupKey": "FA Cup"
+    },
+    {
+      "rank": 3,
+      "provider": "UEFA",
+      "url": "https://www.uefa.com/",
+      "scope": "official European competition appearances, fixtures and standings",
+      "lookupKey": "AFC Hornchurch"
+    },
+    {
+      "rank": 4,
+      "provider": "RSSSF",
+      "url": "https://www.rsssf.org/",
+      "scope": "historic competitions, tables and cross-checking",
+      "lookupKey": "AFC Hornchurch"
+    },
+    {
+      "rank": 5,
+      "provider": "worldfootball.net",
+      "url": "https://www.worldfootball.net/",
+      "scope": "club match archive and competition participation cross-check",
+      "lookupKey": "AFC Hornchurch"
+    }
+  ],
+  "coverage": {
+    "earliestMatch": "2003-11-09",
+    "latestMatch": "2008-11-09",
+    "seasonsWithMatches": [
+      "2003-04",
+      "2004-05",
+      "2008-09"
+    ],
+    "missingSeasons": [
+      "1985-86",
+      "1986-87",
+      "1987-88",
+      "1988-89",
+      "1989-90",
+      "1990-91",
+      "1991-92",
+      "1992-93",
+      "1993-94",
+      "1994-95",
+      "1995-96",
+      "1996-97",
+      "1997-98",
+      "1998-99",
+      "1999-00",
+      "2000-01",
+      "2001-02",
+      "2002-03",
+      "2005-06",
+      "2006-07",
+      "2007-08",
+      "2009-10",
+      "2010-11",
+      "2011-12",
+      "2012-13",
+      "2013-14",
+      "2014-15",
+      "2015-16",
+      "2016-17",
+      "2017-18",
+      "2018-19",
+      "2019-20",
+      "2020-21",
+      "2021-22",
+      "2022-23",
+      "2023-24",
+      "2024-25",
+      "2025-26",
+      "2026-27"
+    ],
+    "competitionScopeVerified": false,
+    "status": "partial"
+  },
+  "matches": [
+    {
+      "id": "engsoccerdata:a931572683fc3f7925cb86da965133b560f9c74d8de608d9b7ef274f24226424:2003-11-09:AFC%20Hornchurch:Darlington:home",
+      "date": "2003-11-09",
+      "season": "2003-04",
+      "competition": {
+        "name": "FA Cup",
+        "type": "cup",
+        "country": "England"
+      },
+      "stage": "1",
+      "opponent": {
+        "name": "Darlington",
+        "slug": "darlington"
+      },
+      "venue": "home",
+      "score": {
+        "for": 2,
+        "against": 0
+      },
+      "result": "W",
+      "sourceRef": "src:6ea4c3bbc540746eb267"
+    },
+    {
+      "id": "engsoccerdata:a931572683fc3f7925cb86da965133b560f9c74d8de608d9b7ef274f24226424:2003-12-06:AFC%20Hornchurch:Tranmere%20Rovers:home",
+      "date": "2003-12-06",
+      "season": "2003-04",
+      "competition": {
+        "name": "FA Cup",
+        "type": "cup",
+        "country": "England"
+      },
+      "stage": "2",
+      "opponent": {
+        "name": "Tranmere Rovers",
+        "slug": "tranmere-rovers"
+      },
+      "venue": "home",
+      "score": {
+        "for": 0,
+        "against": 1
+      },
+      "result": "L",
+      "sourceRef": "src:6ea4c3bbc540746eb267"
+    },
+    {
+      "id": "engsoccerdata:a931572683fc3f7925cb86da965133b560f9c74d8de608d9b7ef274f24226424:2004-11-13:Boston%20United:AFC%20Hornchurch:away",
+      "date": "2004-11-13",
+      "season": "2004-05",
+      "competition": {
+        "name": "FA Cup",
+        "type": "cup",
+        "country": "England"
+      },
+      "stage": "1",
+      "opponent": {
+        "name": "Boston United",
+        "slug": "boston-united"
+      },
+      "venue": "away",
+      "score": {
+        "for": 2,
+        "against": 5
+      },
+      "result": "L",
+      "sourceRef": "src:6ea4c3bbc540746eb267"
+    },
+    {
+      "id": "engsoccerdata:a931572683fc3f7925cb86da965133b560f9c74d8de608d9b7ef274f24226424:2008-11-09:AFC%20Hornchurch:Peterborough%20United:home",
+      "date": "2008-11-09",
+      "season": "2008-09",
+      "competition": {
+        "name": "FA Cup",
+        "type": "cup",
+        "country": "England"
+      },
+      "stage": "1",
+      "opponent": {
+        "name": "Peterborough United",
+        "slug": "peterborough-united"
+      },
+      "venue": "home",
+      "score": {
+        "for": 0,
+        "against": 1
+      },
+      "result": "L",
+      "sourceRef": "src:6ea4c3bbc540746eb267"
+    }
+  ],
+  "seasonStandings": [],
+  "competitionStandings": [],
+  "updatedAt": "2026-08-04T20:25:00.208Z"
+}

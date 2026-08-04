@@ -1,0 +1,1369 @@
+{
+  "contract": "football-team-history-v1",
+  "team": {
+    "name": "Woking",
+    "slug": "woking",
+    "primaryLeague": "FA Cup",
+    "aliases": []
+  },
+  "requestedCoverage": {
+    "fromYear": 1985,
+    "to": "present",
+    "includes": [
+      "all competitions",
+      "opponents",
+      "scorelines",
+      "league standings",
+      "competition standings"
+    ]
+  },
+  "sourcePlan": [
+    {
+      "rank": 1,
+      "provider": "Official club archive",
+      "url": "",
+      "scope": "club history, competition participation and match reports",
+      "lookupKey": "Woking",
+      "review": "Verify the club-owned archive URL before collection."
+    },
+    {
+      "rank": 2,
+      "provider": "Official domestic competition / association",
+      "url": "",
+      "scope": "official league fixtures, final tables and cup records",
+      "lookupKey": "FA Cup"
+    },
+    {
+      "rank": 3,
+      "provider": "UEFA",
+      "url": "https://www.uefa.com/",
+      "scope": "official European competition appearances, fixtures and standings",
+      "lookupKey": "Woking"
+    },
+    {
+      "rank": 4,
+      "provider": "RSSSF",
+      "url": "https://www.rsssf.org/",
+      "scope": "historic competitions, tables and cross-checking",
+      "lookupKey": "Woking"
+    },
+    {
+      "rank": 5,
+      "provider": "worldfootball.net",
+      "url": "https://www.worldfootball.net/",
+      "scope": "club match archive and competition participation cross-check",
+      "lookupKey": "Woking"
+    }
+  ],
+  "coverage": {
+    "earliestMatch": "1986-11-15",
+    "latestMatch": "2019-01-06",
+    "seasonsWithMatches": [
+      "1986-87",
+      "1988-89",
+      "1989-90",
+      "1990-91",
+      "1991-92",
+      "1992-93",
+      "1993-94",
+      "1994-95",
+      "1995-96",
+      "1996-97",
+      "1997-98",
+      "1998-99",
+      "2000-01",
+      "2003-04",
+      "2004-05",
+      "2005-06",
+      "2006-07",
+      "2009-10",
+      "2010-11",
+      "2014-15",
+      "2016-17",
+      "2017-18",
+      "2018-19"
+    ],
+    "missingSeasons": [
+      "1985-86",
+      "1987-88",
+      "1999-00",
+      "2001-02",
+      "2002-03",
+      "2007-08",
+      "2008-09",
+      "2011-12",
+      "2012-13",
+      "2013-14",
+      "2015-16",
+      "2019-20",
+      "2020-21",
+      "2021-22",
+      "2022-23",
+      "2023-24",
+      "2024-25",
+      "2025-26",
+      "2026-27"
+    ],
+    "competitionScopeVerified": false,
+    "status": "partial"
+  },
+  "matches": [
+    {
+      "id": "engsoccerdata:a931572683fc3f7925cb86da965133b560f9c74d8de608d9b7ef274f24226424:1986-11-15:Woking:Chelmsford%20City:home",
+      "date": "1986-11-15",
+      "season": "1986-87",
+      "competition": {
+        "name": "FA Cup",
+        "type": "cup",
+        "country": "England"
+      },
+      "stage": "1",
+      "opponent": {
+        "name": "Chelmsford City",
+        "slug": "chelmsford-city"
+      },
+      "venue": "home",
+      "score": {
+        "for": 1,
+        "against": 1
+      },
+      "result": "D",
+      "sourceRef": "src:6ea4c3bbc540746eb267"
+    },
+    {
+      "id": "engsoccerdata:a931572683fc3f7925cb86da965133b560f9c74d8de608d9b7ef274f24226424:1986-11-17:Chelmsford%20City:Woking:away",
+      "date": "1986-11-17",
+      "season": "1986-87",
+      "competition": {
+        "name": "FA Cup",
+        "type": "cup",
+        "country": "England"
+      },
+      "stage": "1",
+      "opponent": {
+        "name": "Chelmsford City",
+        "slug": "chelmsford-city"
+      },
+      "venue": "away",
+      "score": {
+        "for": 1,
+        "against": 2
+      },
+      "result": "L",
+      "sourceRef": "src:6ea4c3bbc540746eb267"
+    },
+    {
+      "id": "engsoccerdata:a931572683fc3f7925cb86da965133b560f9c74d8de608d9b7ef274f24226424:1988-11-19:Woking:Cambridge%20United:home",
+      "date": "1988-11-19",
+      "season": "1988-89",
+      "competition": {
+        "name": "FA Cup",
+        "type": "cup",
+        "country": "England"
+      },
+      "stage": "1",
+      "opponent": {
+        "name": "Cambridge United",
+        "slug": "cambridge-united"
+      },
+      "venue": "home",
+      "score": {
+        "for": 1,
+        "against": 4
+      },
+      "result": "L",
+      "sourceRef": "src:6ea4c3bbc540746eb267"
+    },
+    {
+      "id": "engsoccerdata:a931572683fc3f7925cb86da965133b560f9c74d8de608d9b7ef274f24226424:1989-11-18:Slough%20Town:Woking:away",
+      "date": "1989-11-18",
+      "season": "1989-90",
+      "competition": {
+        "name": "FA Cup",
+        "type": "cup",
+        "country": "England"
+      },
+      "stage": "1",
+      "opponent": {
+        "name": "Slough Town",
+        "slug": "slough-town"
+      },
+      "venue": "away",
+      "score": {
+        "for": 2,
+        "against": 1
+      },
+      "result": "W",
+      "sourceRef": "src:6ea4c3bbc540746eb267"
+    },
+    {
+      "id": "engsoccerdata:a931572683fc3f7925cb86da965133b560f9c74d8de608d9b7ef274f24226424:1989-12-09:Cambridge%20United:Woking:away",
+      "date": "1989-12-09",
+      "season": "1989-90",
+      "competition": {
+        "name": "FA Cup",
+        "type": "cup",
+        "country": "England"
+      },
+      "stage": "2",
+      "opponent": {
+        "name": "Cambridge United",
+        "slug": "cambridge-united"
+      },
+      "venue": "away",
+      "score": {
+        "for": 1,
+        "against": 3
+      },
+      "result": "L",
+      "sourceRef": "src:6ea4c3bbc540746eb267"
+    },
+    {
+      "id": "engsoccerdata:a931572683fc3f7925cb86da965133b560f9c74d8de608d9b7ef274f24226424:1990-11-17:Woking:Kidderminster%20Harriers:home",
+      "date": "1990-11-17",
+      "season": "1990-91",
+      "competition": {
+        "name": "FA Cup",
+        "type": "cup",
+        "country": "England"
+      },
+      "stage": "1",
+      "opponent": {
+        "name": "Kidderminster Harriers",
+        "slug": "kidderminster-harriers"
+      },
+      "venue": "home",
+      "score": {
+        "for": 0,
+        "against": 0
+      },
+      "result": "D",
+      "sourceRef": "src:6ea4c3bbc540746eb267"
+    },
+    {
+      "id": "engsoccerdata:a931572683fc3f7925cb86da965133b560f9c74d8de608d9b7ef274f24226424:1990-11-21:Kidderminster%20Harriers:Woking:away",
+      "date": "1990-11-21",
+      "season": "1990-91",
+      "competition": {
+        "name": "FA Cup",
+        "type": "cup",
+        "country": "England"
+      },
+      "stage": "1",
+      "opponent": {
+        "name": "Kidderminster Harriers",
+        "slug": "kidderminster-harriers"
+      },
+      "venue": "away",
+      "score": {
+        "for": 1,
+        "against": 1
+      },
+      "result": "D",
+      "sourceRef": "src:6ea4c3bbc540746eb267"
+    },
+    {
+      "id": "engsoccerdata:a931572683fc3f7925cb86da965133b560f9c74d8de608d9b7ef274f24226424:1990-11-26:Kidderminster%20Harriers:Woking:away",
+      "date": "1990-11-26",
+      "season": "1990-91",
+      "competition": {
+        "name": "FA Cup",
+        "type": "cup",
+        "country": "England"
+      },
+      "stage": "1",
+      "opponent": {
+        "name": "Kidderminster Harriers",
+        "slug": "kidderminster-harriers"
+      },
+      "venue": "away",
+      "score": {
+        "for": 2,
+        "against": 1
+      },
+      "result": "W",
+      "sourceRef": "src:6ea4c3bbc540746eb267"
+    },
+    {
+      "id": "engsoccerdata:a931572683fc3f7925cb86da965133b560f9c74d8de608d9b7ef274f24226424:1990-12-08:Woking:Merthyr%20Tydfil:home",
+      "date": "1990-12-08",
+      "season": "1990-91",
+      "competition": {
+        "name": "FA Cup",
+        "type": "cup",
+        "country": "England"
+      },
+      "stage": "2",
+      "opponent": {
+        "name": "Merthyr Tydfil",
+        "slug": "merthyr-tydfil"
+      },
+      "venue": "home",
+      "score": {
+        "for": 5,
+        "against": 1
+      },
+      "result": "W",
+      "sourceRef": "src:6ea4c3bbc540746eb267"
+    },
+    {
+      "id": "engsoccerdata:a931572683fc3f7925cb86da965133b560f9c74d8de608d9b7ef274f24226424:1991-01-05:West%20Bromwich%20Albion:Woking:away",
+      "date": "1991-01-05",
+      "season": "1990-91",
+      "competition": {
+        "name": "FA Cup",
+        "type": "cup",
+        "country": "England"
+      },
+      "stage": "3",
+      "opponent": {
+        "name": "West Bromwich Albion",
+        "slug": "west-bromwich-albion"
+      },
+      "venue": "away",
+      "score": {
+        "for": 4,
+        "against": 2
+      },
+      "result": "W",
+      "sourceRef": "src:6ea4c3bbc540746eb267"
+    },
+    {
+      "id": "engsoccerdata:a931572683fc3f7925cb86da965133b560f9c74d8de608d9b7ef274f24226424:1991-01-27:Woking:Everton:home",
+      "date": "1991-01-27",
+      "season": "1990-91",
+      "competition": {
+        "name": "FA Cup",
+        "type": "cup",
+        "country": "England"
+      },
+      "stage": "4",
+      "opponent": {
+        "name": "Everton",
+        "slug": "everton"
+      },
+      "venue": "home",
+      "score": {
+        "for": 0,
+        "against": 1
+      },
+      "result": "L",
+      "sourceRef": "src:6ea4c3bbc540746eb267"
+    },
+    {
+      "id": "engsoccerdata:a931572683fc3f7925cb86da965133b560f9c74d8de608d9b7ef274f24226424:1991-11-26:Windsor%20%26%20Eton:Woking:away",
+      "date": "1991-11-26",
+      "season": "1991-92",
+      "competition": {
+        "name": "FA Cup",
+        "type": "cup",
+        "country": "England"
+      },
+      "stage": "1",
+      "opponent": {
+        "name": "Windsor & Eton",
+        "slug": "windsor-and-eton"
+      },
+      "venue": "away",
+      "score": {
+        "for": 4,
+        "against": 2
+      },
+      "result": "W",
+      "sourceRef": "src:6ea4c3bbc540746eb267"
+    },
+    {
+      "id": "engsoccerdata:a931572683fc3f7925cb86da965133b560f9c74d8de608d9b7ef274f24226424:1991-12-07:Woking:Yeovil:home",
+      "date": "1991-12-07",
+      "season": "1991-92",
+      "competition": {
+        "name": "FA Cup",
+        "type": "cup",
+        "country": "England"
+      },
+      "stage": "2",
+      "opponent": {
+        "name": "Yeovil",
+        "slug": "yeovil"
+      },
+      "venue": "home",
+      "score": {
+        "for": 3,
+        "against": 0
+      },
+      "result": "W",
+      "sourceRef": "src:6ea4c3bbc540746eb267"
+    },
+    {
+      "id": "engsoccerdata:a931572683fc3f7925cb86da965133b560f9c74d8de608d9b7ef274f24226424:1992-01-04:Woking:Hereford%20Town:home",
+      "date": "1992-01-04",
+      "season": "1991-92",
+      "competition": {
+        "name": "FA Cup",
+        "type": "cup",
+        "country": "England"
+      },
+      "stage": "3",
+      "opponent": {
+        "name": "Hereford Town",
+        "slug": "hereford-town"
+      },
+      "venue": "home",
+      "score": {
+        "for": 0,
+        "against": 0
+      },
+      "result": "D",
+      "sourceRef": "src:6ea4c3bbc540746eb267"
+    },
+    {
+      "id": "engsoccerdata:a931572683fc3f7925cb86da965133b560f9c74d8de608d9b7ef274f24226424:1992-01-14:Hereford%20Town:Woking:away",
+      "date": "1992-01-14",
+      "season": "1991-92",
+      "competition": {
+        "name": "FA Cup",
+        "type": "cup",
+        "country": "England"
+      },
+      "stage": "3",
+      "opponent": {
+        "name": "Hereford Town",
+        "slug": "hereford-town"
+      },
+      "venue": "away",
+      "score": {
+        "for": 1,
+        "against": 2
+      },
+      "result": "L",
+      "sourceRef": "src:6ea4c3bbc540746eb267"
+    },
+    {
+      "id": "engsoccerdata:a931572683fc3f7925cb86da965133b560f9c74d8de608d9b7ef274f24226424:1992-11-14:Woking:Nuneaton%20Borough%20AFC:home",
+      "date": "1992-11-14",
+      "season": "1992-93",
+      "competition": {
+        "name": "FA Cup",
+        "type": "cup",
+        "country": "England"
+      },
+      "stage": "1",
+      "opponent": {
+        "name": "Nuneaton Borough AFC",
+        "slug": "nuneaton-borough-afc"
+      },
+      "venue": "home",
+      "score": {
+        "for": 3,
+        "against": 2
+      },
+      "result": "W",
+      "sourceRef": "src:6ea4c3bbc540746eb267"
+    },
+    {
+      "id": "engsoccerdata:a931572683fc3f7925cb86da965133b560f9c74d8de608d9b7ef274f24226424:1992-12-05:Brighton%20%26%20Hove%20Albion:Woking:away",
+      "date": "1992-12-05",
+      "season": "1992-93",
+      "competition": {
+        "name": "FA Cup",
+        "type": "cup",
+        "country": "England"
+      },
+      "stage": "2",
+      "opponent": {
+        "name": "Brighton",
+        "slug": "brighton"
+      },
+      "venue": "away",
+      "score": {
+        "for": 1,
+        "against": 1
+      },
+      "result": "D",
+      "sourceRef": "src:6ea4c3bbc540746eb267"
+    },
+    {
+      "id": "engsoccerdata:a931572683fc3f7925cb86da965133b560f9c74d8de608d9b7ef274f24226424:1992-12-16:Woking:Brighton%20%26%20Hove%20Albion:home",
+      "date": "1992-12-16",
+      "season": "1992-93",
+      "competition": {
+        "name": "FA Cup",
+        "type": "cup",
+        "country": "England"
+      },
+      "stage": "2",
+      "opponent": {
+        "name": "Brighton",
+        "slug": "brighton"
+      },
+      "venue": "home",
+      "score": {
+        "for": 1,
+        "against": 2
+      },
+      "result": "L",
+      "sourceRef": "src:6ea4c3bbc540746eb267"
+    },
+    {
+      "id": "engsoccerdata:a931572683fc3f7925cb86da965133b560f9c74d8de608d9b7ef274f24226424:1993-11-13:Woking:Weston-Super-Mare:home",
+      "date": "1993-11-13",
+      "season": "1993-94",
+      "competition": {
+        "name": "FA Cup",
+        "type": "cup",
+        "country": "England"
+      },
+      "stage": "1",
+      "opponent": {
+        "name": "Weston-Super-Mare",
+        "slug": "weston-super-mare"
+      },
+      "venue": "home",
+      "score": {
+        "for": 2,
+        "against": 2
+      },
+      "result": "D",
+      "sourceRef": "src:6ea4c3bbc540746eb267"
+    },
+    {
+      "id": "engsoccerdata:a931572683fc3f7925cb86da965133b560f9c74d8de608d9b7ef274f24226424:1993-12-04:Kidderminster%20Harriers:Woking:away",
+      "date": "1993-12-04",
+      "season": "1993-94",
+      "competition": {
+        "name": "FA Cup",
+        "type": "cup",
+        "country": "England"
+      },
+      "stage": "2",
+      "opponent": {
+        "name": "Kidderminster Harriers",
+        "slug": "kidderminster-harriers"
+      },
+      "venue": "away",
+      "score": {
+        "for": 0,
+        "against": 1
+      },
+      "result": "L",
+      "sourceRef": "src:6ea4c3bbc540746eb267"
+    },
+    {
+      "id": "engsoccerdata:a931572683fc3f7925cb86da965133b560f9c74d8de608d9b7ef274f24226424:1994-11-12:Barnet:Woking:away",
+      "date": "1994-11-12",
+      "season": "1994-95",
+      "competition": {
+        "name": "FA Cup",
+        "type": "cup",
+        "country": "England"
+      },
+      "stage": "1",
+      "opponent": {
+        "name": "Barnet",
+        "slug": "barnet"
+      },
+      "venue": "away",
+      "score": {
+        "for": 4,
+        "against": 4
+      },
+      "result": "D",
+      "sourceRef": "src:6ea4c3bbc540746eb267"
+    },
+    {
+      "id": "engsoccerdata:a931572683fc3f7925cb86da965133b560f9c74d8de608d9b7ef274f24226424:1994-11-22:Woking:Barnet:home",
+      "date": "1994-11-22",
+      "season": "1994-95",
+      "competition": {
+        "name": "FA Cup",
+        "type": "cup",
+        "country": "England"
+      },
+      "stage": "1",
+      "opponent": {
+        "name": "Barnet",
+        "slug": "barnet"
+      },
+      "venue": "home",
+      "score": {
+        "for": 1,
+        "against": 0
+      },
+      "result": "W",
+      "sourceRef": "src:6ea4c3bbc540746eb267"
+    },
+    {
+      "id": "engsoccerdata:a931572683fc3f7925cb86da965133b560f9c74d8de608d9b7ef274f24226424:1994-12-04:Marlow:Woking:away",
+      "date": "1994-12-04",
+      "season": "1994-95",
+      "competition": {
+        "name": "FA Cup",
+        "type": "cup",
+        "country": "England"
+      },
+      "stage": "2",
+      "opponent": {
+        "name": "Marlow",
+        "slug": "marlow"
+      },
+      "venue": "away",
+      "score": {
+        "for": 1,
+        "against": 2
+      },
+      "result": "L",
+      "sourceRef": "src:6ea4c3bbc540746eb267"
+    },
+    {
+      "id": "engsoccerdata:a931572683fc3f7925cb86da965133b560f9c74d8de608d9b7ef274f24226424:1995-11-11:Barnet:Woking:away",
+      "date": "1995-11-11",
+      "season": "1995-96",
+      "competition": {
+        "name": "FA Cup",
+        "type": "cup",
+        "country": "England"
+      },
+      "stage": "1",
+      "opponent": {
+        "name": "Barnet",
+        "slug": "barnet"
+      },
+      "venue": "away",
+      "score": {
+        "for": 2,
+        "against": 2
+      },
+      "result": "D",
+      "sourceRef": "src:6ea4c3bbc540746eb267"
+    },
+    {
+      "id": "engsoccerdata:a931572683fc3f7925cb86da965133b560f9c74d8de608d9b7ef274f24226424:1995-11-21:Woking:Barnet:home",
+      "date": "1995-11-21",
+      "season": "1995-96",
+      "competition": {
+        "name": "FA Cup",
+        "type": "cup",
+        "country": "England"
+      },
+      "stage": "1",
+      "opponent": {
+        "name": "Barnet",
+        "slug": "barnet"
+      },
+      "venue": "home",
+      "score": {
+        "for": 2,
+        "against": 1
+      },
+      "result": "W",
+      "sourceRef": "src:6ea4c3bbc540746eb267"
+    },
+    {
+      "id": "engsoccerdata:a931572683fc3f7925cb86da965133b560f9c74d8de608d9b7ef274f24226424:1995-12-02:Enfield:Woking:away",
+      "date": "1995-12-02",
+      "season": "1995-96",
+      "competition": {
+        "name": "FA Cup",
+        "type": "cup",
+        "country": "England"
+      },
+      "stage": "2",
+      "opponent": {
+        "name": "Enfield",
+        "slug": "enfield"
+      },
+      "venue": "away",
+      "score": {
+        "for": 1,
+        "against": 1
+      },
+      "result": "D",
+      "sourceRef": "src:6ea4c3bbc540746eb267"
+    },
+    {
+      "id": "engsoccerdata:a931572683fc3f7925cb86da965133b560f9c74d8de608d9b7ef274f24226424:1995-12-12:Woking:Enfield:home",
+      "date": "1995-12-12",
+      "season": "1995-96",
+      "competition": {
+        "name": "FA Cup",
+        "type": "cup",
+        "country": "England"
+      },
+      "stage": "2",
+      "opponent": {
+        "name": "Enfield",
+        "slug": "enfield"
+      },
+      "venue": "home",
+      "score": {
+        "for": 2,
+        "against": 1
+      },
+      "result": "W",
+      "sourceRef": "src:6ea4c3bbc540746eb267"
+    },
+    {
+      "id": "engsoccerdata:a931572683fc3f7925cb86da965133b560f9c74d8de608d9b7ef274f24226424:1996-01-06:Swindon%20Town:Woking:away",
+      "date": "1996-01-06",
+      "season": "1995-96",
+      "competition": {
+        "name": "FA Cup",
+        "type": "cup",
+        "country": "England"
+      },
+      "stage": "3",
+      "opponent": {
+        "name": "Swindon",
+        "slug": "swindon"
+      },
+      "venue": "away",
+      "score": {
+        "for": 0,
+        "against": 2
+      },
+      "result": "L",
+      "sourceRef": "src:6ea4c3bbc540746eb267"
+    },
+    {
+      "id": "engsoccerdata:a931572683fc3f7925cb86da965133b560f9c74d8de608d9b7ef274f24226424:1996-11-15:Woking:Millwall:home",
+      "date": "1996-11-15",
+      "season": "1996-97",
+      "competition": {
+        "name": "FA Cup",
+        "type": "cup",
+        "country": "England"
+      },
+      "stage": "1",
+      "opponent": {
+        "name": "Millwall",
+        "slug": "millwall"
+      },
+      "venue": "home",
+      "score": {
+        "for": 2,
+        "against": 2
+      },
+      "result": "D",
+      "sourceRef": "src:6ea4c3bbc540746eb267"
+    },
+    {
+      "id": "engsoccerdata:a931572683fc3f7925cb86da965133b560f9c74d8de608d9b7ef274f24226424:1996-11-26:Millwall:Woking:away",
+      "date": "1996-11-26",
+      "season": "1996-97",
+      "competition": {
+        "name": "FA Cup",
+        "type": "cup",
+        "country": "England"
+      },
+      "stage": "1",
+      "opponent": {
+        "name": "Millwall",
+        "slug": "millwall"
+      },
+      "venue": "away",
+      "score": {
+        "for": 1,
+        "against": 0
+      },
+      "result": "W",
+      "sourceRef": "src:6ea4c3bbc540746eb267"
+    },
+    {
+      "id": "engsoccerdata:a931572683fc3f7925cb86da965133b560f9c74d8de608d9b7ef274f24226424:1996-12-07:Cambridge%20United:Woking:away",
+      "date": "1996-12-07",
+      "season": "1996-97",
+      "competition": {
+        "name": "FA Cup",
+        "type": "cup",
+        "country": "England"
+      },
+      "stage": "2",
+      "opponent": {
+        "name": "Cambridge United",
+        "slug": "cambridge-united"
+      },
+      "venue": "away",
+      "score": {
+        "for": 2,
+        "against": 0
+      },
+      "result": "W",
+      "sourceRef": "src:6ea4c3bbc540746eb267"
+    },
+    {
+      "id": "engsoccerdata:a931572683fc3f7925cb86da965133b560f9c74d8de608d9b7ef274f24226424:1997-01-25:Coventry%20City:Woking:away",
+      "date": "1997-01-25",
+      "season": "1996-97",
+      "competition": {
+        "name": "FA Cup",
+        "type": "cup",
+        "country": "England"
+      },
+      "stage": "3",
+      "opponent": {
+        "name": "Coventry",
+        "slug": "coventry"
+      },
+      "venue": "away",
+      "score": {
+        "for": 1,
+        "against": 1
+      },
+      "result": "D",
+      "sourceRef": "src:6ea4c3bbc540746eb267"
+    },
+    {
+      "id": "engsoccerdata:a931572683fc3f7925cb86da965133b560f9c74d8de608d9b7ef274f24226424:1997-02-04:Woking:Coventry%20City:home",
+      "date": "1997-02-04",
+      "season": "1996-97",
+      "competition": {
+        "name": "FA Cup",
+        "type": "cup",
+        "country": "England"
+      },
+      "stage": "3",
+      "opponent": {
+        "name": "Coventry",
+        "slug": "coventry"
+      },
+      "venue": "home",
+      "score": {
+        "for": 1,
+        "against": 2
+      },
+      "result": "L",
+      "sourceRef": "src:6ea4c3bbc540746eb267"
+    },
+    {
+      "id": "engsoccerdata:a931572683fc3f7925cb86da965133b560f9c74d8de608d9b7ef274f24226424:1997-11-15:Woking:Southend%20United:home",
+      "date": "1997-11-15",
+      "season": "1997-98",
+      "competition": {
+        "name": "FA Cup",
+        "type": "cup",
+        "country": "England"
+      },
+      "stage": "1",
+      "opponent": {
+        "name": "Southend United",
+        "slug": "southend-united"
+      },
+      "venue": "home",
+      "score": {
+        "for": 0,
+        "against": 2
+      },
+      "result": "L",
+      "sourceRef": "src:6ea4c3bbc540746eb267"
+    },
+    {
+      "id": "engsoccerdata:a931572683fc3f7925cb86da965133b560f9c74d8de608d9b7ef274f24226424:1998-11-14:Woking:Scunthorpe%20United:home",
+      "date": "1998-11-14",
+      "season": "1998-99",
+      "competition": {
+        "name": "FA Cup",
+        "type": "cup",
+        "country": "England"
+      },
+      "stage": "1",
+      "opponent": {
+        "name": "Scunthorpe United",
+        "slug": "scunthorpe-united"
+      },
+      "venue": "home",
+      "score": {
+        "for": 0,
+        "against": 1
+      },
+      "result": "L",
+      "sourceRef": "src:6ea4c3bbc540746eb267"
+    },
+    {
+      "id": "engsoccerdata:a931572683fc3f7925cb86da965133b560f9c74d8de608d9b7ef274f24226424:2000-11-18:Carlisle%20United:Woking:away",
+      "date": "2000-11-18",
+      "season": "2000-01",
+      "competition": {
+        "name": "FA Cup",
+        "type": "cup",
+        "country": "England"
+      },
+      "stage": "1",
+      "opponent": {
+        "name": "Carlisle United",
+        "slug": "carlisle-united"
+      },
+      "venue": "away",
+      "score": {
+        "for": 1,
+        "against": 5
+      },
+      "result": "L",
+      "sourceRef": "src:6ea4c3bbc540746eb267"
+    },
+    {
+      "id": "engsoccerdata:a931572683fc3f7925cb86da965133b560f9c74d8de608d9b7ef274f24226424:2003-11-08:Woking:Histon:home",
+      "date": "2003-11-08",
+      "season": "2003-04",
+      "competition": {
+        "name": "FA Cup",
+        "type": "cup",
+        "country": "England"
+      },
+      "stage": "1",
+      "opponent": {
+        "name": "Histon",
+        "slug": "histon"
+      },
+      "venue": "home",
+      "score": {
+        "for": 3,
+        "against": 1
+      },
+      "result": "W",
+      "sourceRef": "src:6ea4c3bbc540746eb267"
+    },
+    {
+      "id": "engsoccerdata:a931572683fc3f7925cb86da965133b560f9c74d8de608d9b7ef274f24226424:2003-12-06:Woking:Kidderminster%20Harriers:home",
+      "date": "2003-12-06",
+      "season": "2003-04",
+      "competition": {
+        "name": "FA Cup",
+        "type": "cup",
+        "country": "England"
+      },
+      "stage": "2",
+      "opponent": {
+        "name": "Kidderminster Harriers",
+        "slug": "kidderminster-harriers"
+      },
+      "venue": "home",
+      "score": {
+        "for": 0,
+        "against": 3
+      },
+      "result": "L",
+      "sourceRef": "src:6ea4c3bbc540746eb267"
+    },
+    {
+      "id": "engsoccerdata:a931572683fc3f7925cb86da965133b560f9c74d8de608d9b7ef274f24226424:2004-11-13:Notts%20County:Woking:away",
+      "date": "2004-11-13",
+      "season": "2004-05",
+      "competition": {
+        "name": "FA Cup",
+        "type": "cup",
+        "country": "England"
+      },
+      "stage": "1",
+      "opponent": {
+        "name": "Notts County",
+        "slug": "notts-county"
+      },
+      "venue": "away",
+      "score": {
+        "for": 0,
+        "against": 2
+      },
+      "result": "L",
+      "sourceRef": "src:6ea4c3bbc540746eb267"
+    },
+    {
+      "id": "engsoccerdata:a931572683fc3f7925cb86da965133b560f9c74d8de608d9b7ef274f24226424:2005-11-05:Southport:Woking:away",
+      "date": "2005-11-05",
+      "season": "2005-06",
+      "competition": {
+        "name": "FA Cup",
+        "type": "cup",
+        "country": "England"
+      },
+      "stage": "1",
+      "opponent": {
+        "name": "Southport",
+        "slug": "southport"
+      },
+      "venue": "away",
+      "score": {
+        "for": 1,
+        "against": 1
+      },
+      "result": "D",
+      "sourceRef": "src:6ea4c3bbc540746eb267"
+    },
+    {
+      "id": "engsoccerdata:a931572683fc3f7925cb86da965133b560f9c74d8de608d9b7ef274f24226424:2005-11-15:Woking:Southport:home",
+      "date": "2005-11-15",
+      "season": "2005-06",
+      "competition": {
+        "name": "FA Cup",
+        "type": "cup",
+        "country": "England"
+      },
+      "stage": "1",
+      "opponent": {
+        "name": "Southport",
+        "slug": "southport"
+      },
+      "venue": "home",
+      "score": {
+        "for": 1,
+        "against": 0
+      },
+      "result": "W",
+      "sourceRef": "src:6ea4c3bbc540746eb267"
+    },
+    {
+      "id": "engsoccerdata:a931572683fc3f7925cb86da965133b560f9c74d8de608d9b7ef274f24226424:2005-12-03:Woking:Northwich%20Victoria:home",
+      "date": "2005-12-03",
+      "season": "2005-06",
+      "competition": {
+        "name": "FA Cup",
+        "type": "cup",
+        "country": "England"
+      },
+      "stage": "2",
+      "opponent": {
+        "name": "Northwich Victoria",
+        "slug": "northwich-victoria"
+      },
+      "venue": "home",
+      "score": {
+        "for": 0,
+        "against": 0
+      },
+      "result": "D",
+      "sourceRef": "src:6ea4c3bbc540746eb267"
+    },
+    {
+      "id": "engsoccerdata:a931572683fc3f7925cb86da965133b560f9c74d8de608d9b7ef274f24226424:2005-12-13:Northwich%20Victoria:Woking:away",
+      "date": "2005-12-13",
+      "season": "2005-06",
+      "competition": {
+        "name": "FA Cup",
+        "type": "cup",
+        "country": "England"
+      },
+      "stage": "2",
+      "opponent": {
+        "name": "Northwich Victoria",
+        "slug": "northwich-victoria"
+      },
+      "venue": "away",
+      "score": {
+        "for": 1,
+        "against": 2
+      },
+      "result": "L",
+      "sourceRef": "src:6ea4c3bbc540746eb267"
+    },
+    {
+      "id": "engsoccerdata:a931572683fc3f7925cb86da965133b560f9c74d8de608d9b7ef274f24226424:2006-11-11:Tranmere%20Rovers:Woking:away",
+      "date": "2006-11-11",
+      "season": "2006-07",
+      "competition": {
+        "name": "FA Cup",
+        "type": "cup",
+        "country": "England"
+      },
+      "stage": "1",
+      "opponent": {
+        "name": "Tranmere Rovers",
+        "slug": "tranmere-rovers"
+      },
+      "venue": "away",
+      "score": {
+        "for": 2,
+        "against": 4
+      },
+      "result": "L",
+      "sourceRef": "src:6ea4c3bbc540746eb267"
+    },
+    {
+      "id": "engsoccerdata:a931572683fc3f7925cb86da965133b560f9c74d8de608d9b7ef274f24226424:2009-11-07:Swindon%20Town:Woking:away",
+      "date": "2009-11-07",
+      "season": "2009-10",
+      "competition": {
+        "name": "FA Cup",
+        "type": "cup",
+        "country": "England"
+      },
+      "stage": "1",
+      "opponent": {
+        "name": "Swindon",
+        "slug": "swindon"
+      },
+      "venue": "away",
+      "score": {
+        "for": 0,
+        "against": 1
+      },
+      "result": "L",
+      "sourceRef": "src:6ea4c3bbc540746eb267"
+    },
+    {
+      "id": "engsoccerdata:a931572683fc3f7925cb86da965133b560f9c74d8de608d9b7ef274f24226424:2010-11-06:Brighton%20%26%20Hove%20Albion:Woking:away",
+      "date": "2010-11-06",
+      "season": "2010-11",
+      "competition": {
+        "name": "FA Cup",
+        "type": "cup",
+        "country": "England"
+      },
+      "stage": "1",
+      "opponent": {
+        "name": "Brighton",
+        "slug": "brighton"
+      },
+      "venue": "away",
+      "score": {
+        "for": 0,
+        "against": 0
+      },
+      "result": "D",
+      "sourceRef": "src:6ea4c3bbc540746eb267"
+    },
+    {
+      "id": "engsoccerdata:a931572683fc3f7925cb86da965133b560f9c74d8de608d9b7ef274f24226424:2010-11-16:Woking:Brighton%20%26%20Hove%20Albion:home",
+      "date": "2010-11-16",
+      "season": "2010-11",
+      "competition": {
+        "name": "FA Cup",
+        "type": "cup",
+        "country": "England"
+      },
+      "stage": "1",
+      "opponent": {
+        "name": "Brighton",
+        "slug": "brighton"
+      },
+      "venue": "home",
+      "score": {
+        "for": 2,
+        "against": 2
+      },
+      "result": "D",
+      "sourceRef": "src:6ea4c3bbc540746eb267"
+    },
+    {
+      "id": "engsoccerdata:a931572683fc3f7925cb86da965133b560f9c74d8de608d9b7ef274f24226424:2014-11-09:Wrexham:Woking:away",
+      "date": "2014-11-09",
+      "season": "2014-15",
+      "competition": {
+        "name": "FA Cup",
+        "type": "cup",
+        "country": "England"
+      },
+      "stage": "1",
+      "opponent": {
+        "name": "Wrexham",
+        "slug": "wrexham"
+      },
+      "venue": "away",
+      "score": {
+        "for": 0,
+        "against": 3
+      },
+      "result": "L",
+      "sourceRef": "src:6ea4c3bbc540746eb267"
+    },
+    {
+      "id": "engsoccerdata:a931572683fc3f7925cb86da965133b560f9c74d8de608d9b7ef274f24226424:2016-11-05:Stockport%20County:Woking:away",
+      "date": "2016-11-05",
+      "season": "2016-17",
+      "competition": {
+        "name": "FA Cup",
+        "type": "cup",
+        "country": "England"
+      },
+      "stage": "1",
+      "opponent": {
+        "name": "Stockport County",
+        "slug": "stockport-county"
+      },
+      "venue": "away",
+      "score": {
+        "for": 4,
+        "against": 2
+      },
+      "result": "W",
+      "sourceRef": "src:6ea4c3bbc540746eb267"
+    },
+    {
+      "id": "engsoccerdata:a931572683fc3f7925cb86da965133b560f9c74d8de608d9b7ef274f24226424:2016-12-04:Woking:Accrington:home",
+      "date": "2016-12-04",
+      "season": "2016-17",
+      "competition": {
+        "name": "FA Cup",
+        "type": "cup",
+        "country": "England"
+      },
+      "stage": "2",
+      "opponent": {
+        "name": "Accrington",
+        "slug": "accrington"
+      },
+      "venue": "home",
+      "score": {
+        "for": 0,
+        "against": 3
+      },
+      "result": "L",
+      "sourceRef": "src:6ea4c3bbc540746eb267"
+    },
+    {
+      "id": "engsoccerdata:a931572683fc3f7925cb86da965133b560f9c74d8de608d9b7ef274f24226424:2017-11-05:Woking:Bury:home",
+      "date": "2017-11-05",
+      "season": "2017-18",
+      "competition": {
+        "name": "FA Cup",
+        "type": "cup",
+        "country": "England"
+      },
+      "stage": "1",
+      "opponent": {
+        "name": "Bury",
+        "slug": "bury"
+      },
+      "venue": "home",
+      "score": {
+        "for": 1,
+        "against": 1
+      },
+      "result": "D",
+      "sourceRef": "src:6ea4c3bbc540746eb267"
+    },
+    {
+      "id": "engsoccerdata:a931572683fc3f7925cb86da965133b560f9c74d8de608d9b7ef274f24226424:2017-11-14:Bury:Woking:away",
+      "date": "2017-11-14",
+      "season": "2017-18",
+      "competition": {
+        "name": "FA Cup",
+        "type": "cup",
+        "country": "England"
+      },
+      "stage": "1",
+      "opponent": {
+        "name": "Bury",
+        "slug": "bury"
+      },
+      "venue": "away",
+      "score": {
+        "for": 3,
+        "against": 0
+      },
+      "result": "W",
+      "sourceRef": "src:6ea4c3bbc540746eb267"
+    },
+    {
+      "id": "engsoccerdata:a931572683fc3f7925cb86da965133b560f9c74d8de608d9b7ef274f24226424:2017-12-03:Woking:Peterborough%20United:home",
+      "date": "2017-12-03",
+      "season": "2017-18",
+      "competition": {
+        "name": "FA Cup",
+        "type": "cup",
+        "country": "England"
+      },
+      "stage": "2",
+      "opponent": {
+        "name": "Peterborough United",
+        "slug": "peterborough-united"
+      },
+      "venue": "home",
+      "score": {
+        "for": 1,
+        "against": 1
+      },
+      "result": "D",
+      "sourceRef": "src:6ea4c3bbc540746eb267"
+    },
+    {
+      "id": "engsoccerdata:a931572683fc3f7925cb86da965133b560f9c74d8de608d9b7ef274f24226424:2017-12-12:Peterborough%20United:Woking:away",
+      "date": "2017-12-12",
+      "season": "2017-18",
+      "competition": {
+        "name": "FA Cup",
+        "type": "cup",
+        "country": "England"
+      },
+      "stage": "2",
+      "opponent": {
+        "name": "Peterborough United",
+        "slug": "peterborough-united"
+      },
+      "venue": "away",
+      "score": {
+        "for": 2,
+        "against": 5
+      },
+      "result": "L",
+      "sourceRef": "src:6ea4c3bbc540746eb267"
+    },
+    {
+      "id": "engsoccerdata:a931572683fc3f7925cb86da965133b560f9c74d8de608d9b7ef274f24226424:2018-11-10:Torquay%20United:Woking:away",
+      "date": "2018-11-10",
+      "season": "2018-19",
+      "competition": {
+        "name": "FA Cup",
+        "type": "cup",
+        "country": "England"
+      },
+      "stage": "1",
+      "opponent": {
+        "name": "Torquay United",
+        "slug": "torquay-united"
+      },
+      "venue": "away",
+      "score": {
+        "for": 1,
+        "against": 0
+      },
+      "result": "W",
+      "sourceRef": "src:6ea4c3bbc540746eb267"
+    },
+    {
+      "id": "engsoccerdata:a931572683fc3f7925cb86da965133b560f9c74d8de608d9b7ef274f24226424:2018-12-02:Swindon%20Town:Woking:away",
+      "date": "2018-12-02",
+      "season": "2018-19",
+      "competition": {
+        "name": "FA Cup",
+        "type": "cup",
+        "country": "England"
+      },
+      "stage": "2",
+      "opponent": {
+        "name": "Swindon",
+        "slug": "swindon"
+      },
+      "venue": "away",
+      "score": {
+        "for": 1,
+        "against": 0
+      },
+      "result": "W",
+      "sourceRef": "src:6ea4c3bbc540746eb267"
+    },
+    {
+      "id": "engsoccerdata:a931572683fc3f7925cb86da965133b560f9c74d8de608d9b7ef274f24226424:2019-01-06:Woking:Watford:home",
+      "date": "2019-01-06",
+      "season": "2018-19",
+      "competition": {
+        "name": "FA Cup",
+        "type": "cup",
+        "country": "England"
+      },
+      "stage": "3",
+      "opponent": {
+        "name": "Watford",
+        "slug": "watford"
+      },
+      "venue": "home",
+      "score": {
+        "for": 0,
+        "against": 2
+      },
+      "result": "L",
+      "sourceRef": "src:6ea4c3bbc540746eb267"
+    }
+  ],
+  "seasonStandings": [],
+  "competitionStandings": [],
+  "updatedAt": "2026-08-04T20:25:09.081Z"
+}

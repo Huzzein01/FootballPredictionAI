@@ -1,0 +1,203 @@
+{
+  "contract": "football-team-history-v1",
+  "team": {
+    "name": "Leatherhead",
+    "slug": "leatherhead",
+    "primaryLeague": "FA Cup",
+    "aliases": []
+  },
+  "requestedCoverage": {
+    "fromYear": 1985,
+    "to": "present",
+    "includes": [
+      "all competitions",
+      "opponents",
+      "scorelines",
+      "league standings",
+      "competition standings"
+    ]
+  },
+  "sourcePlan": [
+    {
+      "rank": 1,
+      "provider": "Official club archive",
+      "url": "",
+      "scope": "club history, competition participation and match reports",
+      "lookupKey": "Leatherhead",
+      "review": "Verify the club-owned archive URL before collection."
+    },
+    {
+      "rank": 2,
+      "provider": "Official domestic competition / association",
+      "url": "",
+      "scope": "official league fixtures, final tables and cup records",
+      "lookupKey": "FA Cup"
+    },
+    {
+      "rank": 3,
+      "provider": "UEFA",
+      "url": "https://www.uefa.com/",
+      "scope": "official European competition appearances, fixtures and standings",
+      "lookupKey": "Leatherhead"
+    },
+    {
+      "rank": 4,
+      "provider": "RSSSF",
+      "url": "https://www.rsssf.org/",
+      "scope": "historic competitions, tables and cross-checking",
+      "lookupKey": "Leatherhead"
+    },
+    {
+      "rank": 5,
+      "provider": "worldfootball.net",
+      "url": "https://www.worldfootball.net/",
+      "scope": "club match archive and competition participation cross-check",
+      "lookupKey": "Leatherhead"
+    }
+  ],
+  "coverage": {
+    "earliestMatch": "2006-11-11",
+    "latestMatch": "2017-12-03",
+    "seasonsWithMatches": [
+      "2006-07",
+      "2017-18"
+    ],
+    "missingSeasons": [
+      "1985-86",
+      "1986-87",
+      "1987-88",
+      "1988-89",
+      "1989-90",
+      "1990-91",
+      "1991-92",
+      "1992-93",
+      "1993-94",
+      "1994-95",
+      "1995-96",
+      "1996-97",
+      "1997-98",
+      "1998-99",
+      "1999-00",
+      "2000-01",
+      "2001-02",
+      "2002-03",
+      "2003-04",
+      "2004-05",
+      "2005-06",
+      "2007-08",
+      "2008-09",
+      "2009-10",
+      "2010-11",
+      "2011-12",
+      "2012-13",
+      "2013-14",
+      "2014-15",
+      "2015-16",
+      "2016-17",
+      "2018-19",
+      "2019-20",
+      "2020-21",
+      "2021-22",
+      "2022-23",
+      "2023-24",
+      "2024-25",
+      "2025-26",
+      "2026-27"
+    ],
+    "competitionScopeVerified": false,
+    "status": "partial"
+  },
+  "matches": [
+    {
+      "id": "engsoccerdata:a931572683fc3f7925cb86da965133b560f9c74d8de608d9b7ef274f24226424:2006-11-11:Torquay%20United:Leatherhead:away",
+      "date": "2006-11-11",
+      "season": "2006-07",
+      "competition": {
+        "name": "FA Cup",
+        "type": "cup",
+        "country": "England"
+      },
+      "stage": "1",
+      "opponent": {
+        "name": "Torquay United",
+        "slug": "torquay-united"
+      },
+      "venue": "away",
+      "score": {
+        "for": 1,
+        "against": 2
+      },
+      "result": "L",
+      "sourceRef": "src:6ea4c3bbc540746eb267"
+    },
+    {
+      "id": "engsoccerdata:a931572683fc3f7925cb86da965133b560f9c74d8de608d9b7ef274f24226424:2017-11-05:Leatherhead:Billericay:home",
+      "date": "2017-11-05",
+      "season": "2017-18",
+      "competition": {
+        "name": "FA Cup",
+        "type": "cup",
+        "country": "England"
+      },
+      "stage": "1",
+      "opponent": {
+        "name": "Billericay",
+        "slug": "billericay"
+      },
+      "venue": "home",
+      "score": {
+        "for": 1,
+        "against": 1
+      },
+      "result": "D",
+      "sourceRef": "src:6ea4c3bbc540746eb267"
+    },
+    {
+      "id": "engsoccerdata:a931572683fc3f7925cb86da965133b560f9c74d8de608d9b7ef274f24226424:2017-11-16:Billericay:Leatherhead:away",
+      "date": "2017-11-16",
+      "season": "2017-18",
+      "competition": {
+        "name": "FA Cup",
+        "type": "cup",
+        "country": "England"
+      },
+      "stage": "1",
+      "opponent": {
+        "name": "Billericay",
+        "slug": "billericay"
+      },
+      "venue": "away",
+      "score": {
+        "for": 3,
+        "against": 1
+      },
+      "result": "W",
+      "sourceRef": "src:6ea4c3bbc540746eb267"
+    },
+    {
+      "id": "engsoccerdata:a931572683fc3f7925cb86da965133b560f9c74d8de608d9b7ef274f24226424:2017-12-03:Wycombe%20Wanderers:Leatherhead:away",
+      "date": "2017-12-03",
+      "season": "2017-18",
+      "competition": {
+        "name": "FA Cup",
+        "type": "cup",
+        "country": "England"
+      },
+      "stage": "2",
+      "opponent": {
+        "name": "Wycombe Wanderers",
+        "slug": "wycombe-wanderers"
+      },
+      "venue": "away",
+      "score": {
+        "for": 1,
+        "against": 3
+      },
+      "result": "L",
+      "sourceRef": "src:6ea4c3bbc540746eb267"
+    }
+  ],
+  "seasonStandings": [],
+  "competitionStandings": [],
+  "updatedAt": "2026-08-04T20:25:04.908Z"
+}

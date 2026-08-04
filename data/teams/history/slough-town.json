@@ -1,0 +1,731 @@
+{
+  "contract": "football-team-history-v1",
+  "team": {
+    "name": "Slough Town",
+    "slug": "slough-town",
+    "primaryLeague": "FA Cup",
+    "aliases": []
+  },
+  "requestedCoverage": {
+    "fromYear": 1985,
+    "to": "present",
+    "includes": [
+      "all competitions",
+      "opponents",
+      "scorelines",
+      "league standings",
+      "competition standings"
+    ]
+  },
+  "sourcePlan": [
+    {
+      "rank": 1,
+      "provider": "Official club archive",
+      "url": "",
+      "scope": "club history, competition participation and match reports",
+      "lookupKey": "Slough Town",
+      "review": "Verify the club-owned archive URL before collection."
+    },
+    {
+      "rank": 2,
+      "provider": "Official domestic competition / association",
+      "url": "",
+      "scope": "official league fixtures, final tables and cup records",
+      "lookupKey": "FA Cup"
+    },
+    {
+      "rank": 3,
+      "provider": "UEFA",
+      "url": "https://www.uefa.com/",
+      "scope": "official European competition appearances, fixtures and standings",
+      "lookupKey": "Slough Town"
+    },
+    {
+      "rank": 4,
+      "provider": "RSSSF",
+      "url": "https://www.rsssf.org/",
+      "scope": "historic competitions, tables and cross-checking",
+      "lookupKey": "Slough Town"
+    },
+    {
+      "rank": 5,
+      "provider": "worldfootball.net",
+      "url": "https://www.worldfootball.net/",
+      "scope": "club match archive and competition participation cross-check",
+      "lookupKey": "Slough Town"
+    }
+  ],
+  "coverage": {
+    "earliestMatch": "1985-11-16",
+    "latestMatch": "2018-12-02",
+    "seasonsWithMatches": [
+      "1985-86",
+      "1986-87",
+      "1989-90",
+      "1991-92",
+      "1992-93",
+      "1993-94",
+      "1994-95",
+      "1995-96",
+      "1997-98",
+      "1998-99",
+      "2002-03",
+      "2004-05",
+      "2012-13",
+      "2017-18",
+      "2018-19"
+    ],
+    "missingSeasons": [
+      "1987-88",
+      "1988-89",
+      "1990-91",
+      "1996-97",
+      "1999-00",
+      "2000-01",
+      "2001-02",
+      "2003-04",
+      "2005-06",
+      "2006-07",
+      "2007-08",
+      "2008-09",
+      "2009-10",
+      "2010-11",
+      "2011-12",
+      "2013-14",
+      "2014-15",
+      "2015-16",
+      "2016-17",
+      "2019-20",
+      "2020-21",
+      "2021-22",
+      "2022-23",
+      "2023-24",
+      "2024-25",
+      "2025-26",
+      "2026-27"
+    ],
+    "competitionScopeVerified": false,
+    "status": "partial"
+  },
+  "matches": [
+    {
+      "id": "engsoccerdata:a931572683fc3f7925cb86da965133b560f9c74d8de608d9b7ef274f24226424:1985-11-16:Slough%20Town:Aylesbury%20United:home",
+      "date": "1985-11-16",
+      "season": "1985-86",
+      "competition": {
+        "name": "FA Cup",
+        "type": "cup",
+        "country": "England"
+      },
+      "stage": "1",
+      "opponent": {
+        "name": "Aylesbury United",
+        "slug": "aylesbury-united"
+      },
+      "venue": "home",
+      "score": {
+        "for": 2,
+        "against": 2
+      },
+      "result": "D",
+      "sourceRef": "src:6ea4c3bbc540746eb267"
+    },
+    {
+      "id": "engsoccerdata:a931572683fc3f7925cb86da965133b560f9c74d8de608d9b7ef274f24226424:1985-11-19:Aylesbury%20United:Slough%20Town:away",
+      "date": "1985-11-19",
+      "season": "1985-86",
+      "competition": {
+        "name": "FA Cup",
+        "type": "cup",
+        "country": "England"
+      },
+      "stage": "1",
+      "opponent": {
+        "name": "Aylesbury United",
+        "slug": "aylesbury-united"
+      },
+      "venue": "away",
+      "score": {
+        "for": 5,
+        "against": 2
+      },
+      "result": "W",
+      "sourceRef": "src:6ea4c3bbc540746eb267"
+    },
+    {
+      "id": "engsoccerdata:a931572683fc3f7925cb86da965133b560f9c74d8de608d9b7ef274f24226424:1985-12-07:Leyton%20Orient:Slough%20Town:away",
+      "date": "1985-12-07",
+      "season": "1985-86",
+      "competition": {
+        "name": "FA Cup",
+        "type": "cup",
+        "country": "England"
+      },
+      "stage": "2",
+      "opponent": {
+        "name": "Leyton Orient",
+        "slug": "leyton-orient"
+      },
+      "venue": "away",
+      "score": {
+        "for": 2,
+        "against": 2
+      },
+      "result": "D",
+      "sourceRef": "src:6ea4c3bbc540746eb267"
+    },
+    {
+      "id": "engsoccerdata:a931572683fc3f7925cb86da965133b560f9c74d8de608d9b7ef274f24226424:1985-12-10:Slough%20Town:Leyton%20Orient:home",
+      "date": "1985-12-10",
+      "season": "1985-86",
+      "competition": {
+        "name": "FA Cup",
+        "type": "cup",
+        "country": "England"
+      },
+      "stage": "2",
+      "opponent": {
+        "name": "Leyton Orient",
+        "slug": "leyton-orient"
+      },
+      "venue": "home",
+      "score": {
+        "for": 2,
+        "against": 3
+      },
+      "result": "L",
+      "sourceRef": "src:6ea4c3bbc540746eb267"
+    },
+    {
+      "id": "engsoccerdata:a931572683fc3f7925cb86da965133b560f9c74d8de608d9b7ef274f24226424:1986-11-15:Slough%20Town:Bognor%20Regis%20Town:home",
+      "date": "1986-11-15",
+      "season": "1986-87",
+      "competition": {
+        "name": "FA Cup",
+        "type": "cup",
+        "country": "England"
+      },
+      "stage": "1",
+      "opponent": {
+        "name": "Bognor Regis Town",
+        "slug": "bognor-regis-town"
+      },
+      "venue": "home",
+      "score": {
+        "for": 1,
+        "against": 1
+      },
+      "result": "D",
+      "sourceRef": "src:6ea4c3bbc540746eb267"
+    },
+    {
+      "id": "engsoccerdata:a931572683fc3f7925cb86da965133b560f9c74d8de608d9b7ef274f24226424:1986-11-18:Bognor%20Regis%20Town:Slough%20Town:away",
+      "date": "1986-11-18",
+      "season": "1986-87",
+      "competition": {
+        "name": "FA Cup",
+        "type": "cup",
+        "country": "England"
+      },
+      "stage": "1",
+      "opponent": {
+        "name": "Bognor Regis Town",
+        "slug": "bognor-regis-town"
+      },
+      "venue": "away",
+      "score": {
+        "for": 1,
+        "against": 0
+      },
+      "result": "W",
+      "sourceRef": "src:6ea4c3bbc540746eb267"
+    },
+    {
+      "id": "engsoccerdata:a931572683fc3f7925cb86da965133b560f9c74d8de608d9b7ef274f24226424:1986-12-06:Swansea%20City:Slough%20Town:away",
+      "date": "1986-12-06",
+      "season": "1986-87",
+      "competition": {
+        "name": "FA Cup",
+        "type": "cup",
+        "country": "England"
+      },
+      "stage": "2",
+      "opponent": {
+        "name": "Swansea",
+        "slug": "swansea"
+      },
+      "venue": "away",
+      "score": {
+        "for": 0,
+        "against": 3
+      },
+      "result": "L",
+      "sourceRef": "src:6ea4c3bbc540746eb267"
+    },
+    {
+      "id": "engsoccerdata:a931572683fc3f7925cb86da965133b560f9c74d8de608d9b7ef274f24226424:1989-11-18:Slough%20Town:Woking:home",
+      "date": "1989-11-18",
+      "season": "1989-90",
+      "competition": {
+        "name": "FA Cup",
+        "type": "cup",
+        "country": "England"
+      },
+      "stage": "1",
+      "opponent": {
+        "name": "Woking",
+        "slug": "woking"
+      },
+      "venue": "home",
+      "score": {
+        "for": 1,
+        "against": 2
+      },
+      "result": "L",
+      "sourceRef": "src:6ea4c3bbc540746eb267"
+    },
+    {
+      "id": "engsoccerdata:a931572683fc3f7925cb86da965133b560f9c74d8de608d9b7ef274f24226424:1991-11-16:Slough%20Town:Reading:home",
+      "date": "1991-11-16",
+      "season": "1991-92",
+      "competition": {
+        "name": "FA Cup",
+        "type": "cup",
+        "country": "England"
+      },
+      "stage": "1",
+      "opponent": {
+        "name": "Reading",
+        "slug": "reading"
+      },
+      "venue": "home",
+      "score": {
+        "for": 3,
+        "against": 3
+      },
+      "result": "D",
+      "sourceRef": "src:6ea4c3bbc540746eb267"
+    },
+    {
+      "id": "engsoccerdata:a931572683fc3f7925cb86da965133b560f9c74d8de608d9b7ef274f24226424:1991-11-27:Reading:Slough%20Town:away",
+      "date": "1991-11-27",
+      "season": "1991-92",
+      "competition": {
+        "name": "FA Cup",
+        "type": "cup",
+        "country": "England"
+      },
+      "stage": "1",
+      "opponent": {
+        "name": "Reading",
+        "slug": "reading"
+      },
+      "venue": "away",
+      "score": {
+        "for": 1,
+        "against": 2
+      },
+      "result": "L",
+      "sourceRef": "src:6ea4c3bbc540746eb267"
+    },
+    {
+      "id": "engsoccerdata:a931572683fc3f7925cb86da965133b560f9c74d8de608d9b7ef274f24226424:1992-11-14:Colchester%20United:Slough%20Town:away",
+      "date": "1992-11-14",
+      "season": "1992-93",
+      "competition": {
+        "name": "FA Cup",
+        "type": "cup",
+        "country": "England"
+      },
+      "stage": "1",
+      "opponent": {
+        "name": "Colchester United",
+        "slug": "colchester-united"
+      },
+      "venue": "away",
+      "score": {
+        "for": 0,
+        "against": 4
+      },
+      "result": "L",
+      "sourceRef": "src:6ea4c3bbc540746eb267"
+    },
+    {
+      "id": "engsoccerdata:a931572683fc3f7925cb86da965133b560f9c74d8de608d9b7ef274f24226424:1993-11-13:Slough%20Town:Torquay%20United:home",
+      "date": "1993-11-13",
+      "season": "1993-94",
+      "competition": {
+        "name": "FA Cup",
+        "type": "cup",
+        "country": "England"
+      },
+      "stage": "1",
+      "opponent": {
+        "name": "Torquay United",
+        "slug": "torquay-united"
+      },
+      "venue": "home",
+      "score": {
+        "for": 1,
+        "against": 2
+      },
+      "result": "L",
+      "sourceRef": "src:6ea4c3bbc540746eb267"
+    },
+    {
+      "id": "engsoccerdata:a931572683fc3f7925cb86da965133b560f9c74d8de608d9b7ef274f24226424:1994-11-12:Slough%20Town:Birmingham%20City:home",
+      "date": "1994-11-12",
+      "season": "1994-95",
+      "competition": {
+        "name": "FA Cup",
+        "type": "cup",
+        "country": "England"
+      },
+      "stage": "1",
+      "opponent": {
+        "name": "Birmingham City",
+        "slug": "birmingham-city"
+      },
+      "venue": "home",
+      "score": {
+        "for": 0,
+        "against": 4
+      },
+      "result": "L",
+      "sourceRef": "src:6ea4c3bbc540746eb267"
+    },
+    {
+      "id": "engsoccerdata:a931572683fc3f7925cb86da965133b560f9c74d8de608d9b7ef274f24226424:1995-11-11:Slough%20Town:Plymouth%20Argyle:home",
+      "date": "1995-11-11",
+      "season": "1995-96",
+      "competition": {
+        "name": "FA Cup",
+        "type": "cup",
+        "country": "England"
+      },
+      "stage": "1",
+      "opponent": {
+        "name": "Plymouth Argyle",
+        "slug": "plymouth-argyle"
+      },
+      "venue": "home",
+      "score": {
+        "for": 0,
+        "against": 2
+      },
+      "result": "L",
+      "sourceRef": "src:6ea4c3bbc540746eb267"
+    },
+    {
+      "id": "engsoccerdata:a931572683fc3f7925cb86da965133b560f9c74d8de608d9b7ef274f24226424:1997-11-15:Slough%20Town:Cardiff%20City:home",
+      "date": "1997-11-15",
+      "season": "1997-98",
+      "competition": {
+        "name": "FA Cup",
+        "type": "cup",
+        "country": "England"
+      },
+      "stage": "1",
+      "opponent": {
+        "name": "Cardiff City",
+        "slug": "cardiff-city"
+      },
+      "venue": "home",
+      "score": {
+        "for": 1,
+        "against": 1
+      },
+      "result": "D",
+      "sourceRef": "src:6ea4c3bbc540746eb267"
+    },
+    {
+      "id": "engsoccerdata:a931572683fc3f7925cb86da965133b560f9c74d8de608d9b7ef274f24226424:1997-11-25:Cardiff%20City:Slough%20Town:away",
+      "date": "1997-11-25",
+      "season": "1997-98",
+      "competition": {
+        "name": "FA Cup",
+        "type": "cup",
+        "country": "England"
+      },
+      "stage": "1",
+      "opponent": {
+        "name": "Cardiff City",
+        "slug": "cardiff-city"
+      },
+      "venue": "away",
+      "score": {
+        "for": 2,
+        "against": 3
+      },
+      "result": "L",
+      "sourceRef": "src:6ea4c3bbc540746eb267"
+    },
+    {
+      "id": "engsoccerdata:a931572683fc3f7925cb86da965133b560f9c74d8de608d9b7ef274f24226424:1998-11-14:Macclesfield%20Town:Slough%20Town:away",
+      "date": "1998-11-14",
+      "season": "1998-99",
+      "competition": {
+        "name": "FA Cup",
+        "type": "cup",
+        "country": "England"
+      },
+      "stage": "1",
+      "opponent": {
+        "name": "Macclesfield Town",
+        "slug": "macclesfield-town"
+      },
+      "venue": "away",
+      "score": {
+        "for": 2,
+        "against": 2
+      },
+      "result": "D",
+      "sourceRef": "src:6ea4c3bbc540746eb267"
+    },
+    {
+      "id": "engsoccerdata:a931572683fc3f7925cb86da965133b560f9c74d8de608d9b7ef274f24226424:1998-11-24:Slough%20Town:Macclesfield%20Town:home",
+      "date": "1998-11-24",
+      "season": "1998-99",
+      "competition": {
+        "name": "FA Cup",
+        "type": "cup",
+        "country": "England"
+      },
+      "stage": "1",
+      "opponent": {
+        "name": "Macclesfield Town",
+        "slug": "macclesfield-town"
+      },
+      "venue": "home",
+      "score": {
+        "for": 1,
+        "against": 1
+      },
+      "result": "D",
+      "sourceRef": "src:6ea4c3bbc540746eb267"
+    },
+    {
+      "id": "engsoccerdata:a931572683fc3f7925cb86da965133b560f9c74d8de608d9b7ef274f24226424:2002-11-16:Slough%20Town:Harrogate%20Railway:home",
+      "date": "2002-11-16",
+      "season": "2002-03",
+      "competition": {
+        "name": "FA Cup",
+        "type": "cup",
+        "country": "England"
+      },
+      "stage": "1",
+      "opponent": {
+        "name": "Harrogate Railway",
+        "slug": "harrogate-railway"
+      },
+      "venue": "home",
+      "score": {
+        "for": 1,
+        "against": 2
+      },
+      "result": "L",
+      "sourceRef": "src:6ea4c3bbc540746eb267"
+    },
+    {
+      "id": "engsoccerdata:a931572683fc3f7925cb86da965133b560f9c74d8de608d9b7ef274f24226424:2004-11-13:Slough%20Town:Walsall:home",
+      "date": "2004-11-13",
+      "season": "2004-05",
+      "competition": {
+        "name": "FA Cup",
+        "type": "cup",
+        "country": "England"
+      },
+      "stage": "1",
+      "opponent": {
+        "name": "Walsall",
+        "slug": "walsall"
+      },
+      "venue": "home",
+      "score": {
+        "for": 2,
+        "against": 1
+      },
+      "result": "W",
+      "sourceRef": "src:6ea4c3bbc540746eb267"
+    },
+    {
+      "id": "engsoccerdata:a931572683fc3f7925cb86da965133b560f9c74d8de608d9b7ef274f24226424:2004-12-04:Slough%20Town:Yeading:home",
+      "date": "2004-12-04",
+      "season": "2004-05",
+      "competition": {
+        "name": "FA Cup",
+        "type": "cup",
+        "country": "England"
+      },
+      "stage": "2",
+      "opponent": {
+        "name": "Yeading",
+        "slug": "yeading"
+      },
+      "venue": "home",
+      "score": {
+        "for": 1,
+        "against": 3
+      },
+      "result": "L",
+      "sourceRef": "src:6ea4c3bbc540746eb267"
+    },
+    {
+      "id": "engsoccerdata:a931572683fc3f7925cb86da965133b560f9c74d8de608d9b7ef274f24226424:2012-11-03:Mansfield%20Town:Slough%20Town:away",
+      "date": "2012-11-03",
+      "season": "2012-13",
+      "competition": {
+        "name": "FA Cup",
+        "type": "cup",
+        "country": "England"
+      },
+      "stage": "1",
+      "opponent": {
+        "name": "Mansfield Town",
+        "slug": "mansfield-town"
+      },
+      "venue": "away",
+      "score": {
+        "for": 0,
+        "against": 0
+      },
+      "result": "D",
+      "sourceRef": "src:6ea4c3bbc540746eb267"
+    },
+    {
+      "id": "engsoccerdata:a931572683fc3f7925cb86da965133b560f9c74d8de608d9b7ef274f24226424:2012-11-13:Slough%20Town:Mansfield%20Town:home",
+      "date": "2012-11-13",
+      "season": "2012-13",
+      "competition": {
+        "name": "FA Cup",
+        "type": "cup",
+        "country": "England"
+      },
+      "stage": "1",
+      "opponent": {
+        "name": "Mansfield Town",
+        "slug": "mansfield-town"
+      },
+      "venue": "home",
+      "score": {
+        "for": 1,
+        "against": 1
+      },
+      "result": "D",
+      "sourceRef": "src:6ea4c3bbc540746eb267"
+    },
+    {
+      "id": "engsoccerdata:a931572683fc3f7925cb86da965133b560f9c74d8de608d9b7ef274f24226424:2017-11-04:Gainsborough%20Trinity:Slough%20Town:away",
+      "date": "2017-11-04",
+      "season": "2017-18",
+      "competition": {
+        "name": "FA Cup",
+        "type": "cup",
+        "country": "England"
+      },
+      "stage": "1",
+      "opponent": {
+        "name": "Gainsborough Trinity",
+        "slug": "gainsborough-trinity"
+      },
+      "venue": "away",
+      "score": {
+        "for": 6,
+        "against": 0
+      },
+      "result": "W",
+      "sourceRef": "src:6ea4c3bbc540746eb267"
+    },
+    {
+      "id": "engsoccerdata:a931572683fc3f7925cb86da965133b560f9c74d8de608d9b7ef274f24226424:2017-12-04:Slough%20Town:Rochdale:home",
+      "date": "2017-12-04",
+      "season": "2017-18",
+      "competition": {
+        "name": "FA Cup",
+        "type": "cup",
+        "country": "England"
+      },
+      "stage": "2",
+      "opponent": {
+        "name": "Rochdale",
+        "slug": "rochdale"
+      },
+      "venue": "home",
+      "score": {
+        "for": 0,
+        "against": 4
+      },
+      "result": "L",
+      "sourceRef": "src:6ea4c3bbc540746eb267"
+    },
+    {
+      "id": "engsoccerdata:a931572683fc3f7925cb86da965133b560f9c74d8de608d9b7ef274f24226424:2018-11-10:Sutton%20United:Slough%20Town:away",
+      "date": "2018-11-10",
+      "season": "2018-19",
+      "competition": {
+        "name": "FA Cup",
+        "type": "cup",
+        "country": "England"
+      },
+      "stage": "1",
+      "opponent": {
+        "name": "Sutton United",
+        "slug": "sutton-united"
+      },
+      "venue": "away",
+      "score": {
+        "for": 0,
+        "against": 0
+      },
+      "result": "D",
+      "sourceRef": "src:6ea4c3bbc540746eb267"
+    },
+    {
+      "id": "engsoccerdata:a931572683fc3f7925cb86da965133b560f9c74d8de608d9b7ef274f24226424:2018-11-20:Slough%20Town:Sutton%20United:home",
+      "date": "2018-11-20",
+      "season": "2018-19",
+      "competition": {
+        "name": "FA Cup",
+        "type": "cup",
+        "country": "England"
+      },
+      "stage": "1",
+      "opponent": {
+        "name": "Sutton United",
+        "slug": "sutton-united"
+      },
+      "venue": "home",
+      "score": {
+        "for": 1,
+        "against": 1
+      },
+      "result": "D",
+      "sourceRef": "src:6ea4c3bbc540746eb267"
+    },
+    {
+      "id": "engsoccerdata:a931572683fc3f7925cb86da965133b560f9c74d8de608d9b7ef274f24226424:2018-12-02:Slough%20Town:Gillingham:home",
+      "date": "2018-12-02",
+      "season": "2018-19",
+      "competition": {
+        "name": "FA Cup",
+        "type": "cup",
+        "country": "England"
+      },
+      "stage": "2",
+      "opponent": {
+        "name": "Gillingham",
+        "slug": "gillingham"
+      },
+      "venue": "home",
+      "score": {
+        "for": 0,
+        "against": 1
+      },
+      "result": "L",
+      "sourceRef": "src:6ea4c3bbc540746eb267"
+    }
+  ],
+  "seasonStandings": [],
+  "competitionStandings": [],
+  "updatedAt": "2026-08-04T20:25:07.559Z"
+}
