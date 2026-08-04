@@ -1,0 +1,882 @@
+{
+  "contract": "football-team-history-v1",
+  "team": {
+    "name": "ATAC Troyes",
+    "slug": "atac-troyes",
+    "primaryLeague": "French League 1",
+    "aliases": []
+  },
+  "requestedCoverage": {
+    "fromYear": 1985,
+    "to": "present",
+    "includes": [
+      "all competitions",
+      "opponents",
+      "scorelines",
+      "league standings",
+      "competition standings"
+    ]
+  },
+  "sourcePlan": [
+    {
+      "rank": 1,
+      "provider": "Official club archive",
+      "url": "",
+      "scope": "club history, competition participation and match reports",
+      "lookupKey": "ATAC Troyes",
+      "review": "Verify the club-owned archive URL before collection."
+    },
+    {
+      "rank": 2,
+      "provider": "Official domestic competition / association",
+      "url": "",
+      "scope": "official league fixtures, final tables and cup records",
+      "lookupKey": "French League 1"
+    },
+    {
+      "rank": 3,
+      "provider": "UEFA",
+      "url": "https://www.uefa.com/",
+      "scope": "official European competition appearances, fixtures and standings",
+      "lookupKey": "ATAC Troyes"
+    },
+    {
+      "rank": 4,
+      "provider": "RSSSF",
+      "url": "https://www.rsssf.org/",
+      "scope": "historic competitions, tables and cross-checking",
+      "lookupKey": "ATAC Troyes"
+    },
+    {
+      "rank": 5,
+      "provider": "worldfootball.net",
+      "url": "https://www.worldfootball.net/",
+      "scope": "club match archive and competition participation cross-check",
+      "lookupKey": "ATAC Troyes"
+    }
+  ],
+  "coverage": {
+    "earliestMatch": "1999-07-31",
+    "latestMatch": "2000-05-13",
+    "seasonsWithMatches": [
+      "1999-00"
+    ],
+    "missingSeasons": [
+      "1985-86",
+      "1986-87",
+      "1987-88",
+      "1988-89",
+      "1989-90",
+      "1990-91",
+      "1991-92",
+      "1992-93",
+      "1993-94",
+      "1994-95",
+      "1995-96",
+      "1996-97",
+      "1997-98",
+      "1998-99",
+      "2000-01",
+      "2001-02",
+      "2002-03",
+      "2003-04",
+      "2004-05",
+      "2005-06",
+      "2006-07",
+      "2007-08",
+      "2008-09",
+      "2009-10",
+      "2010-11",
+      "2011-12",
+      "2012-13",
+      "2013-14",
+      "2014-15",
+      "2015-16",
+      "2016-17",
+      "2017-18",
+      "2018-19",
+      "2019-20",
+      "2020-21",
+      "2021-22",
+      "2022-23",
+      "2023-24",
+      "2024-25",
+      "2025-26",
+      "2026-27"
+    ],
+    "competitionScopeVerified": false,
+    "status": "partial"
+  },
+  "matches": [
+    {
+      "id": "engsoccerdata:86d9593d16709b202258a5cf23622966d86873fe4a5eec770e2de26cabcfce7f:1999-07-31:Paris%20Saint-Germain:ATAC%20Troyes:away",
+      "date": "1999-07-31",
+      "season": "1999-00",
+      "competition": {
+        "name": "French League 1",
+        "type": "league",
+        "country": "France"
+      },
+      "stage": "",
+      "opponent": {
+        "name": "Paris SG",
+        "slug": "paris-sg"
+      },
+      "venue": "away",
+      "score": {
+        "for": 0,
+        "against": 1
+      },
+      "result": "L",
+      "sourceRef": "src:d8e9bceda94501177b14"
+    },
+    {
+      "id": "engsoccerdata:86d9593d16709b202258a5cf23622966d86873fe4a5eec770e2de26cabcfce7f:1999-08-06:ATAC%20Troyes:Olympique%20Lyon:home",
+      "date": "1999-08-06",
+      "season": "1999-00",
+      "competition": {
+        "name": "French League 1",
+        "type": "league",
+        "country": "France"
+      },
+      "stage": "",
+      "opponent": {
+        "name": "Olympique Lyon",
+        "slug": "olympique-lyon"
+      },
+      "venue": "home",
+      "score": {
+        "for": 1,
+        "against": 2
+      },
+      "result": "L",
+      "sourceRef": "src:d8e9bceda94501177b14"
+    },
+    {
+      "id": "engsoccerdata:86d9593d16709b202258a5cf23622966d86873fe4a5eec770e2de26cabcfce7f:1999-08-14:Girondins%20Bordeaux:ATAC%20Troyes:away",
+      "date": "1999-08-14",
+      "season": "1999-00",
+      "competition": {
+        "name": "French League 1",
+        "type": "league",
+        "country": "France"
+      },
+      "stage": "",
+      "opponent": {
+        "name": "Girondins Bordeaux",
+        "slug": "girondins-bordeaux"
+      },
+      "venue": "away",
+      "score": {
+        "for": 0,
+        "against": 4
+      },
+      "result": "L",
+      "sourceRef": "src:d8e9bceda94501177b14"
+    },
+    {
+      "id": "engsoccerdata:86d9593d16709b202258a5cf23622966d86873fe4a5eec770e2de26cabcfce7f:1999-08-20:ATAC%20Troyes:RC%20Strasbourg:home",
+      "date": "1999-08-20",
+      "season": "1999-00",
+      "competition": {
+        "name": "French League 1",
+        "type": "league",
+        "country": "France"
+      },
+      "stage": "",
+      "opponent": {
+        "name": "RC Strasbourg",
+        "slug": "rc-strasbourg"
+      },
+      "venue": "home",
+      "score": {
+        "for": 2,
+        "against": 1
+      },
+      "result": "W",
+      "sourceRef": "src:d8e9bceda94501177b14"
+    },
+    {
+      "id": "engsoccerdata:86d9593d16709b202258a5cf23622966d86873fe4a5eec770e2de26cabcfce7f:1999-08-29:AS%20Monaco:ATAC%20Troyes:away",
+      "date": "1999-08-29",
+      "season": "1999-00",
+      "competition": {
+        "name": "French League 1",
+        "type": "league",
+        "country": "France"
+      },
+      "stage": "",
+      "opponent": {
+        "name": "AS Monaco",
+        "slug": "as-monaco"
+      },
+      "venue": "away",
+      "score": {
+        "for": 0,
+        "against": 3
+      },
+      "result": "L",
+      "sourceRef": "src:d8e9bceda94501177b14"
+    },
+    {
+      "id": "engsoccerdata:86d9593d16709b202258a5cf23622966d86873fe4a5eec770e2de26cabcfce7f:1999-09-11:ATAC%20Troyes:FC%20Nantes:home",
+      "date": "1999-09-11",
+      "season": "1999-00",
+      "competition": {
+        "name": "French League 1",
+        "type": "league",
+        "country": "France"
+      },
+      "stage": "",
+      "opponent": {
+        "name": "FC Nantes",
+        "slug": "fc-nantes"
+      },
+      "venue": "home",
+      "score": {
+        "for": 1,
+        "against": 0
+      },
+      "result": "W",
+      "sourceRef": "src:d8e9bceda94501177b14"
+    },
+    {
+      "id": "engsoccerdata:86d9593d16709b202258a5cf23622966d86873fe4a5eec770e2de26cabcfce7f:1999-09-19:Olympique%20Marseille:ATAC%20Troyes:away",
+      "date": "1999-09-19",
+      "season": "1999-00",
+      "competition": {
+        "name": "French League 1",
+        "type": "league",
+        "country": "France"
+      },
+      "stage": "",
+      "opponent": {
+        "name": "Olympique Marseille",
+        "slug": "olympique-marseille"
+      },
+      "venue": "away",
+      "score": {
+        "for": 0,
+        "against": 1
+      },
+      "result": "L",
+      "sourceRef": "src:d8e9bceda94501177b14"
+    },
+    {
+      "id": "engsoccerdata:86d9593d16709b202258a5cf23622966d86873fe4a5eec770e2de26cabcfce7f:1999-09-25:ATAC%20Troyes:AS%20Nancy:home",
+      "date": "1999-09-25",
+      "season": "1999-00",
+      "competition": {
+        "name": "French League 1",
+        "type": "league",
+        "country": "France"
+      },
+      "stage": "",
+      "opponent": {
+        "name": "AS Nancy",
+        "slug": "as-nancy"
+      },
+      "venue": "home",
+      "score": {
+        "for": 2,
+        "against": 0
+      },
+      "result": "W",
+      "sourceRef": "src:d8e9bceda94501177b14"
+    },
+    {
+      "id": "engsoccerdata:86d9593d16709b202258a5cf23622966d86873fe4a5eec770e2de26cabcfce7f:1999-10-02:CS%20Sedan:ATAC%20Troyes:away",
+      "date": "1999-10-02",
+      "season": "1999-00",
+      "competition": {
+        "name": "French League 1",
+        "type": "league",
+        "country": "France"
+      },
+      "stage": "",
+      "opponent": {
+        "name": "CS Sedan",
+        "slug": "cs-sedan"
+      },
+      "venue": "away",
+      "score": {
+        "for": 1,
+        "against": 2
+      },
+      "result": "L",
+      "sourceRef": "src:d8e9bceda94501177b14"
+    },
+    {
+      "id": "engsoccerdata:86d9593d16709b202258a5cf23622966d86873fe4a5eec770e2de26cabcfce7f:1999-10-13:ATAC%20Troyes:Le%20Havre%20AC:home",
+      "date": "1999-10-13",
+      "season": "1999-00",
+      "competition": {
+        "name": "French League 1",
+        "type": "league",
+        "country": "France"
+      },
+      "stage": "",
+      "opponent": {
+        "name": "Le Havre AC",
+        "slug": "le-havre-ac"
+      },
+      "venue": "home",
+      "score": {
+        "for": 3,
+        "against": 1
+      },
+      "result": "W",
+      "sourceRef": "src:d8e9bceda94501177b14"
+    },
+    {
+      "id": "engsoccerdata:86d9593d16709b202258a5cf23622966d86873fe4a5eec770e2de26cabcfce7f:1999-10-16:AS%20Saint-Etienne:ATAC%20Troyes:away",
+      "date": "1999-10-16",
+      "season": "1999-00",
+      "competition": {
+        "name": "French League 1",
+        "type": "league",
+        "country": "France"
+      },
+      "stage": "",
+      "opponent": {
+        "name": "AS Saint-Etienne",
+        "slug": "as-saint-etienne"
+      },
+      "venue": "away",
+      "score": {
+        "for": 0,
+        "against": 1
+      },
+      "result": "L",
+      "sourceRef": "src:d8e9bceda94501177b14"
+    },
+    {
+      "id": "engsoccerdata:86d9593d16709b202258a5cf23622966d86873fe4a5eec770e2de26cabcfce7f:1999-10-24:ATAC%20Troyes:RC%20Lens:home",
+      "date": "1999-10-24",
+      "season": "1999-00",
+      "competition": {
+        "name": "French League 1",
+        "type": "league",
+        "country": "France"
+      },
+      "stage": "",
+      "opponent": {
+        "name": "RC Lens",
+        "slug": "rc-lens"
+      },
+      "venue": "home",
+      "score": {
+        "for": 0,
+        "against": 1
+      },
+      "result": "L",
+      "sourceRef": "src:d8e9bceda94501177b14"
+    },
+    {
+      "id": "engsoccerdata:86d9593d16709b202258a5cf23622966d86873fe4a5eec770e2de26cabcfce7f:1999-10-30:SC%20Bastia:ATAC%20Troyes:away",
+      "date": "1999-10-30",
+      "season": "1999-00",
+      "competition": {
+        "name": "French League 1",
+        "type": "league",
+        "country": "France"
+      },
+      "stage": "",
+      "opponent": {
+        "name": "SC Bastia",
+        "slug": "sc-bastia"
+      },
+      "venue": "away",
+      "score": {
+        "for": 0,
+        "against": 5
+      },
+      "result": "L",
+      "sourceRef": "src:d8e9bceda94501177b14"
+    },
+    {
+      "id": "engsoccerdata:86d9593d16709b202258a5cf23622966d86873fe4a5eec770e2de26cabcfce7f:1999-11-07:ATAC%20Troyes:Montpellier%20HSC:home",
+      "date": "1999-11-07",
+      "season": "1999-00",
+      "competition": {
+        "name": "French League 1",
+        "type": "league",
+        "country": "France"
+      },
+      "stage": "",
+      "opponent": {
+        "name": "Montpellier HSC",
+        "slug": "montpellier-hsc"
+      },
+      "venue": "home",
+      "score": {
+        "for": 2,
+        "against": 1
+      },
+      "result": "W",
+      "sourceRef": "src:d8e9bceda94501177b14"
+    },
+    {
+      "id": "engsoccerdata:86d9593d16709b202258a5cf23622966d86873fe4a5eec770e2de26cabcfce7f:1999-11-10:AJ%20Auxerre:ATAC%20Troyes:away",
+      "date": "1999-11-10",
+      "season": "1999-00",
+      "competition": {
+        "name": "French League 1",
+        "type": "league",
+        "country": "France"
+      },
+      "stage": "",
+      "opponent": {
+        "name": "AJ Auxerre",
+        "slug": "aj-auxerre"
+      },
+      "venue": "away",
+      "score": {
+        "for": 1,
+        "against": 0
+      },
+      "result": "W",
+      "sourceRef": "src:d8e9bceda94501177b14"
+    },
+    {
+      "id": "engsoccerdata:86d9593d16709b202258a5cf23622966d86873fe4a5eec770e2de26cabcfce7f:1999-11-19:Stade%20Rennes:ATAC%20Troyes:away",
+      "date": "1999-11-19",
+      "season": "1999-00",
+      "competition": {
+        "name": "French League 1",
+        "type": "league",
+        "country": "France"
+      },
+      "stage": "",
+      "opponent": {
+        "name": "Stade Rennes",
+        "slug": "stade-rennes"
+      },
+      "venue": "away",
+      "score": {
+        "for": 2,
+        "against": 2
+      },
+      "result": "D",
+      "sourceRef": "src:d8e9bceda94501177b14"
+    },
+    {
+      "id": "engsoccerdata:86d9593d16709b202258a5cf23622966d86873fe4a5eec770e2de26cabcfce7f:1999-11-27:ATAC%20Troyes:FC%20Metz:home",
+      "date": "1999-11-27",
+      "season": "1999-00",
+      "competition": {
+        "name": "French League 1",
+        "type": "league",
+        "country": "France"
+      },
+      "stage": "",
+      "opponent": {
+        "name": "FC Metz",
+        "slug": "fc-metz"
+      },
+      "venue": "home",
+      "score": {
+        "for": 2,
+        "against": 2
+      },
+      "result": "D",
+      "sourceRef": "src:d8e9bceda94501177b14"
+    },
+    {
+      "id": "engsoccerdata:86d9593d16709b202258a5cf23622966d86873fe4a5eec770e2de26cabcfce7f:1999-12-03:Olympique%20Lyon:ATAC%20Troyes:away",
+      "date": "1999-12-03",
+      "season": "1999-00",
+      "competition": {
+        "name": "French League 1",
+        "type": "league",
+        "country": "France"
+      },
+      "stage": "",
+      "opponent": {
+        "name": "Olympique Lyon",
+        "slug": "olympique-lyon"
+      },
+      "venue": "away",
+      "score": {
+        "for": 3,
+        "against": 1
+      },
+      "result": "W",
+      "sourceRef": "src:d8e9bceda94501177b14"
+    },
+    {
+      "id": "engsoccerdata:86d9593d16709b202258a5cf23622966d86873fe4a5eec770e2de26cabcfce7f:1999-12-11:ATAC%20Troyes:Girondins%20Bordeaux:home",
+      "date": "1999-12-11",
+      "season": "1999-00",
+      "competition": {
+        "name": "French League 1",
+        "type": "league",
+        "country": "France"
+      },
+      "stage": "",
+      "opponent": {
+        "name": "Girondins Bordeaux",
+        "slug": "girondins-bordeaux"
+      },
+      "venue": "home",
+      "score": {
+        "for": 2,
+        "against": 0
+      },
+      "result": "W",
+      "sourceRef": "src:d8e9bceda94501177b14"
+    },
+    {
+      "id": "engsoccerdata:86d9593d16709b202258a5cf23622966d86873fe4a5eec770e2de26cabcfce7f:2000-01-12:ATAC%20Troyes:AS%20Monaco:home",
+      "date": "2000-01-12",
+      "season": "1999-00",
+      "competition": {
+        "name": "French League 1",
+        "type": "league",
+        "country": "France"
+      },
+      "stage": "",
+      "opponent": {
+        "name": "AS Monaco",
+        "slug": "as-monaco"
+      },
+      "venue": "home",
+      "score": {
+        "for": 1,
+        "against": 4
+      },
+      "result": "L",
+      "sourceRef": "src:d8e9bceda94501177b14"
+    },
+    {
+      "id": "engsoccerdata:86d9593d16709b202258a5cf23622966d86873fe4a5eec770e2de26cabcfce7f:2000-01-19:FC%20Nantes:ATAC%20Troyes:away",
+      "date": "2000-01-19",
+      "season": "1999-00",
+      "competition": {
+        "name": "French League 1",
+        "type": "league",
+        "country": "France"
+      },
+      "stage": "",
+      "opponent": {
+        "name": "FC Nantes",
+        "slug": "fc-nantes"
+      },
+      "venue": "away",
+      "score": {
+        "for": 0,
+        "against": 3
+      },
+      "result": "L",
+      "sourceRef": "src:d8e9bceda94501177b14"
+    },
+    {
+      "id": "engsoccerdata:86d9593d16709b202258a5cf23622966d86873fe4a5eec770e2de26cabcfce7f:2000-01-20:RC%20Strasbourg:ATAC%20Troyes:away",
+      "date": "2000-01-20",
+      "season": "1999-00",
+      "competition": {
+        "name": "French League 1",
+        "type": "league",
+        "country": "France"
+      },
+      "stage": "",
+      "opponent": {
+        "name": "RC Strasbourg",
+        "slug": "rc-strasbourg"
+      },
+      "venue": "away",
+      "score": {
+        "for": 0,
+        "against": 2
+      },
+      "result": "L",
+      "sourceRef": "src:d8e9bceda94501177b14"
+    },
+    {
+      "id": "engsoccerdata:86d9593d16709b202258a5cf23622966d86873fe4a5eec770e2de26cabcfce7f:2000-01-25:ATAC%20Troyes:Olympique%20Marseille:home",
+      "date": "2000-01-25",
+      "season": "1999-00",
+      "competition": {
+        "name": "French League 1",
+        "type": "league",
+        "country": "France"
+      },
+      "stage": "",
+      "opponent": {
+        "name": "Olympique Marseille",
+        "slug": "olympique-marseille"
+      },
+      "venue": "home",
+      "score": {
+        "for": 1,
+        "against": 2
+      },
+      "result": "L",
+      "sourceRef": "src:d8e9bceda94501177b14"
+    },
+    {
+      "id": "engsoccerdata:86d9593d16709b202258a5cf23622966d86873fe4a5eec770e2de26cabcfce7f:2000-02-02:AS%20Nancy:ATAC%20Troyes:away",
+      "date": "2000-02-02",
+      "season": "1999-00",
+      "competition": {
+        "name": "French League 1",
+        "type": "league",
+        "country": "France"
+      },
+      "stage": "",
+      "opponent": {
+        "name": "AS Nancy",
+        "slug": "as-nancy"
+      },
+      "venue": "away",
+      "score": {
+        "for": 2,
+        "against": 1
+      },
+      "result": "W",
+      "sourceRef": "src:d8e9bceda94501177b14"
+    },
+    {
+      "id": "engsoccerdata:86d9593d16709b202258a5cf23622966d86873fe4a5eec770e2de26cabcfce7f:2000-02-05:ATAC%20Troyes:CS%20Sedan:home",
+      "date": "2000-02-05",
+      "season": "1999-00",
+      "competition": {
+        "name": "French League 1",
+        "type": "league",
+        "country": "France"
+      },
+      "stage": "",
+      "opponent": {
+        "name": "CS Sedan",
+        "slug": "cs-sedan"
+      },
+      "venue": "home",
+      "score": {
+        "for": 0,
+        "against": 2
+      },
+      "result": "L",
+      "sourceRef": "src:d8e9bceda94501177b14"
+    },
+    {
+      "id": "engsoccerdata:86d9593d16709b202258a5cf23622966d86873fe4a5eec770e2de26cabcfce7f:2000-02-16:Le%20Havre%20AC:ATAC%20Troyes:away",
+      "date": "2000-02-16",
+      "season": "1999-00",
+      "competition": {
+        "name": "French League 1",
+        "type": "league",
+        "country": "France"
+      },
+      "stage": "",
+      "opponent": {
+        "name": "Le Havre AC",
+        "slug": "le-havre-ac"
+      },
+      "venue": "away",
+      "score": {
+        "for": 0,
+        "against": 2
+      },
+      "result": "L",
+      "sourceRef": "src:d8e9bceda94501177b14"
+    },
+    {
+      "id": "engsoccerdata:86d9593d16709b202258a5cf23622966d86873fe4a5eec770e2de26cabcfce7f:2000-02-26:ATAC%20Troyes:AS%20Saint-Etienne:home",
+      "date": "2000-02-26",
+      "season": "1999-00",
+      "competition": {
+        "name": "French League 1",
+        "type": "league",
+        "country": "France"
+      },
+      "stage": "",
+      "opponent": {
+        "name": "AS Saint-Etienne",
+        "slug": "as-saint-etienne"
+      },
+      "venue": "home",
+      "score": {
+        "for": 0,
+        "against": 1
+      },
+      "result": "L",
+      "sourceRef": "src:d8e9bceda94501177b14"
+    },
+    {
+      "id": "engsoccerdata:86d9593d16709b202258a5cf23622966d86873fe4a5eec770e2de26cabcfce7f:2000-03-12:RC%20Lens:ATAC%20Troyes:away",
+      "date": "2000-03-12",
+      "season": "1999-00",
+      "competition": {
+        "name": "French League 1",
+        "type": "league",
+        "country": "France"
+      },
+      "stage": "",
+      "opponent": {
+        "name": "RC Lens",
+        "slug": "rc-lens"
+      },
+      "venue": "away",
+      "score": {
+        "for": 1,
+        "against": 0
+      },
+      "result": "W",
+      "sourceRef": "src:d8e9bceda94501177b14"
+    },
+    {
+      "id": "engsoccerdata:86d9593d16709b202258a5cf23622966d86873fe4a5eec770e2de26cabcfce7f:2000-03-25:ATAC%20Troyes:SC%20Bastia:home",
+      "date": "2000-03-25",
+      "season": "1999-00",
+      "competition": {
+        "name": "French League 1",
+        "type": "league",
+        "country": "France"
+      },
+      "stage": "",
+      "opponent": {
+        "name": "SC Bastia",
+        "slug": "sc-bastia"
+      },
+      "venue": "home",
+      "score": {
+        "for": 1,
+        "against": 0
+      },
+      "result": "W",
+      "sourceRef": "src:d8e9bceda94501177b14"
+    },
+    {
+      "id": "engsoccerdata:86d9593d16709b202258a5cf23622966d86873fe4a5eec770e2de26cabcfce7f:2000-04-08:Montpellier%20HSC:ATAC%20Troyes:away",
+      "date": "2000-04-08",
+      "season": "1999-00",
+      "competition": {
+        "name": "French League 1",
+        "type": "league",
+        "country": "France"
+      },
+      "stage": "",
+      "opponent": {
+        "name": "Montpellier HSC",
+        "slug": "montpellier-hsc"
+      },
+      "venue": "away",
+      "score": {
+        "for": 2,
+        "against": 2
+      },
+      "result": "D",
+      "sourceRef": "src:d8e9bceda94501177b14"
+    },
+    {
+      "id": "engsoccerdata:86d9593d16709b202258a5cf23622966d86873fe4a5eec770e2de26cabcfce7f:2000-04-15:ATAC%20Troyes:AJ%20Auxerre:home",
+      "date": "2000-04-15",
+      "season": "1999-00",
+      "competition": {
+        "name": "French League 1",
+        "type": "league",
+        "country": "France"
+      },
+      "stage": "",
+      "opponent": {
+        "name": "AJ Auxerre",
+        "slug": "aj-auxerre"
+      },
+      "venue": "home",
+      "score": {
+        "for": 2,
+        "against": 0
+      },
+      "result": "W",
+      "sourceRef": "src:d8e9bceda94501177b14"
+    },
+    {
+      "id": "engsoccerdata:86d9593d16709b202258a5cf23622966d86873fe4a5eec770e2de26cabcfce7f:2000-04-29:ATAC%20Troyes:Stade%20Rennes:home",
+      "date": "2000-04-29",
+      "season": "1999-00",
+      "competition": {
+        "name": "French League 1",
+        "type": "league",
+        "country": "France"
+      },
+      "stage": "",
+      "opponent": {
+        "name": "Stade Rennes",
+        "slug": "stade-rennes"
+      },
+      "venue": "home",
+      "score": {
+        "for": 1,
+        "against": 0
+      },
+      "result": "W",
+      "sourceRef": "src:d8e9bceda94501177b14"
+    },
+    {
+      "id": "engsoccerdata:86d9593d16709b202258a5cf23622966d86873fe4a5eec770e2de26cabcfce7f:2000-05-04:FC%20Metz:ATAC%20Troyes:away",
+      "date": "2000-05-04",
+      "season": "1999-00",
+      "competition": {
+        "name": "French League 1",
+        "type": "league",
+        "country": "France"
+      },
+      "stage": "",
+      "opponent": {
+        "name": "FC Metz",
+        "slug": "fc-metz"
+      },
+      "venue": "away",
+      "score": {
+        "for": 1,
+        "against": 3
+      },
+      "result": "L",
+      "sourceRef": "src:d8e9bceda94501177b14"
+    },
+    {
+      "id": "engsoccerdata:86d9593d16709b202258a5cf23622966d86873fe4a5eec770e2de26cabcfce7f:2000-05-13:ATAC%20Troyes:Paris%20Saint-Germain:home",
+      "date": "2000-05-13",
+      "season": "1999-00",
+      "competition": {
+        "name": "French League 1",
+        "type": "league",
+        "country": "France"
+      },
+      "stage": "",
+      "opponent": {
+        "name": "Paris SG",
+        "slug": "paris-sg"
+      },
+      "venue": "home",
+      "score": {
+        "for": 2,
+        "against": 2
+      },
+      "result": "D",
+      "sourceRef": "src:d8e9bceda94501177b14"
+    }
+  ],
+  "seasonStandings": [
+    {
+      "season": "1999-00",
+      "competition": {
+        "name": "French League 1",
+        "type": "league",
+        "country": "France"
+      },
+      "position": 14,
+      "team": "ATAC Troyes",
+      "played": 34,
+      "won": 13,
+      "drawn": 4,
+      "lost": 17,
+      "goalsFor": 36,
+      "goalsAgainst": 52,
+      "points": 43,
+      "basis": "derived from recorded completed home fixtures"
+    }
+  ],
+  "competitionStandings": [],
+  "updatedAt": "2026-08-04T20:33:21.616Z"
+}

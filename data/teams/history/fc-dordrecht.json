@@ -1,0 +1,882 @@
+{
+  "contract": "football-team-history-v1",
+  "team": {
+    "name": "FC Dordrecht",
+    "slug": "fc-dordrecht",
+    "primaryLeague": "Dutch League 1",
+    "aliases": []
+  },
+  "requestedCoverage": {
+    "fromYear": 1985,
+    "to": "present",
+    "includes": [
+      "all competitions",
+      "opponents",
+      "scorelines",
+      "league standings",
+      "competition standings"
+    ]
+  },
+  "sourcePlan": [
+    {
+      "rank": 1,
+      "provider": "Official club archive",
+      "url": "",
+      "scope": "club history, competition participation and match reports",
+      "lookupKey": "FC Dordrecht",
+      "review": "Verify the club-owned archive URL before collection."
+    },
+    {
+      "rank": 2,
+      "provider": "Official domestic competition / association",
+      "url": "",
+      "scope": "official league fixtures, final tables and cup records",
+      "lookupKey": "Dutch League 1"
+    },
+    {
+      "rank": 3,
+      "provider": "UEFA",
+      "url": "https://www.uefa.com/",
+      "scope": "official European competition appearances, fixtures and standings",
+      "lookupKey": "FC Dordrecht"
+    },
+    {
+      "rank": 4,
+      "provider": "RSSSF",
+      "url": "https://www.rsssf.org/",
+      "scope": "historic competitions, tables and cross-checking",
+      "lookupKey": "FC Dordrecht"
+    },
+    {
+      "rank": 5,
+      "provider": "worldfootball.net",
+      "url": "https://www.worldfootball.net/",
+      "scope": "club match archive and competition participation cross-check",
+      "lookupKey": "FC Dordrecht"
+    }
+  ],
+  "coverage": {
+    "earliestMatch": "2014-08-09",
+    "latestMatch": "2015-05-17",
+    "seasonsWithMatches": [
+      "2014-15"
+    ],
+    "missingSeasons": [
+      "1985-86",
+      "1986-87",
+      "1987-88",
+      "1988-89",
+      "1989-90",
+      "1990-91",
+      "1991-92",
+      "1992-93",
+      "1993-94",
+      "1994-95",
+      "1995-96",
+      "1996-97",
+      "1997-98",
+      "1998-99",
+      "1999-00",
+      "2000-01",
+      "2001-02",
+      "2002-03",
+      "2003-04",
+      "2004-05",
+      "2005-06",
+      "2006-07",
+      "2007-08",
+      "2008-09",
+      "2009-10",
+      "2010-11",
+      "2011-12",
+      "2012-13",
+      "2013-14",
+      "2015-16",
+      "2016-17",
+      "2017-18",
+      "2018-19",
+      "2019-20",
+      "2020-21",
+      "2021-22",
+      "2022-23",
+      "2023-24",
+      "2024-25",
+      "2025-26",
+      "2026-27"
+    ],
+    "competitionScopeVerified": false,
+    "status": "partial"
+  },
+  "matches": [
+    {
+      "id": "engsoccerdata:6ed2410f59fee88cbb93a1f59fde9c1e5e2cc5bed9282b367c7d7bb712053dbf:2014-08-09:sc%20Heerenveen:FC%20Dordrecht:away",
+      "date": "2014-08-09",
+      "season": "2014-15",
+      "competition": {
+        "name": "Dutch League 1",
+        "type": "league",
+        "country": "Netherlands"
+      },
+      "stage": "",
+      "opponent": {
+        "name": "sc Heerenveen",
+        "slug": "sc-heerenveen"
+      },
+      "venue": "away",
+      "score": {
+        "for": 2,
+        "against": 1
+      },
+      "result": "W",
+      "sourceRef": "src:1853dee97e2e055b7043"
+    },
+    {
+      "id": "engsoccerdata:6ed2410f59fee88cbb93a1f59fde9c1e5e2cc5bed9282b367c7d7bb712053dbf:2014-08-16:FC%20Dordrecht:PEC%20Zwolle:home",
+      "date": "2014-08-16",
+      "season": "2014-15",
+      "competition": {
+        "name": "Dutch League 1",
+        "type": "league",
+        "country": "Netherlands"
+      },
+      "stage": "",
+      "opponent": {
+        "name": "PEC Zwolle",
+        "slug": "pec-zwolle"
+      },
+      "venue": "home",
+      "score": {
+        "for": 1,
+        "against": 2
+      },
+      "result": "L",
+      "sourceRef": "src:1853dee97e2e055b7043"
+    },
+    {
+      "id": "engsoccerdata:6ed2410f59fee88cbb93a1f59fde9c1e5e2cc5bed9282b367c7d7bb712053dbf:2014-08-23:Go%20Ahead%20Eagles:FC%20Dordrecht:away",
+      "date": "2014-08-23",
+      "season": "2014-15",
+      "competition": {
+        "name": "Dutch League 1",
+        "type": "league",
+        "country": "Netherlands"
+      },
+      "stage": "",
+      "opponent": {
+        "name": "Go Ahead Eagles",
+        "slug": "go-ahead-eagles"
+      },
+      "venue": "away",
+      "score": {
+        "for": 0,
+        "against": 0
+      },
+      "result": "D",
+      "sourceRef": "src:1853dee97e2e055b7043"
+    },
+    {
+      "id": "engsoccerdata:6ed2410f59fee88cbb93a1f59fde9c1e5e2cc5bed9282b367c7d7bb712053dbf:2014-08-30:FC%20Dordrecht:AZ%20Alkmaar:home",
+      "date": "2014-08-30",
+      "season": "2014-15",
+      "competition": {
+        "name": "Dutch League 1",
+        "type": "league",
+        "country": "Netherlands"
+      },
+      "stage": "",
+      "opponent": {
+        "name": "AZ Alkmaar",
+        "slug": "az-alkmaar"
+      },
+      "venue": "home",
+      "score": {
+        "for": 1,
+        "against": 3
+      },
+      "result": "L",
+      "sourceRef": "src:1853dee97e2e055b7043"
+    },
+    {
+      "id": "engsoccerdata:6ed2410f59fee88cbb93a1f59fde9c1e5e2cc5bed9282b367c7d7bb712053dbf:2014-09-14:FC%20Dordrecht:NAC%20Breda:home",
+      "date": "2014-09-14",
+      "season": "2014-15",
+      "competition": {
+        "name": "Dutch League 1",
+        "type": "league",
+        "country": "Netherlands"
+      },
+      "stage": "",
+      "opponent": {
+        "name": "NAC Breda",
+        "slug": "nac-breda"
+      },
+      "venue": "home",
+      "score": {
+        "for": 0,
+        "against": 1
+      },
+      "result": "L",
+      "sourceRef": "src:1853dee97e2e055b7043"
+    },
+    {
+      "id": "engsoccerdata:6ed2410f59fee88cbb93a1f59fde9c1e5e2cc5bed9282b367c7d7bb712053dbf:2014-09-20:SBV%20Excelsior:FC%20Dordrecht:away",
+      "date": "2014-09-20",
+      "season": "2014-15",
+      "competition": {
+        "name": "Dutch League 1",
+        "type": "league",
+        "country": "Netherlands"
+      },
+      "stage": "",
+      "opponent": {
+        "name": "SBV Excelsior",
+        "slug": "sbv-excelsior"
+      },
+      "venue": "away",
+      "score": {
+        "for": 1,
+        "against": 1
+      },
+      "result": "D",
+      "sourceRef": "src:1853dee97e2e055b7043"
+    },
+    {
+      "id": "engsoccerdata:6ed2410f59fee88cbb93a1f59fde9c1e5e2cc5bed9282b367c7d7bb712053dbf:2014-09-27:FC%20Dordrecht:Vitesse:home",
+      "date": "2014-09-27",
+      "season": "2014-15",
+      "competition": {
+        "name": "Dutch League 1",
+        "type": "league",
+        "country": "Netherlands"
+      },
+      "stage": "",
+      "opponent": {
+        "name": "Vitesse",
+        "slug": "vitesse"
+      },
+      "venue": "home",
+      "score": {
+        "for": 2,
+        "against": 6
+      },
+      "result": "L",
+      "sourceRef": "src:1853dee97e2e055b7043"
+    },
+    {
+      "id": "engsoccerdata:6ed2410f59fee88cbb93a1f59fde9c1e5e2cc5bed9282b367c7d7bb712053dbf:2014-10-04:SC%20Cambuur:FC%20Dordrecht:away",
+      "date": "2014-10-04",
+      "season": "2014-15",
+      "competition": {
+        "name": "Dutch League 1",
+        "type": "league",
+        "country": "Netherlands"
+      },
+      "stage": "",
+      "opponent": {
+        "name": "SC Cambuur",
+        "slug": "sc-cambuur"
+      },
+      "venue": "away",
+      "score": {
+        "for": 1,
+        "against": 4
+      },
+      "result": "L",
+      "sourceRef": "src:1853dee97e2e055b7043"
+    },
+    {
+      "id": "engsoccerdata:6ed2410f59fee88cbb93a1f59fde9c1e5e2cc5bed9282b367c7d7bb712053dbf:2014-10-19:FC%20Dordrecht:FC%20Utrecht:home",
+      "date": "2014-10-19",
+      "season": "2014-15",
+      "competition": {
+        "name": "Dutch League 1",
+        "type": "league",
+        "country": "Netherlands"
+      },
+      "stage": "",
+      "opponent": {
+        "name": "FC Utrecht",
+        "slug": "fc-utrecht"
+      },
+      "venue": "home",
+      "score": {
+        "for": 1,
+        "against": 3
+      },
+      "result": "L",
+      "sourceRef": "src:1853dee97e2e055b7043"
+    },
+    {
+      "id": "engsoccerdata:6ed2410f59fee88cbb93a1f59fde9c1e5e2cc5bed9282b367c7d7bb712053dbf:2014-10-24:ADO%20Den%20Haag:FC%20Dordrecht:away",
+      "date": "2014-10-24",
+      "season": "2014-15",
+      "competition": {
+        "name": "Dutch League 1",
+        "type": "league",
+        "country": "Netherlands"
+      },
+      "stage": "",
+      "opponent": {
+        "name": "ADO Den Haag",
+        "slug": "ado-den-haag"
+      },
+      "venue": "away",
+      "score": {
+        "for": 0,
+        "against": 2
+      },
+      "result": "L",
+      "sourceRef": "src:1853dee97e2e055b7043"
+    },
+    {
+      "id": "engsoccerdata:6ed2410f59fee88cbb93a1f59fde9c1e5e2cc5bed9282b367c7d7bb712053dbf:2014-11-01:AFC%20Ajax:FC%20Dordrecht:away",
+      "date": "2014-11-01",
+      "season": "2014-15",
+      "competition": {
+        "name": "Dutch League 1",
+        "type": "league",
+        "country": "Netherlands"
+      },
+      "stage": "",
+      "opponent": {
+        "name": "AFC Ajax",
+        "slug": "afc-ajax"
+      },
+      "venue": "away",
+      "score": {
+        "for": 0,
+        "against": 4
+      },
+      "result": "L",
+      "sourceRef": "src:1853dee97e2e055b7043"
+    },
+    {
+      "id": "engsoccerdata:6ed2410f59fee88cbb93a1f59fde9c1e5e2cc5bed9282b367c7d7bb712053dbf:2014-11-09:FC%20Dordrecht:FC%20Twente:home",
+      "date": "2014-11-09",
+      "season": "2014-15",
+      "competition": {
+        "name": "Dutch League 1",
+        "type": "league",
+        "country": "Netherlands"
+      },
+      "stage": "",
+      "opponent": {
+        "name": "FC Twente",
+        "slug": "fc-twente"
+      },
+      "venue": "home",
+      "score": {
+        "for": 0,
+        "against": 4
+      },
+      "result": "L",
+      "sourceRef": "src:1853dee97e2e055b7043"
+    },
+    {
+      "id": "engsoccerdata:6ed2410f59fee88cbb93a1f59fde9c1e5e2cc5bed9282b367c7d7bb712053dbf:2014-11-22:Feyenoord:FC%20Dordrecht:away",
+      "date": "2014-11-22",
+      "season": "2014-15",
+      "competition": {
+        "name": "Dutch League 1",
+        "type": "league",
+        "country": "Netherlands"
+      },
+      "stage": "",
+      "opponent": {
+        "name": "Feyenoord",
+        "slug": "feyenoord"
+      },
+      "venue": "away",
+      "score": {
+        "for": 0,
+        "against": 2
+      },
+      "result": "L",
+      "sourceRef": "src:1853dee97e2e055b7043"
+    },
+    {
+      "id": "engsoccerdata:6ed2410f59fee88cbb93a1f59fde9c1e5e2cc5bed9282b367c7d7bb712053dbf:2014-11-28:FC%20Dordrecht:Willem%20II:home",
+      "date": "2014-11-28",
+      "season": "2014-15",
+      "competition": {
+        "name": "Dutch League 1",
+        "type": "league",
+        "country": "Netherlands"
+      },
+      "stage": "",
+      "opponent": {
+        "name": "Willem II",
+        "slug": "willem-ii"
+      },
+      "venue": "home",
+      "score": {
+        "for": 0,
+        "against": 4
+      },
+      "result": "L",
+      "sourceRef": "src:1853dee97e2e055b7043"
+    },
+    {
+      "id": "engsoccerdata:6ed2410f59fee88cbb93a1f59fde9c1e5e2cc5bed9282b367c7d7bb712053dbf:2014-12-06:FC%20Dordrecht:PSV%20Eindhoven:home",
+      "date": "2014-12-06",
+      "season": "2014-15",
+      "competition": {
+        "name": "Dutch League 1",
+        "type": "league",
+        "country": "Netherlands"
+      },
+      "stage": "",
+      "opponent": {
+        "name": "PSV Eindhoven",
+        "slug": "psv-eindhoven"
+      },
+      "venue": "home",
+      "score": {
+        "for": 1,
+        "against": 3
+      },
+      "result": "L",
+      "sourceRef": "src:1853dee97e2e055b7043"
+    },
+    {
+      "id": "engsoccerdata:6ed2410f59fee88cbb93a1f59fde9c1e5e2cc5bed9282b367c7d7bb712053dbf:2014-12-12:Heracles%20Almelo:FC%20Dordrecht:away",
+      "date": "2014-12-12",
+      "season": "2014-15",
+      "competition": {
+        "name": "Dutch League 1",
+        "type": "league",
+        "country": "Netherlands"
+      },
+      "stage": "",
+      "opponent": {
+        "name": "Heracles Almelo",
+        "slug": "heracles-almelo"
+      },
+      "venue": "away",
+      "score": {
+        "for": 1,
+        "against": 1
+      },
+      "result": "D",
+      "sourceRef": "src:1853dee97e2e055b7043"
+    },
+    {
+      "id": "engsoccerdata:6ed2410f59fee88cbb93a1f59fde9c1e5e2cc5bed9282b367c7d7bb712053dbf:2014-12-20:FC%20Dordrecht:FC%20Groningen:home",
+      "date": "2014-12-20",
+      "season": "2014-15",
+      "competition": {
+        "name": "Dutch League 1",
+        "type": "league",
+        "country": "Netherlands"
+      },
+      "stage": "",
+      "opponent": {
+        "name": "FC Groningen",
+        "slug": "fc-groningen"
+      },
+      "venue": "home",
+      "score": {
+        "for": 1,
+        "against": 1
+      },
+      "result": "D",
+      "sourceRef": "src:1853dee97e2e055b7043"
+    },
+    {
+      "id": "engsoccerdata:6ed2410f59fee88cbb93a1f59fde9c1e5e2cc5bed9282b367c7d7bb712053dbf:2015-01-17:AZ%20Alkmaar:FC%20Dordrecht:away",
+      "date": "2015-01-17",
+      "season": "2014-15",
+      "competition": {
+        "name": "Dutch League 1",
+        "type": "league",
+        "country": "Netherlands"
+      },
+      "stage": "",
+      "opponent": {
+        "name": "AZ Alkmaar",
+        "slug": "az-alkmaar"
+      },
+      "venue": "away",
+      "score": {
+        "for": 0,
+        "against": 2
+      },
+      "result": "L",
+      "sourceRef": "src:1853dee97e2e055b7043"
+    },
+    {
+      "id": "engsoccerdata:6ed2410f59fee88cbb93a1f59fde9c1e5e2cc5bed9282b367c7d7bb712053dbf:2015-01-24:FC%20Dordrecht:SBV%20Excelsior:home",
+      "date": "2015-01-24",
+      "season": "2014-15",
+      "competition": {
+        "name": "Dutch League 1",
+        "type": "league",
+        "country": "Netherlands"
+      },
+      "stage": "",
+      "opponent": {
+        "name": "SBV Excelsior",
+        "slug": "sbv-excelsior"
+      },
+      "venue": "home",
+      "score": {
+        "for": 1,
+        "against": 0
+      },
+      "result": "W",
+      "sourceRef": "src:1853dee97e2e055b7043"
+    },
+    {
+      "id": "engsoccerdata:6ed2410f59fee88cbb93a1f59fde9c1e5e2cc5bed9282b367c7d7bb712053dbf:2015-01-30:FC%20Dordrecht:sc%20Heerenveen:home",
+      "date": "2015-01-30",
+      "season": "2014-15",
+      "competition": {
+        "name": "Dutch League 1",
+        "type": "league",
+        "country": "Netherlands"
+      },
+      "stage": "",
+      "opponent": {
+        "name": "sc Heerenveen",
+        "slug": "sc-heerenveen"
+      },
+      "venue": "home",
+      "score": {
+        "for": 0,
+        "against": 0
+      },
+      "result": "D",
+      "sourceRef": "src:1853dee97e2e055b7043"
+    },
+    {
+      "id": "engsoccerdata:6ed2410f59fee88cbb93a1f59fde9c1e5e2cc5bed9282b367c7d7bb712053dbf:2015-02-04:PEC%20Zwolle:FC%20Dordrecht:away",
+      "date": "2015-02-04",
+      "season": "2014-15",
+      "competition": {
+        "name": "Dutch League 1",
+        "type": "league",
+        "country": "Netherlands"
+      },
+      "stage": "",
+      "opponent": {
+        "name": "PEC Zwolle",
+        "slug": "pec-zwolle"
+      },
+      "venue": "away",
+      "score": {
+        "for": 0,
+        "against": 4
+      },
+      "result": "L",
+      "sourceRef": "src:1853dee97e2e055b7043"
+    },
+    {
+      "id": "engsoccerdata:6ed2410f59fee88cbb93a1f59fde9c1e5e2cc5bed9282b367c7d7bb712053dbf:2015-02-07:FC%20Dordrecht:ADO%20Den%20Haag:home",
+      "date": "2015-02-07",
+      "season": "2014-15",
+      "competition": {
+        "name": "Dutch League 1",
+        "type": "league",
+        "country": "Netherlands"
+      },
+      "stage": "",
+      "opponent": {
+        "name": "ADO Den Haag",
+        "slug": "ado-den-haag"
+      },
+      "venue": "home",
+      "score": {
+        "for": 0,
+        "against": 0
+      },
+      "result": "D",
+      "sourceRef": "src:1853dee97e2e055b7043"
+    },
+    {
+      "id": "engsoccerdata:6ed2410f59fee88cbb93a1f59fde9c1e5e2cc5bed9282b367c7d7bb712053dbf:2015-02-15:FC%20Utrecht:FC%20Dordrecht:away",
+      "date": "2015-02-15",
+      "season": "2014-15",
+      "competition": {
+        "name": "Dutch League 1",
+        "type": "league",
+        "country": "Netherlands"
+      },
+      "stage": "",
+      "opponent": {
+        "name": "FC Utrecht",
+        "slug": "fc-utrecht"
+      },
+      "venue": "away",
+      "score": {
+        "for": 1,
+        "against": 6
+      },
+      "result": "L",
+      "sourceRef": "src:1853dee97e2e055b7043"
+    },
+    {
+      "id": "engsoccerdata:6ed2410f59fee88cbb93a1f59fde9c1e5e2cc5bed9282b367c7d7bb712053dbf:2015-02-22:PSV%20Eindhoven:FC%20Dordrecht:away",
+      "date": "2015-02-22",
+      "season": "2014-15",
+      "competition": {
+        "name": "Dutch League 1",
+        "type": "league",
+        "country": "Netherlands"
+      },
+      "stage": "",
+      "opponent": {
+        "name": "PSV Eindhoven",
+        "slug": "psv-eindhoven"
+      },
+      "venue": "away",
+      "score": {
+        "for": 0,
+        "against": 3
+      },
+      "result": "L",
+      "sourceRef": "src:1853dee97e2e055b7043"
+    },
+    {
+      "id": "engsoccerdata:6ed2410f59fee88cbb93a1f59fde9c1e5e2cc5bed9282b367c7d7bb712053dbf:2015-02-27:FC%20Dordrecht:Go%20Ahead%20Eagles:home",
+      "date": "2015-02-27",
+      "season": "2014-15",
+      "competition": {
+        "name": "Dutch League 1",
+        "type": "league",
+        "country": "Netherlands"
+      },
+      "stage": "",
+      "opponent": {
+        "name": "Go Ahead Eagles",
+        "slug": "go-ahead-eagles"
+      },
+      "venue": "home",
+      "score": {
+        "for": 2,
+        "against": 1
+      },
+      "result": "W",
+      "sourceRef": "src:1853dee97e2e055b7043"
+    },
+    {
+      "id": "engsoccerdata:6ed2410f59fee88cbb93a1f59fde9c1e5e2cc5bed9282b367c7d7bb712053dbf:2015-03-08:FC%20Groningen:FC%20Dordrecht:away",
+      "date": "2015-03-08",
+      "season": "2014-15",
+      "competition": {
+        "name": "Dutch League 1",
+        "type": "league",
+        "country": "Netherlands"
+      },
+      "stage": "",
+      "opponent": {
+        "name": "FC Groningen",
+        "slug": "fc-groningen"
+      },
+      "venue": "away",
+      "score": {
+        "for": 0,
+        "against": 2
+      },
+      "result": "L",
+      "sourceRef": "src:1853dee97e2e055b7043"
+    },
+    {
+      "id": "engsoccerdata:6ed2410f59fee88cbb93a1f59fde9c1e5e2cc5bed9282b367c7d7bb712053dbf:2015-03-15:FC%20Dordrecht:Feyenoord:home",
+      "date": "2015-03-15",
+      "season": "2014-15",
+      "competition": {
+        "name": "Dutch League 1",
+        "type": "league",
+        "country": "Netherlands"
+      },
+      "stage": "",
+      "opponent": {
+        "name": "Feyenoord",
+        "slug": "feyenoord"
+      },
+      "venue": "home",
+      "score": {
+        "for": 1,
+        "against": 2
+      },
+      "result": "L",
+      "sourceRef": "src:1853dee97e2e055b7043"
+    },
+    {
+      "id": "engsoccerdata:6ed2410f59fee88cbb93a1f59fde9c1e5e2cc5bed9282b367c7d7bb712053dbf:2015-03-21:Willem%20II:FC%20Dordrecht:away",
+      "date": "2015-03-21",
+      "season": "2014-15",
+      "competition": {
+        "name": "Dutch League 1",
+        "type": "league",
+        "country": "Netherlands"
+      },
+      "stage": "",
+      "opponent": {
+        "name": "Willem II",
+        "slug": "willem-ii"
+      },
+      "venue": "away",
+      "score": {
+        "for": 1,
+        "against": 2
+      },
+      "result": "L",
+      "sourceRef": "src:1853dee97e2e055b7043"
+    },
+    {
+      "id": "engsoccerdata:6ed2410f59fee88cbb93a1f59fde9c1e5e2cc5bed9282b367c7d7bb712053dbf:2015-04-04:FC%20Dordrecht:Heracles%20Almelo:home",
+      "date": "2015-04-04",
+      "season": "2014-15",
+      "competition": {
+        "name": "Dutch League 1",
+        "type": "league",
+        "country": "Netherlands"
+      },
+      "stage": "",
+      "opponent": {
+        "name": "Heracles Almelo",
+        "slug": "heracles-almelo"
+      },
+      "venue": "home",
+      "score": {
+        "for": 2,
+        "against": 3
+      },
+      "result": "L",
+      "sourceRef": "src:1853dee97e2e055b7043"
+    },
+    {
+      "id": "engsoccerdata:6ed2410f59fee88cbb93a1f59fde9c1e5e2cc5bed9282b367c7d7bb712053dbf:2015-04-11:NAC%20Breda:FC%20Dordrecht:away",
+      "date": "2015-04-11",
+      "season": "2014-15",
+      "competition": {
+        "name": "Dutch League 1",
+        "type": "league",
+        "country": "Netherlands"
+      },
+      "stage": "",
+      "opponent": {
+        "name": "NAC Breda",
+        "slug": "nac-breda"
+      },
+      "venue": "away",
+      "score": {
+        "for": 2,
+        "against": 2
+      },
+      "result": "D",
+      "sourceRef": "src:1853dee97e2e055b7043"
+    },
+    {
+      "id": "engsoccerdata:6ed2410f59fee88cbb93a1f59fde9c1e5e2cc5bed9282b367c7d7bb712053dbf:2015-04-18:Vitesse:FC%20Dordrecht:away",
+      "date": "2015-04-18",
+      "season": "2014-15",
+      "competition": {
+        "name": "Dutch League 1",
+        "type": "league",
+        "country": "Netherlands"
+      },
+      "stage": "",
+      "opponent": {
+        "name": "Vitesse",
+        "slug": "vitesse"
+      },
+      "venue": "away",
+      "score": {
+        "for": 0,
+        "against": 3
+      },
+      "result": "L",
+      "sourceRef": "src:1853dee97e2e055b7043"
+    },
+    {
+      "id": "engsoccerdata:6ed2410f59fee88cbb93a1f59fde9c1e5e2cc5bed9282b367c7d7bb712053dbf:2015-04-26:FC%20Dordrecht:SC%20Cambuur:home",
+      "date": "2015-04-26",
+      "season": "2014-15",
+      "competition": {
+        "name": "Dutch League 1",
+        "type": "league",
+        "country": "Netherlands"
+      },
+      "stage": "",
+      "opponent": {
+        "name": "SC Cambuur",
+        "slug": "sc-cambuur"
+      },
+      "venue": "home",
+      "score": {
+        "for": 0,
+        "against": 0
+      },
+      "result": "D",
+      "sourceRef": "src:1853dee97e2e055b7043"
+    },
+    {
+      "id": "engsoccerdata:6ed2410f59fee88cbb93a1f59fde9c1e5e2cc5bed9282b367c7d7bb712053dbf:2015-05-10:FC%20Twente:FC%20Dordrecht:away",
+      "date": "2015-05-10",
+      "season": "2014-15",
+      "competition": {
+        "name": "Dutch League 1",
+        "type": "league",
+        "country": "Netherlands"
+      },
+      "stage": "",
+      "opponent": {
+        "name": "FC Twente",
+        "slug": "fc-twente"
+      },
+      "venue": "away",
+      "score": {
+        "for": 0,
+        "against": 3
+      },
+      "result": "L",
+      "sourceRef": "src:1853dee97e2e055b7043"
+    },
+    {
+      "id": "engsoccerdata:6ed2410f59fee88cbb93a1f59fde9c1e5e2cc5bed9282b367c7d7bb712053dbf:2015-05-17:FC%20Dordrecht:AFC%20Ajax:home",
+      "date": "2015-05-17",
+      "season": "2014-15",
+      "competition": {
+        "name": "Dutch League 1",
+        "type": "league",
+        "country": "Netherlands"
+      },
+      "stage": "",
+      "opponent": {
+        "name": "AFC Ajax",
+        "slug": "afc-ajax"
+      },
+      "venue": "home",
+      "score": {
+        "for": 2,
+        "against": 1
+      },
+      "result": "W",
+      "sourceRef": "src:1853dee97e2e055b7043"
+    }
+  ],
+  "seasonStandings": [
+    {
+      "season": "2014-15",
+      "competition": {
+        "name": "Dutch League 1",
+        "type": "league",
+        "country": "Netherlands"
+      },
+      "position": 18,
+      "team": "FC Dordrecht",
+      "played": 34,
+      "won": 4,
+      "drawn": 8,
+      "lost": 22,
+      "goalsFor": 24,
+      "goalsAgainst": 76,
+      "points": 20,
+      "basis": "derived from recorded completed home fixtures"
+    }
+  ],
+  "competitionStandings": [],
+  "updatedAt": "2026-08-04T20:33:24.774Z"
+}

@@ -1,0 +1,881 @@
+{
+  "contract": "football-team-history-v1",
+  "team": {
+    "name": "Wattenscheid",
+    "slug": "wattenscheid",
+    "primaryLeague": "Bundesliga",
+    "aliases": []
+  },
+  "requestedCoverage": {
+    "fromYear": 1985,
+    "to": "present",
+    "includes": [
+      "all competitions",
+      "opponents",
+      "scorelines",
+      "league standings",
+      "competition standings"
+    ]
+  },
+  "sourcePlan": [
+    {
+      "rank": 1,
+      "provider": "Official club archive",
+      "url": "",
+      "scope": "club history, competition participation and match reports",
+      "lookupKey": "Wattenscheid",
+      "review": "Verify the club-owned archive URL before collection."
+    },
+    {
+      "rank": 2,
+      "provider": "Official domestic competition / association",
+      "url": "https://www.bundesliga.com/",
+      "scope": "official league fixtures, final tables and cup records",
+      "lookupKey": "Bundesliga"
+    },
+    {
+      "rank": 3,
+      "provider": "UEFA",
+      "url": "https://www.uefa.com/",
+      "scope": "official European competition appearances, fixtures and standings",
+      "lookupKey": "Wattenscheid"
+    },
+    {
+      "rank": 4,
+      "provider": "RSSSF",
+      "url": "https://www.rsssf.org/",
+      "scope": "historic competitions, tables and cross-checking",
+      "lookupKey": "Wattenscheid"
+    },
+    {
+      "rank": 5,
+      "provider": "worldfootball.net",
+      "url": "https://www.worldfootball.net/",
+      "scope": "club match archive and competition participation cross-check",
+      "lookupKey": "Wattenscheid"
+    }
+  ],
+  "coverage": {
+    "earliestMatch": "1993-08-07",
+    "latestMatch": "1994-05-07",
+    "seasonsWithMatches": [
+      "1993-94"
+    ],
+    "missingSeasons": [
+      "1985-86",
+      "1986-87",
+      "1987-88",
+      "1988-89",
+      "1989-90",
+      "1990-91",
+      "1991-92",
+      "1992-93",
+      "1994-95",
+      "1995-96",
+      "1996-97",
+      "1997-98",
+      "1998-99",
+      "1999-00",
+      "2000-01",
+      "2001-02",
+      "2002-03",
+      "2003-04",
+      "2004-05",
+      "2005-06",
+      "2006-07",
+      "2007-08",
+      "2008-09",
+      "2009-10",
+      "2010-11",
+      "2011-12",
+      "2012-13",
+      "2013-14",
+      "2014-15",
+      "2015-16",
+      "2016-17",
+      "2017-18",
+      "2018-19",
+      "2019-20",
+      "2020-21",
+      "2021-22",
+      "2022-23",
+      "2023-24",
+      "2024-25",
+      "2025-26",
+      "2026-27"
+    ],
+    "status": "partial"
+  },
+  "matches": [
+    {
+      "id": "football-data:ece937d09925735cbe1100ba847c1706022ff604765195aca2f9e35d3905d2cb:1993-08-07:Wattenscheid:Schalke%2004:home",
+      "date": "1993-08-07",
+      "season": "1993-94",
+      "competition": {
+        "name": "Bundesliga",
+        "type": "league",
+        "country": ""
+      },
+      "stage": "",
+      "opponent": {
+        "name": "Schalke 04",
+        "slug": "schalke-04"
+      },
+      "venue": "home",
+      "score": {
+        "for": 3,
+        "against": 0
+      },
+      "result": "W",
+      "sourceRef": "src:2a98735378708adac6e4"
+    },
+    {
+      "id": "football-data:ece937d09925735cbe1100ba847c1706022ff604765195aca2f9e35d3905d2cb:1993-08-14:Freiburg:Wattenscheid:away",
+      "date": "1993-08-14",
+      "season": "1993-94",
+      "competition": {
+        "name": "Bundesliga",
+        "type": "league",
+        "country": ""
+      },
+      "stage": "",
+      "opponent": {
+        "name": "Freiburg",
+        "slug": "freiburg"
+      },
+      "venue": "away",
+      "score": {
+        "for": 1,
+        "against": 4
+      },
+      "result": "L",
+      "sourceRef": "src:2a98735378708adac6e4"
+    },
+    {
+      "id": "football-data:ece937d09925735cbe1100ba847c1706022ff604765195aca2f9e35d3905d2cb:1993-08-21:Wattenscheid:Leverkusen:home",
+      "date": "1993-08-21",
+      "season": "1993-94",
+      "competition": {
+        "name": "Bundesliga",
+        "type": "league",
+        "country": ""
+      },
+      "stage": "",
+      "opponent": {
+        "name": "Leverkusen",
+        "slug": "leverkusen"
+      },
+      "venue": "home",
+      "score": {
+        "for": 1,
+        "against": 2
+      },
+      "result": "L",
+      "sourceRef": "src:2a98735378708adac6e4"
+    },
+    {
+      "id": "football-data:ece937d09925735cbe1100ba847c1706022ff604765195aca2f9e35d3905d2cb:1993-08-28:Dresden:Wattenscheid:away",
+      "date": "1993-08-28",
+      "season": "1993-94",
+      "competition": {
+        "name": "Bundesliga",
+        "type": "league",
+        "country": ""
+      },
+      "stage": "",
+      "opponent": {
+        "name": "Dresden",
+        "slug": "dresden"
+      },
+      "venue": "away",
+      "score": {
+        "for": 1,
+        "against": 1
+      },
+      "result": "D",
+      "sourceRef": "src:2a98735378708adac6e4"
+    },
+    {
+      "id": "football-data:ece937d09925735cbe1100ba847c1706022ff604765195aca2f9e35d3905d2cb:1993-09-01:Wattenscheid:Stuttgart:home",
+      "date": "1993-09-01",
+      "season": "1993-94",
+      "competition": {
+        "name": "Bundesliga",
+        "type": "league",
+        "country": ""
+      },
+      "stage": "",
+      "opponent": {
+        "name": "Stuttgart",
+        "slug": "stuttgart"
+      },
+      "venue": "home",
+      "score": {
+        "for": 2,
+        "against": 4
+      },
+      "result": "L",
+      "sourceRef": "src:2a98735378708adac6e4"
+    },
+    {
+      "id": "football-data:ece937d09925735cbe1100ba847c1706022ff604765195aca2f9e35d3905d2cb:1993-09-04:Leipzig:Wattenscheid:away",
+      "date": "1993-09-04",
+      "season": "1993-94",
+      "competition": {
+        "name": "Bundesliga",
+        "type": "league",
+        "country": ""
+      },
+      "stage": "",
+      "opponent": {
+        "name": "Leipzig",
+        "slug": "leipzig"
+      },
+      "venue": "away",
+      "score": {
+        "for": 0,
+        "against": 0
+      },
+      "result": "D",
+      "sourceRef": "src:2a98735378708adac6e4"
+    },
+    {
+      "id": "football-data:ece937d09925735cbe1100ba847c1706022ff604765195aca2f9e35d3905d2cb:1993-09-08:Wattenscheid:Duisburg:home",
+      "date": "1993-09-08",
+      "season": "1993-94",
+      "competition": {
+        "name": "Bundesliga",
+        "type": "league",
+        "country": ""
+      },
+      "stage": "",
+      "opponent": {
+        "name": "Duisburg",
+        "slug": "duisburg"
+      },
+      "venue": "home",
+      "score": {
+        "for": 0,
+        "against": 2
+      },
+      "result": "L",
+      "sourceRef": "src:2a98735378708adac6e4"
+    },
+    {
+      "id": "football-data:ece937d09925735cbe1100ba847c1706022ff604765195aca2f9e35d3905d2cb:1993-09-18:Bayern%20Munich:Wattenscheid:away",
+      "date": "1993-09-18",
+      "season": "1993-94",
+      "competition": {
+        "name": "Bundesliga",
+        "type": "league",
+        "country": ""
+      },
+      "stage": "",
+      "opponent": {
+        "name": "Bayern Munich",
+        "slug": "bayern-munich"
+      },
+      "venue": "away",
+      "score": {
+        "for": 3,
+        "against": 3
+      },
+      "result": "D",
+      "sourceRef": "src:2a98735378708adac6e4"
+    },
+    {
+      "id": "football-data:ece937d09925735cbe1100ba847c1706022ff604765195aca2f9e35d3905d2cb:1993-09-25:Werder%20Bremen:Wattenscheid:away",
+      "date": "1993-09-25",
+      "season": "1993-94",
+      "competition": {
+        "name": "Bundesliga",
+        "type": "league",
+        "country": ""
+      },
+      "stage": "",
+      "opponent": {
+        "name": "Werder Bremen",
+        "slug": "werder-bremen"
+      },
+      "venue": "away",
+      "score": {
+        "for": 0,
+        "against": 0
+      },
+      "result": "D",
+      "sourceRef": "src:2a98735378708adac6e4"
+    },
+    {
+      "id": "football-data:ece937d09925735cbe1100ba847c1706022ff604765195aca2f9e35d3905d2cb:1993-10-02:Wattenscheid:Dortmund:home",
+      "date": "1993-10-02",
+      "season": "1993-94",
+      "competition": {
+        "name": "Bundesliga",
+        "type": "league",
+        "country": ""
+      },
+      "stage": "",
+      "opponent": {
+        "name": "Dortmund",
+        "slug": "dortmund"
+      },
+      "venue": "home",
+      "score": {
+        "for": 1,
+        "against": 2
+      },
+      "result": "L",
+      "sourceRef": "src:2a98735378708adac6e4"
+    },
+    {
+      "id": "football-data:ece937d09925735cbe1100ba847c1706022ff604765195aca2f9e35d3905d2cb:1993-10-09:Hamburg:Wattenscheid:away",
+      "date": "1993-10-09",
+      "season": "1993-94",
+      "competition": {
+        "name": "Bundesliga",
+        "type": "league",
+        "country": ""
+      },
+      "stage": "",
+      "opponent": {
+        "name": "Hamburg",
+        "slug": "hamburg"
+      },
+      "venue": "away",
+      "score": {
+        "for": 1,
+        "against": 2
+      },
+      "result": "L",
+      "sourceRef": "src:2a98735378708adac6e4"
+    },
+    {
+      "id": "football-data:ece937d09925735cbe1100ba847c1706022ff604765195aca2f9e35d3905d2cb:1993-10-16:Wattenscheid:FC%20Koln:home",
+      "date": "1993-10-16",
+      "season": "1993-94",
+      "competition": {
+        "name": "Bundesliga",
+        "type": "league",
+        "country": ""
+      },
+      "stage": "",
+      "opponent": {
+        "name": "FC Koln",
+        "slug": "fc-koln"
+      },
+      "venue": "home",
+      "score": {
+        "for": 2,
+        "against": 2
+      },
+      "result": "D",
+      "sourceRef": "src:2a98735378708adac6e4"
+    },
+    {
+      "id": "football-data:ece937d09925735cbe1100ba847c1706022ff604765195aca2f9e35d3905d2cb:1993-10-23:M'Gladbach:Wattenscheid:away",
+      "date": "1993-10-23",
+      "season": "1993-94",
+      "competition": {
+        "name": "Bundesliga",
+        "type": "league",
+        "country": ""
+      },
+      "stage": "",
+      "opponent": {
+        "name": "M'Gladbach",
+        "slug": "m-gladbach"
+      },
+      "venue": "away",
+      "score": {
+        "for": 3,
+        "against": 3
+      },
+      "result": "D",
+      "sourceRef": "src:2a98735378708adac6e4"
+    },
+    {
+      "id": "football-data:ece937d09925735cbe1100ba847c1706022ff604765195aca2f9e35d3905d2cb:1993-10-30:Wattenscheid:Ein%20Frankfurt:home",
+      "date": "1993-10-30",
+      "season": "1993-94",
+      "competition": {
+        "name": "Bundesliga",
+        "type": "league",
+        "country": ""
+      },
+      "stage": "",
+      "opponent": {
+        "name": "Ein Frankfurt",
+        "slug": "ein-frankfurt"
+      },
+      "venue": "home",
+      "score": {
+        "for": 0,
+        "against": 0
+      },
+      "result": "D",
+      "sourceRef": "src:2a98735378708adac6e4"
+    },
+    {
+      "id": "football-data:ece937d09925735cbe1100ba847c1706022ff604765195aca2f9e35d3905d2cb:1993-11-06:Kaiserslautern:Wattenscheid:away",
+      "date": "1993-11-06",
+      "season": "1993-94",
+      "competition": {
+        "name": "Bundesliga",
+        "type": "league",
+        "country": ""
+      },
+      "stage": "",
+      "opponent": {
+        "name": "Kaiserslautern",
+        "slug": "kaiserslautern"
+      },
+      "venue": "away",
+      "score": {
+        "for": 1,
+        "against": 4
+      },
+      "result": "L",
+      "sourceRef": "src:2a98735378708adac6e4"
+    },
+    {
+      "id": "football-data:ece937d09925735cbe1100ba847c1706022ff604765195aca2f9e35d3905d2cb:1993-11-13:Wattenscheid:Nurnberg:home",
+      "date": "1993-11-13",
+      "season": "1993-94",
+      "competition": {
+        "name": "Bundesliga",
+        "type": "league",
+        "country": ""
+      },
+      "stage": "",
+      "opponent": {
+        "name": "Nurnberg",
+        "slug": "nurnberg"
+      },
+      "venue": "home",
+      "score": {
+        "for": 2,
+        "against": 1
+      },
+      "result": "W",
+      "sourceRef": "src:2a98735378708adac6e4"
+    },
+    {
+      "id": "football-data:ece937d09925735cbe1100ba847c1706022ff604765195aca2f9e35d3905d2cb:1993-11-20:Karlsruhe:Wattenscheid:away",
+      "date": "1993-11-20",
+      "season": "1993-94",
+      "competition": {
+        "name": "Bundesliga",
+        "type": "league",
+        "country": ""
+      },
+      "stage": "",
+      "opponent": {
+        "name": "Karlsruhe",
+        "slug": "karlsruhe"
+      },
+      "venue": "away",
+      "score": {
+        "for": 0,
+        "against": 2
+      },
+      "result": "L",
+      "sourceRef": "src:2a98735378708adac6e4"
+    },
+    {
+      "id": "football-data:ece937d09925735cbe1100ba847c1706022ff604765195aca2f9e35d3905d2cb:1993-11-27:Schalke%2004:Wattenscheid:away",
+      "date": "1993-11-27",
+      "season": "1993-94",
+      "competition": {
+        "name": "Bundesliga",
+        "type": "league",
+        "country": ""
+      },
+      "stage": "",
+      "opponent": {
+        "name": "Schalke 04",
+        "slug": "schalke-04"
+      },
+      "venue": "away",
+      "score": {
+        "for": 1,
+        "against": 4
+      },
+      "result": "L",
+      "sourceRef": "src:2a98735378708adac6e4"
+    },
+    {
+      "id": "football-data:ece937d09925735cbe1100ba847c1706022ff604765195aca2f9e35d3905d2cb:1993-12-04:Wattenscheid:Freiburg:home",
+      "date": "1993-12-04",
+      "season": "1993-94",
+      "competition": {
+        "name": "Bundesliga",
+        "type": "league",
+        "country": ""
+      },
+      "stage": "",
+      "opponent": {
+        "name": "Freiburg",
+        "slug": "freiburg"
+      },
+      "venue": "home",
+      "score": {
+        "for": 3,
+        "against": 1
+      },
+      "result": "W",
+      "sourceRef": "src:2a98735378708adac6e4"
+    },
+    {
+      "id": "football-data:ece937d09925735cbe1100ba847c1706022ff604765195aca2f9e35d3905d2cb:1993-12-11:Leverkusen:Wattenscheid:away",
+      "date": "1993-12-11",
+      "season": "1993-94",
+      "competition": {
+        "name": "Bundesliga",
+        "type": "league",
+        "country": ""
+      },
+      "stage": "",
+      "opponent": {
+        "name": "Leverkusen",
+        "slug": "leverkusen"
+      },
+      "venue": "away",
+      "score": {
+        "for": 1,
+        "against": 1
+      },
+      "result": "D",
+      "sourceRef": "src:2a98735378708adac6e4"
+    },
+    {
+      "id": "football-data:ece937d09925735cbe1100ba847c1706022ff604765195aca2f9e35d3905d2cb:1994-02-12:Wattenscheid:Dresden:home",
+      "date": "1994-02-12",
+      "season": "1993-94",
+      "competition": {
+        "name": "Bundesliga",
+        "type": "league",
+        "country": ""
+      },
+      "stage": "",
+      "opponent": {
+        "name": "Dresden",
+        "slug": "dresden"
+      },
+      "venue": "home",
+      "score": {
+        "for": 1,
+        "against": 1
+      },
+      "result": "D",
+      "sourceRef": "src:2a98735378708adac6e4"
+    },
+    {
+      "id": "football-data:ece937d09925735cbe1100ba847c1706022ff604765195aca2f9e35d3905d2cb:1994-02-19:Stuttgart:Wattenscheid:away",
+      "date": "1994-02-19",
+      "season": "1993-94",
+      "competition": {
+        "name": "Bundesliga",
+        "type": "league",
+        "country": ""
+      },
+      "stage": "",
+      "opponent": {
+        "name": "Stuttgart",
+        "slug": "stuttgart"
+      },
+      "venue": "away",
+      "score": {
+        "for": 0,
+        "against": 3
+      },
+      "result": "L",
+      "sourceRef": "src:2a98735378708adac6e4"
+    },
+    {
+      "id": "football-data:ece937d09925735cbe1100ba847c1706022ff604765195aca2f9e35d3905d2cb:1994-02-26:Wattenscheid:Leipzig:home",
+      "date": "1994-02-26",
+      "season": "1993-94",
+      "competition": {
+        "name": "Bundesliga",
+        "type": "league",
+        "country": ""
+      },
+      "stage": "",
+      "opponent": {
+        "name": "Leipzig",
+        "slug": "leipzig"
+      },
+      "venue": "home",
+      "score": {
+        "for": 2,
+        "against": 2
+      },
+      "result": "D",
+      "sourceRef": "src:2a98735378708adac6e4"
+    },
+    {
+      "id": "football-data:ece937d09925735cbe1100ba847c1706022ff604765195aca2f9e35d3905d2cb:1994-03-05:Duisburg:Wattenscheid:away",
+      "date": "1994-03-05",
+      "season": "1993-94",
+      "competition": {
+        "name": "Bundesliga",
+        "type": "league",
+        "country": ""
+      },
+      "stage": "",
+      "opponent": {
+        "name": "Duisburg",
+        "slug": "duisburg"
+      },
+      "venue": "away",
+      "score": {
+        "for": 1,
+        "against": 2
+      },
+      "result": "L",
+      "sourceRef": "src:2a98735378708adac6e4"
+    },
+    {
+      "id": "football-data:ece937d09925735cbe1100ba847c1706022ff604765195aca2f9e35d3905d2cb:1994-03-12:Wattenscheid:Bayern%20Munich:home",
+      "date": "1994-03-12",
+      "season": "1993-94",
+      "competition": {
+        "name": "Bundesliga",
+        "type": "league",
+        "country": ""
+      },
+      "stage": "",
+      "opponent": {
+        "name": "Bayern Munich",
+        "slug": "bayern-munich"
+      },
+      "venue": "home",
+      "score": {
+        "for": 1,
+        "against": 3
+      },
+      "result": "L",
+      "sourceRef": "src:2a98735378708adac6e4"
+    },
+    {
+      "id": "football-data:ece937d09925735cbe1100ba847c1706022ff604765195aca2f9e35d3905d2cb:1994-03-19:Wattenscheid:Werder%20Bremen:home",
+      "date": "1994-03-19",
+      "season": "1993-94",
+      "competition": {
+        "name": "Bundesliga",
+        "type": "league",
+        "country": ""
+      },
+      "stage": "",
+      "opponent": {
+        "name": "Werder Bremen",
+        "slug": "werder-bremen"
+      },
+      "venue": "home",
+      "score": {
+        "for": 2,
+        "against": 2
+      },
+      "result": "D",
+      "sourceRef": "src:2a98735378708adac6e4"
+    },
+    {
+      "id": "football-data:ece937d09925735cbe1100ba847c1706022ff604765195aca2f9e35d3905d2cb:1994-03-26:Dortmund:Wattenscheid:away",
+      "date": "1994-03-26",
+      "season": "1993-94",
+      "competition": {
+        "name": "Bundesliga",
+        "type": "league",
+        "country": ""
+      },
+      "stage": "",
+      "opponent": {
+        "name": "Dortmund",
+        "slug": "dortmund"
+      },
+      "venue": "away",
+      "score": {
+        "for": 0,
+        "against": 2
+      },
+      "result": "L",
+      "sourceRef": "src:2a98735378708adac6e4"
+    },
+    {
+      "id": "football-data:ece937d09925735cbe1100ba847c1706022ff604765195aca2f9e35d3905d2cb:1994-04-02:Wattenscheid:Hamburg:home",
+      "date": "1994-04-02",
+      "season": "1993-94",
+      "competition": {
+        "name": "Bundesliga",
+        "type": "league",
+        "country": ""
+      },
+      "stage": "",
+      "opponent": {
+        "name": "Hamburg",
+        "slug": "hamburg"
+      },
+      "venue": "home",
+      "score": {
+        "for": 3,
+        "against": 1
+      },
+      "result": "W",
+      "sourceRef": "src:2a98735378708adac6e4"
+    },
+    {
+      "id": "football-data:ece937d09925735cbe1100ba847c1706022ff604765195aca2f9e35d3905d2cb:1994-04-06:FC%20Koln:Wattenscheid:away",
+      "date": "1994-04-06",
+      "season": "1993-94",
+      "competition": {
+        "name": "Bundesliga",
+        "type": "league",
+        "country": ""
+      },
+      "stage": "",
+      "opponent": {
+        "name": "FC Koln",
+        "slug": "fc-koln"
+      },
+      "venue": "away",
+      "score": {
+        "for": 2,
+        "against": 3
+      },
+      "result": "L",
+      "sourceRef": "src:2a98735378708adac6e4"
+    },
+    {
+      "id": "football-data:ece937d09925735cbe1100ba847c1706022ff604765195aca2f9e35d3905d2cb:1994-04-09:Wattenscheid:M'Gladbach:home",
+      "date": "1994-04-09",
+      "season": "1993-94",
+      "competition": {
+        "name": "Bundesliga",
+        "type": "league",
+        "country": ""
+      },
+      "stage": "",
+      "opponent": {
+        "name": "M'Gladbach",
+        "slug": "m-gladbach"
+      },
+      "venue": "home",
+      "score": {
+        "for": 3,
+        "against": 1
+      },
+      "result": "W",
+      "sourceRef": "src:2a98735378708adac6e4"
+    },
+    {
+      "id": "football-data:ece937d09925735cbe1100ba847c1706022ff604765195aca2f9e35d3905d2cb:1994-04-16:Ein%20Frankfurt:Wattenscheid:away",
+      "date": "1994-04-16",
+      "season": "1993-94",
+      "competition": {
+        "name": "Bundesliga",
+        "type": "league",
+        "country": ""
+      },
+      "stage": "",
+      "opponent": {
+        "name": "Ein Frankfurt",
+        "slug": "ein-frankfurt"
+      },
+      "venue": "away",
+      "score": {
+        "for": 1,
+        "against": 5
+      },
+      "result": "L",
+      "sourceRef": "src:2a98735378708adac6e4"
+    },
+    {
+      "id": "football-data:ece937d09925735cbe1100ba847c1706022ff604765195aca2f9e35d3905d2cb:1994-04-23:Wattenscheid:Kaiserslautern:home",
+      "date": "1994-04-23",
+      "season": "1993-94",
+      "competition": {
+        "name": "Bundesliga",
+        "type": "league",
+        "country": ""
+      },
+      "stage": "",
+      "opponent": {
+        "name": "Kaiserslautern",
+        "slug": "kaiserslautern"
+      },
+      "venue": "home",
+      "score": {
+        "for": 0,
+        "against": 2
+      },
+      "result": "L",
+      "sourceRef": "src:2a98735378708adac6e4"
+    },
+    {
+      "id": "football-data:ece937d09925735cbe1100ba847c1706022ff604765195aca2f9e35d3905d2cb:1994-04-30:Nurnberg:Wattenscheid:away",
+      "date": "1994-04-30",
+      "season": "1993-94",
+      "competition": {
+        "name": "Bundesliga",
+        "type": "league",
+        "country": ""
+      },
+      "stage": "",
+      "opponent": {
+        "name": "Nurnberg",
+        "slug": "nurnberg"
+      },
+      "venue": "away",
+      "score": {
+        "for": 1,
+        "against": 4
+      },
+      "result": "L",
+      "sourceRef": "src:2a98735378708adac6e4"
+    },
+    {
+      "id": "football-data:ece937d09925735cbe1100ba847c1706022ff604765195aca2f9e35d3905d2cb:1994-05-07:Wattenscheid:Karlsruhe:home",
+      "date": "1994-05-07",
+      "season": "1993-94",
+      "competition": {
+        "name": "Bundesliga",
+        "type": "league",
+        "country": ""
+      },
+      "stage": "",
+      "opponent": {
+        "name": "Karlsruhe",
+        "slug": "karlsruhe"
+      },
+      "venue": "home",
+      "score": {
+        "for": 5,
+        "against": 1
+      },
+      "result": "W",
+      "sourceRef": "src:2a98735378708adac6e4"
+    }
+  ],
+  "seasonStandings": [
+    {
+      "season": "1993-94",
+      "competition": {
+        "name": "Bundesliga",
+        "type": "league",
+        "country": ""
+      },
+      "position": 17,
+      "team": "Wattenscheid",
+      "played": 34,
+      "won": 6,
+      "drawn": 11,
+      "lost": 17,
+      "goalsFor": 48,
+      "goalsAgainst": 70,
+      "points": 29,
+      "basis": "derived from recorded completed home fixtures"
+    }
+  ],
+  "competitionStandings": [],
+  "updatedAt": "2026-08-04T20:33:31.594Z"
+}

@@ -1,0 +1,860 @@
+{
+  "contract": "football-team-history-v1",
+  "team": {
+    "name": "Slavia Praha",
+    "slug": "slavia-praha",
+    "primaryLeague": "European Champion Clubs' Cup / Champions League",
+    "aliases": []
+  },
+  "requestedCoverage": {
+    "fromYear": 1985,
+    "to": "present",
+    "includes": [
+      "all competitions",
+      "opponents",
+      "scorelines",
+      "league standings",
+      "competition standings"
+    ]
+  },
+  "sourcePlan": [
+    {
+      "rank": 1,
+      "provider": "Official club archive",
+      "url": "",
+      "scope": "club history, competition participation and match reports",
+      "lookupKey": "Slavia Praha",
+      "review": "Verify the club-owned archive URL before collection."
+    },
+    {
+      "rank": 2,
+      "provider": "Official domestic competition / association",
+      "url": "",
+      "scope": "official league fixtures, final tables and cup records",
+      "lookupKey": "European Champion Clubs' Cup / Champions League"
+    },
+    {
+      "rank": 3,
+      "provider": "UEFA",
+      "url": "https://www.uefa.com/",
+      "scope": "official European competition appearances, fixtures and standings",
+      "lookupKey": "Slavia Praha"
+    },
+    {
+      "rank": 4,
+      "provider": "RSSSF",
+      "url": "https://www.rsssf.org/",
+      "scope": "historic competitions, tables and cross-checking",
+      "lookupKey": "Slavia Praha"
+    },
+    {
+      "rank": 5,
+      "provider": "worldfootball.net",
+      "url": "https://www.worldfootball.net/",
+      "scope": "club match archive and competition participation cross-check",
+      "lookupKey": "Slavia Praha"
+    }
+  ],
+  "coverage": {
+    "earliestMatch": "1996-08-07",
+    "latestMatch": "2009-08-05",
+    "seasonsWithMatches": [
+      "1996-97",
+      "2000-01",
+      "2001-02",
+      "2003-04",
+      "2005-06",
+      "2007-08",
+      "2008-09",
+      "2009-10"
+    ],
+    "missingSeasons": [
+      "1985-86",
+      "1986-87",
+      "1987-88",
+      "1988-89",
+      "1989-90",
+      "1990-91",
+      "1991-92",
+      "1992-93",
+      "1993-94",
+      "1994-95",
+      "1995-96",
+      "1997-98",
+      "1998-99",
+      "1999-00",
+      "2002-03",
+      "2004-05",
+      "2006-07",
+      "2010-11",
+      "2011-12",
+      "2012-13",
+      "2013-14",
+      "2014-15",
+      "2015-16",
+      "2016-17",
+      "2017-18",
+      "2018-19",
+      "2019-20",
+      "2020-21",
+      "2021-22",
+      "2022-23",
+      "2023-24",
+      "2024-25",
+      "2025-26",
+      "2026-27"
+    ],
+    "competitionScopeVerified": false,
+    "status": "partial"
+  },
+  "matches": [
+    {
+      "id": "engsoccerdata:ab554db1a8b9bdb3788dd99077b6b6d754d64f09e84cb506bc3442cc323cbaea:1996-08-07:Grasshoppers%20Zurich:Slavia%20Praha:away",
+      "date": "1996-08-07",
+      "season": "1996-97",
+      "competition": {
+        "name": "European Champion Clubs' Cup / Champions League",
+        "type": "continental",
+        "country": "Europe"
+      },
+      "stage": "prelim",
+      "opponent": {
+        "name": "Grasshoppers Zurich",
+        "slug": "grasshoppers-zurich"
+      },
+      "venue": "away",
+      "score": {
+        "for": 0,
+        "against": 5
+      },
+      "result": "L",
+      "sourceRef": "src:1ac1d16b4d91beda9a2b"
+    },
+    {
+      "id": "engsoccerdata:ab554db1a8b9bdb3788dd99077b6b6d754d64f09e84cb506bc3442cc323cbaea:1996-08-21:Slavia%20Praha:Grasshoppers%20Zurich:home",
+      "date": "1996-08-21",
+      "season": "1996-97",
+      "competition": {
+        "name": "European Champion Clubs' Cup / Champions League",
+        "type": "continental",
+        "country": "Europe"
+      },
+      "stage": "prelim",
+      "opponent": {
+        "name": "Grasshoppers Zurich",
+        "slug": "grasshoppers-zurich"
+      },
+      "venue": "home",
+      "score": {
+        "for": 0,
+        "against": 1
+      },
+      "result": "L",
+      "sourceRef": "src:1ac1d16b4d91beda9a2b"
+    },
+    {
+      "id": "engsoccerdata:ab554db1a8b9bdb3788dd99077b6b6d754d64f09e84cb506bc3442cc323cbaea:2000-07-26:Slavia%20Praha:Shamkir:home",
+      "date": "2000-07-26",
+      "season": "2000-01",
+      "competition": {
+        "name": "European Champion Clubs' Cup / Champions League",
+        "type": "continental",
+        "country": "Europe"
+      },
+      "stage": "Q-2",
+      "opponent": {
+        "name": "Shamkir",
+        "slug": "shamkir"
+      },
+      "venue": "home",
+      "score": {
+        "for": 1,
+        "against": 0
+      },
+      "result": "W",
+      "sourceRef": "src:1ac1d16b4d91beda9a2b"
+    },
+    {
+      "id": "engsoccerdata:ab554db1a8b9bdb3788dd99077b6b6d754d64f09e84cb506bc3442cc323cbaea:2000-08-02:Shamkir:Slavia%20Praha:away",
+      "date": "2000-08-02",
+      "season": "2000-01",
+      "competition": {
+        "name": "European Champion Clubs' Cup / Champions League",
+        "type": "continental",
+        "country": "Europe"
+      },
+      "stage": "Q-2",
+      "opponent": {
+        "name": "Shamkir",
+        "slug": "shamkir"
+      },
+      "venue": "away",
+      "score": {
+        "for": 4,
+        "against": 1
+      },
+      "result": "W",
+      "sourceRef": "src:1ac1d16b4d91beda9a2b"
+    },
+    {
+      "id": "engsoccerdata:ab554db1a8b9bdb3788dd99077b6b6d754d64f09e84cb506bc3442cc323cbaea:2000-08-09:Shakhtar%20Donetsk:Slavia%20Praha:away",
+      "date": "2000-08-09",
+      "season": "2000-01",
+      "competition": {
+        "name": "European Champion Clubs' Cup / Champions League",
+        "type": "continental",
+        "country": "Europe"
+      },
+      "stage": "Q-3",
+      "opponent": {
+        "name": "Shakhtar Donetsk",
+        "slug": "shakhtar-donetsk"
+      },
+      "venue": "away",
+      "score": {
+        "for": 1,
+        "against": 0
+      },
+      "result": "W",
+      "sourceRef": "src:1ac1d16b4d91beda9a2b"
+    },
+    {
+      "id": "engsoccerdata:ab554db1a8b9bdb3788dd99077b6b6d754d64f09e84cb506bc3442cc323cbaea:2000-08-23:Slavia%20Praha:Shakhtar%20Donetsk:home",
+      "date": "2000-08-23",
+      "season": "2000-01",
+      "competition": {
+        "name": "European Champion Clubs' Cup / Champions League",
+        "type": "continental",
+        "country": "Europe"
+      },
+      "stage": "Q-3",
+      "opponent": {
+        "name": "Shakhtar Donetsk",
+        "slug": "shakhtar-donetsk"
+      },
+      "venue": "home",
+      "score": {
+        "for": 0,
+        "against": 1
+      },
+      "result": "L",
+      "sourceRef": "src:1ac1d16b4d91beda9a2b"
+    },
+    {
+      "id": "engsoccerdata:ab554db1a8b9bdb3788dd99077b6b6d754d64f09e84cb506bc3442cc323cbaea:2001-08-08:Slavia%20Praha:Panathinaikos:home",
+      "date": "2001-08-08",
+      "season": "2001-02",
+      "competition": {
+        "name": "European Champion Clubs' Cup / Champions League",
+        "type": "continental",
+        "country": "Europe"
+      },
+      "stage": "Q-3",
+      "opponent": {
+        "name": "Panathinaikos",
+        "slug": "panathinaikos"
+      },
+      "venue": "home",
+      "score": {
+        "for": 1,
+        "against": 2
+      },
+      "result": "L",
+      "sourceRef": "src:1ac1d16b4d91beda9a2b"
+    },
+    {
+      "id": "engsoccerdata:ab554db1a8b9bdb3788dd99077b6b6d754d64f09e84cb506bc3442cc323cbaea:2001-08-22:Panathinaikos:Slavia%20Praha:away",
+      "date": "2001-08-22",
+      "season": "2001-02",
+      "competition": {
+        "name": "European Champion Clubs' Cup / Champions League",
+        "type": "continental",
+        "country": "Europe"
+      },
+      "stage": "Q-3",
+      "opponent": {
+        "name": "Panathinaikos",
+        "slug": "panathinaikos"
+      },
+      "venue": "away",
+      "score": {
+        "for": 0,
+        "against": 1
+      },
+      "result": "L",
+      "sourceRef": "src:1ac1d16b4d91beda9a2b"
+    },
+    {
+      "id": "engsoccerdata:ab554db1a8b9bdb3788dd99077b6b6d754d64f09e84cb506bc3442cc323cbaea:2003-07-30:FK%20Leotar:Slavia%20Praha:away",
+      "date": "2003-07-30",
+      "season": "2003-04",
+      "competition": {
+        "name": "European Champion Clubs' Cup / Champions League",
+        "type": "continental",
+        "country": "Europe"
+      },
+      "stage": "Q-2",
+      "opponent": {
+        "name": "FK Leotar",
+        "slug": "fk-leotar"
+      },
+      "venue": "away",
+      "score": {
+        "for": 2,
+        "against": 1
+      },
+      "result": "W",
+      "sourceRef": "src:1ac1d16b4d91beda9a2b"
+    },
+    {
+      "id": "engsoccerdata:ab554db1a8b9bdb3788dd99077b6b6d754d64f09e84cb506bc3442cc323cbaea:2003-08-06:Slavia%20Praha:FK%20Leotar:home",
+      "date": "2003-08-06",
+      "season": "2003-04",
+      "competition": {
+        "name": "European Champion Clubs' Cup / Champions League",
+        "type": "continental",
+        "country": "Europe"
+      },
+      "stage": "Q-2",
+      "opponent": {
+        "name": "FK Leotar",
+        "slug": "fk-leotar"
+      },
+      "venue": "home",
+      "score": {
+        "for": 2,
+        "against": 0
+      },
+      "result": "W",
+      "sourceRef": "src:1ac1d16b4d91beda9a2b"
+    },
+    {
+      "id": "engsoccerdata:ab554db1a8b9bdb3788dd99077b6b6d754d64f09e84cb506bc3442cc323cbaea:2003-08-12:Celta%20Vigo:Slavia%20Praha:away",
+      "date": "2003-08-12",
+      "season": "2003-04",
+      "competition": {
+        "name": "European Champion Clubs' Cup / Champions League",
+        "type": "continental",
+        "country": "Europe"
+      },
+      "stage": "Q-3",
+      "opponent": {
+        "name": "Celta Vigo",
+        "slug": "celta-vigo"
+      },
+      "venue": "away",
+      "score": {
+        "for": 0,
+        "against": 3
+      },
+      "result": "L",
+      "sourceRef": "src:1ac1d16b4d91beda9a2b"
+    },
+    {
+      "id": "engsoccerdata:ab554db1a8b9bdb3788dd99077b6b6d754d64f09e84cb506bc3442cc323cbaea:2003-08-20:Slavia%20Praha:Celta%20Vigo:home",
+      "date": "2003-08-20",
+      "season": "2003-04",
+      "competition": {
+        "name": "European Champion Clubs' Cup / Champions League",
+        "type": "continental",
+        "country": "Europe"
+      },
+      "stage": "Q-3",
+      "opponent": {
+        "name": "Celta Vigo",
+        "slug": "celta-vigo"
+      },
+      "venue": "home",
+      "score": {
+        "for": 2,
+        "against": 0
+      },
+      "result": "W",
+      "sourceRef": "src:1ac1d16b4d91beda9a2b"
+    },
+    {
+      "id": "engsoccerdata:ab554db1a8b9bdb3788dd99077b6b6d754d64f09e84cb506bc3442cc323cbaea:2005-08-10:RSC%20Anderlecht:Slavia%20Praha:away",
+      "date": "2005-08-10",
+      "season": "2005-06",
+      "competition": {
+        "name": "European Champion Clubs' Cup / Champions League",
+        "type": "continental",
+        "country": "Europe"
+      },
+      "stage": "Q-3",
+      "opponent": {
+        "name": "RSC Anderlecht",
+        "slug": "rsc-anderlecht"
+      },
+      "venue": "away",
+      "score": {
+        "for": 1,
+        "against": 2
+      },
+      "result": "L",
+      "sourceRef": "src:1ac1d16b4d91beda9a2b"
+    },
+    {
+      "id": "engsoccerdata:ab554db1a8b9bdb3788dd99077b6b6d754d64f09e84cb506bc3442cc323cbaea:2005-08-24:Slavia%20Praha:RSC%20Anderlecht:home",
+      "date": "2005-08-24",
+      "season": "2005-06",
+      "competition": {
+        "name": "European Champion Clubs' Cup / Champions League",
+        "type": "continental",
+        "country": "Europe"
+      },
+      "stage": "Q-3",
+      "opponent": {
+        "name": "RSC Anderlecht",
+        "slug": "rsc-anderlecht"
+      },
+      "venue": "home",
+      "score": {
+        "for": 0,
+        "against": 2
+      },
+      "result": "L",
+      "sourceRef": "src:1ac1d16b4d91beda9a2b"
+    },
+    {
+      "id": "engsoccerdata:ab554db1a8b9bdb3788dd99077b6b6d754d64f09e84cb506bc3442cc323cbaea:2007-08-01:MSK%20Zilina:Slavia%20Praha:away",
+      "date": "2007-08-01",
+      "season": "2007-08",
+      "competition": {
+        "name": "European Champion Clubs' Cup / Champions League",
+        "type": "continental",
+        "country": "Europe"
+      },
+      "stage": "Q-2",
+      "opponent": {
+        "name": "MSK Zilina",
+        "slug": "msk-zilina"
+      },
+      "venue": "away",
+      "score": {
+        "for": 0,
+        "against": 0
+      },
+      "result": "D",
+      "sourceRef": "src:1ac1d16b4d91beda9a2b"
+    },
+    {
+      "id": "engsoccerdata:ab554db1a8b9bdb3788dd99077b6b6d754d64f09e84cb506bc3442cc323cbaea:2007-08-08:Slavia%20Praha:MSK%20Zilina:home",
+      "date": "2007-08-08",
+      "season": "2007-08",
+      "competition": {
+        "name": "European Champion Clubs' Cup / Champions League",
+        "type": "continental",
+        "country": "Europe"
+      },
+      "stage": "Q-2",
+      "opponent": {
+        "name": "MSK Zilina",
+        "slug": "msk-zilina"
+      },
+      "venue": "home",
+      "score": {
+        "for": 0,
+        "against": 0
+      },
+      "result": "D",
+      "sourceRef": "src:1ac1d16b4d91beda9a2b"
+    },
+    {
+      "id": "engsoccerdata:ab554db1a8b9bdb3788dd99077b6b6d754d64f09e84cb506bc3442cc323cbaea:2007-08-15:AFC%20Ajax:Slavia%20Praha:away",
+      "date": "2007-08-15",
+      "season": "2007-08",
+      "competition": {
+        "name": "European Champion Clubs' Cup / Champions League",
+        "type": "continental",
+        "country": "Europe"
+      },
+      "stage": "Q-3",
+      "opponent": {
+        "name": "AFC Ajax",
+        "slug": "afc-ajax"
+      },
+      "venue": "away",
+      "score": {
+        "for": 1,
+        "against": 0
+      },
+      "result": "W",
+      "sourceRef": "src:1ac1d16b4d91beda9a2b"
+    },
+    {
+      "id": "engsoccerdata:ab554db1a8b9bdb3788dd99077b6b6d754d64f09e84cb506bc3442cc323cbaea:2007-08-29:Slavia%20Praha:AFC%20Ajax:home",
+      "date": "2007-08-29",
+      "season": "2007-08",
+      "competition": {
+        "name": "European Champion Clubs' Cup / Champions League",
+        "type": "continental",
+        "country": "Europe"
+      },
+      "stage": "Q-3",
+      "opponent": {
+        "name": "AFC Ajax",
+        "slug": "afc-ajax"
+      },
+      "venue": "home",
+      "score": {
+        "for": 2,
+        "against": 1
+      },
+      "result": "W",
+      "sourceRef": "src:1ac1d16b4d91beda9a2b"
+    },
+    {
+      "id": "engsoccerdata:ab554db1a8b9bdb3788dd99077b6b6d754d64f09e84cb506bc3442cc323cbaea:2007-09-19:Slavia%20Praha:Steaua%20Bucuresti:home",
+      "date": "2007-09-19",
+      "season": "2007-08",
+      "competition": {
+        "name": "European Champion Clubs' Cup / Champions League",
+        "type": "continental",
+        "country": "Europe"
+      },
+      "stage": "GroupH",
+      "opponent": {
+        "name": "Steaua Bucuresti",
+        "slug": "steaua-bucuresti"
+      },
+      "venue": "home",
+      "score": {
+        "for": 2,
+        "against": 1
+      },
+      "result": "W",
+      "sourceRef": "src:1ac1d16b4d91beda9a2b"
+    },
+    {
+      "id": "engsoccerdata:ab554db1a8b9bdb3788dd99077b6b6d754d64f09e84cb506bc3442cc323cbaea:2007-10-02:Sevilla:Slavia%20Praha:away",
+      "date": "2007-10-02",
+      "season": "2007-08",
+      "competition": {
+        "name": "European Champion Clubs' Cup / Champions League",
+        "type": "continental",
+        "country": "Europe"
+      },
+      "stage": "GroupH",
+      "opponent": {
+        "name": "Sevilla",
+        "slug": "sevilla"
+      },
+      "venue": "away",
+      "score": {
+        "for": 2,
+        "against": 4
+      },
+      "result": "L",
+      "sourceRef": "src:1ac1d16b4d91beda9a2b"
+    },
+    {
+      "id": "engsoccerdata:ab554db1a8b9bdb3788dd99077b6b6d754d64f09e84cb506bc3442cc323cbaea:2007-10-23:Arsenal:Slavia%20Praha:away",
+      "date": "2007-10-23",
+      "season": "2007-08",
+      "competition": {
+        "name": "European Champion Clubs' Cup / Champions League",
+        "type": "continental",
+        "country": "Europe"
+      },
+      "stage": "GroupH",
+      "opponent": {
+        "name": "Arsenal",
+        "slug": "arsenal"
+      },
+      "venue": "away",
+      "score": {
+        "for": 0,
+        "against": 7
+      },
+      "result": "L",
+      "sourceRef": "src:1ac1d16b4d91beda9a2b"
+    },
+    {
+      "id": "engsoccerdata:ab554db1a8b9bdb3788dd99077b6b6d754d64f09e84cb506bc3442cc323cbaea:2007-11-07:Slavia%20Praha:Arsenal:home",
+      "date": "2007-11-07",
+      "season": "2007-08",
+      "competition": {
+        "name": "European Champion Clubs' Cup / Champions League",
+        "type": "continental",
+        "country": "Europe"
+      },
+      "stage": "GroupH",
+      "opponent": {
+        "name": "Arsenal",
+        "slug": "arsenal"
+      },
+      "venue": "home",
+      "score": {
+        "for": 0,
+        "against": 0
+      },
+      "result": "D",
+      "sourceRef": "src:1ac1d16b4d91beda9a2b"
+    },
+    {
+      "id": "engsoccerdata:ab554db1a8b9bdb3788dd99077b6b6d754d64f09e84cb506bc3442cc323cbaea:2007-11-27:Steaua%20Bucuresti:Slavia%20Praha:away",
+      "date": "2007-11-27",
+      "season": "2007-08",
+      "competition": {
+        "name": "European Champion Clubs' Cup / Champions League",
+        "type": "continental",
+        "country": "Europe"
+      },
+      "stage": "GroupH",
+      "opponent": {
+        "name": "Steaua Bucuresti",
+        "slug": "steaua-bucuresti"
+      },
+      "venue": "away",
+      "score": {
+        "for": 1,
+        "against": 1
+      },
+      "result": "D",
+      "sourceRef": "src:1ac1d16b4d91beda9a2b"
+    },
+    {
+      "id": "engsoccerdata:ab554db1a8b9bdb3788dd99077b6b6d754d64f09e84cb506bc3442cc323cbaea:2007-12-12:Slavia%20Praha:Sevilla:home",
+      "date": "2007-12-12",
+      "season": "2007-08",
+      "competition": {
+        "name": "European Champion Clubs' Cup / Champions League",
+        "type": "continental",
+        "country": "Europe"
+      },
+      "stage": "GroupH",
+      "opponent": {
+        "name": "Sevilla",
+        "slug": "sevilla"
+      },
+      "venue": "home",
+      "score": {
+        "for": 0,
+        "against": 3
+      },
+      "result": "L",
+      "sourceRef": "src:1ac1d16b4d91beda9a2b"
+    },
+    {
+      "id": "engsoccerdata:ab554db1a8b9bdb3788dd99077b6b6d754d64f09e84cb506bc3442cc323cbaea:2008-08-12:ACF%20Fiorentina:Slavia%20Praha:away",
+      "date": "2008-08-12",
+      "season": "2008-09",
+      "competition": {
+        "name": "European Champion Clubs' Cup / Champions League",
+        "type": "continental",
+        "country": "Europe"
+      },
+      "stage": "Q-3",
+      "opponent": {
+        "name": "ACF Fiorentina",
+        "slug": "acf-fiorentina"
+      },
+      "venue": "away",
+      "score": {
+        "for": 0,
+        "against": 2
+      },
+      "result": "L",
+      "sourceRef": "src:1ac1d16b4d91beda9a2b"
+    },
+    {
+      "id": "engsoccerdata:ab554db1a8b9bdb3788dd99077b6b6d754d64f09e84cb506bc3442cc323cbaea:2008-08-27:Slavia%20Praha:ACF%20Fiorentina:home",
+      "date": "2008-08-27",
+      "season": "2008-09",
+      "competition": {
+        "name": "European Champion Clubs' Cup / Champions League",
+        "type": "continental",
+        "country": "Europe"
+      },
+      "stage": "Q-3",
+      "opponent": {
+        "name": "ACF Fiorentina",
+        "slug": "acf-fiorentina"
+      },
+      "venue": "home",
+      "score": {
+        "for": 0,
+        "against": 0
+      },
+      "result": "D",
+      "sourceRef": "src:1ac1d16b4d91beda9a2b"
+    },
+    {
+      "id": "engsoccerdata:ab554db1a8b9bdb3788dd99077b6b6d754d64f09e84cb506bc3442cc323cbaea:2009-07-29:Sheriff%20Tiraspol:Slavia%20Praha:away",
+      "date": "2009-07-29",
+      "season": "2009-10",
+      "competition": {
+        "name": "European Champion Clubs' Cup / Champions League",
+        "type": "continental",
+        "country": "Europe"
+      },
+      "stage": "Q-3",
+      "opponent": {
+        "name": "Sheriff Tiraspol",
+        "slug": "sheriff-tiraspol"
+      },
+      "venue": "away",
+      "score": {
+        "for": 0,
+        "against": 0
+      },
+      "result": "D",
+      "sourceRef": "src:1ac1d16b4d91beda9a2b"
+    },
+    {
+      "id": "engsoccerdata:ab554db1a8b9bdb3788dd99077b6b6d754d64f09e84cb506bc3442cc323cbaea:2009-08-05:Slavia%20Praha:Sheriff%20Tiraspol:home",
+      "date": "2009-08-05",
+      "season": "2009-10",
+      "competition": {
+        "name": "European Champion Clubs' Cup / Champions League",
+        "type": "continental",
+        "country": "Europe"
+      },
+      "stage": "Q-3",
+      "opponent": {
+        "name": "Sheriff Tiraspol",
+        "slug": "sheriff-tiraspol"
+      },
+      "venue": "home",
+      "score": {
+        "for": 1,
+        "against": 1
+      },
+      "result": "D",
+      "sourceRef": "src:1ac1d16b4d91beda9a2b"
+    }
+  ],
+  "seasonStandings": [],
+  "competitionStandings": [
+    {
+      "season": "1996-97",
+      "competition": {
+        "name": "European Champion Clubs' Cup / Champions League",
+        "type": "continental",
+        "country": "Europe"
+      },
+      "format": "knockout-progress",
+      "matches": 2,
+      "wins": 0,
+      "draws": 0,
+      "losses": 2,
+      "furthestStage": "prelim",
+      "latestMatch": "1996-08-21",
+      "basis": "derived from source-attributed recorded matches"
+    },
+    {
+      "season": "2000-01",
+      "competition": {
+        "name": "European Champion Clubs' Cup / Champions League",
+        "type": "continental",
+        "country": "Europe"
+      },
+      "format": "knockout-progress",
+      "matches": 4,
+      "wins": 3,
+      "draws": 0,
+      "losses": 1,
+      "furthestStage": "Q-3",
+      "latestMatch": "2000-08-23",
+      "basis": "derived from source-attributed recorded matches"
+    },
+    {
+      "season": "2001-02",
+      "competition": {
+        "name": "European Champion Clubs' Cup / Champions League",
+        "type": "continental",
+        "country": "Europe"
+      },
+      "format": "knockout-progress",
+      "matches": 2,
+      "wins": 0,
+      "draws": 0,
+      "losses": 2,
+      "furthestStage": "Q-3",
+      "latestMatch": "2001-08-22",
+      "basis": "derived from source-attributed recorded matches"
+    },
+    {
+      "season": "2003-04",
+      "competition": {
+        "name": "European Champion Clubs' Cup / Champions League",
+        "type": "continental",
+        "country": "Europe"
+      },
+      "format": "knockout-progress",
+      "matches": 4,
+      "wins": 3,
+      "draws": 0,
+      "losses": 1,
+      "furthestStage": "Q-3",
+      "latestMatch": "2003-08-20",
+      "basis": "derived from source-attributed recorded matches"
+    },
+    {
+      "season": "2005-06",
+      "competition": {
+        "name": "European Champion Clubs' Cup / Champions League",
+        "type": "continental",
+        "country": "Europe"
+      },
+      "format": "knockout-progress",
+      "matches": 2,
+      "wins": 0,
+      "draws": 0,
+      "losses": 2,
+      "furthestStage": "Q-3",
+      "latestMatch": "2005-08-24",
+      "basis": "derived from source-attributed recorded matches"
+    },
+    {
+      "season": "2007-08",
+      "competition": {
+        "name": "European Champion Clubs' Cup / Champions League",
+        "type": "continental",
+        "country": "Europe"
+      },
+      "format": "knockout-progress",
+      "matches": 10,
+      "wins": 3,
+      "draws": 4,
+      "losses": 3,
+      "furthestStage": "GroupH",
+      "latestMatch": "2007-12-12",
+      "basis": "derived from source-attributed recorded matches"
+    },
+    {
+      "season": "2008-09",
+      "competition": {
+        "name": "European Champion Clubs' Cup / Champions League",
+        "type": "continental",
+        "country": "Europe"
+      },
+      "format": "knockout-progress",
+      "matches": 2,
+      "wins": 0,
+      "draws": 1,
+      "losses": 1,
+      "furthestStage": "Q-3",
+      "latestMatch": "2008-08-27",
+      "basis": "derived from source-attributed recorded matches"
+    },
+    {
+      "season": "2009-10",
+      "competition": {
+        "name": "European Champion Clubs' Cup / Champions League",
+        "type": "continental",
+        "country": "Europe"
+      },
+      "format": "knockout-progress",
+      "matches": 2,
+      "wins": 0,
+      "draws": 2,
+      "losses": 0,
+      "furthestStage": "Q-3",
+      "latestMatch": "2009-08-05",
+      "basis": "derived from source-attributed recorded matches"
+    }
+  ],
+  "updatedAt": "2026-08-04T20:33:29.646Z"
+}

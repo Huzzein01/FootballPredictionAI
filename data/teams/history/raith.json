@@ -1,0 +1,156 @@
+{
+  "contract": "football-team-history-v1",
+  "team": {
+    "name": "Raith",
+    "slug": "raith",
+    "primaryLeague": "Scottish League SC1",
+    "aliases": []
+  },
+  "requestedCoverage": {
+    "fromYear": 1985,
+    "to": "present",
+    "includes": [
+      "all competitions",
+      "opponents",
+      "scorelines",
+      "league standings",
+      "competition standings"
+    ]
+  },
+  "sourcePlan": [
+    {
+      "rank": 1,
+      "provider": "Official club archive",
+      "url": "",
+      "scope": "club history, competition participation and match reports",
+      "lookupKey": "Raith",
+      "review": "Verify the club-owned archive URL before collection."
+    },
+    {
+      "rank": 2,
+      "provider": "Official domestic competition / association",
+      "url": "",
+      "scope": "official league fixtures, final tables and cup records",
+      "lookupKey": "Scottish League SC1"
+    },
+    {
+      "rank": 3,
+      "provider": "UEFA",
+      "url": "https://www.uefa.com/",
+      "scope": "official European competition appearances, fixtures and standings",
+      "lookupKey": "Raith"
+    },
+    {
+      "rank": 4,
+      "provider": "RSSSF",
+      "url": "https://www.rsssf.org/",
+      "scope": "historic competitions, tables and cross-checking",
+      "lookupKey": "Raith"
+    },
+    {
+      "rank": 5,
+      "provider": "worldfootball.net",
+      "url": "https://www.worldfootball.net/",
+      "scope": "club match archive and competition participation cross-check",
+      "lookupKey": "Raith"
+    }
+  ],
+  "coverage": {
+    "earliestMatch": "2004-11-23",
+    "latestMatch": "2004-11-23",
+    "seasonsWithMatches": [
+      "2004-05"
+    ],
+    "missingSeasons": [
+      "1985-86",
+      "1986-87",
+      "1987-88",
+      "1988-89",
+      "1989-90",
+      "1990-91",
+      "1991-92",
+      "1992-93",
+      "1993-94",
+      "1994-95",
+      "1995-96",
+      "1996-97",
+      "1997-98",
+      "1998-99",
+      "1999-00",
+      "2000-01",
+      "2001-02",
+      "2002-03",
+      "2003-04",
+      "2005-06",
+      "2006-07",
+      "2007-08",
+      "2008-09",
+      "2009-10",
+      "2010-11",
+      "2011-12",
+      "2012-13",
+      "2013-14",
+      "2014-15",
+      "2015-16",
+      "2016-17",
+      "2017-18",
+      "2018-19",
+      "2019-20",
+      "2020-21",
+      "2021-22",
+      "2022-23",
+      "2023-24",
+      "2024-25",
+      "2025-26",
+      "2026-27"
+    ],
+    "competitionScopeVerified": false,
+    "status": "partial"
+  },
+  "matches": [
+    {
+      "id": "engsoccerdata:a20629e8b4830ac8ecacec2db746ca2e8be7dfc129211d9dadb7f32e8536a300:2004-11-23:Ross%20County:Raith:away",
+      "date": "2004-11-23",
+      "season": "2004-05",
+      "competition": {
+        "name": "Scottish League SC1",
+        "type": "league",
+        "country": "Scotland"
+      },
+      "stage": "",
+      "opponent": {
+        "name": "Ross County",
+        "slug": "ross-county"
+      },
+      "venue": "away",
+      "score": {
+        "for": 1,
+        "against": 1
+      },
+      "result": "D",
+      "sourceRef": "src:8b18a56e0b409453248a"
+    }
+  ],
+  "seasonStandings": [
+    {
+      "season": "2004-05",
+      "competition": {
+        "name": "Scottish League SC1",
+        "type": "league",
+        "country": "Scotland"
+      },
+      "position": 11,
+      "team": "Raith",
+      "played": 1,
+      "won": 0,
+      "drawn": 1,
+      "lost": 0,
+      "goalsFor": 1,
+      "goalsAgainst": 1,
+      "points": 1,
+      "basis": "derived from recorded completed home fixtures"
+    }
+  ],
+  "competitionStandings": [],
+  "updatedAt": "2026-08-04T20:33:28.615Z"
+}

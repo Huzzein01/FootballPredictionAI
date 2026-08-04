@@ -1,0 +1,648 @@
+{
+  "contract": "football-team-history-v1",
+  "team": {
+    "name": "CFR Cluj",
+    "slug": "cfr-cluj",
+    "primaryLeague": "European Champion Clubs' Cup / Champions League",
+    "aliases": []
+  },
+  "requestedCoverage": {
+    "fromYear": 1985,
+    "to": "present",
+    "includes": [
+      "all competitions",
+      "opponents",
+      "scorelines",
+      "league standings",
+      "competition standings"
+    ]
+  },
+  "sourcePlan": [
+    {
+      "rank": 1,
+      "provider": "Official club archive",
+      "url": "",
+      "scope": "club history, competition participation and match reports",
+      "lookupKey": "CFR Cluj",
+      "review": "Verify the club-owned archive URL before collection."
+    },
+    {
+      "rank": 2,
+      "provider": "Official domestic competition / association",
+      "url": "",
+      "scope": "official league fixtures, final tables and cup records",
+      "lookupKey": "European Champion Clubs' Cup / Champions League"
+    },
+    {
+      "rank": 3,
+      "provider": "UEFA",
+      "url": "https://www.uefa.com/",
+      "scope": "official European competition appearances, fixtures and standings",
+      "lookupKey": "CFR Cluj"
+    },
+    {
+      "rank": 4,
+      "provider": "RSSSF",
+      "url": "https://www.rsssf.org/",
+      "scope": "historic competitions, tables and cross-checking",
+      "lookupKey": "CFR Cluj"
+    },
+    {
+      "rank": 5,
+      "provider": "worldfootball.net",
+      "url": "https://www.worldfootball.net/",
+      "scope": "club match archive and competition participation cross-check",
+      "lookupKey": "CFR Cluj"
+    }
+  ],
+  "coverage": {
+    "earliestMatch": "2008-09-16",
+    "latestMatch": "2012-12-05",
+    "seasonsWithMatches": [
+      "2008-09",
+      "2010-11",
+      "2012-13"
+    ],
+    "missingSeasons": [
+      "1985-86",
+      "1986-87",
+      "1987-88",
+      "1988-89",
+      "1989-90",
+      "1990-91",
+      "1991-92",
+      "1992-93",
+      "1993-94",
+      "1994-95",
+      "1995-96",
+      "1996-97",
+      "1997-98",
+      "1998-99",
+      "1999-00",
+      "2000-01",
+      "2001-02",
+      "2002-03",
+      "2003-04",
+      "2004-05",
+      "2005-06",
+      "2006-07",
+      "2007-08",
+      "2009-10",
+      "2011-12",
+      "2013-14",
+      "2014-15",
+      "2015-16",
+      "2016-17",
+      "2017-18",
+      "2018-19",
+      "2019-20",
+      "2020-21",
+      "2021-22",
+      "2022-23",
+      "2023-24",
+      "2024-25",
+      "2025-26",
+      "2026-27"
+    ],
+    "competitionScopeVerified": false,
+    "status": "partial"
+  },
+  "matches": [
+    {
+      "id": "engsoccerdata:ab554db1a8b9bdb3788dd99077b6b6d754d64f09e84cb506bc3442cc323cbaea:2008-09-16:AS%20Roma:CFR%20Cluj:away",
+      "date": "2008-09-16",
+      "season": "2008-09",
+      "competition": {
+        "name": "European Champion Clubs' Cup / Champions League",
+        "type": "continental",
+        "country": "Europe"
+      },
+      "stage": "GroupA",
+      "opponent": {
+        "name": "AS Roma",
+        "slug": "as-roma"
+      },
+      "venue": "away",
+      "score": {
+        "for": 2,
+        "against": 1
+      },
+      "result": "W",
+      "sourceRef": "src:1ac1d16b4d91beda9a2b"
+    },
+    {
+      "id": "engsoccerdata:ab554db1a8b9bdb3788dd99077b6b6d754d64f09e84cb506bc3442cc323cbaea:2008-10-01:CFR%20Cluj:Chelsea:home",
+      "date": "2008-10-01",
+      "season": "2008-09",
+      "competition": {
+        "name": "European Champion Clubs' Cup / Champions League",
+        "type": "continental",
+        "country": "Europe"
+      },
+      "stage": "GroupA",
+      "opponent": {
+        "name": "Chelsea",
+        "slug": "chelsea"
+      },
+      "venue": "home",
+      "score": {
+        "for": 0,
+        "against": 0
+      },
+      "result": "D",
+      "sourceRef": "src:1ac1d16b4d91beda9a2b"
+    },
+    {
+      "id": "engsoccerdata:ab554db1a8b9bdb3788dd99077b6b6d754d64f09e84cb506bc3442cc323cbaea:2008-10-22:Girondins%20Bordeaux:CFR%20Cluj:away",
+      "date": "2008-10-22",
+      "season": "2008-09",
+      "competition": {
+        "name": "European Champion Clubs' Cup / Champions League",
+        "type": "continental",
+        "country": "Europe"
+      },
+      "stage": "GroupA",
+      "opponent": {
+        "name": "Girondins Bordeaux",
+        "slug": "girondins-bordeaux"
+      },
+      "venue": "away",
+      "score": {
+        "for": 0,
+        "against": 1
+      },
+      "result": "L",
+      "sourceRef": "src:1ac1d16b4d91beda9a2b"
+    },
+    {
+      "id": "engsoccerdata:ab554db1a8b9bdb3788dd99077b6b6d754d64f09e84cb506bc3442cc323cbaea:2008-11-04:CFR%20Cluj:Girondins%20Bordeaux:home",
+      "date": "2008-11-04",
+      "season": "2008-09",
+      "competition": {
+        "name": "European Champion Clubs' Cup / Champions League",
+        "type": "continental",
+        "country": "Europe"
+      },
+      "stage": "GroupA",
+      "opponent": {
+        "name": "Girondins Bordeaux",
+        "slug": "girondins-bordeaux"
+      },
+      "venue": "home",
+      "score": {
+        "for": 1,
+        "against": 2
+      },
+      "result": "L",
+      "sourceRef": "src:1ac1d16b4d91beda9a2b"
+    },
+    {
+      "id": "engsoccerdata:ab554db1a8b9bdb3788dd99077b6b6d754d64f09e84cb506bc3442cc323cbaea:2008-11-26:CFR%20Cluj:AS%20Roma:home",
+      "date": "2008-11-26",
+      "season": "2008-09",
+      "competition": {
+        "name": "European Champion Clubs' Cup / Champions League",
+        "type": "continental",
+        "country": "Europe"
+      },
+      "stage": "GroupA",
+      "opponent": {
+        "name": "AS Roma",
+        "slug": "as-roma"
+      },
+      "venue": "home",
+      "score": {
+        "for": 1,
+        "against": 3
+      },
+      "result": "L",
+      "sourceRef": "src:1ac1d16b4d91beda9a2b"
+    },
+    {
+      "id": "engsoccerdata:ab554db1a8b9bdb3788dd99077b6b6d754d64f09e84cb506bc3442cc323cbaea:2008-12-09:Chelsea:CFR%20Cluj:away",
+      "date": "2008-12-09",
+      "season": "2008-09",
+      "competition": {
+        "name": "European Champion Clubs' Cup / Champions League",
+        "type": "continental",
+        "country": "Europe"
+      },
+      "stage": "GroupA",
+      "opponent": {
+        "name": "Chelsea",
+        "slug": "chelsea"
+      },
+      "venue": "away",
+      "score": {
+        "for": 1,
+        "against": 2
+      },
+      "result": "L",
+      "sourceRef": "src:1ac1d16b4d91beda9a2b"
+    },
+    {
+      "id": "engsoccerdata:ab554db1a8b9bdb3788dd99077b6b6d754d64f09e84cb506bc3442cc323cbaea:2010-09-15:CFR%20Cluj:Basel:home",
+      "date": "2010-09-15",
+      "season": "2010-11",
+      "competition": {
+        "name": "European Champion Clubs' Cup / Champions League",
+        "type": "continental",
+        "country": "Europe"
+      },
+      "stage": "GroupE",
+      "opponent": {
+        "name": "Basel",
+        "slug": "basel"
+      },
+      "venue": "home",
+      "score": {
+        "for": 2,
+        "against": 1
+      },
+      "result": "W",
+      "sourceRef": "src:1ac1d16b4d91beda9a2b"
+    },
+    {
+      "id": "engsoccerdata:ab554db1a8b9bdb3788dd99077b6b6d754d64f09e84cb506bc3442cc323cbaea:2010-09-28:AS%20Roma:CFR%20Cluj:away",
+      "date": "2010-09-28",
+      "season": "2010-11",
+      "competition": {
+        "name": "European Champion Clubs' Cup / Champions League",
+        "type": "continental",
+        "country": "Europe"
+      },
+      "stage": "GroupE",
+      "opponent": {
+        "name": "AS Roma",
+        "slug": "as-roma"
+      },
+      "venue": "away",
+      "score": {
+        "for": 1,
+        "against": 2
+      },
+      "result": "L",
+      "sourceRef": "src:1ac1d16b4d91beda9a2b"
+    },
+    {
+      "id": "engsoccerdata:ab554db1a8b9bdb3788dd99077b6b6d754d64f09e84cb506bc3442cc323cbaea:2010-10-19:Bayern%20Munich:CFR%20Cluj:away",
+      "date": "2010-10-19",
+      "season": "2010-11",
+      "competition": {
+        "name": "European Champion Clubs' Cup / Champions League",
+        "type": "continental",
+        "country": "Europe"
+      },
+      "stage": "GroupE",
+      "opponent": {
+        "name": "Bayern Munich",
+        "slug": "bayern-munich"
+      },
+      "venue": "away",
+      "score": {
+        "for": 2,
+        "against": 3
+      },
+      "result": "L",
+      "sourceRef": "src:1ac1d16b4d91beda9a2b"
+    },
+    {
+      "id": "engsoccerdata:ab554db1a8b9bdb3788dd99077b6b6d754d64f09e84cb506bc3442cc323cbaea:2010-11-03:CFR%20Cluj:Bayern%20Munich:home",
+      "date": "2010-11-03",
+      "season": "2010-11",
+      "competition": {
+        "name": "European Champion Clubs' Cup / Champions League",
+        "type": "continental",
+        "country": "Europe"
+      },
+      "stage": "GroupE",
+      "opponent": {
+        "name": "Bayern Munich",
+        "slug": "bayern-munich"
+      },
+      "venue": "home",
+      "score": {
+        "for": 0,
+        "against": 4
+      },
+      "result": "L",
+      "sourceRef": "src:1ac1d16b4d91beda9a2b"
+    },
+    {
+      "id": "engsoccerdata:ab554db1a8b9bdb3788dd99077b6b6d754d64f09e84cb506bc3442cc323cbaea:2010-11-23:Basel:CFR%20Cluj:away",
+      "date": "2010-11-23",
+      "season": "2010-11",
+      "competition": {
+        "name": "European Champion Clubs' Cup / Champions League",
+        "type": "continental",
+        "country": "Europe"
+      },
+      "stage": "GroupE",
+      "opponent": {
+        "name": "Basel",
+        "slug": "basel"
+      },
+      "venue": "away",
+      "score": {
+        "for": 0,
+        "against": 1
+      },
+      "result": "L",
+      "sourceRef": "src:1ac1d16b4d91beda9a2b"
+    },
+    {
+      "id": "engsoccerdata:ab554db1a8b9bdb3788dd99077b6b6d754d64f09e84cb506bc3442cc323cbaea:2010-12-08:CFR%20Cluj:AS%20Roma:home",
+      "date": "2010-12-08",
+      "season": "2010-11",
+      "competition": {
+        "name": "European Champion Clubs' Cup / Champions League",
+        "type": "continental",
+        "country": "Europe"
+      },
+      "stage": "GroupE",
+      "opponent": {
+        "name": "AS Roma",
+        "slug": "as-roma"
+      },
+      "venue": "home",
+      "score": {
+        "for": 1,
+        "against": 1
+      },
+      "result": "D",
+      "sourceRef": "src:1ac1d16b4d91beda9a2b"
+    },
+    {
+      "id": "engsoccerdata:ab554db1a8b9bdb3788dd99077b6b6d754d64f09e84cb506bc3442cc323cbaea:2012-08-01:CFR%20Cluj:Slovan%20Liberec:home",
+      "date": "2012-08-01",
+      "season": "2012-13",
+      "competition": {
+        "name": "European Champion Clubs' Cup / Champions League",
+        "type": "continental",
+        "country": "Europe"
+      },
+      "stage": "Q-3",
+      "opponent": {
+        "name": "Slovan Liberec",
+        "slug": "slovan-liberec"
+      },
+      "venue": "home",
+      "score": {
+        "for": 1,
+        "against": 0
+      },
+      "result": "W",
+      "sourceRef": "src:1ac1d16b4d91beda9a2b"
+    },
+    {
+      "id": "engsoccerdata:ab554db1a8b9bdb3788dd99077b6b6d754d64f09e84cb506bc3442cc323cbaea:2012-08-08:Slovan%20Liberec:CFR%20Cluj:away",
+      "date": "2012-08-08",
+      "season": "2012-13",
+      "competition": {
+        "name": "European Champion Clubs' Cup / Champions League",
+        "type": "continental",
+        "country": "Europe"
+      },
+      "stage": "Q-3",
+      "opponent": {
+        "name": "Slovan Liberec",
+        "slug": "slovan-liberec"
+      },
+      "venue": "away",
+      "score": {
+        "for": 2,
+        "against": 1
+      },
+      "result": "W",
+      "sourceRef": "src:1ac1d16b4d91beda9a2b"
+    },
+    {
+      "id": "engsoccerdata:ab554db1a8b9bdb3788dd99077b6b6d754d64f09e84cb506bc3442cc323cbaea:2012-08-21:Basel:CFR%20Cluj:away",
+      "date": "2012-08-21",
+      "season": "2012-13",
+      "competition": {
+        "name": "European Champion Clubs' Cup / Champions League",
+        "type": "continental",
+        "country": "Europe"
+      },
+      "stage": "Q-PO",
+      "opponent": {
+        "name": "Basel",
+        "slug": "basel"
+      },
+      "venue": "away",
+      "score": {
+        "for": 2,
+        "against": 1
+      },
+      "result": "W",
+      "sourceRef": "src:1ac1d16b4d91beda9a2b"
+    },
+    {
+      "id": "engsoccerdata:ab554db1a8b9bdb3788dd99077b6b6d754d64f09e84cb506bc3442cc323cbaea:2012-08-29:CFR%20Cluj:Basel:home",
+      "date": "2012-08-29",
+      "season": "2012-13",
+      "competition": {
+        "name": "European Champion Clubs' Cup / Champions League",
+        "type": "continental",
+        "country": "Europe"
+      },
+      "stage": "Q-PO",
+      "opponent": {
+        "name": "Basel",
+        "slug": "basel"
+      },
+      "venue": "home",
+      "score": {
+        "for": 1,
+        "against": 0
+      },
+      "result": "W",
+      "sourceRef": "src:1ac1d16b4d91beda9a2b"
+    },
+    {
+      "id": "engsoccerdata:ab554db1a8b9bdb3788dd99077b6b6d754d64f09e84cb506bc3442cc323cbaea:2012-09-19:Sporting%20Braga:CFR%20Cluj:away",
+      "date": "2012-09-19",
+      "season": "2012-13",
+      "competition": {
+        "name": "European Champion Clubs' Cup / Champions League",
+        "type": "continental",
+        "country": "Europe"
+      },
+      "stage": "GroupH",
+      "opponent": {
+        "name": "Sporting Braga",
+        "slug": "sporting-braga"
+      },
+      "venue": "away",
+      "score": {
+        "for": 2,
+        "against": 0
+      },
+      "result": "W",
+      "sourceRef": "src:1ac1d16b4d91beda9a2b"
+    },
+    {
+      "id": "engsoccerdata:ab554db1a8b9bdb3788dd99077b6b6d754d64f09e84cb506bc3442cc323cbaea:2012-10-02:CFR%20Cluj:Manchester%20United:home",
+      "date": "2012-10-02",
+      "season": "2012-13",
+      "competition": {
+        "name": "European Champion Clubs' Cup / Champions League",
+        "type": "continental",
+        "country": "Europe"
+      },
+      "stage": "GroupH",
+      "opponent": {
+        "name": "Man United",
+        "slug": "man-united"
+      },
+      "venue": "home",
+      "score": {
+        "for": 1,
+        "against": 2
+      },
+      "result": "L",
+      "sourceRef": "src:1ac1d16b4d91beda9a2b"
+    },
+    {
+      "id": "engsoccerdata:ab554db1a8b9bdb3788dd99077b6b6d754d64f09e84cb506bc3442cc323cbaea:2012-10-23:Galatasaray:CFR%20Cluj:away",
+      "date": "2012-10-23",
+      "season": "2012-13",
+      "competition": {
+        "name": "European Champion Clubs' Cup / Champions League",
+        "type": "continental",
+        "country": "Europe"
+      },
+      "stage": "GroupH",
+      "opponent": {
+        "name": "Galatasaray",
+        "slug": "galatasaray"
+      },
+      "venue": "away",
+      "score": {
+        "for": 1,
+        "against": 1
+      },
+      "result": "D",
+      "sourceRef": "src:1ac1d16b4d91beda9a2b"
+    },
+    {
+      "id": "engsoccerdata:ab554db1a8b9bdb3788dd99077b6b6d754d64f09e84cb506bc3442cc323cbaea:2012-11-07:CFR%20Cluj:Galatasaray:home",
+      "date": "2012-11-07",
+      "season": "2012-13",
+      "competition": {
+        "name": "European Champion Clubs' Cup / Champions League",
+        "type": "continental",
+        "country": "Europe"
+      },
+      "stage": "GroupH",
+      "opponent": {
+        "name": "Galatasaray",
+        "slug": "galatasaray"
+      },
+      "venue": "home",
+      "score": {
+        "for": 1,
+        "against": 3
+      },
+      "result": "L",
+      "sourceRef": "src:1ac1d16b4d91beda9a2b"
+    },
+    {
+      "id": "engsoccerdata:ab554db1a8b9bdb3788dd99077b6b6d754d64f09e84cb506bc3442cc323cbaea:2012-11-20:CFR%20Cluj:Sporting%20Braga:home",
+      "date": "2012-11-20",
+      "season": "2012-13",
+      "competition": {
+        "name": "European Champion Clubs' Cup / Champions League",
+        "type": "continental",
+        "country": "Europe"
+      },
+      "stage": "GroupH",
+      "opponent": {
+        "name": "Sporting Braga",
+        "slug": "sporting-braga"
+      },
+      "venue": "home",
+      "score": {
+        "for": 3,
+        "against": 1
+      },
+      "result": "W",
+      "sourceRef": "src:1ac1d16b4d91beda9a2b"
+    },
+    {
+      "id": "engsoccerdata:ab554db1a8b9bdb3788dd99077b6b6d754d64f09e84cb506bc3442cc323cbaea:2012-12-05:Manchester%20United:CFR%20Cluj:away",
+      "date": "2012-12-05",
+      "season": "2012-13",
+      "competition": {
+        "name": "European Champion Clubs' Cup / Champions League",
+        "type": "continental",
+        "country": "Europe"
+      },
+      "stage": "GroupH",
+      "opponent": {
+        "name": "Man United",
+        "slug": "man-united"
+      },
+      "venue": "away",
+      "score": {
+        "for": 1,
+        "against": 0
+      },
+      "result": "W",
+      "sourceRef": "src:1ac1d16b4d91beda9a2b"
+    }
+  ],
+  "seasonStandings": [],
+  "competitionStandings": [
+    {
+      "season": "2008-09",
+      "competition": {
+        "name": "European Champion Clubs' Cup / Champions League",
+        "type": "continental",
+        "country": "Europe"
+      },
+      "format": "knockout-progress",
+      "matches": 6,
+      "wins": 1,
+      "draws": 1,
+      "losses": 4,
+      "furthestStage": "GroupA",
+      "latestMatch": "2008-12-09",
+      "basis": "derived from source-attributed recorded matches"
+    },
+    {
+      "season": "2010-11",
+      "competition": {
+        "name": "European Champion Clubs' Cup / Champions League",
+        "type": "continental",
+        "country": "Europe"
+      },
+      "format": "knockout-progress",
+      "matches": 6,
+      "wins": 1,
+      "draws": 1,
+      "losses": 4,
+      "furthestStage": "GroupE",
+      "latestMatch": "2010-12-08",
+      "basis": "derived from source-attributed recorded matches"
+    },
+    {
+      "season": "2012-13",
+      "competition": {
+        "name": "European Champion Clubs' Cup / Champions League",
+        "type": "continental",
+        "country": "Europe"
+      },
+      "format": "knockout-progress",
+      "matches": 10,
+      "wins": 7,
+      "draws": 1,
+      "losses": 2,
+      "furthestStage": "GroupH",
+      "latestMatch": "2012-12-05",
+      "basis": "derived from source-attributed recorded matches"
+    }
+  ],
+  "updatedAt": "2026-08-04T20:33:23.647Z"
+}

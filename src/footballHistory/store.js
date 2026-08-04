@@ -28,7 +28,7 @@ function rebuildCoverage(record) {
   const currentYear = new Date().getUTCFullYear();
   const expected = [];
   for (let year = 1985; year <= currentYear; year += 1) expected.push(`${year}-${String(year + 1).slice(-2)}`);
-  record.coverage = { earliestMatch: dates[0] || "", latestMatch: dates.at(-1) || "", seasonsWithMatches: seasons, missingSeasons: expected.filter((season) => !seasons.includes(season)), status: dates[0] && Number(dates[0].slice(0, 4)) <= 1985 ? "backfilled" : "partial" };
+  record.coverage = { earliestMatch: dates[0] || "", latestMatch: dates.at(-1) || "", seasonsWithMatches: seasons, missingSeasons: expected.filter((season) => !seasons.includes(season)), competitionScopeVerified: Boolean(record.coverage?.competitionScopeVerified), status: dates[0] && Number(dates[0].slice(0, 4)) <= 1985 && record.coverage?.competitionScopeVerified ? "backfilled" : "partial" };
   return record;
 }
 module.exports = { historyDir, historyPath, readHistory, writeHistory, ensureHistory, rebuildCoverage };

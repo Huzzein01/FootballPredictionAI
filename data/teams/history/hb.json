@@ -1,0 +1,640 @@
+{
+  "contract": "football-team-history-v1",
+  "team": {
+    "name": "HB",
+    "slug": "hb",
+    "primaryLeague": "European Champion Clubs' Cup / Champions League",
+    "aliases": []
+  },
+  "requestedCoverage": {
+    "fromYear": 1985,
+    "to": "present",
+    "includes": [
+      "all competitions",
+      "opponents",
+      "scorelines",
+      "league standings",
+      "competition standings"
+    ]
+  },
+  "sourcePlan": [
+    {
+      "rank": 1,
+      "provider": "Official club archive",
+      "url": "",
+      "scope": "club history, competition participation and match reports",
+      "lookupKey": "HB",
+      "review": "Verify the club-owned archive URL before collection."
+    },
+    {
+      "rank": 2,
+      "provider": "Official domestic competition / association",
+      "url": "",
+      "scope": "official league fixtures, final tables and cup records",
+      "lookupKey": "European Champion Clubs' Cup / Champions League"
+    },
+    {
+      "rank": 3,
+      "provider": "UEFA",
+      "url": "https://www.uefa.com/",
+      "scope": "official European competition appearances, fixtures and standings",
+      "lookupKey": "HB"
+    },
+    {
+      "rank": 4,
+      "provider": "RSSSF",
+      "url": "https://www.rsssf.org/",
+      "scope": "historic competitions, tables and cross-checking",
+      "lookupKey": "HB"
+    },
+    {
+      "rank": 5,
+      "provider": "worldfootball.net",
+      "url": "https://www.worldfootball.net/",
+      "scope": "club match archive and competition participation cross-check",
+      "lookupKey": "HB"
+    }
+  ],
+  "coverage": {
+    "earliestMatch": "1999-07-14",
+    "latestMatch": "2014-07-22",
+    "seasonsWithMatches": [
+      "1999-00",
+      "2003-04",
+      "2004-05",
+      "2005-06",
+      "2007-08",
+      "2010-11",
+      "2011-12",
+      "2014-15"
+    ],
+    "missingSeasons": [
+      "1985-86",
+      "1986-87",
+      "1987-88",
+      "1988-89",
+      "1989-90",
+      "1990-91",
+      "1991-92",
+      "1992-93",
+      "1993-94",
+      "1994-95",
+      "1995-96",
+      "1996-97",
+      "1997-98",
+      "1998-99",
+      "2000-01",
+      "2001-02",
+      "2002-03",
+      "2006-07",
+      "2008-09",
+      "2009-10",
+      "2012-13",
+      "2013-14",
+      "2015-16",
+      "2016-17",
+      "2017-18",
+      "2018-19",
+      "2019-20",
+      "2020-21",
+      "2021-22",
+      "2022-23",
+      "2023-24",
+      "2024-25",
+      "2025-26",
+      "2026-27"
+    ],
+    "competitionScopeVerified": false,
+    "status": "partial"
+  },
+  "matches": [
+    {
+      "id": "engsoccerdata:ab554db1a8b9bdb3788dd99077b6b6d754d64f09e84cb506bc3442cc323cbaea:1999-07-14:HB:Haka%20Valkeakoski:home",
+      "date": "1999-07-14",
+      "season": "1999-00",
+      "competition": {
+        "name": "European Champion Clubs' Cup / Champions League",
+        "type": "continental",
+        "country": "Europe"
+      },
+      "stage": "Q-1",
+      "opponent": {
+        "name": "Haka Valkeakoski",
+        "slug": "haka-valkeakoski"
+      },
+      "venue": "home",
+      "score": {
+        "for": 1,
+        "against": 1
+      },
+      "result": "D",
+      "sourceRef": "src:1ac1d16b4d91beda9a2b"
+    },
+    {
+      "id": "engsoccerdata:ab554db1a8b9bdb3788dd99077b6b6d754d64f09e84cb506bc3442cc323cbaea:1999-07-21:Haka%20Valkeakoski:HB:away",
+      "date": "1999-07-21",
+      "season": "1999-00",
+      "competition": {
+        "name": "European Champion Clubs' Cup / Champions League",
+        "type": "continental",
+        "country": "Europe"
+      },
+      "stage": "Q-1",
+      "opponent": {
+        "name": "Haka Valkeakoski",
+        "slug": "haka-valkeakoski"
+      },
+      "venue": "away",
+      "score": {
+        "for": 0,
+        "against": 6
+      },
+      "result": "L",
+      "sourceRef": "src:1ac1d16b4d91beda9a2b"
+    },
+    {
+      "id": "engsoccerdata:ab554db1a8b9bdb3788dd99077b6b6d754d64f09e84cb506bc3442cc323cbaea:2003-07-16:HB:FBK%20Kaunas:home",
+      "date": "2003-07-16",
+      "season": "2003-04",
+      "competition": {
+        "name": "European Champion Clubs' Cup / Champions League",
+        "type": "continental",
+        "country": "Europe"
+      },
+      "stage": "Q-1",
+      "opponent": {
+        "name": "FBK Kaunas",
+        "slug": "fbk-kaunas"
+      },
+      "venue": "home",
+      "score": {
+        "for": 0,
+        "against": 1
+      },
+      "result": "L",
+      "sourceRef": "src:1ac1d16b4d91beda9a2b"
+    },
+    {
+      "id": "engsoccerdata:ab554db1a8b9bdb3788dd99077b6b6d754d64f09e84cb506bc3442cc323cbaea:2003-07-23:FBK%20Kaunas:HB:away",
+      "date": "2003-07-23",
+      "season": "2003-04",
+      "competition": {
+        "name": "European Champion Clubs' Cup / Champions League",
+        "type": "continental",
+        "country": "Europe"
+      },
+      "stage": "Q-1",
+      "opponent": {
+        "name": "FBK Kaunas",
+        "slug": "fbk-kaunas"
+      },
+      "venue": "away",
+      "score": {
+        "for": 1,
+        "against": 4
+      },
+      "result": "L",
+      "sourceRef": "src:1ac1d16b4d91beda9a2b"
+    },
+    {
+      "id": "engsoccerdata:ab554db1a8b9bdb3788dd99077b6b6d754d64f09e84cb506bc3442cc323cbaea:2004-07-14:WIT%20Georgia:HB:away",
+      "date": "2004-07-14",
+      "season": "2004-05",
+      "competition": {
+        "name": "European Champion Clubs' Cup / Champions League",
+        "type": "continental",
+        "country": "Europe"
+      },
+      "stage": "Q-1",
+      "opponent": {
+        "name": "WIT Georgia",
+        "slug": "wit-georgia"
+      },
+      "venue": "away",
+      "score": {
+        "for": 0,
+        "against": 5
+      },
+      "result": "L",
+      "sourceRef": "src:1ac1d16b4d91beda9a2b"
+    },
+    {
+      "id": "engsoccerdata:ab554db1a8b9bdb3788dd99077b6b6d754d64f09e84cb506bc3442cc323cbaea:2004-07-21:HB:WIT%20Georgia:home",
+      "date": "2004-07-21",
+      "season": "2004-05",
+      "competition": {
+        "name": "European Champion Clubs' Cup / Champions League",
+        "type": "continental",
+        "country": "Europe"
+      },
+      "stage": "Q-1",
+      "opponent": {
+        "name": "WIT Georgia",
+        "slug": "wit-georgia"
+      },
+      "venue": "home",
+      "score": {
+        "for": 3,
+        "against": 2
+      },
+      "result": "W",
+      "sourceRef": "src:1ac1d16b4d91beda9a2b"
+    },
+    {
+      "id": "engsoccerdata:ab554db1a8b9bdb3788dd99077b6b6d754d64f09e84cb506bc3442cc323cbaea:2005-07-13:HB:FBK%20Kaunas:home",
+      "date": "2005-07-13",
+      "season": "2005-06",
+      "competition": {
+        "name": "European Champion Clubs' Cup / Champions League",
+        "type": "continental",
+        "country": "Europe"
+      },
+      "stage": "Q-1",
+      "opponent": {
+        "name": "FBK Kaunas",
+        "slug": "fbk-kaunas"
+      },
+      "venue": "home",
+      "score": {
+        "for": 2,
+        "against": 4
+      },
+      "result": "L",
+      "sourceRef": "src:1ac1d16b4d91beda9a2b"
+    },
+    {
+      "id": "engsoccerdata:ab554db1a8b9bdb3788dd99077b6b6d754d64f09e84cb506bc3442cc323cbaea:2005-07-19:FBK%20Kaunas:HB:away",
+      "date": "2005-07-19",
+      "season": "2005-06",
+      "competition": {
+        "name": "European Champion Clubs' Cup / Champions League",
+        "type": "continental",
+        "country": "Europe"
+      },
+      "stage": "Q-1",
+      "opponent": {
+        "name": "FBK Kaunas",
+        "slug": "fbk-kaunas"
+      },
+      "venue": "away",
+      "score": {
+        "for": 0,
+        "against": 4
+      },
+      "result": "L",
+      "sourceRef": "src:1ac1d16b4d91beda9a2b"
+    },
+    {
+      "id": "engsoccerdata:ab554db1a8b9bdb3788dd99077b6b6d754d64f09e84cb506bc3442cc323cbaea:2007-07-18:FH:HB:away",
+      "date": "2007-07-18",
+      "season": "2007-08",
+      "competition": {
+        "name": "European Champion Clubs' Cup / Champions League",
+        "type": "continental",
+        "country": "Europe"
+      },
+      "stage": "Q-1",
+      "opponent": {
+        "name": "FH",
+        "slug": "fh"
+      },
+      "venue": "away",
+      "score": {
+        "for": 1,
+        "against": 4
+      },
+      "result": "L",
+      "sourceRef": "src:1ac1d16b4d91beda9a2b"
+    },
+    {
+      "id": "engsoccerdata:ab554db1a8b9bdb3788dd99077b6b6d754d64f09e84cb506bc3442cc323cbaea:2007-07-25:HB:FH:home",
+      "date": "2007-07-25",
+      "season": "2007-08",
+      "competition": {
+        "name": "European Champion Clubs' Cup / Champions League",
+        "type": "continental",
+        "country": "Europe"
+      },
+      "stage": "Q-1",
+      "opponent": {
+        "name": "FH",
+        "slug": "fh"
+      },
+      "venue": "home",
+      "score": {
+        "for": 0,
+        "against": 0
+      },
+      "result": "D",
+      "sourceRef": "src:1ac1d16b4d91beda9a2b"
+    },
+    {
+      "id": "engsoccerdata:ab554db1a8b9bdb3788dd99077b6b6d754d64f09e84cb506bc3442cc323cbaea:2010-07-13:Salzburg:HB:away",
+      "date": "2010-07-13",
+      "season": "2010-11",
+      "competition": {
+        "name": "European Champion Clubs' Cup / Champions League",
+        "type": "continental",
+        "country": "Europe"
+      },
+      "stage": "Q-2",
+      "opponent": {
+        "name": "Salzburg",
+        "slug": "salzburg"
+      },
+      "venue": "away",
+      "score": {
+        "for": 0,
+        "against": 5
+      },
+      "result": "L",
+      "sourceRef": "src:1ac1d16b4d91beda9a2b"
+    },
+    {
+      "id": "engsoccerdata:ab554db1a8b9bdb3788dd99077b6b6d754d64f09e84cb506bc3442cc323cbaea:2010-07-20:HB:Salzburg:home",
+      "date": "2010-07-20",
+      "season": "2010-11",
+      "competition": {
+        "name": "European Champion Clubs' Cup / Champions League",
+        "type": "continental",
+        "country": "Europe"
+      },
+      "stage": "Q-2",
+      "opponent": {
+        "name": "Salzburg",
+        "slug": "salzburg"
+      },
+      "venue": "home",
+      "score": {
+        "for": 1,
+        "against": 0
+      },
+      "result": "W",
+      "sourceRef": "src:1ac1d16b4d91beda9a2b"
+    },
+    {
+      "id": "engsoccerdata:ab554db1a8b9bdb3788dd99077b6b6d754d64f09e84cb506bc3442cc323cbaea:2011-07-13:Malmo%20FF:HB:away",
+      "date": "2011-07-13",
+      "season": "2011-12",
+      "competition": {
+        "name": "European Champion Clubs' Cup / Champions League",
+        "type": "continental",
+        "country": "Europe"
+      },
+      "stage": "Q-2",
+      "opponent": {
+        "name": "Malmo FF",
+        "slug": "malmo-ff"
+      },
+      "venue": "away",
+      "score": {
+        "for": 0,
+        "against": 2
+      },
+      "result": "L",
+      "sourceRef": "src:1ac1d16b4d91beda9a2b"
+    },
+    {
+      "id": "engsoccerdata:ab554db1a8b9bdb3788dd99077b6b6d754d64f09e84cb506bc3442cc323cbaea:2011-07-19:HB:Malmo%20FF:home",
+      "date": "2011-07-19",
+      "season": "2011-12",
+      "competition": {
+        "name": "European Champion Clubs' Cup / Champions League",
+        "type": "continental",
+        "country": "Europe"
+      },
+      "stage": "Q-2",
+      "opponent": {
+        "name": "Malmo FF",
+        "slug": "malmo-ff"
+      },
+      "venue": "home",
+      "score": {
+        "for": 1,
+        "against": 1
+      },
+      "result": "D",
+      "sourceRef": "src:1ac1d16b4d91beda9a2b"
+    },
+    {
+      "id": "engsoccerdata:ab554db1a8b9bdb3788dd99077b6b6d754d64f09e84cb506bc3442cc323cbaea:2014-07-02:Lincoln%20Red%20Imps:HB:away",
+      "date": "2014-07-02",
+      "season": "2014-15",
+      "competition": {
+        "name": "European Champion Clubs' Cup / Champions League",
+        "type": "continental",
+        "country": "Europe"
+      },
+      "stage": "Q-1",
+      "opponent": {
+        "name": "Lincoln Red Imps",
+        "slug": "lincoln-red-imps"
+      },
+      "venue": "away",
+      "score": {
+        "for": 1,
+        "against": 1
+      },
+      "result": "D",
+      "sourceRef": "src:1ac1d16b4d91beda9a2b"
+    },
+    {
+      "id": "engsoccerdata:ab554db1a8b9bdb3788dd99077b6b6d754d64f09e84cb506bc3442cc323cbaea:2014-07-08:HB:Lincoln%20Red%20Imps:home",
+      "date": "2014-07-08",
+      "season": "2014-15",
+      "competition": {
+        "name": "European Champion Clubs' Cup / Champions League",
+        "type": "continental",
+        "country": "Europe"
+      },
+      "stage": "Q-1",
+      "opponent": {
+        "name": "Lincoln Red Imps",
+        "slug": "lincoln-red-imps"
+      },
+      "venue": "home",
+      "score": {
+        "for": 5,
+        "against": 2
+      },
+      "result": "W",
+      "sourceRef": "src:1ac1d16b4d91beda9a2b"
+    },
+    {
+      "id": "engsoccerdata:ab554db1a8b9bdb3788dd99077b6b6d754d64f09e84cb506bc3442cc323cbaea:2014-07-15:Partizan%20Belgrade:HB:away",
+      "date": "2014-07-15",
+      "season": "2014-15",
+      "competition": {
+        "name": "European Champion Clubs' Cup / Champions League",
+        "type": "continental",
+        "country": "Europe"
+      },
+      "stage": "Q-2",
+      "opponent": {
+        "name": "Partizan Belgrade",
+        "slug": "partizan-belgrade"
+      },
+      "venue": "away",
+      "score": {
+        "for": 0,
+        "against": 3
+      },
+      "result": "L",
+      "sourceRef": "src:1ac1d16b4d91beda9a2b"
+    },
+    {
+      "id": "engsoccerdata:ab554db1a8b9bdb3788dd99077b6b6d754d64f09e84cb506bc3442cc323cbaea:2014-07-22:HB:Partizan%20Belgrade:home",
+      "date": "2014-07-22",
+      "season": "2014-15",
+      "competition": {
+        "name": "European Champion Clubs' Cup / Champions League",
+        "type": "continental",
+        "country": "Europe"
+      },
+      "stage": "Q-2",
+      "opponent": {
+        "name": "Partizan Belgrade",
+        "slug": "partizan-belgrade"
+      },
+      "venue": "home",
+      "score": {
+        "for": 1,
+        "against": 3
+      },
+      "result": "L",
+      "sourceRef": "src:1ac1d16b4d91beda9a2b"
+    }
+  ],
+  "seasonStandings": [],
+  "competitionStandings": [
+    {
+      "season": "1999-00",
+      "competition": {
+        "name": "European Champion Clubs' Cup / Champions League",
+        "type": "continental",
+        "country": "Europe"
+      },
+      "format": "knockout-progress",
+      "matches": 2,
+      "wins": 0,
+      "draws": 1,
+      "losses": 1,
+      "furthestStage": "Q-1",
+      "latestMatch": "1999-07-21",
+      "basis": "derived from source-attributed recorded matches"
+    },
+    {
+      "season": "2003-04",
+      "competition": {
+        "name": "European Champion Clubs' Cup / Champions League",
+        "type": "continental",
+        "country": "Europe"
+      },
+      "format": "knockout-progress",
+      "matches": 2,
+      "wins": 0,
+      "draws": 0,
+      "losses": 2,
+      "furthestStage": "Q-1",
+      "latestMatch": "2003-07-23",
+      "basis": "derived from source-attributed recorded matches"
+    },
+    {
+      "season": "2004-05",
+      "competition": {
+        "name": "European Champion Clubs' Cup / Champions League",
+        "type": "continental",
+        "country": "Europe"
+      },
+      "format": "knockout-progress",
+      "matches": 2,
+      "wins": 1,
+      "draws": 0,
+      "losses": 1,
+      "furthestStage": "Q-1",
+      "latestMatch": "2004-07-21",
+      "basis": "derived from source-attributed recorded matches"
+    },
+    {
+      "season": "2005-06",
+      "competition": {
+        "name": "European Champion Clubs' Cup / Champions League",
+        "type": "continental",
+        "country": "Europe"
+      },
+      "format": "knockout-progress",
+      "matches": 2,
+      "wins": 0,
+      "draws": 0,
+      "losses": 2,
+      "furthestStage": "Q-1",
+      "latestMatch": "2005-07-19",
+      "basis": "derived from source-attributed recorded matches"
+    },
+    {
+      "season": "2007-08",
+      "competition": {
+        "name": "European Champion Clubs' Cup / Champions League",
+        "type": "continental",
+        "country": "Europe"
+      },
+      "format": "knockout-progress",
+      "matches": 2,
+      "wins": 0,
+      "draws": 1,
+      "losses": 1,
+      "furthestStage": "Q-1",
+      "latestMatch": "2007-07-25",
+      "basis": "derived from source-attributed recorded matches"
+    },
+    {
+      "season": "2010-11",
+      "competition": {
+        "name": "European Champion Clubs' Cup / Champions League",
+        "type": "continental",
+        "country": "Europe"
+      },
+      "format": "knockout-progress",
+      "matches": 2,
+      "wins": 1,
+      "draws": 0,
+      "losses": 1,
+      "furthestStage": "Q-2",
+      "latestMatch": "2010-07-20",
+      "basis": "derived from source-attributed recorded matches"
+    },
+    {
+      "season": "2011-12",
+      "competition": {
+        "name": "European Champion Clubs' Cup / Champions League",
+        "type": "continental",
+        "country": "Europe"
+      },
+      "format": "knockout-progress",
+      "matches": 2,
+      "wins": 0,
+      "draws": 1,
+      "losses": 1,
+      "furthestStage": "Q-2",
+      "latestMatch": "2011-07-19",
+      "basis": "derived from source-attributed recorded matches"
+    },
+    {
+      "season": "2014-15",
+      "competition": {
+        "name": "European Champion Clubs' Cup / Champions League",
+        "type": "continental",
+        "country": "Europe"
+      },
+      "format": "knockout-progress",
+      "matches": 4,
+      "wins": 1,
+      "draws": 1,
+      "losses": 2,
+      "furthestStage": "Q-2",
+      "latestMatch": "2014-07-22",
+      "basis": "derived from source-attributed recorded matches"
+    }
+  ],
+  "updatedAt": "2026-08-04T20:33:25.696Z"
+}

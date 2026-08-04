@@ -1,0 +1,1824 @@
+{
+  "contract": "football-team-history-v1",
+  "team": {
+    "name": "Gimnastic",
+    "slug": "gimnastic",
+    "primaryLeague": "La Liga",
+    "aliases": []
+  },
+  "requestedCoverage": {
+    "fromYear": 1985,
+    "to": "present",
+    "includes": [
+      "all competitions",
+      "opponents",
+      "scorelines",
+      "league standings",
+      "competition standings"
+    ]
+  },
+  "sourcePlan": [
+    {
+      "rank": 1,
+      "provider": "Official club archive",
+      "url": "",
+      "scope": "club history, competition participation and match reports",
+      "lookupKey": "Gimnastic",
+      "review": "Verify the club-owned archive URL before collection."
+    },
+    {
+      "rank": 2,
+      "provider": "Official domestic competition / association",
+      "url": "https://www.laliga.com/",
+      "scope": "official league fixtures, final tables and cup records",
+      "lookupKey": "La Liga"
+    },
+    {
+      "rank": 3,
+      "provider": "UEFA",
+      "url": "https://www.uefa.com/",
+      "scope": "official European competition appearances, fixtures and standings",
+      "lookupKey": "Gimnastic"
+    },
+    {
+      "rank": 4,
+      "provider": "RSSSF",
+      "url": "https://www.rsssf.org/",
+      "scope": "historic competitions, tables and cross-checking",
+      "lookupKey": "Gimnastic"
+    },
+    {
+      "rank": 5,
+      "provider": "worldfootball.net",
+      "url": "https://www.worldfootball.net/",
+      "scope": "club match archive and competition participation cross-check",
+      "lookupKey": "Gimnastic"
+    }
+  ],
+  "coverage": {
+    "earliestMatch": "2006-08-27",
+    "latestMatch": "2007-06-17",
+    "seasonsWithMatches": [
+      "2006-07"
+    ],
+    "missingSeasons": [
+      "1985-86",
+      "1986-87",
+      "1987-88",
+      "1988-89",
+      "1989-90",
+      "1990-91",
+      "1991-92",
+      "1992-93",
+      "1993-94",
+      "1994-95",
+      "1995-96",
+      "1996-97",
+      "1997-98",
+      "1998-99",
+      "1999-00",
+      "2000-01",
+      "2001-02",
+      "2002-03",
+      "2003-04",
+      "2004-05",
+      "2005-06",
+      "2007-08",
+      "2008-09",
+      "2009-10",
+      "2010-11",
+      "2011-12",
+      "2012-13",
+      "2013-14",
+      "2014-15",
+      "2015-16",
+      "2016-17",
+      "2017-18",
+      "2018-19",
+      "2019-20",
+      "2020-21",
+      "2021-22",
+      "2022-23",
+      "2023-24",
+      "2024-25",
+      "2025-26",
+      "2026-27"
+    ],
+    "competitionScopeVerified": false,
+    "status": "partial"
+  },
+  "matches": [
+    {
+      "id": "engsoccerdata:5d482cb76d8b47f77bec531683510815738bc54feb9f0e2524905665116d02fb:2006-08-27:Espanyol%20Barcelona:Gimnastic:away",
+      "date": "2006-08-27",
+      "season": "2006-07",
+      "competition": {
+        "name": "Spanish League 1",
+        "type": "league",
+        "country": "Spain"
+      },
+      "stage": "league",
+      "opponent": {
+        "name": "Espanyol Barcelona",
+        "slug": "espanyol-barcelona"
+      },
+      "venue": "away",
+      "score": {
+        "for": 1,
+        "against": 0
+      },
+      "result": "W",
+      "sourceRef": "src:e6ceedb882c5d872d5cd"
+    },
+    {
+      "id": "football-data:80674f6a96b154105965778073abd2cadd2d6cbb9d8956f984351d0f5a05c4fe:2006-08-27:Espanol:Gimnastic:away",
+      "date": "2006-08-27",
+      "season": "2006-07",
+      "competition": {
+        "name": "La Liga",
+        "type": "league",
+        "country": ""
+      },
+      "stage": "",
+      "opponent": {
+        "name": "Espanol",
+        "slug": "espanol"
+      },
+      "venue": "away",
+      "score": {
+        "for": 1,
+        "against": 0
+      },
+      "result": "W",
+      "sourceRef": "src:05f78f8932ec74468f83"
+    },
+    {
+      "id": "engsoccerdata:5d482cb76d8b47f77bec531683510815738bc54feb9f0e2524905665116d02fb:2006-09-10:Gimnastic:Celta%20Vigo:home",
+      "date": "2006-09-10",
+      "season": "2006-07",
+      "competition": {
+        "name": "Spanish League 1",
+        "type": "league",
+        "country": "Spain"
+      },
+      "stage": "league",
+      "opponent": {
+        "name": "Celta Vigo",
+        "slug": "celta-vigo"
+      },
+      "venue": "home",
+      "score": {
+        "for": 1,
+        "against": 2
+      },
+      "result": "L",
+      "sourceRef": "src:e6ceedb882c5d872d5cd"
+    },
+    {
+      "id": "football-data:80674f6a96b154105965778073abd2cadd2d6cbb9d8956f984351d0f5a05c4fe:2006-09-10:Gimnastic:Celta:home",
+      "date": "2006-09-10",
+      "season": "2006-07",
+      "competition": {
+        "name": "La Liga",
+        "type": "league",
+        "country": ""
+      },
+      "stage": "",
+      "opponent": {
+        "name": "Celta",
+        "slug": "celta"
+      },
+      "venue": "home",
+      "score": {
+        "for": 1,
+        "against": 2
+      },
+      "result": "L",
+      "sourceRef": "src:05f78f8932ec74468f83"
+    },
+    {
+      "id": "engsoccerdata:5d482cb76d8b47f77bec531683510815738bc54feb9f0e2524905665116d02fb:2006-09-17:CA%20Osasuna:Gimnastic:away",
+      "date": "2006-09-17",
+      "season": "2006-07",
+      "competition": {
+        "name": "Spanish League 1",
+        "type": "league",
+        "country": "Spain"
+      },
+      "stage": "league",
+      "opponent": {
+        "name": "Osasuna",
+        "slug": "osasuna"
+      },
+      "venue": "away",
+      "score": {
+        "for": 0,
+        "against": 2
+      },
+      "result": "L",
+      "sourceRef": "src:e6ceedb882c5d872d5cd"
+    },
+    {
+      "id": "football-data:80674f6a96b154105965778073abd2cadd2d6cbb9d8956f984351d0f5a05c4fe:2006-09-17:Osasuna:Gimnastic:away",
+      "date": "2006-09-17",
+      "season": "2006-07",
+      "competition": {
+        "name": "La Liga",
+        "type": "league",
+        "country": ""
+      },
+      "stage": "",
+      "opponent": {
+        "name": "Osasuna",
+        "slug": "osasuna"
+      },
+      "venue": "away",
+      "score": {
+        "for": 0,
+        "against": 2
+      },
+      "result": "L",
+      "sourceRef": "src:05f78f8932ec74468f83"
+    },
+    {
+      "id": "engsoccerdata:5d482cb76d8b47f77bec531683510815738bc54feb9f0e2524905665116d02fb:2006-09-24:Gimnastic:Racing%20Santander:home",
+      "date": "2006-09-24",
+      "season": "2006-07",
+      "competition": {
+        "name": "Spanish League 1",
+        "type": "league",
+        "country": "Spain"
+      },
+      "stage": "league",
+      "opponent": {
+        "name": "Racing Santander",
+        "slug": "racing-santander"
+      },
+      "venue": "home",
+      "score": {
+        "for": 2,
+        "against": 2
+      },
+      "result": "D",
+      "sourceRef": "src:e6ceedb882c5d872d5cd"
+    },
+    {
+      "id": "football-data:80674f6a96b154105965778073abd2cadd2d6cbb9d8956f984351d0f5a05c4fe:2006-09-24:Gimnastic:Santander:home",
+      "date": "2006-09-24",
+      "season": "2006-07",
+      "competition": {
+        "name": "La Liga",
+        "type": "league",
+        "country": ""
+      },
+      "stage": "",
+      "opponent": {
+        "name": "Santander",
+        "slug": "santander"
+      },
+      "venue": "home",
+      "score": {
+        "for": 2,
+        "against": 2
+      },
+      "result": "D",
+      "sourceRef": "src:05f78f8932ec74468f83"
+    },
+    {
+      "id": "engsoccerdata:5d482cb76d8b47f77bec531683510815738bc54feb9f0e2524905665116d02fb:2006-10-01:Valencia%20CF:Gimnastic:away",
+      "date": "2006-10-01",
+      "season": "2006-07",
+      "competition": {
+        "name": "Spanish League 1",
+        "type": "league",
+        "country": "Spain"
+      },
+      "stage": "league",
+      "opponent": {
+        "name": "Valencia CF",
+        "slug": "valencia-cf"
+      },
+      "venue": "away",
+      "score": {
+        "for": 0,
+        "against": 4
+      },
+      "result": "L",
+      "sourceRef": "src:e6ceedb882c5d872d5cd"
+    },
+    {
+      "id": "football-data:80674f6a96b154105965778073abd2cadd2d6cbb9d8956f984351d0f5a05c4fe:2006-10-01:Valencia:Gimnastic:away",
+      "date": "2006-10-01",
+      "season": "2006-07",
+      "competition": {
+        "name": "La Liga",
+        "type": "league",
+        "country": ""
+      },
+      "stage": "",
+      "opponent": {
+        "name": "Valencia",
+        "slug": "valencia"
+      },
+      "venue": "away",
+      "score": {
+        "for": 0,
+        "against": 4
+      },
+      "result": "L",
+      "sourceRef": "src:05f78f8932ec74468f83"
+    },
+    {
+      "id": "engsoccerdata:5d482cb76d8b47f77bec531683510815738bc54feb9f0e2524905665116d02fb:2006-10-15:Gimnastic:Athletic%20Bilbao:home",
+      "date": "2006-10-15",
+      "season": "2006-07",
+      "competition": {
+        "name": "Spanish League 1",
+        "type": "league",
+        "country": "Spain"
+      },
+      "stage": "league",
+      "opponent": {
+        "name": "Athletic Bilbao",
+        "slug": "athletic-bilbao"
+      },
+      "venue": "home",
+      "score": {
+        "for": 2,
+        "against": 3
+      },
+      "result": "L",
+      "sourceRef": "src:e6ceedb882c5d872d5cd"
+    },
+    {
+      "id": "football-data:80674f6a96b154105965778073abd2cadd2d6cbb9d8956f984351d0f5a05c4fe:2006-10-15:Gimnastic:Ath%20Bilbao:home",
+      "date": "2006-10-15",
+      "season": "2006-07",
+      "competition": {
+        "name": "La Liga",
+        "type": "league",
+        "country": ""
+      },
+      "stage": "",
+      "opponent": {
+        "name": "Ath Bilbao",
+        "slug": "ath-bilbao"
+      },
+      "venue": "home",
+      "score": {
+        "for": 2,
+        "against": 3
+      },
+      "result": "L",
+      "sourceRef": "src:05f78f8932ec74468f83"
+    },
+    {
+      "id": "engsoccerdata:5d482cb76d8b47f77bec531683510815738bc54feb9f0e2524905665116d02fb:2006-10-22:Sevilla%20FC:Gimnastic:away",
+      "date": "2006-10-22",
+      "season": "2006-07",
+      "competition": {
+        "name": "Spanish League 1",
+        "type": "league",
+        "country": "Spain"
+      },
+      "stage": "league",
+      "opponent": {
+        "name": "Sevilla FC",
+        "slug": "sevilla-fc"
+      },
+      "venue": "away",
+      "score": {
+        "for": 1,
+        "against": 2
+      },
+      "result": "L",
+      "sourceRef": "src:e6ceedb882c5d872d5cd"
+    },
+    {
+      "id": "football-data:80674f6a96b154105965778073abd2cadd2d6cbb9d8956f984351d0f5a05c4fe:2006-10-22:Sevilla:Gimnastic:away",
+      "date": "2006-10-22",
+      "season": "2006-07",
+      "competition": {
+        "name": "La Liga",
+        "type": "league",
+        "country": ""
+      },
+      "stage": "",
+      "opponent": {
+        "name": "Sevilla",
+        "slug": "sevilla"
+      },
+      "venue": "away",
+      "score": {
+        "for": 1,
+        "against": 2
+      },
+      "result": "L",
+      "sourceRef": "src:05f78f8932ec74468f83"
+    },
+    {
+      "id": "engsoccerdata:5d482cb76d8b47f77bec531683510815738bc54feb9f0e2524905665116d02fb:2006-10-28:Gimnastic:Real%20Madrid:home",
+      "date": "2006-10-28",
+      "season": "2006-07",
+      "competition": {
+        "name": "Spanish League 1",
+        "type": "league",
+        "country": "Spain"
+      },
+      "stage": "league",
+      "opponent": {
+        "name": "Real Madrid",
+        "slug": "real-madrid"
+      },
+      "venue": "home",
+      "score": {
+        "for": 1,
+        "against": 3
+      },
+      "result": "L",
+      "sourceRef": "src:e6ceedb882c5d872d5cd"
+    },
+    {
+      "id": "football-data:80674f6a96b154105965778073abd2cadd2d6cbb9d8956f984351d0f5a05c4fe:2006-10-28:Gimnastic:Real%20Madrid:home",
+      "date": "2006-10-28",
+      "season": "2006-07",
+      "competition": {
+        "name": "La Liga",
+        "type": "league",
+        "country": ""
+      },
+      "stage": "",
+      "opponent": {
+        "name": "Real Madrid",
+        "slug": "real-madrid"
+      },
+      "venue": "home",
+      "score": {
+        "for": 1,
+        "against": 3
+      },
+      "result": "L",
+      "sourceRef": "src:05f78f8932ec74468f83"
+    },
+    {
+      "id": "engsoccerdata:5d482cb76d8b47f77bec531683510815738bc54feb9f0e2524905665116d02fb:2006-11-05:Recreativo%20Huelva:Gimnastic:away",
+      "date": "2006-11-05",
+      "season": "2006-07",
+      "competition": {
+        "name": "Spanish League 1",
+        "type": "league",
+        "country": "Spain"
+      },
+      "stage": "league",
+      "opponent": {
+        "name": "Recreativo Huelva",
+        "slug": "recreativo-huelva"
+      },
+      "venue": "away",
+      "score": {
+        "for": 1,
+        "against": 2
+      },
+      "result": "L",
+      "sourceRef": "src:e6ceedb882c5d872d5cd"
+    },
+    {
+      "id": "football-data:80674f6a96b154105965778073abd2cadd2d6cbb9d8956f984351d0f5a05c4fe:2006-11-05:Recreativo:Gimnastic:away",
+      "date": "2006-11-05",
+      "season": "2006-07",
+      "competition": {
+        "name": "La Liga",
+        "type": "league",
+        "country": ""
+      },
+      "stage": "",
+      "opponent": {
+        "name": "Recreativo",
+        "slug": "recreativo"
+      },
+      "venue": "away",
+      "score": {
+        "for": 1,
+        "against": 2
+      },
+      "result": "L",
+      "sourceRef": "src:05f78f8932ec74468f83"
+    },
+    {
+      "id": "engsoccerdata:5d482cb76d8b47f77bec531683510815738bc54feb9f0e2524905665116d02fb:2006-11-12:Gimnastic:Deportivo%20La%20Coruna:home",
+      "date": "2006-11-12",
+      "season": "2006-07",
+      "competition": {
+        "name": "Spanish League 1",
+        "type": "league",
+        "country": "Spain"
+      },
+      "stage": "league",
+      "opponent": {
+        "name": "Deportivo La Coruna",
+        "slug": "deportivo-la-coruna"
+      },
+      "venue": "home",
+      "score": {
+        "for": 0,
+        "against": 0
+      },
+      "result": "D",
+      "sourceRef": "src:e6ceedb882c5d872d5cd"
+    },
+    {
+      "id": "football-data:80674f6a96b154105965778073abd2cadd2d6cbb9d8956f984351d0f5a05c4fe:2006-11-12:Gimnastic:La%20Coruna:home",
+      "date": "2006-11-12",
+      "season": "2006-07",
+      "competition": {
+        "name": "La Liga",
+        "type": "league",
+        "country": ""
+      },
+      "stage": "",
+      "opponent": {
+        "name": "La Coruna",
+        "slug": "la-coruna"
+      },
+      "venue": "home",
+      "score": {
+        "for": 0,
+        "against": 0
+      },
+      "result": "D",
+      "sourceRef": "src:05f78f8932ec74468f83"
+    },
+    {
+      "id": "engsoccerdata:5d482cb76d8b47f77bec531683510815738bc54feb9f0e2524905665116d02fb:2006-11-19:Real%20Zaragoza:Gimnastic:away",
+      "date": "2006-11-19",
+      "season": "2006-07",
+      "competition": {
+        "name": "Spanish League 1",
+        "type": "league",
+        "country": "Spain"
+      },
+      "stage": "league",
+      "opponent": {
+        "name": "Real Zaragoza",
+        "slug": "real-zaragoza"
+      },
+      "venue": "away",
+      "score": {
+        "for": 0,
+        "against": 3
+      },
+      "result": "L",
+      "sourceRef": "src:e6ceedb882c5d872d5cd"
+    },
+    {
+      "id": "football-data:80674f6a96b154105965778073abd2cadd2d6cbb9d8956f984351d0f5a05c4fe:2006-11-19:Zaragoza:Gimnastic:away",
+      "date": "2006-11-19",
+      "season": "2006-07",
+      "competition": {
+        "name": "La Liga",
+        "type": "league",
+        "country": ""
+      },
+      "stage": "",
+      "opponent": {
+        "name": "Zaragoza",
+        "slug": "zaragoza"
+      },
+      "venue": "away",
+      "score": {
+        "for": 0,
+        "against": 3
+      },
+      "result": "L",
+      "sourceRef": "src:05f78f8932ec74468f83"
+    },
+    {
+      "id": "engsoccerdata:5d482cb76d8b47f77bec531683510815738bc54feb9f0e2524905665116d02fb:2006-11-26:Gimnastic:RCD%20Mallorca:home",
+      "date": "2006-11-26",
+      "season": "2006-07",
+      "competition": {
+        "name": "Spanish League 1",
+        "type": "league",
+        "country": "Spain"
+      },
+      "stage": "league",
+      "opponent": {
+        "name": "RCD Mallorca",
+        "slug": "rcd-mallorca"
+      },
+      "venue": "home",
+      "score": {
+        "for": 2,
+        "against": 3
+      },
+      "result": "L",
+      "sourceRef": "src:e6ceedb882c5d872d5cd"
+    },
+    {
+      "id": "football-data:80674f6a96b154105965778073abd2cadd2d6cbb9d8956f984351d0f5a05c4fe:2006-11-26:Gimnastic:Mallorca:home",
+      "date": "2006-11-26",
+      "season": "2006-07",
+      "competition": {
+        "name": "La Liga",
+        "type": "league",
+        "country": ""
+      },
+      "stage": "",
+      "opponent": {
+        "name": "Mallorca",
+        "slug": "mallorca"
+      },
+      "venue": "home",
+      "score": {
+        "for": 2,
+        "against": 3
+      },
+      "result": "L",
+      "sourceRef": "src:05f78f8932ec74468f83"
+    },
+    {
+      "id": "engsoccerdata:5d482cb76d8b47f77bec531683510815738bc54feb9f0e2524905665116d02fb:2006-12-03:Villarreal%20CF:Gimnastic:away",
+      "date": "2006-12-03",
+      "season": "2006-07",
+      "competition": {
+        "name": "Spanish League 1",
+        "type": "league",
+        "country": "Spain"
+      },
+      "stage": "league",
+      "opponent": {
+        "name": "Villarreal CF",
+        "slug": "villarreal-cf"
+      },
+      "venue": "away",
+      "score": {
+        "for": 0,
+        "against": 2
+      },
+      "result": "L",
+      "sourceRef": "src:e6ceedb882c5d872d5cd"
+    },
+    {
+      "id": "football-data:80674f6a96b154105965778073abd2cadd2d6cbb9d8956f984351d0f5a05c4fe:2006-12-03:Villarreal:Gimnastic:away",
+      "date": "2006-12-03",
+      "season": "2006-07",
+      "competition": {
+        "name": "La Liga",
+        "type": "league",
+        "country": ""
+      },
+      "stage": "",
+      "opponent": {
+        "name": "Villarreal",
+        "slug": "villarreal"
+      },
+      "venue": "away",
+      "score": {
+        "for": 0,
+        "against": 2
+      },
+      "result": "L",
+      "sourceRef": "src:05f78f8932ec74468f83"
+    },
+    {
+      "id": "engsoccerdata:5d482cb76d8b47f77bec531683510815738bc54feb9f0e2524905665116d02fb:2006-12-10:Gimnastic:Levante%20UD:home",
+      "date": "2006-12-10",
+      "season": "2006-07",
+      "competition": {
+        "name": "Spanish League 1",
+        "type": "league",
+        "country": "Spain"
+      },
+      "stage": "league",
+      "opponent": {
+        "name": "Levante UD",
+        "slug": "levante-ud"
+      },
+      "venue": "home",
+      "score": {
+        "for": 2,
+        "against": 1
+      },
+      "result": "W",
+      "sourceRef": "src:e6ceedb882c5d872d5cd"
+    },
+    {
+      "id": "football-data:80674f6a96b154105965778073abd2cadd2d6cbb9d8956f984351d0f5a05c4fe:2006-12-10:Gimnastic:Levante:home",
+      "date": "2006-12-10",
+      "season": "2006-07",
+      "competition": {
+        "name": "La Liga",
+        "type": "league",
+        "country": ""
+      },
+      "stage": "",
+      "opponent": {
+        "name": "Levante",
+        "slug": "levante"
+      },
+      "venue": "home",
+      "score": {
+        "for": 2,
+        "against": 1
+      },
+      "result": "W",
+      "sourceRef": "src:05f78f8932ec74468f83"
+    },
+    {
+      "id": "engsoccerdata:5d482cb76d8b47f77bec531683510815738bc54feb9f0e2524905665116d02fb:2006-12-17:Real%20Sociedad:Gimnastic:away",
+      "date": "2006-12-17",
+      "season": "2006-07",
+      "competition": {
+        "name": "Spanish League 1",
+        "type": "league",
+        "country": "Spain"
+      },
+      "stage": "league",
+      "opponent": {
+        "name": "Real Sociedad",
+        "slug": "real-sociedad"
+      },
+      "venue": "away",
+      "score": {
+        "for": 2,
+        "against": 3
+      },
+      "result": "L",
+      "sourceRef": "src:e6ceedb882c5d872d5cd"
+    },
+    {
+      "id": "football-data:80674f6a96b154105965778073abd2cadd2d6cbb9d8956f984351d0f5a05c4fe:2006-12-17:Real%20Sociedad:Gimnastic:away",
+      "date": "2006-12-17",
+      "season": "2006-07",
+      "competition": {
+        "name": "La Liga",
+        "type": "league",
+        "country": ""
+      },
+      "stage": "",
+      "opponent": {
+        "name": "Real Sociedad",
+        "slug": "real-sociedad"
+      },
+      "venue": "away",
+      "score": {
+        "for": 2,
+        "against": 3
+      },
+      "result": "L",
+      "sourceRef": "src:05f78f8932ec74468f83"
+    },
+    {
+      "id": "engsoccerdata:5d482cb76d8b47f77bec531683510815738bc54feb9f0e2524905665116d02fb:2006-12-20:Gimnastic:Real%20Betis:home",
+      "date": "2006-12-20",
+      "season": "2006-07",
+      "competition": {
+        "name": "Spanish League 1",
+        "type": "league",
+        "country": "Spain"
+      },
+      "stage": "league",
+      "opponent": {
+        "name": "Betis",
+        "slug": "betis"
+      },
+      "venue": "home",
+      "score": {
+        "for": 0,
+        "against": 1
+      },
+      "result": "L",
+      "sourceRef": "src:e6ceedb882c5d872d5cd"
+    },
+    {
+      "id": "football-data:80674f6a96b154105965778073abd2cadd2d6cbb9d8956f984351d0f5a05c4fe:2006-12-20:Gimnastic:Betis:home",
+      "date": "2006-12-20",
+      "season": "2006-07",
+      "competition": {
+        "name": "La Liga",
+        "type": "league",
+        "country": ""
+      },
+      "stage": "",
+      "opponent": {
+        "name": "Betis",
+        "slug": "betis"
+      },
+      "venue": "home",
+      "score": {
+        "for": 0,
+        "against": 1
+      },
+      "result": "L",
+      "sourceRef": "src:05f78f8932ec74468f83"
+    },
+    {
+      "id": "engsoccerdata:5d482cb76d8b47f77bec531683510815738bc54feb9f0e2524905665116d02fb:2007-01-06:Atletico%20Madrid:Gimnastic:away",
+      "date": "2007-01-06",
+      "season": "2006-07",
+      "competition": {
+        "name": "Spanish League 1",
+        "type": "league",
+        "country": "Spain"
+      },
+      "stage": "league",
+      "opponent": {
+        "name": "Ath Madrid",
+        "slug": "ath-madrid"
+      },
+      "venue": "away",
+      "score": {
+        "for": 0,
+        "against": 0
+      },
+      "result": "D",
+      "sourceRef": "src:e6ceedb882c5d872d5cd"
+    },
+    {
+      "id": "football-data:80674f6a96b154105965778073abd2cadd2d6cbb9d8956f984351d0f5a05c4fe:2007-01-06:Ath%20Madrid:Gimnastic:away",
+      "date": "2007-01-06",
+      "season": "2006-07",
+      "competition": {
+        "name": "La Liga",
+        "type": "league",
+        "country": ""
+      },
+      "stage": "",
+      "opponent": {
+        "name": "Ath Madrid",
+        "slug": "ath-madrid"
+      },
+      "venue": "away",
+      "score": {
+        "for": 0,
+        "against": 0
+      },
+      "result": "D",
+      "sourceRef": "src:05f78f8932ec74468f83"
+    },
+    {
+      "id": "engsoccerdata:5d482cb76d8b47f77bec531683510815738bc54feb9f0e2524905665116d02fb:2007-01-14:Gimnastic:Getafe%20CF:home",
+      "date": "2007-01-14",
+      "season": "2006-07",
+      "competition": {
+        "name": "Spanish League 1",
+        "type": "league",
+        "country": "Spain"
+      },
+      "stage": "league",
+      "opponent": {
+        "name": "Getafe CF",
+        "slug": "getafe-cf"
+      },
+      "venue": "home",
+      "score": {
+        "for": 1,
+        "against": 3
+      },
+      "result": "L",
+      "sourceRef": "src:e6ceedb882c5d872d5cd"
+    },
+    {
+      "id": "football-data:80674f6a96b154105965778073abd2cadd2d6cbb9d8956f984351d0f5a05c4fe:2007-01-14:Gimnastic:Getafe:home",
+      "date": "2007-01-14",
+      "season": "2006-07",
+      "competition": {
+        "name": "La Liga",
+        "type": "league",
+        "country": ""
+      },
+      "stage": "",
+      "opponent": {
+        "name": "Getafe",
+        "slug": "getafe"
+      },
+      "venue": "home",
+      "score": {
+        "for": 1,
+        "against": 3
+      },
+      "result": "L",
+      "sourceRef": "src:05f78f8932ec74468f83"
+    },
+    {
+      "id": "engsoccerdata:5d482cb76d8b47f77bec531683510815738bc54feb9f0e2524905665116d02fb:2007-01-21:FC%20Barcelona:Gimnastic:away",
+      "date": "2007-01-21",
+      "season": "2006-07",
+      "competition": {
+        "name": "Spanish League 1",
+        "type": "league",
+        "country": "Spain"
+      },
+      "stage": "league",
+      "opponent": {
+        "name": "Barcelona",
+        "slug": "barcelona"
+      },
+      "venue": "away",
+      "score": {
+        "for": 0,
+        "against": 3
+      },
+      "result": "L",
+      "sourceRef": "src:e6ceedb882c5d872d5cd"
+    },
+    {
+      "id": "football-data:80674f6a96b154105965778073abd2cadd2d6cbb9d8956f984351d0f5a05c4fe:2007-01-21:Barcelona:Gimnastic:away",
+      "date": "2007-01-21",
+      "season": "2006-07",
+      "competition": {
+        "name": "La Liga",
+        "type": "league",
+        "country": ""
+      },
+      "stage": "",
+      "opponent": {
+        "name": "Barcelona",
+        "slug": "barcelona"
+      },
+      "venue": "away",
+      "score": {
+        "for": 0,
+        "against": 3
+      },
+      "result": "L",
+      "sourceRef": "src:05f78f8932ec74468f83"
+    },
+    {
+      "id": "engsoccerdata:5d482cb76d8b47f77bec531683510815738bc54feb9f0e2524905665116d02fb:2007-01-28:Gimnastic:Espanyol%20Barcelona:home",
+      "date": "2007-01-28",
+      "season": "2006-07",
+      "competition": {
+        "name": "Spanish League 1",
+        "type": "league",
+        "country": "Spain"
+      },
+      "stage": "league",
+      "opponent": {
+        "name": "Espanyol Barcelona",
+        "slug": "espanyol-barcelona"
+      },
+      "venue": "home",
+      "score": {
+        "for": 4,
+        "against": 0
+      },
+      "result": "W",
+      "sourceRef": "src:e6ceedb882c5d872d5cd"
+    },
+    {
+      "id": "football-data:80674f6a96b154105965778073abd2cadd2d6cbb9d8956f984351d0f5a05c4fe:2007-01-28:Gimnastic:Espanol:home",
+      "date": "2007-01-28",
+      "season": "2006-07",
+      "competition": {
+        "name": "La Liga",
+        "type": "league",
+        "country": ""
+      },
+      "stage": "",
+      "opponent": {
+        "name": "Espanol",
+        "slug": "espanol"
+      },
+      "venue": "home",
+      "score": {
+        "for": 4,
+        "against": 0
+      },
+      "result": "W",
+      "sourceRef": "src:05f78f8932ec74468f83"
+    },
+    {
+      "id": "engsoccerdata:5d482cb76d8b47f77bec531683510815738bc54feb9f0e2524905665116d02fb:2007-02-04:Celta%20Vigo:Gimnastic:away",
+      "date": "2007-02-04",
+      "season": "2006-07",
+      "competition": {
+        "name": "Spanish League 1",
+        "type": "league",
+        "country": "Spain"
+      },
+      "stage": "league",
+      "opponent": {
+        "name": "Celta Vigo",
+        "slug": "celta-vigo"
+      },
+      "venue": "away",
+      "score": {
+        "for": 1,
+        "against": 1
+      },
+      "result": "D",
+      "sourceRef": "src:e6ceedb882c5d872d5cd"
+    },
+    {
+      "id": "football-data:80674f6a96b154105965778073abd2cadd2d6cbb9d8956f984351d0f5a05c4fe:2007-02-04:Celta:Gimnastic:away",
+      "date": "2007-02-04",
+      "season": "2006-07",
+      "competition": {
+        "name": "La Liga",
+        "type": "league",
+        "country": ""
+      },
+      "stage": "",
+      "opponent": {
+        "name": "Celta",
+        "slug": "celta"
+      },
+      "venue": "away",
+      "score": {
+        "for": 1,
+        "against": 1
+      },
+      "result": "D",
+      "sourceRef": "src:05f78f8932ec74468f83"
+    },
+    {
+      "id": "engsoccerdata:5d482cb76d8b47f77bec531683510815738bc54feb9f0e2524905665116d02fb:2007-02-11:Gimnastic:CA%20Osasuna:home",
+      "date": "2007-02-11",
+      "season": "2006-07",
+      "competition": {
+        "name": "Spanish League 1",
+        "type": "league",
+        "country": "Spain"
+      },
+      "stage": "league",
+      "opponent": {
+        "name": "Osasuna",
+        "slug": "osasuna"
+      },
+      "venue": "home",
+      "score": {
+        "for": 2,
+        "against": 3
+      },
+      "result": "L",
+      "sourceRef": "src:e6ceedb882c5d872d5cd"
+    },
+    {
+      "id": "football-data:80674f6a96b154105965778073abd2cadd2d6cbb9d8956f984351d0f5a05c4fe:2007-02-11:Gimnastic:Osasuna:home",
+      "date": "2007-02-11",
+      "season": "2006-07",
+      "competition": {
+        "name": "La Liga",
+        "type": "league",
+        "country": ""
+      },
+      "stage": "",
+      "opponent": {
+        "name": "Osasuna",
+        "slug": "osasuna"
+      },
+      "venue": "home",
+      "score": {
+        "for": 2,
+        "against": 3
+      },
+      "result": "L",
+      "sourceRef": "src:05f78f8932ec74468f83"
+    },
+    {
+      "id": "engsoccerdata:5d482cb76d8b47f77bec531683510815738bc54feb9f0e2524905665116d02fb:2007-02-18:Racing%20Santander:Gimnastic:away",
+      "date": "2007-02-18",
+      "season": "2006-07",
+      "competition": {
+        "name": "Spanish League 1",
+        "type": "league",
+        "country": "Spain"
+      },
+      "stage": "league",
+      "opponent": {
+        "name": "Racing Santander",
+        "slug": "racing-santander"
+      },
+      "venue": "away",
+      "score": {
+        "for": 1,
+        "against": 4
+      },
+      "result": "L",
+      "sourceRef": "src:e6ceedb882c5d872d5cd"
+    },
+    {
+      "id": "football-data:80674f6a96b154105965778073abd2cadd2d6cbb9d8956f984351d0f5a05c4fe:2007-02-18:Santander:Gimnastic:away",
+      "date": "2007-02-18",
+      "season": "2006-07",
+      "competition": {
+        "name": "La Liga",
+        "type": "league",
+        "country": ""
+      },
+      "stage": "",
+      "opponent": {
+        "name": "Santander",
+        "slug": "santander"
+      },
+      "venue": "away",
+      "score": {
+        "for": 1,
+        "against": 4
+      },
+      "result": "L",
+      "sourceRef": "src:05f78f8932ec74468f83"
+    },
+    {
+      "id": "engsoccerdata:5d482cb76d8b47f77bec531683510815738bc54feb9f0e2524905665116d02fb:2007-02-25:Gimnastic:Valencia%20CF:home",
+      "date": "2007-02-25",
+      "season": "2006-07",
+      "competition": {
+        "name": "Spanish League 1",
+        "type": "league",
+        "country": "Spain"
+      },
+      "stage": "league",
+      "opponent": {
+        "name": "Valencia CF",
+        "slug": "valencia-cf"
+      },
+      "venue": "home",
+      "score": {
+        "for": 1,
+        "against": 1
+      },
+      "result": "D",
+      "sourceRef": "src:e6ceedb882c5d872d5cd"
+    },
+    {
+      "id": "football-data:80674f6a96b154105965778073abd2cadd2d6cbb9d8956f984351d0f5a05c4fe:2007-02-25:Gimnastic:Valencia:home",
+      "date": "2007-02-25",
+      "season": "2006-07",
+      "competition": {
+        "name": "La Liga",
+        "type": "league",
+        "country": ""
+      },
+      "stage": "",
+      "opponent": {
+        "name": "Valencia",
+        "slug": "valencia"
+      },
+      "venue": "home",
+      "score": {
+        "for": 1,
+        "against": 1
+      },
+      "result": "D",
+      "sourceRef": "src:05f78f8932ec74468f83"
+    },
+    {
+      "id": "engsoccerdata:5d482cb76d8b47f77bec531683510815738bc54feb9f0e2524905665116d02fb:2007-03-04:Athletic%20Bilbao:Gimnastic:away",
+      "date": "2007-03-04",
+      "season": "2006-07",
+      "competition": {
+        "name": "Spanish League 1",
+        "type": "league",
+        "country": "Spain"
+      },
+      "stage": "league",
+      "opponent": {
+        "name": "Athletic Bilbao",
+        "slug": "athletic-bilbao"
+      },
+      "venue": "away",
+      "score": {
+        "for": 2,
+        "against": 0
+      },
+      "result": "W",
+      "sourceRef": "src:e6ceedb882c5d872d5cd"
+    },
+    {
+      "id": "football-data:80674f6a96b154105965778073abd2cadd2d6cbb9d8956f984351d0f5a05c4fe:2007-03-04:Ath%20Bilbao:Gimnastic:away",
+      "date": "2007-03-04",
+      "season": "2006-07",
+      "competition": {
+        "name": "La Liga",
+        "type": "league",
+        "country": ""
+      },
+      "stage": "",
+      "opponent": {
+        "name": "Ath Bilbao",
+        "slug": "ath-bilbao"
+      },
+      "venue": "away",
+      "score": {
+        "for": 2,
+        "against": 0
+      },
+      "result": "W",
+      "sourceRef": "src:05f78f8932ec74468f83"
+    },
+    {
+      "id": "engsoccerdata:5d482cb76d8b47f77bec531683510815738bc54feb9f0e2524905665116d02fb:2007-03-11:Gimnastic:Sevilla%20FC:home",
+      "date": "2007-03-11",
+      "season": "2006-07",
+      "competition": {
+        "name": "Spanish League 1",
+        "type": "league",
+        "country": "Spain"
+      },
+      "stage": "league",
+      "opponent": {
+        "name": "Sevilla FC",
+        "slug": "sevilla-fc"
+      },
+      "venue": "home",
+      "score": {
+        "for": 1,
+        "against": 0
+      },
+      "result": "W",
+      "sourceRef": "src:e6ceedb882c5d872d5cd"
+    },
+    {
+      "id": "football-data:80674f6a96b154105965778073abd2cadd2d6cbb9d8956f984351d0f5a05c4fe:2007-03-11:Gimnastic:Sevilla:home",
+      "date": "2007-03-11",
+      "season": "2006-07",
+      "competition": {
+        "name": "La Liga",
+        "type": "league",
+        "country": ""
+      },
+      "stage": "",
+      "opponent": {
+        "name": "Sevilla",
+        "slug": "sevilla"
+      },
+      "venue": "home",
+      "score": {
+        "for": 1,
+        "against": 0
+      },
+      "result": "W",
+      "sourceRef": "src:05f78f8932ec74468f83"
+    },
+    {
+      "id": "engsoccerdata:5d482cb76d8b47f77bec531683510815738bc54feb9f0e2524905665116d02fb:2007-03-18:Real%20Madrid:Gimnastic:away",
+      "date": "2007-03-18",
+      "season": "2006-07",
+      "competition": {
+        "name": "Spanish League 1",
+        "type": "league",
+        "country": "Spain"
+      },
+      "stage": "league",
+      "opponent": {
+        "name": "Real Madrid",
+        "slug": "real-madrid"
+      },
+      "venue": "away",
+      "score": {
+        "for": 0,
+        "against": 2
+      },
+      "result": "L",
+      "sourceRef": "src:e6ceedb882c5d872d5cd"
+    },
+    {
+      "id": "football-data:80674f6a96b154105965778073abd2cadd2d6cbb9d8956f984351d0f5a05c4fe:2007-03-18:Real%20Madrid:Gimnastic:away",
+      "date": "2007-03-18",
+      "season": "2006-07",
+      "competition": {
+        "name": "La Liga",
+        "type": "league",
+        "country": ""
+      },
+      "stage": "",
+      "opponent": {
+        "name": "Real Madrid",
+        "slug": "real-madrid"
+      },
+      "venue": "away",
+      "score": {
+        "for": 0,
+        "against": 2
+      },
+      "result": "L",
+      "sourceRef": "src:05f78f8932ec74468f83"
+    },
+    {
+      "id": "engsoccerdata:5d482cb76d8b47f77bec531683510815738bc54feb9f0e2524905665116d02fb:2007-04-01:Gimnastic:Recreativo%20Huelva:home",
+      "date": "2007-04-01",
+      "season": "2006-07",
+      "competition": {
+        "name": "Spanish League 1",
+        "type": "league",
+        "country": "Spain"
+      },
+      "stage": "league",
+      "opponent": {
+        "name": "Recreativo Huelva",
+        "slug": "recreativo-huelva"
+      },
+      "venue": "home",
+      "score": {
+        "for": 1,
+        "against": 1
+      },
+      "result": "D",
+      "sourceRef": "src:e6ceedb882c5d872d5cd"
+    },
+    {
+      "id": "football-data:80674f6a96b154105965778073abd2cadd2d6cbb9d8956f984351d0f5a05c4fe:2007-04-01:Gimnastic:Recreativo:home",
+      "date": "2007-04-01",
+      "season": "2006-07",
+      "competition": {
+        "name": "La Liga",
+        "type": "league",
+        "country": ""
+      },
+      "stage": "",
+      "opponent": {
+        "name": "Recreativo",
+        "slug": "recreativo"
+      },
+      "venue": "home",
+      "score": {
+        "for": 1,
+        "against": 1
+      },
+      "result": "D",
+      "sourceRef": "src:05f78f8932ec74468f83"
+    },
+    {
+      "id": "engsoccerdata:5d482cb76d8b47f77bec531683510815738bc54feb9f0e2524905665116d02fb:2007-04-08:Deportivo%20La%20Coruna:Gimnastic:away",
+      "date": "2007-04-08",
+      "season": "2006-07",
+      "competition": {
+        "name": "Spanish League 1",
+        "type": "league",
+        "country": "Spain"
+      },
+      "stage": "league",
+      "opponent": {
+        "name": "Deportivo La Coruna",
+        "slug": "deportivo-la-coruna"
+      },
+      "venue": "away",
+      "score": {
+        "for": 0,
+        "against": 1
+      },
+      "result": "L",
+      "sourceRef": "src:e6ceedb882c5d872d5cd"
+    },
+    {
+      "id": "football-data:80674f6a96b154105965778073abd2cadd2d6cbb9d8956f984351d0f5a05c4fe:2007-04-08:La%20Coruna:Gimnastic:away",
+      "date": "2007-04-08",
+      "season": "2006-07",
+      "competition": {
+        "name": "La Liga",
+        "type": "league",
+        "country": ""
+      },
+      "stage": "",
+      "opponent": {
+        "name": "La Coruna",
+        "slug": "la-coruna"
+      },
+      "venue": "away",
+      "score": {
+        "for": 0,
+        "against": 1
+      },
+      "result": "L",
+      "sourceRef": "src:05f78f8932ec74468f83"
+    },
+    {
+      "id": "engsoccerdata:5d482cb76d8b47f77bec531683510815738bc54feb9f0e2524905665116d02fb:2007-04-15:Gimnastic:Real%20Zaragoza:home",
+      "date": "2007-04-15",
+      "season": "2006-07",
+      "competition": {
+        "name": "Spanish League 1",
+        "type": "league",
+        "country": "Spain"
+      },
+      "stage": "league",
+      "opponent": {
+        "name": "Real Zaragoza",
+        "slug": "real-zaragoza"
+      },
+      "venue": "home",
+      "score": {
+        "for": 1,
+        "against": 0
+      },
+      "result": "W",
+      "sourceRef": "src:e6ceedb882c5d872d5cd"
+    },
+    {
+      "id": "football-data:80674f6a96b154105965778073abd2cadd2d6cbb9d8956f984351d0f5a05c4fe:2007-04-15:Gimnastic:Zaragoza:home",
+      "date": "2007-04-15",
+      "season": "2006-07",
+      "competition": {
+        "name": "La Liga",
+        "type": "league",
+        "country": ""
+      },
+      "stage": "",
+      "opponent": {
+        "name": "Zaragoza",
+        "slug": "zaragoza"
+      },
+      "venue": "home",
+      "score": {
+        "for": 1,
+        "against": 0
+      },
+      "result": "W",
+      "sourceRef": "src:05f78f8932ec74468f83"
+    },
+    {
+      "id": "engsoccerdata:5d482cb76d8b47f77bec531683510815738bc54feb9f0e2524905665116d02fb:2007-04-22:RCD%20Mallorca:Gimnastic:away",
+      "date": "2007-04-22",
+      "season": "2006-07",
+      "competition": {
+        "name": "Spanish League 1",
+        "type": "league",
+        "country": "Spain"
+      },
+      "stage": "league",
+      "opponent": {
+        "name": "RCD Mallorca",
+        "slug": "rcd-mallorca"
+      },
+      "venue": "away",
+      "score": {
+        "for": 0,
+        "against": 1
+      },
+      "result": "L",
+      "sourceRef": "src:e6ceedb882c5d872d5cd"
+    },
+    {
+      "id": "football-data:80674f6a96b154105965778073abd2cadd2d6cbb9d8956f984351d0f5a05c4fe:2007-04-22:Mallorca:Gimnastic:away",
+      "date": "2007-04-22",
+      "season": "2006-07",
+      "competition": {
+        "name": "La Liga",
+        "type": "league",
+        "country": ""
+      },
+      "stage": "",
+      "opponent": {
+        "name": "Mallorca",
+        "slug": "mallorca"
+      },
+      "venue": "away",
+      "score": {
+        "for": 0,
+        "against": 1
+      },
+      "result": "L",
+      "sourceRef": "src:05f78f8932ec74468f83"
+    },
+    {
+      "id": "engsoccerdata:5d482cb76d8b47f77bec531683510815738bc54feb9f0e2524905665116d02fb:2007-04-29:Gimnastic:Villarreal%20CF:home",
+      "date": "2007-04-29",
+      "season": "2006-07",
+      "competition": {
+        "name": "Spanish League 1",
+        "type": "league",
+        "country": "Spain"
+      },
+      "stage": "league",
+      "opponent": {
+        "name": "Villarreal CF",
+        "slug": "villarreal-cf"
+      },
+      "venue": "home",
+      "score": {
+        "for": 0,
+        "against": 3
+      },
+      "result": "L",
+      "sourceRef": "src:e6ceedb882c5d872d5cd"
+    },
+    {
+      "id": "football-data:80674f6a96b154105965778073abd2cadd2d6cbb9d8956f984351d0f5a05c4fe:2007-04-29:Gimnastic:Villarreal:home",
+      "date": "2007-04-29",
+      "season": "2006-07",
+      "competition": {
+        "name": "La Liga",
+        "type": "league",
+        "country": ""
+      },
+      "stage": "",
+      "opponent": {
+        "name": "Villarreal",
+        "slug": "villarreal"
+      },
+      "venue": "home",
+      "score": {
+        "for": 0,
+        "against": 3
+      },
+      "result": "L",
+      "sourceRef": "src:05f78f8932ec74468f83"
+    },
+    {
+      "id": "engsoccerdata:5d482cb76d8b47f77bec531683510815738bc54feb9f0e2524905665116d02fb:2007-05-06:Levante%20UD:Gimnastic:away",
+      "date": "2007-05-06",
+      "season": "2006-07",
+      "competition": {
+        "name": "Spanish League 1",
+        "type": "league",
+        "country": "Spain"
+      },
+      "stage": "league",
+      "opponent": {
+        "name": "Levante UD",
+        "slug": "levante-ud"
+      },
+      "venue": "away",
+      "score": {
+        "for": 0,
+        "against": 2
+      },
+      "result": "L",
+      "sourceRef": "src:e6ceedb882c5d872d5cd"
+    },
+    {
+      "id": "football-data:80674f6a96b154105965778073abd2cadd2d6cbb9d8956f984351d0f5a05c4fe:2007-05-06:Levante:Gimnastic:away",
+      "date": "2007-05-06",
+      "season": "2006-07",
+      "competition": {
+        "name": "La Liga",
+        "type": "league",
+        "country": ""
+      },
+      "stage": "",
+      "opponent": {
+        "name": "Levante",
+        "slug": "levante"
+      },
+      "venue": "away",
+      "score": {
+        "for": 0,
+        "against": 2
+      },
+      "result": "L",
+      "sourceRef": "src:05f78f8932ec74468f83"
+    },
+    {
+      "id": "engsoccerdata:5d482cb76d8b47f77bec531683510815738bc54feb9f0e2524905665116d02fb:2007-05-13:Gimnastic:Real%20Sociedad:home",
+      "date": "2007-05-13",
+      "season": "2006-07",
+      "competition": {
+        "name": "Spanish League 1",
+        "type": "league",
+        "country": "Spain"
+      },
+      "stage": "league",
+      "opponent": {
+        "name": "Real Sociedad",
+        "slug": "real-sociedad"
+      },
+      "venue": "home",
+      "score": {
+        "for": 1,
+        "against": 3
+      },
+      "result": "L",
+      "sourceRef": "src:e6ceedb882c5d872d5cd"
+    },
+    {
+      "id": "football-data:80674f6a96b154105965778073abd2cadd2d6cbb9d8956f984351d0f5a05c4fe:2007-05-13:Gimnastic:Real%20Sociedad:home",
+      "date": "2007-05-13",
+      "season": "2006-07",
+      "competition": {
+        "name": "La Liga",
+        "type": "league",
+        "country": ""
+      },
+      "stage": "",
+      "opponent": {
+        "name": "Real Sociedad",
+        "slug": "real-sociedad"
+      },
+      "venue": "home",
+      "score": {
+        "for": 1,
+        "against": 3
+      },
+      "result": "L",
+      "sourceRef": "src:05f78f8932ec74468f83"
+    },
+    {
+      "id": "engsoccerdata:5d482cb76d8b47f77bec531683510815738bc54feb9f0e2524905665116d02fb:2007-05-19:Real%20Betis:Gimnastic:away",
+      "date": "2007-05-19",
+      "season": "2006-07",
+      "competition": {
+        "name": "Spanish League 1",
+        "type": "league",
+        "country": "Spain"
+      },
+      "stage": "league",
+      "opponent": {
+        "name": "Betis",
+        "slug": "betis"
+      },
+      "venue": "away",
+      "score": {
+        "for": 1,
+        "against": 1
+      },
+      "result": "D",
+      "sourceRef": "src:e6ceedb882c5d872d5cd"
+    },
+    {
+      "id": "football-data:80674f6a96b154105965778073abd2cadd2d6cbb9d8956f984351d0f5a05c4fe:2007-05-19:Betis:Gimnastic:away",
+      "date": "2007-05-19",
+      "season": "2006-07",
+      "competition": {
+        "name": "La Liga",
+        "type": "league",
+        "country": ""
+      },
+      "stage": "",
+      "opponent": {
+        "name": "Betis",
+        "slug": "betis"
+      },
+      "venue": "away",
+      "score": {
+        "for": 1,
+        "against": 1
+      },
+      "result": "D",
+      "sourceRef": "src:05f78f8932ec74468f83"
+    },
+    {
+      "id": "engsoccerdata:5d482cb76d8b47f77bec531683510815738bc54feb9f0e2524905665116d02fb:2007-05-27:Gimnastic:Atletico%20Madrid:home",
+      "date": "2007-05-27",
+      "season": "2006-07",
+      "competition": {
+        "name": "Spanish League 1",
+        "type": "league",
+        "country": "Spain"
+      },
+      "stage": "league",
+      "opponent": {
+        "name": "Ath Madrid",
+        "slug": "ath-madrid"
+      },
+      "venue": "home",
+      "score": {
+        "for": 0,
+        "against": 2
+      },
+      "result": "L",
+      "sourceRef": "src:e6ceedb882c5d872d5cd"
+    },
+    {
+      "id": "football-data:80674f6a96b154105965778073abd2cadd2d6cbb9d8956f984351d0f5a05c4fe:2007-05-27:Gimnastic:Ath%20Madrid:home",
+      "date": "2007-05-27",
+      "season": "2006-07",
+      "competition": {
+        "name": "La Liga",
+        "type": "league",
+        "country": ""
+      },
+      "stage": "",
+      "opponent": {
+        "name": "Ath Madrid",
+        "slug": "ath-madrid"
+      },
+      "venue": "home",
+      "score": {
+        "for": 0,
+        "against": 2
+      },
+      "result": "L",
+      "sourceRef": "src:05f78f8932ec74468f83"
+    },
+    {
+      "id": "engsoccerdata:5d482cb76d8b47f77bec531683510815738bc54feb9f0e2524905665116d02fb:2007-06-10:Getafe%20CF:Gimnastic:away",
+      "date": "2007-06-10",
+      "season": "2006-07",
+      "competition": {
+        "name": "Spanish League 1",
+        "type": "league",
+        "country": "Spain"
+      },
+      "stage": "league",
+      "opponent": {
+        "name": "Getafe CF",
+        "slug": "getafe-cf"
+      },
+      "venue": "away",
+      "score": {
+        "for": 1,
+        "against": 0
+      },
+      "result": "W",
+      "sourceRef": "src:e6ceedb882c5d872d5cd"
+    },
+    {
+      "id": "football-data:80674f6a96b154105965778073abd2cadd2d6cbb9d8956f984351d0f5a05c4fe:2007-06-10:Getafe:Gimnastic:away",
+      "date": "2007-06-10",
+      "season": "2006-07",
+      "competition": {
+        "name": "La Liga",
+        "type": "league",
+        "country": ""
+      },
+      "stage": "",
+      "opponent": {
+        "name": "Getafe",
+        "slug": "getafe"
+      },
+      "venue": "away",
+      "score": {
+        "for": 1,
+        "against": 0
+      },
+      "result": "W",
+      "sourceRef": "src:05f78f8932ec74468f83"
+    },
+    {
+      "id": "engsoccerdata:5d482cb76d8b47f77bec531683510815738bc54feb9f0e2524905665116d02fb:2007-06-17:Gimnastic:FC%20Barcelona:home",
+      "date": "2007-06-17",
+      "season": "2006-07",
+      "competition": {
+        "name": "Spanish League 1",
+        "type": "league",
+        "country": "Spain"
+      },
+      "stage": "league",
+      "opponent": {
+        "name": "Barcelona",
+        "slug": "barcelona"
+      },
+      "venue": "home",
+      "score": {
+        "for": 1,
+        "against": 5
+      },
+      "result": "L",
+      "sourceRef": "src:e6ceedb882c5d872d5cd"
+    },
+    {
+      "id": "football-data:80674f6a96b154105965778073abd2cadd2d6cbb9d8956f984351d0f5a05c4fe:2007-06-17:Gimnastic:Barcelona:home",
+      "date": "2007-06-17",
+      "season": "2006-07",
+      "competition": {
+        "name": "La Liga",
+        "type": "league",
+        "country": ""
+      },
+      "stage": "",
+      "opponent": {
+        "name": "Barcelona",
+        "slug": "barcelona"
+      },
+      "venue": "home",
+      "score": {
+        "for": 1,
+        "against": 5
+      },
+      "result": "L",
+      "sourceRef": "src:05f78f8932ec74468f83"
+    }
+  ],
+  "seasonStandings": [
+    {
+      "season": "2006-07",
+      "competition": {
+        "name": "La Liga",
+        "type": "league",
+        "country": ""
+      },
+      "position": 20,
+      "team": "Gimnastic",
+      "played": 38,
+      "won": 7,
+      "drawn": 7,
+      "lost": 24,
+      "goalsFor": 34,
+      "goalsAgainst": 69,
+      "points": 28,
+      "basis": "derived from recorded completed home fixtures"
+    },
+    {
+      "season": "2006-07",
+      "competition": {
+        "name": "Spanish League 1",
+        "type": "league",
+        "country": "Spain"
+      },
+      "position": 20,
+      "team": "Gimnastic",
+      "played": 38,
+      "won": 7,
+      "drawn": 7,
+      "lost": 24,
+      "goalsFor": 34,
+      "goalsAgainst": 69,
+      "points": 28,
+      "basis": "derived from recorded completed home fixtures"
+    }
+  ],
+  "competitionStandings": [],
+  "updatedAt": "2026-08-04T20:33:25.323Z"
+}

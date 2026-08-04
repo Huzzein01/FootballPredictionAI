@@ -1,0 +1,384 @@
+{
+  "contract": "football-team-history-v1",
+  "team": {
+    "name": "FK Sarajevo",
+    "slug": "fk-sarajevo",
+    "primaryLeague": "European Champion Clubs' Cup / Champions League",
+    "aliases": []
+  },
+  "requestedCoverage": {
+    "fromYear": 1985,
+    "to": "present",
+    "includes": [
+      "all competitions",
+      "opponents",
+      "scorelines",
+      "league standings",
+      "competition standings"
+    ]
+  },
+  "sourcePlan": [
+    {
+      "rank": 1,
+      "provider": "Official club archive",
+      "url": "",
+      "scope": "club history, competition participation and match reports",
+      "lookupKey": "FK Sarajevo",
+      "review": "Verify the club-owned archive URL before collection."
+    },
+    {
+      "rank": 2,
+      "provider": "Official domestic competition / association",
+      "url": "",
+      "scope": "official league fixtures, final tables and cup records",
+      "lookupKey": "European Champion Clubs' Cup / Champions League"
+    },
+    {
+      "rank": 3,
+      "provider": "UEFA",
+      "url": "https://www.uefa.com/",
+      "scope": "official European competition appearances, fixtures and standings",
+      "lookupKey": "FK Sarajevo"
+    },
+    {
+      "rank": 4,
+      "provider": "RSSSF",
+      "url": "https://www.rsssf.org/",
+      "scope": "historic competitions, tables and cross-checking",
+      "lookupKey": "FK Sarajevo"
+    },
+    {
+      "rank": 5,
+      "provider": "worldfootball.net",
+      "url": "https://www.worldfootball.net/",
+      "scope": "club match archive and competition participation cross-check",
+      "lookupKey": "FK Sarajevo"
+    }
+  ],
+  "coverage": {
+    "earliestMatch": "1985-09-18",
+    "latestMatch": "2015-07-22",
+    "seasonsWithMatches": [
+      "1985-86",
+      "2007-08",
+      "2015-16"
+    ],
+    "missingSeasons": [
+      "1986-87",
+      "1987-88",
+      "1988-89",
+      "1989-90",
+      "1990-91",
+      "1991-92",
+      "1992-93",
+      "1993-94",
+      "1994-95",
+      "1995-96",
+      "1996-97",
+      "1997-98",
+      "1998-99",
+      "1999-00",
+      "2000-01",
+      "2001-02",
+      "2002-03",
+      "2003-04",
+      "2004-05",
+      "2005-06",
+      "2006-07",
+      "2008-09",
+      "2009-10",
+      "2010-11",
+      "2011-12",
+      "2012-13",
+      "2013-14",
+      "2014-15",
+      "2016-17",
+      "2017-18",
+      "2018-19",
+      "2019-20",
+      "2020-21",
+      "2021-22",
+      "2022-23",
+      "2023-24",
+      "2024-25",
+      "2025-26",
+      "2026-27"
+    ],
+    "competitionScopeVerified": false,
+    "status": "partial"
+  },
+  "matches": [
+    {
+      "id": "engsoccerdata:ab554db1a8b9bdb3788dd99077b6b6d754d64f09e84cb506bc3442cc323cbaea:1985-09-18:FC%20Kuusysi:FK%20Sarajevo:away",
+      "date": "1985-09-18",
+      "season": "1985-86",
+      "competition": {
+        "name": "European Champion Clubs' Cup / Champions League",
+        "type": "continental",
+        "country": "Europe"
+      },
+      "stage": "Round1",
+      "opponent": {
+        "name": "FC Kuusysi",
+        "slug": "fc-kuusysi"
+      },
+      "venue": "away",
+      "score": {
+        "for": 1,
+        "against": 2
+      },
+      "result": "L",
+      "sourceRef": "src:1ac1d16b4d91beda9a2b"
+    },
+    {
+      "id": "engsoccerdata:ab554db1a8b9bdb3788dd99077b6b6d754d64f09e84cb506bc3442cc323cbaea:1985-10-02:FK%20Sarajevo:FC%20Kuusysi:home",
+      "date": "1985-10-02",
+      "season": "1985-86",
+      "competition": {
+        "name": "European Champion Clubs' Cup / Champions League",
+        "type": "continental",
+        "country": "Europe"
+      },
+      "stage": "Round1",
+      "opponent": {
+        "name": "FC Kuusysi",
+        "slug": "fc-kuusysi"
+      },
+      "venue": "home",
+      "score": {
+        "for": 1,
+        "against": 2
+      },
+      "result": "L",
+      "sourceRef": "src:1ac1d16b4d91beda9a2b"
+    },
+    {
+      "id": "engsoccerdata:ab554db1a8b9bdb3788dd99077b6b6d754d64f09e84cb506bc3442cc323cbaea:2007-07-18:Marsaxlokk:FK%20Sarajevo:away",
+      "date": "2007-07-18",
+      "season": "2007-08",
+      "competition": {
+        "name": "European Champion Clubs' Cup / Champions League",
+        "type": "continental",
+        "country": "Europe"
+      },
+      "stage": "Q-1",
+      "opponent": {
+        "name": "Marsaxlokk",
+        "slug": "marsaxlokk"
+      },
+      "venue": "away",
+      "score": {
+        "for": 6,
+        "against": 0
+      },
+      "result": "W",
+      "sourceRef": "src:1ac1d16b4d91beda9a2b"
+    },
+    {
+      "id": "engsoccerdata:ab554db1a8b9bdb3788dd99077b6b6d754d64f09e84cb506bc3442cc323cbaea:2007-07-24:FK%20Sarajevo:Marsaxlokk:home",
+      "date": "2007-07-24",
+      "season": "2007-08",
+      "competition": {
+        "name": "European Champion Clubs' Cup / Champions League",
+        "type": "continental",
+        "country": "Europe"
+      },
+      "stage": "Q-1",
+      "opponent": {
+        "name": "Marsaxlokk",
+        "slug": "marsaxlokk"
+      },
+      "venue": "home",
+      "score": {
+        "for": 3,
+        "against": 1
+      },
+      "result": "W",
+      "sourceRef": "src:1ac1d16b4d91beda9a2b"
+    },
+    {
+      "id": "engsoccerdata:ab554db1a8b9bdb3788dd99077b6b6d754d64f09e84cb506bc3442cc323cbaea:2007-07-31:KRC%20Genk:FK%20Sarajevo:away",
+      "date": "2007-07-31",
+      "season": "2007-08",
+      "competition": {
+        "name": "European Champion Clubs' Cup / Champions League",
+        "type": "continental",
+        "country": "Europe"
+      },
+      "stage": "Q-2",
+      "opponent": {
+        "name": "KRC Genk",
+        "slug": "krc-genk"
+      },
+      "venue": "away",
+      "score": {
+        "for": 2,
+        "against": 1
+      },
+      "result": "W",
+      "sourceRef": "src:1ac1d16b4d91beda9a2b"
+    },
+    {
+      "id": "engsoccerdata:ab554db1a8b9bdb3788dd99077b6b6d754d64f09e84cb506bc3442cc323cbaea:2007-08-08:FK%20Sarajevo:KRC%20Genk:home",
+      "date": "2007-08-08",
+      "season": "2007-08",
+      "competition": {
+        "name": "European Champion Clubs' Cup / Champions League",
+        "type": "continental",
+        "country": "Europe"
+      },
+      "stage": "Q-2",
+      "opponent": {
+        "name": "KRC Genk",
+        "slug": "krc-genk"
+      },
+      "venue": "home",
+      "score": {
+        "for": 0,
+        "against": 1
+      },
+      "result": "L",
+      "sourceRef": "src:1ac1d16b4d91beda9a2b"
+    },
+    {
+      "id": "engsoccerdata:ab554db1a8b9bdb3788dd99077b6b6d754d64f09e84cb506bc3442cc323cbaea:2007-08-15:FK%20Sarajevo:Dinamo%20Kiev:home",
+      "date": "2007-08-15",
+      "season": "2007-08",
+      "competition": {
+        "name": "European Champion Clubs' Cup / Champions League",
+        "type": "continental",
+        "country": "Europe"
+      },
+      "stage": "Q-3",
+      "opponent": {
+        "name": "Dinamo Kiev",
+        "slug": "dinamo-kiev"
+      },
+      "venue": "home",
+      "score": {
+        "for": 0,
+        "against": 1
+      },
+      "result": "L",
+      "sourceRef": "src:1ac1d16b4d91beda9a2b"
+    },
+    {
+      "id": "engsoccerdata:ab554db1a8b9bdb3788dd99077b6b6d754d64f09e84cb506bc3442cc323cbaea:2007-08-29:Dinamo%20Kiev:FK%20Sarajevo:away",
+      "date": "2007-08-29",
+      "season": "2007-08",
+      "competition": {
+        "name": "European Champion Clubs' Cup / Champions League",
+        "type": "continental",
+        "country": "Europe"
+      },
+      "stage": "Q-3",
+      "opponent": {
+        "name": "Dinamo Kiev",
+        "slug": "dinamo-kiev"
+      },
+      "venue": "away",
+      "score": {
+        "for": 0,
+        "against": 3
+      },
+      "result": "L",
+      "sourceRef": "src:1ac1d16b4d91beda9a2b"
+    },
+    {
+      "id": "engsoccerdata:ab554db1a8b9bdb3788dd99077b6b6d754d64f09e84cb506bc3442cc323cbaea:2015-07-14:FK%20Sarajevo:Lech%20Poznan:home",
+      "date": "2015-07-14",
+      "season": "2015-16",
+      "competition": {
+        "name": "European Champion Clubs' Cup / Champions League",
+        "type": "continental",
+        "country": "Europe"
+      },
+      "stage": "Q-2",
+      "opponent": {
+        "name": "Lech Poznan",
+        "slug": "lech-poznan"
+      },
+      "venue": "home",
+      "score": {
+        "for": 0,
+        "against": 2
+      },
+      "result": "L",
+      "sourceRef": "src:1ac1d16b4d91beda9a2b"
+    },
+    {
+      "id": "engsoccerdata:ab554db1a8b9bdb3788dd99077b6b6d754d64f09e84cb506bc3442cc323cbaea:2015-07-22:Lech%20Poznan:FK%20Sarajevo:away",
+      "date": "2015-07-22",
+      "season": "2015-16",
+      "competition": {
+        "name": "European Champion Clubs' Cup / Champions League",
+        "type": "continental",
+        "country": "Europe"
+      },
+      "stage": "Q-2",
+      "opponent": {
+        "name": "Lech Poznan",
+        "slug": "lech-poznan"
+      },
+      "venue": "away",
+      "score": {
+        "for": 0,
+        "against": 1
+      },
+      "result": "L",
+      "sourceRef": "src:1ac1d16b4d91beda9a2b"
+    }
+  ],
+  "seasonStandings": [],
+  "competitionStandings": [
+    {
+      "season": "1985-86",
+      "competition": {
+        "name": "European Champion Clubs' Cup / Champions League",
+        "type": "continental",
+        "country": "Europe"
+      },
+      "format": "knockout-progress",
+      "matches": 2,
+      "wins": 0,
+      "draws": 0,
+      "losses": 2,
+      "furthestStage": "Round1",
+      "latestMatch": "1985-10-02",
+      "basis": "derived from source-attributed recorded matches"
+    },
+    {
+      "season": "2007-08",
+      "competition": {
+        "name": "European Champion Clubs' Cup / Champions League",
+        "type": "continental",
+        "country": "Europe"
+      },
+      "format": "knockout-progress",
+      "matches": 6,
+      "wins": 3,
+      "draws": 0,
+      "losses": 3,
+      "furthestStage": "Q-3",
+      "latestMatch": "2007-08-29",
+      "basis": "derived from source-attributed recorded matches"
+    },
+    {
+      "season": "2015-16",
+      "competition": {
+        "name": "European Champion Clubs' Cup / Champions League",
+        "type": "continental",
+        "country": "Europe"
+      },
+      "format": "knockout-progress",
+      "matches": 2,
+      "wins": 0,
+      "draws": 0,
+      "losses": 2,
+      "furthestStage": "Q-2",
+      "latestMatch": "2015-07-22",
+      "basis": "derived from source-attributed recorded matches"
+    }
+  ],
+  "updatedAt": "2026-08-04T20:33:25.022Z"
+}

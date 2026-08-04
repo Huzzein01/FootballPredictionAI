@@ -1,0 +1,882 @@
+{
+  "contract": "football-team-history-v1",
+  "team": {
+    "name": "Geel",
+    "slug": "geel",
+    "primaryLeague": "Belgian League B1",
+    "aliases": []
+  },
+  "requestedCoverage": {
+    "fromYear": 1985,
+    "to": "present",
+    "includes": [
+      "all competitions",
+      "opponents",
+      "scorelines",
+      "league standings",
+      "competition standings"
+    ]
+  },
+  "sourcePlan": [
+    {
+      "rank": 1,
+      "provider": "Official club archive",
+      "url": "",
+      "scope": "club history, competition participation and match reports",
+      "lookupKey": "Geel",
+      "review": "Verify the club-owned archive URL before collection."
+    },
+    {
+      "rank": 2,
+      "provider": "Official domestic competition / association",
+      "url": "",
+      "scope": "official league fixtures, final tables and cup records",
+      "lookupKey": "Belgian League B1"
+    },
+    {
+      "rank": 3,
+      "provider": "UEFA",
+      "url": "https://www.uefa.com/",
+      "scope": "official European competition appearances, fixtures and standings",
+      "lookupKey": "Geel"
+    },
+    {
+      "rank": 4,
+      "provider": "RSSSF",
+      "url": "https://www.rsssf.org/",
+      "scope": "historic competitions, tables and cross-checking",
+      "lookupKey": "Geel"
+    },
+    {
+      "rank": 5,
+      "provider": "worldfootball.net",
+      "url": "https://www.worldfootball.net/",
+      "scope": "club match archive and competition participation cross-check",
+      "lookupKey": "Geel"
+    }
+  ],
+  "coverage": {
+    "earliestMatch": "1999-08-06",
+    "latestMatch": "2000-05-11",
+    "seasonsWithMatches": [
+      "1999-00"
+    ],
+    "missingSeasons": [
+      "1985-86",
+      "1986-87",
+      "1987-88",
+      "1988-89",
+      "1989-90",
+      "1990-91",
+      "1991-92",
+      "1992-93",
+      "1993-94",
+      "1994-95",
+      "1995-96",
+      "1996-97",
+      "1997-98",
+      "1998-99",
+      "2000-01",
+      "2001-02",
+      "2002-03",
+      "2003-04",
+      "2004-05",
+      "2005-06",
+      "2006-07",
+      "2007-08",
+      "2008-09",
+      "2009-10",
+      "2010-11",
+      "2011-12",
+      "2012-13",
+      "2013-14",
+      "2014-15",
+      "2015-16",
+      "2016-17",
+      "2017-18",
+      "2018-19",
+      "2019-20",
+      "2020-21",
+      "2021-22",
+      "2022-23",
+      "2023-24",
+      "2024-25",
+      "2025-26",
+      "2026-27"
+    ],
+    "competitionScopeVerified": false,
+    "status": "partial"
+  },
+  "matches": [
+    {
+      "id": "engsoccerdata:7eb7b3d83da5313834a25592edf0cc2f8ca02c94a4dcf444a344844ab2386021:1999-08-06:Geel:Gent:home",
+      "date": "1999-08-06",
+      "season": "1999-00",
+      "competition": {
+        "name": "Belgian League B1",
+        "type": "league",
+        "country": "Belgium"
+      },
+      "stage": "",
+      "opponent": {
+        "name": "Gent",
+        "slug": "gent"
+      },
+      "venue": "home",
+      "score": {
+        "for": 1,
+        "against": 5
+      },
+      "result": "L",
+      "sourceRef": "src:31814862a83fdc9c981e"
+    },
+    {
+      "id": "engsoccerdata:7eb7b3d83da5313834a25592edf0cc2f8ca02c94a4dcf444a344844ab2386021:1999-08-14:St%20Truiden:Geel:away",
+      "date": "1999-08-14",
+      "season": "1999-00",
+      "competition": {
+        "name": "Belgian League B1",
+        "type": "league",
+        "country": "Belgium"
+      },
+      "stage": "",
+      "opponent": {
+        "name": "St Truiden",
+        "slug": "st-truiden"
+      },
+      "venue": "away",
+      "score": {
+        "for": 1,
+        "against": 1
+      },
+      "result": "D",
+      "sourceRef": "src:31814862a83fdc9c981e"
+    },
+    {
+      "id": "engsoccerdata:7eb7b3d83da5313834a25592edf0cc2f8ca02c94a4dcf444a344844ab2386021:1999-08-21:Geel:Genk:home",
+      "date": "1999-08-21",
+      "season": "1999-00",
+      "competition": {
+        "name": "Belgian League B1",
+        "type": "league",
+        "country": "Belgium"
+      },
+      "stage": "",
+      "opponent": {
+        "name": "Genk",
+        "slug": "genk"
+      },
+      "venue": "home",
+      "score": {
+        "for": 1,
+        "against": 1
+      },
+      "result": "D",
+      "sourceRef": "src:31814862a83fdc9c981e"
+    },
+    {
+      "id": "engsoccerdata:7eb7b3d83da5313834a25592edf0cc2f8ca02c94a4dcf444a344844ab2386021:1999-08-28:Lokeren:Geel:away",
+      "date": "1999-08-28",
+      "season": "1999-00",
+      "competition": {
+        "name": "Belgian League B1",
+        "type": "league",
+        "country": "Belgium"
+      },
+      "stage": "",
+      "opponent": {
+        "name": "Lokeren",
+        "slug": "lokeren"
+      },
+      "venue": "away",
+      "score": {
+        "for": 0,
+        "against": 0
+      },
+      "result": "D",
+      "sourceRef": "src:31814862a83fdc9c981e"
+    },
+    {
+      "id": "engsoccerdata:7eb7b3d83da5313834a25592edf0cc2f8ca02c94a4dcf444a344844ab2386021:1999-09-11:Geel:Standard:home",
+      "date": "1999-09-11",
+      "season": "1999-00",
+      "competition": {
+        "name": "Belgian League B1",
+        "type": "league",
+        "country": "Belgium"
+      },
+      "stage": "",
+      "opponent": {
+        "name": "Standard",
+        "slug": "standard"
+      },
+      "venue": "home",
+      "score": {
+        "for": 0,
+        "against": 0
+      },
+      "result": "D",
+      "sourceRef": "src:31814862a83fdc9c981e"
+    },
+    {
+      "id": "engsoccerdata:7eb7b3d83da5313834a25592edf0cc2f8ca02c94a4dcf444a344844ab2386021:1999-09-18:Germinal:Geel:away",
+      "date": "1999-09-18",
+      "season": "1999-00",
+      "competition": {
+        "name": "Belgian League B1",
+        "type": "league",
+        "country": "Belgium"
+      },
+      "stage": "",
+      "opponent": {
+        "name": "Germinal",
+        "slug": "germinal"
+      },
+      "venue": "away",
+      "score": {
+        "for": 1,
+        "against": 4
+      },
+      "result": "L",
+      "sourceRef": "src:31814862a83fdc9c981e"
+    },
+    {
+      "id": "engsoccerdata:7eb7b3d83da5313834a25592edf0cc2f8ca02c94a4dcf444a344844ab2386021:1999-09-26:Geel:Charleroi:home",
+      "date": "1999-09-26",
+      "season": "1999-00",
+      "competition": {
+        "name": "Belgian League B1",
+        "type": "league",
+        "country": "Belgium"
+      },
+      "stage": "",
+      "opponent": {
+        "name": "Charleroi",
+        "slug": "charleroi"
+      },
+      "venue": "home",
+      "score": {
+        "for": 0,
+        "against": 0
+      },
+      "result": "D",
+      "sourceRef": "src:31814862a83fdc9c981e"
+    },
+    {
+      "id": "engsoccerdata:7eb7b3d83da5313834a25592edf0cc2f8ca02c94a4dcf444a344844ab2386021:1999-10-03:Aalst:Geel:away",
+      "date": "1999-10-03",
+      "season": "1999-00",
+      "competition": {
+        "name": "Belgian League B1",
+        "type": "league",
+        "country": "Belgium"
+      },
+      "stage": "",
+      "opponent": {
+        "name": "Aalst",
+        "slug": "aalst"
+      },
+      "venue": "away",
+      "score": {
+        "for": 0,
+        "against": 1
+      },
+      "result": "L",
+      "sourceRef": "src:31814862a83fdc9c981e"
+    },
+    {
+      "id": "engsoccerdata:7eb7b3d83da5313834a25592edf0cc2f8ca02c94a4dcf444a344844ab2386021:1999-10-13:Geel:Mouscron:home",
+      "date": "1999-10-13",
+      "season": "1999-00",
+      "competition": {
+        "name": "Belgian League B1",
+        "type": "league",
+        "country": "Belgium"
+      },
+      "stage": "",
+      "opponent": {
+        "name": "Mouscron",
+        "slug": "mouscron"
+      },
+      "venue": "home",
+      "score": {
+        "for": 1,
+        "against": 4
+      },
+      "result": "L",
+      "sourceRef": "src:31814862a83fdc9c981e"
+    },
+    {
+      "id": "engsoccerdata:7eb7b3d83da5313834a25592edf0cc2f8ca02c94a4dcf444a344844ab2386021:1999-10-24:Anderlecht:Geel:away",
+      "date": "1999-10-24",
+      "season": "1999-00",
+      "competition": {
+        "name": "Belgian League B1",
+        "type": "league",
+        "country": "Belgium"
+      },
+      "stage": "",
+      "opponent": {
+        "name": "Anderlecht",
+        "slug": "anderlecht"
+      },
+      "venue": "away",
+      "score": {
+        "for": 0,
+        "against": 4
+      },
+      "result": "L",
+      "sourceRef": "src:31814862a83fdc9c981e"
+    },
+    {
+      "id": "engsoccerdata:7eb7b3d83da5313834a25592edf0cc2f8ca02c94a4dcf444a344844ab2386021:1999-10-30:Geel:Beveren:home",
+      "date": "1999-10-30",
+      "season": "1999-00",
+      "competition": {
+        "name": "Belgian League B1",
+        "type": "league",
+        "country": "Belgium"
+      },
+      "stage": "",
+      "opponent": {
+        "name": "Beveren",
+        "slug": "beveren"
+      },
+      "venue": "home",
+      "score": {
+        "for": 1,
+        "against": 1
+      },
+      "result": "D",
+      "sourceRef": "src:31814862a83fdc9c981e"
+    },
+    {
+      "id": "engsoccerdata:7eb7b3d83da5313834a25592edf0cc2f8ca02c94a4dcf444a344844ab2386021:1999-11-07:Harelbeke:Geel:away",
+      "date": "1999-11-07",
+      "season": "1999-00",
+      "competition": {
+        "name": "Belgian League B1",
+        "type": "league",
+        "country": "Belgium"
+      },
+      "stage": "",
+      "opponent": {
+        "name": "Harelbeke",
+        "slug": "harelbeke"
+      },
+      "venue": "away",
+      "score": {
+        "for": 0,
+        "against": 3
+      },
+      "result": "L",
+      "sourceRef": "src:31814862a83fdc9c981e"
+    },
+    {
+      "id": "engsoccerdata:7eb7b3d83da5313834a25592edf0cc2f8ca02c94a4dcf444a344844ab2386021:1999-11-10:Geel:Lierse:home",
+      "date": "1999-11-10",
+      "season": "1999-00",
+      "competition": {
+        "name": "Belgian League B1",
+        "type": "league",
+        "country": "Belgium"
+      },
+      "stage": "",
+      "opponent": {
+        "name": "Lierse",
+        "slug": "lierse"
+      },
+      "venue": "home",
+      "score": {
+        "for": 2,
+        "against": 1
+      },
+      "result": "W",
+      "sourceRef": "src:31814862a83fdc9c981e"
+    },
+    {
+      "id": "engsoccerdata:7eb7b3d83da5313834a25592edf0cc2f8ca02c94a4dcf444a344844ab2386021:1999-11-20:Mechelen:Geel:away",
+      "date": "1999-11-20",
+      "season": "1999-00",
+      "competition": {
+        "name": "Belgian League B1",
+        "type": "league",
+        "country": "Belgium"
+      },
+      "stage": "",
+      "opponent": {
+        "name": "Mechelen",
+        "slug": "mechelen"
+      },
+      "venue": "away",
+      "score": {
+        "for": 1,
+        "against": 1
+      },
+      "result": "D",
+      "sourceRef": "src:31814862a83fdc9c981e"
+    },
+    {
+      "id": "engsoccerdata:7eb7b3d83da5313834a25592edf0cc2f8ca02c94a4dcf444a344844ab2386021:1999-11-27:Geel:Lommel:home",
+      "date": "1999-11-27",
+      "season": "1999-00",
+      "competition": {
+        "name": "Belgian League B1",
+        "type": "league",
+        "country": "Belgium"
+      },
+      "stage": "",
+      "opponent": {
+        "name": "Lommel",
+        "slug": "lommel"
+      },
+      "venue": "home",
+      "score": {
+        "for": 0,
+        "against": 0
+      },
+      "result": "D",
+      "sourceRef": "src:31814862a83fdc9c981e"
+    },
+    {
+      "id": "engsoccerdata:7eb7b3d83da5313834a25592edf0cc2f8ca02c94a4dcf444a344844ab2386021:1999-12-04:Geel:Westerlo:home",
+      "date": "1999-12-04",
+      "season": "1999-00",
+      "competition": {
+        "name": "Belgian League B1",
+        "type": "league",
+        "country": "Belgium"
+      },
+      "stage": "",
+      "opponent": {
+        "name": "Westerlo",
+        "slug": "westerlo"
+      },
+      "venue": "home",
+      "score": {
+        "for": 2,
+        "against": 3
+      },
+      "result": "L",
+      "sourceRef": "src:31814862a83fdc9c981e"
+    },
+    {
+      "id": "engsoccerdata:7eb7b3d83da5313834a25592edf0cc2f8ca02c94a4dcf444a344844ab2386021:1999-12-11:Club%20Brugge:Geel:away",
+      "date": "1999-12-11",
+      "season": "1999-00",
+      "competition": {
+        "name": "Belgian League B1",
+        "type": "league",
+        "country": "Belgium"
+      },
+      "stage": "",
+      "opponent": {
+        "name": "Club Brugge",
+        "slug": "club-brugge"
+      },
+      "venue": "away",
+      "score": {
+        "for": 0,
+        "against": 4
+      },
+      "result": "L",
+      "sourceRef": "src:31814862a83fdc9c981e"
+    },
+    {
+      "id": "engsoccerdata:7eb7b3d83da5313834a25592edf0cc2f8ca02c94a4dcf444a344844ab2386021:2000-01-12:Gent:Geel:away",
+      "date": "2000-01-12",
+      "season": "1999-00",
+      "competition": {
+        "name": "Belgian League B1",
+        "type": "league",
+        "country": "Belgium"
+      },
+      "stage": "",
+      "opponent": {
+        "name": "Gent",
+        "slug": "gent"
+      },
+      "venue": "away",
+      "score": {
+        "for": 1,
+        "against": 1
+      },
+      "result": "D",
+      "sourceRef": "src:31814862a83fdc9c981e"
+    },
+    {
+      "id": "engsoccerdata:7eb7b3d83da5313834a25592edf0cc2f8ca02c94a4dcf444a344844ab2386021:2000-01-15:Geel:St%20Truiden:home",
+      "date": "2000-01-15",
+      "season": "1999-00",
+      "competition": {
+        "name": "Belgian League B1",
+        "type": "league",
+        "country": "Belgium"
+      },
+      "stage": "",
+      "opponent": {
+        "name": "St Truiden",
+        "slug": "st-truiden"
+      },
+      "venue": "home",
+      "score": {
+        "for": 1,
+        "against": 2
+      },
+      "result": "L",
+      "sourceRef": "src:31814862a83fdc9c981e"
+    },
+    {
+      "id": "engsoccerdata:7eb7b3d83da5313834a25592edf0cc2f8ca02c94a4dcf444a344844ab2386021:2000-01-22:Genk:Geel:away",
+      "date": "2000-01-22",
+      "season": "1999-00",
+      "competition": {
+        "name": "Belgian League B1",
+        "type": "league",
+        "country": "Belgium"
+      },
+      "stage": "",
+      "opponent": {
+        "name": "Genk",
+        "slug": "genk"
+      },
+      "venue": "away",
+      "score": {
+        "for": 0,
+        "against": 1
+      },
+      "result": "L",
+      "sourceRef": "src:31814862a83fdc9c981e"
+    },
+    {
+      "id": "engsoccerdata:7eb7b3d83da5313834a25592edf0cc2f8ca02c94a4dcf444a344844ab2386021:2000-01-29:Geel:Lokeren:home",
+      "date": "2000-01-29",
+      "season": "1999-00",
+      "competition": {
+        "name": "Belgian League B1",
+        "type": "league",
+        "country": "Belgium"
+      },
+      "stage": "",
+      "opponent": {
+        "name": "Lokeren",
+        "slug": "lokeren"
+      },
+      "venue": "home",
+      "score": {
+        "for": 3,
+        "against": 0
+      },
+      "result": "W",
+      "sourceRef": "src:31814862a83fdc9c981e"
+    },
+    {
+      "id": "engsoccerdata:7eb7b3d83da5313834a25592edf0cc2f8ca02c94a4dcf444a344844ab2386021:2000-02-06:Standard:Geel:away",
+      "date": "2000-02-06",
+      "season": "1999-00",
+      "competition": {
+        "name": "Belgian League B1",
+        "type": "league",
+        "country": "Belgium"
+      },
+      "stage": "",
+      "opponent": {
+        "name": "Standard",
+        "slug": "standard"
+      },
+      "venue": "away",
+      "score": {
+        "for": 0,
+        "against": 3
+      },
+      "result": "L",
+      "sourceRef": "src:31814862a83fdc9c981e"
+    },
+    {
+      "id": "engsoccerdata:7eb7b3d83da5313834a25592edf0cc2f8ca02c94a4dcf444a344844ab2386021:2000-02-12:Geel:Germinal:home",
+      "date": "2000-02-12",
+      "season": "1999-00",
+      "competition": {
+        "name": "Belgian League B1",
+        "type": "league",
+        "country": "Belgium"
+      },
+      "stage": "",
+      "opponent": {
+        "name": "Germinal",
+        "slug": "germinal"
+      },
+      "venue": "home",
+      "score": {
+        "for": 0,
+        "against": 2
+      },
+      "result": "L",
+      "sourceRef": "src:31814862a83fdc9c981e"
+    },
+    {
+      "id": "engsoccerdata:7eb7b3d83da5313834a25592edf0cc2f8ca02c94a4dcf444a344844ab2386021:2000-02-19:Charleroi:Geel:away",
+      "date": "2000-02-19",
+      "season": "1999-00",
+      "competition": {
+        "name": "Belgian League B1",
+        "type": "league",
+        "country": "Belgium"
+      },
+      "stage": "",
+      "opponent": {
+        "name": "Charleroi",
+        "slug": "charleroi"
+      },
+      "venue": "away",
+      "score": {
+        "for": 3,
+        "against": 1
+      },
+      "result": "W",
+      "sourceRef": "src:31814862a83fdc9c981e"
+    },
+    {
+      "id": "engsoccerdata:7eb7b3d83da5313834a25592edf0cc2f8ca02c94a4dcf444a344844ab2386021:2000-03-04:Geel:Aalst:home",
+      "date": "2000-03-04",
+      "season": "1999-00",
+      "competition": {
+        "name": "Belgian League B1",
+        "type": "league",
+        "country": "Belgium"
+      },
+      "stage": "",
+      "opponent": {
+        "name": "Aalst",
+        "slug": "aalst"
+      },
+      "venue": "home",
+      "score": {
+        "for": 1,
+        "against": 2
+      },
+      "result": "L",
+      "sourceRef": "src:31814862a83fdc9c981e"
+    },
+    {
+      "id": "engsoccerdata:7eb7b3d83da5313834a25592edf0cc2f8ca02c94a4dcf444a344844ab2386021:2000-03-11:Mouscron:Geel:away",
+      "date": "2000-03-11",
+      "season": "1999-00",
+      "competition": {
+        "name": "Belgian League B1",
+        "type": "league",
+        "country": "Belgium"
+      },
+      "stage": "",
+      "opponent": {
+        "name": "Mouscron",
+        "slug": "mouscron"
+      },
+      "venue": "away",
+      "score": {
+        "for": 1,
+        "against": 3
+      },
+      "result": "L",
+      "sourceRef": "src:31814862a83fdc9c981e"
+    },
+    {
+      "id": "engsoccerdata:7eb7b3d83da5313834a25592edf0cc2f8ca02c94a4dcf444a344844ab2386021:2000-03-18:Geel:Anderlecht:home",
+      "date": "2000-03-18",
+      "season": "1999-00",
+      "competition": {
+        "name": "Belgian League B1",
+        "type": "league",
+        "country": "Belgium"
+      },
+      "stage": "",
+      "opponent": {
+        "name": "Anderlecht",
+        "slug": "anderlecht"
+      },
+      "venue": "home",
+      "score": {
+        "for": 0,
+        "against": 0
+      },
+      "result": "D",
+      "sourceRef": "src:31814862a83fdc9c981e"
+    },
+    {
+      "id": "engsoccerdata:7eb7b3d83da5313834a25592edf0cc2f8ca02c94a4dcf444a344844ab2386021:2000-03-25:Beveren:Geel:away",
+      "date": "2000-03-25",
+      "season": "1999-00",
+      "competition": {
+        "name": "Belgian League B1",
+        "type": "league",
+        "country": "Belgium"
+      },
+      "stage": "",
+      "opponent": {
+        "name": "Beveren",
+        "slug": "beveren"
+      },
+      "venue": "away",
+      "score": {
+        "for": 1,
+        "against": 1
+      },
+      "result": "D",
+      "sourceRef": "src:31814862a83fdc9c981e"
+    },
+    {
+      "id": "engsoccerdata:7eb7b3d83da5313834a25592edf0cc2f8ca02c94a4dcf444a344844ab2386021:2000-04-02:Geel:Harelbeke:home",
+      "date": "2000-04-02",
+      "season": "1999-00",
+      "competition": {
+        "name": "Belgian League B1",
+        "type": "league",
+        "country": "Belgium"
+      },
+      "stage": "",
+      "opponent": {
+        "name": "Harelbeke",
+        "slug": "harelbeke"
+      },
+      "venue": "home",
+      "score": {
+        "for": 3,
+        "against": 2
+      },
+      "result": "W",
+      "sourceRef": "src:31814862a83fdc9c981e"
+    },
+    {
+      "id": "engsoccerdata:7eb7b3d83da5313834a25592edf0cc2f8ca02c94a4dcf444a344844ab2386021:2000-04-07:Lierse:Geel:away",
+      "date": "2000-04-07",
+      "season": "1999-00",
+      "competition": {
+        "name": "Belgian League B1",
+        "type": "league",
+        "country": "Belgium"
+      },
+      "stage": "",
+      "opponent": {
+        "name": "Lierse",
+        "slug": "lierse"
+      },
+      "venue": "away",
+      "score": {
+        "for": 2,
+        "against": 2
+      },
+      "result": "D",
+      "sourceRef": "src:31814862a83fdc9c981e"
+    },
+    {
+      "id": "engsoccerdata:7eb7b3d83da5313834a25592edf0cc2f8ca02c94a4dcf444a344844ab2386021:2000-04-16:Geel:Mechelen:home",
+      "date": "2000-04-16",
+      "season": "1999-00",
+      "competition": {
+        "name": "Belgian League B1",
+        "type": "league",
+        "country": "Belgium"
+      },
+      "stage": "",
+      "opponent": {
+        "name": "Mechelen",
+        "slug": "mechelen"
+      },
+      "venue": "home",
+      "score": {
+        "for": 3,
+        "against": 0
+      },
+      "result": "W",
+      "sourceRef": "src:31814862a83fdc9c981e"
+    },
+    {
+      "id": "engsoccerdata:7eb7b3d83da5313834a25592edf0cc2f8ca02c94a4dcf444a344844ab2386021:2000-04-22:Lommel:Geel:away",
+      "date": "2000-04-22",
+      "season": "1999-00",
+      "competition": {
+        "name": "Belgian League B1",
+        "type": "league",
+        "country": "Belgium"
+      },
+      "stage": "",
+      "opponent": {
+        "name": "Lommel",
+        "slug": "lommel"
+      },
+      "venue": "away",
+      "score": {
+        "for": 1,
+        "against": 1
+      },
+      "result": "D",
+      "sourceRef": "src:31814862a83fdc9c981e"
+    },
+    {
+      "id": "engsoccerdata:7eb7b3d83da5313834a25592edf0cc2f8ca02c94a4dcf444a344844ab2386021:2000-05-06:Westerlo:Geel:away",
+      "date": "2000-05-06",
+      "season": "1999-00",
+      "competition": {
+        "name": "Belgian League B1",
+        "type": "league",
+        "country": "Belgium"
+      },
+      "stage": "",
+      "opponent": {
+        "name": "Westerlo",
+        "slug": "westerlo"
+      },
+      "venue": "away",
+      "score": {
+        "for": 1,
+        "against": 4
+      },
+      "result": "L",
+      "sourceRef": "src:31814862a83fdc9c981e"
+    },
+    {
+      "id": "engsoccerdata:7eb7b3d83da5313834a25592edf0cc2f8ca02c94a4dcf444a344844ab2386021:2000-05-11:Geel:Club%20Brugge:home",
+      "date": "2000-05-11",
+      "season": "1999-00",
+      "competition": {
+        "name": "Belgian League B1",
+        "type": "league",
+        "country": "Belgium"
+      },
+      "stage": "",
+      "opponent": {
+        "name": "Club Brugge",
+        "slug": "club-brugge"
+      },
+      "venue": "home",
+      "score": {
+        "for": 0,
+        "against": 2
+      },
+      "result": "L",
+      "sourceRef": "src:31814862a83fdc9c981e"
+    }
+  ],
+  "seasonStandings": [
+    {
+      "season": "1999-00",
+      "competition": {
+        "name": "Belgian League B1",
+        "type": "league",
+        "country": "Belgium"
+      },
+      "position": 17,
+      "team": "Geel",
+      "played": 34,
+      "won": 5,
+      "drawn": 13,
+      "lost": 16,
+      "goalsFor": 32,
+      "goalsAgainst": 60,
+      "points": 28,
+      "basis": "derived from recorded completed home fixtures"
+    }
+  ],
+  "competitionStandings": [],
+  "updatedAt": "2026-08-04T20:33:25.223Z"
+}

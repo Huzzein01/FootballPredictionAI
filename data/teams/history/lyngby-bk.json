@@ -1,0 +1,176 @@
+{
+  "contract": "football-team-history-v1",
+  "team": {
+    "name": "Lyngby BK",
+    "slug": "lyngby-bk",
+    "primaryLeague": "European Champion Clubs' Cup / Champions League",
+    "aliases": []
+  },
+  "requestedCoverage": {
+    "fromYear": 1985,
+    "to": "present",
+    "includes": [
+      "all competitions",
+      "opponents",
+      "scorelines",
+      "league standings",
+      "competition standings"
+    ]
+  },
+  "sourcePlan": [
+    {
+      "rank": 1,
+      "provider": "Official club archive",
+      "url": "",
+      "scope": "club history, competition participation and match reports",
+      "lookupKey": "Lyngby BK",
+      "review": "Verify the club-owned archive URL before collection."
+    },
+    {
+      "rank": 2,
+      "provider": "Official domestic competition / association",
+      "url": "",
+      "scope": "official league fixtures, final tables and cup records",
+      "lookupKey": "European Champion Clubs' Cup / Champions League"
+    },
+    {
+      "rank": 3,
+      "provider": "UEFA",
+      "url": "https://www.uefa.com/",
+      "scope": "official European competition appearances, fixtures and standings",
+      "lookupKey": "Lyngby BK"
+    },
+    {
+      "rank": 4,
+      "provider": "RSSSF",
+      "url": "https://www.rsssf.org/",
+      "scope": "historic competitions, tables and cross-checking",
+      "lookupKey": "Lyngby BK"
+    },
+    {
+      "rank": 5,
+      "provider": "worldfootball.net",
+      "url": "https://www.worldfootball.net/",
+      "scope": "club match archive and competition participation cross-check",
+      "lookupKey": "Lyngby BK"
+    }
+  ],
+  "coverage": {
+    "earliestMatch": "1992-09-16",
+    "latestMatch": "1992-09-30",
+    "seasonsWithMatches": [
+      "1992-93"
+    ],
+    "missingSeasons": [
+      "1985-86",
+      "1986-87",
+      "1987-88",
+      "1988-89",
+      "1989-90",
+      "1990-91",
+      "1991-92",
+      "1993-94",
+      "1994-95",
+      "1995-96",
+      "1996-97",
+      "1997-98",
+      "1998-99",
+      "1999-00",
+      "2000-01",
+      "2001-02",
+      "2002-03",
+      "2003-04",
+      "2004-05",
+      "2005-06",
+      "2006-07",
+      "2007-08",
+      "2008-09",
+      "2009-10",
+      "2010-11",
+      "2011-12",
+      "2012-13",
+      "2013-14",
+      "2014-15",
+      "2015-16",
+      "2016-17",
+      "2017-18",
+      "2018-19",
+      "2019-20",
+      "2020-21",
+      "2021-22",
+      "2022-23",
+      "2023-24",
+      "2024-25",
+      "2025-26",
+      "2026-27"
+    ],
+    "competitionScopeVerified": false,
+    "status": "partial"
+  },
+  "matches": [
+    {
+      "id": "engsoccerdata:ab554db1a8b9bdb3788dd99077b6b6d754d64f09e84cb506bc3442cc323cbaea:1992-09-16:Rangers:Lyngby%20BK:away",
+      "date": "1992-09-16",
+      "season": "1992-93",
+      "competition": {
+        "name": "European Champion Clubs' Cup / Champions League",
+        "type": "continental",
+        "country": "Europe"
+      },
+      "stage": "Round1",
+      "opponent": {
+        "name": "Rangers",
+        "slug": "rangers"
+      },
+      "venue": "away",
+      "score": {
+        "for": 0,
+        "against": 2
+      },
+      "result": "L",
+      "sourceRef": "src:1ac1d16b4d91beda9a2b"
+    },
+    {
+      "id": "engsoccerdata:ab554db1a8b9bdb3788dd99077b6b6d754d64f09e84cb506bc3442cc323cbaea:1992-09-30:Lyngby%20BK:Rangers:home",
+      "date": "1992-09-30",
+      "season": "1992-93",
+      "competition": {
+        "name": "European Champion Clubs' Cup / Champions League",
+        "type": "continental",
+        "country": "Europe"
+      },
+      "stage": "Round1",
+      "opponent": {
+        "name": "Rangers",
+        "slug": "rangers"
+      },
+      "venue": "home",
+      "score": {
+        "for": 0,
+        "against": 1
+      },
+      "result": "L",
+      "sourceRef": "src:1ac1d16b4d91beda9a2b"
+    }
+  ],
+  "seasonStandings": [],
+  "competitionStandings": [
+    {
+      "season": "1992-93",
+      "competition": {
+        "name": "European Champion Clubs' Cup / Champions League",
+        "type": "continental",
+        "country": "Europe"
+      },
+      "format": "knockout-progress",
+      "matches": 2,
+      "wins": 0,
+      "draws": 0,
+      "losses": 2,
+      "furthestStage": "Round1",
+      "latestMatch": "1992-09-30",
+      "basis": "derived from source-attributed recorded matches"
+    }
+  ],
+  "updatedAt": "2026-08-04T20:33:26.918Z"
+}

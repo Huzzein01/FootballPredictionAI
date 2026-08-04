@@ -1,0 +1,400 @@
+{
+  "contract": "football-team-history-v1",
+  "team": {
+    "name": "BFC Dynamo",
+    "slug": "bfc-dynamo",
+    "primaryLeague": "European Champion Clubs' Cup / Champions League",
+    "aliases": []
+  },
+  "requestedCoverage": {
+    "fromYear": 1985,
+    "to": "present",
+    "includes": [
+      "all competitions",
+      "opponents",
+      "scorelines",
+      "league standings",
+      "competition standings"
+    ]
+  },
+  "sourcePlan": [
+    {
+      "rank": 1,
+      "provider": "Official club archive",
+      "url": "",
+      "scope": "club history, competition participation and match reports",
+      "lookupKey": "BFC Dynamo",
+      "review": "Verify the club-owned archive URL before collection."
+    },
+    {
+      "rank": 2,
+      "provider": "Official domestic competition / association",
+      "url": "",
+      "scope": "official league fixtures, final tables and cup records",
+      "lookupKey": "European Champion Clubs' Cup / Champions League"
+    },
+    {
+      "rank": 3,
+      "provider": "UEFA",
+      "url": "https://www.uefa.com/",
+      "scope": "official European competition appearances, fixtures and standings",
+      "lookupKey": "BFC Dynamo"
+    },
+    {
+      "rank": 4,
+      "provider": "RSSSF",
+      "url": "https://www.rsssf.org/",
+      "scope": "historic competitions, tables and cross-checking",
+      "lookupKey": "BFC Dynamo"
+    },
+    {
+      "rank": 5,
+      "provider": "worldfootball.net",
+      "url": "https://www.worldfootball.net/",
+      "scope": "club match archive and competition participation cross-check",
+      "lookupKey": "BFC Dynamo"
+    }
+  ],
+  "coverage": {
+    "earliestMatch": "1985-09-18",
+    "latestMatch": "1988-10-11",
+    "seasonsWithMatches": [
+      "1985-86",
+      "1986-87",
+      "1987-88",
+      "1988-89"
+    ],
+    "missingSeasons": [
+      "1989-90",
+      "1990-91",
+      "1991-92",
+      "1992-93",
+      "1993-94",
+      "1994-95",
+      "1995-96",
+      "1996-97",
+      "1997-98",
+      "1998-99",
+      "1999-00",
+      "2000-01",
+      "2001-02",
+      "2002-03",
+      "2003-04",
+      "2004-05",
+      "2005-06",
+      "2006-07",
+      "2007-08",
+      "2008-09",
+      "2009-10",
+      "2010-11",
+      "2011-12",
+      "2012-13",
+      "2013-14",
+      "2014-15",
+      "2015-16",
+      "2016-17",
+      "2017-18",
+      "2018-19",
+      "2019-20",
+      "2020-21",
+      "2021-22",
+      "2022-23",
+      "2023-24",
+      "2024-25",
+      "2025-26",
+      "2026-27"
+    ],
+    "competitionScopeVerified": false,
+    "status": "partial"
+  },
+  "matches": [
+    {
+      "id": "engsoccerdata:ab554db1a8b9bdb3788dd99077b6b6d754d64f09e84cb506bc3442cc323cbaea:1985-09-18:BFC%20Dynamo:Austria%20Wien:home",
+      "date": "1985-09-18",
+      "season": "1985-86",
+      "competition": {
+        "name": "European Champion Clubs' Cup / Champions League",
+        "type": "continental",
+        "country": "Europe"
+      },
+      "stage": "Round1",
+      "opponent": {
+        "name": "Austria Wien",
+        "slug": "austria-wien"
+      },
+      "venue": "home",
+      "score": {
+        "for": 0,
+        "against": 2
+      },
+      "result": "L",
+      "sourceRef": "src:1ac1d16b4d91beda9a2b"
+    },
+    {
+      "id": "engsoccerdata:ab554db1a8b9bdb3788dd99077b6b6d754d64f09e84cb506bc3442cc323cbaea:1985-10-02:Austria%20Wien:BFC%20Dynamo:away",
+      "date": "1985-10-02",
+      "season": "1985-86",
+      "competition": {
+        "name": "European Champion Clubs' Cup / Champions League",
+        "type": "continental",
+        "country": "Europe"
+      },
+      "stage": "Round1",
+      "opponent": {
+        "name": "Austria Wien",
+        "slug": "austria-wien"
+      },
+      "venue": "away",
+      "score": {
+        "for": 1,
+        "against": 2
+      },
+      "result": "L",
+      "sourceRef": "src:1ac1d16b4d91beda9a2b"
+    },
+    {
+      "id": "engsoccerdata:ab554db1a8b9bdb3788dd99077b6b6d754d64f09e84cb506bc3442cc323cbaea:1986-09-17:Orgryte%20IS:BFC%20Dynamo:away",
+      "date": "1986-09-17",
+      "season": "1986-87",
+      "competition": {
+        "name": "European Champion Clubs' Cup / Champions League",
+        "type": "continental",
+        "country": "Europe"
+      },
+      "stage": "Round1",
+      "opponent": {
+        "name": "Orgryte IS",
+        "slug": "orgryte-is"
+      },
+      "venue": "away",
+      "score": {
+        "for": 3,
+        "against": 2
+      },
+      "result": "W",
+      "sourceRef": "src:1ac1d16b4d91beda9a2b"
+    },
+    {
+      "id": "engsoccerdata:ab554db1a8b9bdb3788dd99077b6b6d754d64f09e84cb506bc3442cc323cbaea:1986-10-01:BFC%20Dynamo:Orgryte%20IS:home",
+      "date": "1986-10-01",
+      "season": "1986-87",
+      "competition": {
+        "name": "European Champion Clubs' Cup / Champions League",
+        "type": "continental",
+        "country": "Europe"
+      },
+      "stage": "Round1",
+      "opponent": {
+        "name": "Orgryte IS",
+        "slug": "orgryte-is"
+      },
+      "venue": "home",
+      "score": {
+        "for": 4,
+        "against": 1
+      },
+      "result": "W",
+      "sourceRef": "src:1ac1d16b4d91beda9a2b"
+    },
+    {
+      "id": "engsoccerdata:ab554db1a8b9bdb3788dd99077b6b6d754d64f09e84cb506bc3442cc323cbaea:1986-10-22:Brondby%20IF:BFC%20Dynamo:away",
+      "date": "1986-10-22",
+      "season": "1986-87",
+      "competition": {
+        "name": "European Champion Clubs' Cup / Champions League",
+        "type": "continental",
+        "country": "Europe"
+      },
+      "stage": "R16",
+      "opponent": {
+        "name": "Brondby IF",
+        "slug": "brondby-if"
+      },
+      "venue": "away",
+      "score": {
+        "for": 1,
+        "against": 2
+      },
+      "result": "L",
+      "sourceRef": "src:1ac1d16b4d91beda9a2b"
+    },
+    {
+      "id": "engsoccerdata:ab554db1a8b9bdb3788dd99077b6b6d754d64f09e84cb506bc3442cc323cbaea:1986-11-05:BFC%20Dynamo:Brondby%20IF:home",
+      "date": "1986-11-05",
+      "season": "1986-87",
+      "competition": {
+        "name": "European Champion Clubs' Cup / Champions League",
+        "type": "continental",
+        "country": "Europe"
+      },
+      "stage": "R16",
+      "opponent": {
+        "name": "Brondby IF",
+        "slug": "brondby-if"
+      },
+      "venue": "home",
+      "score": {
+        "for": 1,
+        "against": 1
+      },
+      "result": "D",
+      "sourceRef": "src:1ac1d16b4d91beda9a2b"
+    },
+    {
+      "id": "engsoccerdata:ab554db1a8b9bdb3788dd99077b6b6d754d64f09e84cb506bc3442cc323cbaea:1987-09-16:Girondins%20Bordeaux:BFC%20Dynamo:away",
+      "date": "1987-09-16",
+      "season": "1987-88",
+      "competition": {
+        "name": "European Champion Clubs' Cup / Champions League",
+        "type": "continental",
+        "country": "Europe"
+      },
+      "stage": "Round1",
+      "opponent": {
+        "name": "Girondins Bordeaux",
+        "slug": "girondins-bordeaux"
+      },
+      "venue": "away",
+      "score": {
+        "for": 0,
+        "against": 2
+      },
+      "result": "L",
+      "sourceRef": "src:1ac1d16b4d91beda9a2b"
+    },
+    {
+      "id": "engsoccerdata:ab554db1a8b9bdb3788dd99077b6b6d754d64f09e84cb506bc3442cc323cbaea:1987-09-30:BFC%20Dynamo:Girondins%20Bordeaux:home",
+      "date": "1987-09-30",
+      "season": "1987-88",
+      "competition": {
+        "name": "European Champion Clubs' Cup / Champions League",
+        "type": "continental",
+        "country": "Europe"
+      },
+      "stage": "Round1",
+      "opponent": {
+        "name": "Girondins Bordeaux",
+        "slug": "girondins-bordeaux"
+      },
+      "venue": "home",
+      "score": {
+        "for": 0,
+        "against": 2
+      },
+      "result": "L",
+      "sourceRef": "src:1ac1d16b4d91beda9a2b"
+    },
+    {
+      "id": "engsoccerdata:ab554db1a8b9bdb3788dd99077b6b6d754d64f09e84cb506bc3442cc323cbaea:1988-09-06:BFC%20Dynamo:Werder%20Bremen:home",
+      "date": "1988-09-06",
+      "season": "1988-89",
+      "competition": {
+        "name": "European Champion Clubs' Cup / Champions League",
+        "type": "continental",
+        "country": "Europe"
+      },
+      "stage": "Round1",
+      "opponent": {
+        "name": "Werder Bremen",
+        "slug": "werder-bremen"
+      },
+      "venue": "home",
+      "score": {
+        "for": 3,
+        "against": 0
+      },
+      "result": "W",
+      "sourceRef": "src:1ac1d16b4d91beda9a2b"
+    },
+    {
+      "id": "engsoccerdata:ab554db1a8b9bdb3788dd99077b6b6d754d64f09e84cb506bc3442cc323cbaea:1988-10-11:Werder%20Bremen:BFC%20Dynamo:away",
+      "date": "1988-10-11",
+      "season": "1988-89",
+      "competition": {
+        "name": "European Champion Clubs' Cup / Champions League",
+        "type": "continental",
+        "country": "Europe"
+      },
+      "stage": "Round1",
+      "opponent": {
+        "name": "Werder Bremen",
+        "slug": "werder-bremen"
+      },
+      "venue": "away",
+      "score": {
+        "for": 0,
+        "against": 5
+      },
+      "result": "L",
+      "sourceRef": "src:1ac1d16b4d91beda9a2b"
+    }
+  ],
+  "seasonStandings": [],
+  "competitionStandings": [
+    {
+      "season": "1985-86",
+      "competition": {
+        "name": "European Champion Clubs' Cup / Champions League",
+        "type": "continental",
+        "country": "Europe"
+      },
+      "format": "knockout-progress",
+      "matches": 2,
+      "wins": 0,
+      "draws": 0,
+      "losses": 2,
+      "furthestStage": "Round1",
+      "latestMatch": "1985-10-02",
+      "basis": "derived from source-attributed recorded matches"
+    },
+    {
+      "season": "1986-87",
+      "competition": {
+        "name": "European Champion Clubs' Cup / Champions League",
+        "type": "continental",
+        "country": "Europe"
+      },
+      "format": "knockout-progress",
+      "matches": 4,
+      "wins": 2,
+      "draws": 1,
+      "losses": 1,
+      "furthestStage": "R16",
+      "latestMatch": "1986-11-05",
+      "basis": "derived from source-attributed recorded matches"
+    },
+    {
+      "season": "1987-88",
+      "competition": {
+        "name": "European Champion Clubs' Cup / Champions League",
+        "type": "continental",
+        "country": "Europe"
+      },
+      "format": "knockout-progress",
+      "matches": 2,
+      "wins": 0,
+      "draws": 0,
+      "losses": 2,
+      "furthestStage": "Round1",
+      "latestMatch": "1987-09-30",
+      "basis": "derived from source-attributed recorded matches"
+    },
+    {
+      "season": "1988-89",
+      "competition": {
+        "name": "European Champion Clubs' Cup / Champions League",
+        "type": "continental",
+        "country": "Europe"
+      },
+      "format": "knockout-progress",
+      "matches": 2,
+      "wins": 1,
+      "draws": 0,
+      "losses": 1,
+      "furthestStage": "Round1",
+      "latestMatch": "1988-10-11",
+      "basis": "derived from source-attributed recorded matches"
+    }
+  ],
+  "updatedAt": "2026-08-04T20:33:22.476Z"
+}

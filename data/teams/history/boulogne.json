@@ -1,0 +1,969 @@
+{
+  "contract": "football-team-history-v1",
+  "team": {
+    "name": "Boulogne",
+    "slug": "boulogne",
+    "primaryLeague": "Ligue 1",
+    "aliases": []
+  },
+  "requestedCoverage": {
+    "fromYear": 1985,
+    "to": "present",
+    "includes": [
+      "all competitions",
+      "opponents",
+      "scorelines",
+      "league standings",
+      "competition standings"
+    ]
+  },
+  "sourcePlan": [
+    {
+      "rank": 1,
+      "provider": "Official club archive",
+      "url": "",
+      "scope": "club history, competition participation and match reports",
+      "lookupKey": "Boulogne",
+      "review": "Verify the club-owned archive URL before collection."
+    },
+    {
+      "rank": 2,
+      "provider": "Official domestic competition / association",
+      "url": "https://ligue1.com/",
+      "scope": "official league fixtures, final tables and cup records",
+      "lookupKey": "Ligue 1"
+    },
+    {
+      "rank": 3,
+      "provider": "UEFA",
+      "url": "https://www.uefa.com/",
+      "scope": "official European competition appearances, fixtures and standings",
+      "lookupKey": "Boulogne"
+    },
+    {
+      "rank": 4,
+      "provider": "RSSSF",
+      "url": "https://www.rsssf.org/",
+      "scope": "historic competitions, tables and cross-checking",
+      "lookupKey": "Boulogne"
+    },
+    {
+      "rank": 5,
+      "provider": "worldfootball.net",
+      "url": "https://www.worldfootball.net/",
+      "scope": "club match archive and competition participation cross-check",
+      "lookupKey": "Boulogne"
+    }
+  ],
+  "coverage": {
+    "earliestMatch": "2009-08-08",
+    "latestMatch": "2010-05-15",
+    "seasonsWithMatches": [
+      "2009-10"
+    ],
+    "missingSeasons": [
+      "1985-86",
+      "1986-87",
+      "1987-88",
+      "1988-89",
+      "1989-90",
+      "1990-91",
+      "1991-92",
+      "1992-93",
+      "1993-94",
+      "1994-95",
+      "1995-96",
+      "1996-97",
+      "1997-98",
+      "1998-99",
+      "1999-00",
+      "2000-01",
+      "2001-02",
+      "2002-03",
+      "2003-04",
+      "2004-05",
+      "2005-06",
+      "2006-07",
+      "2007-08",
+      "2008-09",
+      "2010-11",
+      "2011-12",
+      "2012-13",
+      "2013-14",
+      "2014-15",
+      "2015-16",
+      "2016-17",
+      "2017-18",
+      "2018-19",
+      "2019-20",
+      "2020-21",
+      "2021-22",
+      "2022-23",
+      "2023-24",
+      "2024-25",
+      "2025-26",
+      "2026-27"
+    ],
+    "status": "partial"
+  },
+  "matches": [
+    {
+      "id": "football-data:7021d41c5e3baff0232dd634ee2b40a572a6e07f5ecdd5a9fa8e79591976842c:2009-08-08:Rennes:Boulogne:away",
+      "date": "2009-08-08",
+      "season": "2009-10",
+      "competition": {
+        "name": "Ligue 1",
+        "type": "league",
+        "country": ""
+      },
+      "stage": "",
+      "opponent": {
+        "name": "Rennes",
+        "slug": "rennes"
+      },
+      "venue": "away",
+      "score": {
+        "for": 0,
+        "against": 3
+      },
+      "result": "L",
+      "sourceRef": "src:a9c6615c16cde0314d70"
+    },
+    {
+      "id": "football-data:7021d41c5e3baff0232dd634ee2b40a572a6e07f5ecdd5a9fa8e79591976842c:2009-08-16:Boulogne:Grenoble:home",
+      "date": "2009-08-16",
+      "season": "2009-10",
+      "competition": {
+        "name": "Ligue 1",
+        "type": "league",
+        "country": ""
+      },
+      "stage": "",
+      "opponent": {
+        "name": "Grenoble",
+        "slug": "grenoble"
+      },
+      "venue": "home",
+      "score": {
+        "for": 2,
+        "against": 1
+      },
+      "result": "W",
+      "sourceRef": "src:a9c6615c16cde0314d70"
+    },
+    {
+      "id": "football-data:7021d41c5e3baff0232dd634ee2b40a572a6e07f5ecdd5a9fa8e79591976842c:2009-08-22:St%20Etienne:Boulogne:away",
+      "date": "2009-08-22",
+      "season": "2009-10",
+      "competition": {
+        "name": "Ligue 1",
+        "type": "league",
+        "country": ""
+      },
+      "stage": "",
+      "opponent": {
+        "name": "St Etienne",
+        "slug": "st-etienne"
+      },
+      "venue": "away",
+      "score": {
+        "for": 1,
+        "against": 0
+      },
+      "result": "W",
+      "sourceRef": "src:a9c6615c16cde0314d70"
+    },
+    {
+      "id": "football-data:7021d41c5e3baff0232dd634ee2b40a572a6e07f5ecdd5a9fa8e79591976842c:2009-08-29:Boulogne:Auxerre:home",
+      "date": "2009-08-29",
+      "season": "2009-10",
+      "competition": {
+        "name": "Ligue 1",
+        "type": "league",
+        "country": ""
+      },
+      "stage": "",
+      "opponent": {
+        "name": "Auxerre",
+        "slug": "auxerre"
+      },
+      "venue": "home",
+      "score": {
+        "for": 0,
+        "against": 0
+      },
+      "result": "D",
+      "sourceRef": "src:a9c6615c16cde0314d70"
+    },
+    {
+      "id": "football-data:7021d41c5e3baff0232dd634ee2b40a572a6e07f5ecdd5a9fa8e79591976842c:2009-09-12:Valenciennes:Boulogne:away",
+      "date": "2009-09-12",
+      "season": "2009-10",
+      "competition": {
+        "name": "Ligue 1",
+        "type": "league",
+        "country": ""
+      },
+      "stage": "",
+      "opponent": {
+        "name": "Valenciennes",
+        "slug": "valenciennes"
+      },
+      "venue": "away",
+      "score": {
+        "for": 1,
+        "against": 1
+      },
+      "result": "D",
+      "sourceRef": "src:a9c6615c16cde0314d70"
+    },
+    {
+      "id": "football-data:7021d41c5e3baff0232dd634ee2b40a572a6e07f5ecdd5a9fa8e79591976842c:2009-09-19:Boulogne:Bordeaux:home",
+      "date": "2009-09-19",
+      "season": "2009-10",
+      "competition": {
+        "name": "Ligue 1",
+        "type": "league",
+        "country": ""
+      },
+      "stage": "",
+      "opponent": {
+        "name": "Bordeaux",
+        "slug": "bordeaux"
+      },
+      "venue": "home",
+      "score": {
+        "for": 0,
+        "against": 2
+      },
+      "result": "L",
+      "sourceRef": "src:a9c6615c16cde0314d70"
+    },
+    {
+      "id": "football-data:7021d41c5e3baff0232dd634ee2b40a572a6e07f5ecdd5a9fa8e79591976842c:2009-09-26:Montpellier:Boulogne:away",
+      "date": "2009-09-26",
+      "season": "2009-10",
+      "competition": {
+        "name": "Ligue 1",
+        "type": "league",
+        "country": ""
+      },
+      "stage": "",
+      "opponent": {
+        "name": "Montpellier",
+        "slug": "montpellier"
+      },
+      "venue": "away",
+      "score": {
+        "for": 0,
+        "against": 1
+      },
+      "result": "L",
+      "sourceRef": "src:a9c6615c16cde0314d70"
+    },
+    {
+      "id": "football-data:7021d41c5e3baff0232dd634ee2b40a572a6e07f5ecdd5a9fa8e79591976842c:2009-10-04:Boulogne:Lille:home",
+      "date": "2009-10-04",
+      "season": "2009-10",
+      "competition": {
+        "name": "Ligue 1",
+        "type": "league",
+        "country": ""
+      },
+      "stage": "",
+      "opponent": {
+        "name": "Lille",
+        "slug": "lille"
+      },
+      "venue": "home",
+      "score": {
+        "for": 2,
+        "against": 3
+      },
+      "result": "L",
+      "sourceRef": "src:a9c6615c16cde0314d70"
+    },
+    {
+      "id": "football-data:7021d41c5e3baff0232dd634ee2b40a572a6e07f5ecdd5a9fa8e79591976842c:2009-10-17:Le%20Mans:Boulogne:away",
+      "date": "2009-10-17",
+      "season": "2009-10",
+      "competition": {
+        "name": "Ligue 1",
+        "type": "league",
+        "country": ""
+      },
+      "stage": "",
+      "opponent": {
+        "name": "Le Mans",
+        "slug": "le-mans"
+      },
+      "venue": "away",
+      "score": {
+        "for": 1,
+        "against": 1
+      },
+      "result": "D",
+      "sourceRef": "src:a9c6615c16cde0314d70"
+    },
+    {
+      "id": "football-data:7021d41c5e3baff0232dd634ee2b40a572a6e07f5ecdd5a9fa8e79591976842c:2009-10-24:Boulogne:Monaco:home",
+      "date": "2009-10-24",
+      "season": "2009-10",
+      "competition": {
+        "name": "Ligue 1",
+        "type": "league",
+        "country": ""
+      },
+      "stage": "",
+      "opponent": {
+        "name": "Monaco",
+        "slug": "monaco"
+      },
+      "venue": "home",
+      "score": {
+        "for": 1,
+        "against": 3
+      },
+      "result": "L",
+      "sourceRef": "src:a9c6615c16cde0314d70"
+    },
+    {
+      "id": "football-data:7021d41c5e3baff0232dd634ee2b40a572a6e07f5ecdd5a9fa8e79591976842c:2009-10-31:Boulogne:Nancy:home",
+      "date": "2009-10-31",
+      "season": "2009-10",
+      "competition": {
+        "name": "Ligue 1",
+        "type": "league",
+        "country": ""
+      },
+      "stage": "",
+      "opponent": {
+        "name": "Nancy",
+        "slug": "nancy"
+      },
+      "venue": "home",
+      "score": {
+        "for": 1,
+        "against": 2
+      },
+      "result": "L",
+      "sourceRef": "src:a9c6615c16cde0314d70"
+    },
+    {
+      "id": "football-data:7021d41c5e3baff0232dd634ee2b40a572a6e07f5ecdd5a9fa8e79591976842c:2009-11-07:Lorient:Boulogne:away",
+      "date": "2009-11-07",
+      "season": "2009-10",
+      "competition": {
+        "name": "Ligue 1",
+        "type": "league",
+        "country": ""
+      },
+      "stage": "",
+      "opponent": {
+        "name": "Lorient",
+        "slug": "lorient"
+      },
+      "venue": "away",
+      "score": {
+        "for": 0,
+        "against": 5
+      },
+      "result": "L",
+      "sourceRef": "src:a9c6615c16cde0314d70"
+    },
+    {
+      "id": "football-data:7021d41c5e3baff0232dd634ee2b40a572a6e07f5ecdd5a9fa8e79591976842c:2009-11-28:Toulouse:Boulogne:away",
+      "date": "2009-11-28",
+      "season": "2009-10",
+      "competition": {
+        "name": "Ligue 1",
+        "type": "league",
+        "country": ""
+      },
+      "stage": "",
+      "opponent": {
+        "name": "Toulouse",
+        "slug": "toulouse"
+      },
+      "venue": "away",
+      "score": {
+        "for": 0,
+        "against": 1
+      },
+      "result": "L",
+      "sourceRef": "src:a9c6615c16cde0314d70"
+    },
+    {
+      "id": "football-data:7021d41c5e3baff0232dd634ee2b40a572a6e07f5ecdd5a9fa8e79591976842c:2009-12-02:Boulogne:Paris%20SG:home",
+      "date": "2009-12-02",
+      "season": "2009-10",
+      "competition": {
+        "name": "Ligue 1",
+        "type": "league",
+        "country": ""
+      },
+      "stage": "",
+      "opponent": {
+        "name": "Paris SG",
+        "slug": "paris-sg"
+      },
+      "venue": "home",
+      "score": {
+        "for": 2,
+        "against": 5
+      },
+      "result": "L",
+      "sourceRef": "src:a9c6615c16cde0314d70"
+    },
+    {
+      "id": "football-data:7021d41c5e3baff0232dd634ee2b40a572a6e07f5ecdd5a9fa8e79591976842c:2009-12-06:Boulogne:Lens:home",
+      "date": "2009-12-06",
+      "season": "2009-10",
+      "competition": {
+        "name": "Ligue 1",
+        "type": "league",
+        "country": ""
+      },
+      "stage": "",
+      "opponent": {
+        "name": "Lens",
+        "slug": "lens"
+      },
+      "venue": "home",
+      "score": {
+        "for": 2,
+        "against": 1
+      },
+      "result": "W",
+      "sourceRef": "src:a9c6615c16cde0314d70"
+    },
+    {
+      "id": "football-data:7021d41c5e3baff0232dd634ee2b40a572a6e07f5ecdd5a9fa8e79591976842c:2009-12-12:Marseille:Boulogne:away",
+      "date": "2009-12-12",
+      "season": "2009-10",
+      "competition": {
+        "name": "Ligue 1",
+        "type": "league",
+        "country": ""
+      },
+      "stage": "",
+      "opponent": {
+        "name": "Marseille",
+        "slug": "marseille"
+      },
+      "venue": "away",
+      "score": {
+        "for": 0,
+        "against": 2
+      },
+      "result": "L",
+      "sourceRef": "src:a9c6615c16cde0314d70"
+    },
+    {
+      "id": "football-data:7021d41c5e3baff0232dd634ee2b40a572a6e07f5ecdd5a9fa8e79591976842c:2009-12-16:Lyon:Boulogne:away",
+      "date": "2009-12-16",
+      "season": "2009-10",
+      "competition": {
+        "name": "Ligue 1",
+        "type": "league",
+        "country": ""
+      },
+      "stage": "",
+      "opponent": {
+        "name": "Lyon",
+        "slug": "lyon"
+      },
+      "venue": "away",
+      "score": {
+        "for": 0,
+        "against": 2
+      },
+      "result": "L",
+      "sourceRef": "src:a9c6615c16cde0314d70"
+    },
+    {
+      "id": "football-data:7021d41c5e3baff0232dd634ee2b40a572a6e07f5ecdd5a9fa8e79591976842c:2009-12-23:Nice:Boulogne:away",
+      "date": "2009-12-23",
+      "season": "2009-10",
+      "competition": {
+        "name": "Ligue 1",
+        "type": "league",
+        "country": ""
+      },
+      "stage": "",
+      "opponent": {
+        "name": "Nice",
+        "slug": "nice"
+      },
+      "venue": "away",
+      "score": {
+        "for": 2,
+        "against": 2
+      },
+      "result": "D",
+      "sourceRef": "src:a9c6615c16cde0314d70"
+    },
+    {
+      "id": "football-data:7021d41c5e3baff0232dd634ee2b40a572a6e07f5ecdd5a9fa8e79591976842c:2010-01-13:Boulogne:Sochaux:home",
+      "date": "2010-01-13",
+      "season": "2009-10",
+      "competition": {
+        "name": "Ligue 1",
+        "type": "league",
+        "country": ""
+      },
+      "stage": "",
+      "opponent": {
+        "name": "Sochaux",
+        "slug": "sochaux"
+      },
+      "venue": "home",
+      "score": {
+        "for": 0,
+        "against": 0
+      },
+      "result": "D",
+      "sourceRef": "src:a9c6615c16cde0314d70"
+    },
+    {
+      "id": "football-data:7021d41c5e3baff0232dd634ee2b40a572a6e07f5ecdd5a9fa8e79591976842c:2010-01-16:Auxerre:Boulogne:away",
+      "date": "2010-01-16",
+      "season": "2009-10",
+      "competition": {
+        "name": "Ligue 1",
+        "type": "league",
+        "country": ""
+      },
+      "stage": "",
+      "opponent": {
+        "name": "Auxerre",
+        "slug": "auxerre"
+      },
+      "venue": "away",
+      "score": {
+        "for": 0,
+        "against": 0
+      },
+      "result": "D",
+      "sourceRef": "src:a9c6615c16cde0314d70"
+    },
+    {
+      "id": "football-data:7021d41c5e3baff0232dd634ee2b40a572a6e07f5ecdd5a9fa8e79591976842c:2010-01-20:Boulogne:Valenciennes:home",
+      "date": "2010-01-20",
+      "season": "2009-10",
+      "competition": {
+        "name": "Ligue 1",
+        "type": "league",
+        "country": ""
+      },
+      "stage": "",
+      "opponent": {
+        "name": "Valenciennes",
+        "slug": "valenciennes"
+      },
+      "venue": "home",
+      "score": {
+        "for": 0,
+        "against": 2
+      },
+      "result": "L",
+      "sourceRef": "src:a9c6615c16cde0314d70"
+    },
+    {
+      "id": "football-data:7021d41c5e3baff0232dd634ee2b40a572a6e07f5ecdd5a9fa8e79591976842c:2010-01-30:Bordeaux:Boulogne:away",
+      "date": "2010-01-30",
+      "season": "2009-10",
+      "competition": {
+        "name": "Ligue 1",
+        "type": "league",
+        "country": ""
+      },
+      "stage": "",
+      "opponent": {
+        "name": "Bordeaux",
+        "slug": "bordeaux"
+      },
+      "venue": "away",
+      "score": {
+        "for": 0,
+        "against": 0
+      },
+      "result": "D",
+      "sourceRef": "src:a9c6615c16cde0314d70"
+    },
+    {
+      "id": "football-data:7021d41c5e3baff0232dd634ee2b40a572a6e07f5ecdd5a9fa8e79591976842c:2010-02-06:Boulogne:Montpellier:home",
+      "date": "2010-02-06",
+      "season": "2009-10",
+      "competition": {
+        "name": "Ligue 1",
+        "type": "league",
+        "country": ""
+      },
+      "stage": "",
+      "opponent": {
+        "name": "Montpellier",
+        "slug": "montpellier"
+      },
+      "venue": "home",
+      "score": {
+        "for": 0,
+        "against": 2
+      },
+      "result": "L",
+      "sourceRef": "src:a9c6615c16cde0314d70"
+    },
+    {
+      "id": "football-data:7021d41c5e3baff0232dd634ee2b40a572a6e07f5ecdd5a9fa8e79591976842c:2010-02-13:Lille:Boulogne:away",
+      "date": "2010-02-13",
+      "season": "2009-10",
+      "competition": {
+        "name": "Ligue 1",
+        "type": "league",
+        "country": ""
+      },
+      "stage": "",
+      "opponent": {
+        "name": "Lille",
+        "slug": "lille"
+      },
+      "venue": "away",
+      "score": {
+        "for": 1,
+        "against": 3
+      },
+      "result": "L",
+      "sourceRef": "src:a9c6615c16cde0314d70"
+    },
+    {
+      "id": "football-data:7021d41c5e3baff0232dd634ee2b40a572a6e07f5ecdd5a9fa8e79591976842c:2010-02-20:Boulogne:Le%20Mans:home",
+      "date": "2010-02-20",
+      "season": "2009-10",
+      "competition": {
+        "name": "Ligue 1",
+        "type": "league",
+        "country": ""
+      },
+      "stage": "",
+      "opponent": {
+        "name": "Le Mans",
+        "slug": "le-mans"
+      },
+      "venue": "home",
+      "score": {
+        "for": 1,
+        "against": 3
+      },
+      "result": "L",
+      "sourceRef": "src:a9c6615c16cde0314d70"
+    },
+    {
+      "id": "football-data:7021d41c5e3baff0232dd634ee2b40a572a6e07f5ecdd5a9fa8e79591976842c:2010-02-27:Monaco:Boulogne:away",
+      "date": "2010-02-27",
+      "season": "2009-10",
+      "competition": {
+        "name": "Ligue 1",
+        "type": "league",
+        "country": ""
+      },
+      "stage": "",
+      "opponent": {
+        "name": "Monaco",
+        "slug": "monaco"
+      },
+      "venue": "away",
+      "score": {
+        "for": 0,
+        "against": 1
+      },
+      "result": "L",
+      "sourceRef": "src:a9c6615c16cde0314d70"
+    },
+    {
+      "id": "football-data:7021d41c5e3baff0232dd634ee2b40a572a6e07f5ecdd5a9fa8e79591976842c:2010-03-06:Boulogne:Lyon:home",
+      "date": "2010-03-06",
+      "season": "2009-10",
+      "competition": {
+        "name": "Ligue 1",
+        "type": "league",
+        "country": ""
+      },
+      "stage": "",
+      "opponent": {
+        "name": "Lyon",
+        "slug": "lyon"
+      },
+      "venue": "home",
+      "score": {
+        "for": 0,
+        "against": 0
+      },
+      "result": "D",
+      "sourceRef": "src:a9c6615c16cde0314d70"
+    },
+    {
+      "id": "football-data:7021d41c5e3baff0232dd634ee2b40a572a6e07f5ecdd5a9fa8e79591976842c:2010-03-13:Nancy:Boulogne:away",
+      "date": "2010-03-13",
+      "season": "2009-10",
+      "competition": {
+        "name": "Ligue 1",
+        "type": "league",
+        "country": ""
+      },
+      "stage": "",
+      "opponent": {
+        "name": "Nancy",
+        "slug": "nancy"
+      },
+      "venue": "away",
+      "score": {
+        "for": 3,
+        "against": 1
+      },
+      "result": "W",
+      "sourceRef": "src:a9c6615c16cde0314d70"
+    },
+    {
+      "id": "football-data:7021d41c5e3baff0232dd634ee2b40a572a6e07f5ecdd5a9fa8e79591976842c:2010-03-20:Boulogne:Lorient:home",
+      "date": "2010-03-20",
+      "season": "2009-10",
+      "competition": {
+        "name": "Ligue 1",
+        "type": "league",
+        "country": ""
+      },
+      "stage": "",
+      "opponent": {
+        "name": "Lorient",
+        "slug": "lorient"
+      },
+      "venue": "home",
+      "score": {
+        "for": 2,
+        "against": 0
+      },
+      "result": "W",
+      "sourceRef": "src:a9c6615c16cde0314d70"
+    },
+    {
+      "id": "football-data:7021d41c5e3baff0232dd634ee2b40a572a6e07f5ecdd5a9fa8e79591976842c:2010-03-28:Paris%20SG:Boulogne:away",
+      "date": "2010-03-28",
+      "season": "2009-10",
+      "competition": {
+        "name": "Ligue 1",
+        "type": "league",
+        "country": ""
+      },
+      "stage": "",
+      "opponent": {
+        "name": "Paris SG",
+        "slug": "paris-sg"
+      },
+      "venue": "away",
+      "score": {
+        "for": 0,
+        "against": 3
+      },
+      "result": "L",
+      "sourceRef": "src:a9c6615c16cde0314d70"
+    },
+    {
+      "id": "football-data:7021d41c5e3baff0232dd634ee2b40a572a6e07f5ecdd5a9fa8e79591976842c:2010-04-04:Boulogne:Toulouse:home",
+      "date": "2010-04-04",
+      "season": "2009-10",
+      "competition": {
+        "name": "Ligue 1",
+        "type": "league",
+        "country": ""
+      },
+      "stage": "",
+      "opponent": {
+        "name": "Toulouse",
+        "slug": "toulouse"
+      },
+      "venue": "home",
+      "score": {
+        "for": 1,
+        "against": 1
+      },
+      "result": "D",
+      "sourceRef": "src:a9c6615c16cde0314d70"
+    },
+    {
+      "id": "football-data:7021d41c5e3baff0232dd634ee2b40a572a6e07f5ecdd5a9fa8e79591976842c:2010-04-10:Lens:Boulogne:away",
+      "date": "2010-04-10",
+      "season": "2009-10",
+      "competition": {
+        "name": "Ligue 1",
+        "type": "league",
+        "country": ""
+      },
+      "stage": "",
+      "opponent": {
+        "name": "Lens",
+        "slug": "lens"
+      },
+      "venue": "away",
+      "score": {
+        "for": 0,
+        "against": 3
+      },
+      "result": "L",
+      "sourceRef": "src:a9c6615c16cde0314d70"
+    },
+    {
+      "id": "football-data:7021d41c5e3baff0232dd634ee2b40a572a6e07f5ecdd5a9fa8e79591976842c:2010-04-17:Boulogne:Marseille:home",
+      "date": "2010-04-17",
+      "season": "2009-10",
+      "competition": {
+        "name": "Ligue 1",
+        "type": "league",
+        "country": ""
+      },
+      "stage": "",
+      "opponent": {
+        "name": "Marseille",
+        "slug": "marseille"
+      },
+      "venue": "home",
+      "score": {
+        "for": 1,
+        "against": 2
+      },
+      "result": "L",
+      "sourceRef": "src:a9c6615c16cde0314d70"
+    },
+    {
+      "id": "football-data:7021d41c5e3baff0232dd634ee2b40a572a6e07f5ecdd5a9fa8e79591976842c:2010-04-24:Sochaux:Boulogne:away",
+      "date": "2010-04-24",
+      "season": "2009-10",
+      "competition": {
+        "name": "Ligue 1",
+        "type": "league",
+        "country": ""
+      },
+      "stage": "",
+      "opponent": {
+        "name": "Sochaux",
+        "slug": "sochaux"
+      },
+      "venue": "away",
+      "score": {
+        "for": 3,
+        "against": 0
+      },
+      "result": "W",
+      "sourceRef": "src:a9c6615c16cde0314d70"
+    },
+    {
+      "id": "football-data:7021d41c5e3baff0232dd634ee2b40a572a6e07f5ecdd5a9fa8e79591976842c:2010-05-02:Boulogne:Nice:home",
+      "date": "2010-05-02",
+      "season": "2009-10",
+      "competition": {
+        "name": "Ligue 1",
+        "type": "league",
+        "country": ""
+      },
+      "stage": "",
+      "opponent": {
+        "name": "Nice",
+        "slug": "nice"
+      },
+      "venue": "home",
+      "score": {
+        "for": 3,
+        "against": 3
+      },
+      "result": "D",
+      "sourceRef": "src:a9c6615c16cde0314d70"
+    },
+    {
+      "id": "football-data:7021d41c5e3baff0232dd634ee2b40a572a6e07f5ecdd5a9fa8e79591976842c:2010-05-05:Boulogne:St%20Etienne:home",
+      "date": "2010-05-05",
+      "season": "2009-10",
+      "competition": {
+        "name": "Ligue 1",
+        "type": "league",
+        "country": ""
+      },
+      "stage": "",
+      "opponent": {
+        "name": "St Etienne",
+        "slug": "st-etienne"
+      },
+      "venue": "home",
+      "score": {
+        "for": 0,
+        "against": 1
+      },
+      "result": "L",
+      "sourceRef": "src:a9c6615c16cde0314d70"
+    },
+    {
+      "id": "football-data:7021d41c5e3baff0232dd634ee2b40a572a6e07f5ecdd5a9fa8e79591976842c:2010-05-08:Grenoble:Boulogne:away",
+      "date": "2010-05-08",
+      "season": "2009-10",
+      "competition": {
+        "name": "Ligue 1",
+        "type": "league",
+        "country": ""
+      },
+      "stage": "",
+      "opponent": {
+        "name": "Grenoble",
+        "slug": "grenoble"
+      },
+      "venue": "away",
+      "score": {
+        "for": 0,
+        "against": 2
+      },
+      "result": "L",
+      "sourceRef": "src:a9c6615c16cde0314d70"
+    },
+    {
+      "id": "football-data:7021d41c5e3baff0232dd634ee2b40a572a6e07f5ecdd5a9fa8e79591976842c:2010-05-15:Boulogne:Rennes:home",
+      "date": "2010-05-15",
+      "season": "2009-10",
+      "competition": {
+        "name": "Ligue 1",
+        "type": "league",
+        "country": ""
+      },
+      "stage": "",
+      "opponent": {
+        "name": "Rennes",
+        "slug": "rennes"
+      },
+      "venue": "home",
+      "score": {
+        "for": 1,
+        "against": 0
+      },
+      "result": "W",
+      "sourceRef": "src:a9c6615c16cde0314d70"
+    }
+  ],
+  "seasonStandings": [
+    {
+      "season": "2009-10",
+      "competition": {
+        "name": "Ligue 1",
+        "type": "league",
+        "country": ""
+      },
+      "position": 19,
+      "team": "Boulogne",
+      "played": 38,
+      "won": 7,
+      "drawn": 10,
+      "lost": 21,
+      "goalsFor": 31,
+      "goalsAgainst": 62,
+      "points": 31,
+      "basis": "derived from recorded completed home fixtures"
+    }
+  ],
+  "competitionStandings": [],
+  "updatedAt": "2026-08-04T20:33:22.730Z"
+}

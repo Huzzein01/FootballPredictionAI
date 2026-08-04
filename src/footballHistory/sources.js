@@ -4,13 +4,14 @@
 // `query` is intentionally retained: sources are collected per club, never silently shared.
 function sourcePlan(team) {
   const name = team.name || team.team || "";
-  const query = encodeURIComponent(name);
+  const league = String(team.primaryLeague || team.league || "");
+  const domestic = { EPL: "https://www.premierleague.com/", "La Liga": "https://www.laliga.com/", Bundesliga: "https://www.bundesliga.com/", "Ligue 1": "https://ligue1.com/" }[league] || "";
   return [
-    { rank: 1, provider: "Official club archive", scope: "club history, competition participation and match reports", lookup: `https://www.google.com/search?q=site%3A${encodeURIComponent(name.toLowerCase().replace(/\s+/g, ""))}.com+${query}+archive` },
-    { rank: 2, provider: "Domestic league / national association", scope: "official league fixtures, tables and cup records", lookup: `https://www.google.com/search?q=${query}+official+league+archive+tables` },
-    { rank: 3, provider: "UEFA", scope: "official European competition appearances, fixtures and standings", lookup: `https://www.uefa.com/search/?q=${query}` },
-    { rank: 4, provider: "RSSSF", scope: "historic competitions, tables and cross-checking", lookup: `https://www.rsssf.org/search.html?query=${query}` },
-    { rank: 5, provider: "worldfootball.net", scope: "club match archive and competition participation cross-check", lookup: `https://www.worldfootball.net/search/?q=${query}` },
+    { rank: 1, provider: "Official club archive", url: "", scope: "club history, competition participation and match reports", lookupKey: name, review: "Verify the club-owned archive URL before collection." },
+    { rank: 2, provider: "Official domestic competition / association", url: domestic, scope: "official league fixtures, final tables and cup records", lookupKey: league || name },
+    { rank: 3, provider: "UEFA", url: "https://www.uefa.com/", scope: "official European competition appearances, fixtures and standings", lookupKey: name },
+    { rank: 4, provider: "RSSSF", url: "https://www.rsssf.org/", scope: "historic competitions, tables and cross-checking", lookupKey: name },
+    { rank: 5, provider: "worldfootball.net", url: "https://www.worldfootball.net/", scope: "club match archive and competition participation cross-check", lookupKey: name },
   ];
 }
 

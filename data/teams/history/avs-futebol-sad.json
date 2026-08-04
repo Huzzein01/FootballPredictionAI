@@ -1,0 +1,882 @@
+{
+  "contract": "football-team-history-v1",
+  "team": {
+    "name": "AVS Futebol SAD",
+    "slug": "avs-futebol-sad",
+    "primaryLeague": "Portuguese League P1",
+    "aliases": []
+  },
+  "requestedCoverage": {
+    "fromYear": 1985,
+    "to": "present",
+    "includes": [
+      "all competitions",
+      "opponents",
+      "scorelines",
+      "league standings",
+      "competition standings"
+    ]
+  },
+  "sourcePlan": [
+    {
+      "rank": 1,
+      "provider": "Official club archive",
+      "url": "",
+      "scope": "club history, competition participation and match reports",
+      "lookupKey": "AVS Futebol SAD",
+      "review": "Verify the club-owned archive URL before collection."
+    },
+    {
+      "rank": 2,
+      "provider": "Official domestic competition / association",
+      "url": "",
+      "scope": "official league fixtures, final tables and cup records",
+      "lookupKey": "Portuguese League P1"
+    },
+    {
+      "rank": 3,
+      "provider": "UEFA",
+      "url": "https://www.uefa.com/",
+      "scope": "official European competition appearances, fixtures and standings",
+      "lookupKey": "AVS Futebol SAD"
+    },
+    {
+      "rank": 4,
+      "provider": "RSSSF",
+      "url": "https://www.rsssf.org/",
+      "scope": "historic competitions, tables and cross-checking",
+      "lookupKey": "AVS Futebol SAD"
+    },
+    {
+      "rank": 5,
+      "provider": "worldfootball.net",
+      "url": "https://www.worldfootball.net/",
+      "scope": "club match archive and competition participation cross-check",
+      "lookupKey": "AVS Futebol SAD"
+    }
+  ],
+  "coverage": {
+    "earliestMatch": "2024-08-10",
+    "latestMatch": "2025-05-17",
+    "seasonsWithMatches": [
+      "2024-25"
+    ],
+    "missingSeasons": [
+      "1985-86",
+      "1986-87",
+      "1987-88",
+      "1988-89",
+      "1989-90",
+      "1990-91",
+      "1991-92",
+      "1992-93",
+      "1993-94",
+      "1994-95",
+      "1995-96",
+      "1996-97",
+      "1997-98",
+      "1998-99",
+      "1999-00",
+      "2000-01",
+      "2001-02",
+      "2002-03",
+      "2003-04",
+      "2004-05",
+      "2005-06",
+      "2006-07",
+      "2007-08",
+      "2008-09",
+      "2009-10",
+      "2010-11",
+      "2011-12",
+      "2012-13",
+      "2013-14",
+      "2014-15",
+      "2015-16",
+      "2016-17",
+      "2017-18",
+      "2018-19",
+      "2019-20",
+      "2020-21",
+      "2021-22",
+      "2022-23",
+      "2023-24",
+      "2025-26",
+      "2026-27"
+    ],
+    "competitionScopeVerified": false,
+    "status": "partial"
+  },
+  "matches": [
+    {
+      "id": "engsoccerdata:75ab6c755bd04d33b803c5655d83822a76c1ac19223b547568467273c4083857:2024-08-10:AVS%20Futebol%20SAD:Nacional:home",
+      "date": "2024-08-10",
+      "season": "2024-25",
+      "competition": {
+        "name": "Portuguese League P1",
+        "type": "league",
+        "country": "Portugal"
+      },
+      "stage": "",
+      "opponent": {
+        "name": "Nacional",
+        "slug": "nacional"
+      },
+      "venue": "home",
+      "score": {
+        "for": 1,
+        "against": 1
+      },
+      "result": "D",
+      "sourceRef": "src:55236cfb04cba569a9dd"
+    },
+    {
+      "id": "engsoccerdata:75ab6c755bd04d33b803c5655d83822a76c1ac19223b547568467273c4083857:2024-08-16:Gil%20Vicente:AVS%20Futebol%20SAD:away",
+      "date": "2024-08-16",
+      "season": "2024-25",
+      "competition": {
+        "name": "Portuguese League P1",
+        "type": "league",
+        "country": "Portugal"
+      },
+      "stage": "",
+      "opponent": {
+        "name": "Gil Vicente",
+        "slug": "gil-vicente"
+      },
+      "venue": "away",
+      "score": {
+        "for": 2,
+        "against": 4
+      },
+      "result": "L",
+      "sourceRef": "src:55236cfb04cba569a9dd"
+    },
+    {
+      "id": "engsoccerdata:75ab6c755bd04d33b803c5655d83822a76c1ac19223b547568467273c4083857:2024-08-25:AVS%20Futebol%20SAD:Guimaraes:home",
+      "date": "2024-08-25",
+      "season": "2024-25",
+      "competition": {
+        "name": "Portuguese League P1",
+        "type": "league",
+        "country": "Portugal"
+      },
+      "stage": "",
+      "opponent": {
+        "name": "Guimaraes",
+        "slug": "guimaraes"
+      },
+      "venue": "home",
+      "score": {
+        "for": 1,
+        "against": 0
+      },
+      "result": "W",
+      "sourceRef": "src:55236cfb04cba569a9dd"
+    },
+    {
+      "id": "engsoccerdata:75ab6c755bd04d33b803c5655d83822a76c1ac19223b547568467273c4083857:2024-08-31:Santa%20Clara:AVS%20Futebol%20SAD:away",
+      "date": "2024-08-31",
+      "season": "2024-25",
+      "competition": {
+        "name": "Portuguese League P1",
+        "type": "league",
+        "country": "Portugal"
+      },
+      "stage": "",
+      "opponent": {
+        "name": "Santa Clara",
+        "slug": "santa-clara"
+      },
+      "venue": "away",
+      "score": {
+        "for": 1,
+        "against": 2
+      },
+      "result": "L",
+      "sourceRef": "src:55236cfb04cba569a9dd"
+    },
+    {
+      "id": "engsoccerdata:75ab6c755bd04d33b803c5655d83822a76c1ac19223b547568467273c4083857:2024-09-14:AVS%20Futebol%20SAD:Rio%20Ave:home",
+      "date": "2024-09-14",
+      "season": "2024-25",
+      "competition": {
+        "name": "Portuguese League P1",
+        "type": "league",
+        "country": "Portugal"
+      },
+      "stage": "",
+      "opponent": {
+        "name": "Rio Ave",
+        "slug": "rio-ave"
+      },
+      "venue": "home",
+      "score": {
+        "for": 1,
+        "against": 0
+      },
+      "result": "W",
+      "sourceRef": "src:55236cfb04cba569a9dd"
+    },
+    {
+      "id": "engsoccerdata:75ab6c755bd04d33b803c5655d83822a76c1ac19223b547568467273c4083857:2024-09-22:Sp%20Lisbon:AVS%20Futebol%20SAD:away",
+      "date": "2024-09-22",
+      "season": "2024-25",
+      "competition": {
+        "name": "Portuguese League P1",
+        "type": "league",
+        "country": "Portugal"
+      },
+      "stage": "",
+      "opponent": {
+        "name": "Sp Lisbon",
+        "slug": "sp-lisbon"
+      },
+      "venue": "away",
+      "score": {
+        "for": 0,
+        "against": 3
+      },
+      "result": "L",
+      "sourceRef": "src:55236cfb04cba569a9dd"
+    },
+    {
+      "id": "engsoccerdata:75ab6c755bd04d33b803c5655d83822a76c1ac19223b547568467273c4083857:2024-09-30:AVS%20Futebol%20SAD:Farense:home",
+      "date": "2024-09-30",
+      "season": "2024-25",
+      "competition": {
+        "name": "Portuguese League P1",
+        "type": "league",
+        "country": "Portugal"
+      },
+      "stage": "",
+      "opponent": {
+        "name": "Farense",
+        "slug": "farense"
+      },
+      "venue": "home",
+      "score": {
+        "for": 0,
+        "against": 0
+      },
+      "result": "D",
+      "sourceRef": "src:55236cfb04cba569a9dd"
+    },
+    {
+      "id": "engsoccerdata:75ab6c755bd04d33b803c5655d83822a76c1ac19223b547568467273c4083857:2024-10-05:Arouca:AVS%20Futebol%20SAD:away",
+      "date": "2024-10-05",
+      "season": "2024-25",
+      "competition": {
+        "name": "Portuguese League P1",
+        "type": "league",
+        "country": "Portugal"
+      },
+      "stage": "",
+      "opponent": {
+        "name": "Arouca",
+        "slug": "arouca"
+      },
+      "venue": "away",
+      "score": {
+        "for": 1,
+        "against": 1
+      },
+      "result": "D",
+      "sourceRef": "src:55236cfb04cba569a9dd"
+    },
+    {
+      "id": "engsoccerdata:75ab6c755bd04d33b803c5655d83822a76c1ac19223b547568467273c4083857:2024-10-28:AVS%20Futebol%20SAD:Porto:home",
+      "date": "2024-10-28",
+      "season": "2024-25",
+      "competition": {
+        "name": "Portuguese League P1",
+        "type": "league",
+        "country": "Portugal"
+      },
+      "stage": "",
+      "opponent": {
+        "name": "Porto",
+        "slug": "porto"
+      },
+      "venue": "home",
+      "score": {
+        "for": 0,
+        "against": 5
+      },
+      "result": "L",
+      "sourceRef": "src:55236cfb04cba569a9dd"
+    },
+    {
+      "id": "engsoccerdata:75ab6c755bd04d33b803c5655d83822a76c1ac19223b547568467273c4083857:2024-11-03:AVS%20Futebol%20SAD:Famalicao:home",
+      "date": "2024-11-03",
+      "season": "2024-25",
+      "competition": {
+        "name": "Portuguese League P1",
+        "type": "league",
+        "country": "Portugal"
+      },
+      "stage": "",
+      "opponent": {
+        "name": "Famalicao",
+        "slug": "famalicao"
+      },
+      "venue": "home",
+      "score": {
+        "for": 2,
+        "against": 3
+      },
+      "result": "L",
+      "sourceRef": "src:55236cfb04cba569a9dd"
+    },
+    {
+      "id": "engsoccerdata:75ab6c755bd04d33b803c5655d83822a76c1ac19223b547568467273c4083857:2024-11-09:Estoril:AVS%20Futebol%20SAD:away",
+      "date": "2024-11-09",
+      "season": "2024-25",
+      "competition": {
+        "name": "Portuguese League P1",
+        "type": "league",
+        "country": "Portugal"
+      },
+      "stage": "",
+      "opponent": {
+        "name": "Estoril",
+        "slug": "estoril"
+      },
+      "venue": "away",
+      "score": {
+        "for": 0,
+        "against": 0
+      },
+      "result": "D",
+      "sourceRef": "src:55236cfb04cba569a9dd"
+    },
+    {
+      "id": "engsoccerdata:75ab6c755bd04d33b803c5655d83822a76c1ac19223b547568467273c4083857:2024-12-01:AVS%20Futebol%20SAD:Sp%20Braga:home",
+      "date": "2024-12-01",
+      "season": "2024-25",
+      "competition": {
+        "name": "Portuguese League P1",
+        "type": "league",
+        "country": "Portugal"
+      },
+      "stage": "",
+      "opponent": {
+        "name": "Sp Braga",
+        "slug": "sp-braga"
+      },
+      "venue": "home",
+      "score": {
+        "for": 0,
+        "against": 1
+      },
+      "result": "L",
+      "sourceRef": "src:55236cfb04cba569a9dd"
+    },
+    {
+      "id": "engsoccerdata:75ab6c755bd04d33b803c5655d83822a76c1ac19223b547568467273c4083857:2024-12-08:Casa%20Pia%20AC:AVS%20Futebol%20SAD:away",
+      "date": "2024-12-08",
+      "season": "2024-25",
+      "competition": {
+        "name": "Portuguese League P1",
+        "type": "league",
+        "country": "Portugal"
+      },
+      "stage": "",
+      "opponent": {
+        "name": "Casa Pia AC",
+        "slug": "casa-pia-ac"
+      },
+      "venue": "away",
+      "score": {
+        "for": 1,
+        "against": 1
+      },
+      "result": "D",
+      "sourceRef": "src:55236cfb04cba569a9dd"
+    },
+    {
+      "id": "engsoccerdata:75ab6c755bd04d33b803c5655d83822a76c1ac19223b547568467273c4083857:2024-12-15:AVS%20Futebol%20SAD:Benfica:home",
+      "date": "2024-12-15",
+      "season": "2024-25",
+      "competition": {
+        "name": "Portuguese League P1",
+        "type": "league",
+        "country": "Portugal"
+      },
+      "stage": "",
+      "opponent": {
+        "name": "Benfica",
+        "slug": "benfica"
+      },
+      "venue": "home",
+      "score": {
+        "for": 1,
+        "against": 1
+      },
+      "result": "D",
+      "sourceRef": "src:55236cfb04cba569a9dd"
+    },
+    {
+      "id": "engsoccerdata:75ab6c755bd04d33b803c5655d83822a76c1ac19223b547568467273c4083857:2024-12-21:Boavista:AVS%20Futebol%20SAD:away",
+      "date": "2024-12-21",
+      "season": "2024-25",
+      "competition": {
+        "name": "Portuguese League P1",
+        "type": "league",
+        "country": "Portugal"
+      },
+      "stage": "",
+      "opponent": {
+        "name": "Boavista",
+        "slug": "boavista"
+      },
+      "venue": "away",
+      "score": {
+        "for": 0,
+        "against": 0
+      },
+      "result": "D",
+      "sourceRef": "src:55236cfb04cba569a9dd"
+    },
+    {
+      "id": "engsoccerdata:75ab6c755bd04d33b803c5655d83822a76c1ac19223b547568467273c4083857:2024-12-28:AVS%20Futebol%20SAD:Estrela%20da%20Amadora:home",
+      "date": "2024-12-28",
+      "season": "2024-25",
+      "competition": {
+        "name": "Portuguese League P1",
+        "type": "league",
+        "country": "Portugal"
+      },
+      "stage": "",
+      "opponent": {
+        "name": "Estrela da Amadora",
+        "slug": "estrela-da-amadora"
+      },
+      "venue": "home",
+      "score": {
+        "for": 1,
+        "against": 1
+      },
+      "result": "D",
+      "sourceRef": "src:55236cfb04cba569a9dd"
+    },
+    {
+      "id": "engsoccerdata:75ab6c755bd04d33b803c5655d83822a76c1ac19223b547568467273c4083857:2025-01-04:Moreirense:AVS%20Futebol%20SAD:away",
+      "date": "2025-01-04",
+      "season": "2024-25",
+      "competition": {
+        "name": "Portuguese League P1",
+        "type": "league",
+        "country": "Portugal"
+      },
+      "stage": "",
+      "opponent": {
+        "name": "Moreirense",
+        "slug": "moreirense"
+      },
+      "venue": "away",
+      "score": {
+        "for": 1,
+        "against": 1
+      },
+      "result": "D",
+      "sourceRef": "src:55236cfb04cba569a9dd"
+    },
+    {
+      "id": "engsoccerdata:75ab6c755bd04d33b803c5655d83822a76c1ac19223b547568467273c4083857:2025-01-19:Nacional:AVS%20Futebol%20SAD:away",
+      "date": "2025-01-19",
+      "season": "2024-25",
+      "competition": {
+        "name": "Portuguese League P1",
+        "type": "league",
+        "country": "Portugal"
+      },
+      "stage": "",
+      "opponent": {
+        "name": "Nacional",
+        "slug": "nacional"
+      },
+      "venue": "away",
+      "score": {
+        "for": 1,
+        "against": 3
+      },
+      "result": "L",
+      "sourceRef": "src:55236cfb04cba569a9dd"
+    },
+    {
+      "id": "engsoccerdata:75ab6c755bd04d33b803c5655d83822a76c1ac19223b547568467273c4083857:2025-01-27:AVS%20Futebol%20SAD:Gil%20Vicente:home",
+      "date": "2025-01-27",
+      "season": "2024-25",
+      "competition": {
+        "name": "Portuguese League P1",
+        "type": "league",
+        "country": "Portugal"
+      },
+      "stage": "",
+      "opponent": {
+        "name": "Gil Vicente",
+        "slug": "gil-vicente"
+      },
+      "venue": "home",
+      "score": {
+        "for": 1,
+        "against": 0
+      },
+      "result": "W",
+      "sourceRef": "src:55236cfb04cba569a9dd"
+    },
+    {
+      "id": "engsoccerdata:75ab6c755bd04d33b803c5655d83822a76c1ac19223b547568467273c4083857:2025-02-01:Guimaraes:AVS%20Futebol%20SAD:away",
+      "date": "2025-02-01",
+      "season": "2024-25",
+      "competition": {
+        "name": "Portuguese League P1",
+        "type": "league",
+        "country": "Portugal"
+      },
+      "stage": "",
+      "opponent": {
+        "name": "Guimaraes",
+        "slug": "guimaraes"
+      },
+      "venue": "away",
+      "score": {
+        "for": 0,
+        "against": 2
+      },
+      "result": "L",
+      "sourceRef": "src:55236cfb04cba569a9dd"
+    },
+    {
+      "id": "engsoccerdata:75ab6c755bd04d33b803c5655d83822a76c1ac19223b547568467273c4083857:2025-02-08:AVS%20Futebol%20SAD:Santa%20Clara:home",
+      "date": "2025-02-08",
+      "season": "2024-25",
+      "competition": {
+        "name": "Portuguese League P1",
+        "type": "league",
+        "country": "Portugal"
+      },
+      "stage": "",
+      "opponent": {
+        "name": "Santa Clara",
+        "slug": "santa-clara"
+      },
+      "venue": "home",
+      "score": {
+        "for": 1,
+        "against": 2
+      },
+      "result": "L",
+      "sourceRef": "src:55236cfb04cba569a9dd"
+    },
+    {
+      "id": "engsoccerdata:75ab6c755bd04d33b803c5655d83822a76c1ac19223b547568467273c4083857:2025-02-16:Rio%20Ave:AVS%20Futebol%20SAD:away",
+      "date": "2025-02-16",
+      "season": "2024-25",
+      "competition": {
+        "name": "Portuguese League P1",
+        "type": "league",
+        "country": "Portugal"
+      },
+      "stage": "",
+      "opponent": {
+        "name": "Rio Ave",
+        "slug": "rio-ave"
+      },
+      "venue": "away",
+      "score": {
+        "for": 1,
+        "against": 1
+      },
+      "result": "D",
+      "sourceRef": "src:55236cfb04cba569a9dd"
+    },
+    {
+      "id": "engsoccerdata:75ab6c755bd04d33b803c5655d83822a76c1ac19223b547568467273c4083857:2025-02-23:AVS%20Futebol%20SAD:Sp%20Lisbon:home",
+      "date": "2025-02-23",
+      "season": "2024-25",
+      "competition": {
+        "name": "Portuguese League P1",
+        "type": "league",
+        "country": "Portugal"
+      },
+      "stage": "",
+      "opponent": {
+        "name": "Sp Lisbon",
+        "slug": "sp-lisbon"
+      },
+      "venue": "home",
+      "score": {
+        "for": 2,
+        "against": 2
+      },
+      "result": "D",
+      "sourceRef": "src:55236cfb04cba569a9dd"
+    },
+    {
+      "id": "engsoccerdata:75ab6c755bd04d33b803c5655d83822a76c1ac19223b547568467273c4083857:2025-03-02:Farense:AVS%20Futebol%20SAD:away",
+      "date": "2025-03-02",
+      "season": "2024-25",
+      "competition": {
+        "name": "Portuguese League P1",
+        "type": "league",
+        "country": "Portugal"
+      },
+      "stage": "",
+      "opponent": {
+        "name": "Farense",
+        "slug": "farense"
+      },
+      "venue": "away",
+      "score": {
+        "for": 1,
+        "against": 0
+      },
+      "result": "W",
+      "sourceRef": "src:55236cfb04cba569a9dd"
+    },
+    {
+      "id": "engsoccerdata:75ab6c755bd04d33b803c5655d83822a76c1ac19223b547568467273c4083857:2025-03-08:AVS%20Futebol%20SAD:Arouca:home",
+      "date": "2025-03-08",
+      "season": "2024-25",
+      "competition": {
+        "name": "Portuguese League P1",
+        "type": "league",
+        "country": "Portugal"
+      },
+      "stage": "",
+      "opponent": {
+        "name": "Arouca",
+        "slug": "arouca"
+      },
+      "venue": "home",
+      "score": {
+        "for": 0,
+        "against": 1
+      },
+      "result": "L",
+      "sourceRef": "src:55236cfb04cba569a9dd"
+    },
+    {
+      "id": "engsoccerdata:75ab6c755bd04d33b803c5655d83822a76c1ac19223b547568467273c4083857:2025-03-15:Porto:AVS%20Futebol%20SAD:away",
+      "date": "2025-03-15",
+      "season": "2024-25",
+      "competition": {
+        "name": "Portuguese League P1",
+        "type": "league",
+        "country": "Portugal"
+      },
+      "stage": "",
+      "opponent": {
+        "name": "Porto",
+        "slug": "porto"
+      },
+      "venue": "away",
+      "score": {
+        "for": 0,
+        "against": 2
+      },
+      "result": "L",
+      "sourceRef": "src:55236cfb04cba569a9dd"
+    },
+    {
+      "id": "engsoccerdata:75ab6c755bd04d33b803c5655d83822a76c1ac19223b547568467273c4083857:2025-03-30:Famalicao:AVS%20Futebol%20SAD:away",
+      "date": "2025-03-30",
+      "season": "2024-25",
+      "competition": {
+        "name": "Portuguese League P1",
+        "type": "league",
+        "country": "Portugal"
+      },
+      "stage": "",
+      "opponent": {
+        "name": "Famalicao",
+        "slug": "famalicao"
+      },
+      "venue": "away",
+      "score": {
+        "for": 1,
+        "against": 4
+      },
+      "result": "L",
+      "sourceRef": "src:55236cfb04cba569a9dd"
+    },
+    {
+      "id": "engsoccerdata:75ab6c755bd04d33b803c5655d83822a76c1ac19223b547568467273c4083857:2025-04-04:AVS%20Futebol%20SAD:Estoril:home",
+      "date": "2025-04-04",
+      "season": "2024-25",
+      "competition": {
+        "name": "Portuguese League P1",
+        "type": "league",
+        "country": "Portugal"
+      },
+      "stage": "",
+      "opponent": {
+        "name": "Estoril",
+        "slug": "estoril"
+      },
+      "venue": "home",
+      "score": {
+        "for": 0,
+        "against": 3
+      },
+      "result": "L",
+      "sourceRef": "src:55236cfb04cba569a9dd"
+    },
+    {
+      "id": "engsoccerdata:75ab6c755bd04d33b803c5655d83822a76c1ac19223b547568467273c4083857:2025-04-13:Sp%20Braga:AVS%20Futebol%20SAD:away",
+      "date": "2025-04-13",
+      "season": "2024-25",
+      "competition": {
+        "name": "Portuguese League P1",
+        "type": "league",
+        "country": "Portugal"
+      },
+      "stage": "",
+      "opponent": {
+        "name": "Sp Braga",
+        "slug": "sp-braga"
+      },
+      "venue": "away",
+      "score": {
+        "for": 1,
+        "against": 4
+      },
+      "result": "L",
+      "sourceRef": "src:55236cfb04cba569a9dd"
+    },
+    {
+      "id": "engsoccerdata:75ab6c755bd04d33b803c5655d83822a76c1ac19223b547568467273c4083857:2025-04-19:AVS%20Futebol%20SAD:Casa%20Pia%20AC:home",
+      "date": "2025-04-19",
+      "season": "2024-25",
+      "competition": {
+        "name": "Portuguese League P1",
+        "type": "league",
+        "country": "Portugal"
+      },
+      "stage": "",
+      "opponent": {
+        "name": "Casa Pia AC",
+        "slug": "casa-pia-ac"
+      },
+      "venue": "home",
+      "score": {
+        "for": 1,
+        "against": 1
+      },
+      "result": "D",
+      "sourceRef": "src:55236cfb04cba569a9dd"
+    },
+    {
+      "id": "engsoccerdata:75ab6c755bd04d33b803c5655d83822a76c1ac19223b547568467273c4083857:2025-04-27:Benfica:AVS%20Futebol%20SAD:away",
+      "date": "2025-04-27",
+      "season": "2024-25",
+      "competition": {
+        "name": "Portuguese League P1",
+        "type": "league",
+        "country": "Portugal"
+      },
+      "stage": "",
+      "opponent": {
+        "name": "Benfica",
+        "slug": "benfica"
+      },
+      "venue": "away",
+      "score": {
+        "for": 0,
+        "against": 6
+      },
+      "result": "L",
+      "sourceRef": "src:55236cfb04cba569a9dd"
+    },
+    {
+      "id": "engsoccerdata:75ab6c755bd04d33b803c5655d83822a76c1ac19223b547568467273c4083857:2025-05-05:AVS%20Futebol%20SAD:Boavista:home",
+      "date": "2025-05-05",
+      "season": "2024-25",
+      "competition": {
+        "name": "Portuguese League P1",
+        "type": "league",
+        "country": "Portugal"
+      },
+      "stage": "",
+      "opponent": {
+        "name": "Boavista",
+        "slug": "boavista"
+      },
+      "venue": "home",
+      "score": {
+        "for": 1,
+        "against": 2
+      },
+      "result": "L",
+      "sourceRef": "src:55236cfb04cba569a9dd"
+    },
+    {
+      "id": "engsoccerdata:75ab6c755bd04d33b803c5655d83822a76c1ac19223b547568467273c4083857:2025-05-11:Estrela%20da%20Amadora:AVS%20Futebol%20SAD:away",
+      "date": "2025-05-11",
+      "season": "2024-25",
+      "competition": {
+        "name": "Portuguese League P1",
+        "type": "league",
+        "country": "Portugal"
+      },
+      "stage": "",
+      "opponent": {
+        "name": "Estrela da Amadora",
+        "slug": "estrela-da-amadora"
+      },
+      "venue": "away",
+      "score": {
+        "for": 1,
+        "against": 0
+      },
+      "result": "W",
+      "sourceRef": "src:55236cfb04cba569a9dd"
+    },
+    {
+      "id": "engsoccerdata:75ab6c755bd04d33b803c5655d83822a76c1ac19223b547568467273c4083857:2025-05-17:AVS%20Futebol%20SAD:Moreirense:home",
+      "date": "2025-05-17",
+      "season": "2024-25",
+      "competition": {
+        "name": "Portuguese League P1",
+        "type": "league",
+        "country": "Portugal"
+      },
+      "stage": "",
+      "opponent": {
+        "name": "Moreirense",
+        "slug": "moreirense"
+      },
+      "venue": "home",
+      "score": {
+        "for": 0,
+        "against": 3
+      },
+      "result": "L",
+      "sourceRef": "src:55236cfb04cba569a9dd"
+    }
+  ],
+  "seasonStandings": [
+    {
+      "season": "2024-25",
+      "competition": {
+        "name": "Portuguese League P1",
+        "type": "league",
+        "country": "Portugal"
+      },
+      "position": 17,
+      "team": "AVS Futebol SAD",
+      "played": 34,
+      "won": 5,
+      "drawn": 12,
+      "lost": 17,
+      "goalsFor": 25,
+      "goalsAgainst": 60,
+      "points": 27,
+      "basis": "derived from recorded completed home fixtures"
+    }
+  ],
+  "competitionStandings": [],
+  "updatedAt": "2026-08-04T20:33:21.712Z"
+}

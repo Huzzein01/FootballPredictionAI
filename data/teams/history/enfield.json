@@ -1,0 +1,892 @@
+{
+  "contract": "football-team-history-v1",
+  "team": {
+    "name": "Enfield",
+    "slug": "enfield",
+    "primaryLeague": "FA Cup",
+    "aliases": []
+  },
+  "requestedCoverage": {
+    "fromYear": 1985,
+    "to": "present",
+    "includes": [
+      "all competitions",
+      "opponents",
+      "scorelines",
+      "league standings",
+      "competition standings"
+    ]
+  },
+  "sourcePlan": [
+    {
+      "rank": 1,
+      "provider": "Official club archive",
+      "url": "",
+      "scope": "club history, competition participation and match reports",
+      "lookupKey": "Enfield",
+      "review": "Verify the club-owned archive URL before collection."
+    },
+    {
+      "rank": 2,
+      "provider": "Official domestic competition / association",
+      "url": "",
+      "scope": "official league fixtures, final tables and cup records",
+      "lookupKey": "FA Cup"
+    },
+    {
+      "rank": 3,
+      "provider": "UEFA",
+      "url": "https://www.uefa.com/",
+      "scope": "official European competition appearances, fixtures and standings",
+      "lookupKey": "Enfield"
+    },
+    {
+      "rank": 4,
+      "provider": "RSSSF",
+      "url": "https://www.rsssf.org/",
+      "scope": "historic competitions, tables and cross-checking",
+      "lookupKey": "Enfield"
+    },
+    {
+      "rank": 5,
+      "provider": "worldfootball.net",
+      "url": "https://www.worldfootball.net/",
+      "scope": "club match archive and competition participation cross-check",
+      "lookupKey": "Enfield"
+    }
+  ],
+  "coverage": {
+    "earliestMatch": "1985-11-16",
+    "latestMatch": "1999-11-30",
+    "seasonsWithMatches": [
+      "1985-86",
+      "1986-87",
+      "1988-89",
+      "1991-92",
+      "1993-94",
+      "1994-95",
+      "1995-96",
+      "1996-97",
+      "1998-99",
+      "1999-00"
+    ],
+    "missingSeasons": [
+      "1987-88",
+      "1989-90",
+      "1990-91",
+      "1992-93",
+      "1997-98",
+      "2000-01",
+      "2001-02",
+      "2002-03",
+      "2003-04",
+      "2004-05",
+      "2005-06",
+      "2006-07",
+      "2007-08",
+      "2008-09",
+      "2009-10",
+      "2010-11",
+      "2011-12",
+      "2012-13",
+      "2013-14",
+      "2014-15",
+      "2015-16",
+      "2016-17",
+      "2017-18",
+      "2018-19",
+      "2019-20",
+      "2020-21",
+      "2021-22",
+      "2022-23",
+      "2023-24",
+      "2024-25",
+      "2025-26",
+      "2026-27"
+    ],
+    "competitionScopeVerified": false,
+    "status": "partial"
+  },
+  "matches": [
+    {
+      "id": "engsoccerdata:a931572683fc3f7925cb86da965133b560f9c74d8de608d9b7ef274f24226424:1985-11-16:Enfield:Bognor%20Regis%20Town:home",
+      "date": "1985-11-16",
+      "season": "1985-86",
+      "competition": {
+        "name": "FA Cup",
+        "type": "cup",
+        "country": "England"
+      },
+      "stage": "1",
+      "opponent": {
+        "name": "Bognor Regis Town",
+        "slug": "bognor-regis-town"
+      },
+      "venue": "home",
+      "score": {
+        "for": 0,
+        "against": 2
+      },
+      "result": "L",
+      "sourceRef": "src:c097effda42ed7e7e5e8"
+    },
+    {
+      "id": "engsoccerdata:a931572683fc3f7925cb86da965133b560f9c74d8de608d9b7ef274f24226424:1986-11-15:Dartford:Enfield:away",
+      "date": "1986-11-15",
+      "season": "1986-87",
+      "competition": {
+        "name": "FA Cup",
+        "type": "cup",
+        "country": "England"
+      },
+      "stage": "1",
+      "opponent": {
+        "name": "Dartford",
+        "slug": "dartford"
+      },
+      "venue": "away",
+      "score": {
+        "for": 1,
+        "against": 1
+      },
+      "result": "D",
+      "sourceRef": "src:c097effda42ed7e7e5e8"
+    },
+    {
+      "id": "engsoccerdata:a931572683fc3f7925cb86da965133b560f9c74d8de608d9b7ef274f24226424:1986-11-18:Enfield:Dartford:home",
+      "date": "1986-11-18",
+      "season": "1986-87",
+      "competition": {
+        "name": "FA Cup",
+        "type": "cup",
+        "country": "England"
+      },
+      "stage": "1",
+      "opponent": {
+        "name": "Dartford",
+        "slug": "dartford"
+      },
+      "venue": "home",
+      "score": {
+        "for": 3,
+        "against": 0
+      },
+      "result": "W",
+      "sourceRef": "src:c097effda42ed7e7e5e8"
+    },
+    {
+      "id": "engsoccerdata:a931572683fc3f7925cb86da965133b560f9c74d8de608d9b7ef274f24226424:1986-12-06:Swindon%20Town:Enfield:away",
+      "date": "1986-12-06",
+      "season": "1986-87",
+      "competition": {
+        "name": "FA Cup",
+        "type": "cup",
+        "country": "England"
+      },
+      "stage": "2",
+      "opponent": {
+        "name": "Swindon",
+        "slug": "swindon"
+      },
+      "venue": "away",
+      "score": {
+        "for": 0,
+        "against": 3
+      },
+      "result": "L",
+      "sourceRef": "src:c097effda42ed7e7e5e8"
+    },
+    {
+      "id": "engsoccerdata:a931572683fc3f7925cb86da965133b560f9c74d8de608d9b7ef274f24226424:1988-11-19:Enfield:Leyton%20Orient:home",
+      "date": "1988-11-19",
+      "season": "1988-89",
+      "competition": {
+        "name": "FA Cup",
+        "type": "cup",
+        "country": "England"
+      },
+      "stage": "1",
+      "opponent": {
+        "name": "Leyton Orient",
+        "slug": "leyton-orient"
+      },
+      "venue": "home",
+      "score": {
+        "for": 1,
+        "against": 1
+      },
+      "result": "D",
+      "sourceRef": "src:c097effda42ed7e7e5e8"
+    },
+    {
+      "id": "engsoccerdata:a931572683fc3f7925cb86da965133b560f9c74d8de608d9b7ef274f24226424:1988-11-23:Leyton%20Orient:Enfield:away",
+      "date": "1988-11-23",
+      "season": "1988-89",
+      "competition": {
+        "name": "FA Cup",
+        "type": "cup",
+        "country": "England"
+      },
+      "stage": "1",
+      "opponent": {
+        "name": "Leyton Orient",
+        "slug": "leyton-orient"
+      },
+      "venue": "away",
+      "score": {
+        "for": 2,
+        "against": 2
+      },
+      "result": "D",
+      "sourceRef": "src:c097effda42ed7e7e5e8"
+    },
+    {
+      "id": "engsoccerdata:a931572683fc3f7925cb86da965133b560f9c74d8de608d9b7ef274f24226424:1988-11-28:Leyton%20Orient:Enfield:away",
+      "date": "1988-11-28",
+      "season": "1988-89",
+      "competition": {
+        "name": "FA Cup",
+        "type": "cup",
+        "country": "England"
+      },
+      "stage": "1",
+      "opponent": {
+        "name": "Leyton Orient",
+        "slug": "leyton-orient"
+      },
+      "venue": "away",
+      "score": {
+        "for": 1,
+        "against": 0
+      },
+      "result": "W",
+      "sourceRef": "src:c097effda42ed7e7e5e8"
+    },
+    {
+      "id": "engsoccerdata:a931572683fc3f7925cb86da965133b560f9c74d8de608d9b7ef274f24226424:1988-12-11:Enfield:Cardiff%20City:home",
+      "date": "1988-12-11",
+      "season": "1988-89",
+      "competition": {
+        "name": "FA Cup",
+        "type": "cup",
+        "country": "England"
+      },
+      "stage": "2",
+      "opponent": {
+        "name": "Cardiff City",
+        "slug": "cardiff-city"
+      },
+      "venue": "home",
+      "score": {
+        "for": 1,
+        "against": 4
+      },
+      "result": "L",
+      "sourceRef": "src:c097effda42ed7e7e5e8"
+    },
+    {
+      "id": "engsoccerdata:a931572683fc3f7925cb86da965133b560f9c74d8de608d9b7ef274f24226424:1991-11-16:Aldershot:Enfield:away",
+      "date": "1991-11-16",
+      "season": "1991-92",
+      "competition": {
+        "name": "FA Cup",
+        "type": "cup",
+        "country": "England"
+      },
+      "stage": "1",
+      "opponent": {
+        "name": "Aldershot",
+        "slug": "aldershot"
+      },
+      "venue": "away",
+      "score": {
+        "for": 1,
+        "against": 0
+      },
+      "result": "W",
+      "sourceRef": "src:c097effda42ed7e7e5e8"
+    },
+    {
+      "id": "engsoccerdata:a931572683fc3f7925cb86da965133b560f9c74d8de608d9b7ef274f24226424:1991-12-07:Enfield:Barnet:home",
+      "date": "1991-12-07",
+      "season": "1991-92",
+      "competition": {
+        "name": "FA Cup",
+        "type": "cup",
+        "country": "England"
+      },
+      "stage": "2",
+      "opponent": {
+        "name": "Barnet",
+        "slug": "barnet"
+      },
+      "venue": "home",
+      "score": {
+        "for": 1,
+        "against": 4
+      },
+      "result": "L",
+      "sourceRef": "src:c097effda42ed7e7e5e8"
+    },
+    {
+      "id": "engsoccerdata:a931572683fc3f7925cb86da965133b560f9c74d8de608d9b7ef274f24226424:1993-11-13:Enfield:Cardiff%20City:home",
+      "date": "1993-11-13",
+      "season": "1993-94",
+      "competition": {
+        "name": "FA Cup",
+        "type": "cup",
+        "country": "England"
+      },
+      "stage": "1",
+      "opponent": {
+        "name": "Cardiff City",
+        "slug": "cardiff-city"
+      },
+      "venue": "home",
+      "score": {
+        "for": 0,
+        "against": 0
+      },
+      "result": "D",
+      "sourceRef": "src:c097effda42ed7e7e5e8"
+    },
+    {
+      "id": "engsoccerdata:a931572683fc3f7925cb86da965133b560f9c74d8de608d9b7ef274f24226424:1993-11-30:Cardiff%20City:Enfield:away",
+      "date": "1993-11-30",
+      "season": "1993-94",
+      "competition": {
+        "name": "FA Cup",
+        "type": "cup",
+        "country": "England"
+      },
+      "stage": "1",
+      "opponent": {
+        "name": "Cardiff City",
+        "slug": "cardiff-city"
+      },
+      "venue": "away",
+      "score": {
+        "for": 0,
+        "against": 1
+      },
+      "result": "L",
+      "sourceRef": "src:c097effda42ed7e7e5e8"
+    },
+    {
+      "id": "engsoccerdata:a931572683fc3f7925cb86da965133b560f9c74d8de608d9b7ef274f24226424:1994-11-12:Enfield:Cardiff%20City:home",
+      "date": "1994-11-12",
+      "season": "1994-95",
+      "competition": {
+        "name": "FA Cup",
+        "type": "cup",
+        "country": "England"
+      },
+      "stage": "1",
+      "opponent": {
+        "name": "Cardiff City",
+        "slug": "cardiff-city"
+      },
+      "venue": "home",
+      "score": {
+        "for": 1,
+        "against": 0
+      },
+      "result": "W",
+      "sourceRef": "src:c097effda42ed7e7e5e8"
+    },
+    {
+      "id": "engsoccerdata:a931572683fc3f7925cb86da965133b560f9c74d8de608d9b7ef274f24226424:1994-12-03:Enfield:Torquay%20United:home",
+      "date": "1994-12-03",
+      "season": "1994-95",
+      "competition": {
+        "name": "FA Cup",
+        "type": "cup",
+        "country": "England"
+      },
+      "stage": "2",
+      "opponent": {
+        "name": "Torquay United",
+        "slug": "torquay-united"
+      },
+      "venue": "home",
+      "score": {
+        "for": 1,
+        "against": 1
+      },
+      "result": "D",
+      "sourceRef": "src:c097effda42ed7e7e5e8"
+    },
+    {
+      "id": "engsoccerdata:a931572683fc3f7925cb86da965133b560f9c74d8de608d9b7ef274f24226424:1994-12-13:Torquay%20United:Enfield:away",
+      "date": "1994-12-13",
+      "season": "1994-95",
+      "competition": {
+        "name": "FA Cup",
+        "type": "cup",
+        "country": "England"
+      },
+      "stage": "2",
+      "opponent": {
+        "name": "Torquay United",
+        "slug": "torquay-united"
+      },
+      "venue": "away",
+      "score": {
+        "for": 1,
+        "against": 0
+      },
+      "result": "W",
+      "sourceRef": "src:c097effda42ed7e7e5e8"
+    },
+    {
+      "id": "engsoccerdata:a931572683fc3f7925cb86da965133b560f9c74d8de608d9b7ef274f24226424:1995-01-07:Leicester%20City:Enfield:away",
+      "date": "1995-01-07",
+      "season": "1994-95",
+      "competition": {
+        "name": "FA Cup",
+        "type": "cup",
+        "country": "England"
+      },
+      "stage": "3",
+      "opponent": {
+        "name": "Leicester",
+        "slug": "leicester"
+      },
+      "venue": "away",
+      "score": {
+        "for": 0,
+        "against": 2
+      },
+      "result": "L",
+      "sourceRef": "src:c097effda42ed7e7e5e8"
+    },
+    {
+      "id": "engsoccerdata:a931572683fc3f7925cb86da965133b560f9c74d8de608d9b7ef274f24226424:1995-11-11:Newport%20IOW:Enfield:away",
+      "date": "1995-11-11",
+      "season": "1995-96",
+      "competition": {
+        "name": "FA Cup",
+        "type": "cup",
+        "country": "England"
+      },
+      "stage": "1",
+      "opponent": {
+        "name": "Newport IOW",
+        "slug": "newport-iow"
+      },
+      "venue": "away",
+      "score": {
+        "for": 1,
+        "against": 1
+      },
+      "result": "D",
+      "sourceRef": "src:c097effda42ed7e7e5e8"
+    },
+    {
+      "id": "engsoccerdata:a931572683fc3f7925cb86da965133b560f9c74d8de608d9b7ef274f24226424:1995-11-21:Enfield:Newport%20IOW:home",
+      "date": "1995-11-21",
+      "season": "1995-96",
+      "competition": {
+        "name": "FA Cup",
+        "type": "cup",
+        "country": "England"
+      },
+      "stage": "1",
+      "opponent": {
+        "name": "Newport IOW",
+        "slug": "newport-iow"
+      },
+      "venue": "home",
+      "score": {
+        "for": 2,
+        "against": 1
+      },
+      "result": "W",
+      "sourceRef": "src:c097effda42ed7e7e5e8"
+    },
+    {
+      "id": "engsoccerdata:a931572683fc3f7925cb86da965133b560f9c74d8de608d9b7ef274f24226424:1995-12-02:Enfield:Woking:home",
+      "date": "1995-12-02",
+      "season": "1995-96",
+      "competition": {
+        "name": "FA Cup",
+        "type": "cup",
+        "country": "England"
+      },
+      "stage": "2",
+      "opponent": {
+        "name": "Woking",
+        "slug": "woking"
+      },
+      "venue": "home",
+      "score": {
+        "for": 1,
+        "against": 1
+      },
+      "result": "D",
+      "sourceRef": "src:c097effda42ed7e7e5e8"
+    },
+    {
+      "id": "engsoccerdata:a931572683fc3f7925cb86da965133b560f9c74d8de608d9b7ef274f24226424:1995-12-12:Woking:Enfield:away",
+      "date": "1995-12-12",
+      "season": "1995-96",
+      "competition": {
+        "name": "FA Cup",
+        "type": "cup",
+        "country": "England"
+      },
+      "stage": "2",
+      "opponent": {
+        "name": "Woking",
+        "slug": "woking"
+      },
+      "venue": "away",
+      "score": {
+        "for": 1,
+        "against": 2
+      },
+      "result": "L",
+      "sourceRef": "src:c097effda42ed7e7e5e8"
+    },
+    {
+      "id": "engsoccerdata:a931572683fc3f7925cb86da965133b560f9c74d8de608d9b7ef274f24226424:1996-11-16:Bromley:Enfield:away",
+      "date": "1996-11-16",
+      "season": "1996-97",
+      "competition": {
+        "name": "FA Cup",
+        "type": "cup",
+        "country": "England"
+      },
+      "stage": "1",
+      "opponent": {
+        "name": "Bromley",
+        "slug": "bromley"
+      },
+      "venue": "away",
+      "score": {
+        "for": 3,
+        "against": 1
+      },
+      "result": "W",
+      "sourceRef": "src:c097effda42ed7e7e5e8"
+    },
+    {
+      "id": "engsoccerdata:a931572683fc3f7925cb86da965133b560f9c74d8de608d9b7ef274f24226424:1996-12-07:Enfield:Peterborough%20United:home",
+      "date": "1996-12-07",
+      "season": "1996-97",
+      "competition": {
+        "name": "FA Cup",
+        "type": "cup",
+        "country": "England"
+      },
+      "stage": "2",
+      "opponent": {
+        "name": "Peterborough United",
+        "slug": "peterborough-united"
+      },
+      "venue": "home",
+      "score": {
+        "for": 1,
+        "against": 1
+      },
+      "result": "D",
+      "sourceRef": "src:c097effda42ed7e7e5e8"
+    },
+    {
+      "id": "engsoccerdata:a931572683fc3f7925cb86da965133b560f9c74d8de608d9b7ef274f24226424:1996-12-17:Peterborough%20United:Enfield:away",
+      "date": "1996-12-17",
+      "season": "1996-97",
+      "competition": {
+        "name": "FA Cup",
+        "type": "cup",
+        "country": "England"
+      },
+      "stage": "2",
+      "opponent": {
+        "name": "Peterborough United",
+        "slug": "peterborough-united"
+      },
+      "venue": "away",
+      "score": {
+        "for": 1,
+        "against": 4
+      },
+      "result": "L",
+      "sourceRef": "src:c097effda42ed7e7e5e8"
+    },
+    {
+      "id": "engsoccerdata:a931572683fc3f7925cb86da965133b560f9c74d8de608d9b7ef274f24226424:1998-11-14:Enfield:York%20City:home",
+      "date": "1998-11-14",
+      "season": "1998-99",
+      "competition": {
+        "name": "FA Cup",
+        "type": "cup",
+        "country": "England"
+      },
+      "stage": "1",
+      "opponent": {
+        "name": "York City",
+        "slug": "york-city"
+      },
+      "venue": "home",
+      "score": {
+        "for": 2,
+        "against": 2
+      },
+      "result": "D",
+      "sourceRef": "src:c097effda42ed7e7e5e8"
+    },
+    {
+      "id": "engsoccerdata:a931572683fc3f7925cb86da965133b560f9c74d8de608d9b7ef274f24226424:1998-11-24:York%20City:Enfield:away",
+      "date": "1998-11-24",
+      "season": "1998-99",
+      "competition": {
+        "name": "FA Cup",
+        "type": "cup",
+        "country": "England"
+      },
+      "stage": "1",
+      "opponent": {
+        "name": "York City",
+        "slug": "york-city"
+      },
+      "venue": "away",
+      "score": {
+        "for": 1,
+        "against": 2
+      },
+      "result": "L",
+      "sourceRef": "src:c097effda42ed7e7e5e8"
+    },
+    {
+      "id": "engsoccerdata:a931572683fc3f7925cb86da965133b560f9c74d8de608d9b7ef274f24226424:1999-10-30:Chesterfield:Enfield:away",
+      "date": "1999-10-30",
+      "season": "1999-00",
+      "competition": {
+        "name": "FA Cup",
+        "type": "cup",
+        "country": "England"
+      },
+      "stage": "1",
+      "opponent": {
+        "name": "Chesterfield",
+        "slug": "chesterfield"
+      },
+      "venue": "away",
+      "score": {
+        "for": 2,
+        "against": 1
+      },
+      "result": "W",
+      "sourceRef": "src:c097effda42ed7e7e5e8"
+    },
+    {
+      "id": "engsoccerdata:a931572683fc3f7925cb86da965133b560f9c74d8de608d9b7ef274f24226424:1999-11-20:Preston%20North%20End:Enfield:away",
+      "date": "1999-11-20",
+      "season": "1999-00",
+      "competition": {
+        "name": "FA Cup",
+        "type": "cup",
+        "country": "England"
+      },
+      "stage": "2",
+      "opponent": {
+        "name": "Preston North End",
+        "slug": "preston-north-end"
+      },
+      "venue": "away",
+      "score": {
+        "for": 0,
+        "against": 0
+      },
+      "result": "D",
+      "sourceRef": "src:c097effda42ed7e7e5e8"
+    },
+    {
+      "id": "engsoccerdata:a931572683fc3f7925cb86da965133b560f9c74d8de608d9b7ef274f24226424:1999-11-30:Enfield:Preston%20North%20End:home",
+      "date": "1999-11-30",
+      "season": "1999-00",
+      "competition": {
+        "name": "FA Cup",
+        "type": "cup",
+        "country": "England"
+      },
+      "stage": "2",
+      "opponent": {
+        "name": "Preston North End",
+        "slug": "preston-north-end"
+      },
+      "venue": "home",
+      "score": {
+        "for": 0,
+        "against": 3
+      },
+      "result": "L",
+      "sourceRef": "src:c097effda42ed7e7e5e8"
+    }
+  ],
+  "seasonStandings": [],
+  "competitionStandings": [
+    {
+      "season": "1985-86",
+      "competition": {
+        "name": "FA Cup",
+        "type": "cup",
+        "country": "England"
+      },
+      "format": "knockout-progress",
+      "matches": 1,
+      "wins": 0,
+      "draws": 0,
+      "losses": 1,
+      "furthestStage": "1",
+      "latestMatch": "1985-11-16",
+      "basis": "derived from source-attributed recorded matches"
+    },
+    {
+      "season": "1986-87",
+      "competition": {
+        "name": "FA Cup",
+        "type": "cup",
+        "country": "England"
+      },
+      "format": "knockout-progress",
+      "matches": 3,
+      "wins": 1,
+      "draws": 1,
+      "losses": 1,
+      "furthestStage": "2",
+      "latestMatch": "1986-12-06",
+      "basis": "derived from source-attributed recorded matches"
+    },
+    {
+      "season": "1988-89",
+      "competition": {
+        "name": "FA Cup",
+        "type": "cup",
+        "country": "England"
+      },
+      "format": "knockout-progress",
+      "matches": 4,
+      "wins": 1,
+      "draws": 2,
+      "losses": 1,
+      "furthestStage": "2",
+      "latestMatch": "1988-12-11",
+      "basis": "derived from source-attributed recorded matches"
+    },
+    {
+      "season": "1991-92",
+      "competition": {
+        "name": "FA Cup",
+        "type": "cup",
+        "country": "England"
+      },
+      "format": "knockout-progress",
+      "matches": 2,
+      "wins": 1,
+      "draws": 0,
+      "losses": 1,
+      "furthestStage": "2",
+      "latestMatch": "1991-12-07",
+      "basis": "derived from source-attributed recorded matches"
+    },
+    {
+      "season": "1993-94",
+      "competition": {
+        "name": "FA Cup",
+        "type": "cup",
+        "country": "England"
+      },
+      "format": "knockout-progress",
+      "matches": 2,
+      "wins": 0,
+      "draws": 1,
+      "losses": 1,
+      "furthestStage": "1",
+      "latestMatch": "1993-11-30",
+      "basis": "derived from source-attributed recorded matches"
+    },
+    {
+      "season": "1994-95",
+      "competition": {
+        "name": "FA Cup",
+        "type": "cup",
+        "country": "England"
+      },
+      "format": "knockout-progress",
+      "matches": 4,
+      "wins": 2,
+      "draws": 1,
+      "losses": 1,
+      "furthestStage": "3",
+      "latestMatch": "1995-01-07",
+      "basis": "derived from source-attributed recorded matches"
+    },
+    {
+      "season": "1995-96",
+      "competition": {
+        "name": "FA Cup",
+        "type": "cup",
+        "country": "England"
+      },
+      "format": "knockout-progress",
+      "matches": 4,
+      "wins": 1,
+      "draws": 2,
+      "losses": 1,
+      "furthestStage": "2",
+      "latestMatch": "1995-12-12",
+      "basis": "derived from source-attributed recorded matches"
+    },
+    {
+      "season": "1996-97",
+      "competition": {
+        "name": "FA Cup",
+        "type": "cup",
+        "country": "England"
+      },
+      "format": "knockout-progress",
+      "matches": 3,
+      "wins": 1,
+      "draws": 1,
+      "losses": 1,
+      "furthestStage": "2",
+      "latestMatch": "1996-12-17",
+      "basis": "derived from source-attributed recorded matches"
+    },
+    {
+      "season": "1998-99",
+      "competition": {
+        "name": "FA Cup",
+        "type": "cup",
+        "country": "England"
+      },
+      "format": "knockout-progress",
+      "matches": 2,
+      "wins": 0,
+      "draws": 1,
+      "losses": 1,
+      "furthestStage": "1",
+      "latestMatch": "1998-11-24",
+      "basis": "derived from source-attributed recorded matches"
+    },
+    {
+      "season": "1999-00",
+      "competition": {
+        "name": "FA Cup",
+        "type": "cup",
+        "country": "England"
+      },
+      "format": "knockout-progress",
+      "matches": 3,
+      "wins": 1,
+      "draws": 1,
+      "losses": 1,
+      "furthestStage": "2",
+      "latestMatch": "1999-11-30",
+      "basis": "derived from source-attributed recorded matches"
+    }
+  ],
+  "updatedAt": "2026-08-04T20:33:24.576Z"
+}

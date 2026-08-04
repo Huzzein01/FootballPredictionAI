@@ -17,7 +17,7 @@ function validateMatch(match) {
   if (!match?.competition?.name) errors.push("match.competition.name is required");
   if (!match?.opponent?.name) errors.push("match.opponent.name is required");
   if (!Number.isFinite(Number(match?.score?.for)) || !Number.isFinite(Number(match?.score?.against))) errors.push("match.score requires numeric for/against values");
-  if (!Array.isArray(match?.sources) || !match.sources.some((source) => source?.url && source?.retrievedAt)) errors.push("match requires an attributable source URL and retrieval time");
+  if ((!Array.isArray(match?.sources) || !match.sources.some((source) => source?.url && source?.retrievedAt)) && !match?.sourceRef) errors.push("match requires an attributable source URL/retrieval time or sourceRef");
   return errors;
 }
 
@@ -44,7 +44,7 @@ function emptyHistory(team) {
     team: { name: team.team, slug: team.slug, primaryLeague: team.league || "", aliases: [] },
     requestedCoverage: { fromYear: MIN_YEAR, to: "present", includes: ["all competitions", "opponents", "scorelines", "league standings", "competition standings"] },
     sourcePlan: [],
-    coverage: { earliestMatch: "", latestMatch: "", seasonsWithMatches: [], missingSeasons: [], status: "not-collected" },
+    coverage: { earliestMatch: "", latestMatch: "", seasonsWithMatches: [], missingSeasons: [], competitionScopeVerified: false, status: "not-collected" },
     matches: [],
     seasonStandings: [],
     competitionStandings: [],
