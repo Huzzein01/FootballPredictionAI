@@ -1,0 +1,620 @@
+{
+  "contract": "football-team-history-v1",
+  "team": {
+    "name": "Ulm",
+    "slug": "ulm",
+    "primaryLeague": "Bundesliga",
+    "aliases": []
+  },
+  "requestedCoverage": {
+    "fromYear": 1985,
+    "to": "present",
+    "includes": [
+      "all competitions",
+      "opponents",
+      "scorelines",
+      "league standings",
+      "competition standings"
+    ]
+  },
+  "sourcePlan": [
+    {
+      "rank": 1,
+      "provider": "Official club archive",
+      "scope": "club history, competition participation and match reports",
+      "lookup": "https://www.google.com/search?q=site%3Aulm.com+Ulm+archive"
+    },
+    {
+      "rank": 2,
+      "provider": "Domestic league / national association",
+      "scope": "official league fixtures, tables and cup records",
+      "lookup": "https://www.google.com/search?q=Ulm+official+league+archive+tables"
+    },
+    {
+      "rank": 3,
+      "provider": "UEFA",
+      "scope": "official European competition appearances, fixtures and standings",
+      "lookup": "https://www.uefa.com/search/?q=Ulm"
+    },
+    {
+      "rank": 4,
+      "provider": "RSSSF",
+      "scope": "historic competitions, tables and cross-checking",
+      "lookup": "https://www.rsssf.org/search.html?query=Ulm"
+    },
+    {
+      "rank": 5,
+      "provider": "worldfootball.net",
+      "scope": "club match archive and competition participation cross-check",
+      "lookup": "https://www.worldfootball.net/search/?q=Ulm"
+    }
+  ],
+  "coverage": {
+    "earliestMatch": "1999-08-15",
+    "latestMatch": "1999-12-18",
+    "seasonsWithMatches": [
+      "1999-00"
+    ],
+    "missingSeasons": [
+      "1985-86",
+      "1986-87",
+      "1987-88",
+      "1988-89",
+      "1989-90",
+      "1990-91",
+      "1991-92",
+      "1992-93",
+      "1993-94",
+      "1994-95",
+      "1995-96",
+      "1996-97",
+      "1997-98",
+      "1998-99",
+      "2000-01",
+      "2001-02",
+      "2002-03",
+      "2003-04",
+      "2004-05",
+      "2005-06",
+      "2006-07",
+      "2007-08",
+      "2008-09",
+      "2009-10",
+      "2010-11",
+      "2011-12",
+      "2012-13",
+      "2013-14",
+      "2014-15",
+      "2015-16",
+      "2016-17",
+      "2017-18",
+      "2018-19",
+      "2019-20",
+      "2020-21",
+      "2021-22",
+      "2022-23",
+      "2023-24",
+      "2024-25",
+      "2025-26",
+      "2026-27"
+    ],
+    "status": "partial"
+  },
+  "matches": [
+    {
+      "id": "football-data:c642f7aa1cb29824886ce191c5814898df53927a43a71e725fd2c8cea7626497:1999-08-15:Ulm:Freiburg:home",
+      "date": "1999-08-15",
+      "season": "1999-00",
+      "competition": {
+        "name": "Bundesliga",
+        "type": "league",
+        "country": ""
+      },
+      "stage": "",
+      "opponent": {
+        "name": "Freiburg",
+        "slug": "freiburg"
+      },
+      "venue": "home",
+      "score": {
+        "for": 1,
+        "against": 1
+      },
+      "result": "D",
+      "sources": [
+        {
+          "provider": "football-data.co.uk",
+          "url": "https://www.football-data.co.uk/mmz4281/9900/D1.csv",
+          "retrievedAt": "2026-08-04T20:08:38.867Z",
+          "rawArtifact": "data/teams/history/normalized/football-data-1785874172243.json"
+        }
+      ]
+    },
+    {
+      "id": "football-data:c642f7aa1cb29824886ce191c5814898df53927a43a71e725fd2c8cea7626497:1999-08-21:Munich%201860:Ulm:away",
+      "date": "1999-08-21",
+      "season": "1999-00",
+      "competition": {
+        "name": "Bundesliga",
+        "type": "league",
+        "country": ""
+      },
+      "stage": "",
+      "opponent": {
+        "name": "Munich 1860",
+        "slug": "munich-1860"
+      },
+      "venue": "away",
+      "score": {
+        "for": 1,
+        "against": 4
+      },
+      "result": "L",
+      "sources": [
+        {
+          "provider": "football-data.co.uk",
+          "url": "https://www.football-data.co.uk/mmz4281/9900/D1.csv",
+          "retrievedAt": "2026-08-04T20:08:38.867Z",
+          "rawArtifact": "data/teams/history/normalized/football-data-1785874172243.json"
+        }
+      ]
+    },
+    {
+      "id": "football-data:c642f7aa1cb29824886ce191c5814898df53927a43a71e725fd2c8cea7626497:1999-08-29:Ulm:Dortmund:home",
+      "date": "1999-08-29",
+      "season": "1999-00",
+      "competition": {
+        "name": "Bundesliga",
+        "type": "league",
+        "country": ""
+      },
+      "stage": "",
+      "opponent": {
+        "name": "Dortmund",
+        "slug": "dortmund"
+      },
+      "venue": "home",
+      "score": {
+        "for": 0,
+        "against": 1
+      },
+      "result": "L",
+      "sources": [
+        {
+          "provider": "football-data.co.uk",
+          "url": "https://www.football-data.co.uk/mmz4281/9900/D1.csv",
+          "retrievedAt": "2026-08-04T20:08:38.867Z",
+          "rawArtifact": "data/teams/history/normalized/football-data-1785874172243.json"
+        }
+      ]
+    },
+    {
+      "id": "football-data:c642f7aa1cb29824886ce191c5814898df53927a43a71e725fd2c8cea7626497:1999-09-10:Hansa%20Rostock:Ulm:away",
+      "date": "1999-09-10",
+      "season": "1999-00",
+      "competition": {
+        "name": "Bundesliga",
+        "type": "league",
+        "country": ""
+      },
+      "stage": "",
+      "opponent": {
+        "name": "Hansa Rostock",
+        "slug": "hansa-rostock"
+      },
+      "venue": "away",
+      "score": {
+        "for": 1,
+        "against": 2
+      },
+      "result": "L",
+      "sources": [
+        {
+          "provider": "football-data.co.uk",
+          "url": "https://www.football-data.co.uk/mmz4281/9900/D1.csv",
+          "retrievedAt": "2026-08-04T20:08:38.867Z",
+          "rawArtifact": "data/teams/history/normalized/football-data-1785874172243.json"
+        }
+      ]
+    },
+    {
+      "id": "football-data:c642f7aa1cb29824886ce191c5814898df53927a43a71e725fd2c8cea7626497:1999-09-18:Ulm:Bielefeld:home",
+      "date": "1999-09-18",
+      "season": "1999-00",
+      "competition": {
+        "name": "Bundesliga",
+        "type": "league",
+        "country": ""
+      },
+      "stage": "",
+      "opponent": {
+        "name": "Bielefeld",
+        "slug": "bielefeld"
+      },
+      "venue": "home",
+      "score": {
+        "for": 2,
+        "against": 0
+      },
+      "result": "W",
+      "sources": [
+        {
+          "provider": "football-data.co.uk",
+          "url": "https://www.football-data.co.uk/mmz4281/9900/D1.csv",
+          "retrievedAt": "2026-08-04T20:08:38.867Z",
+          "rawArtifact": "data/teams/history/normalized/football-data-1785874172243.json"
+        }
+      ]
+    },
+    {
+      "id": "football-data:c642f7aa1cb29824886ce191c5814898df53927a43a71e725fd2c8cea7626497:1999-09-25:Werder%20Bremen:Ulm:away",
+      "date": "1999-09-25",
+      "season": "1999-00",
+      "competition": {
+        "name": "Bundesliga",
+        "type": "league",
+        "country": ""
+      },
+      "stage": "",
+      "opponent": {
+        "name": "Werder Bremen",
+        "slug": "werder-bremen"
+      },
+      "venue": "away",
+      "score": {
+        "for": 2,
+        "against": 2
+      },
+      "result": "D",
+      "sources": [
+        {
+          "provider": "football-data.co.uk",
+          "url": "https://www.football-data.co.uk/mmz4281/9900/D1.csv",
+          "retrievedAt": "2026-08-04T20:08:38.867Z",
+          "rawArtifact": "data/teams/history/normalized/football-data-1785874172243.json"
+        }
+      ]
+    },
+    {
+      "id": "football-data:c642f7aa1cb29824886ce191c5814898df53927a43a71e725fd2c8cea7626497:1999-10-02:Ulm:Hamburg:home",
+      "date": "1999-10-02",
+      "season": "1999-00",
+      "competition": {
+        "name": "Bundesliga",
+        "type": "league",
+        "country": ""
+      },
+      "stage": "",
+      "opponent": {
+        "name": "Hamburg",
+        "slug": "hamburg"
+      },
+      "venue": "home",
+      "score": {
+        "for": 1,
+        "against": 2
+      },
+      "result": "L",
+      "sources": [
+        {
+          "provider": "football-data.co.uk",
+          "url": "https://www.football-data.co.uk/mmz4281/9900/D1.csv",
+          "retrievedAt": "2026-08-04T20:08:38.867Z",
+          "rawArtifact": "data/teams/history/normalized/football-data-1785874172243.json"
+        }
+      ]
+    },
+    {
+      "id": "football-data:c642f7aa1cb29824886ce191c5814898df53927a43a71e725fd2c8cea7626497:1999-10-15:Leverkusen:Ulm:away",
+      "date": "1999-10-15",
+      "season": "1999-00",
+      "competition": {
+        "name": "Bundesliga",
+        "type": "league",
+        "country": ""
+      },
+      "stage": "",
+      "opponent": {
+        "name": "Leverkusen",
+        "slug": "leverkusen"
+      },
+      "venue": "away",
+      "score": {
+        "for": 1,
+        "against": 4
+      },
+      "result": "L",
+      "sources": [
+        {
+          "provider": "football-data.co.uk",
+          "url": "https://www.football-data.co.uk/mmz4281/9900/D1.csv",
+          "retrievedAt": "2026-08-04T20:08:38.867Z",
+          "rawArtifact": "data/teams/history/normalized/football-data-1785874172243.json"
+        }
+      ]
+    },
+    {
+      "id": "football-data:c642f7aa1cb29824886ce191c5814898df53927a43a71e725fd2c8cea7626497:1999-10-23:Ulm:Unterhaching:home",
+      "date": "1999-10-23",
+      "season": "1999-00",
+      "competition": {
+        "name": "Bundesliga",
+        "type": "league",
+        "country": ""
+      },
+      "stage": "",
+      "opponent": {
+        "name": "Unterhaching",
+        "slug": "unterhaching"
+      },
+      "venue": "home",
+      "score": {
+        "for": 1,
+        "against": 0
+      },
+      "result": "W",
+      "sources": [
+        {
+          "provider": "football-data.co.uk",
+          "url": "https://www.football-data.co.uk/mmz4281/9900/D1.csv",
+          "retrievedAt": "2026-08-04T20:08:38.867Z",
+          "rawArtifact": "data/teams/history/normalized/football-data-1785874172243.json"
+        }
+      ]
+    },
+    {
+      "id": "football-data:c642f7aa1cb29824886ce191c5814898df53927a43a71e725fd2c8cea7626497:1999-10-30:Duisburg:Ulm:away",
+      "date": "1999-10-30",
+      "season": "1999-00",
+      "competition": {
+        "name": "Bundesliga",
+        "type": "league",
+        "country": ""
+      },
+      "stage": "",
+      "opponent": {
+        "name": "Duisburg",
+        "slug": "duisburg"
+      },
+      "venue": "away",
+      "score": {
+        "for": 0,
+        "against": 0
+      },
+      "result": "D",
+      "sources": [
+        {
+          "provider": "football-data.co.uk",
+          "url": "https://www.football-data.co.uk/mmz4281/9900/D1.csv",
+          "retrievedAt": "2026-08-04T20:08:38.867Z",
+          "rawArtifact": "data/teams/history/normalized/football-data-1785874172243.json"
+        }
+      ]
+    },
+    {
+      "id": "football-data:c642f7aa1cb29824886ce191c5814898df53927a43a71e725fd2c8cea7626497:1999-11-06:Ulm:Bayern%20Munich:home",
+      "date": "1999-11-06",
+      "season": "1999-00",
+      "competition": {
+        "name": "Bundesliga",
+        "type": "league",
+        "country": ""
+      },
+      "stage": "",
+      "opponent": {
+        "name": "Bayern Munich",
+        "slug": "bayern-munich"
+      },
+      "venue": "home",
+      "score": {
+        "for": 0,
+        "against": 1
+      },
+      "result": "L",
+      "sources": [
+        {
+          "provider": "football-data.co.uk",
+          "url": "https://www.football-data.co.uk/mmz4281/9900/D1.csv",
+          "retrievedAt": "2026-08-04T20:08:38.867Z",
+          "rawArtifact": "data/teams/history/normalized/football-data-1785874172243.json"
+        }
+      ]
+    },
+    {
+      "id": "football-data:c642f7aa1cb29824886ce191c5814898df53927a43a71e725fd2c8cea7626497:1999-11-20:Stuttgart:Ulm:away",
+      "date": "1999-11-20",
+      "season": "1999-00",
+      "competition": {
+        "name": "Bundesliga",
+        "type": "league",
+        "country": ""
+      },
+      "stage": "",
+      "opponent": {
+        "name": "Stuttgart",
+        "slug": "stuttgart"
+      },
+      "venue": "away",
+      "score": {
+        "for": 0,
+        "against": 2
+      },
+      "result": "L",
+      "sources": [
+        {
+          "provider": "football-data.co.uk",
+          "url": "https://www.football-data.co.uk/mmz4281/9900/D1.csv",
+          "retrievedAt": "2026-08-04T20:08:38.867Z",
+          "rawArtifact": "data/teams/history/normalized/football-data-1785874172243.json"
+        }
+      ]
+    },
+    {
+      "id": "football-data:c642f7aa1cb29824886ce191c5814898df53927a43a71e725fd2c8cea7626497:1999-11-26:Ulm:Schalke%2004:home",
+      "date": "1999-11-26",
+      "season": "1999-00",
+      "competition": {
+        "name": "Bundesliga",
+        "type": "league",
+        "country": ""
+      },
+      "stage": "",
+      "opponent": {
+        "name": "Schalke 04",
+        "slug": "schalke-04"
+      },
+      "venue": "home",
+      "score": {
+        "for": 1,
+        "against": 1
+      },
+      "result": "D",
+      "sources": [
+        {
+          "provider": "football-data.co.uk",
+          "url": "https://www.football-data.co.uk/mmz4281/9900/D1.csv",
+          "retrievedAt": "2026-08-04T20:08:38.867Z",
+          "rawArtifact": "data/teams/history/normalized/football-data-1785874172243.json"
+        }
+      ]
+    },
+    {
+      "id": "football-data:c642f7aa1cb29824886ce191c5814898df53927a43a71e725fd2c8cea7626497:1999-12-04:Hertha:Ulm:away",
+      "date": "1999-12-04",
+      "season": "1999-00",
+      "competition": {
+        "name": "Bundesliga",
+        "type": "league",
+        "country": ""
+      },
+      "stage": "",
+      "opponent": {
+        "name": "Hertha",
+        "slug": "hertha"
+      },
+      "venue": "away",
+      "score": {
+        "for": 0,
+        "against": 3
+      },
+      "result": "L",
+      "sources": [
+        {
+          "provider": "football-data.co.uk",
+          "url": "https://www.football-data.co.uk/mmz4281/9900/D1.csv",
+          "retrievedAt": "2026-08-04T20:08:38.867Z",
+          "rawArtifact": "data/teams/history/normalized/football-data-1785874172243.json"
+        }
+      ]
+    },
+    {
+      "id": "football-data:c642f7aa1cb29824886ce191c5814898df53927a43a71e725fd2c8cea7626497:1999-12-12:Ulm:Kaiserslautern:home",
+      "date": "1999-12-12",
+      "season": "1999-00",
+      "competition": {
+        "name": "Bundesliga",
+        "type": "league",
+        "country": ""
+      },
+      "stage": "",
+      "opponent": {
+        "name": "Kaiserslautern",
+        "slug": "kaiserslautern"
+      },
+      "venue": "home",
+      "score": {
+        "for": 3,
+        "against": 1
+      },
+      "result": "W",
+      "sources": [
+        {
+          "provider": "football-data.co.uk",
+          "url": "https://www.football-data.co.uk/mmz4281/9900/D1.csv",
+          "retrievedAt": "2026-08-04T20:08:38.867Z",
+          "rawArtifact": "data/teams/history/normalized/football-data-1785874172243.json"
+        }
+      ]
+    },
+    {
+      "id": "football-data:c642f7aa1cb29824886ce191c5814898df53927a43a71e725fd2c8cea7626497:1999-12-15:Wolfsburg:Ulm:away",
+      "date": "1999-12-15",
+      "season": "1999-00",
+      "competition": {
+        "name": "Bundesliga",
+        "type": "league",
+        "country": ""
+      },
+      "stage": "",
+      "opponent": {
+        "name": "Wolfsburg",
+        "slug": "wolfsburg"
+      },
+      "venue": "away",
+      "score": {
+        "for": 2,
+        "against": 1
+      },
+      "result": "W",
+      "sources": [
+        {
+          "provider": "football-data.co.uk",
+          "url": "https://www.football-data.co.uk/mmz4281/9900/D1.csv",
+          "retrievedAt": "2026-08-04T20:08:38.867Z",
+          "rawArtifact": "data/teams/history/normalized/football-data-1785874172243.json"
+        }
+      ]
+    },
+    {
+      "id": "football-data:c642f7aa1cb29824886ce191c5814898df53927a43a71e725fd2c8cea7626497:1999-12-18:Ulm:Ein%20Frankfurt:home",
+      "date": "1999-12-18",
+      "season": "1999-00",
+      "competition": {
+        "name": "Bundesliga",
+        "type": "league",
+        "country": ""
+      },
+      "stage": "",
+      "opponent": {
+        "name": "Ein Frankfurt",
+        "slug": "ein-frankfurt"
+      },
+      "venue": "home",
+      "score": {
+        "for": 3,
+        "against": 0
+      },
+      "result": "W",
+      "sources": [
+        {
+          "provider": "football-data.co.uk",
+          "url": "https://www.football-data.co.uk/mmz4281/9900/D1.csv",
+          "retrievedAt": "2026-08-04T20:08:38.867Z",
+          "rawArtifact": "data/teams/history/normalized/football-data-1785874172243.json"
+        }
+      ]
+    }
+  ],
+  "seasonStandings": [
+    {
+      "season": "1999-00",
+      "competition": {
+        "name": "Bundesliga",
+        "type": "league",
+        "country": ""
+      },
+      "position": 15,
+      "team": "Ulm",
+      "played": 17,
+      "won": 5,
+      "drawn": 4,
+      "lost": 8,
+      "goalsFor": 19,
+      "goalsAgainst": 25,
+      "points": 19,
+      "basis": "derived from recorded completed home fixtures"
+    }
+  ],
+  "competitionStandings": [],
+  "updatedAt": "2026-08-04T20:09:36.718Z"
+}
