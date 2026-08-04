@@ -510,17 +510,22 @@ async function refreshInternationalFriendlyResults({ force = false } = {}) {
     }
   }
 
-  const dateWindow = dateRange(180, 0);
+  const dateWindow = dateRange(180, 30);
   const sourceUrl = `https://site.api.espn.com/apis/site/v2/sports/soccer/${INTL_FRIENDLY_ESPN_SLUG}/scoreboard?dates=${dateWindow}&limit=300`;
   let results = [];
+  let fixtures = [];
   let error = null;
   try {
     const response = await fetch(sourceUrl, { headers: { "user-agent": USER_AGENT } });
     if (!response.ok) throw new Error(`ESPN friendly request failed: ${response.status}`);
     const payload = await response.json();
-    results = (payload.events || [])
+    const events = payload.events || [];
+    results = events
       .map((event) => normalizeEspnResult(event, "International Friendly", sourceUrl))
       .filter((r) => r.completed && r.homeTeam && r.awayTeam && Number.isFinite(r.homeGoals) && Number.isFinite(r.awayGoals));
+    fixtures = events
+      .map((event) => normalizeEspnEvent(event, "International Friendly", sourceUrl))
+      .filter((fixture) => fixture.homeTeam && fixture.awayTeam && !fixture.completed);
   } catch (err) {
     error = err.message;
   }
@@ -531,6 +536,7 @@ async function refreshInternationalFriendlyResults({ force = false } = {}) {
     dateWindow,
     fetched: results.length,
     results,
+    fixtures,
     error: error || null,
   };
   writeJson(INTL_FRIENDLY_RESULTS_PATH, snapshot);

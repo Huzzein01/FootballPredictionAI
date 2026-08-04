@@ -15,7 +15,7 @@ const { futuresPredictions } = require("./futuresService");
 const { resetPlayerStatsCache } = require("./playerStats");
 const { loadMatches, normalizeTeamName } = require("./footballData");
 const { refreshMissingOdds } = require("./oddsRepairService");
-const { readResultsSnapshot, refreshEspnFixtures, refreshEspnResults, enrichPredictionsWithLiveStatus, refreshInternationalFriendlyResults, readFriendlyResultsSnapshot } = require("./espnFixtureService");
+const { readResultsSnapshot, readFixturesSnapshot, refreshEspnFixtures, refreshEspnResults, enrichPredictionsWithLiveStatus, refreshInternationalFriendlyResults, readFriendlyResultsSnapshot } = require("./espnFixtureService");
 const { refreshWorldCupResults, syncWorldCupPlayerStats, readWorldCupResults } = require("./worldCupSync");
 const { listTeamResults, getTeamResults } = require("./teamResultsStore");
 const { listTeamTraining, getTeamTraining, appendTeamNote, updateTeamTrainingProfiles } = require("./teamTrainingStore");
@@ -29,6 +29,7 @@ const { readJsonWithFallback, repoDataPath } = require("./runtimePaths");
 const { hydrateKnownStoresOnce, persistKnownStores, storageStatus } = require("./supabaseJsonStore");
 const parlayBacktests = require("./parlayBacktestStore");
 const { projectDomesticCup, CUP_CONFIG } = require("./domesticCupProjection");
+const { chooseFootballContext, clubSeasonFor } = require("./footballContext");
 const { createPrediction: createBaseballPrediction, settlePrediction: settleBaseballPrediction, monitoring: baseballMonitoring } = require("./baseballModel/productionService");
 const { ingestSchedulePayload } = require("./baseballModel/featureStore");
 const { collectPregameFeatures } = require("./baseballModel/pregameCollectors");
@@ -635,6 +636,35 @@ async function handleApi(req, res, pathname) {
     });
   }
 
+  if (req.method === "GET" && pathname === "/api/football/context") {
+    const now = new Date();
+    const clubSeason = clubSeasonFor(now);
+    // The context switch must render immediately. Fixture collectors refresh
+    // this cache independently; never hold the UI on a network request here.
+    const friendlySnapshot = readFriendlyResultsSnapshot() || {};
+    const internationalFixtures = [
+      ...(readFixtureData().fixtures || []),
+      ...(friendlySnapshot?.fixtures || []),
+    ];
+    const decision = chooseFootballContext({
+      now,
+      clubFixtures: readFixturesSnapshot()?.fixtures || [],
+      internationalFixtures,
+    });
+    return sendJson(res, 200, {
+      ...decision,
+      evaluatedAt: now.toISOString(),
+      clubSeason,
+      fixture: decision.fixture ? {
+        date: decision.fixture.date || "",
+        kickoffUtc: decision.fixture.kickoffUtc || "",
+        league: decision.fixture.league || "",
+        homeTeam: decision.fixture.homeTeam || "",
+        awayTeam: decision.fixture.awayTeam || "",
+      } : null,
+    });
+  }
+
   if (req.method === "GET" && pathname === "/api/played-fixtures") {
     const url = new URL(req.url, `http://${req.headers.host}`);
     const season = url.searchParams.get("season") || "2025-26";
@@ -1083,6 +1113,24 @@ async function handleApi(req, res, pathname) {
 
   if (req.method === "GET" && pathname === "/api/international/friendly-results") {
     return sendJson(res, 200, readFriendlyResultsSnapshot() || { results: [], fetched: 0 });
+  }
+
+  if (req.method === "GET" && pathname === "/api/international/recent-champion") {
+    const snapshot = readWorldCupResults() || {};
+    const final = [...(snapshot.results || [])]
+      .filter((match) => match.completed && Number.isFinite(Number(match.homeGoals)) && Number.isFinite(Number(match.awayGoals)))
+      .sort((left, right) => String(right.date || "").localeCompare(String(left.date || "")))[0];
+    if (!final || Number(final.homeGoals) === Number(final.awayGoals)) return sendJson(res, 200, { winner: null });
+    const winner = Number(final.homeGoals) > Number(final.awayGoals) ? final.homeTeam : final.awayTeam;
+    const year = String(final.date || "").slice(0, 4);
+    return sendJson(res, 200, {
+      winner,
+      date: final.date,
+      score: `${final.homeTeam} ${final.homeGoals}–${final.awayGoals} ${final.awayTeam}`,
+      tournament: `${final.league || "International tournament"}${year ? ` ${year}` : ""}`,
+      sourceName: final.sourceName || snapshot.source || "",
+      sourceUrl: final.sourceUrl || snapshot.sourceUrl || "",
+    });
   }
 
   if (req.method === "GET" && pathname === "/api/international/bracket") {

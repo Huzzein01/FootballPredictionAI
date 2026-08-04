@@ -13,7 +13,7 @@ async function api(path, opts) { const r = await fetch(path, opts); if (!r.ok) t
 const STATE = {
   context: "international", section: "predictions", matchday: "all",
   sortBy: "confidence", clubSeason: "2026-27", internationalSeason: "2026 World Cup", competitionType: "league", competitions: ["All Leagues"],
-  liveTimer: null, goalWatch: null, liveScores: {}, parlayRisk: "safe",
+  liveTimer: null, goalWatch: null, contextTimer: null, liveScores: {}, parlayRisk: "safe",
 };
 
 const CLUB_SEASONS = ["2026-27", "2025-26", "2024-25", "2023-24", "2022-23", "2021-22", "2020-21"];
@@ -46,16 +46,38 @@ const seasonFor = () => STATE.context === "international" ? STATE.internationalS
 const isCurrentInternationalSeason = () => STATE.internationalSeason === "2026 World Cup";
 
 /* ── Boot ────────────────────────────────────────────────────────────────── */
-function bootApp() {
+async function bootApp() {
   buildNav();
   buildSectionNav();
   bindContextSwitch();
   bindSeasonSwitch();
+  await applyModelContext();
   bindCompetitionFilter();
   bindFilterPanel();
   positionCtxGlow();
   renderSection();
   refreshHeroStats();
+  STATE.contextTimer = window.setInterval(() => applyModelContext({ rerender: true }), 15 * 60_000);
+}
+async function applyModelContext({ rerender = false } = {}) {
+  const decision = await api("/api/football/context").catch(() => null);
+  if (!decision?.context) return;
+  const changed = STATE.context !== decision.context;
+  STATE.context = decision.context;
+  if (decision.context === "club" && CLUB_SEASONS.includes(decision.season)) STATE.clubSeason = decision.season;
+  document.documentElement.dataset.context = STATE.context;
+  $("#ctxSwitch").querySelectorAll(".ctx-btn").forEach((button) => button.classList.toggle("is-active", button.dataset.ctx === STATE.context));
+  positionCtxGlow();
+  updateSeasonSwitch();
+  updateCompetitionSwitch();
+  updateHeroSubtitle();
+  updateFilterSummary();
+  if (rerender && changed) {
+    if (!sectionAllowed(STATE.section)) STATE.section = "predictions";
+    buildSectionNav();
+    renderSection();
+    refreshHeroStats();
+  }
 }
 
 function bindContextSwitch() {
@@ -328,9 +350,22 @@ async function renderPredictions() {
     return (a.league || a.group || "").localeCompare(b.league || b.group || "");
   });
 
-  if (!list.length) { stage.appendChild(el("div", "empty", "No upcoming fixtures for this filter.")); return; }
+  if (!list.length) {
+    stage.appendChild(el("div", "empty", "No upcoming fixtures for this filter."));
+    if (intl) await renderRecentInternationalChampion(stage);
+    return;
+  }
   const grid = el("div", "grid"); list.slice(0, 60).forEach((p) => grid.appendChild(predictionCard(p)));
   stage.appendChild(grid);
+}
+async function renderRecentInternationalChampion(stage) {
+  const champion = await api("/api/international/recent-champion").catch(() => null);
+  if (!champion?.winner) return;
+  const date = new Date(`${champion.date}T12:00:00Z`);
+  const wonOn = Number.isFinite(date.getTime())
+    ? new Intl.DateTimeFormat(undefined, { year: "numeric", month: "long", day: "numeric" }).format(date)
+    : champion.date;
+  stage.appendChild(el("aside", "recent-champion", `<span>Most recent international tournament</span><strong>${esc(champion.winner)} won ${esc(champion.tournament)}</strong><small>${esc(wonOn)} · Final ${esc(champion.score)}</small>`));
 }
 function predictionCard(p) {
   const pickLabel = p.prediction === "H" ? `${p.homeTeam} win` : p.prediction === "A" ? `${p.awayTeam} win` : "Draw";
