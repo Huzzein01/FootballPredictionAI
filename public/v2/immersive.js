@@ -72,18 +72,12 @@ async function applyModelContext({ rerender = false } = {}) {
   updateCompetitionSwitch();
   updateHeroSubtitle();
   updateFilterSummary();
-  updateSeasonCalendarStatus(decision);
   if (rerender && changed) {
     if (!sectionAllowed(STATE.section)) STATE.section = "predictions";
     buildSectionNav();
     renderSection();
     refreshHeroStats();
   }
-}
-function updateSeasonCalendarStatus(decision = null) {
-  const status = $("#seasonCalendarStatus");
-  if (!status) return;
-  status.textContent = decision?.reason || `${STATE.context === "club" ? "Club" : "International"} · manual selection`;
 }
 
 function bindContextSwitch() {
@@ -98,7 +92,6 @@ function bindContextSwitch() {
       updateCompetitionSwitch();
       updateHeroSubtitle();
       updateFilterSummary();
-      updateSeasonCalendarStatus();
       if (!sectionAllowed(STATE.section)) STATE.section = "predictions";
       buildSectionNav(); renderSection(); refreshHeroStats();
     });
@@ -127,7 +120,6 @@ function bindSeasonSwitch() {
     STATE.matchday = "all";
     updateHeroSubtitle();
     updateFilterSummary();
-    updateSeasonCalendarStatus();
     renderSection();
     refreshHeroStats();
   });
