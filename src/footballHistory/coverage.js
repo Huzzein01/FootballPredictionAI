@@ -13,6 +13,8 @@ function coverageReport() {
   });
   const matchCount = records.reduce((total, record) => total + (record.matches || []).length, 0);
   const sourceCoverage = records.filter((record) => (record.sourcePlan || []).length >= 5).length;
+  const verifiedCompetitionScope = records.filter((record) => record.coverage?.competitionScopeVerified).length;
+  const completeSeasonCoverage = records.filter((record) => (record.coverage?.missingSeasons || []).length === 0).length;
   return {
     reportVersion: "football-team-history-coverage-v1",
     requestedFromYear: MIN_YEAR,
@@ -21,7 +23,9 @@ function coverageReport() {
     totalTeamMatchRows: matchCount,
     teamsWithFiveSourcePlans: sourceCoverage,
     teamsWithCoverageFrom1985: withHistoricCoverage.length,
-    readyForFullHistoricalTraining: withHistoricCoverage.length === records.length && records.length > 0,
+    teamsWithEverySeasonCovered: completeSeasonCoverage,
+    teamsWithVerifiedCompetitionScope: verifiedCompetitionScope,
+    readyForFullHistoricalTraining: completeSeasonCoverage === records.length && verifiedCompetitionScope === records.length && records.length > 0,
     nextAction: "Run a timestamped external source collector, import its normalized artifacts, then rerun this report before training.",
     sampleGaps: records.filter((record) => record.coverage?.missingSeasons?.length).slice(0, 10).map((record) => ({ team: record.team.name, earliestMatch: record.coverage.earliestMatch, missingSeasonCount: record.coverage.missingSeasons.length })),
   };

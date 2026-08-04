@@ -11,6 +11,7 @@ test("team history contract requires attributed, settled historic matches", () =
   record.sourcePlan = sourcePlan(record.team);
   record.matches.push({ id: "example-1985-01", date: "1985-08-17", season: "1985-86", competition: { name: "Example League" }, opponent: { name: "Opponent", slug: "opponent" }, venue: "home", score: { for: 2, against: 1 }, sources: [{ url: "https://example.test/match", retrievedAt: "2026-08-04T00:00:00.000Z" }] });
   assert.equal(validateHistory(record).valid, true);
+  assert.equal(record.coverage.competitionScopeVerified, false);
   assert.equal(seasonFromDate("1985-08-17"), "1985-86");
 });
 

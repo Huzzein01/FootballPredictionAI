@@ -44,7 +44,7 @@ function emptyHistory(team) {
     team: { name: team.team, slug: team.slug, primaryLeague: team.league || "", aliases: [] },
     requestedCoverage: { fromYear: MIN_YEAR, to: "present", includes: ["all competitions", "opponents", "scorelines", "league standings", "competition standings"] },
     sourcePlan: [],
-    coverage: { earliestMatch: "", latestMatch: "", seasonsWithMatches: [], missingSeasons: [], status: "not-collected" },
+    coverage: { earliestMatch: "", latestMatch: "", seasonsWithMatches: [], missingSeasons: [], competitionScopeVerified: false, status: "not-collected" },
     matches: [],
     seasonStandings: [],
     competitionStandings: [],
