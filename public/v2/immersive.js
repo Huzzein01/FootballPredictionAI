@@ -13,16 +13,11 @@ async function api(path, opts) { const r = await fetch(path, opts); if (!r.ok) t
 const STATE = {
   context: "international", section: "predictions", matchday: "all",
   sortBy: "confidence", clubSeason: "2026-27", internationalSeason: "2026 World Cup", competitionType: "league", competitions: ["All Leagues"],
-  liveTimer: null, goalWatch: null, liveScores: {}, parlayRisk: "safe",
+  liveTimer: null, goalWatch: null, contextTimer: null, liveScores: {}, parlayRisk: "safe",
 };
 
 const CLUB_SEASONS = ["2026-27", "2025-26", "2024-25", "2023-24", "2022-23", "2021-22", "2020-21"];
 const INTERNATIONAL_SEASONS = ["2026 World Cup", "2022 World Cup", "2018 World Cup"];
-const FOOTBALL_SEASON_CALENDAR = [
-  { context: "international", season: "2026 World Cup", starts: "2026-06-11", ends: "2026-07-19", label: "World Cup window" },
-  { context: "club", season: "2026-27", starts: "2026-08-01", ends: "2027-05-31", label: "Club season" },
-  { context: "club", season: "2025-26", starts: "2025-08-01", ends: "2026-05-31", label: "Club season" },
-];
 const FOOTBALL_CATALOG = {
   league: ["All Leagues", "EPL", "La Liga", "Bundesliga", "Ligue 1", "Serie A", "Eredivisie", "Primeira Liga", "Scottish Premiership", "Turkish Super Lig", "Belgian Pro League", "Danish Superliga", "Eliteserien", "Allsvenskan", "Swiss Super League"],
   competition: ["All Competitions", "Champions League", "Europa League", "Conference League", "UEFA Super Cup", "FA Cup", "Carabao Cup", "Copa del Rey", "DFB-Pokal", "Coppa Italia", "Coupe de France"],
@@ -51,44 +46,44 @@ const seasonFor = () => STATE.context === "international" ? STATE.internationalS
 const isCurrentInternationalSeason = () => STATE.internationalSeason === "2026 World Cup";
 
 /* ── Boot ────────────────────────────────────────────────────────────────── */
-function bootApp() {
+async function bootApp() {
   buildNav();
   buildSectionNav();
   bindContextSwitch();
   bindSeasonSwitch();
-  applySeasonCalendar();
+  await applyModelContext();
   bindCompetitionFilter();
   bindFilterPanel();
   positionCtxGlow();
   renderSection();
   refreshHeroStats();
+  STATE.contextTimer = window.setInterval(() => applyModelContext({ rerender: true }), 15 * 60_000);
 }
-function dateKey(date = new Date()) { return date.toISOString().slice(0, 10); }
-function calendarEntryFor(date = new Date()) {
-  const today = dateKey(date);
-  return FOOTBALL_SEASON_CALENDAR.find((entry) => entry.starts <= today && today <= entry.ends) || null;
-}
-function applySeasonCalendar(date = new Date()) {
-  const entry = calendarEntryFor(date);
-  if (entry) {
-    STATE.context = entry.context;
-    if (entry.context === "club") STATE.clubSeason = entry.season;
-    else STATE.internationalSeason = entry.season;
-  }
+async function applyModelContext({ rerender = false } = {}) {
+  const decision = await api("/api/football/context").catch(() => null);
+  if (!decision?.context) return;
+  const changed = STATE.context !== decision.context;
+  STATE.context = decision.context;
+  if (decision.context === "club" && CLUB_SEASONS.includes(decision.season)) STATE.clubSeason = decision.season;
   document.documentElement.dataset.context = STATE.context;
   $("#ctxSwitch").querySelectorAll(".ctx-btn").forEach((button) => button.classList.toggle("is-active", button.dataset.ctx === STATE.context));
   positionCtxGlow();
   updateSeasonSwitch();
+  updateCompetitionSwitch();
   updateHeroSubtitle();
   updateFilterSummary();
-  updateSeasonCalendarStatus(entry);
+  updateSeasonCalendarStatus(decision);
+  if (rerender && changed) {
+    if (!sectionAllowed(STATE.section)) STATE.section = "predictions";
+    buildSectionNav();
+    renderSection();
+    refreshHeroStats();
+  }
 }
-function updateSeasonCalendarStatus(entry = calendarEntryFor()) {
+function updateSeasonCalendarStatus(decision = null) {
   const status = $("#seasonCalendarStatus");
   if (!status) return;
-  const modeLabel = STATE.context === "club" ? "Club" : "International";
-  const calendarControlsCurrentMode = entry && entry.context === STATE.context;
-  status.textContent = calendarControlsCurrentMode ? `${modeLabel} · ${entry.label}` : `${modeLabel} · manual selection`;
+  status.textContent = decision?.reason || `${STATE.context === "club" ? "Club" : "International"} · manual selection`;
 }
 
 function bindContextSwitch() {
@@ -132,6 +127,7 @@ function bindSeasonSwitch() {
     STATE.matchday = "all";
     updateHeroSubtitle();
     updateFilterSummary();
+    updateSeasonCalendarStatus();
     renderSection();
     refreshHeroStats();
   });
