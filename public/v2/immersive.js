@@ -243,9 +243,6 @@ function buildNav() {
   brand.href = "/home/";
   brand.setAttribute("aria-label", "Sportsbooks Analyst home");
   nav.appendChild(brand);
-  const classic = el("button", "nav-btn nav-ui-toggle", "Classic UI");
-  classic.title = "Open the classic interface";
-  classic.addEventListener("click", () => window.location.assign("/classic/"));
   const sportLinks = [
     { label: "Football", href: "/football/", active: true },
     { label: "Baseball", href: "/baseball/" },
@@ -257,8 +254,6 @@ function buildNav() {
     if (sport.active) link.setAttribute("aria-current", "page");
     nav.appendChild(link);
   });
-  nav.appendChild(el("span", "nav-divider", ""));
-  nav.appendChild(classic);
 }
 
 function buildSectionNav() {
