@@ -11,6 +11,17 @@ const escapeHtml = (value) => String(value ?? "").replace(/[&<>"']/g, (char) => 
 const state = { feature: "Teams Profile", current: null, historical: null, monitoring: null };
 
 document.title = `Sportsbooks Analyst — ${data.name}`;
+const sharedMark = "/brand/prediction-weave.svg";
+const favicon = document.querySelector('link[rel~="icon"]') || document.head.appendChild(document.createElement("link"));
+favicon.rel = "icon"; favicon.type = "image/svg+xml"; favicon.href = sharedMark;
+const brand = document.querySelector(".product-bar .brand");
+if (brand) {
+  brand.innerHTML = `<img src="${sharedMark}" alt="" style="width:30px;height:34px;object-fit:contain;flex:0 0 auto">Sportsbooks Analyst`;
+  brand.setAttribute("role", "link"); brand.tabIndex = 0; brand.style.cursor = "pointer";
+  const openSportHome = () => { window.location.href = "/home/"; };
+  brand.addEventListener("click", openSportHome);
+  brand.addEventListener("keydown", (event) => { if (event.key === "Enter" || event.key === " ") { event.preventDefault(); openSportHome(); } });
+}
 document.querySelector("#sportTitle").textContent = `${data.icon} ${data.name}`;
 document.querySelector("#sportSubtitle").textContent = data.description;
 document.querySelector("#leagueLabel").textContent = `${data.league} data workspace`;
