@@ -14,7 +14,7 @@ function coverageReport() {
   const matchCount = records.reduce((total, record) => total + (record.matches || []).length, 0);
   const sourceCoverage = records.filter((record) => (record.sourcePlan || []).length >= 5).length;
   const verifiedCompetitionScope = records.filter((record) => record.coverage?.competitionScopeVerified).length;
-  const completeSeasonCoverage = records.filter((record) => (record.coverage?.missingSeasons || []).length === 0).length;
+  const completeSeasonCoverage = records.filter((record) => /^\d{4}-\d{2}-\d{2}$/.test(record.coverage?.earliestMatch || "") && (record.coverage?.missingSeasons || []).length === 0).length;
   return {
     reportVersion: "football-team-history-coverage-v1",
     requestedFromYear: MIN_YEAR,
