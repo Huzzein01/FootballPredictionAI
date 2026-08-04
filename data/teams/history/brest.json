@@ -1,0 +1,137 @@
+{
+  "contract": "football-team-history-v1",
+  "team": {
+    "name": "Brest",
+    "slug": "brest",
+    "primaryLeague": "Ligue 1",
+    "aliases": []
+  },
+  "requestedCoverage": {
+    "fromYear": 1985,
+    "to": "present",
+    "includes": [
+      "all competitions",
+      "opponents",
+      "scorelines",
+      "league standings",
+      "competition standings"
+    ]
+  },
+  "sourcePlan": [
+    {
+      "rank": 1,
+      "provider": "Official club archive",
+      "scope": "club history, competition participation and match reports",
+      "lookup": "https://www.google.com/search?q=site%3Abrest.com+Brest+archive"
+    },
+    {
+      "rank": 2,
+      "provider": "Domestic league / national association",
+      "scope": "official league fixtures, tables and cup records",
+      "lookup": "https://www.google.com/search?q=Brest+official+league+archive+tables"
+    },
+    {
+      "rank": 3,
+      "provider": "UEFA",
+      "scope": "official European competition appearances, fixtures and standings",
+      "lookup": "https://www.uefa.com/search/?q=Brest"
+    },
+    {
+      "rank": 4,
+      "provider": "RSSSF",
+      "scope": "historic competitions, tables and cross-checking",
+      "lookup": "https://www.rsssf.org/search.html?query=Brest"
+    },
+    {
+      "rank": 5,
+      "provider": "worldfootball.net",
+      "scope": "club match archive and competition participation cross-check",
+      "lookup": "https://www.worldfootball.net/search/?q=Brest"
+    }
+  ],
+  "coverage": {
+    "earliestMatch": "2026-04-24",
+    "latestMatch": "2026-04-24",
+    "seasonsWithMatches": [
+      "2025-26"
+    ],
+    "missingSeasons": [
+      "1985-86",
+      "1986-87",
+      "1987-88",
+      "1988-89",
+      "1989-90",
+      "1990-91",
+      "1991-92",
+      "1992-93",
+      "1993-94",
+      "1994-95",
+      "1995-96",
+      "1996-97",
+      "1997-98",
+      "1998-99",
+      "1999-00",
+      "2000-01",
+      "2001-02",
+      "2002-03",
+      "2003-04",
+      "2004-05",
+      "2005-06",
+      "2006-07",
+      "2007-08",
+      "2008-09",
+      "2009-10",
+      "2010-11",
+      "2011-12",
+      "2012-13",
+      "2013-14",
+      "2014-15",
+      "2015-16",
+      "2016-17",
+      "2017-18",
+      "2018-19",
+      "2019-20",
+      "2020-21",
+      "2021-22",
+      "2022-23",
+      "2023-24",
+      "2024-25",
+      "2026-27"
+    ],
+    "status": "partial"
+  },
+  "matches": [
+    {
+      "id": "football-data:2025-26:Ligue 1:2026-04-24:brest:lens:home",
+      "date": "2026-04-24",
+      "season": "2025-26",
+      "competition": {
+        "name": "Ligue 1",
+        "type": "league",
+        "country": ""
+      },
+      "stage": "league",
+      "opponent": {
+        "name": "Lens",
+        "slug": "lens"
+      },
+      "venue": "home",
+      "score": {
+        "for": 3,
+        "against": 3
+      },
+      "result": "D",
+      "sources": [
+        {
+          "provider": "football-data.co.uk",
+          "url": "https://www.football-data.co.uk/",
+          "retrievedAt": "2026-08-04T20:00:12.895Z",
+          "sourceFile": "F1.csv"
+        }
+      ]
+    }
+  ],
+  "seasonStandings": [],
+  "competitionStandings": [],
+  "updatedAt": "2026-08-04T20:00:12.905Z"
+}
