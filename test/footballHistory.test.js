@@ -6,6 +6,7 @@ const { sourcePlan } = require("../src/footballHistory/sources");
 const { tableForMatches } = require("../src/footballHistory/standings");
 const { snapshotFor } = require("../src/footballHistory/training");
 const { stageRank } = require("../src/footballHistory/competitionProgress");
+const { isInScopeMatch } = require("../src/footballHistory/scope");
 
 test("team history contract requires attributed, settled historic matches", () => {
   const record = emptyHistory({ team: "Example FC", slug: "example-fc" });
@@ -33,4 +34,12 @@ test("training snapshots only use matches strictly before cutoff", () => {
   const snapshot = snapshotFor(record, "1985-08-24");
   assert.equal(snapshot.matchesUsed, 1);
   assert.equal(snapshot.historyEnd, "1985-08-17");
+});
+
+test("historical training accepts available dated major records without requiring a full backfill", () => {
+  const major = { id: "m", date: "1987-02-14", competition: { name: "FA Cup", type: "cup" }, score: { for: 1, against: 0 }, sources: [{ url: "https://example.test/m", retrievedAt: "2026-08-04T00:00:00.000Z" }] };
+  assert.equal(isInScopeMatch(major), true);
+  assert.equal(isInScopeMatch({ ...major, date: "1984-12-31" }), false);
+  assert.equal(isInScopeMatch({ ...major, competition: { name: "Friendly", type: "friendly" } }), false);
+  assert.equal(isInScopeMatch({ ...major, competition: { name: "Friendly", type: "friendly", preseason: true, opponentConfederation: "South America" } }), true);
 });
