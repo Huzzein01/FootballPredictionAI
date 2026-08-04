@@ -8,6 +8,7 @@ loadLocalEnv();
 
 const FIXTURE_PATH = repoDataPath("remaining_fixtures_2025_26_with_odds.csv");
 const LIVE_ODDS_PATH = mutableDataPath("live_odds_snapshot.json");
+const LIVE_BASEBALL_ODDS_PATH = mutableDataPath("live_baseball_odds_snapshot.json");
 const SEEDED_LIVE_ODDS_PATH = repoDataPath("live_odds_snapshot.json");
 const WORLD_CUP_FIXTURES_PATH = repoDataPath("international", "world_cup_2026_fixtures.json");
 const USER_AGENT = "FootballPredictionAI odds-api-refresh";
@@ -42,6 +43,10 @@ const INTERNATIONAL_SPORT_KEYS = {
   "Copa America": "soccer_conmebol_copa_america",
   "AFC Asian Cup": "soccer_afc_asian_cup",
   "CONCACAF Gold Cup": "soccer_concacaf_gold_cup",
+};
+
+const BASEBALL_SPORT_KEYS = {
+  MLB: "baseball_mlb",
 };
 
 let availableSportsCache = null;
@@ -171,6 +176,13 @@ function hasUsableOdds(row) {
   });
 }
 
+function hasUsableTwoWayOdds(row) {
+  return [row.homeOdds, row.awayOdds].every((value) => {
+    const n = Number(value);
+    return Number.isFinite(n) && n > 0 && n <= 100;
+  });
+}
+
 function eventSourceUrl(sportKey) {
   return `https://theoddsapi.com/quickstart.html#odds`;
 }
@@ -213,6 +225,26 @@ function oddsFromEvent(event) {
   return hasUsableOdds(odds) ? odds : null;
 }
 
+function twoWayOddsFromEvent(event) {
+  const homePrices = [];
+  const awayPrices = [];
+  for (const bookmaker of event.bookmakers || event.books || []) {
+    const h2h = (bookmaker.markets || [bookmaker]).find((market) => market.key === "h2h" || market.market === "h2h");
+    if (!h2h) continue;
+    for (const outcome of h2h.outcomes || []) {
+      const outcomeName = normalizeLooseTeamName(outcome.name);
+      if (outcomeName === normalizeLooseTeamName(event.home_team)) homePrices.push(outcome.price);
+      if (outcomeName === normalizeLooseTeamName(event.away_team)) awayPrices.push(outcome.price);
+    }
+  }
+  const odds = {
+    homeOdds: average(homePrices),
+    awayOdds: average(awayPrices),
+  };
+  if (!hasUsableTwoWayOdds(odds)) return null;
+  return { ...odds, homeDecimal: odds.homeOdds, awayDecimal: odds.awayOdds };
+}
+
 function oddsApiConfig(apiKey) {
   const currentProvider = /^toa_/i.test(apiKey) || process.env.ODDS_API_PROVIDER === "current";
   return currentProvider
@@ -226,7 +258,7 @@ async function fetchOddsEvents(sportKey, { daysForward = 120 } = {}) {
   const config = oddsApiConfig(apiKey);
   const url = config.currentProvider
     ? new URL("/odds/", config.baseUrl)
-    : new URL(`/sports/${sportKey}/odds/`, config.baseUrl);
+    : new URL(`sports/${sportKey}/odds/`, config.baseUrl.endsWith("/") ? config.baseUrl : `${config.baseUrl}/`);
   if (config.currentProvider) {
     url.searchParams.set("sport_key", sportKey);
   } else {
@@ -285,6 +317,10 @@ function readLiveOddsSnapshot() {
   return readJsonWithFallback(LIVE_ODDS_PATH, SEEDED_LIVE_ODDS_PATH, null);
 }
 
+function readLiveBaseballOddsSnapshot() {
+  return readJsonWithFallback(LIVE_BASEBALL_ODDS_PATH, null, null);
+}
+
 function readWorldCupFixtureData() {
   if (!fs.existsSync(WORLD_CUP_FIXTURES_PATH)) return { fixtures: [] };
   return JSON.parse(fs.readFileSync(WORLD_CUP_FIXTURES_PATH, "utf8").replace(/^\uFEFF/, ""));
@@ -292,6 +328,13 @@ function readWorldCupFixtureData() {
 
 function snapshotIsFresh(maxAgeMinutes = 30) {
   const snapshot = readLiveOddsSnapshot();
+  if (!snapshot?.updatedAt) return false;
+  const ageMs = Date.now() - Date.parse(snapshot.updatedAt);
+  return Number.isFinite(ageMs) && ageMs >= 0 && ageMs < maxAgeMinutes * 60_000;
+}
+
+function baseballSnapshotIsFresh(maxAgeMinutes = 30) {
+  const snapshot = readLiveBaseballOddsSnapshot();
   if (!snapshot?.updatedAt) return false;
   const ageMs = Date.now() - Date.parse(snapshot.updatedAt);
   return Number.isFinite(ageMs) && ageMs >= 0 && ageMs < maxAgeMinutes * 60_000;
@@ -311,6 +354,30 @@ function indexedEventsBySport(fetchedSports) {
         awayTeam: normalizeLooseTeamName(event.away_team),
         rawHomeTeam: event.home_team || "",
         rawAwayTeam: event.away_team || "",
+        odds,
+        bookmakerCount: event.bookmakers?.length || event.books?.length || 0,
+      });
+    }
+  }
+  return events;
+}
+
+function indexedBaseballEvents(fetchedSports) {
+  const events = [];
+  for (const sport of fetchedSports) {
+    for (const event of sport.events || []) {
+      const odds = twoWayOddsFromEvent(event);
+      if (!odds) continue;
+      events.push({
+        sportKey: sport.sportKey,
+        eventId: event.id || event.event_id || "",
+        commenceTime: event.commence_time || event.start_time || "",
+        date: String(event.commence_time || event.start_time || "").slice(0, 10),
+        homeTeam: event.home_team || "",
+        awayTeam: event.away_team || "",
+        normalizedHomeTeam: normalizeLooseTeamName(event.home_team),
+        normalizedAwayTeam: normalizeLooseTeamName(event.away_team),
+        provider: "The Odds API",
         odds,
         bookmakerCount: event.bookmakers?.length || event.books?.length || 0,
       });
@@ -378,6 +445,36 @@ function internationalOddsFromEvents(events) {
       };
     })
     .filter(Boolean);
+}
+
+async function refreshBaseballOddsApi({ force = false, daysForward = 14 } = {}) {
+  const maxAgeMinutes = Number(process.env.ODDS_API_CACHE_MINUTES || 30);
+  if (!force && baseballSnapshotIsFresh(maxAgeMinutes)) {
+    const cached = readLiveBaseballOddsSnapshot();
+    return { ...cached, cached: true };
+  }
+  const sportKey = BASEBALL_SPORT_KEYS.MLB;
+  const fetchedSports = [];
+  const errors = [];
+  try {
+    fetchedSports.push(await fetchOddsEvents(sportKey, { daysForward }));
+  } catch (error) {
+    errors.push({ sportKey, message: error.message });
+  }
+  const events = indexedBaseballEvents(fetchedSports);
+  const snapshot = {
+    updatedAt: new Date().toISOString(),
+    provider: "The Odds API",
+    enabled: Boolean(process.env.ODDS_API_KEY || process.env.THE_ODDS_API_KEY),
+    cached: false,
+    requestedSports: [sportKey],
+    eventCount: events.length,
+    events,
+    quota: fetchedSports.map((sport) => ({ sportKey: sport.sportKey, quota: sport.quota || null, skipped: sport.skipped || false, reason: sport.reason || "" })),
+    errors,
+  };
+  writeJson(LIVE_BASEBALL_ODDS_PATH, snapshot);
+  return snapshot;
 }
 
 async function refreshTheOddsApi({ force = false, includeClub = true, includeInternational = true, daysForward = 120 } = {}) {
@@ -481,10 +578,14 @@ function oddsForInternationalFixture(fixture) {
 }
 
 module.exports = {
+  BASEBALL_SPORT_KEYS,
   CLUB_SPORT_KEYS,
   INTERNATIONAL_SPORT_KEYS,
+  LIVE_BASEBALL_ODDS_PATH,
   LIVE_ODDS_PATH,
   oddsForInternationalFixture,
   lookupMatchOdds,
+  readLiveBaseballOddsSnapshot,
+  refreshBaseballOddsApi,
   refreshTheOddsApi,
 };

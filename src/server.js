@@ -19,7 +19,7 @@ const { readResultsSnapshot, readFixturesSnapshot, refreshEspnFixtures, refreshE
 const { refreshWorldCupResults, syncWorldCupPlayerStats, readWorldCupResults } = require("./worldCupSync");
 const { listTeamResults, getTeamResults } = require("./teamResultsStore");
 const { listTeamTraining, getTeamTraining, appendTeamNote, updateTeamTrainingProfiles } = require("./teamTrainingStore");
-const { refreshTheOddsApi, lookupMatchOdds } = require("./oddsApiService");
+const { refreshTheOddsApi, lookupMatchOdds, refreshBaseballOddsApi } = require("./oddsApiService");
 const { runFixtureBridge, bridgeState } = require("./espnFixtureBridge");
 const { apiFootballStatus } = require("./liveData");
 const { readOrRefreshSportSeason } = require("./multiSportDataService");
@@ -31,6 +31,7 @@ const parlayBacktests = require("./parlayBacktestStore");
 const { projectDomesticCup, CUP_CONFIG } = require("./domesticCupProjection");
 const { chooseFootballContext, clubSeasonFor } = require("./footballContext");
 const { createPrediction: createBaseballPrediction, settlePrediction: settleBaseballPrediction, monitoring: baseballMonitoring } = require("./baseballModel/productionService");
+const { forecastBoard: baseballForecastBoard } = require("./baseballModel/forecastService");
 const { ingestSchedulePayload } = require("./baseballModel/featureStore");
 const { collectPregameFeatures } = require("./baseballModel/pregameCollectors");
 
@@ -596,6 +597,24 @@ async function handleApi(req, res, pathname) {
       return sendJson(res, 200, await readOrRefreshSportSeason(sport, season, { refresh }));
     } catch (error) {
       return sendJson(res, 502, { error: error.message, sport, season });
+    }
+  }
+
+  if (req.method === "GET" && pathname === "/api/sports/baseball/predictions") {
+    const url = new URL(req.url, `http://${req.headers.host}`);
+    const season = url.searchParams.get("season") || String(new Date().getUTCFullYear());
+    const refresh = url.searchParams.get("refresh") === "1";
+    const refreshOdds = url.searchParams.get("refreshOdds") === "1";
+    const limit = Math.max(0, Number(url.searchParams.get("limit") || 30));
+    const marketWeight = Math.max(0, Math.min(1, Number(url.searchParams.get("marketWeight") || 0.2)));
+    const oddsDays = Math.max(1, Math.min(60, Number(url.searchParams.get("oddsDays") || 14)));
+    try {
+      const currentSeason = await readOrRefreshSportSeason("baseball", season, { refresh });
+      const odds = await refreshBaseballOddsApi({ force: refreshOdds, daysForward: oddsDays });
+      const board = baseballForecastBoard(currentSeason, { oddsEvents: odds.events || [], limit, marketWeight });
+      return sendJson(res, 200, { ...board, odds: { ...odds, events: undefined } });
+    } catch (error) {
+      return sendJson(res, 502, { error: error.message, sport: "baseball", season });
     }
   }
 
