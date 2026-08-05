@@ -51,8 +51,33 @@ const stat = (b, s, cls = "") => `<div class="hero-stat"><b class="${cls}">${esc
 const seasonFor = () => STATE.context === "international" ? STATE.internationalSeason : STATE.clubSeason;
 const isCurrentInternationalSeason = () => STATE.internationalSeason === "2026 World Cup";
 
+/* ── Theme (adaptive / light / dark) ────────────────────────────────────────
+   "Adaptive" follows local time (light 4am-4pm, dark otherwise) rather than
+   prefers-color-scheme, matching the sportsbook's day/night broadcast feel. */
+function centralHour() {
+  try {
+    const parts = new Intl.DateTimeFormat("en-US", { timeZone: "America/Chicago", hour: "numeric", hour12: false }).formatToParts(new Date());
+    return Number(parts.find((part) => part.type === "hour")?.value);
+  } catch { return new Date().getHours(); }
+}
+const adaptiveTheme = () => { const hour = centralHour(); return hour >= 4 && hour < 16 ? "light" : "dark"; };
+function applyTheme(mode) {
+  const selected = ["light", "dark", "adaptive"].includes(mode) ? mode : "adaptive";
+  document.documentElement.dataset.theme = selected === "adaptive" ? adaptiveTheme() : selected;
+  document.documentElement.dataset.themeMode = selected;
+  const select = $("#themeSelect");
+  if (select) select.value = selected;
+  localStorage.setItem("football-theme-mode", selected);
+}
+function initTheme() {
+  applyTheme(localStorage.getItem("football-theme-mode") || "adaptive");
+  $("#themeSelect")?.addEventListener("change", (event) => applyTheme(event.target.value));
+  window.setInterval(() => { if ((localStorage.getItem("football-theme-mode") || "adaptive") === "adaptive") applyTheme("adaptive"); }, 60_000);
+}
+
 /* ── Boot ────────────────────────────────────────────────────────────────── */
 async function bootApp() {
+  initTheme();
   buildNav();
   buildSectionNav();
   bindContextSwitch();
@@ -596,11 +621,15 @@ async function renderFutures() {
   const grid = el("div", "grid");
   (data.sections || []).forEach((sec) => {
     const c = el("article", "card");
-    const picks = (sec.picks || []).slice(0, 8).map((pk) => `
+    const picks = (sec.picks || []).slice(0, 8).map((pk) => {
+      const isPlayerMarket = /scorer|assist/i.test(pk.market || "");
+      const crest = (!isPlayerMarket && STATE.context === "club") ? clubCrest(pk.label, "", selectedLeague()) : "";
+      return `
       <div class="fut-pick"><span class="fut-rank">${pk.rank}</span>
-        <span class="fut-label">${esc(pk.label)}<span class="fut-detail">${esc(pk.detail || "")}</span></span>
+        <span class="fut-label">${crest}${esc(pk.label)}<span class="fut-detail">${esc(pk.detail || "")}</span></span>
         <span class="fut-conf-bar"><i style="width:${Math.min(100, num(pk.confidence))}%"></i></span>
-        <span class="fut-conf">${num(pk.confidence)}%</span></div>`).join("");
+        <span class="fut-conf">${num(pk.confidence)}%</span></div>`;
+    }).join("");
     c.innerHTML = `<div class="card-top"><span>${esc(sec.title)}</span></div><div class="lm" style="margin-bottom:8px">${esc(sec.subtitle || "")}</div>${picks}`;
     grid.appendChild(c);
   });
@@ -610,16 +639,17 @@ async function renderFutures() {
   if (intl) {
     api("/api/international/bracket").then((br) => {
       if (STATE.section !== "futures") return;
-      if (br.champion) bracketMount.appendChild(el("div", "champion", `<div style="font-size:11px;color:var(--muted);text-transform:uppercase;letter-spacing:1px">Projected champion</div><div class="ct">${esc(br.champion.team)}</div>`));
+      if (br.champion) bracketMount.appendChild(el("div", "champion", `<div style="font-size:11px;color:var(--muted);text-transform:uppercase;letter-spacing:1px">Projected champion</div><div class="ct">${flag(br.champion.flag)}${esc(br.champion.team)}</div>`));
       const rounds = br.bracket || {};
       const tn = (x) => (x && typeof x === "object") ? (x.team || x.name || "") : (x || "");
+      const tf = (x) => (x && typeof x === "object") ? (x.flag || "") : "";
       const wrap = el("div", "bracket");
       [["r16", "Round of 16"], ["qf", "Quarter-Finals"], ["sf", "Semi-Finals"], ["final", "Final"]].forEach(([k, label]) => {
         const r = rounds[k]; if (!r) return;
         const col = el("div", "bround", `<h4>${esc(label)}</h4>`);
         (r.matches || []).forEach((m) => {
           const home = tn(m.home), away = tn(m.away), w = tn(m.winner);
-          col.appendChild(el("div", "btie", `<span class="${w && w === home ? "w" : ""}">${esc(home)}</span> v <span class="${w && w === away ? "w" : ""}">${esc(away)}</span>`));
+          col.appendChild(el("div", "btie", `<span class="${w && w === home ? "w" : ""}">${flag(tf(m.home))}${esc(home)}</span> v <span class="${w && w === away ? "w" : ""}">${flag(tf(m.away))}${esc(away)}</span>`));
         });
         wrap.appendChild(col);
       });
@@ -655,7 +685,7 @@ async function renderTables() {
   if (!leagues.length) { stage.appendChild(el("div", "empty", "League tables unavailable right now.")); return; }
   const grid = el("div", "grid");
   leagues.forEach(([name, lg]) => {
-    const rows = (lg.standings || []).slice(0, 20).map((r, i) => `<tr><td><span class="rk">${i + 1}</span></td><td>${esc(r.team)}</td><td>${r.played}</td><td>${r.goalsFor}:${r.goalsAgainst}</td><td><b>${r.points}</b></td></tr>`).join("");
+    const rows = (lg.standings || []).slice(0, 20).map((r, i) => `<tr><td><span class="rk">${i + 1}</span></td><td class="table-team"><div class="team">${clubCrest(r.team, "", name)}<span class="tn">${esc(r.team)}</span></div></td><td>${r.played}</td><td>${r.goalsFor}:${r.goalsAgainst}</td><td><b>${r.points}</b></td></tr>`).join("");
     const c = el("article", "card");
     c.innerHTML = `<div class="card-top"><span>${esc(name)}</span></div><table class="table"><thead><tr><th>#</th><th>Team</th><th>P</th><th>GF:GA</th><th>Pts</th></tr></thead><tbody>${rows}</tbody></table>`;
     grid.appendChild(c);

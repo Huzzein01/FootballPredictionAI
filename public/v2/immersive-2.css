@@ -115,7 +115,7 @@
    Original visual system inspired by modern sportsbook information hierarchy:
    cobalt primary navigation, navy utility rail, and bright analytical cards.
    =========================================================================== */
-:root {
+:root, :root[data-theme="light"] {
   --bg-0: #e9f0f9;
   --bg-1: #f5f8fc;
   --bg-2: #ffffff;
@@ -136,9 +136,36 @@
   --bad: #dc3d54;
 }
 
+/* Adaptive/dark mode: reuses the original "Broadcast Desk" oxblood-on-near-black
+   tokens from immersive.css so components styled with var(--bg-*)/var(--ink)/etc.
+   flip consistently. Components with hardcoded colors are a known follow-up. */
+:root[data-theme="dark"] {
+  --bg-0: oklch(0.07 0.006 22);
+  --bg-1: oklch(0.10 0.008 22);
+  --bg-2: oklch(0.14 0.010 22);
+  --surface: oklch(0.13 0.009 22);
+  --border: oklch(0.26 0.008 22 / 0.4);
+  --border-solid: oklch(0.24 0.008 22);
+  --ink: oklch(0.96 0.005 75);
+  --muted: oklch(0.62 0.010 52);
+  --ox: oklch(0.54 0.128 20);
+  --ox-hi: oklch(0.62 0.128 20);
+  --ox-glow: oklch(0.54 0.128 20 / 0.3);
+  --amber: oklch(0.74 0.112 65);
+  --amber-hi: oklch(0.82 0.090 65);
+  --amber-glow: oklch(0.74 0.112 65 / 0.22);
+  --good: oklch(0.65 0.145 145);
+  --draw-border: oklch(0.56 0.075 200);
+  --draw-pill: oklch(0.26 0.040 200);
+  --bad: oklch(0.62 0.150 22);
+}
+
 body {
   background: linear-gradient(180deg, #f7faff 0, #edf3fa 360px, #f8fafc 100%);
   color: var(--ink);
+}
+:root[data-theme="dark"] body {
+  background: linear-gradient(180deg, oklch(0.07 0.006 22) 0, oklch(0.09 0.007 22) 360px, oklch(0.08 0.006 22) 100%);
 }
 
 .app {
@@ -260,15 +287,15 @@ body {
   box-shadow: 0 6px 18px rgb(18 57 107 / 7%);
 }
 .section-head { margin-bottom: 17px; border-color: #dce5f0; }
-.section-head h2 { color: #0a2242; font-size: 28px; }
-.section-head .sub { color: #5d6e82; }
-.card { background: #fff; border-color: #d8e3f0; border-top-width: 3px; border-radius: 10px; box-shadow: 0 2px 7px rgb(18 57 107 / 5%); }
+.section-head h2 { color: var(--ink); font-size: 28px; }
+.section-head .sub { color: var(--muted); }
+.card { background: var(--surface); border-color: var(--border); border-top-width: 3px; border-radius: 10px; box-shadow: 0 2px 7px rgb(18 57 107 / 5%); }
 .card:hover { border-color: #78a9ee; box-shadow: 0 4px 10px rgb(19 89 185 / 9%); transform: none; }
 .card[data-pick="H"] { border-top-color: #1b70e8; }
 .card[data-pick="D"] { border-top-color: #6e99cc; }
 .card[data-pick="A"] { border-top-color: #107d9c; }
 .card.high-conf { border-color: #82b2f5; box-shadow: 0 0 0 1px #d9ebff, 0 9px 20px rgb(27 112 232 / 9%); }
-.card-top, .conf-legend, .proj { color: #607287; }
+.card-top, .conf-legend, .proj { color: var(--muted); }
 .team .flag { background: #edf3fa; }
 .team .flag {
   width: 46px;
@@ -458,8 +485,21 @@ body {
 .pstat b {
   display: block; font-family: var(--display);
   font-size: 17px; font-weight: 700; line-height: 1;
+  color: oklch(0.97 0.005 75 / 0.96);
 }
-.pstat span { font-size: 10px; color: var(--muted); text-transform: uppercase; letter-spacing: 0.06em; margin-top: 3px; display: block; }
+.pstat span { font-size: 10px; color: oklch(0.78 0.01 75 / 0.85); text-transform: uppercase; letter-spacing: 0.06em; margin-top: 3px; display: block; }
+
+/* Crest-in-table cell: the base .team/.flag/.tn rules stack vertically for
+   match cards; tables need the crest inline beside the name instead. */
+.table-team .team {
+  flex-direction: row; align-items: center; justify-content: flex-start;
+  gap: 8px; text-align: left;
+}
+.table-team .team .flag {
+  width: 20px; height: 20px; border-radius: 50%; object-fit: cover;
+  flex-shrink: 0;
+}
+.table-team .team .tn { font-size: 13px; font-weight: 600; line-height: 1.2; color: var(--ink); }
 
 /* Futures picks */
 .fut-pick {
@@ -472,6 +512,10 @@ body {
   color: var(--muted); min-width: 24px;
 }
 .fut-label { flex: 1; font-weight: 600; font-size: 13px; }
+.fut-label .flag {
+  width: 18px; height: 18px; border-radius: 50%; object-fit: cover;
+  vertical-align: middle; margin-right: 6px;
+}
 .fut-detail { font-size: 11px; color: var(--muted); font-weight: 400; display: block; margin-top: 1px; }
 .fut-conf {
   font-family: var(--display); font-size: 16px; font-weight: 700;
@@ -499,6 +543,10 @@ body {
   border-radius: 8px; padding: 8px 10px; margin-bottom: 7px; font-size: 12px;
 }
 .btie .w { color: var(--amber); font-weight: 700; }
+.btie .flag {
+  width: 16px; height: 16px; border-radius: 50%; object-fit: cover;
+  vertical-align: middle; margin-right: 4px;
+}
 
 .champion {
   text-align: center; padding: 16px;
@@ -508,6 +556,10 @@ body {
 }
 .champion .ct {
   font-family: var(--display); font-size: 28px; font-weight: 800; color: var(--amber);
+  display: flex; align-items: center; justify-content: center; gap: 10px;
+}
+.champion .ct .flag {
+  width: 30px; height: 30px; border-radius: 50%; object-fit: cover;
 }
 
 /* KPI grid — broadcast stat rail, not hero-metric cards */
