@@ -167,15 +167,15 @@
       ]
     },
     {
-      "id": "uefa:65570:home",
+      "id": "engsoccerdata:ab554db1a8b9bdb3788dd99077b6b6d754d64f09e84cb506bc3442cc323cbaea:2000-08-09:St.%20Gallen:Galatasaray:home",
       "date": "2000-08-09",
       "season": "2000-01",
       "competition": {
-        "name": "UEFA Champions League / European Cup",
+        "name": "European Champion Clubs' Cup / Champions League",
         "type": "continental",
         "country": "Europe"
       },
-      "stage": "Third qualifying round",
+      "stage": "Q-3",
       "opponent": {
         "name": "Galatasaray",
         "slug": "galatasaray"
@@ -193,6 +193,12 @@
           "url": "https://www.uefa.com/uefachampionsleague/match/65570/",
           "retrievedAt": "2026-08-04T21:11:10.969Z",
           "rawArtifact": "data/teams/history/normalized/uefa-1785878005892.json"
+        },
+        {
+          "provider": "jalapic/engsoccerdata",
+          "url": "https://raw.githubusercontent.com/jalapic/engsoccerdata/master/data-raw/champs.csv",
+          "retrievedAt": "2026-08-05T17:19:11.274Z",
+          "rawArtifact": "data/teams/history/normalized/engsoccerdata-1785950371133.json"
         }
       ]
     },
@@ -245,7 +251,15 @@
         "against": 2
       },
       "result": "D",
-      "sourceRef": "src:1ac1d16b4d91beda9a2b"
+      "sourceRef": "src:1ac1d16b4d91beda9a2b",
+      "sources": [
+        {
+          "provider": "jalapic/engsoccerdata",
+          "url": "https://raw.githubusercontent.com/jalapic/engsoccerdata/master/data-raw/champs.csv",
+          "retrievedAt": "2026-08-05T17:19:11.274Z",
+          "rawArtifact": "data/teams/history/normalized/engsoccerdata-1785950371133.json"
+        }
+      ]
     },
     {
       "id": "uefa:66066:away",
@@ -988,5 +1002,5 @@
       "basis": "derived from source-attributed recorded matches"
     }
   ],
-  "updatedAt": "2026-08-05T17:05:21.971Z"
+  "updatedAt": "2026-08-05T17:35:14.499Z"
 }
