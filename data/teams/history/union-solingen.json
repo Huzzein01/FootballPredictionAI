@@ -1,0 +1,457 @@
+{
+  "contract": "football-team-history-v1",
+  "team": {
+    "name": "Union Solingen",
+    "slug": "union-solingen",
+    "primaryLeague": "DFB-Pokal",
+    "aliases": []
+  },
+  "requestedCoverage": {
+    "fromYear": 1985,
+    "to": "present",
+    "includes": [
+      "all competitions",
+      "opponents",
+      "scorelines",
+      "league standings",
+      "competition standings"
+    ]
+  },
+  "sourcePlan": [
+    {
+      "rank": 1,
+      "provider": "Official club archive",
+      "url": "",
+      "scope": "club history, competition participation and match reports",
+      "lookupKey": "Union Solingen",
+      "review": "Verify the club-owned archive URL before collection."
+    },
+    {
+      "rank": 2,
+      "provider": "Official domestic competition / association",
+      "url": "",
+      "scope": "official league fixtures, final tables and cup records",
+      "lookupKey": "DFB-Pokal"
+    },
+    {
+      "rank": 3,
+      "provider": "UEFA",
+      "url": "https://www.uefa.com/",
+      "scope": "official European competition appearances, fixtures and standings",
+      "lookupKey": "Union Solingen"
+    },
+    {
+      "rank": 4,
+      "provider": "RSSSF",
+      "url": "https://www.rsssf.org/",
+      "scope": "historic competitions, tables and cross-checking",
+      "lookupKey": "Union Solingen"
+    },
+    {
+      "rank": 5,
+      "provider": "worldfootball.net",
+      "url": "https://www.worldfootball.net/",
+      "scope": "club match archive and competition participation cross-check",
+      "lookupKey": "Union Solingen"
+    }
+  ],
+  "coverage": {
+    "earliestMatch": "1985-08-24",
+    "latestMatch": "1989-08-20",
+    "seasonsWithMatches": [
+      "1985-86",
+      "1986-87",
+      "1987-88",
+      "1988-89",
+      "1989-90"
+    ],
+    "missingSeasons": [
+      "1990-91",
+      "1991-92",
+      "1992-93",
+      "1993-94",
+      "1994-95",
+      "1995-96",
+      "1996-97",
+      "1997-98",
+      "1998-99",
+      "1999-00",
+      "2000-01",
+      "2001-02",
+      "2002-03",
+      "2003-04",
+      "2004-05",
+      "2005-06",
+      "2006-07",
+      "2007-08",
+      "2008-09",
+      "2009-10",
+      "2010-11",
+      "2011-12",
+      "2012-13",
+      "2013-14",
+      "2014-15",
+      "2015-16",
+      "2016-17",
+      "2017-18",
+      "2018-19",
+      "2019-20",
+      "2020-21",
+      "2021-22",
+      "2022-23",
+      "2023-24",
+      "2024-25",
+      "2025-26",
+      "2026-27"
+    ],
+    "competitionScopeVerified": false,
+    "status": "partial"
+  },
+  "matches": [
+    {
+      "id": "dfb-pokal:8832d00036dc261d20dd1068886911d325aec008d46689af7575f06a0b1a7675:1985-08-24:SV%20Sandhausen:Union%20Solingen:away",
+      "date": "1985-08-24",
+      "season": "1985-86",
+      "competition": {
+        "name": "DFB-Pokal",
+        "type": "cup",
+        "country": "Germany"
+      },
+      "stage": "",
+      "opponent": {
+        "name": "SV Sandhausen",
+        "slug": "sv-sandhausen"
+      },
+      "venue": "away",
+      "score": {
+        "for": 0,
+        "against": 1
+      },
+      "result": "L",
+      "sources": [
+        {
+          "provider": "DFB Datencenter",
+          "url": "https://datencenter.dfb.de/datencenter/dfb-pokal/1985-1986/1-runde/sv-sandhausen-union-solingen-561028",
+          "retrievedAt": "2026-08-05T18:51:01.061Z",
+          "rawArtifact": "data/teams/history/normalized/dfb-pokal-1785956491062.json"
+        }
+      ]
+    },
+    {
+      "id": "dfb-pokal:75c8574084d0be3b3b397c01a95b143c146c204211192167bec77e0128172482:1986-08-29:Hamburger%20SV:Union%20Solingen:away",
+      "date": "1986-08-29",
+      "season": "1986-87",
+      "competition": {
+        "name": "DFB-Pokal",
+        "type": "cup",
+        "country": "Germany"
+      },
+      "stage": "",
+      "opponent": {
+        "name": "Hamburger SV",
+        "slug": "hamburger-sv"
+      },
+      "venue": "away",
+      "score": {
+        "for": 0,
+        "against": 3
+      },
+      "result": "L",
+      "sources": [
+        {
+          "provider": "DFB Datencenter",
+          "url": "https://datencenter.dfb.de/datencenter/dfb-pokal/1986-1987/1-runde/hamburger-sv-union-solingen-560942",
+          "retrievedAt": "2026-08-05T18:51:05.044Z",
+          "rawArtifact": "data/teams/history/normalized/dfb-pokal-1785956491062.json"
+        }
+      ]
+    },
+    {
+      "id": "dfb-pokal:928a741a6a43af0614c3af2bea4750c4136cd0f8633436fbca6fc86edd4e0e53:1987-08-29:SV%20St.%20Ingbert:Union%20Solingen:away",
+      "date": "1987-08-29",
+      "season": "1987-88",
+      "competition": {
+        "name": "DFB-Pokal",
+        "type": "cup",
+        "country": "Germany"
+      },
+      "stage": "",
+      "opponent": {
+        "name": "SV St. Ingbert",
+        "slug": "sv-st-ingbert"
+      },
+      "venue": "away",
+      "score": {
+        "for": 2,
+        "against": 0
+      },
+      "result": "W",
+      "sources": [
+        {
+          "provider": "DFB Datencenter",
+          "url": "https://datencenter.dfb.de/datencenter/dfb-pokal/1987-1988/1-runde/sv-st-ingbert-union-solingen-560882",
+          "retrievedAt": "2026-08-05T18:51:08.822Z",
+          "rawArtifact": "data/teams/history/normalized/dfb-pokal-1785956491062.json"
+        }
+      ]
+    },
+    {
+      "id": "dfb-pokal:928a741a6a43af0614c3af2bea4750c4136cd0f8633436fbca6fc86edd4e0e53:1987-10-24:Union%20Solingen:Fortuna%20D%C3%BCsseldorf:home",
+      "date": "1987-10-24",
+      "season": "1987-88",
+      "competition": {
+        "name": "DFB-Pokal",
+        "type": "cup",
+        "country": "Germany"
+      },
+      "stage": "",
+      "opponent": {
+        "name": "Fortuna Düsseldorf",
+        "slug": "fortuna-dusseldorf"
+      },
+      "venue": "home",
+      "score": {
+        "for": 1,
+        "against": 2
+      },
+      "result": "L",
+      "sources": [
+        {
+          "provider": "DFB Datencenter",
+          "url": "https://datencenter.dfb.de/datencenter/dfb-pokal/1987-1988/2-runde/union-solingen-fortuna-duesseldorf-560912",
+          "retrievedAt": "2026-08-05T18:51:08.822Z",
+          "rawArtifact": "data/teams/history/normalized/dfb-pokal-1785956491062.json"
+        }
+      ]
+    },
+    {
+      "id": "dfb-pokal:432b81e73251b9682469e11189cd5a60916d20be6a49bcbd34e43c3a45bba97e:1988-08-07:STV%20Horst-Emscher:Union%20Solingen:away",
+      "date": "1988-08-07",
+      "season": "1988-89",
+      "competition": {
+        "name": "DFB-Pokal",
+        "type": "cup",
+        "country": "Germany"
+      },
+      "stage": "",
+      "opponent": {
+        "name": "STV Horst-Emscher",
+        "slug": "stv-horst-emscher"
+      },
+      "venue": "away",
+      "score": {
+        "for": 0,
+        "against": 0
+      },
+      "result": "D",
+      "sources": [
+        {
+          "provider": "DFB Datencenter",
+          "url": "https://datencenter.dfb.de/datencenter/dfb-pokal/1988-1989/1-runde/stv-horst-emscher-union-solingen-560818",
+          "retrievedAt": "2026-08-05T18:51:13.248Z",
+          "rawArtifact": "data/teams/history/normalized/dfb-pokal-1785956491062.json"
+        }
+      ]
+    },
+    {
+      "id": "dfb-pokal:432b81e73251b9682469e11189cd5a60916d20be6a49bcbd34e43c3a45bba97e:1988-08-17:Union%20Solingen:STV%20Horst-Emscher:home",
+      "date": "1988-08-17",
+      "season": "1988-89",
+      "competition": {
+        "name": "DFB-Pokal",
+        "type": "cup",
+        "country": "Germany"
+      },
+      "stage": "",
+      "opponent": {
+        "name": "STV Horst-Emscher",
+        "slug": "stv-horst-emscher"
+      },
+      "venue": "home",
+      "score": {
+        "for": 5,
+        "against": 1
+      },
+      "result": "W",
+      "sources": [
+        {
+          "provider": "DFB Datencenter",
+          "url": "https://datencenter.dfb.de/datencenter/dfb-pokal/1988-1989/1-runde/union-solingen-stv-horst-emscher-560819",
+          "retrievedAt": "2026-08-05T18:51:13.248Z",
+          "rawArtifact": "data/teams/history/normalized/dfb-pokal-1785956491062.json"
+        }
+      ]
+    },
+    {
+      "id": "dfb-pokal:432b81e73251b9682469e11189cd5a60916d20be6a49bcbd34e43c3a45bba97e:1988-09-24:Union%20Solingen:Fortuna%20K%C3%B6ln:home",
+      "date": "1988-09-24",
+      "season": "1988-89",
+      "competition": {
+        "name": "DFB-Pokal",
+        "type": "cup",
+        "country": "Germany"
+      },
+      "stage": "",
+      "opponent": {
+        "name": "Fortuna Köln",
+        "slug": "fortuna-koln"
+      },
+      "venue": "home",
+      "score": {
+        "for": 2,
+        "against": 2
+      },
+      "result": "D",
+      "sources": [
+        {
+          "provider": "DFB Datencenter",
+          "url": "https://datencenter.dfb.de/datencenter/dfb-pokal/1988-1989/2-runde/union-solingen-fortuna-koeln-560839",
+          "retrievedAt": "2026-08-05T18:51:13.248Z",
+          "rawArtifact": "data/teams/history/normalized/dfb-pokal-1785956491062.json"
+        }
+      ]
+    },
+    {
+      "id": "dfb-pokal:432b81e73251b9682469e11189cd5a60916d20be6a49bcbd34e43c3a45bba97e:1988-10-13:Fortuna%20K%C3%B6ln:Union%20Solingen:away",
+      "date": "1988-10-13",
+      "season": "1988-89",
+      "competition": {
+        "name": "DFB-Pokal",
+        "type": "cup",
+        "country": "Germany"
+      },
+      "stage": "",
+      "opponent": {
+        "name": "Fortuna Köln",
+        "slug": "fortuna-koln"
+      },
+      "venue": "away",
+      "score": {
+        "for": 2,
+        "against": 5
+      },
+      "result": "L",
+      "sources": [
+        {
+          "provider": "DFB Datencenter",
+          "url": "https://datencenter.dfb.de/datencenter/dfb-pokal/1988-1989/2-runde/fortuna-koeln-union-solingen-560840",
+          "retrievedAt": "2026-08-05T18:51:13.248Z",
+          "rawArtifact": "data/teams/history/normalized/dfb-pokal-1785956491062.json"
+        }
+      ]
+    },
+    {
+      "id": "dfb-pokal:323884400bcb0ae13f66dc59e8d0c32c369b9d930005cf5a8d5e6191042dd8d8:1989-08-20:Union%20Solingen:SC%20Freiburg:home",
+      "date": "1989-08-20",
+      "season": "1989-90",
+      "competition": {
+        "name": "DFB-Pokal",
+        "type": "cup",
+        "country": "Germany"
+      },
+      "stage": "",
+      "opponent": {
+        "name": "SC Freiburg",
+        "slug": "sc-freiburg"
+      },
+      "venue": "home",
+      "score": {
+        "for": 1,
+        "against": 3
+      },
+      "result": "L",
+      "sources": [
+        {
+          "provider": "DFB Datencenter",
+          "url": "https://datencenter.dfb.de/datencenter/dfb-pokal/1989-1990/1-runde/union-solingen-sc-freiburg-560753",
+          "retrievedAt": "2026-08-05T18:51:16.899Z",
+          "rawArtifact": "data/teams/history/normalized/dfb-pokal-1785956491062.json"
+        }
+      ]
+    }
+  ],
+  "seasonStandings": [],
+  "competitionStandings": [
+    {
+      "season": "1985-86",
+      "competition": {
+        "name": "DFB-Pokal",
+        "type": "cup",
+        "country": "Germany"
+      },
+      "format": "knockout-progress",
+      "matches": 1,
+      "wins": 0,
+      "draws": 0,
+      "losses": 1,
+      "furthestStage": "recorded participation",
+      "latestMatch": "1985-08-24",
+      "basis": "derived from source-attributed recorded matches"
+    },
+    {
+      "season": "1986-87",
+      "competition": {
+        "name": "DFB-Pokal",
+        "type": "cup",
+        "country": "Germany"
+      },
+      "format": "knockout-progress",
+      "matches": 1,
+      "wins": 0,
+      "draws": 0,
+      "losses": 1,
+      "furthestStage": "recorded participation",
+      "latestMatch": "1986-08-29",
+      "basis": "derived from source-attributed recorded matches"
+    },
+    {
+      "season": "1987-88",
+      "competition": {
+        "name": "DFB-Pokal",
+        "type": "cup",
+        "country": "Germany"
+      },
+      "format": "knockout-progress",
+      "matches": 2,
+      "wins": 1,
+      "draws": 0,
+      "losses": 1,
+      "furthestStage": "recorded participation",
+      "latestMatch": "1987-10-24",
+      "basis": "derived from source-attributed recorded matches"
+    },
+    {
+      "season": "1988-89",
+      "competition": {
+        "name": "DFB-Pokal",
+        "type": "cup",
+        "country": "Germany"
+      },
+      "format": "knockout-progress",
+      "matches": 4,
+      "wins": 1,
+      "draws": 2,
+      "losses": 1,
+      "furthestStage": "recorded participation",
+      "latestMatch": "1988-10-13",
+      "basis": "derived from source-attributed recorded matches"
+    },
+    {
+      "season": "1989-90",
+      "competition": {
+        "name": "DFB-Pokal",
+        "type": "cup",
+        "country": "Germany"
+      },
+      "format": "knockout-progress",
+      "matches": 1,
+      "wins": 0,
+      "draws": 0,
+      "losses": 1,
+      "furthestStage": "recorded participation",
+      "latestMatch": "1989-08-20",
+      "basis": "derived from source-attributed recorded matches"
+    }
+  ],
+  "updatedAt": "2026-08-05T19:20:50.694Z"
+}

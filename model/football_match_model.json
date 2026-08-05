@@ -577,7 +577,7 @@
     "squadRatingDiff"
   ],
   "marketBlend": 1,
-  "trainedAt": "2026-08-05T17:12:14.701Z",
+  "trainedAt": "2026-08-05T19:37:59.541Z",
   "dataCoverage": "2020-21 through 2024-25 train/tune; 2025-26 partial holdout test",
   "trainingPolicy": "Club form/stat model with current-season player goal, assist, shot, and shot-on-target strength features when imported from Thunderbit/FBref screenshots, CSVs, or manual player-profile match entries. Manual team-profile entries for tracked clubs are layered into current-season prediction features for form, goals, shots, shots on target, corners, clean sheets, xG/xGA notes, set-piece notes, and motivation context. Training rows include pre-match table context for title-race pressure, European-place pressure, relegation pressure, secured-title rotation risk, and dead-rubber risk. A standings snapshot is only applied to its matching season: when a new campaign has no current-season table, previous champions, qualification, and low-stakes labels are cleared, and a small neutral opening-week calibration is used while long-term strength signals remain. Settled backtest match results are added to the training split as feedback rows. Manual goalkeeper saves are stored for profile tracking and future goalkeeper-specific feature work, while existing match features use attacking and chance-volume player totals. Missing player-stat fields default to zero by club/season.",
   "feedbackRows": 252,

@@ -29,14 +29,25 @@ const rows = fs.readdirSync(historyDir())
     }));
   })
   .sort((a, b) => a.date.localeCompare(b.date) || a.id.localeCompare(b.id));
+// Rows are streamed in batches rather than passed through a single JSON.stringify
+// call: the combined dataset is now large enough to exceed V8's max string length.
 fs.mkdirSync(path.dirname(output), { recursive: true });
-fs.writeFileSync(output, JSON.stringify({
+const fd = fs.openSync(output, "w");
+const header = JSON.stringify({
   contract: "football-verified-major-history-training-v1",
   generatedAt: new Date().toISOString(),
   policy: "Individually dated, attributable major-competition records from 1985 onward; include preseason friendlies only when the record explicitly identifies a Europe/South America cross-confederation opponent.",
   from: MIN_TRAINING_DATE,
   through,
   rowCount: rows.length,
-  rows,
-}, null, 2) + "\n");
+}, null, 2);
+fs.writeSync(fd, `${header.slice(0, -2)},\n  "rows": [\n`);
+const batchSize = 5000;
+for (let start = 0; start < rows.length; start += batchSize) {
+  const batch = rows.slice(start, start + batchSize);
+  const body = batch.map((row) => `    ${JSON.stringify(row)}`).join(",\n");
+  fs.writeSync(fd, start === 0 ? body : `,\n${body}`);
+}
+fs.writeSync(fd, "\n  ]\n}\n");
+fs.closeSync(fd);
 console.log(JSON.stringify({ output, rowCount: rows.length, from: MIN_TRAINING_DATE, through }, null, 2));

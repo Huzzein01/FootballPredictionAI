@@ -1,0 +1,351 @@
+{
+  "contract": "football-team-history-v1",
+  "team": {
+    "name": "FC Uerdingen 05",
+    "slug": "fc-uerdingen-05",
+    "primaryLeague": "DFB-Pokal",
+    "aliases": []
+  },
+  "requestedCoverage": {
+    "fromYear": 1985,
+    "to": "present",
+    "includes": [
+      "all competitions",
+      "opponents",
+      "scorelines",
+      "league standings",
+      "competition standings"
+    ]
+  },
+  "sourcePlan": [
+    {
+      "rank": 1,
+      "provider": "Official club archive",
+      "url": "",
+      "scope": "club history, competition participation and match reports",
+      "lookupKey": "FC Uerdingen 05",
+      "review": "Verify the club-owned archive URL before collection."
+    },
+    {
+      "rank": 2,
+      "provider": "Official domestic competition / association",
+      "url": "",
+      "scope": "official league fixtures, final tables and cup records",
+      "lookupKey": "DFB-Pokal"
+    },
+    {
+      "rank": 3,
+      "provider": "UEFA",
+      "url": "https://www.uefa.com/",
+      "scope": "official European competition appearances, fixtures and standings",
+      "lookupKey": "FC Uerdingen 05"
+    },
+    {
+      "rank": 4,
+      "provider": "RSSSF",
+      "url": "https://www.rsssf.org/",
+      "scope": "historic competitions, tables and cross-checking",
+      "lookupKey": "FC Uerdingen 05"
+    },
+    {
+      "rank": 5,
+      "provider": "worldfootball.net",
+      "url": "https://www.worldfootball.net/",
+      "scope": "club match archive and competition participation cross-check",
+      "lookupKey": "FC Uerdingen 05"
+    }
+  ],
+  "coverage": {
+    "earliestMatch": "1985-08-24",
+    "latestMatch": "1987-03-07",
+    "seasonsWithMatches": [
+      "1985-86",
+      "1986-87"
+    ],
+    "missingSeasons": [
+      "1987-88",
+      "1988-89",
+      "1989-90",
+      "1990-91",
+      "1991-92",
+      "1992-93",
+      "1993-94",
+      "1994-95",
+      "1995-96",
+      "1996-97",
+      "1997-98",
+      "1998-99",
+      "1999-00",
+      "2000-01",
+      "2001-02",
+      "2002-03",
+      "2003-04",
+      "2004-05",
+      "2005-06",
+      "2006-07",
+      "2007-08",
+      "2008-09",
+      "2009-10",
+      "2010-11",
+      "2011-12",
+      "2012-13",
+      "2013-14",
+      "2014-15",
+      "2015-16",
+      "2016-17",
+      "2017-18",
+      "2018-19",
+      "2019-20",
+      "2020-21",
+      "2021-22",
+      "2022-23",
+      "2023-24",
+      "2024-25",
+      "2025-26",
+      "2026-27"
+    ],
+    "competitionScopeVerified": false,
+    "status": "partial"
+  },
+  "matches": [
+    {
+      "id": "dfb-pokal:8832d00036dc261d20dd1068886911d325aec008d46689af7575f06a0b1a7675:1985-08-24:VfR%20B%C3%BCrstadt:FC%20Uerdingen%2005:away",
+      "date": "1985-08-24",
+      "season": "1985-86",
+      "competition": {
+        "name": "DFB-Pokal",
+        "type": "cup",
+        "country": "Germany"
+      },
+      "stage": "",
+      "opponent": {
+        "name": "VfR Bürstadt",
+        "slug": "vfr-burstadt"
+      },
+      "venue": "away",
+      "score": {
+        "for": 3,
+        "against": 1
+      },
+      "result": "W",
+      "sources": [
+        {
+          "provider": "DFB Datencenter",
+          "url": "https://datencenter.dfb.de/datencenter/dfb-pokal/1985-1986/1-runde/vfr-buerstadt-kfc-uerdingen-561016",
+          "retrievedAt": "2026-08-05T18:51:01.061Z",
+          "rawArtifact": "data/teams/history/normalized/dfb-pokal-1785956491062.json"
+        }
+      ]
+    },
+    {
+      "id": "dfb-pokal:8832d00036dc261d20dd1068886911d325aec008d46689af7575f06a0b1a7675:1985-10-19:Eintracht%20Trier:FC%20Uerdingen%2005:away",
+      "date": "1985-10-19",
+      "season": "1985-86",
+      "competition": {
+        "name": "DFB-Pokal",
+        "type": "cup",
+        "country": "Germany"
+      },
+      "stage": "",
+      "opponent": {
+        "name": "Eintracht Trier",
+        "slug": "eintracht-trier"
+      },
+      "venue": "away",
+      "score": {
+        "for": 0,
+        "against": 0
+      },
+      "result": "D",
+      "sources": [
+        {
+          "provider": "DFB Datencenter",
+          "url": "https://datencenter.dfb.de/datencenter/dfb-pokal/1985-1986/2-runde/eintracht-trier-kfc-uerdingen-561053",
+          "retrievedAt": "2026-08-05T18:51:01.061Z",
+          "rawArtifact": "data/teams/history/normalized/dfb-pokal-1785956491062.json"
+        }
+      ]
+    },
+    {
+      "id": "dfb-pokal:8832d00036dc261d20dd1068886911d325aec008d46689af7575f06a0b1a7675:1985-10-29:FC%20Uerdingen%2005:Eintracht%20Trier:home",
+      "date": "1985-10-29",
+      "season": "1985-86",
+      "competition": {
+        "name": "DFB-Pokal",
+        "type": "cup",
+        "country": "Germany"
+      },
+      "stage": "",
+      "opponent": {
+        "name": "Eintracht Trier",
+        "slug": "eintracht-trier"
+      },
+      "venue": "home",
+      "score": {
+        "for": 0,
+        "against": 3
+      },
+      "result": "L",
+      "sources": [
+        {
+          "provider": "DFB Datencenter",
+          "url": "https://datencenter.dfb.de/datencenter/dfb-pokal/1985-1986/2-runde/kfc-uerdingen-eintracht-trier-561054",
+          "retrievedAt": "2026-08-05T18:51:01.061Z",
+          "rawArtifact": "data/teams/history/normalized/dfb-pokal-1785956491062.json"
+        }
+      ]
+    },
+    {
+      "id": "dfb-pokal:75c8574084d0be3b3b397c01a95b143c146c204211192167bec77e0128172482:1986-08-30:FC%20Uerdingen%2005:VfB%20Stuttgart:home",
+      "date": "1986-08-30",
+      "season": "1986-87",
+      "competition": {
+        "name": "DFB-Pokal",
+        "type": "cup",
+        "country": "Germany"
+      },
+      "stage": "",
+      "opponent": {
+        "name": "VfB Stuttgart",
+        "slug": "vfb-stuttgart"
+      },
+      "venue": "home",
+      "score": {
+        "for": 6,
+        "against": 4
+      },
+      "result": "W",
+      "sources": [
+        {
+          "provider": "DFB Datencenter",
+          "url": "https://datencenter.dfb.de/datencenter/dfb-pokal/1986-1987/1-runde/kfc-uerdingen-vfb-stuttgart-560936",
+          "retrievedAt": "2026-08-05T18:51:05.044Z",
+          "rawArtifact": "data/teams/history/normalized/dfb-pokal-1785956491062.json"
+        }
+      ]
+    },
+    {
+      "id": "dfb-pokal:75c8574084d0be3b3b397c01a95b143c146c204211192167bec77e0128172482:1986-10-25:FC%20Uerdingen%2005:1.%20FC%20N%C3%BCrnberg:home",
+      "date": "1986-10-25",
+      "season": "1986-87",
+      "competition": {
+        "name": "DFB-Pokal",
+        "type": "cup",
+        "country": "Germany"
+      },
+      "stage": "",
+      "opponent": {
+        "name": "1. FC Nürnberg",
+        "slug": "1-fc-nurnberg"
+      },
+      "venue": "home",
+      "score": {
+        "for": 3,
+        "against": 2
+      },
+      "result": "W",
+      "sources": [
+        {
+          "provider": "DFB Datencenter",
+          "url": "https://datencenter.dfb.de/datencenter/dfb-pokal/1986-1987/2-runde/kfc-uerdingen-1-fc-nuernberg-560976",
+          "retrievedAt": "2026-08-05T18:51:05.044Z",
+          "rawArtifact": "data/teams/history/normalized/dfb-pokal-1785956491062.json"
+        }
+      ]
+    },
+    {
+      "id": "dfb-pokal:75c8574084d0be3b3b397c01a95b143c146c204211192167bec77e0128172482:1986-11-19:FC%20Uerdingen%2005:1.%20FC%20K%C3%B6ln:home",
+      "date": "1986-11-19",
+      "season": "1986-87",
+      "competition": {
+        "name": "DFB-Pokal",
+        "type": "cup",
+        "country": "Germany"
+      },
+      "stage": "",
+      "opponent": {
+        "name": "1. FC Köln",
+        "slug": "1-fc-koln"
+      },
+      "venue": "home",
+      "score": {
+        "for": 3,
+        "against": 1
+      },
+      "result": "W",
+      "sources": [
+        {
+          "provider": "DFB Datencenter",
+          "url": "https://datencenter.dfb.de/datencenter/dfb-pokal/1986-1987/achtelfinale/kfc-uerdingen-1-fc-koeln-560991",
+          "retrievedAt": "2026-08-05T18:51:05.044Z",
+          "rawArtifact": "data/teams/history/normalized/dfb-pokal-1785956491062.json"
+        }
+      ]
+    },
+    {
+      "id": "dfb-pokal:75c8574084d0be3b3b397c01a95b143c146c204211192167bec77e0128172482:1987-03-07:Borussia%20M%C3%B6nchengladbach:FC%20Uerdingen%2005:away",
+      "date": "1987-03-07",
+      "season": "1986-87",
+      "competition": {
+        "name": "DFB-Pokal",
+        "type": "cup",
+        "country": "Germany"
+      },
+      "stage": "",
+      "opponent": {
+        "name": "Borussia Mönchengladbach",
+        "slug": "borussia-monchengladbach"
+      },
+      "venue": "away",
+      "score": {
+        "for": 2,
+        "against": 9
+      },
+      "result": "L",
+      "sources": [
+        {
+          "provider": "DFB Datencenter",
+          "url": "https://datencenter.dfb.de/datencenter/dfb-pokal/1986-1987/viertelfinale/borussia-moenchengladbach-kfc-uerdingen-560999",
+          "retrievedAt": "2026-08-05T18:51:05.044Z",
+          "rawArtifact": "data/teams/history/normalized/dfb-pokal-1785956491062.json"
+        }
+      ]
+    }
+  ],
+  "seasonStandings": [],
+  "competitionStandings": [
+    {
+      "season": "1985-86",
+      "competition": {
+        "name": "DFB-Pokal",
+        "type": "cup",
+        "country": "Germany"
+      },
+      "format": "knockout-progress",
+      "matches": 3,
+      "wins": 1,
+      "draws": 1,
+      "losses": 1,
+      "furthestStage": "recorded participation",
+      "latestMatch": "1985-10-29",
+      "basis": "derived from source-attributed recorded matches"
+    },
+    {
+      "season": "1986-87",
+      "competition": {
+        "name": "DFB-Pokal",
+        "type": "cup",
+        "country": "Germany"
+      },
+      "format": "knockout-progress",
+      "matches": 4,
+      "wins": 3,
+      "draws": 0,
+      "losses": 1,
+      "furthestStage": "recorded participation",
+      "latestMatch": "1987-03-07",
+      "basis": "derived from source-attributed recorded matches"
+    }
+  ],
+  "updatedAt": "2026-08-05T19:20:38.051Z"
+}

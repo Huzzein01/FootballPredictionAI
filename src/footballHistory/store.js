@@ -2,7 +2,7 @@
 
 const fs = require("fs");
 const path = require("path");
-const { repoDataPath, ensureParent } = require("../runtimePaths");
+const { repoDataPath, writeFileRetrying } = require("../runtimePaths");
 const { slugifyTeam } = require("../teamResultsStore");
 const { emptyHistory, seasonFromDate } = require("./schema");
 const { sourcePlan } = require("./sources");
@@ -10,7 +10,7 @@ const { sourcePlan } = require("./sources");
 function historyDir() { return repoDataPath("teams", "history"); }
 function historyPath(slug) { return path.join(historyDir(), `${slug}.json`); }
 function readHistory(slug) { try { return JSON.parse(fs.readFileSync(historyPath(slug), "utf8")); } catch { return null; } }
-function writeHistory(record) { ensureParent(historyPath(record.team.slug)); fs.writeFileSync(historyPath(record.team.slug), JSON.stringify(record, null, 2) + "\n"); }
+function writeHistory(record) { writeFileRetrying(historyPath(record.team.slug), JSON.stringify(record, null, 2) + "\n"); }
 function ensureHistory(team) {
   const slug = team.slug || slugifyTeam(team.team);
   const found = readHistory(slug);

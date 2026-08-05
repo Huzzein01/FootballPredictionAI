@@ -1,0 +1,544 @@
+{
+  "contract": "football-team-history-v1",
+  "team": {
+    "name": "KFC Uerdingen",
+    "slug": "kfc-uerdingen",
+    "primaryLeague": "DFB-Pokal",
+    "aliases": []
+  },
+  "requestedCoverage": {
+    "fromYear": 1985,
+    "to": "present",
+    "includes": [
+      "all competitions",
+      "opponents",
+      "scorelines",
+      "league standings",
+      "competition standings"
+    ]
+  },
+  "sourcePlan": [
+    {
+      "rank": 1,
+      "provider": "Official club archive",
+      "url": "",
+      "scope": "club history, competition participation and match reports",
+      "lookupKey": "KFC Uerdingen",
+      "review": "Verify the club-owned archive URL before collection."
+    },
+    {
+      "rank": 2,
+      "provider": "Official domestic competition / association",
+      "url": "",
+      "scope": "official league fixtures, final tables and cup records",
+      "lookupKey": "DFB-Pokal"
+    },
+    {
+      "rank": 3,
+      "provider": "UEFA",
+      "url": "https://www.uefa.com/",
+      "scope": "official European competition appearances, fixtures and standings",
+      "lookupKey": "KFC Uerdingen"
+    },
+    {
+      "rank": 4,
+      "provider": "RSSSF",
+      "url": "https://www.rsssf.org/",
+      "scope": "historic competitions, tables and cross-checking",
+      "lookupKey": "KFC Uerdingen"
+    },
+    {
+      "rank": 5,
+      "provider": "worldfootball.net",
+      "url": "https://www.worldfootball.net/",
+      "scope": "club match archive and competition participation cross-check",
+      "lookupKey": "KFC Uerdingen"
+    }
+  ],
+  "coverage": {
+    "earliestMatch": "1996-08-10",
+    "latestMatch": "2001-12-12",
+    "seasonsWithMatches": [
+      "1996-97",
+      "1997-98",
+      "1998-99",
+      "1999-00",
+      "2001-02"
+    ],
+    "missingSeasons": [
+      "1985-86",
+      "1986-87",
+      "1987-88",
+      "1988-89",
+      "1989-90",
+      "1990-91",
+      "1991-92",
+      "1992-93",
+      "1993-94",
+      "1994-95",
+      "1995-96",
+      "2000-01",
+      "2002-03",
+      "2003-04",
+      "2004-05",
+      "2005-06",
+      "2006-07",
+      "2007-08",
+      "2008-09",
+      "2009-10",
+      "2010-11",
+      "2011-12",
+      "2012-13",
+      "2013-14",
+      "2014-15",
+      "2015-16",
+      "2016-17",
+      "2017-18",
+      "2018-19",
+      "2019-20",
+      "2020-21",
+      "2021-22",
+      "2022-23",
+      "2023-24",
+      "2024-25",
+      "2025-26",
+      "2026-27"
+    ],
+    "competitionScopeVerified": false,
+    "status": "partial"
+  },
+  "matches": [
+    {
+      "id": "dfb-pokal:f50db9b5683fa3571e82319b58fadca9f123efd4a9f6b6d301917b22cc012d4c:1996-08-10:KFC%20Uerdingen:SC%20Freiburg:home",
+      "date": "1996-08-10",
+      "season": "1996-97",
+      "competition": {
+        "name": "DFB-Pokal",
+        "type": "cup",
+        "country": "Germany"
+      },
+      "stage": "",
+      "opponent": {
+        "name": "SC Freiburg",
+        "slug": "sc-freiburg"
+      },
+      "venue": "home",
+      "score": {
+        "for": 0,
+        "against": 2
+      },
+      "result": "L",
+      "sources": [
+        {
+          "provider": "DFB Datencenter",
+          "url": "https://datencenter.dfb.de/datencenter/dfb-pokal/1996-1997/1-runde/kfc-uerdingen-sc-freiburg-560236",
+          "retrievedAt": "2026-08-05T18:51:45.488Z",
+          "rawArtifact": "data/teams/history/normalized/dfb-pokal-1785956491062.json"
+        }
+      ]
+    },
+    {
+      "id": "dfb-pokal:de39f6286b515b0bfad6a694d203e4405386a217e8505a2038f30a5a316503e3:1997-08-16:0%20%3A%202:KFC%20Uerdingen:away",
+      "date": "1997-08-16",
+      "season": "1997-98",
+      "competition": {
+        "name": "DFB-Pokal",
+        "type": "cup",
+        "country": "Germany"
+      },
+      "stage": "",
+      "opponent": {
+        "name": "0 : 2",
+        "slug": "0-2"
+      },
+      "venue": "away",
+      "score": {
+        "for": 2,
+        "against": 0
+      },
+      "result": "W",
+      "sources": [
+        {
+          "provider": "DFB Datencenter",
+          "url": "https://datencenter.dfb.de/datencenter/dfb-pokal/1997-1998/1-runde/sc-neukirchen-kfc-uerdingen-560188",
+          "retrievedAt": "2026-08-05T18:51:48.774Z",
+          "rawArtifact": "data/teams/history/normalized/dfb-pokal-1785956491062.json"
+        }
+      ]
+    },
+    {
+      "id": "dfb-pokal:de39f6286b515b0bfad6a694d203e4405386a217e8505a2038f30a5a316503e3:1997-09-25:VfB%20L%C3%BCbeck:KFC%20Uerdingen:away",
+      "date": "1997-09-25",
+      "season": "1997-98",
+      "competition": {
+        "name": "DFB-Pokal",
+        "type": "cup",
+        "country": "Germany"
+      },
+      "stage": "",
+      "opponent": {
+        "name": "VfB Lübeck",
+        "slug": "vfb-lubeck"
+      },
+      "venue": "away",
+      "score": {
+        "for": 4,
+        "against": 1
+      },
+      "result": "W",
+      "sources": [
+        {
+          "provider": "DFB Datencenter",
+          "url": "https://datencenter.dfb.de/datencenter/dfb-pokal/1997-1998/2-runde/vfb-luebeck-kfc-uerdingen-560205",
+          "retrievedAt": "2026-08-05T18:51:48.774Z",
+          "rawArtifact": "data/teams/history/normalized/dfb-pokal-1785956491062.json"
+        }
+      ]
+    },
+    {
+      "id": "dfb-pokal:de39f6286b515b0bfad6a694d203e4405386a217e8505a2038f30a5a316503e3:1997-12-03:SV%20Meppen:KFC%20Uerdingen:away",
+      "date": "1997-12-03",
+      "season": "1997-98",
+      "competition": {
+        "name": "DFB-Pokal",
+        "type": "cup",
+        "country": "Germany"
+      },
+      "stage": "",
+      "opponent": {
+        "name": "SV Meppen",
+        "slug": "sv-meppen"
+      },
+      "venue": "away",
+      "score": {
+        "for": 2,
+        "against": 0
+      },
+      "result": "W",
+      "sources": [
+        {
+          "provider": "DFB Datencenter",
+          "url": "https://datencenter.dfb.de/datencenter/dfb-pokal/1997-1998/achtelfinale/sv-meppen-kfc-uerdingen-560213",
+          "retrievedAt": "2026-08-05T18:51:48.774Z",
+          "rawArtifact": "data/teams/history/normalized/dfb-pokal-1785956491062.json"
+        }
+      ]
+    },
+    {
+      "id": "dfb-pokal:de39f6286b515b0bfad6a694d203e4405386a217e8505a2038f30a5a316503e3:1997-12-16:KFC%20Uerdingen:VfB%20Stuttgart:home",
+      "date": "1997-12-16",
+      "season": "1997-98",
+      "competition": {
+        "name": "DFB-Pokal",
+        "type": "cup",
+        "country": "Germany"
+      },
+      "stage": "",
+      "opponent": {
+        "name": "VfB Stuttgart",
+        "slug": "vfb-stuttgart"
+      },
+      "venue": "home",
+      "score": {
+        "for": 0,
+        "against": 4
+      },
+      "result": "L",
+      "sources": [
+        {
+          "provider": "DFB Datencenter",
+          "url": "https://datencenter.dfb.de/datencenter/dfb-pokal/1997-1998/viertelfinale/kfc-uerdingen-vfb-stuttgart-560217",
+          "retrievedAt": "2026-08-05T18:51:48.774Z",
+          "rawArtifact": "data/teams/history/normalized/dfb-pokal-1785956491062.json"
+        }
+      ]
+    },
+    {
+      "id": "dfb-pokal:074709604e972caf956d54ae56f92b35d3f19b30e12514d09679eb984964951c:1998-08-29:1.%20FC%20Magdeburg:KFC%20Uerdingen:away",
+      "date": "1998-08-29",
+      "season": "1998-99",
+      "competition": {
+        "name": "DFB-Pokal",
+        "type": "cup",
+        "country": "Germany"
+      },
+      "stage": "",
+      "opponent": {
+        "name": "1. FC Magdeburg",
+        "slug": "1-fc-magdeburg"
+      },
+      "venue": "away",
+      "score": {
+        "for": 2,
+        "against": 1
+      },
+      "result": "W",
+      "sources": [
+        {
+          "provider": "DFB Datencenter",
+          "url": "https://datencenter.dfb.de/datencenter/dfb-pokal/1998-1999/1-runde/1-fc-magdeburg-kfc-uerdingen-560126",
+          "retrievedAt": "2026-08-05T18:52:18.341Z",
+          "rawArtifact": "data/teams/history/normalized/dfb-pokal-1785956491062.json"
+        }
+      ]
+    },
+    {
+      "id": "dfb-pokal:074709604e972caf956d54ae56f92b35d3f19b30e12514d09679eb984964951c:1998-09-23:KFC%20Uerdingen:FC%20St.%20Pauli:home",
+      "date": "1998-09-23",
+      "season": "1998-99",
+      "competition": {
+        "name": "DFB-Pokal",
+        "type": "cup",
+        "country": "Germany"
+      },
+      "stage": "",
+      "opponent": {
+        "name": "FC St. Pauli",
+        "slug": "fc-st-pauli"
+      },
+      "venue": "home",
+      "score": {
+        "for": 5,
+        "against": 4
+      },
+      "result": "W",
+      "sources": [
+        {
+          "provider": "DFB Datencenter",
+          "url": "https://datencenter.dfb.de/datencenter/dfb-pokal/1998-1999/2-runde/kfc-uerdingen-fc-st-pauli-560142",
+          "retrievedAt": "2026-08-05T18:52:18.341Z",
+          "rawArtifact": "data/teams/history/normalized/dfb-pokal-1785956491062.json"
+        }
+      ]
+    },
+    {
+      "id": "dfb-pokal:074709604e972caf956d54ae56f92b35d3f19b30e12514d09679eb984964951c:1998-11-03:Sportfreunde%20Siegen:KFC%20Uerdingen:away",
+      "date": "1998-11-03",
+      "season": "1998-99",
+      "competition": {
+        "name": "DFB-Pokal",
+        "type": "cup",
+        "country": "Germany"
+      },
+      "stage": "",
+      "opponent": {
+        "name": "Sportfreunde Siegen",
+        "slug": "sportfreunde-siegen"
+      },
+      "venue": "away",
+      "score": {
+        "for": 0,
+        "against": 1
+      },
+      "result": "L",
+      "sources": [
+        {
+          "provider": "DFB Datencenter",
+          "url": "https://datencenter.dfb.de/datencenter/dfb-pokal/1998-1999/achtelfinale/sportfreunde-siegen-kfc-uerdingen-560151",
+          "retrievedAt": "2026-08-05T18:52:18.341Z",
+          "rawArtifact": "data/teams/history/normalized/dfb-pokal-1785956491062.json"
+        }
+      ]
+    },
+    {
+      "id": "dfb-pokal:0c03b5dfa04888b03b3173a43d7ed5ad1cefe3a413b01654060c760563d36d66:1999-08-06:KFC%20Uerdingen:Tennis%20Borussia%20Berlin:home",
+      "date": "1999-08-06",
+      "season": "1999-00",
+      "competition": {
+        "name": "DFB-Pokal",
+        "type": "cup",
+        "country": "Germany"
+      },
+      "stage": "",
+      "opponent": {
+        "name": "Tennis Borussia Berlin",
+        "slug": "tennis-borussia-berlin"
+      },
+      "venue": "home",
+      "score": {
+        "for": 0,
+        "against": 4
+      },
+      "result": "L",
+      "sources": [
+        {
+          "provider": "DFB Datencenter",
+          "url": "https://datencenter.dfb.de/datencenter/dfb-pokal/1999-2000/2-runde/kfc-uerdingen-tennis-borussia-berlin-560055",
+          "retrievedAt": "2026-08-05T18:52:21.654Z",
+          "rawArtifact": "data/teams/history/normalized/dfb-pokal-1785956491062.json"
+        }
+      ]
+    },
+    {
+      "id": "dfb-pokal:3189622fa7bbb82f3943c449f56e92739e5fa9175e8b0f8678ef79de4574226d:2001-08-25:KFC%20Uerdingen:Energie%20Cottbus:home",
+      "date": "2001-08-25",
+      "season": "2001-02",
+      "competition": {
+        "name": "DFB-Pokal",
+        "type": "cup",
+        "country": "Germany"
+      },
+      "stage": "",
+      "opponent": {
+        "name": "Energie Cottbus",
+        "slug": "energie-cottbus"
+      },
+      "venue": "home",
+      "score": {
+        "for": 1,
+        "against": 0
+      },
+      "result": "W",
+      "sources": [
+        {
+          "provider": "DFB Datencenter",
+          "url": "https://datencenter.dfb.de/datencenter/dfb-pokal/2001-2002/1-runde/kfc-uerdingen-energie-cottbus-559912",
+          "retrievedAt": "2026-08-05T18:52:29.115Z",
+          "rawArtifact": "data/teams/history/normalized/dfb-pokal-1785956491062.json"
+        }
+      ]
+    },
+    {
+      "id": "dfb-pokal:3189622fa7bbb82f3943c449f56e92739e5fa9175e8b0f8678ef79de4574226d:2001-11-27:KFC%20Uerdingen:Werder%20Bremen:home",
+      "date": "2001-11-27",
+      "season": "2001-02",
+      "competition": {
+        "name": "DFB-Pokal",
+        "type": "cup",
+        "country": "Germany"
+      },
+      "stage": "",
+      "opponent": {
+        "name": "Werder Bremen",
+        "slug": "werder-bremen"
+      },
+      "venue": "home",
+      "score": {
+        "for": 4,
+        "against": 3
+      },
+      "result": "W",
+      "sources": [
+        {
+          "provider": "DFB Datencenter",
+          "url": "https://datencenter.dfb.de/datencenter/dfb-pokal/2001-2002/2-runde/kfc-uerdingen-sv-werder-bremen-559943",
+          "retrievedAt": "2026-08-05T18:52:29.115Z",
+          "rawArtifact": "data/teams/history/normalized/dfb-pokal-1785956491062.json"
+        }
+      ]
+    },
+    {
+      "id": "dfb-pokal:3189622fa7bbb82f3943c449f56e92739e5fa9175e8b0f8678ef79de4574226d:2001-12-12:KFC%20Uerdingen:1.%20FC%20K%C3%B6ln:home",
+      "date": "2001-12-12",
+      "season": "2001-02",
+      "competition": {
+        "name": "DFB-Pokal",
+        "type": "cup",
+        "country": "Germany"
+      },
+      "stage": "",
+      "opponent": {
+        "name": "1. FC Köln",
+        "slug": "1-fc-koln"
+      },
+      "venue": "home",
+      "score": {
+        "for": 3,
+        "against": 5
+      },
+      "result": "L",
+      "sources": [
+        {
+          "provider": "DFB Datencenter",
+          "url": "https://datencenter.dfb.de/datencenter/dfb-pokal/2001-2002/achtelfinale/kfc-uerdingen-1-fc-koeln-559962",
+          "retrievedAt": "2026-08-05T18:52:29.115Z",
+          "rawArtifact": "data/teams/history/normalized/dfb-pokal-1785956491062.json"
+        }
+      ]
+    }
+  ],
+  "seasonStandings": [],
+  "competitionStandings": [
+    {
+      "season": "1996-97",
+      "competition": {
+        "name": "DFB-Pokal",
+        "type": "cup",
+        "country": "Germany"
+      },
+      "format": "knockout-progress",
+      "matches": 1,
+      "wins": 0,
+      "draws": 0,
+      "losses": 1,
+      "furthestStage": "recorded participation",
+      "latestMatch": "1996-08-10",
+      "basis": "derived from source-attributed recorded matches"
+    },
+    {
+      "season": "1997-98",
+      "competition": {
+        "name": "DFB-Pokal",
+        "type": "cup",
+        "country": "Germany"
+      },
+      "format": "knockout-progress",
+      "matches": 4,
+      "wins": 3,
+      "draws": 0,
+      "losses": 1,
+      "furthestStage": "recorded participation",
+      "latestMatch": "1997-12-16",
+      "basis": "derived from source-attributed recorded matches"
+    },
+    {
+      "season": "1998-99",
+      "competition": {
+        "name": "DFB-Pokal",
+        "type": "cup",
+        "country": "Germany"
+      },
+      "format": "knockout-progress",
+      "matches": 3,
+      "wins": 2,
+      "draws": 0,
+      "losses": 1,
+      "furthestStage": "recorded participation",
+      "latestMatch": "1998-11-03",
+      "basis": "derived from source-attributed recorded matches"
+    },
+    {
+      "season": "1999-00",
+      "competition": {
+        "name": "DFB-Pokal",
+        "type": "cup",
+        "country": "Germany"
+      },
+      "format": "knockout-progress",
+      "matches": 1,
+      "wins": 0,
+      "draws": 0,
+      "losses": 1,
+      "furthestStage": "recorded participation",
+      "latestMatch": "1999-08-06",
+      "basis": "derived from source-attributed recorded matches"
+    },
+    {
+      "season": "2001-02",
+      "competition": {
+        "name": "DFB-Pokal",
+        "type": "cup",
+        "country": "Germany"
+      },
+      "format": "knockout-progress",
+      "matches": 3,
+      "wins": 2,
+      "draws": 0,
+      "losses": 1,
+      "furthestStage": "recorded participation",
+      "latestMatch": "2001-12-12",
+      "basis": "derived from source-attributed recorded matches"
+    }
+  ],
+  "updatedAt": "2026-08-05T19:20:41.810Z"
+}

@@ -1,0 +1,811 @@
+{
+  "contract": "football-team-history-v1",
+  "team": {
+    "name": "1. FC Dynamo Dresden",
+    "slug": "1-fc-dynamo-dresden",
+    "primaryLeague": "DFB-Pokal",
+    "aliases": []
+  },
+  "requestedCoverage": {
+    "fromYear": 1985,
+    "to": "present",
+    "includes": [
+      "all competitions",
+      "opponents",
+      "scorelines",
+      "league standings",
+      "competition standings"
+    ]
+  },
+  "sourcePlan": [
+    {
+      "rank": 1,
+      "provider": "Official club archive",
+      "url": "",
+      "scope": "club history, competition participation and match reports",
+      "lookupKey": "1. FC Dynamo Dresden",
+      "review": "Verify the club-owned archive URL before collection."
+    },
+    {
+      "rank": 2,
+      "provider": "Official domestic competition / association",
+      "url": "",
+      "scope": "official league fixtures, final tables and cup records",
+      "lookupKey": "DFB-Pokal"
+    },
+    {
+      "rank": 3,
+      "provider": "UEFA",
+      "url": "https://www.uefa.com/",
+      "scope": "official European competition appearances, fixtures and standings",
+      "lookupKey": "1. FC Dynamo Dresden"
+    },
+    {
+      "rank": 4,
+      "provider": "RSSSF",
+      "url": "https://www.rsssf.org/",
+      "scope": "historic competitions, tables and cross-checking",
+      "lookupKey": "1. FC Dynamo Dresden"
+    },
+    {
+      "rank": 5,
+      "provider": "worldfootball.net",
+      "url": "https://www.worldfootball.net/",
+      "scope": "club match archive and competition participation cross-check",
+      "lookupKey": "1. FC Dynamo Dresden"
+    }
+  ],
+  "coverage": {
+    "earliestMatch": "1991-08-16",
+    "latestMatch": "2006-09-09",
+    "seasonsWithMatches": [
+      "1991-92",
+      "1992-93",
+      "1993-94",
+      "1994-95",
+      "1995-96",
+      "2003-04",
+      "2004-05",
+      "2005-06",
+      "2006-07"
+    ],
+    "missingSeasons": [
+      "1985-86",
+      "1986-87",
+      "1987-88",
+      "1988-89",
+      "1989-90",
+      "1990-91",
+      "1996-97",
+      "1997-98",
+      "1998-99",
+      "1999-00",
+      "2000-01",
+      "2001-02",
+      "2002-03",
+      "2007-08",
+      "2008-09",
+      "2009-10",
+      "2010-11",
+      "2011-12",
+      "2012-13",
+      "2013-14",
+      "2014-15",
+      "2015-16",
+      "2016-17",
+      "2017-18",
+      "2018-19",
+      "2019-20",
+      "2020-21",
+      "2021-22",
+      "2022-23",
+      "2023-24",
+      "2024-25",
+      "2025-26",
+      "2026-27"
+    ],
+    "competitionScopeVerified": false,
+    "status": "partial"
+  },
+  "matches": [
+    {
+      "id": "dfb-pokal:a4ed906c58d52e1068ceff2bcbd83a8d0750dbb4c8dd97ba56e7c4749cd80658:1991-08-16:Greifswalder%20SC:1.%20FC%20Dynamo%20Dresden:away",
+      "date": "1991-08-16",
+      "season": "1991-92",
+      "competition": {
+        "name": "DFB-Pokal",
+        "type": "cup",
+        "country": "Germany"
+      },
+      "stage": "",
+      "opponent": {
+        "name": "Greifswalder SC",
+        "slug": "greifswalder-sc"
+      },
+      "venue": "away",
+      "score": {
+        "for": 2,
+        "against": 0
+      },
+      "result": "W",
+      "sources": [
+        {
+          "provider": "DFB Datencenter",
+          "url": "https://datencenter.dfb.de/datencenter/dfb-pokal/1991-1992/2-runde/greifswalder-sc-dynamo-dresden-560593",
+          "retrievedAt": "2026-08-05T18:51:26.641Z",
+          "rawArtifact": "data/teams/history/normalized/dfb-pokal-1785956491062.json"
+        }
+      ]
+    },
+    {
+      "id": "dfb-pokal:a4ed906c58d52e1068ceff2bcbd83a8d0750dbb4c8dd97ba56e7c4749cd80658:1991-09-03:1.%20Suhler%20SV:1.%20FC%20Dynamo%20Dresden:away",
+      "date": "1991-09-03",
+      "season": "1991-92",
+      "competition": {
+        "name": "DFB-Pokal",
+        "type": "cup",
+        "country": "Germany"
+      },
+      "stage": "",
+      "opponent": {
+        "name": "1. Suhler SV",
+        "slug": "1-suhler-sv"
+      },
+      "venue": "away",
+      "score": {
+        "for": 5,
+        "against": 0
+      },
+      "result": "W",
+      "sources": [
+        {
+          "provider": "DFB Datencenter",
+          "url": "https://datencenter.dfb.de/datencenter/dfb-pokal/1991-1992/3-runde/1-suhler-sv-dynamo-dresden-560631",
+          "retrievedAt": "2026-08-05T18:51:26.641Z",
+          "rawArtifact": "data/teams/history/normalized/dfb-pokal-1785956491062.json"
+        }
+      ]
+    },
+    {
+      "id": "dfb-pokal:a4ed906c58d52e1068ceff2bcbd83a8d0750dbb4c8dd97ba56e7c4749cd80658:1991-09-24:SV%20Werder%20Bremen:1.%20FC%20Dynamo%20Dresden:away",
+      "date": "1991-09-24",
+      "season": "1991-92",
+      "competition": {
+        "name": "DFB-Pokal",
+        "type": "cup",
+        "country": "Germany"
+      },
+      "stage": "",
+      "opponent": {
+        "name": "SV Werder Bremen",
+        "slug": "sv-werder-bremen"
+      },
+      "venue": "away",
+      "score": {
+        "for": 1,
+        "against": 4
+      },
+      "result": "L",
+      "sources": [
+        {
+          "provider": "DFB Datencenter",
+          "url": "https://datencenter.dfb.de/datencenter/dfb-pokal/1991-1992/achtelfinale/sv-werder-bremen-dynamo-dresden-560641",
+          "retrievedAt": "2026-08-05T18:51:26.641Z",
+          "rawArtifact": "data/teams/history/normalized/dfb-pokal-1785956491062.json"
+        }
+      ]
+    },
+    {
+      "id": "dfb-pokal:91bff6de20749f3a2147d35317ff91a715d3b4638c2d5e9e24b3fc21eff18455:1992-08-18:TSV%201860%20M%C3%BCnchen:1.%20FC%20Dynamo%20Dresden:away",
+      "date": "1992-08-18",
+      "season": "1992-93",
+      "competition": {
+        "name": "DFB-Pokal",
+        "type": "cup",
+        "country": "Germany"
+      },
+      "stage": "",
+      "opponent": {
+        "name": "TSV 1860 München",
+        "slug": "tsv-1860-munchen"
+      },
+      "venue": "away",
+      "score": {
+        "for": 2,
+        "against": 1
+      },
+      "result": "W",
+      "sources": [
+        {
+          "provider": "DFB Datencenter",
+          "url": "https://datencenter.dfb.de/datencenter/dfb-pokal/1992-1993/1-runde/tsv-1860-muenchen-dynamo-dresden-560490",
+          "retrievedAt": "2026-08-05T18:51:30.951Z",
+          "rawArtifact": "data/teams/history/normalized/dfb-pokal-1785956491062.json"
+        }
+      ]
+    },
+    {
+      "id": "dfb-pokal:91bff6de20749f3a2147d35317ff91a715d3b4638c2d5e9e24b3fc21eff18455:1992-09-12:1.%20FC%20Dynamo%20Dresden:VfB%20Leipzig:home",
+      "date": "1992-09-12",
+      "season": "1992-93",
+      "competition": {
+        "name": "DFB-Pokal",
+        "type": "cup",
+        "country": "Germany"
+      },
+      "stage": "",
+      "opponent": {
+        "name": "VfB Leipzig",
+        "slug": "vfb-leipzig"
+      },
+      "venue": "home",
+      "score": {
+        "for": 2,
+        "against": 3
+      },
+      "result": "L",
+      "sources": [
+        {
+          "provider": "DFB Datencenter",
+          "url": "https://datencenter.dfb.de/datencenter/dfb-pokal/1992-1993/2-runde/dynamo-dresden-vfb-leipzig-560531",
+          "retrievedAt": "2026-08-05T18:51:30.951Z",
+          "rawArtifact": "data/teams/history/normalized/dfb-pokal-1785956491062.json"
+        }
+      ]
+    },
+    {
+      "id": "dfb-pokal:d9c9de4cd63abf9a9176d2805cd68ecc132dd7ec218cdc21fb0675d1d14aa936:1993-08-25:1.%20FC%20Dynamo%20Dresden:VfL%20Wolfsburg:home",
+      "date": "1993-08-25",
+      "season": "1993-94",
+      "competition": {
+        "name": "DFB-Pokal",
+        "type": "cup",
+        "country": "Germany"
+      },
+      "stage": "",
+      "opponent": {
+        "name": "VfL Wolfsburg",
+        "slug": "vfl-wolfsburg"
+      },
+      "venue": "home",
+      "score": {
+        "for": 4,
+        "against": 2
+      },
+      "result": "W",
+      "sources": [
+        {
+          "provider": "DFB Datencenter",
+          "url": "https://datencenter.dfb.de/datencenter/dfb-pokal/1993-1994/2-runde/dynamo-dresden-vfl-wolfsburg-560450",
+          "retrievedAt": "2026-08-05T18:51:35.230Z",
+          "rawArtifact": "data/teams/history/normalized/dfb-pokal-1785956491062.json"
+        }
+      ]
+    },
+    {
+      "id": "dfb-pokal:d9c9de4cd63abf9a9176d2805cd68ecc132dd7ec218cdc21fb0675d1d14aa936:1993-09-11:Hannover%2096:1.%20FC%20Dynamo%20Dresden:away",
+      "date": "1993-09-11",
+      "season": "1993-94",
+      "competition": {
+        "name": "DFB-Pokal",
+        "type": "cup",
+        "country": "Germany"
+      },
+      "stage": "",
+      "opponent": {
+        "name": "Hannover 96",
+        "slug": "hannover-96"
+      },
+      "venue": "away",
+      "score": {
+        "for": 3,
+        "against": 2
+      },
+      "result": "W",
+      "sources": [
+        {
+          "provider": "DFB Datencenter",
+          "url": "https://datencenter.dfb.de/datencenter/dfb-pokal/1993-1994/3-runde/hannover-96-dynamo-dresden-560459",
+          "retrievedAt": "2026-08-05T18:51:35.230Z",
+          "rawArtifact": "data/teams/history/normalized/dfb-pokal-1785956491062.json"
+        }
+      ]
+    },
+    {
+      "id": "dfb-pokal:d9c9de4cd63abf9a9176d2805cd68ecc132dd7ec218cdc21fb0675d1d14aa936:1993-11-09:1.%20FC%20Dynamo%20Dresden:Bayern%20M%C3%BCnchen:home",
+      "date": "1993-11-09",
+      "season": "1993-94",
+      "competition": {
+        "name": "DFB-Pokal",
+        "type": "cup",
+        "country": "Germany"
+      },
+      "stage": "",
+      "opponent": {
+        "name": "Bayern München",
+        "slug": "bayern-munchen"
+      },
+      "venue": "home",
+      "score": {
+        "for": 2,
+        "against": 1
+      },
+      "result": "W",
+      "sources": [
+        {
+          "provider": "DFB Datencenter",
+          "url": "https://datencenter.dfb.de/datencenter/dfb-pokal/1993-1994/achtelfinale/dynamo-dresden-bayern-muenchen-560478",
+          "retrievedAt": "2026-08-05T18:51:35.230Z",
+          "rawArtifact": "data/teams/history/normalized/dfb-pokal-1785956491062.json"
+        }
+      ]
+    },
+    {
+      "id": "dfb-pokal:d9c9de4cd63abf9a9176d2805cd68ecc132dd7ec218cdc21fb0675d1d14aa936:1993-12-01:1.%20FC%20Dynamo%20Dresden:Bayer%2004%20Leverkusen:home",
+      "date": "1993-12-01",
+      "season": "1993-94",
+      "competition": {
+        "name": "DFB-Pokal",
+        "type": "cup",
+        "country": "Germany"
+      },
+      "stage": "",
+      "opponent": {
+        "name": "Bayer 04 Leverkusen",
+        "slug": "bayer-04-leverkusen"
+      },
+      "venue": "home",
+      "score": {
+        "for": 5,
+        "against": 4
+      },
+      "result": "W",
+      "sources": [
+        {
+          "provider": "DFB Datencenter",
+          "url": "https://datencenter.dfb.de/datencenter/dfb-pokal/1993-1994/viertelfinale/dynamo-dresden-bayer-04-leverkusen-560482",
+          "retrievedAt": "2026-08-05T18:51:35.230Z",
+          "rawArtifact": "data/teams/history/normalized/dfb-pokal-1785956491062.json"
+        }
+      ]
+    },
+    {
+      "id": "dfb-pokal:d9c9de4cd63abf9a9176d2805cd68ecc132dd7ec218cdc21fb0675d1d14aa936:1994-03-09:1.%20FC%20Dynamo%20Dresden:SV%20Werder%20Bremen:home",
+      "date": "1994-03-09",
+      "season": "1993-94",
+      "competition": {
+        "name": "DFB-Pokal",
+        "type": "cup",
+        "country": "Germany"
+      },
+      "stage": "",
+      "opponent": {
+        "name": "SV Werder Bremen",
+        "slug": "sv-werder-bremen"
+      },
+      "venue": "home",
+      "score": {
+        "for": 0,
+        "against": 2
+      },
+      "result": "L",
+      "sources": [
+        {
+          "provider": "DFB Datencenter",
+          "url": "https://datencenter.dfb.de/datencenter/dfb-pokal/1993-1994/halbfinale/dynamo-dresden-sv-werder-bremen-560485",
+          "retrievedAt": "2026-08-05T18:51:35.230Z",
+          "rawArtifact": "data/teams/history/normalized/dfb-pokal-1785956491062.json"
+        }
+      ]
+    },
+    {
+      "id": "dfb-pokal:8d38f80d71aae28d2583ccc92f805770e435cb6fe27b731d840dfbca62f79571:1994-08-14:SV%20Meppen:1.%20FC%20Dynamo%20Dresden:away",
+      "date": "1994-08-14",
+      "season": "1994-95",
+      "competition": {
+        "name": "DFB-Pokal",
+        "type": "cup",
+        "country": "Germany"
+      },
+      "stage": "",
+      "opponent": {
+        "name": "SV Meppen",
+        "slug": "sv-meppen"
+      },
+      "venue": "away",
+      "score": {
+        "for": 1,
+        "against": 0
+      },
+      "result": "W",
+      "sources": [
+        {
+          "provider": "DFB Datencenter",
+          "url": "https://datencenter.dfb.de/datencenter/dfb-pokal/1994-1995/1-runde/sv-meppen-dynamo-dresden-560371",
+          "retrievedAt": "2026-08-05T18:51:38.644Z",
+          "rawArtifact": "data/teams/history/normalized/dfb-pokal-1785956491062.json"
+        }
+      ]
+    },
+    {
+      "id": "dfb-pokal:8d38f80d71aae28d2583ccc92f805770e435cb6fe27b731d840dfbca62f79571:1994-09-10:1.%20FC%20Dynamo%20Dresden:FC%20Bayer%2005%20Uerdingen:home",
+      "date": "1994-09-10",
+      "season": "1994-95",
+      "competition": {
+        "name": "DFB-Pokal",
+        "type": "cup",
+        "country": "Germany"
+      },
+      "stage": "",
+      "opponent": {
+        "name": "FC Bayer 05 Uerdingen",
+        "slug": "fc-bayer-05-uerdingen"
+      },
+      "venue": "home",
+      "score": {
+        "for": 1,
+        "against": 0
+      },
+      "result": "W",
+      "sources": [
+        {
+          "provider": "DFB Datencenter",
+          "url": "https://datencenter.dfb.de/datencenter/dfb-pokal/1994-1995/2-runde/dynamo-dresden-kfc-uerdingen-560389",
+          "retrievedAt": "2026-08-05T18:51:38.644Z",
+          "rawArtifact": "data/teams/history/normalized/dfb-pokal-1785956491062.json"
+        }
+      ]
+    },
+    {
+      "id": "dfb-pokal:8d38f80d71aae28d2583ccc92f805770e435cb6fe27b731d840dfbca62f79571:1994-10-25:1.%20FC%20K%C3%B6ln:1.%20FC%20Dynamo%20Dresden:away",
+      "date": "1994-10-25",
+      "season": "1994-95",
+      "competition": {
+        "name": "DFB-Pokal",
+        "type": "cup",
+        "country": "Germany"
+      },
+      "stage": "",
+      "opponent": {
+        "name": "1. FC Köln",
+        "slug": "1-fc-koln"
+      },
+      "venue": "away",
+      "score": {
+        "for": 1,
+        "against": 2
+      },
+      "result": "L",
+      "sources": [
+        {
+          "provider": "DFB Datencenter",
+          "url": "https://datencenter.dfb.de/datencenter/dfb-pokal/1994-1995/achtelfinale/1-fc-koeln-dynamo-dresden-560399",
+          "retrievedAt": "2026-08-05T18:51:38.644Z",
+          "rawArtifact": "data/teams/history/normalized/dfb-pokal-1785956491062.json"
+        }
+      ]
+    },
+    {
+      "id": "dfb-pokal:6717cedcd10991f6898562b17e1c206de6c398a62723169c393cf6e9ebc12a8a:1995-08-25:1.%20FC%20Dynamo%20Dresden:Fortuna%20D%C3%BCsseldorf:home",
+      "date": "1995-08-25",
+      "season": "1995-96",
+      "competition": {
+        "name": "DFB-Pokal",
+        "type": "cup",
+        "country": "Germany"
+      },
+      "stage": "",
+      "opponent": {
+        "name": "Fortuna Düsseldorf",
+        "slug": "fortuna-dusseldorf"
+      },
+      "venue": "home",
+      "score": {
+        "for": 1,
+        "against": 3
+      },
+      "result": "L",
+      "sources": [
+        {
+          "provider": "DFB Datencenter",
+          "url": "https://datencenter.dfb.de/datencenter/dfb-pokal/1995-1996/1-runde/dynamo-dresden-fortuna-duesseldorf-560294",
+          "retrievedAt": "2026-08-05T18:51:41.837Z",
+          "rawArtifact": "data/teams/history/normalized/dfb-pokal-1785956491062.json"
+        }
+      ]
+    },
+    {
+      "id": "dfb-pokal:17dfd63a9239ce44e39b966341a8945a82a9475d82cc0c530c282323363aeef4:2003-09-01:1.%20FC%20Dynamo%20Dresden:Hamburger%20SV:home",
+      "date": "2003-09-01",
+      "season": "2003-04",
+      "competition": {
+        "name": "DFB-Pokal",
+        "type": "cup",
+        "country": "Germany"
+      },
+      "stage": "",
+      "opponent": {
+        "name": "Hamburger SV",
+        "slug": "hamburger-sv"
+      },
+      "venue": "home",
+      "score": {
+        "for": 0,
+        "against": 1
+      },
+      "result": "L",
+      "sources": [
+        {
+          "provider": "DFB Datencenter",
+          "url": "https://datencenter.dfb.de/datencenter/dfb-pokal/2003-2004/1-runde/dynamo-dresden-hamburger-sv-559785",
+          "retrievedAt": "2026-08-05T18:52:35.049Z",
+          "rawArtifact": "data/teams/history/normalized/dfb-pokal-1785956491062.json"
+        }
+      ]
+    },
+    {
+      "id": "dfb-pokal:24b0117cdd5ac7a18ceca2c4e8b3d254b03165c32a26e71c5fe2a3486f05f357:2004-08-22:1.%20FC%20Dynamo%20Dresden:Karlsruher%20SC:home",
+      "date": "2004-08-22",
+      "season": "2004-05",
+      "competition": {
+        "name": "DFB-Pokal",
+        "type": "cup",
+        "country": "Germany"
+      },
+      "stage": "",
+      "opponent": {
+        "name": "Karlsruher SC",
+        "slug": "karlsruher-sc"
+      },
+      "venue": "home",
+      "score": {
+        "for": 1,
+        "against": 2
+      },
+      "result": "L",
+      "sources": [
+        {
+          "provider": "DFB Datencenter",
+          "url": "https://datencenter.dfb.de/datencenter/dfb-pokal/2004-2005/1-runde/dynamo-dresden-karlsruher-sc-559737",
+          "retrievedAt": "2026-08-05T18:52:37.905Z",
+          "rawArtifact": "data/teams/history/normalized/dfb-pokal-1785956491062.json"
+        }
+      ]
+    },
+    {
+      "id": "dfb-pokal:b5bc4d4d10494e3abcb2bb86c2196c3faf9a40cae96b4b1bd94a9d374e640147:2005-08-21:FC%20Sachsen%20Leipzig:1.%20FC%20Dynamo%20Dresden:away",
+      "date": "2005-08-21",
+      "season": "2005-06",
+      "competition": {
+        "name": "DFB-Pokal",
+        "type": "cup",
+        "country": "Germany"
+      },
+      "stage": "",
+      "opponent": {
+        "name": "FC Sachsen Leipzig",
+        "slug": "fc-sachsen-leipzig"
+      },
+      "venue": "away",
+      "score": {
+        "for": 5,
+        "against": 3
+      },
+      "result": "W",
+      "sources": [
+        {
+          "provider": "DFB Datencenter",
+          "url": "https://datencenter.dfb.de/datencenter/dfb-pokal/2005-2006/1-runde/sg-sachsen-leipzig-dynamo-dresden-559664",
+          "retrievedAt": "2026-08-05T18:52:37.979Z",
+          "rawArtifact": "data/teams/history/normalized/dfb-pokal-1785956491062.json"
+        }
+      ]
+    },
+    {
+      "id": "dfb-pokal:b5bc4d4d10494e3abcb2bb86c2196c3faf9a40cae96b4b1bd94a9d374e640147:2005-10-25:1.%20FC%20N%C3%BCrnberg:1.%20FC%20Dynamo%20Dresden:away",
+      "date": "2005-10-25",
+      "season": "2005-06",
+      "competition": {
+        "name": "DFB-Pokal",
+        "type": "cup",
+        "country": "Germany"
+      },
+      "stage": "",
+      "opponent": {
+        "name": "1. FC Nürnberg",
+        "slug": "1-fc-nurnberg"
+      },
+      "venue": "away",
+      "score": {
+        "for": 0,
+        "against": 3
+      },
+      "result": "L",
+      "sources": [
+        {
+          "provider": "DFB Datencenter",
+          "url": "https://datencenter.dfb.de/datencenter/dfb-pokal/2005-2006/2-runde/1-fc-nuernberg-dynamo-dresden-559696",
+          "retrievedAt": "2026-08-05T18:52:37.979Z",
+          "rawArtifact": "data/teams/history/normalized/dfb-pokal-1785956491062.json"
+        }
+      ]
+    },
+    {
+      "id": "dfb-pokal:7be7b9c7436c340060020097eda89042b6685e5531f3f82204bf4d93944ded8f:2006-09-09:1.%20FC%20Dynamo%20Dresden:Hannover%2096:home",
+      "date": "2006-09-09",
+      "season": "2006-07",
+      "competition": {
+        "name": "DFB-Pokal",
+        "type": "cup",
+        "country": "Germany"
+      },
+      "stage": "",
+      "opponent": {
+        "name": "Hannover 96",
+        "slug": "hannover-96"
+      },
+      "venue": "home",
+      "score": {
+        "for": 2,
+        "against": 3
+      },
+      "result": "L",
+      "sources": [
+        {
+          "provider": "DFB Datencenter",
+          "url": "https://datencenter.dfb.de/datencenter/dfb-pokal/2006-2007/1-runde/dynamo-dresden-hannover-96-559601",
+          "retrievedAt": "2026-08-05T18:52:38.056Z",
+          "rawArtifact": "data/teams/history/normalized/dfb-pokal-1785956491062.json"
+        }
+      ]
+    }
+  ],
+  "seasonStandings": [],
+  "competitionStandings": [
+    {
+      "season": "1991-92",
+      "competition": {
+        "name": "DFB-Pokal",
+        "type": "cup",
+        "country": "Germany"
+      },
+      "format": "knockout-progress",
+      "matches": 3,
+      "wins": 2,
+      "draws": 0,
+      "losses": 1,
+      "furthestStage": "recorded participation",
+      "latestMatch": "1991-09-24",
+      "basis": "derived from source-attributed recorded matches"
+    },
+    {
+      "season": "1992-93",
+      "competition": {
+        "name": "DFB-Pokal",
+        "type": "cup",
+        "country": "Germany"
+      },
+      "format": "knockout-progress",
+      "matches": 2,
+      "wins": 1,
+      "draws": 0,
+      "losses": 1,
+      "furthestStage": "recorded participation",
+      "latestMatch": "1992-09-12",
+      "basis": "derived from source-attributed recorded matches"
+    },
+    {
+      "season": "1993-94",
+      "competition": {
+        "name": "DFB-Pokal",
+        "type": "cup",
+        "country": "Germany"
+      },
+      "format": "knockout-progress",
+      "matches": 5,
+      "wins": 4,
+      "draws": 0,
+      "losses": 1,
+      "furthestStage": "recorded participation",
+      "latestMatch": "1994-03-09",
+      "basis": "derived from source-attributed recorded matches"
+    },
+    {
+      "season": "1994-95",
+      "competition": {
+        "name": "DFB-Pokal",
+        "type": "cup",
+        "country": "Germany"
+      },
+      "format": "knockout-progress",
+      "matches": 3,
+      "wins": 2,
+      "draws": 0,
+      "losses": 1,
+      "furthestStage": "recorded participation",
+      "latestMatch": "1994-10-25",
+      "basis": "derived from source-attributed recorded matches"
+    },
+    {
+      "season": "1995-96",
+      "competition": {
+        "name": "DFB-Pokal",
+        "type": "cup",
+        "country": "Germany"
+      },
+      "format": "knockout-progress",
+      "matches": 1,
+      "wins": 0,
+      "draws": 0,
+      "losses": 1,
+      "furthestStage": "recorded participation",
+      "latestMatch": "1995-08-25",
+      "basis": "derived from source-attributed recorded matches"
+    },
+    {
+      "season": "2003-04",
+      "competition": {
+        "name": "DFB-Pokal",
+        "type": "cup",
+        "country": "Germany"
+      },
+      "format": "knockout-progress",
+      "matches": 1,
+      "wins": 0,
+      "draws": 0,
+      "losses": 1,
+      "furthestStage": "recorded participation",
+      "latestMatch": "2003-09-01",
+      "basis": "derived from source-attributed recorded matches"
+    },
+    {
+      "season": "2004-05",
+      "competition": {
+        "name": "DFB-Pokal",
+        "type": "cup",
+        "country": "Germany"
+      },
+      "format": "knockout-progress",
+      "matches": 1,
+      "wins": 0,
+      "draws": 0,
+      "losses": 1,
+      "furthestStage": "recorded participation",
+      "latestMatch": "2004-08-22",
+      "basis": "derived from source-attributed recorded matches"
+    },
+    {
+      "season": "2005-06",
+      "competition": {
+        "name": "DFB-Pokal",
+        "type": "cup",
+        "country": "Germany"
+      },
+      "format": "knockout-progress",
+      "matches": 2,
+      "wins": 1,
+      "draws": 0,
+      "losses": 1,
+      "furthestStage": "recorded participation",
+      "latestMatch": "2005-10-25",
+      "basis": "derived from source-attributed recorded matches"
+    },
+    {
+      "season": "2006-07",
+      "competition": {
+        "name": "DFB-Pokal",
+        "type": "cup",
+        "country": "Germany"
+      },
+      "format": "knockout-progress",
+      "matches": 1,
+      "wins": 0,
+      "draws": 0,
+      "losses": 1,
+      "furthestStage": "recorded participation",
+      "latestMatch": "2006-09-09",
+      "basis": "derived from source-attributed recorded matches"
+    }
+  ],
+  "updatedAt": "2026-08-05T19:20:29.968Z"
+}
