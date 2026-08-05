@@ -17,6 +17,7 @@ const { loadMatches, normalizeTeamName } = require("./footballData");
 const { refreshMissingOdds } = require("./oddsRepairService");
 const { readResultsSnapshot, readFixturesSnapshot, refreshEspnFixtures, refreshEspnResults, enrichPredictionsWithLiveStatus, refreshInternationalFriendlyResults, readFriendlyResultsSnapshot } = require("./espnFixtureService");
 const { refreshWorldCupResults, syncWorldCupPlayerStats, readWorldCupResults } = require("./worldCupSync");
+const { syncClubPlayerStats } = require("./clubPlayerStatsSync");
 const { listTeamResults, getTeamResults } = require("./teamResultsStore");
 const { listTeamTraining, getTeamTraining, appendTeamNote, updateTeamTrainingProfiles } = require("./teamTrainingStore");
 const { refreshTheOddsApi, lookupMatchOdds, refreshBaseballOddsApi } = require("./oddsApiService");
@@ -1385,6 +1386,7 @@ if (!process.env.VERCEL) {
       triggerLiveFixtureRefresh("background-interval");
       await refreshWorldCupResults();
       await syncWorldCupPlayerStats();
+      try { await syncClubPlayerStats(); } catch (e) { console.warn("Club player stats sync error:", e.message); }
       // Bridge: catches newly-published fixtures (especially WC knockout round
       // match-ups) the moment ESPN publishes them.
       try { await runFixtureBridge(); } catch (e) { console.warn("Fixture bridge error:", e.message); }
@@ -1408,5 +1410,5 @@ if (!process.env.VERCEL) {
   setTimeout(backgroundSync, 10_000).unref?.();
   const timer = setInterval(backgroundSync, SYNC_INTERVAL_MS);
   timer.unref?.();
-  console.log("Continuous auto-sync + auto-tune enabled: ESPN fixture bridge (WC knockout + club near-term), results, WC settlement, player stats, model tuning, daily parlay slip (every 5 min).");
+  console.log("Continuous auto-sync + auto-tune enabled: ESPN fixture bridge (WC knockout + club near-term), results, WC settlement, WC + club player stats, model tuning, daily parlay slip (every 5 min).");
 }
