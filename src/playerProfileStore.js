@@ -2221,6 +2221,28 @@ const PLAYER_PROFILES = [
     photoSourceName: "Wikipedia / Wikimedia Commons",
     photoSourceUrl: "https://en.wikipedia.org/wiki/Steve_Mounié",
   },
+  {
+    id: "christopher-trimmel",
+    player: "Christopher Trimmel",
+    team: "Union Berlin",
+    league: "Bundesliga",
+    role: "Defender",
+    position: "RB",
+    photoUrl: "https://upload.wikimedia.org/wikipedia/commons/7/73/Christopher_Trimmel_%2833832632510%29_%28cropped%29.jpg",
+    photoSourceName: "Wikipedia / Wikimedia Commons",
+    photoSourceUrl: "https://en.wikipedia.org/wiki/Christopher_Trimmel",
+  },
+  {
+    id: "josip-juranovic",
+    player: "Josip Juranović",
+    team: "Union Berlin",
+    league: "Bundesliga",
+    role: "Defender",
+    position: "RB",
+    photoUrl: "https://upload.wikimedia.org/wikipedia/commons/a/a4/Josip_Juranovic_2022.jpg",
+    photoSourceName: "Wikipedia / Wikimedia Commons",
+    photoSourceUrl: "https://en.wikipedia.org/wiki/Josip_Juranović",
+  },
 ];
 
 const SUPPLEMENTAL_PROFILE_ROWS = [
