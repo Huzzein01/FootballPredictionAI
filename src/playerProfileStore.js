@@ -1055,6 +1055,28 @@ const PLAYER_PROFILES = [
     photoSourceName: "Wikipedia / Wikimedia Commons",
     photoSourceUrl: "https://en.wikipedia.org/wiki/Anis_Hadj_Moussa",
   },
+  {
+    id: "gabriel-suazo",
+    player: "Gabriel Suazo",
+    team: "Sevilla",
+    league: "La Liga",
+    role: "Defender",
+    position: "LB",
+    photoUrl: "https://upload.wikimedia.org/wikipedia/commons/e/e6/Audax_Italiano_v_Colo-Colo_20200209_42.jpg",
+    photoSourceName: "Wikipedia / Wikimedia Commons",
+    photoSourceUrl: "https://en.wikipedia.org/wiki/Gabriel_Suazo",
+  },
+  {
+    id: "ruben-vargas",
+    player: "Ruben Vargas",
+    team: "Sevilla",
+    league: "La Liga",
+    role: "Attacker",
+    position: "LW",
+    photoUrl: "https://upload.wikimedia.org/wikipedia/commons/6/6a/Ruben_Vargas_SFV_2019.jpg",
+    photoSourceName: "Wikipedia / Wikimedia Commons",
+    photoSourceUrl: "https://en.wikipedia.org/wiki/Rub%C3%A9n_Vargas",
+  },
 ];
 
 const SUPPLEMENTAL_PROFILE_ROWS = [
