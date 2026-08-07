@@ -256,7 +256,10 @@ function buildBracket(participants, cfg) {
   }
 
   const champion = remaining[0] ? { team: remaining[0] } : null;
-  return { bracket, champion };
+  const rounds = renderRounds
+    .filter((key) => bracket[key])
+    .map((key) => ({ id: key, ...bracket[key] }));
+  return { bracket, rounds, champion };
 }
 
 // ── Public API ────────────────────────────────────────────────────────────
@@ -271,7 +274,7 @@ function projectDomesticCup(cupId, liveStandings) {
   if (!cfg) throw new Error(`Unknown cup: ${cupId}`);
 
   const participants = buildParticipants(cupId, liveStandings);
-  const { bracket, champion } = buildBracket(participants, cfg);
+  const { bracket, rounds, champion } = buildBracket(participants, cfg);
 
   return {
     cupId,
@@ -281,10 +284,11 @@ function projectDomesticCup(cupId, liveStandings) {
     participantCount: participants.length,
     participants,
     bracket,
+    rounds,
     champion,
     disclaimer:
-      `Model projection based on ${cfg.country} cup participant pool and squad strength ratings. ` +
-      `Actual draws are random — this shows the statistically strongest projected path.`,
+      `${cfg.name} 2026-27 path, built from ${cfg.country} squad strength and current form. ` +
+      `The official draw will lock in the actual matchups — this is the strongest projected route through it.`,
   };
 }
 

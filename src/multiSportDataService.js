@@ -98,10 +98,45 @@ async function fetchNbaSeason(season) {
   return summarize("basketball", "NBA", `${startYear}-${String(startYear + 1).slice(-2)}`, games, sourceUrl);
 }
 
+async function fetchNflSeason(season) {
+  const startYear = Number(String(season).slice(0, 4));
+  if (!Number.isFinite(startYear)) throw new Error("NFL season must begin with a four-digit year");
+  const dates = `${startYear}0801-${startYear + 1}0301`;
+  const sourceUrl = `https://site.api.espn.com/apis/site/v2/sports/football/nfl/scoreboard?dates=${dates}&limit=1000`;
+  const response = await fetch(sourceUrl, { headers: { "user-agent": USER_AGENT } });
+  if (!response.ok) throw new Error(`NFL schedule request failed: ${response.status}`);
+  const payload = await response.json();
+  const games = (payload.events || []).map((event) => {
+    const competition = event.competitions?.[0] || {};
+    const competitors = competition.competitors || [];
+    const home = competitors.find((team) => team.homeAway === "home") || {};
+    const away = competitors.find((team) => team.homeAway === "away") || {};
+    const completed = Boolean(event.status?.type?.completed || competition.status?.type?.completed);
+    return {
+      id: `nfl:${event.id}`,
+      sport: "americanFootball",
+      league: "NFL",
+      season: `${startYear}-${String(startYear + 1).slice(-2)}`,
+      date: toIsoDate(event.date || competition.date),
+      kickoffUtc: event.date || competition.date || "",
+      homeTeam: home.team?.displayName || "",
+      awayTeam: away.team?.displayName || "",
+      homeScore: completed && Number.isFinite(Number(home.score)) ? Number(home.score) : null,
+      awayScore: completed && Number.isFinite(Number(away.score)) ? Number(away.score) : null,
+      completed,
+      status: event.status?.type?.detail || competition.status?.type?.detail || "Scheduled",
+      venue: competition.venue?.fullName || "",
+    };
+  }).filter((game) => game.homeTeam && game.awayTeam && game.date);
+  return summarize("americanFootball", "NFL", `${startYear}-${String(startYear + 1).slice(-2)}`, games, sourceUrl);
+}
+
 async function refreshSportSeason(sport, season) {
-  const normalizedSport = sport === "baseball" ? "baseball" : sport === "basketball" ? "basketball" : "";
-  if (!normalizedSport) throw new Error("Only baseball and basketball imports are available here");
-  const data = normalizedSport === "baseball" ? await fetchMlbSeason(season) : await fetchNbaSeason(season);
+  const normalizedSport = sport === "baseball" ? "baseball" : sport === "basketball" ? "basketball" : sport === "american-football" ? "american-football" : "";
+  if (!normalizedSport) throw new Error("Only baseball, basketball, and american-football imports are available here");
+  const data = normalizedSport === "baseball" ? await fetchMlbSeason(season)
+    : normalizedSport === "basketball" ? await fetchNbaSeason(season)
+    : await fetchNflSeason(season);
   fs.mkdirSync(CACHE_DIR, { recursive: true });
   writeJson(cachePath(normalizedSport, season), data);
   return data;
