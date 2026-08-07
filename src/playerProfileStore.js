@@ -1154,6 +1154,28 @@ const PLAYER_PROFILES = [
     photoSourceName: "Wikipedia / Wikimedia Commons",
     photoSourceUrl: "https://en.wikipedia.org/wiki/Willi_Orban",
   },
+  {
+    id: "georginio-rutter",
+    player: "Georginio Rutter",
+    team: "Brighton",
+    league: "EPL",
+    role: "Attacker",
+    position: "ST",
+    photoUrl: "https://upload.wikimedia.org/wikipedia/commons/6/62/Georginio_Rutter_%28cropped%29.jpeg",
+    photoSourceName: "Wikipedia / Wikimedia Commons",
+    photoSourceUrl: "https://en.wikipedia.org/wiki/Georginio_Rutter",
+  },
+  {
+    id: "yankuba-minteh",
+    player: "Yankuba Minteh",
+    team: "Brighton",
+    league: "EPL",
+    role: "Attacker",
+    position: "RW",
+    photoUrl: "https://upload.wikimedia.org/wikipedia/commons/b/bb/Yankuba_Minteh_24012026_%281%29.jpg",
+    photoSourceName: "Wikipedia / Wikimedia Commons",
+    photoSourceUrl: "https://en.wikipedia.org/wiki/Yankuba_Minteh",
+  },
 ];
 
 const SUPPLEMENTAL_PROFILE_ROWS = [
