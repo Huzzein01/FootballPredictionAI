@@ -1,0 +1,190 @@
+{
+  "contract": "football-team-history-v1",
+  "team": {
+    "name": "Bergmann-Borsig",
+    "slug": "bergmann-borsig",
+    "primaryLeague": "DFB-Pokal",
+    "aliases": []
+  },
+  "requestedCoverage": {
+    "fromYear": 1985,
+    "to": "present",
+    "includes": [
+      "all competitions",
+      "opponents",
+      "scorelines",
+      "league standings",
+      "competition standings"
+    ]
+  },
+  "sourcePlan": [
+    {
+      "rank": 1,
+      "provider": "Official club archive",
+      "url": "",
+      "scope": "club history, competition participation and match reports",
+      "lookupKey": "Bergmann-Borsig",
+      "review": "Verify the club-owned archive URL before collection."
+    },
+    {
+      "rank": 2,
+      "provider": "Official domestic competition / association",
+      "url": "",
+      "scope": "official league fixtures, final tables and cup records",
+      "lookupKey": "DFB-Pokal"
+    },
+    {
+      "rank": 3,
+      "provider": "UEFA",
+      "url": "https://www.uefa.com/",
+      "scope": "official European competition appearances, fixtures and standings",
+      "lookupKey": "Bergmann-Borsig"
+    },
+    {
+      "rank": 4,
+      "provider": "RSSSF",
+      "url": "https://www.rsssf.org/",
+      "scope": "historic competitions, tables and cross-checking",
+      "lookupKey": "Bergmann-Borsig"
+    },
+    {
+      "rank": 5,
+      "provider": "worldfootball.net",
+      "url": "https://www.worldfootball.net/",
+      "scope": "club match archive and competition participation cross-check",
+      "lookupKey": "Bergmann-Borsig"
+    }
+  ],
+  "coverage": {
+    "earliestMatch": "1991-08-17",
+    "latestMatch": "1991-09-04",
+    "seasonsWithMatches": [
+      "1991-92"
+    ],
+    "missingSeasons": [
+      "1985-86",
+      "1986-87",
+      "1987-88",
+      "1988-89",
+      "1989-90",
+      "1990-91",
+      "1992-93",
+      "1993-94",
+      "1994-95",
+      "1995-96",
+      "1996-97",
+      "1997-98",
+      "1998-99",
+      "1999-00",
+      "2000-01",
+      "2001-02",
+      "2002-03",
+      "2003-04",
+      "2004-05",
+      "2005-06",
+      "2006-07",
+      "2007-08",
+      "2008-09",
+      "2009-10",
+      "2010-11",
+      "2011-12",
+      "2012-13",
+      "2013-14",
+      "2014-15",
+      "2015-16",
+      "2016-17",
+      "2017-18",
+      "2018-19",
+      "2019-20",
+      "2020-21",
+      "2021-22",
+      "2022-23",
+      "2023-24",
+      "2024-25",
+      "2025-26",
+      "2026-27"
+    ],
+    "competitionScopeVerified": false,
+    "status": "partial"
+  },
+  "matches": [
+    {
+      "id": "dfb-pokal:a4ed906c58d52e1068ceff2bcbd83a8d0750dbb4c8dd97ba56e7c4749cd80658:1991-08-17:Bergmann-Borsig:SC%20Freiburg:home",
+      "date": "1991-08-17",
+      "season": "1991-92",
+      "competition": {
+        "name": "DFB-Pokal",
+        "type": "cup",
+        "country": "Germany"
+      },
+      "stage": "",
+      "opponent": {
+        "name": "SC Freiburg",
+        "slug": "sc-freiburg"
+      },
+      "venue": "home",
+      "score": {
+        "for": 2,
+        "against": 1
+      },
+      "result": "W",
+      "sources": [
+        {
+          "provider": "DFB Datencenter",
+          "url": "https://datencenter.dfb.de/datencenter/dfb-pokal/1991-1992/2-runde/bergmann-borsig-sc-freiburg-560607",
+          "retrievedAt": "2026-08-05T18:51:26.641Z",
+          "rawArtifact": "data/teams/history/normalized/dfb-pokal-1785956491062.json"
+        }
+      ]
+    },
+    {
+      "id": "dfb-pokal:a4ed906c58d52e1068ceff2bcbd83a8d0750dbb4c8dd97ba56e7c4749cd80658:1991-09-04:Hamburger%20SV%20II:Bergmann-Borsig:away",
+      "date": "1991-09-04",
+      "season": "1991-92",
+      "competition": {
+        "name": "DFB-Pokal",
+        "type": "cup",
+        "country": "Germany"
+      },
+      "stage": "",
+      "opponent": {
+        "name": "Hamburger SV II",
+        "slug": "hamburger-sv-ii"
+      },
+      "venue": "away",
+      "score": {
+        "for": 5,
+        "against": 6
+      },
+      "result": "L",
+      "sources": [
+        {
+          "provider": "DFB Datencenter",
+          "url": "https://datencenter.dfb.de/datencenter/dfb-pokal/1991-1992/3-runde/hamburger-sv-ii-bergmann-borsig-560635",
+          "retrievedAt": "2026-08-05T18:51:26.641Z",
+          "rawArtifact": "data/teams/history/normalized/dfb-pokal-1785956491062.json"
+        }
+      ]
+    }
+  ],
+  "seasonStandings": [],
+  "competitionStandings": [
+    {
+      "season": "1991-92",
+      "competition": {
+        "name": "DFB-Pokal",
+        "type": "cup",
+        "country": "Germany"
+      },
+      "format": "knockout-progress",
+      "matches": 2,
+      "wins": 1,
+      "draws": 0,
+      "losses": 1,
+      "furthestStage": "recorded participation",
+      "latestMatch": "1991-09-04",
+      "basis": "derived from source-attributed recorded matches"
+    }
+  ],
+  "updatedAt": "2026-08-05T19:20:32.752Z"
+}

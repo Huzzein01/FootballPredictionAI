@@ -1,0 +1,325 @@
+{
+  "contract": "football-team-history-v1",
+  "team": {
+    "name": "SV 07 Elversberg",
+    "slug": "sv-07-elversberg",
+    "primaryLeague": "DFB-Pokal",
+    "aliases": []
+  },
+  "requestedCoverage": {
+    "fromYear": 1985,
+    "to": "present",
+    "includes": [
+      "all competitions",
+      "opponents",
+      "scorelines",
+      "league standings",
+      "competition standings"
+    ]
+  },
+  "sourcePlan": [
+    {
+      "rank": 1,
+      "provider": "Official club archive",
+      "url": "",
+      "scope": "club history, competition participation and match reports",
+      "lookupKey": "SV 07 Elversberg",
+      "review": "Verify the club-owned archive URL before collection."
+    },
+    {
+      "rank": 2,
+      "provider": "Official domestic competition / association",
+      "url": "",
+      "scope": "official league fixtures, final tables and cup records",
+      "lookupKey": "DFB-Pokal"
+    },
+    {
+      "rank": 3,
+      "provider": "UEFA",
+      "url": "https://www.uefa.com/",
+      "scope": "official European competition appearances, fixtures and standings",
+      "lookupKey": "SV 07 Elversberg"
+    },
+    {
+      "rank": 4,
+      "provider": "RSSSF",
+      "url": "https://www.rsssf.org/",
+      "scope": "historic competitions, tables and cross-checking",
+      "lookupKey": "SV 07 Elversberg"
+    },
+    {
+      "rank": 5,
+      "provider": "worldfootball.net",
+      "url": "https://www.worldfootball.net/",
+      "scope": "club match archive and competition participation cross-check",
+      "lookupKey": "SV 07 Elversberg"
+    }
+  ],
+  "coverage": {
+    "earliestMatch": "2009-08-01",
+    "latestMatch": "2018-08-18",
+    "seasonsWithMatches": [
+      "2009-10",
+      "2010-11",
+      "2015-16",
+      "2018-19"
+    ],
+    "missingSeasons": [
+      "1985-86",
+      "1986-87",
+      "1987-88",
+      "1988-89",
+      "1989-90",
+      "1990-91",
+      "1991-92",
+      "1992-93",
+      "1993-94",
+      "1994-95",
+      "1995-96",
+      "1996-97",
+      "1997-98",
+      "1998-99",
+      "1999-00",
+      "2000-01",
+      "2001-02",
+      "2002-03",
+      "2003-04",
+      "2004-05",
+      "2005-06",
+      "2006-07",
+      "2007-08",
+      "2008-09",
+      "2011-12",
+      "2012-13",
+      "2013-14",
+      "2014-15",
+      "2016-17",
+      "2017-18",
+      "2019-20",
+      "2020-21",
+      "2021-22",
+      "2022-23",
+      "2023-24",
+      "2024-25",
+      "2025-26",
+      "2026-27"
+    ],
+    "competitionScopeVerified": false,
+    "status": "partial"
+  },
+  "matches": [
+    {
+      "id": "dfb-pokal:1edf3cf97a3e0c7b40d3427d58ee2c72af58c8fbc46b3d9ae61bbaaa7654a839:2009-08-01:SV%2007%20Elversberg:SC%20Freiburg:home",
+      "date": "2009-08-01",
+      "season": "2009-10",
+      "competition": {
+        "name": "DFB-Pokal",
+        "type": "cup",
+        "country": "Germany"
+      },
+      "stage": "",
+      "opponent": {
+        "name": "SC Freiburg",
+        "slug": "sc-freiburg"
+      },
+      "venue": "home",
+      "score": {
+        "for": 0,
+        "against": 2
+      },
+      "result": "L",
+      "sources": [
+        {
+          "provider": "DFB Datencenter",
+          "url": "https://datencenter.dfb.de/datencenter/dfb-pokal/2009-2010/1-runde/sv-elversberg-sc-freiburg-80614",
+          "retrievedAt": "2026-08-05T18:52:38.245Z",
+          "rawArtifact": "data/teams/history/normalized/dfb-pokal-1785956491062.json"
+        }
+      ]
+    },
+    {
+      "id": "dfb-pokal:c254ffe3372a5bdd54eee3428200d526193712a38f5c222e0d504960c4e84788:2010-08-14:SV%2007%20Elversberg:Hannover%2096:home",
+      "date": "2010-08-14",
+      "season": "2010-11",
+      "competition": {
+        "name": "DFB-Pokal",
+        "type": "cup",
+        "country": "Germany"
+      },
+      "stage": "",
+      "opponent": {
+        "name": "Hannover 96",
+        "slug": "hannover-96"
+      },
+      "venue": "home",
+      "score": {
+        "for": 5,
+        "against": 4
+      },
+      "result": "W",
+      "sources": [
+        {
+          "provider": "DFB Datencenter",
+          "url": "https://datencenter.dfb.de/datencenter/dfb-pokal/2010-2011/1-runde/sv-elversberg-hannover-96-137952",
+          "retrievedAt": "2026-08-05T18:52:38.308Z",
+          "rawArtifact": "data/teams/history/normalized/dfb-pokal-1785956491062.json"
+        }
+      ]
+    },
+    {
+      "id": "dfb-pokal:c254ffe3372a5bdd54eee3428200d526193712a38f5c222e0d504960c4e84788:2010-10-27:SV%2007%20Elversberg:1.%20FC%20N%C3%BCrnberg:home",
+      "date": "2010-10-27",
+      "season": "2010-11",
+      "competition": {
+        "name": "DFB-Pokal",
+        "type": "cup",
+        "country": "Germany"
+      },
+      "stage": "",
+      "opponent": {
+        "name": "1. FC Nürnberg",
+        "slug": "1-fc-nurnberg"
+      },
+      "venue": "home",
+      "score": {
+        "for": 0,
+        "against": 3
+      },
+      "result": "L",
+      "sources": [
+        {
+          "provider": "DFB Datencenter",
+          "url": "https://datencenter.dfb.de/datencenter/dfb-pokal/2010-2011/2-runde/sv-elversberg-1-fc-nuernberg-243264",
+          "retrievedAt": "2026-08-05T18:52:38.308Z",
+          "rawArtifact": "data/teams/history/normalized/dfb-pokal-1785956491062.json"
+        }
+      ]
+    },
+    {
+      "id": "dfb-pokal:bee17929bd56d53e350d7e1f34aba85dea8f8fe15ed77dc7d9a830ee3b3a455e:2015-08-07:SV%2007%20Elversberg:FC%20Augsburg:home",
+      "date": "2015-08-07",
+      "season": "2015-16",
+      "competition": {
+        "name": "DFB-Pokal",
+        "type": "cup",
+        "country": "Germany"
+      },
+      "stage": "",
+      "opponent": {
+        "name": "FC Augsburg",
+        "slug": "fc-augsburg"
+      },
+      "venue": "home",
+      "score": {
+        "for": 1,
+        "against": 3
+      },
+      "result": "L",
+      "sources": [
+        {
+          "provider": "DFB Datencenter",
+          "url": "https://datencenter.dfb.de/datencenter/dfb-pokal/2015-2016/1-runde/sv-elversberg-fc-augsburg-2218702",
+          "retrievedAt": "2026-08-05T18:52:38.627Z",
+          "rawArtifact": "data/teams/history/normalized/dfb-pokal-1785956491062.json"
+        }
+      ]
+    },
+    {
+      "id": "dfb-pokal:4970add6c328d88a4796527ca5c4616755add7240b9f20bbcf5437155da677c6:2018-08-18:SV%2007%20Elversberg:VfL%20Wolfsburg:home",
+      "date": "2018-08-18",
+      "season": "2018-19",
+      "competition": {
+        "name": "DFB-Pokal",
+        "type": "cup",
+        "country": "Germany"
+      },
+      "stage": "",
+      "opponent": {
+        "name": "VfL Wolfsburg",
+        "slug": "vfl-wolfsburg"
+      },
+      "venue": "home",
+      "score": {
+        "for": 0,
+        "against": 1
+      },
+      "result": "L",
+      "sources": [
+        {
+          "provider": "DFB Datencenter",
+          "url": "https://datencenter.dfb.de/datencenter/dfb-pokal/2018-2019/1-runde/sv-elversberg-vfl-wolfsburg-2261346",
+          "retrievedAt": "2026-08-05T18:52:47.335Z",
+          "rawArtifact": "data/teams/history/normalized/dfb-pokal-1785956491062.json"
+        }
+      ]
+    }
+  ],
+  "seasonStandings": [],
+  "competitionStandings": [
+    {
+      "season": "2009-10",
+      "competition": {
+        "name": "DFB-Pokal",
+        "type": "cup",
+        "country": "Germany"
+      },
+      "format": "knockout-progress",
+      "matches": 1,
+      "wins": 0,
+      "draws": 0,
+      "losses": 1,
+      "furthestStage": "recorded participation",
+      "latestMatch": "2009-08-01",
+      "basis": "derived from source-attributed recorded matches"
+    },
+    {
+      "season": "2010-11",
+      "competition": {
+        "name": "DFB-Pokal",
+        "type": "cup",
+        "country": "Germany"
+      },
+      "format": "knockout-progress",
+      "matches": 2,
+      "wins": 1,
+      "draws": 0,
+      "losses": 1,
+      "furthestStage": "recorded participation",
+      "latestMatch": "2010-10-27",
+      "basis": "derived from source-attributed recorded matches"
+    },
+    {
+      "season": "2015-16",
+      "competition": {
+        "name": "DFB-Pokal",
+        "type": "cup",
+        "country": "Germany"
+      },
+      "format": "knockout-progress",
+      "matches": 1,
+      "wins": 0,
+      "draws": 0,
+      "losses": 1,
+      "furthestStage": "recorded participation",
+      "latestMatch": "2015-08-07",
+      "basis": "derived from source-attributed recorded matches"
+    },
+    {
+      "season": "2018-19",
+      "competition": {
+        "name": "DFB-Pokal",
+        "type": "cup",
+        "country": "Germany"
+      },
+      "format": "knockout-progress",
+      "matches": 1,
+      "wins": 0,
+      "draws": 0,
+      "losses": 1,
+      "furthestStage": "recorded participation",
+      "latestMatch": "2018-08-18",
+      "basis": "derived from source-attributed recorded matches"
+    }
+  ],
+  "updatedAt": "2026-08-05T19:20:49.718Z"
+}

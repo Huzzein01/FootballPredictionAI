@@ -1,0 +1,264 @@
+{
+  "contract": "football-team-history-v1",
+  "team": {
+    "name": "TSV Vestenbergsgreuth",
+    "slug": "tsv-vestenbergsgreuth",
+    "primaryLeague": "DFB-Pokal",
+    "aliases": []
+  },
+  "requestedCoverage": {
+    "fromYear": 1985,
+    "to": "present",
+    "includes": [
+      "all competitions",
+      "opponents",
+      "scorelines",
+      "league standings",
+      "competition standings"
+    ]
+  },
+  "sourcePlan": [
+    {
+      "rank": 1,
+      "provider": "Official club archive",
+      "url": "",
+      "scope": "club history, competition participation and match reports",
+      "lookupKey": "TSV Vestenbergsgreuth",
+      "review": "Verify the club-owned archive URL before collection."
+    },
+    {
+      "rank": 2,
+      "provider": "Official domestic competition / association",
+      "url": "",
+      "scope": "official league fixtures, final tables and cup records",
+      "lookupKey": "DFB-Pokal"
+    },
+    {
+      "rank": 3,
+      "provider": "UEFA",
+      "url": "https://www.uefa.com/",
+      "scope": "official European competition appearances, fixtures and standings",
+      "lookupKey": "TSV Vestenbergsgreuth"
+    },
+    {
+      "rank": 4,
+      "provider": "RSSSF",
+      "url": "https://www.rsssf.org/",
+      "scope": "historic competitions, tables and cross-checking",
+      "lookupKey": "TSV Vestenbergsgreuth"
+    },
+    {
+      "rank": 5,
+      "provider": "worldfootball.net",
+      "url": "https://www.worldfootball.net/",
+      "scope": "club match archive and competition participation cross-check",
+      "lookupKey": "TSV Vestenbergsgreuth"
+    }
+  ],
+  "coverage": {
+    "earliestMatch": "1987-08-29",
+    "latestMatch": "1994-11-01",
+    "seasonsWithMatches": [
+      "1987-88",
+      "1994-95"
+    ],
+    "missingSeasons": [
+      "1985-86",
+      "1986-87",
+      "1988-89",
+      "1989-90",
+      "1990-91",
+      "1991-92",
+      "1992-93",
+      "1993-94",
+      "1995-96",
+      "1996-97",
+      "1997-98",
+      "1998-99",
+      "1999-00",
+      "2000-01",
+      "2001-02",
+      "2002-03",
+      "2003-04",
+      "2004-05",
+      "2005-06",
+      "2006-07",
+      "2007-08",
+      "2008-09",
+      "2009-10",
+      "2010-11",
+      "2011-12",
+      "2012-13",
+      "2013-14",
+      "2014-15",
+      "2015-16",
+      "2016-17",
+      "2017-18",
+      "2018-19",
+      "2019-20",
+      "2020-21",
+      "2021-22",
+      "2022-23",
+      "2023-24",
+      "2024-25",
+      "2025-26",
+      "2026-27"
+    ],
+    "competitionScopeVerified": false,
+    "status": "partial"
+  },
+  "matches": [
+    {
+      "id": "dfb-pokal:928a741a6a43af0614c3af2bea4750c4136cd0f8633436fbca6fc86edd4e0e53:1987-08-29:TSV%20Vestenbergsgreuth:SV%20Darmstadt%2098:home",
+      "date": "1987-08-29",
+      "season": "1987-88",
+      "competition": {
+        "name": "DFB-Pokal",
+        "type": "cup",
+        "country": "Germany"
+      },
+      "stage": "",
+      "opponent": {
+        "name": "Darmstadt",
+        "slug": "darmstadt"
+      },
+      "venue": "home",
+      "score": {
+        "for": 0,
+        "against": 4
+      },
+      "result": "L",
+      "sources": [
+        {
+          "provider": "DFB Datencenter",
+          "url": "https://datencenter.dfb.de/datencenter/dfb-pokal/1987-1988/1-runde/tsv-vestenbergsgreuth-sv-darmstadt-98-560881",
+          "retrievedAt": "2026-08-05T18:51:08.822Z",
+          "rawArtifact": "data/teams/history/normalized/dfb-pokal-1785956491062.json"
+        }
+      ]
+    },
+    {
+      "id": "dfb-pokal:8d38f80d71aae28d2583ccc92f805770e435cb6fe27b731d840dfbca62f79571:1994-08-14:TSV%20Vestenbergsgreuth:Bayern%20M%C3%BCnchen:home",
+      "date": "1994-08-14",
+      "season": "1994-95",
+      "competition": {
+        "name": "DFB-Pokal",
+        "type": "cup",
+        "country": "Germany"
+      },
+      "stage": "",
+      "opponent": {
+        "name": "Bayern München",
+        "slug": "bayern-munchen"
+      },
+      "venue": "home",
+      "score": {
+        "for": 1,
+        "against": 0
+      },
+      "result": "W",
+      "sources": [
+        {
+          "provider": "DFB Datencenter",
+          "url": "https://datencenter.dfb.de/datencenter/dfb-pokal/1994-1995/1-runde/tsv-vestenbergsgreuth-bayern-muenchen-560380",
+          "retrievedAt": "2026-08-05T18:51:38.644Z",
+          "rawArtifact": "data/teams/history/normalized/dfb-pokal-1785956491062.json"
+        }
+      ]
+    },
+    {
+      "id": "dfb-pokal:8d38f80d71aae28d2583ccc92f805770e435cb6fe27b731d840dfbca62f79571:1994-09-10:TSV%20Vestenbergsgreuth:FC%2008%20Homburg:home",
+      "date": "1994-09-10",
+      "season": "1994-95",
+      "competition": {
+        "name": "DFB-Pokal",
+        "type": "cup",
+        "country": "Germany"
+      },
+      "stage": "",
+      "opponent": {
+        "name": "FC 08 Homburg",
+        "slug": "fc-08-homburg"
+      },
+      "venue": "home",
+      "score": {
+        "for": 5,
+        "against": 1
+      },
+      "result": "W",
+      "sources": [
+        {
+          "provider": "DFB Datencenter",
+          "url": "https://datencenter.dfb.de/datencenter/dfb-pokal/1994-1995/2-runde/tsv-vestenbergsgreuth-fc-08-homburg-560387",
+          "retrievedAt": "2026-08-05T18:51:38.644Z",
+          "rawArtifact": "data/teams/history/normalized/dfb-pokal-1785956491062.json"
+        }
+      ]
+    },
+    {
+      "id": "dfb-pokal:8d38f80d71aae28d2583ccc92f805770e435cb6fe27b731d840dfbca62f79571:1994-11-01:TSV%20Vestenbergsgreuth:VfL%20Wolfsburg:home",
+      "date": "1994-11-01",
+      "season": "1994-95",
+      "competition": {
+        "name": "DFB-Pokal",
+        "type": "cup",
+        "country": "Germany"
+      },
+      "stage": "",
+      "opponent": {
+        "name": "VfL Wolfsburg",
+        "slug": "vfl-wolfsburg"
+      },
+      "venue": "home",
+      "score": {
+        "for": 3,
+        "against": 4
+      },
+      "result": "L",
+      "sources": [
+        {
+          "provider": "DFB Datencenter",
+          "url": "https://datencenter.dfb.de/datencenter/dfb-pokal/1994-1995/achtelfinale/tsv-vestenbergsgreuth-vfl-wolfsburg-560401",
+          "retrievedAt": "2026-08-05T18:51:38.644Z",
+          "rawArtifact": "data/teams/history/normalized/dfb-pokal-1785956491062.json"
+        }
+      ]
+    }
+  ],
+  "seasonStandings": [],
+  "competitionStandings": [
+    {
+      "season": "1987-88",
+      "competition": {
+        "name": "DFB-Pokal",
+        "type": "cup",
+        "country": "Germany"
+      },
+      "format": "knockout-progress",
+      "matches": 1,
+      "wins": 0,
+      "draws": 0,
+      "losses": 1,
+      "furthestStage": "recorded participation",
+      "latestMatch": "1987-08-29",
+      "basis": "derived from source-attributed recorded matches"
+    },
+    {
+      "season": "1994-95",
+      "competition": {
+        "name": "DFB-Pokal",
+        "type": "cup",
+        "country": "Germany"
+      },
+      "format": "knockout-progress",
+      "matches": 3,
+      "wins": 2,
+      "draws": 0,
+      "losses": 1,
+      "furthestStage": "recorded participation",
+      "latestMatch": "1994-11-01",
+      "basis": "derived from source-attributed recorded matches"
+    }
+  ],
+  "updatedAt": "2026-08-05T19:20:50.526Z"
+}

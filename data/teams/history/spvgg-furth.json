@@ -1,0 +1,309 @@
+{
+  "contract": "football-team-history-v1",
+  "team": {
+    "name": "SpVgg Fürth",
+    "slug": "spvgg-furth",
+    "primaryLeague": "DFB-Pokal",
+    "aliases": []
+  },
+  "requestedCoverage": {
+    "fromYear": 1985,
+    "to": "present",
+    "includes": [
+      "all competitions",
+      "opponents",
+      "scorelines",
+      "league standings",
+      "competition standings"
+    ]
+  },
+  "sourcePlan": [
+    {
+      "rank": 1,
+      "provider": "Official club archive",
+      "url": "",
+      "scope": "club history, competition participation and match reports",
+      "lookupKey": "SpVgg Fürth",
+      "review": "Verify the club-owned archive URL before collection."
+    },
+    {
+      "rank": 2,
+      "provider": "Official domestic competition / association",
+      "url": "",
+      "scope": "official league fixtures, final tables and cup records",
+      "lookupKey": "DFB-Pokal"
+    },
+    {
+      "rank": 3,
+      "provider": "UEFA",
+      "url": "https://www.uefa.com/",
+      "scope": "official European competition appearances, fixtures and standings",
+      "lookupKey": "SpVgg Fürth"
+    },
+    {
+      "rank": 4,
+      "provider": "RSSSF",
+      "url": "https://www.rsssf.org/",
+      "scope": "historic competitions, tables and cross-checking",
+      "lookupKey": "SpVgg Fürth"
+    },
+    {
+      "rank": 5,
+      "provider": "worldfootball.net",
+      "url": "https://www.worldfootball.net/",
+      "scope": "club match archive and competition participation cross-check",
+      "lookupKey": "SpVgg Fürth"
+    }
+  ],
+  "coverage": {
+    "earliestMatch": "1990-08-04",
+    "latestMatch": "1992-08-19",
+    "seasonsWithMatches": [
+      "1990-91",
+      "1991-92",
+      "1992-93"
+    ],
+    "missingSeasons": [
+      "1985-86",
+      "1986-87",
+      "1987-88",
+      "1988-89",
+      "1989-90",
+      "1993-94",
+      "1994-95",
+      "1995-96",
+      "1996-97",
+      "1997-98",
+      "1998-99",
+      "1999-00",
+      "2000-01",
+      "2001-02",
+      "2002-03",
+      "2003-04",
+      "2004-05",
+      "2005-06",
+      "2006-07",
+      "2007-08",
+      "2008-09",
+      "2009-10",
+      "2010-11",
+      "2011-12",
+      "2012-13",
+      "2013-14",
+      "2014-15",
+      "2015-16",
+      "2016-17",
+      "2017-18",
+      "2018-19",
+      "2019-20",
+      "2020-21",
+      "2021-22",
+      "2022-23",
+      "2023-24",
+      "2024-25",
+      "2025-26",
+      "2026-27"
+    ],
+    "competitionScopeVerified": false,
+    "status": "partial"
+  },
+  "matches": [
+    {
+      "id": "dfb-pokal:114cd5ba66bf8859fbc266b70d420ab87d27f0150733247a7624503beb278354:1990-08-04:SpVgg%20F%C3%BCrth:Borussia%20Dortmund:home",
+      "date": "1990-08-04",
+      "season": "1990-91",
+      "competition": {
+        "name": "DFB-Pokal",
+        "type": "cup",
+        "country": "Germany"
+      },
+      "stage": "",
+      "opponent": {
+        "name": "Borussia Dortmund",
+        "slug": "borussia-dortmund"
+      },
+      "venue": "home",
+      "score": {
+        "for": 3,
+        "against": 1
+      },
+      "result": "W",
+      "sources": [
+        {
+          "provider": "DFB Datencenter",
+          "url": "https://datencenter.dfb.de/datencenter/dfb-pokal/1990-1991/1-runde/spvgg-greuther-fuerth-borussia-dortmund-560666",
+          "retrievedAt": "2026-08-05T18:51:21.841Z",
+          "rawArtifact": "data/teams/history/normalized/dfb-pokal-1785956491062.json"
+        }
+      ]
+    },
+    {
+      "id": "dfb-pokal:114cd5ba66bf8859fbc266b70d420ab87d27f0150733247a7624503beb278354:1990-11-03:SpVgg%20F%C3%BCrth:1.%20FC%20Saarbr%C3%BCcken:home",
+      "date": "1990-11-03",
+      "season": "1990-91",
+      "competition": {
+        "name": "DFB-Pokal",
+        "type": "cup",
+        "country": "Germany"
+      },
+      "stage": "",
+      "opponent": {
+        "name": "1. FC Saarbrücken",
+        "slug": "1-fc-saarbrucken"
+      },
+      "venue": "home",
+      "score": {
+        "for": 0,
+        "against": 1
+      },
+      "result": "L",
+      "sources": [
+        {
+          "provider": "DFB Datencenter",
+          "url": "https://datencenter.dfb.de/datencenter/dfb-pokal/1990-1991/2-runde/spvgg-greuther-fuerth-1-fc-saarbruecken-560689",
+          "retrievedAt": "2026-08-05T18:51:21.841Z",
+          "rawArtifact": "data/teams/history/normalized/dfb-pokal-1785956491062.json"
+        }
+      ]
+    },
+    {
+      "id": "dfb-pokal:a4ed906c58d52e1068ceff2bcbd83a8d0750dbb4c8dd97ba56e7c4749cd80658:1991-07-27:SpVgg%20F%C3%BCrth:FC%20Carl%20Zeiss%20Jena:home",
+      "date": "1991-07-27",
+      "season": "1991-92",
+      "competition": {
+        "name": "DFB-Pokal",
+        "type": "cup",
+        "country": "Germany"
+      },
+      "stage": "",
+      "opponent": {
+        "name": "FC Carl Zeiss Jena",
+        "slug": "fc-carl-zeiss-jena"
+      },
+      "venue": "home",
+      "score": {
+        "for": 1,
+        "against": 0
+      },
+      "result": "W",
+      "sources": [
+        {
+          "provider": "DFB Datencenter",
+          "url": "https://datencenter.dfb.de/datencenter/dfb-pokal/1991-1992/1-runde/spvgg-greuther-fuerth-fc-carl-zeiss-jena-560576",
+          "retrievedAt": "2026-08-05T18:51:26.641Z",
+          "rawArtifact": "data/teams/history/normalized/dfb-pokal-1785956491062.json"
+        }
+      ]
+    },
+    {
+      "id": "dfb-pokal:a4ed906c58d52e1068ceff2bcbd83a8d0750dbb4c8dd97ba56e7c4749cd80658:1991-08-17:SpVgg%20F%C3%BCrth:SV%20Waldhof%20Mannheim:home",
+      "date": "1991-08-17",
+      "season": "1991-92",
+      "competition": {
+        "name": "DFB-Pokal",
+        "type": "cup",
+        "country": "Germany"
+      },
+      "stage": "",
+      "opponent": {
+        "name": "SV Waldhof Mannheim",
+        "slug": "sv-waldhof-mannheim"
+      },
+      "venue": "home",
+      "score": {
+        "for": 0,
+        "against": 3
+      },
+      "result": "L",
+      "sources": [
+        {
+          "provider": "DFB Datencenter",
+          "url": "https://datencenter.dfb.de/datencenter/dfb-pokal/1991-1992/2-runde/spvgg-greuther-fuerth-sv-waldhof-mannheim-560609",
+          "retrievedAt": "2026-08-05T18:51:26.641Z",
+          "rawArtifact": "data/teams/history/normalized/dfb-pokal-1785956491062.json"
+        }
+      ]
+    },
+    {
+      "id": "dfb-pokal:91bff6de20749f3a2147d35317ff91a715d3b4638c2d5e9e24b3fc21eff18455:1992-08-19:SpVgg%20F%C3%BCrth:VfL%20Bochum:home",
+      "date": "1992-08-19",
+      "season": "1992-93",
+      "competition": {
+        "name": "DFB-Pokal",
+        "type": "cup",
+        "country": "Germany"
+      },
+      "stage": "",
+      "opponent": {
+        "name": "VfL Bochum",
+        "slug": "vfl-bochum"
+      },
+      "venue": "home",
+      "score": {
+        "for": 0,
+        "against": 2
+      },
+      "result": "L",
+      "sources": [
+        {
+          "provider": "DFB Datencenter",
+          "url": "https://datencenter.dfb.de/datencenter/dfb-pokal/1992-1993/1-runde/spvgg-greuther-fuerth-vfl-bochum-560498",
+          "retrievedAt": "2026-08-05T18:51:30.951Z",
+          "rawArtifact": "data/teams/history/normalized/dfb-pokal-1785956491062.json"
+        }
+      ]
+    }
+  ],
+  "seasonStandings": [],
+  "competitionStandings": [
+    {
+      "season": "1990-91",
+      "competition": {
+        "name": "DFB-Pokal",
+        "type": "cup",
+        "country": "Germany"
+      },
+      "format": "knockout-progress",
+      "matches": 2,
+      "wins": 1,
+      "draws": 0,
+      "losses": 1,
+      "furthestStage": "recorded participation",
+      "latestMatch": "1990-11-03",
+      "basis": "derived from source-attributed recorded matches"
+    },
+    {
+      "season": "1991-92",
+      "competition": {
+        "name": "DFB-Pokal",
+        "type": "cup",
+        "country": "Germany"
+      },
+      "format": "knockout-progress",
+      "matches": 2,
+      "wins": 1,
+      "draws": 0,
+      "losses": 1,
+      "furthestStage": "recorded participation",
+      "latestMatch": "1991-08-17",
+      "basis": "derived from source-attributed recorded matches"
+    },
+    {
+      "season": "1992-93",
+      "competition": {
+        "name": "DFB-Pokal",
+        "type": "cup",
+        "country": "Germany"
+      },
+      "format": "knockout-progress",
+      "matches": 1,
+      "wins": 0,
+      "draws": 0,
+      "losses": 1,
+      "furthestStage": "recorded participation",
+      "latestMatch": "1992-08-19",
+      "basis": "derived from source-attributed recorded matches"
+    }
+  ],
+  "updatedAt": "2026-08-05T19:20:48.880Z"
+}

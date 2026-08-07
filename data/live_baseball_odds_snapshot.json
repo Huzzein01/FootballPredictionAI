@@ -1,20 +1,18 @@
 {
-  "updatedAt": "2026-08-07T16:26:46.823Z",
+  "updatedAt": "2026-08-05T18:50:13.924Z",
   "provider": "The Odds API",
-  "enabled": false,
+  "enabled": true,
   "cached": false,
   "requestedSports": [
     "baseball_mlb"
   ],
   "eventCount": 0,
   "events": [],
-  "quota": [
+  "quota": [],
+  "errors": [
     {
       "sportKey": "baseball_mlb",
-      "quota": null,
-      "skipped": true,
-      "reason": "Missing ODDS_API_KEY"
+      "message": "The Odds API baseball_mlb failed 401: {\"message\":\"Usage quota has been reached. See usage plans at https://the-odds-api.com\",\"error_code\":\"OUT_OF_USAGE_CREDITS\",\"details_url\":\"https://the-odds-api.com/liveapi/guides/v4"
     }
-  ],
-  "errors": []
+  ]
 }

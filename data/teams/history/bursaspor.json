@@ -186,7 +186,15 @@
         "against": 4
       },
       "result": "L",
-      "sourceRef": "src:1ac1d16b4d91beda9a2b"
+      "sourceRef": "src:1ac1d16b4d91beda9a2b",
+      "sources": [
+        {
+          "provider": "jalapic/engsoccerdata",
+          "url": "https://raw.githubusercontent.com/jalapic/engsoccerdata/master/data-raw/champs.csv",
+          "retrievedAt": "2026-08-05T17:19:11.274Z",
+          "rawArtifact": "data/teams/history/normalized/engsoccerdata-1785950371133.json"
+        }
+      ]
     },
     {
       "id": "uefa:2002830:home",
@@ -244,6 +252,12 @@
           "url": "https://www.uefa.com/uefachampionsleague/match/2002838/",
           "retrievedAt": "2026-08-04T21:12:05.732Z",
           "rawArtifact": "data/teams/history/normalized/uefa-1785878005892.json"
+        },
+        {
+          "provider": "jalapic/engsoccerdata",
+          "url": "https://raw.githubusercontent.com/jalapic/engsoccerdata/master/data-raw/champs.csv",
+          "retrievedAt": "2026-08-05T17:19:11.274Z",
+          "rawArtifact": "data/teams/history/normalized/engsoccerdata-1785950371133.json"
         }
       ]
     },
@@ -267,7 +281,15 @@
         "against": 1
       },
       "result": "L",
-      "sourceRef": "src:1ac1d16b4d91beda9a2b"
+      "sourceRef": "src:1ac1d16b4d91beda9a2b",
+      "sources": [
+        {
+          "provider": "jalapic/engsoccerdata",
+          "url": "https://raw.githubusercontent.com/jalapic/engsoccerdata/master/data-raw/champs.csv",
+          "retrievedAt": "2026-08-05T17:19:11.274Z",
+          "rawArtifact": "data/teams/history/normalized/engsoccerdata-1785950371133.json"
+        }
+      ]
     },
     {
       "id": "uefa:2002854:away",
@@ -318,7 +340,15 @@
         "against": 3
       },
       "result": "L",
-      "sourceRef": "src:1ac1d16b4d91beda9a2b"
+      "sourceRef": "src:1ac1d16b4d91beda9a2b",
+      "sources": [
+        {
+          "provider": "jalapic/engsoccerdata",
+          "url": "https://raw.githubusercontent.com/jalapic/engsoccerdata/master/data-raw/champs.csv",
+          "retrievedAt": "2026-08-05T17:19:11.274Z",
+          "rawArtifact": "data/teams/history/normalized/engsoccerdata-1785950371133.json"
+        }
+      ]
     },
     {
       "id": "uefa:2002878:home",
@@ -369,7 +399,15 @@
         "against": 6
       },
       "result": "L",
-      "sourceRef": "src:1ac1d16b4d91beda9a2b"
+      "sourceRef": "src:1ac1d16b4d91beda9a2b",
+      "sources": [
+        {
+          "provider": "jalapic/engsoccerdata",
+          "url": "https://raw.githubusercontent.com/jalapic/engsoccerdata/master/data-raw/champs.csv",
+          "retrievedAt": "2026-08-05T17:19:11.274Z",
+          "rawArtifact": "data/teams/history/normalized/engsoccerdata-1785950371133.json"
+        }
+      ]
     },
     {
       "id": "uefa:2002886:away",
@@ -427,6 +465,12 @@
           "url": "https://www.uefa.com/uefachampionsleague/match/2002910/",
           "retrievedAt": "2026-08-04T21:12:05.732Z",
           "rawArtifact": "data/teams/history/normalized/uefa-1785878005892.json"
+        },
+        {
+          "provider": "jalapic/engsoccerdata",
+          "url": "https://raw.githubusercontent.com/jalapic/engsoccerdata/master/data-raw/champs.csv",
+          "retrievedAt": "2026-08-05T17:19:11.274Z",
+          "rawArtifact": "data/teams/history/normalized/engsoccerdata-1785950371133.json"
         }
       ]
     },
@@ -782,9 +826,41 @@
   "seasonStandings": [],
   "competitionStandings": [
     {
+      "season": "1986-87",
+      "competition": {
+        "name": "UEFA Cup Winners' Cup",
+        "type": "continental",
+        "country": "Europe"
+      },
+      "format": "knockout-progress",
+      "matches": 2,
+      "wins": 0,
+      "draws": 0,
+      "losses": 2,
+      "furthestStage": "First round",
+      "latestMatch": "1986-10-01",
+      "basis": "derived from source-attributed recorded matches"
+    },
+    {
       "season": "2010-11",
       "competition": {
         "name": "European Champion Clubs' Cup / Champions League",
+        "type": "continental",
+        "country": "Europe"
+      },
+      "format": "knockout-progress",
+      "matches": 4,
+      "wins": 0,
+      "draws": 0,
+      "losses": 4,
+      "furthestStage": "GroupC",
+      "latestMatch": "2010-11-24",
+      "basis": "derived from source-attributed recorded matches"
+    },
+    {
+      "season": "2010-11",
+      "competition": {
+        "name": "UEFA Champions League / European Cup",
         "type": "continental",
         "country": "Europe"
       },
@@ -793,10 +869,74 @@
       "wins": 0,
       "draws": 1,
       "losses": 5,
-      "furthestStage": "GroupC",
+      "furthestStage": "Group stage",
       "latestMatch": "2010-12-07",
+      "basis": "derived from source-attributed recorded matches"
+    },
+    {
+      "season": "2011-12",
+      "competition": {
+        "name": "UEFA Cup / UEFA Europa League",
+        "type": "continental",
+        "country": "Europe"
+      },
+      "format": "knockout-progress",
+      "matches": 4,
+      "wins": 2,
+      "draws": 1,
+      "losses": 1,
+      "furthestStage": "Play-offs",
+      "latestMatch": "2011-08-25",
+      "basis": "derived from source-attributed recorded matches"
+    },
+    {
+      "season": "2012-13",
+      "competition": {
+        "name": "UEFA Cup / UEFA Europa League",
+        "type": "continental",
+        "country": "Europe"
+      },
+      "format": "knockout-progress",
+      "matches": 4,
+      "wins": 2,
+      "draws": 0,
+      "losses": 2,
+      "furthestStage": "Play-offs",
+      "latestMatch": "2012-08-30",
+      "basis": "derived from source-attributed recorded matches"
+    },
+    {
+      "season": "2013-14",
+      "competition": {
+        "name": "UEFA Cup / UEFA Europa League",
+        "type": "continental",
+        "country": "Europe"
+      },
+      "format": "knockout-progress",
+      "matches": 2,
+      "wins": 0,
+      "draws": 1,
+      "losses": 1,
+      "furthestStage": "Third qualifying round",
+      "latestMatch": "2013-08-08",
+      "basis": "derived from source-attributed recorded matches"
+    },
+    {
+      "season": "2014-15",
+      "competition": {
+        "name": "UEFA Cup / UEFA Europa League",
+        "type": "continental",
+        "country": "Europe"
+      },
+      "format": "knockout-progress",
+      "matches": 2,
+      "wins": 0,
+      "draws": 2,
+      "losses": 0,
+      "furthestStage": "Second qualifying round",
+      "latestMatch": "2014-07-24",
       "basis": "derived from source-attributed recorded matches"
     }
   ],
-  "updatedAt": "2026-08-04T21:14:07.154Z"
+  "updatedAt": "2026-08-06T20:44:44.747Z"
 }

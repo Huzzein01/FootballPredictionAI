@@ -1,0 +1,431 @@
+{
+  "contract": "football-team-history-v1",
+  "team": {
+    "name": "FC Schönberg 95",
+    "slug": "fc-schonberg-95",
+    "primaryLeague": "DFB-Pokal",
+    "aliases": []
+  },
+  "requestedCoverage": {
+    "fromYear": 1985,
+    "to": "present",
+    "includes": [
+      "all competitions",
+      "opponents",
+      "scorelines",
+      "league standings",
+      "competition standings"
+    ]
+  },
+  "sourcePlan": [
+    {
+      "rank": 1,
+      "provider": "Official club archive",
+      "url": "",
+      "scope": "club history, competition participation and match reports",
+      "lookupKey": "FC Schönberg 95",
+      "review": "Verify the club-owned archive URL before collection."
+    },
+    {
+      "rank": 2,
+      "provider": "Official domestic competition / association",
+      "url": "",
+      "scope": "official league fixtures, final tables and cup records",
+      "lookupKey": "DFB-Pokal"
+    },
+    {
+      "rank": 3,
+      "provider": "UEFA",
+      "url": "https://www.uefa.com/",
+      "scope": "official European competition appearances, fixtures and standings",
+      "lookupKey": "FC Schönberg 95"
+    },
+    {
+      "rank": 4,
+      "provider": "RSSSF",
+      "url": "https://www.rsssf.org/",
+      "scope": "historic competitions, tables and cross-checking",
+      "lookupKey": "FC Schönberg 95"
+    },
+    {
+      "rank": 5,
+      "provider": "worldfootball.net",
+      "url": "https://www.worldfootball.net/",
+      "scope": "club match archive and competition participation cross-check",
+      "lookupKey": "FC Schönberg 95"
+    }
+  ],
+  "coverage": {
+    "earliestMatch": "1999-08-07",
+    "latestMatch": "2012-08-18",
+    "seasonsWithMatches": [
+      "1999-00",
+      "2000-01",
+      "2001-02",
+      "2002-03",
+      "2003-04",
+      "2004-05",
+      "2012-13"
+    ],
+    "missingSeasons": [
+      "1985-86",
+      "1986-87",
+      "1987-88",
+      "1988-89",
+      "1989-90",
+      "1990-91",
+      "1991-92",
+      "1992-93",
+      "1993-94",
+      "1994-95",
+      "1995-96",
+      "1996-97",
+      "1997-98",
+      "1998-99",
+      "2005-06",
+      "2006-07",
+      "2007-08",
+      "2008-09",
+      "2009-10",
+      "2010-11",
+      "2011-12",
+      "2013-14",
+      "2014-15",
+      "2015-16",
+      "2016-17",
+      "2017-18",
+      "2018-19",
+      "2019-20",
+      "2020-21",
+      "2021-22",
+      "2022-23",
+      "2023-24",
+      "2024-25",
+      "2025-26",
+      "2026-27"
+    ],
+    "competitionScopeVerified": false,
+    "status": "partial"
+  },
+  "matches": [
+    {
+      "id": "dfb-pokal:0c03b5dfa04888b03b3173a43d7ed5ad1cefe3a413b01654060c760563d36d66:1999-08-07:FC%20Sch%C3%B6nberg%2095:SV%20Waldhof%20Mannheim:home",
+      "date": "1999-08-07",
+      "season": "1999-00",
+      "competition": {
+        "name": "DFB-Pokal",
+        "type": "cup",
+        "country": "Germany"
+      },
+      "stage": "",
+      "opponent": {
+        "name": "SV Waldhof Mannheim",
+        "slug": "sv-waldhof-mannheim"
+      },
+      "venue": "home",
+      "score": {
+        "for": 0,
+        "against": 3
+      },
+      "result": "L",
+      "sources": [
+        {
+          "provider": "DFB Datencenter",
+          "url": "https://datencenter.dfb.de/datencenter/dfb-pokal/1999-2000/2-runde/fc-schoenberg-95-sv-waldhof-mannheim-560062",
+          "retrievedAt": "2026-08-05T18:52:21.654Z",
+          "rawArtifact": "data/teams/history/normalized/dfb-pokal-1785956491062.json"
+        }
+      ]
+    },
+    {
+      "id": "dfb-pokal:77778c0b9f1c2347ee1ecce3b6ca462aa9c12e16cdeac6230c6124f7bbe26185:2000-08-26:FC%20Sch%C3%B6nberg%2095:Bayern%20M%C3%BCnchen:home",
+      "date": "2000-08-26",
+      "season": "2000-01",
+      "competition": {
+        "name": "DFB-Pokal",
+        "type": "cup",
+        "country": "Germany"
+      },
+      "stage": "",
+      "opponent": {
+        "name": "Bayern München",
+        "slug": "bayern-munchen"
+      },
+      "venue": "home",
+      "score": {
+        "for": 0,
+        "against": 4
+      },
+      "result": "L",
+      "sources": [
+        {
+          "provider": "DFB Datencenter",
+          "url": "https://datencenter.dfb.de/datencenter/dfb-pokal/2000-2001/1-runde/fc-schoenberg-95-bayern-muenchen-559976",
+          "retrievedAt": "2026-08-05T18:52:25.162Z",
+          "rawArtifact": "data/teams/history/normalized/dfb-pokal-1785956491062.json"
+        }
+      ]
+    },
+    {
+      "id": "dfb-pokal:3189622fa7bbb82f3943c449f56e92739e5fa9175e8b0f8678ef79de4574226d:2001-08-26:FC%20Sch%C3%B6nberg%2095:VfB%20Stuttgart:home",
+      "date": "2001-08-26",
+      "season": "2001-02",
+      "competition": {
+        "name": "DFB-Pokal",
+        "type": "cup",
+        "country": "Germany"
+      },
+      "stage": "",
+      "opponent": {
+        "name": "VfB Stuttgart",
+        "slug": "vfb-stuttgart"
+      },
+      "venue": "home",
+      "score": {
+        "for": 2,
+        "against": 4
+      },
+      "result": "L",
+      "sources": [
+        {
+          "provider": "DFB Datencenter",
+          "url": "https://datencenter.dfb.de/datencenter/dfb-pokal/2001-2002/1-runde/fc-schoenberg-95-vfb-stuttgart-559920",
+          "retrievedAt": "2026-08-05T18:52:29.115Z",
+          "rawArtifact": "data/teams/history/normalized/dfb-pokal-1785956491062.json"
+        }
+      ]
+    },
+    {
+      "id": "dfb-pokal:2e7e9b3d5f9b2f54c666f5f73971f38b7a634cd71d8abea584ef7b42495cbe5a:2002-08-31:FC%20Sch%C3%B6nberg%2095:Hamburger%20SV:home",
+      "date": "2002-08-31",
+      "season": "2002-03",
+      "competition": {
+        "name": "DFB-Pokal",
+        "type": "cup",
+        "country": "Germany"
+      },
+      "stage": "",
+      "opponent": {
+        "name": "Hamburger SV",
+        "slug": "hamburger-sv"
+      },
+      "venue": "home",
+      "score": {
+        "for": 0,
+        "against": 6
+      },
+      "result": "L",
+      "sources": [
+        {
+          "provider": "DFB Datencenter",
+          "url": "https://datencenter.dfb.de/datencenter/dfb-pokal/2002-2003/1-runde/fc-schoenberg-95-hamburger-sv-559858",
+          "retrievedAt": "2026-08-05T18:52:32.308Z",
+          "rawArtifact": "data/teams/history/normalized/dfb-pokal-1785956491062.json"
+        }
+      ]
+    },
+    {
+      "id": "dfb-pokal:17dfd63a9239ce44e39b966341a8945a82a9475d82cc0c530c282323363aeef4:2003-08-31:FC%20Sch%C3%B6nberg%2095:Borussia%20M%C3%B6nchengladbach:home",
+      "date": "2003-08-31",
+      "season": "2003-04",
+      "competition": {
+        "name": "DFB-Pokal",
+        "type": "cup",
+        "country": "Germany"
+      },
+      "stage": "",
+      "opponent": {
+        "name": "Borussia Mönchengladbach",
+        "slug": "borussia-monchengladbach"
+      },
+      "venue": "home",
+      "score": {
+        "for": 0,
+        "against": 3
+      },
+      "result": "L",
+      "sources": [
+        {
+          "provider": "DFB Datencenter",
+          "url": "https://datencenter.dfb.de/datencenter/dfb-pokal/2003-2004/1-runde/fc-schoenberg-95-borussia-moenchengladbach-559805",
+          "retrievedAt": "2026-08-05T18:52:35.049Z",
+          "rawArtifact": "data/teams/history/normalized/dfb-pokal-1785956491062.json"
+        }
+      ]
+    },
+    {
+      "id": "dfb-pokal:24b0117cdd5ac7a18ceca2c4e8b3d254b03165c32a26e71c5fe2a3486f05f357:2004-08-21:FC%20Sch%C3%B6nberg%2095:1.%20FC%20Kaiserslautern:home",
+      "date": "2004-08-21",
+      "season": "2004-05",
+      "competition": {
+        "name": "DFB-Pokal",
+        "type": "cup",
+        "country": "Germany"
+      },
+      "stage": "",
+      "opponent": {
+        "name": "1. FC Kaiserslautern",
+        "slug": "1-fc-kaiserslautern"
+      },
+      "venue": "home",
+      "score": {
+        "for": 0,
+        "against": 15
+      },
+      "result": "L",
+      "sources": [
+        {
+          "provider": "DFB Datencenter",
+          "url": "https://datencenter.dfb.de/datencenter/dfb-pokal/2004-2005/1-runde/fc-schoenberg-95-1-fc-kaiserslautern-559722",
+          "retrievedAt": "2026-08-05T18:52:37.905Z",
+          "rawArtifact": "data/teams/history/normalized/dfb-pokal-1785956491062.json"
+        }
+      ]
+    },
+    {
+      "id": "dfb-pokal:8f9ccf74919737839297e4cc5eed5f4fb72b7ac5b979d9b19d044b9fbfd90de9:2012-08-18:FC%20Sch%C3%B6nberg%2095:VfL%20Wolfsburg:home",
+      "date": "2012-08-18",
+      "season": "2012-13",
+      "competition": {
+        "name": "DFB-Pokal",
+        "type": "cup",
+        "country": "Germany"
+      },
+      "stage": "",
+      "opponent": {
+        "name": "VfL Wolfsburg",
+        "slug": "vfl-wolfsburg"
+      },
+      "venue": "home",
+      "score": {
+        "for": 0,
+        "against": 5
+      },
+      "result": "L",
+      "sources": [
+        {
+          "provider": "DFB Datencenter",
+          "url": "https://datencenter.dfb.de/datencenter/dfb-pokal/2012-2013/1-runde/fc-schoenberg-95-vfl-wolfsburg-1005999",
+          "retrievedAt": "2026-08-05T18:52:38.437Z",
+          "rawArtifact": "data/teams/history/normalized/dfb-pokal-1785956491062.json"
+        }
+      ]
+    }
+  ],
+  "seasonStandings": [],
+  "competitionStandings": [
+    {
+      "season": "1999-00",
+      "competition": {
+        "name": "DFB-Pokal",
+        "type": "cup",
+        "country": "Germany"
+      },
+      "format": "knockout-progress",
+      "matches": 1,
+      "wins": 0,
+      "draws": 0,
+      "losses": 1,
+      "furthestStage": "recorded participation",
+      "latestMatch": "1999-08-07",
+      "basis": "derived from source-attributed recorded matches"
+    },
+    {
+      "season": "2000-01",
+      "competition": {
+        "name": "DFB-Pokal",
+        "type": "cup",
+        "country": "Germany"
+      },
+      "format": "knockout-progress",
+      "matches": 1,
+      "wins": 0,
+      "draws": 0,
+      "losses": 1,
+      "furthestStage": "recorded participation",
+      "latestMatch": "2000-08-26",
+      "basis": "derived from source-attributed recorded matches"
+    },
+    {
+      "season": "2001-02",
+      "competition": {
+        "name": "DFB-Pokal",
+        "type": "cup",
+        "country": "Germany"
+      },
+      "format": "knockout-progress",
+      "matches": 1,
+      "wins": 0,
+      "draws": 0,
+      "losses": 1,
+      "furthestStage": "recorded participation",
+      "latestMatch": "2001-08-26",
+      "basis": "derived from source-attributed recorded matches"
+    },
+    {
+      "season": "2002-03",
+      "competition": {
+        "name": "DFB-Pokal",
+        "type": "cup",
+        "country": "Germany"
+      },
+      "format": "knockout-progress",
+      "matches": 1,
+      "wins": 0,
+      "draws": 0,
+      "losses": 1,
+      "furthestStage": "recorded participation",
+      "latestMatch": "2002-08-31",
+      "basis": "derived from source-attributed recorded matches"
+    },
+    {
+      "season": "2003-04",
+      "competition": {
+        "name": "DFB-Pokal",
+        "type": "cup",
+        "country": "Germany"
+      },
+      "format": "knockout-progress",
+      "matches": 1,
+      "wins": 0,
+      "draws": 0,
+      "losses": 1,
+      "furthestStage": "recorded participation",
+      "latestMatch": "2003-08-31",
+      "basis": "derived from source-attributed recorded matches"
+    },
+    {
+      "season": "2004-05",
+      "competition": {
+        "name": "DFB-Pokal",
+        "type": "cup",
+        "country": "Germany"
+      },
+      "format": "knockout-progress",
+      "matches": 1,
+      "wins": 0,
+      "draws": 0,
+      "losses": 1,
+      "furthestStage": "recorded participation",
+      "latestMatch": "2004-08-21",
+      "basis": "derived from source-attributed recorded matches"
+    },
+    {
+      "season": "2012-13",
+      "competition": {
+        "name": "DFB-Pokal",
+        "type": "cup",
+        "country": "Germany"
+      },
+      "format": "knockout-progress",
+      "matches": 1,
+      "wins": 0,
+      "draws": 0,
+      "losses": 1,
+      "furthestStage": "recorded participation",
+      "latestMatch": "2012-08-18",
+      "basis": "derived from source-attributed recorded matches"
+    }
+  ],
+  "updatedAt": "2026-08-05T19:20:37.958Z"
+}

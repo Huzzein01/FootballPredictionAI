@@ -57,7 +57,7 @@
   ],
   "coverage": {
     "earliestMatch": "2007-07-19",
-    "latestMatch": "2023-06-30",
+    "latestMatch": "2025-07-15",
     "seasonsWithMatches": [
       "2007-08",
       "2008-09",
@@ -73,7 +73,8 @@
       "2019-20",
       "2020-21",
       "2021-22",
-      "2022-23"
+      "2022-23",
+      "2025-26"
     ],
     "missingSeasons": [
       "1985-86",
@@ -101,7 +102,6 @@
       "2013-14",
       "2023-24",
       "2024-25",
-      "2025-26",
       "2026-27"
     ],
     "competitionScopeVerified": false,
@@ -193,6 +193,12 @@
           "url": "https://www.uefa.com/uefachampionsleague/match/303476/",
           "retrievedAt": "2026-08-04T21:11:48.853Z",
           "rawArtifact": "data/teams/history/normalized/uefa-1785878005892.json"
+        },
+        {
+          "provider": "jalapic/engsoccerdata",
+          "url": "https://raw.githubusercontent.com/jalapic/engsoccerdata/master/data-raw/champs.csv",
+          "retrievedAt": "2026-08-05T17:19:11.274Z",
+          "rawArtifact": "data/teams/history/normalized/engsoccerdata-1785950371133.json"
         }
       ]
     },
@@ -223,6 +229,12 @@
           "url": "https://www.uefa.com/uefachampionsleague/match/303490/",
           "retrievedAt": "2026-08-04T21:11:48.853Z",
           "rawArtifact": "data/teams/history/normalized/uefa-1785878005892.json"
+        },
+        {
+          "provider": "jalapic/engsoccerdata",
+          "url": "https://raw.githubusercontent.com/jalapic/engsoccerdata/master/data-raw/champs.csv",
+          "retrievedAt": "2026-08-05T17:19:11.274Z",
+          "rawArtifact": "data/teams/history/normalized/engsoccerdata-1785950371133.json"
         }
       ]
     },
@@ -478,7 +490,15 @@
         "against": 2
       },
       "result": "L",
-      "sourceRef": "src:1ac1d16b4d91beda9a2b"
+      "sourceRef": "src:1ac1d16b4d91beda9a2b",
+      "sources": [
+        {
+          "provider": "jalapic/engsoccerdata",
+          "url": "https://raw.githubusercontent.com/jalapic/engsoccerdata/master/data-raw/champs.csv",
+          "retrievedAt": "2026-08-05T17:19:11.274Z",
+          "rawArtifact": "data/teams/history/normalized/engsoccerdata-1785950371133.json"
+        }
+      ]
     },
     {
       "id": "uefa:2009420:home",
@@ -529,7 +549,15 @@
         "against": 0
       },
       "result": "W",
-      "sourceRef": "src:1ac1d16b4d91beda9a2b"
+      "sourceRef": "src:1ac1d16b4d91beda9a2b",
+      "sources": [
+        {
+          "provider": "jalapic/engsoccerdata",
+          "url": "https://raw.githubusercontent.com/jalapic/engsoccerdata/master/data-raw/champs.csv",
+          "retrievedAt": "2026-08-05T17:19:11.274Z",
+          "rawArtifact": "data/teams/history/normalized/engsoccerdata-1785950371133.json"
+        }
+      ]
     },
     {
       "id": "uefa:2009437:away",
@@ -1284,14 +1312,72 @@
           "rawArtifact": "data/teams/history/normalized/uefa-1785878005892.json"
         }
       ]
+    },
+    {
+      "id": "uefa:2045287:away",
+      "date": "2025-07-08",
+      "season": "2025-26",
+      "competition": {
+        "name": "UEFA Champions League / European Cup",
+        "type": "continental",
+        "country": "Europe"
+      },
+      "stage": "First qualifying round",
+      "opponent": {
+        "name": "Noah",
+        "slug": "noah"
+      },
+      "venue": "away",
+      "score": {
+        "for": 0,
+        "against": 1
+      },
+      "result": "L",
+      "sources": [
+        {
+          "provider": "UEFA official match API",
+          "url": "https://www.uefa.com/uefachampionsleague/match/2045287/",
+          "retrievedAt": "2026-08-05T18:40:50.296Z",
+          "rawArtifact": "data/teams/history/normalized/uefa-1785955275409.json"
+        }
+      ]
+    },
+    {
+      "id": "uefa:2045301:home",
+      "date": "2025-07-15",
+      "season": "2025-26",
+      "competition": {
+        "name": "UEFA Champions League / European Cup",
+        "type": "continental",
+        "country": "Europe"
+      },
+      "stage": "First qualifying round",
+      "opponent": {
+        "name": "Noah",
+        "slug": "noah"
+      },
+      "venue": "home",
+      "score": {
+        "for": 2,
+        "against": 2
+      },
+      "result": "D",
+      "sources": [
+        {
+          "provider": "UEFA official match API",
+          "url": "https://www.uefa.com/uefachampionsleague/match/2045301/",
+          "retrievedAt": "2026-08-05T18:40:50.296Z",
+          "rawArtifact": "data/teams/history/normalized/uefa-1785955275409.json"
+        }
+      ]
     }
   ],
   "seasonStandings": [],
   "competitionStandings": [
     {
-      "season": "2008-09",
+      "season": "2007-08",
       "competition": {
-        "name": "European Champion Clubs' Cup / Champions League",
+        "name": "UEFA Cup / UEFA Europa League",
         "type": "continental",
         "country": "Europe"
       },
@@ -1300,8 +1386,72 @@
       "wins": 0,
       "draws": 1,
       "losses": 1,
-      "furthestStage": "Q-1",
+      "furthestStage": "First qualifying round",
+      "latestMatch": "2007-08-02",
+      "basis": "derived from source-attributed recorded matches"
+    },
+    {
+      "season": "2008-09",
+      "competition": {
+        "name": "UEFA Champions League / European Cup",
+        "type": "continental",
+        "country": "Europe"
+      },
+      "format": "knockout-progress",
+      "matches": 2,
+      "wins": 0,
+      "draws": 1,
+      "losses": 1,
+      "furthestStage": "First qualifying round",
       "latestMatch": "2008-07-23",
+      "basis": "derived from source-attributed recorded matches"
+    },
+    {
+      "season": "2009-10",
+      "competition": {
+        "name": "UEFA Cup / UEFA Europa League",
+        "type": "continental",
+        "country": "Europe"
+      },
+      "format": "knockout-progress",
+      "matches": 2,
+      "wins": 1,
+      "draws": 0,
+      "losses": 1,
+      "furthestStage": "First qualifying round",
+      "latestMatch": "2009-07-09",
+      "basis": "derived from source-attributed recorded matches"
+    },
+    {
+      "season": "2010-11",
+      "competition": {
+        "name": "UEFA Cup / UEFA Europa League",
+        "type": "continental",
+        "country": "Europe"
+      },
+      "format": "knockout-progress",
+      "matches": 5,
+      "wins": 1,
+      "draws": 0,
+      "losses": 4,
+      "furthestStage": "First qualifying round",
+      "latestMatch": "2011-06-30",
+      "basis": "derived from source-attributed recorded matches"
+    },
+    {
+      "season": "2011-12",
+      "competition": {
+        "name": "UEFA Cup / UEFA Europa League",
+        "type": "continental",
+        "country": "Europe"
+      },
+      "format": "knockout-progress",
+      "matches": 1,
+      "wins": 1,
+      "draws": 0,
+      "losses": 0,
+      "furthestStage": "First qualifying round",
+      "latestMatch": "2011-07-07",
       "basis": "derived from source-attributed recorded matches"
     },
     {
@@ -1319,7 +1469,199 @@
       "furthestStage": "Q-2",
       "latestMatch": "2012-07-25",
       "basis": "derived from source-attributed recorded matches"
+    },
+    {
+      "season": "2012-13",
+      "competition": {
+        "name": "UEFA Champions League / European Cup",
+        "type": "continental",
+        "country": "Europe"
+      },
+      "format": "knockout-progress",
+      "matches": 2,
+      "wins": 1,
+      "draws": 0,
+      "losses": 1,
+      "furthestStage": "Second qualifying round",
+      "latestMatch": "2012-07-25",
+      "basis": "derived from source-attributed recorded matches"
+    },
+    {
+      "season": "2014-15",
+      "competition": {
+        "name": "UEFA Cup / UEFA Europa League",
+        "type": "continental",
+        "country": "Europe"
+      },
+      "format": "knockout-progress",
+      "matches": 4,
+      "wins": 2,
+      "draws": 1,
+      "losses": 1,
+      "furthestStage": "Second qualifying round",
+      "latestMatch": "2014-07-24",
+      "basis": "derived from source-attributed recorded matches"
+    },
+    {
+      "season": "2015-16",
+      "competition": {
+        "name": "UEFA Cup / UEFA Europa League",
+        "type": "continental",
+        "country": "Europe"
+      },
+      "format": "knockout-progress",
+      "matches": 3,
+      "wins": 0,
+      "draws": 2,
+      "losses": 1,
+      "furthestStage": "First qualifying round",
+      "latestMatch": "2016-06-28",
+      "basis": "derived from source-attributed recorded matches"
+    },
+    {
+      "season": "2016-17",
+      "competition": {
+        "name": "UEFA Cup / UEFA Europa League",
+        "type": "continental",
+        "country": "Europe"
+      },
+      "format": "knockout-progress",
+      "matches": 3,
+      "wins": 2,
+      "draws": 0,
+      "losses": 1,
+      "furthestStage": "Second qualifying round",
+      "latestMatch": "2016-07-21",
+      "basis": "derived from source-attributed recorded matches"
+    },
+    {
+      "season": "2017-18",
+      "competition": {
+        "name": "UEFA Champions League / European Cup",
+        "type": "continental",
+        "country": "Europe"
+      },
+      "format": "knockout-progress",
+      "matches": 2,
+      "wins": 0,
+      "draws": 1,
+      "losses": 1,
+      "furthestStage": "Second qualifying round",
+      "latestMatch": "2017-07-18",
+      "basis": "derived from source-attributed recorded matches"
+    },
+    {
+      "season": "2018-19",
+      "competition": {
+        "name": "UEFA Cup / UEFA Europa League",
+        "type": "continental",
+        "country": "Europe"
+      },
+      "format": "knockout-progress",
+      "matches": 2,
+      "wins": 0,
+      "draws": 1,
+      "losses": 1,
+      "furthestStage": "First qualifying round",
+      "latestMatch": "2018-07-19",
+      "basis": "derived from source-attributed recorded matches"
+    },
+    {
+      "season": "2019-20",
+      "competition": {
+        "name": "UEFA Cup / UEFA Europa League",
+        "type": "continental",
+        "country": "Europe"
+      },
+      "format": "knockout-progress",
+      "matches": 4,
+      "wins": 2,
+      "draws": 0,
+      "losses": 2,
+      "furthestStage": "Second qualifying round",
+      "latestMatch": "2019-08-01",
+      "basis": "derived from source-attributed recorded matches"
+    },
+    {
+      "season": "2020-21",
+      "competition": {
+        "name": "UEFA Champions League / European Cup",
+        "type": "continental",
+        "country": "Europe"
+      },
+      "format": "knockout-progress",
+      "matches": 1,
+      "wins": 0,
+      "draws": 0,
+      "losses": 1,
+      "furthestStage": "First qualifying round",
+      "latestMatch": "2020-08-19",
+      "basis": "derived from source-attributed recorded matches"
+    },
+    {
+      "season": "2020-21",
+      "competition": {
+        "name": "UEFA Cup / UEFA Europa League",
+        "type": "continental",
+        "country": "Europe"
+      },
+      "format": "knockout-progress",
+      "matches": 2,
+      "wins": 1,
+      "draws": 0,
+      "losses": 1,
+      "furthestStage": "Third qualifying round",
+      "latestMatch": "2020-09-24",
+      "basis": "derived from source-attributed recorded matches"
+    },
+    {
+      "season": "2021-22",
+      "competition": {
+        "name": "UEFA Champions League / European Cup",
+        "type": "continental",
+        "country": "Europe"
+      },
+      "format": "knockout-progress",
+      "matches": 2,
+      "wins": 0,
+      "draws": 0,
+      "losses": 2,
+      "furthestStage": "First qualifying round",
+      "latestMatch": "2021-07-13",
+      "basis": "derived from source-attributed recorded matches"
+    },
+    {
+      "season": "2022-23",
+      "competition": {
+        "name": "UEFA Champions League / European Cup",
+        "type": "continental",
+        "country": "Europe"
+      },
+      "format": "knockout-progress",
+      "matches": 2,
+      "wins": 1,
+      "draws": 0,
+      "losses": 1,
+      "furthestStage": "Preliminary round",
+      "latestMatch": "2023-06-30",
+      "basis": "derived from source-attributed recorded matches"
+    },
+    {
+      "season": "2025-26",
+      "competition": {
+        "name": "UEFA Champions League / European Cup",
+        "type": "continental",
+        "country": "Europe"
+      },
+      "format": "knockout-progress",
+      "matches": 2,
+      "wins": 0,
+      "draws": 1,
+      "losses": 1,
+      "furthestStage": "First qualifying round",
+      "latestMatch": "2025-07-15",
+      "basis": "derived from source-attributed recorded matches"
     }
   ],
-  "updatedAt": "2026-08-04T21:14:49.457Z"
+  "updatedAt": "2026-08-06T20:44:52.401Z"
 }

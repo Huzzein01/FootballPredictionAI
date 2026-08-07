@@ -1,0 +1,1797 @@
+{
+  "contract": "football-team-history-v1",
+  "team": {
+    "name": "SV Werder Bremen",
+    "slug": "sv-werder-bremen",
+    "primaryLeague": "DFB-Pokal",
+    "aliases": []
+  },
+  "requestedCoverage": {
+    "fromYear": 1985,
+    "to": "present",
+    "includes": [
+      "all competitions",
+      "opponents",
+      "scorelines",
+      "league standings",
+      "competition standings"
+    ]
+  },
+  "sourcePlan": [
+    {
+      "rank": 1,
+      "provider": "Official club archive",
+      "url": "",
+      "scope": "club history, competition participation and match reports",
+      "lookupKey": "SV Werder Bremen",
+      "review": "Verify the club-owned archive URL before collection."
+    },
+    {
+      "rank": 2,
+      "provider": "Official domestic competition / association",
+      "url": "",
+      "scope": "official league fixtures, final tables and cup records",
+      "lookupKey": "DFB-Pokal"
+    },
+    {
+      "rank": 3,
+      "provider": "UEFA",
+      "url": "https://www.uefa.com/",
+      "scope": "official European competition appearances, fixtures and standings",
+      "lookupKey": "SV Werder Bremen"
+    },
+    {
+      "rank": 4,
+      "provider": "RSSSF",
+      "url": "https://www.rsssf.org/",
+      "scope": "historic competitions, tables and cross-checking",
+      "lookupKey": "SV Werder Bremen"
+    },
+    {
+      "rank": 5,
+      "provider": "worldfootball.net",
+      "url": "https://www.worldfootball.net/",
+      "scope": "club match archive and competition participation cross-check",
+      "lookupKey": "SV Werder Bremen"
+    }
+  ],
+  "coverage": {
+    "earliestMatch": "1985-08-24",
+    "latestMatch": "1994-05-14",
+    "seasonsWithMatches": [
+      "1985-86",
+      "1986-87",
+      "1987-88",
+      "1988-89",
+      "1989-90",
+      "1990-91",
+      "1991-92",
+      "1992-93",
+      "1993-94"
+    ],
+    "missingSeasons": [
+      "1994-95",
+      "1995-96",
+      "1996-97",
+      "1997-98",
+      "1998-99",
+      "1999-00",
+      "2000-01",
+      "2001-02",
+      "2002-03",
+      "2003-04",
+      "2004-05",
+      "2005-06",
+      "2006-07",
+      "2007-08",
+      "2008-09",
+      "2009-10",
+      "2010-11",
+      "2011-12",
+      "2012-13",
+      "2013-14",
+      "2014-15",
+      "2015-16",
+      "2016-17",
+      "2017-18",
+      "2018-19",
+      "2019-20",
+      "2020-21",
+      "2021-22",
+      "2022-23",
+      "2023-24",
+      "2024-25",
+      "2025-26",
+      "2026-27"
+    ],
+    "competitionScopeVerified": false,
+    "status": "partial"
+  },
+  "matches": [
+    {
+      "id": "dfb-pokal:8832d00036dc261d20dd1068886911d325aec008d46689af7575f06a0b1a7675:1985-08-24:SV%20Weil:SV%20Werder%20Bremen:away",
+      "date": "1985-08-24",
+      "season": "1985-86",
+      "competition": {
+        "name": "DFB-Pokal",
+        "type": "cup",
+        "country": "Germany"
+      },
+      "stage": "",
+      "opponent": {
+        "name": "SV Weil",
+        "slug": "sv-weil"
+      },
+      "venue": "away",
+      "score": {
+        "for": 7,
+        "against": 0
+      },
+      "result": "W",
+      "sources": [
+        {
+          "provider": "DFB Datencenter",
+          "url": "https://datencenter.dfb.de/datencenter/dfb-pokal/1985-1986/1-runde/sv-weil-sv-werder-bremen-561013",
+          "retrievedAt": "2026-08-05T18:51:01.061Z",
+          "rawArtifact": "data/teams/history/normalized/dfb-pokal-1785956491062.json"
+        }
+      ]
+    },
+    {
+      "id": "dfb-pokal:8832d00036dc261d20dd1068886911d325aec008d46689af7575f06a0b1a7675:1985-10-20:DSC%20Wanne-Eickel:SV%20Werder%20Bremen:away",
+      "date": "1985-10-20",
+      "season": "1985-86",
+      "competition": {
+        "name": "DFB-Pokal",
+        "type": "cup",
+        "country": "Germany"
+      },
+      "stage": "",
+      "opponent": {
+        "name": "DSC Wanne-Eickel",
+        "slug": "dsc-wanne-eickel"
+      },
+      "venue": "away",
+      "score": {
+        "for": 4,
+        "against": 0
+      },
+      "result": "W",
+      "sources": [
+        {
+          "provider": "DFB Datencenter",
+          "url": "https://datencenter.dfb.de/datencenter/dfb-pokal/1985-1986/2-runde/dsc-wanne-eickel-sv-werder-bremen-561047",
+          "retrievedAt": "2026-08-05T18:51:01.061Z",
+          "rawArtifact": "data/teams/history/normalized/dfb-pokal-1785956491062.json"
+        }
+      ]
+    },
+    {
+      "id": "dfb-pokal:8832d00036dc261d20dd1068886911d325aec008d46689af7575f06a0b1a7675:1985-11-13:VfB%20Stuttgart:SV%20Werder%20Bremen:away",
+      "date": "1985-11-13",
+      "season": "1985-86",
+      "competition": {
+        "name": "DFB-Pokal",
+        "type": "cup",
+        "country": "Germany"
+      },
+      "stage": "",
+      "opponent": {
+        "name": "VfB Stuttgart",
+        "slug": "vfb-stuttgart"
+      },
+      "venue": "away",
+      "score": {
+        "for": 0,
+        "against": 2
+      },
+      "result": "L",
+      "sources": [
+        {
+          "provider": "DFB Datencenter",
+          "url": "https://datencenter.dfb.de/datencenter/dfb-pokal/1985-1986/achtelfinale/vfb-stuttgart-sv-werder-bremen-561057",
+          "retrievedAt": "2026-08-05T18:51:01.061Z",
+          "rawArtifact": "data/teams/history/normalized/dfb-pokal-1785956491062.json"
+        }
+      ]
+    },
+    {
+      "id": "dfb-pokal:75c8574084d0be3b3b397c01a95b143c146c204211192167bec77e0128172482:1986-08-29:SV%20Werder%20Bremen:Alemannia%20Aachen:home",
+      "date": "1986-08-29",
+      "season": "1986-87",
+      "competition": {
+        "name": "DFB-Pokal",
+        "type": "cup",
+        "country": "Germany"
+      },
+      "stage": "",
+      "opponent": {
+        "name": "Alemannia Aachen",
+        "slug": "alemannia-aachen"
+      },
+      "venue": "home",
+      "score": {
+        "for": 0,
+        "against": 0
+      },
+      "result": "D",
+      "sources": [
+        {
+          "provider": "DFB Datencenter",
+          "url": "https://datencenter.dfb.de/datencenter/dfb-pokal/1986-1987/1-runde/sv-werder-bremen-alemannia-aachen-560940",
+          "retrievedAt": "2026-08-05T18:51:05.044Z",
+          "rawArtifact": "data/teams/history/normalized/dfb-pokal-1785956491062.json"
+        }
+      ]
+    },
+    {
+      "id": "dfb-pokal:75c8574084d0be3b3b397c01a95b143c146c204211192167bec77e0128172482:1986-10-07:Alemannia%20Aachen:SV%20Werder%20Bremen:away",
+      "date": "1986-10-07",
+      "season": "1986-87",
+      "competition": {
+        "name": "DFB-Pokal",
+        "type": "cup",
+        "country": "Germany"
+      },
+      "stage": "",
+      "opponent": {
+        "name": "Alemannia Aachen",
+        "slug": "alemannia-aachen"
+      },
+      "venue": "away",
+      "score": {
+        "for": 6,
+        "against": 7
+      },
+      "result": "L",
+      "sources": [
+        {
+          "provider": "DFB Datencenter",
+          "url": "https://datencenter.dfb.de/datencenter/dfb-pokal/1986-1987/1-runde/alemannia-aachen-sv-werder-bremen-560964",
+          "retrievedAt": "2026-08-05T18:51:05.044Z",
+          "rawArtifact": "data/teams/history/normalized/dfb-pokal-1785956491062.json"
+        }
+      ]
+    },
+    {
+      "id": "dfb-pokal:928a741a6a43af0614c3af2bea4750c4136cd0f8633436fbca6fc86edd4e0e53:1987-08-28:TSV%20Verden:SV%20Werder%20Bremen:away",
+      "date": "1987-08-28",
+      "season": "1987-88",
+      "competition": {
+        "name": "DFB-Pokal",
+        "type": "cup",
+        "country": "Germany"
+      },
+      "stage": "",
+      "opponent": {
+        "name": "TSV Verden",
+        "slug": "tsv-verden"
+      },
+      "venue": "away",
+      "score": {
+        "for": 4,
+        "against": 0
+      },
+      "result": "W",
+      "sources": [
+        {
+          "provider": "DFB Datencenter",
+          "url": "https://datencenter.dfb.de/datencenter/dfb-pokal/1987-1988/1-runde/tsv-verden-sv-werder-bremen-560866",
+          "retrievedAt": "2026-08-05T18:51:08.822Z",
+          "rawArtifact": "data/teams/history/normalized/dfb-pokal-1785956491062.json"
+        }
+      ]
+    },
+    {
+      "id": "dfb-pokal:928a741a6a43af0614c3af2bea4750c4136cd0f8633436fbca6fc86edd4e0e53:1987-08-29:SV%20Werder%20Bremen:MTV%20Ingolstadt:home",
+      "date": "1987-08-29",
+      "season": "1987-88",
+      "competition": {
+        "name": "DFB-Pokal",
+        "type": "cup",
+        "country": "Germany"
+      },
+      "stage": "",
+      "opponent": {
+        "name": "MTV Ingolstadt",
+        "slug": "mtv-ingolstadt"
+      },
+      "venue": "home",
+      "score": {
+        "for": 5,
+        "against": 1
+      },
+      "result": "W",
+      "sources": [
+        {
+          "provider": "DFB Datencenter",
+          "url": "https://datencenter.dfb.de/datencenter/dfb-pokal/1987-1988/1-runde/sv-werder-bremen-ii-mtv-ingolstadt-560888",
+          "retrievedAt": "2026-08-05T18:51:08.822Z",
+          "rawArtifact": "data/teams/history/normalized/dfb-pokal-1785956491062.json"
+        }
+      ]
+    },
+    {
+      "id": "dfb-pokal:928a741a6a43af0614c3af2bea4750c4136cd0f8633436fbca6fc86edd4e0e53:1987-10-23:SV%20Werder%20Bremen:Hamburger%20SV:home",
+      "date": "1987-10-23",
+      "season": "1987-88",
+      "competition": {
+        "name": "DFB-Pokal",
+        "type": "cup",
+        "country": "Germany"
+      },
+      "stage": "",
+      "opponent": {
+        "name": "Hamburger SV",
+        "slug": "hamburger-sv"
+      },
+      "venue": "home",
+      "score": {
+        "for": 1,
+        "against": 3
+      },
+      "result": "L",
+      "sources": [
+        {
+          "provider": "DFB Datencenter",
+          "url": "https://datencenter.dfb.de/datencenter/dfb-pokal/1987-1988/2-runde/sv-werder-bremen-ii-hamburger-sv-560900",
+          "retrievedAt": "2026-08-05T18:51:08.822Z",
+          "rawArtifact": "data/teams/history/normalized/dfb-pokal-1785956491062.json"
+        }
+      ]
+    },
+    {
+      "id": "dfb-pokal:928a741a6a43af0614c3af2bea4750c4136cd0f8633436fbca6fc86edd4e0e53:1987-11-21:VfL%20Wolfsburg:SV%20Werder%20Bremen:away",
+      "date": "1987-11-21",
+      "season": "1987-88",
+      "competition": {
+        "name": "DFB-Pokal",
+        "type": "cup",
+        "country": "Germany"
+      },
+      "stage": "",
+      "opponent": {
+        "name": "VfL Wolfsburg",
+        "slug": "vfl-wolfsburg"
+      },
+      "venue": "away",
+      "score": {
+        "for": 5,
+        "against": 4
+      },
+      "result": "W",
+      "sources": [
+        {
+          "provider": "DFB Datencenter",
+          "url": "https://datencenter.dfb.de/datencenter/dfb-pokal/1987-1988/2-runde/vfl-wolfsburg-sv-werder-bremen-560917",
+          "retrievedAt": "2026-08-05T18:51:08.822Z",
+          "rawArtifact": "data/teams/history/normalized/dfb-pokal-1785956491062.json"
+        }
+      ]
+    },
+    {
+      "id": "dfb-pokal:928a741a6a43af0614c3af2bea4750c4136cd0f8633436fbca6fc86edd4e0e53:1988-02-13:1.%20FC%20Pforzheim:SV%20Werder%20Bremen:away",
+      "date": "1988-02-13",
+      "season": "1987-88",
+      "competition": {
+        "name": "DFB-Pokal",
+        "type": "cup",
+        "country": "Germany"
+      },
+      "stage": "",
+      "opponent": {
+        "name": "1. FC Pforzheim",
+        "slug": "1-fc-pforzheim"
+      },
+      "venue": "away",
+      "score": {
+        "for": 1,
+        "against": 1
+      },
+      "result": "D",
+      "sources": [
+        {
+          "provider": "DFB Datencenter",
+          "url": "https://datencenter.dfb.de/datencenter/dfb-pokal/1987-1988/achtelfinale/1-fc-pforzheim-sv-werder-bremen-560922",
+          "retrievedAt": "2026-08-05T18:51:08.822Z",
+          "rawArtifact": "data/teams/history/normalized/dfb-pokal-1785956491062.json"
+        }
+      ]
+    },
+    {
+      "id": "dfb-pokal:928a741a6a43af0614c3af2bea4750c4136cd0f8633436fbca6fc86edd4e0e53:1988-02-24:SV%20Werder%20Bremen:1.%20FC%20Pforzheim:home",
+      "date": "1988-02-24",
+      "season": "1987-88",
+      "competition": {
+        "name": "DFB-Pokal",
+        "type": "cup",
+        "country": "Germany"
+      },
+      "stage": "",
+      "opponent": {
+        "name": "1. FC Pforzheim",
+        "slug": "1-fc-pforzheim"
+      },
+      "venue": "home",
+      "score": {
+        "for": 3,
+        "against": 1
+      },
+      "result": "W",
+      "sources": [
+        {
+          "provider": "DFB Datencenter",
+          "url": "https://datencenter.dfb.de/datencenter/dfb-pokal/1987-1988/achtelfinale/sv-werder-bremen-1-fc-pforzheim-560923",
+          "retrievedAt": "2026-08-05T18:51:08.822Z",
+          "rawArtifact": "data/teams/history/normalized/dfb-pokal-1785956491062.json"
+        }
+      ]
+    },
+    {
+      "id": "dfb-pokal:928a741a6a43af0614c3af2bea4750c4136cd0f8633436fbca6fc86edd4e0e53:1988-03-09:SV%20Viktoria%20Aschaffenburg:SV%20Werder%20Bremen:away",
+      "date": "1988-03-09",
+      "season": "1987-88",
+      "competition": {
+        "name": "DFB-Pokal",
+        "type": "cup",
+        "country": "Germany"
+      },
+      "stage": "",
+      "opponent": {
+        "name": "SV Viktoria Aschaffenburg",
+        "slug": "sv-viktoria-aschaffenburg"
+      },
+      "venue": "away",
+      "score": {
+        "for": 3,
+        "against": 1
+      },
+      "result": "W",
+      "sources": [
+        {
+          "provider": "DFB Datencenter",
+          "url": "https://datencenter.dfb.de/datencenter/dfb-pokal/1987-1988/viertelfinale/sv-viktoria-aschaffenburg-sv-werder-bremen-560929",
+          "retrievedAt": "2026-08-05T18:51:08.822Z",
+          "rawArtifact": "data/teams/history/normalized/dfb-pokal-1785956491062.json"
+        }
+      ]
+    },
+    {
+      "id": "dfb-pokal:928a741a6a43af0614c3af2bea4750c4136cd0f8633436fbca6fc86edd4e0e53:1988-04-13:SV%20Werder%20Bremen:Eintracht%20Frankfurt:home",
+      "date": "1988-04-13",
+      "season": "1987-88",
+      "competition": {
+        "name": "DFB-Pokal",
+        "type": "cup",
+        "country": "Germany"
+      },
+      "stage": "",
+      "opponent": {
+        "name": "Eintracht Frankfurt",
+        "slug": "eintracht-frankfurt"
+      },
+      "venue": "home",
+      "score": {
+        "for": 0,
+        "against": 1
+      },
+      "result": "L",
+      "sources": [
+        {
+          "provider": "DFB Datencenter",
+          "url": "https://datencenter.dfb.de/datencenter/dfb-pokal/1987-1988/halbfinale/sv-werder-bremen-eintracht-frankfurt-560933",
+          "retrievedAt": "2026-08-05T18:51:08.822Z",
+          "rawArtifact": "data/teams/history/normalized/dfb-pokal-1785956491062.json"
+        }
+      ]
+    },
+    {
+      "id": "dfb-pokal:432b81e73251b9682469e11189cd5a60916d20be6a49bcbd34e43c3a45bba97e:1988-08-06:SV%20Werder%20Bremen:Hannover%2096:home",
+      "date": "1988-08-06",
+      "season": "1988-89",
+      "competition": {
+        "name": "DFB-Pokal",
+        "type": "cup",
+        "country": "Germany"
+      },
+      "stage": "",
+      "opponent": {
+        "name": "Hannover 96",
+        "slug": "hannover-96"
+      },
+      "venue": "home",
+      "score": {
+        "for": 4,
+        "against": 1
+      },
+      "result": "W",
+      "sources": [
+        {
+          "provider": "DFB Datencenter",
+          "url": "https://datencenter.dfb.de/datencenter/dfb-pokal/1988-1989/1-runde/sv-werder-bremen-hannover-96-560792",
+          "retrievedAt": "2026-08-05T18:51:13.248Z",
+          "rawArtifact": "data/teams/history/normalized/dfb-pokal-1785956491062.json"
+        }
+      ]
+    },
+    {
+      "id": "dfb-pokal:432b81e73251b9682469e11189cd5a60916d20be6a49bcbd34e43c3a45bba97e:1988-10-05:SV%20Werder%20Bremen:SpVgg%20Bayreuth:home",
+      "date": "1988-10-05",
+      "season": "1988-89",
+      "competition": {
+        "name": "DFB-Pokal",
+        "type": "cup",
+        "country": "Germany"
+      },
+      "stage": "",
+      "opponent": {
+        "name": "SpVgg Bayreuth",
+        "slug": "spvgg-bayreuth"
+      },
+      "venue": "home",
+      "score": {
+        "for": 6,
+        "against": 1
+      },
+      "result": "W",
+      "sources": [
+        {
+          "provider": "DFB Datencenter",
+          "url": "https://datencenter.dfb.de/datencenter/dfb-pokal/1988-1989/2-runde/sv-werder-bremen-spvgg-oberfranken-bayreuth-560834",
+          "retrievedAt": "2026-08-05T18:51:13.248Z",
+          "rawArtifact": "data/teams/history/normalized/dfb-pokal-1785956491062.json"
+        }
+      ]
+    },
+    {
+      "id": "dfb-pokal:432b81e73251b9682469e11189cd5a60916d20be6a49bcbd34e43c3a45bba97e:1988-12-10:SV%20Werder%20Bremen:Fortuna%20K%C3%B6ln:home",
+      "date": "1988-12-10",
+      "season": "1988-89",
+      "competition": {
+        "name": "DFB-Pokal",
+        "type": "cup",
+        "country": "Germany"
+      },
+      "stage": "",
+      "opponent": {
+        "name": "Fortuna Köln",
+        "slug": "fortuna-koln"
+      },
+      "venue": "home",
+      "score": {
+        "for": 3,
+        "against": 1
+      },
+      "result": "W",
+      "sources": [
+        {
+          "provider": "DFB Datencenter",
+          "url": "https://datencenter.dfb.de/datencenter/dfb-pokal/1988-1989/achtelfinale/sv-werder-bremen-fortuna-koeln-560853",
+          "retrievedAt": "2026-08-05T18:51:13.248Z",
+          "rawArtifact": "data/teams/history/normalized/dfb-pokal-1785956491062.json"
+        }
+      ]
+    },
+    {
+      "id": "dfb-pokal:432b81e73251b9682469e11189cd5a60916d20be6a49bcbd34e43c3a45bba97e:1989-03-29:Hamburger%20SV:SV%20Werder%20Bremen:away",
+      "date": "1989-03-29",
+      "season": "1988-89",
+      "competition": {
+        "name": "DFB-Pokal",
+        "type": "cup",
+        "country": "Germany"
+      },
+      "stage": "",
+      "opponent": {
+        "name": "Hamburger SV",
+        "slug": "hamburger-sv"
+      },
+      "venue": "away",
+      "score": {
+        "for": 1,
+        "against": 0
+      },
+      "result": "W",
+      "sources": [
+        {
+          "provider": "DFB Datencenter",
+          "url": "https://datencenter.dfb.de/datencenter/dfb-pokal/1988-1989/viertelfinale/hamburger-sv-sv-werder-bremen-560859",
+          "retrievedAt": "2026-08-05T18:51:13.248Z",
+          "rawArtifact": "data/teams/history/normalized/dfb-pokal-1785956491062.json"
+        }
+      ]
+    },
+    {
+      "id": "dfb-pokal:432b81e73251b9682469e11189cd5a60916d20be6a49bcbd34e43c3a45bba97e:1989-05-10:Bayer%2004%20Leverkusen:SV%20Werder%20Bremen:away",
+      "date": "1989-05-10",
+      "season": "1988-89",
+      "competition": {
+        "name": "DFB-Pokal",
+        "type": "cup",
+        "country": "Germany"
+      },
+      "stage": "",
+      "opponent": {
+        "name": "Bayer 04 Leverkusen",
+        "slug": "bayer-04-leverkusen"
+      },
+      "venue": "away",
+      "score": {
+        "for": 2,
+        "against": 1
+      },
+      "result": "W",
+      "sources": [
+        {
+          "provider": "DFB Datencenter",
+          "url": "https://datencenter.dfb.de/datencenter/dfb-pokal/1988-1989/halbfinale/bayer-04-leverkusen-sv-werder-bremen-560861",
+          "retrievedAt": "2026-08-05T18:51:13.248Z",
+          "rawArtifact": "data/teams/history/normalized/dfb-pokal-1785956491062.json"
+        }
+      ]
+    },
+    {
+      "id": "dfb-pokal:432b81e73251b9682469e11189cd5a60916d20be6a49bcbd34e43c3a45bba97e:1989-06-24:Borussia%20Dortmund:SV%20Werder%20Bremen:away",
+      "date": "1989-06-24",
+      "season": "1988-89",
+      "competition": {
+        "name": "DFB-Pokal",
+        "type": "cup",
+        "country": "Germany"
+      },
+      "stage": "",
+      "opponent": {
+        "name": "Borussia Dortmund",
+        "slug": "borussia-dortmund"
+      },
+      "venue": "away",
+      "score": {
+        "for": 1,
+        "against": 4
+      },
+      "result": "L",
+      "sources": [
+        {
+          "provider": "DFB Datencenter",
+          "url": "https://datencenter.dfb.de/datencenter/dfb-pokal/1988-1989/finale/borussia-dortmund-sv-werder-bremen-560862",
+          "retrievedAt": "2026-08-05T18:51:13.248Z",
+          "rawArtifact": "data/teams/history/normalized/dfb-pokal-1785956491062.json"
+        }
+      ]
+    },
+    {
+      "id": "dfb-pokal:323884400bcb0ae13f66dc59e8d0c32c369b9d930005cf5a8d5e6191042dd8d8:1989-08-18:FC%20St.%20Pauli:SV%20Werder%20Bremen:away",
+      "date": "1989-08-18",
+      "season": "1989-90",
+      "competition": {
+        "name": "DFB-Pokal",
+        "type": "cup",
+        "country": "Germany"
+      },
+      "stage": "",
+      "opponent": {
+        "name": "FC St. Pauli",
+        "slug": "fc-st-pauli"
+      },
+      "venue": "away",
+      "score": {
+        "for": 2,
+        "against": 1
+      },
+      "result": "W",
+      "sources": [
+        {
+          "provider": "DFB Datencenter",
+          "url": "https://datencenter.dfb.de/datencenter/dfb-pokal/1989-1990/1-runde/fc-st-pauli-sv-werder-bremen-560728",
+          "retrievedAt": "2026-08-05T18:51:16.899Z",
+          "rawArtifact": "data/teams/history/normalized/dfb-pokal-1785956491062.json"
+        }
+      ]
+    },
+    {
+      "id": "dfb-pokal:323884400bcb0ae13f66dc59e8d0c32c369b9d930005cf5a8d5e6191042dd8d8:1989-08-20:SV%20Werder%20Bremen:Bayer%2004%20Leverkusen:home",
+      "date": "1989-08-20",
+      "season": "1989-90",
+      "competition": {
+        "name": "DFB-Pokal",
+        "type": "cup",
+        "country": "Germany"
+      },
+      "stage": "",
+      "opponent": {
+        "name": "Bayer 04 Leverkusen",
+        "slug": "bayer-04-leverkusen"
+      },
+      "venue": "home",
+      "score": {
+        "for": 1,
+        "against": 4
+      },
+      "result": "L",
+      "sources": [
+        {
+          "provider": "DFB Datencenter",
+          "url": "https://datencenter.dfb.de/datencenter/dfb-pokal/1989-1990/1-runde/sv-werder-bremen-ii-bayer-04-leverkusen-560752",
+          "retrievedAt": "2026-08-05T18:51:16.899Z",
+          "rawArtifact": "data/teams/history/normalized/dfb-pokal-1785956491062.json"
+        }
+      ]
+    },
+    {
+      "id": "dfb-pokal:323884400bcb0ae13f66dc59e8d0c32c369b9d930005cf5a8d5e6191042dd8d8:1989-09-23:Stuttgarter%20Kickers:SV%20Werder%20Bremen:away",
+      "date": "1989-09-23",
+      "season": "1989-90",
+      "competition": {
+        "name": "DFB-Pokal",
+        "type": "cup",
+        "country": "Germany"
+      },
+      "stage": "",
+      "opponent": {
+        "name": "Stuttgarter Kickers",
+        "slug": "stuttgarter-kickers"
+      },
+      "venue": "away",
+      "score": {
+        "for": 3,
+        "against": 2
+      },
+      "result": "W",
+      "sources": [
+        {
+          "provider": "DFB Datencenter",
+          "url": "https://datencenter.dfb.de/datencenter/dfb-pokal/1989-1990/2-runde/stuttgarter-kickers-sv-werder-bremen-560763",
+          "retrievedAt": "2026-08-05T18:51:16.899Z",
+          "rawArtifact": "data/teams/history/normalized/dfb-pokal-1785956491062.json"
+        }
+      ]
+    },
+    {
+      "id": "dfb-pokal:323884400bcb0ae13f66dc59e8d0c32c369b9d930005cf5a8d5e6191042dd8d8:1989-11-08:TSV%201860%20M%C3%BCnchen:SV%20Werder%20Bremen:away",
+      "date": "1989-11-08",
+      "season": "1989-90",
+      "competition": {
+        "name": "DFB-Pokal",
+        "type": "cup",
+        "country": "Germany"
+      },
+      "stage": "",
+      "opponent": {
+        "name": "TSV 1860 München",
+        "slug": "tsv-1860-munchen"
+      },
+      "venue": "away",
+      "score": {
+        "for": 2,
+        "against": 1
+      },
+      "result": "W",
+      "sources": [
+        {
+          "provider": "DFB Datencenter",
+          "url": "https://datencenter.dfb.de/datencenter/dfb-pokal/1989-1990/achtelfinale/tsv-1860-muenchen-sv-werder-bremen-560775",
+          "retrievedAt": "2026-08-05T18:51:16.899Z",
+          "rawArtifact": "data/teams/history/normalized/dfb-pokal-1785956491062.json"
+        }
+      ]
+    },
+    {
+      "id": "dfb-pokal:323884400bcb0ae13f66dc59e8d0c32c369b9d930005cf5a8d5e6191042dd8d8:1989-12-12:SV%20Werder%20Bremen:VfB%20Stuttgart:home",
+      "date": "1989-12-12",
+      "season": "1989-90",
+      "competition": {
+        "name": "DFB-Pokal",
+        "type": "cup",
+        "country": "Germany"
+      },
+      "stage": "",
+      "opponent": {
+        "name": "VfB Stuttgart",
+        "slug": "vfb-stuttgart"
+      },
+      "venue": "home",
+      "score": {
+        "for": 3,
+        "against": 0
+      },
+      "result": "W",
+      "sources": [
+        {
+          "provider": "DFB Datencenter",
+          "url": "https://datencenter.dfb.de/datencenter/dfb-pokal/1989-1990/viertelfinale/sv-werder-bremen-vfb-stuttgart-560783",
+          "retrievedAt": "2026-08-05T18:51:16.899Z",
+          "rawArtifact": "data/teams/history/normalized/dfb-pokal-1785956491062.json"
+        }
+      ]
+    },
+    {
+      "id": "dfb-pokal:323884400bcb0ae13f66dc59e8d0c32c369b9d930005cf5a8d5e6191042dd8d8:1990-03-27:SV%20Werder%20Bremen:Eintracht%20Braunschweig:home",
+      "date": "1990-03-27",
+      "season": "1989-90",
+      "competition": {
+        "name": "DFB-Pokal",
+        "type": "cup",
+        "country": "Germany"
+      },
+      "stage": "",
+      "opponent": {
+        "name": "Eintracht Braunschweig",
+        "slug": "eintracht-braunschweig"
+      },
+      "venue": "home",
+      "score": {
+        "for": 2,
+        "against": 0
+      },
+      "result": "W",
+      "sources": [
+        {
+          "provider": "DFB Datencenter",
+          "url": "https://datencenter.dfb.de/datencenter/dfb-pokal/1989-1990/halbfinale/sv-werder-bremen-eintracht-braunschweig-560788",
+          "retrievedAt": "2026-08-05T18:51:16.899Z",
+          "rawArtifact": "data/teams/history/normalized/dfb-pokal-1785956491062.json"
+        }
+      ]
+    },
+    {
+      "id": "dfb-pokal:323884400bcb0ae13f66dc59e8d0c32c369b9d930005cf5a8d5e6191042dd8d8:1990-05-19:1.%20FC%20Kaiserslautern:SV%20Werder%20Bremen:away",
+      "date": "1990-05-19",
+      "season": "1989-90",
+      "competition": {
+        "name": "DFB-Pokal",
+        "type": "cup",
+        "country": "Germany"
+      },
+      "stage": "",
+      "opponent": {
+        "name": "1. FC Kaiserslautern",
+        "slug": "1-fc-kaiserslautern"
+      },
+      "venue": "away",
+      "score": {
+        "for": 2,
+        "against": 3
+      },
+      "result": "L",
+      "sources": [
+        {
+          "provider": "DFB Datencenter",
+          "url": "https://datencenter.dfb.de/datencenter/dfb-pokal/1989-1990/finale/1-fc-kaiserslautern-sv-werder-bremen-560790",
+          "retrievedAt": "2026-08-05T18:51:16.899Z",
+          "rawArtifact": "data/teams/history/normalized/dfb-pokal-1785956491062.json"
+        }
+      ]
+    },
+    {
+      "id": "dfb-pokal:114cd5ba66bf8859fbc266b70d420ab87d27f0150733247a7624503beb278354:1990-08-04:SpVgg%20Weiden:SV%20Werder%20Bremen:away",
+      "date": "1990-08-04",
+      "season": "1990-91",
+      "competition": {
+        "name": "DFB-Pokal",
+        "type": "cup",
+        "country": "Germany"
+      },
+      "stage": "",
+      "opponent": {
+        "name": "SpVgg Weiden",
+        "slug": "spvgg-weiden"
+      },
+      "venue": "away",
+      "score": {
+        "for": 2,
+        "against": 1
+      },
+      "result": "W",
+      "sources": [
+        {
+          "provider": "DFB Datencenter",
+          "url": "https://datencenter.dfb.de/datencenter/dfb-pokal/1990-1991/1-runde/spvgg-weiden-sv-werder-bremen-560667",
+          "retrievedAt": "2026-08-05T18:51:21.841Z",
+          "rawArtifact": "data/teams/history/normalized/dfb-pokal-1785956491062.json"
+        }
+      ]
+    },
+    {
+      "id": "dfb-pokal:114cd5ba66bf8859fbc266b70d420ab87d27f0150733247a7624503beb278354:1990-08-04:SV%20Werder%20Bremen:SG%20Wattenscheid%2009:home",
+      "date": "1990-08-04",
+      "season": "1990-91",
+      "competition": {
+        "name": "DFB-Pokal",
+        "type": "cup",
+        "country": "Germany"
+      },
+      "stage": "",
+      "opponent": {
+        "name": "SG Wattenscheid 09",
+        "slug": "sg-wattenscheid-09"
+      },
+      "venue": "home",
+      "score": {
+        "for": 1,
+        "against": 3
+      },
+      "result": "L",
+      "sources": [
+        {
+          "provider": "DFB Datencenter",
+          "url": "https://datencenter.dfb.de/datencenter/dfb-pokal/1990-1991/1-runde/sv-werder-bremen-ii-sg-wattenscheid-09-560665",
+          "retrievedAt": "2026-08-05T18:51:21.841Z",
+          "rawArtifact": "data/teams/history/normalized/dfb-pokal-1785956491062.json"
+        }
+      ]
+    },
+    {
+      "id": "dfb-pokal:114cd5ba66bf8859fbc266b70d420ab87d27f0150733247a7624503beb278354:1990-11-02:SV%20Werder%20Bremen:FC%20St.%20Pauli:home",
+      "date": "1990-11-02",
+      "season": "1990-91",
+      "competition": {
+        "name": "DFB-Pokal",
+        "type": "cup",
+        "country": "Germany"
+      },
+      "stage": "",
+      "opponent": {
+        "name": "FC St. Pauli",
+        "slug": "fc-st-pauli"
+      },
+      "venue": "home",
+      "score": {
+        "for": 2,
+        "against": 0
+      },
+      "result": "W",
+      "sources": [
+        {
+          "provider": "DFB Datencenter",
+          "url": "https://datencenter.dfb.de/datencenter/dfb-pokal/1990-1991/2-runde/sv-werder-bremen-fc-st-pauli-560688",
+          "retrievedAt": "2026-08-05T18:51:21.841Z",
+          "rawArtifact": "data/teams/history/normalized/dfb-pokal-1785956491062.json"
+        }
+      ]
+    },
+    {
+      "id": "dfb-pokal:114cd5ba66bf8859fbc266b70d420ab87d27f0150733247a7624503beb278354:1990-11-30:SV%20Werder%20Bremen:FC%20Schalke%2004:home",
+      "date": "1990-11-30",
+      "season": "1990-91",
+      "competition": {
+        "name": "DFB-Pokal",
+        "type": "cup",
+        "country": "Germany"
+      },
+      "stage": "",
+      "opponent": {
+        "name": "FC Schalke 04",
+        "slug": "fc-schalke-04"
+      },
+      "venue": "home",
+      "score": {
+        "for": 3,
+        "against": 1
+      },
+      "result": "W",
+      "sources": [
+        {
+          "provider": "DFB Datencenter",
+          "url": "https://datencenter.dfb.de/datencenter/dfb-pokal/1990-1991/achtelfinale/sv-werder-bremen-fc-schalke-04-560708",
+          "retrievedAt": "2026-08-05T18:51:21.841Z",
+          "rawArtifact": "data/teams/history/normalized/dfb-pokal-1785956491062.json"
+        }
+      ]
+    },
+    {
+      "id": "dfb-pokal:114cd5ba66bf8859fbc266b70d420ab87d27f0150733247a7624503beb278354:1991-03-30:Kasseler%20Sportverein%20Hessen:SV%20Werder%20Bremen:away",
+      "date": "1991-03-30",
+      "season": "1990-91",
+      "competition": {
+        "name": "DFB-Pokal",
+        "type": "cup",
+        "country": "Germany"
+      },
+      "stage": "",
+      "opponent": {
+        "name": "Kasseler Sportverein Hessen",
+        "slug": "kasseler-sportverein-hessen"
+      },
+      "venue": "away",
+      "score": {
+        "for": 2,
+        "against": 0
+      },
+      "result": "W",
+      "sources": [
+        {
+          "provider": "DFB Datencenter",
+          "url": "https://datencenter.dfb.de/datencenter/dfb-pokal/1990-1991/viertelfinale/hessen-kassel-sv-werder-bremen-560718",
+          "retrievedAt": "2026-08-05T18:51:21.841Z",
+          "rawArtifact": "data/teams/history/normalized/dfb-pokal-1785956491062.json"
+        }
+      ]
+    },
+    {
+      "id": "dfb-pokal:114cd5ba66bf8859fbc266b70d420ab87d27f0150733247a7624503beb278354:1991-04-25:Eintracht%20Frankfurt:SV%20Werder%20Bremen:away",
+      "date": "1991-04-25",
+      "season": "1990-91",
+      "competition": {
+        "name": "DFB-Pokal",
+        "type": "cup",
+        "country": "Germany"
+      },
+      "stage": "",
+      "opponent": {
+        "name": "Eintracht Frankfurt",
+        "slug": "eintracht-frankfurt"
+      },
+      "venue": "away",
+      "score": {
+        "for": 2,
+        "against": 2
+      },
+      "result": "D",
+      "sources": [
+        {
+          "provider": "DFB Datencenter",
+          "url": "https://datencenter.dfb.de/datencenter/dfb-pokal/1990-1991/halbfinale/eintracht-frankfurt-sv-werder-bremen-560722",
+          "retrievedAt": "2026-08-05T18:51:21.841Z",
+          "rawArtifact": "data/teams/history/normalized/dfb-pokal-1785956491062.json"
+        }
+      ]
+    },
+    {
+      "id": "dfb-pokal:114cd5ba66bf8859fbc266b70d420ab87d27f0150733247a7624503beb278354:1991-05-08:SV%20Werder%20Bremen:Eintracht%20Frankfurt:home",
+      "date": "1991-05-08",
+      "season": "1990-91",
+      "competition": {
+        "name": "DFB-Pokal",
+        "type": "cup",
+        "country": "Germany"
+      },
+      "stage": "",
+      "opponent": {
+        "name": "Eintracht Frankfurt",
+        "slug": "eintracht-frankfurt"
+      },
+      "venue": "home",
+      "score": {
+        "for": 6,
+        "against": 3
+      },
+      "result": "W",
+      "sources": [
+        {
+          "provider": "DFB Datencenter",
+          "url": "https://datencenter.dfb.de/datencenter/dfb-pokal/1990-1991/halbfinale/sv-werder-bremen-eintracht-frankfurt-560723",
+          "retrievedAt": "2026-08-05T18:51:21.841Z",
+          "rawArtifact": "data/teams/history/normalized/dfb-pokal-1785956491062.json"
+        }
+      ]
+    },
+    {
+      "id": "dfb-pokal:114cd5ba66bf8859fbc266b70d420ab87d27f0150733247a7624503beb278354:1991-06-22:SV%20Werder%20Bremen:1.%20FC%20K%C3%B6ln:home",
+      "date": "1991-06-22",
+      "season": "1990-91",
+      "competition": {
+        "name": "DFB-Pokal",
+        "type": "cup",
+        "country": "Germany"
+      },
+      "stage": "",
+      "opponent": {
+        "name": "1. FC Köln",
+        "slug": "1-fc-koln"
+      },
+      "venue": "home",
+      "score": {
+        "for": 4,
+        "against": 3
+      },
+      "result": "W",
+      "sources": [
+        {
+          "provider": "DFB Datencenter",
+          "url": "https://datencenter.dfb.de/datencenter/dfb-pokal/1990-1991/finale/sv-werder-bremen-1-fc-koeln-560724",
+          "retrievedAt": "2026-08-05T18:51:21.841Z",
+          "rawArtifact": "data/teams/history/normalized/dfb-pokal-1785956491062.json"
+        }
+      ]
+    },
+    {
+      "id": "dfb-pokal:a4ed906c58d52e1068ceff2bcbd83a8d0750dbb4c8dd97ba56e7c4749cd80658:1991-08-16:SV%20Werder%20Bremen:VfB%20Stuttgart:home",
+      "date": "1991-08-16",
+      "season": "1991-92",
+      "competition": {
+        "name": "DFB-Pokal",
+        "type": "cup",
+        "country": "Germany"
+      },
+      "stage": "",
+      "opponent": {
+        "name": "VfB Stuttgart",
+        "slug": "vfb-stuttgart"
+      },
+      "venue": "home",
+      "score": {
+        "for": 1,
+        "against": 5
+      },
+      "result": "L",
+      "sources": [
+        {
+          "provider": "DFB Datencenter",
+          "url": "https://datencenter.dfb.de/datencenter/dfb-pokal/1991-1992/2-runde/sv-werder-bremen-ii-vfb-stuttgart-560594",
+          "retrievedAt": "2026-08-05T18:51:26.641Z",
+          "rawArtifact": "data/teams/history/normalized/dfb-pokal-1785956491062.json"
+        }
+      ]
+    },
+    {
+      "id": "dfb-pokal:a4ed906c58d52e1068ceff2bcbd83a8d0750dbb4c8dd97ba56e7c4749cd80658:1991-08-17:SV%20Werder%20Bremen:Hamburger%20SV:home",
+      "date": "1991-08-17",
+      "season": "1991-92",
+      "competition": {
+        "name": "DFB-Pokal",
+        "type": "cup",
+        "country": "Germany"
+      },
+      "stage": "",
+      "opponent": {
+        "name": "Hamburger SV",
+        "slug": "hamburger-sv"
+      },
+      "venue": "home",
+      "score": {
+        "for": 3,
+        "against": 1
+      },
+      "result": "W",
+      "sources": [
+        {
+          "provider": "DFB Datencenter",
+          "url": "https://datencenter.dfb.de/datencenter/dfb-pokal/1991-1992/2-runde/sv-werder-bremen-hamburger-sv-560596",
+          "retrievedAt": "2026-08-05T18:51:26.641Z",
+          "rawArtifact": "data/teams/history/normalized/dfb-pokal-1785956491062.json"
+        }
+      ]
+    },
+    {
+      "id": "dfb-pokal:a4ed906c58d52e1068ceff2bcbd83a8d0750dbb4c8dd97ba56e7c4749cd80658:1991-09-03:Fortuna%20D%C3%BCsseldorf:SV%20Werder%20Bremen:away",
+      "date": "1991-09-03",
+      "season": "1991-92",
+      "competition": {
+        "name": "DFB-Pokal",
+        "type": "cup",
+        "country": "Germany"
+      },
+      "stage": "",
+      "opponent": {
+        "name": "Fortuna Düsseldorf",
+        "slug": "fortuna-dusseldorf"
+      },
+      "venue": "away",
+      "score": {
+        "for": 3,
+        "against": 1
+      },
+      "result": "W",
+      "sources": [
+        {
+          "provider": "DFB Datencenter",
+          "url": "https://datencenter.dfb.de/datencenter/dfb-pokal/1991-1992/3-runde/fortuna-duesseldorf-sv-werder-bremen-560624",
+          "retrievedAt": "2026-08-05T18:51:26.641Z",
+          "rawArtifact": "data/teams/history/normalized/dfb-pokal-1785956491062.json"
+        }
+      ]
+    },
+    {
+      "id": "dfb-pokal:a4ed906c58d52e1068ceff2bcbd83a8d0750dbb4c8dd97ba56e7c4749cd80658:1991-09-24:SV%20Werder%20Bremen:1.%20FC%20Dynamo%20Dresden:home",
+      "date": "1991-09-24",
+      "season": "1991-92",
+      "competition": {
+        "name": "DFB-Pokal",
+        "type": "cup",
+        "country": "Germany"
+      },
+      "stage": "",
+      "opponent": {
+        "name": "1. FC Dynamo Dresden",
+        "slug": "1-fc-dynamo-dresden"
+      },
+      "venue": "home",
+      "score": {
+        "for": 4,
+        "against": 1
+      },
+      "result": "W",
+      "sources": [
+        {
+          "provider": "DFB Datencenter",
+          "url": "https://datencenter.dfb.de/datencenter/dfb-pokal/1991-1992/achtelfinale/sv-werder-bremen-dynamo-dresden-560641",
+          "retrievedAt": "2026-08-05T18:51:26.641Z",
+          "rawArtifact": "data/teams/history/normalized/dfb-pokal-1785956491062.json"
+        }
+      ]
+    },
+    {
+      "id": "dfb-pokal:a4ed906c58d52e1068ceff2bcbd83a8d0750dbb4c8dd97ba56e7c4749cd80658:1991-12-03:SV%20Werder%20Bremen:1.%20FC%20Kaiserslautern:home",
+      "date": "1991-12-03",
+      "season": "1991-92",
+      "competition": {
+        "name": "DFB-Pokal",
+        "type": "cup",
+        "country": "Germany"
+      },
+      "stage": "",
+      "opponent": {
+        "name": "1. FC Kaiserslautern",
+        "slug": "1-fc-kaiserslautern"
+      },
+      "venue": "home",
+      "score": {
+        "for": 2,
+        "against": 0
+      },
+      "result": "W",
+      "sources": [
+        {
+          "provider": "DFB Datencenter",
+          "url": "https://datencenter.dfb.de/datencenter/dfb-pokal/1991-1992/viertelfinale/sv-werder-bremen-1-fc-kaiserslautern-560651",
+          "retrievedAt": "2026-08-05T18:51:26.641Z",
+          "rawArtifact": "data/teams/history/normalized/dfb-pokal-1785956491062.json"
+        }
+      ]
+    },
+    {
+      "id": "dfb-pokal:a4ed906c58d52e1068ceff2bcbd83a8d0750dbb4c8dd97ba56e7c4749cd80658:1992-04-08:Hannover%2096:SV%20Werder%20Bremen:away",
+      "date": "1992-04-08",
+      "season": "1991-92",
+      "competition": {
+        "name": "DFB-Pokal",
+        "type": "cup",
+        "country": "Germany"
+      },
+      "stage": "",
+      "opponent": {
+        "name": "Hannover 96",
+        "slug": "hannover-96"
+      },
+      "venue": "away",
+      "score": {
+        "for": 5,
+        "against": 6
+      },
+      "result": "L",
+      "sources": [
+        {
+          "provider": "DFB Datencenter",
+          "url": "https://datencenter.dfb.de/datencenter/dfb-pokal/1991-1992/halbfinale/hannover-96-sv-werder-bremen-560652",
+          "retrievedAt": "2026-08-05T18:51:26.641Z",
+          "rawArtifact": "data/teams/history/normalized/dfb-pokal-1785956491062.json"
+        }
+      ]
+    },
+    {
+      "id": "dfb-pokal:91bff6de20749f3a2147d35317ff91a715d3b4638c2d5e9e24b3fc21eff18455:1992-08-19:SC%20J%C3%BClich:SV%20Werder%20Bremen:away",
+      "date": "1992-08-19",
+      "season": "1992-93",
+      "competition": {
+        "name": "DFB-Pokal",
+        "type": "cup",
+        "country": "Germany"
+      },
+      "stage": "",
+      "opponent": {
+        "name": "SC Jülich",
+        "slug": "sc-julich"
+      },
+      "venue": "away",
+      "score": {
+        "for": 5,
+        "against": 1
+      },
+      "result": "W",
+      "sources": [
+        {
+          "provider": "DFB Datencenter",
+          "url": "https://datencenter.dfb.de/datencenter/dfb-pokal/1992-1993/1-runde/sc-juelich-sv-werder-bremen-560502",
+          "retrievedAt": "2026-08-05T18:51:30.951Z",
+          "rawArtifact": "data/teams/history/normalized/dfb-pokal-1785956491062.json"
+        }
+      ]
+    },
+    {
+      "id": "dfb-pokal:91bff6de20749f3a2147d35317ff91a715d3b4638c2d5e9e24b3fc21eff18455:1992-09-12:SpVgg%20Beckum:SV%20Werder%20Bremen:away",
+      "date": "1992-09-12",
+      "season": "1992-93",
+      "competition": {
+        "name": "DFB-Pokal",
+        "type": "cup",
+        "country": "Germany"
+      },
+      "stage": "",
+      "opponent": {
+        "name": "SpVgg Beckum",
+        "slug": "spvgg-beckum"
+      },
+      "venue": "away",
+      "score": {
+        "for": 7,
+        "against": 0
+      },
+      "result": "W",
+      "sources": [
+        {
+          "provider": "DFB Datencenter",
+          "url": "https://datencenter.dfb.de/datencenter/dfb-pokal/1992-1993/2-runde/spvgg-beckum-sv-werder-bremen-560526",
+          "retrievedAt": "2026-08-05T18:51:30.951Z",
+          "rawArtifact": "data/teams/history/normalized/dfb-pokal-1785956491062.json"
+        }
+      ]
+    },
+    {
+      "id": "dfb-pokal:91bff6de20749f3a2147d35317ff91a715d3b4638c2d5e9e24b3fc21eff18455:1992-09-12:SV%20Werder%20Bremen:Borussia%20M%C3%B6nchengladbach:home",
+      "date": "1992-09-12",
+      "season": "1992-93",
+      "competition": {
+        "name": "DFB-Pokal",
+        "type": "cup",
+        "country": "Germany"
+      },
+      "stage": "",
+      "opponent": {
+        "name": "Borussia Mönchengladbach",
+        "slug": "borussia-monchengladbach"
+      },
+      "venue": "home",
+      "score": {
+        "for": 1,
+        "against": 2
+      },
+      "result": "L",
+      "sources": [
+        {
+          "provider": "DFB Datencenter",
+          "url": "https://datencenter.dfb.de/datencenter/dfb-pokal/1992-1993/2-runde/sv-werder-bremen-ii-borussia-moenchengladbach-560520",
+          "retrievedAt": "2026-08-05T18:51:30.951Z",
+          "rawArtifact": "data/teams/history/normalized/dfb-pokal-1785956491062.json"
+        }
+      ]
+    },
+    {
+      "id": "dfb-pokal:91bff6de20749f3a2147d35317ff91a715d3b4638c2d5e9e24b3fc21eff18455:1992-10-10:SV%20Werder%20Bremen:1.%20FSV%20Mainz%2005:home",
+      "date": "1992-10-10",
+      "season": "1992-93",
+      "competition": {
+        "name": "DFB-Pokal",
+        "type": "cup",
+        "country": "Germany"
+      },
+      "stage": "",
+      "opponent": {
+        "name": "1. FSV Mainz 05",
+        "slug": "1-fsv-mainz-05"
+      },
+      "venue": "home",
+      "score": {
+        "for": 3,
+        "against": 1
+      },
+      "result": "W",
+      "sources": [
+        {
+          "provider": "DFB Datencenter",
+          "url": "https://datencenter.dfb.de/datencenter/dfb-pokal/1992-1993/3-runde/sv-werder-bremen-1-fsv-mainz-05-560542",
+          "retrievedAt": "2026-08-05T18:51:30.951Z",
+          "rawArtifact": "data/teams/history/normalized/dfb-pokal-1785956491062.json"
+        }
+      ]
+    },
+    {
+      "id": "dfb-pokal:91bff6de20749f3a2147d35317ff91a715d3b4638c2d5e9e24b3fc21eff18455:1992-11-07:SV%20Werder%20Bremen:Borussia%20Dortmund:home",
+      "date": "1992-11-07",
+      "season": "1992-93",
+      "competition": {
+        "name": "DFB-Pokal",
+        "type": "cup",
+        "country": "Germany"
+      },
+      "stage": "",
+      "opponent": {
+        "name": "Borussia Dortmund",
+        "slug": "borussia-dortmund"
+      },
+      "venue": "home",
+      "score": {
+        "for": 2,
+        "against": 0
+      },
+      "result": "W",
+      "sources": [
+        {
+          "provider": "DFB Datencenter",
+          "url": "https://datencenter.dfb.de/datencenter/dfb-pokal/1992-1993/achtelfinale/sv-werder-bremen-borussia-dortmund-560561",
+          "retrievedAt": "2026-08-05T18:51:30.951Z",
+          "rawArtifact": "data/teams/history/normalized/dfb-pokal-1785956491062.json"
+        }
+      ]
+    },
+    {
+      "id": "dfb-pokal:91bff6de20749f3a2147d35317ff91a715d3b4638c2d5e9e24b3fc21eff18455:1992-12-01:Chemnitzer%20FC:SV%20Werder%20Bremen:away",
+      "date": "1992-12-01",
+      "season": "1992-93",
+      "competition": {
+        "name": "DFB-Pokal",
+        "type": "cup",
+        "country": "Germany"
+      },
+      "stage": "",
+      "opponent": {
+        "name": "Chemnitzer FC",
+        "slug": "chemnitzer-fc"
+      },
+      "venue": "away",
+      "score": {
+        "for": 1,
+        "against": 2
+      },
+      "result": "L",
+      "sources": [
+        {
+          "provider": "DFB Datencenter",
+          "url": "https://datencenter.dfb.de/datencenter/dfb-pokal/1992-1993/viertelfinale/chemnitzer-fc-sv-werder-bremen-560563",
+          "retrievedAt": "2026-08-05T18:51:30.951Z",
+          "rawArtifact": "data/teams/history/normalized/dfb-pokal-1785956491062.json"
+        }
+      ]
+    },
+    {
+      "id": "dfb-pokal:d9c9de4cd63abf9a9176d2805cd68ecc132dd7ec218cdc21fb0675d1d14aa936:1993-08-02:SV%20Werder%20Bremen:Bayern%20M%C3%BCnchen:home",
+      "date": "1993-08-02",
+      "season": "1993-94",
+      "competition": {
+        "name": "DFB-Pokal",
+        "type": "cup",
+        "country": "Germany"
+      },
+      "stage": "",
+      "opponent": {
+        "name": "Bayern München",
+        "slug": "bayern-munchen"
+      },
+      "venue": "home",
+      "score": {
+        "for": 1,
+        "against": 5
+      },
+      "result": "L",
+      "sources": [
+        {
+          "provider": "DFB Datencenter",
+          "url": "https://datencenter.dfb.de/datencenter/dfb-pokal/1993-1994/1-runde/sv-werder-bremen-ii-bayern-muenchen-560412",
+          "retrievedAt": "2026-08-05T18:51:35.230Z",
+          "rawArtifact": "data/teams/history/normalized/dfb-pokal-1785956491062.json"
+        }
+      ]
+    },
+    {
+      "id": "dfb-pokal:d9c9de4cd63abf9a9176d2805cd68ecc132dd7ec218cdc21fb0675d1d14aa936:1993-08-25:SV%20Werder%20Bremen:Stuttgarter%20Kickers:home",
+      "date": "1993-08-25",
+      "season": "1993-94",
+      "competition": {
+        "name": "DFB-Pokal",
+        "type": "cup",
+        "country": "Germany"
+      },
+      "stage": "",
+      "opponent": {
+        "name": "Stuttgarter Kickers",
+        "slug": "stuttgarter-kickers"
+      },
+      "venue": "home",
+      "score": {
+        "for": 2,
+        "against": 1
+      },
+      "result": "W",
+      "sources": [
+        {
+          "provider": "DFB Datencenter",
+          "url": "https://datencenter.dfb.de/datencenter/dfb-pokal/1993-1994/2-runde/sv-werder-bremen-stuttgarter-kickers-560449",
+          "retrievedAt": "2026-08-05T18:51:35.230Z",
+          "rawArtifact": "data/teams/history/normalized/dfb-pokal-1785956491062.json"
+        }
+      ]
+    },
+    {
+      "id": "dfb-pokal:d9c9de4cd63abf9a9176d2805cd68ecc132dd7ec218cdc21fb0675d1d14aa936:1993-09-12:Kickers%20Offenbach:SV%20Werder%20Bremen:away",
+      "date": "1993-09-12",
+      "season": "1993-94",
+      "competition": {
+        "name": "DFB-Pokal",
+        "type": "cup",
+        "country": "Germany"
+      },
+      "stage": "",
+      "opponent": {
+        "name": "Kickers Offenbach",
+        "slug": "kickers-offenbach"
+      },
+      "venue": "away",
+      "score": {
+        "for": 5,
+        "against": 3
+      },
+      "result": "W",
+      "sources": [
+        {
+          "provider": "DFB Datencenter",
+          "url": "https://datencenter.dfb.de/datencenter/dfb-pokal/1993-1994/3-runde/kickers-offenbach-sv-werder-bremen-560466",
+          "retrievedAt": "2026-08-05T18:51:35.230Z",
+          "rawArtifact": "data/teams/history/normalized/dfb-pokal-1785956491062.json"
+        }
+      ]
+    },
+    {
+      "id": "dfb-pokal:d9c9de4cd63abf9a9176d2805cd68ecc132dd7ec218cdc21fb0675d1d14aa936:1993-10-27:SV%20Werder%20Bremen:Hamburger%20SV:home",
+      "date": "1993-10-27",
+      "season": "1993-94",
+      "competition": {
+        "name": "DFB-Pokal",
+        "type": "cup",
+        "country": "Germany"
+      },
+      "stage": "",
+      "opponent": {
+        "name": "Hamburger SV",
+        "slug": "hamburger-sv"
+      },
+      "venue": "home",
+      "score": {
+        "for": 4,
+        "against": 2
+      },
+      "result": "W",
+      "sources": [
+        {
+          "provider": "DFB Datencenter",
+          "url": "https://datencenter.dfb.de/datencenter/dfb-pokal/1993-1994/achtelfinale/sv-werder-bremen-hamburger-sv-560475",
+          "retrievedAt": "2026-08-05T18:51:35.230Z",
+          "rawArtifact": "data/teams/history/normalized/dfb-pokal-1785956491062.json"
+        }
+      ]
+    },
+    {
+      "id": "dfb-pokal:d9c9de4cd63abf9a9176d2805cd68ecc132dd7ec218cdc21fb0675d1d14aa936:1994-02-09:SV%20Werder%20Bremen:1.%20FC%20Kaiserslautern:home",
+      "date": "1994-02-09",
+      "season": "1993-94",
+      "competition": {
+        "name": "DFB-Pokal",
+        "type": "cup",
+        "country": "Germany"
+      },
+      "stage": "",
+      "opponent": {
+        "name": "1. FC Kaiserslautern",
+        "slug": "1-fc-kaiserslautern"
+      },
+      "venue": "home",
+      "score": {
+        "for": 4,
+        "against": 3
+      },
+      "result": "W",
+      "sources": [
+        {
+          "provider": "DFB Datencenter",
+          "url": "https://datencenter.dfb.de/datencenter/dfb-pokal/1993-1994/viertelfinale/sv-werder-bremen-1-fc-kaiserslautern-560483",
+          "retrievedAt": "2026-08-05T18:51:35.230Z",
+          "rawArtifact": "data/teams/history/normalized/dfb-pokal-1785956491062.json"
+        }
+      ]
+    },
+    {
+      "id": "dfb-pokal:d9c9de4cd63abf9a9176d2805cd68ecc132dd7ec218cdc21fb0675d1d14aa936:1994-03-09:1.%20FC%20Dynamo%20Dresden:SV%20Werder%20Bremen:away",
+      "date": "1994-03-09",
+      "season": "1993-94",
+      "competition": {
+        "name": "DFB-Pokal",
+        "type": "cup",
+        "country": "Germany"
+      },
+      "stage": "",
+      "opponent": {
+        "name": "1. FC Dynamo Dresden",
+        "slug": "1-fc-dynamo-dresden"
+      },
+      "venue": "away",
+      "score": {
+        "for": 2,
+        "against": 0
+      },
+      "result": "W",
+      "sources": [
+        {
+          "provider": "DFB Datencenter",
+          "url": "https://datencenter.dfb.de/datencenter/dfb-pokal/1993-1994/halbfinale/dynamo-dresden-sv-werder-bremen-560485",
+          "retrievedAt": "2026-08-05T18:51:35.230Z",
+          "rawArtifact": "data/teams/history/normalized/dfb-pokal-1785956491062.json"
+        }
+      ]
+    },
+    {
+      "id": "dfb-pokal:d9c9de4cd63abf9a9176d2805cd68ecc132dd7ec218cdc21fb0675d1d14aa936:1994-05-14:SV%20Werder%20Bremen:Rot-Weiss%20Essen:home",
+      "date": "1994-05-14",
+      "season": "1993-94",
+      "competition": {
+        "name": "DFB-Pokal",
+        "type": "cup",
+        "country": "Germany"
+      },
+      "stage": "",
+      "opponent": {
+        "name": "Rot-Weiss Essen",
+        "slug": "rot-weiss-essen"
+      },
+      "venue": "home",
+      "score": {
+        "for": 3,
+        "against": 1
+      },
+      "result": "W",
+      "sources": [
+        {
+          "provider": "DFB Datencenter",
+          "url": "https://datencenter.dfb.de/datencenter/dfb-pokal/1993-1994/finale/sv-werder-bremen-rot-weiss-essen-560486",
+          "retrievedAt": "2026-08-05T18:51:35.230Z",
+          "rawArtifact": "data/teams/history/normalized/dfb-pokal-1785956491062.json"
+        }
+      ]
+    }
+  ],
+  "seasonStandings": [],
+  "competitionStandings": [
+    {
+      "season": "1985-86",
+      "competition": {
+        "name": "DFB-Pokal",
+        "type": "cup",
+        "country": "Germany"
+      },
+      "format": "knockout-progress",
+      "matches": 3,
+      "wins": 2,
+      "draws": 0,
+      "losses": 1,
+      "furthestStage": "recorded participation",
+      "latestMatch": "1985-11-13",
+      "basis": "derived from source-attributed recorded matches"
+    },
+    {
+      "season": "1986-87",
+      "competition": {
+        "name": "DFB-Pokal",
+        "type": "cup",
+        "country": "Germany"
+      },
+      "format": "knockout-progress",
+      "matches": 2,
+      "wins": 0,
+      "draws": 1,
+      "losses": 1,
+      "furthestStage": "recorded participation",
+      "latestMatch": "1986-10-07",
+      "basis": "derived from source-attributed recorded matches"
+    },
+    {
+      "season": "1987-88",
+      "competition": {
+        "name": "DFB-Pokal",
+        "type": "cup",
+        "country": "Germany"
+      },
+      "format": "knockout-progress",
+      "matches": 8,
+      "wins": 5,
+      "draws": 1,
+      "losses": 2,
+      "furthestStage": "recorded participation",
+      "latestMatch": "1988-04-13",
+      "basis": "derived from source-attributed recorded matches"
+    },
+    {
+      "season": "1988-89",
+      "competition": {
+        "name": "DFB-Pokal",
+        "type": "cup",
+        "country": "Germany"
+      },
+      "format": "knockout-progress",
+      "matches": 6,
+      "wins": 5,
+      "draws": 0,
+      "losses": 1,
+      "furthestStage": "recorded participation",
+      "latestMatch": "1989-06-24",
+      "basis": "derived from source-attributed recorded matches"
+    },
+    {
+      "season": "1989-90",
+      "competition": {
+        "name": "DFB-Pokal",
+        "type": "cup",
+        "country": "Germany"
+      },
+      "format": "knockout-progress",
+      "matches": 7,
+      "wins": 5,
+      "draws": 0,
+      "losses": 2,
+      "furthestStage": "recorded participation",
+      "latestMatch": "1990-05-19",
+      "basis": "derived from source-attributed recorded matches"
+    },
+    {
+      "season": "1990-91",
+      "competition": {
+        "name": "DFB-Pokal",
+        "type": "cup",
+        "country": "Germany"
+      },
+      "format": "knockout-progress",
+      "matches": 8,
+      "wins": 6,
+      "draws": 1,
+      "losses": 1,
+      "furthestStage": "recorded participation",
+      "latestMatch": "1991-06-22",
+      "basis": "derived from source-attributed recorded matches"
+    },
+    {
+      "season": "1991-92",
+      "competition": {
+        "name": "DFB-Pokal",
+        "type": "cup",
+        "country": "Germany"
+      },
+      "format": "knockout-progress",
+      "matches": 6,
+      "wins": 4,
+      "draws": 0,
+      "losses": 2,
+      "furthestStage": "recorded participation",
+      "latestMatch": "1992-04-08",
+      "basis": "derived from source-attributed recorded matches"
+    },
+    {
+      "season": "1992-93",
+      "competition": {
+        "name": "DFB-Pokal",
+        "type": "cup",
+        "country": "Germany"
+      },
+      "format": "knockout-progress",
+      "matches": 6,
+      "wins": 4,
+      "draws": 0,
+      "losses": 2,
+      "furthestStage": "recorded participation",
+      "latestMatch": "1992-12-01",
+      "basis": "derived from source-attributed recorded matches"
+    },
+    {
+      "season": "1993-94",
+      "competition": {
+        "name": "DFB-Pokal",
+        "type": "cup",
+        "country": "Germany"
+      },
+      "format": "knockout-progress",
+      "matches": 7,
+      "wins": 6,
+      "draws": 0,
+      "losses": 1,
+      "furthestStage": "recorded participation",
+      "latestMatch": "1994-05-14",
+      "basis": "derived from source-attributed recorded matches"
+    }
+  ],
+  "updatedAt": "2026-08-05T19:20:49.907Z"
+}

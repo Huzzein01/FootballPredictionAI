@@ -1,0 +1,70 @@
+{
+  "contract": "football-team-history-v1",
+  "team": {
+    "name": "AC Horsens",
+    "slug": "ac-horsens",
+    "primaryLeague": "Danish Superliga",
+    "aliases": []
+  },
+  "requestedCoverage": {
+    "fromYear": 1985,
+    "to": "present",
+    "includes": [
+      "all competitions",
+      "opponents",
+      "scorelines",
+      "league standings",
+      "competition standings"
+    ]
+  },
+  "sourcePlan": [
+    {
+      "rank": 1,
+      "provider": "Official club archive",
+      "url": "",
+      "scope": "club history, competition participation and match reports",
+      "lookupKey": "AC Horsens",
+      "review": "Verify the club-owned archive URL before collection."
+    },
+    {
+      "rank": 2,
+      "provider": "Official domestic competition / association",
+      "url": "",
+      "scope": "official league fixtures, final tables and cup records",
+      "lookupKey": "Danish Superliga"
+    },
+    {
+      "rank": 3,
+      "provider": "UEFA",
+      "url": "https://www.uefa.com/",
+      "scope": "official European competition appearances, fixtures and standings",
+      "lookupKey": "AC Horsens"
+    },
+    {
+      "rank": 4,
+      "provider": "RSSSF",
+      "url": "https://www.rsssf.org/",
+      "scope": "historic competitions, tables and cross-checking",
+      "lookupKey": "AC Horsens"
+    },
+    {
+      "rank": 5,
+      "provider": "worldfootball.net",
+      "url": "https://www.worldfootball.net/",
+      "scope": "club match archive and competition participation cross-check",
+      "lookupKey": "AC Horsens"
+    }
+  ],
+  "coverage": {
+    "earliestMatch": "",
+    "latestMatch": "",
+    "seasonsWithMatches": [],
+    "missingSeasons": [],
+    "competitionScopeVerified": false,
+    "status": "not-collected"
+  },
+  "matches": [],
+  "seasonStandings": [],
+  "competitionStandings": [],
+  "updatedAt": "2026-08-05T19:20:30.362Z"
+}

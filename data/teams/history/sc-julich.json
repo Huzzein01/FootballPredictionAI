@@ -1,0 +1,338 @@
+{
+  "contract": "football-team-history-v1",
+  "team": {
+    "name": "SC Jülich",
+    "slug": "sc-julich",
+    "primaryLeague": "DFB-Pokal",
+    "aliases": []
+  },
+  "requestedCoverage": {
+    "fromYear": 1985,
+    "to": "present",
+    "includes": [
+      "all competitions",
+      "opponents",
+      "scorelines",
+      "league standings",
+      "competition standings"
+    ]
+  },
+  "sourcePlan": [
+    {
+      "rank": 1,
+      "provider": "Official club archive",
+      "url": "",
+      "scope": "club history, competition participation and match reports",
+      "lookupKey": "SC Jülich",
+      "review": "Verify the club-owned archive URL before collection."
+    },
+    {
+      "rank": 2,
+      "provider": "Official domestic competition / association",
+      "url": "",
+      "scope": "official league fixtures, final tables and cup records",
+      "lookupKey": "DFB-Pokal"
+    },
+    {
+      "rank": 3,
+      "provider": "UEFA",
+      "url": "https://www.uefa.com/",
+      "scope": "official European competition appearances, fixtures and standings",
+      "lookupKey": "SC Jülich"
+    },
+    {
+      "rank": 4,
+      "provider": "RSSSF",
+      "url": "https://www.rsssf.org/",
+      "scope": "historic competitions, tables and cross-checking",
+      "lookupKey": "SC Jülich"
+    },
+    {
+      "rank": 5,
+      "provider": "worldfootball.net",
+      "url": "https://www.worldfootball.net/",
+      "scope": "club match archive and competition participation cross-check",
+      "lookupKey": "SC Jülich"
+    }
+  ],
+  "coverage": {
+    "earliestMatch": "1989-08-19",
+    "latestMatch": "1992-08-19",
+    "seasonsWithMatches": [
+      "1989-90",
+      "1991-92",
+      "1992-93"
+    ],
+    "missingSeasons": [
+      "1985-86",
+      "1986-87",
+      "1987-88",
+      "1988-89",
+      "1990-91",
+      "1993-94",
+      "1994-95",
+      "1995-96",
+      "1996-97",
+      "1997-98",
+      "1998-99",
+      "1999-00",
+      "2000-01",
+      "2001-02",
+      "2002-03",
+      "2003-04",
+      "2004-05",
+      "2005-06",
+      "2006-07",
+      "2007-08",
+      "2008-09",
+      "2009-10",
+      "2010-11",
+      "2011-12",
+      "2012-13",
+      "2013-14",
+      "2014-15",
+      "2015-16",
+      "2016-17",
+      "2017-18",
+      "2018-19",
+      "2019-20",
+      "2020-21",
+      "2021-22",
+      "2022-23",
+      "2023-24",
+      "2024-25",
+      "2025-26",
+      "2026-27"
+    ],
+    "competitionScopeVerified": false,
+    "status": "partial"
+  },
+  "matches": [
+    {
+      "id": "dfb-pokal:323884400bcb0ae13f66dc59e8d0c32c369b9d930005cf5a8d5e6191042dd8d8:1989-08-19:SC%20J%C3%BClich:Blau-Wei%C3%9F%2090%20Berlin:home",
+      "date": "1989-08-19",
+      "season": "1989-90",
+      "competition": {
+        "name": "DFB-Pokal",
+        "type": "cup",
+        "country": "Germany"
+      },
+      "stage": "",
+      "opponent": {
+        "name": "Blau-Weiß 90 Berlin",
+        "slug": "blau-wei-90-berlin"
+      },
+      "venue": "home",
+      "score": {
+        "for": 2,
+        "against": 2
+      },
+      "result": "D",
+      "sources": [
+        {
+          "provider": "DFB Datencenter",
+          "url": "https://datencenter.dfb.de/datencenter/dfb-pokal/1989-1990/1-runde/sc-juelich-blau-weiss-90-berlin-560742",
+          "retrievedAt": "2026-08-05T18:51:16.899Z",
+          "rawArtifact": "data/teams/history/normalized/dfb-pokal-1785956491062.json"
+        }
+      ]
+    },
+    {
+      "id": "dfb-pokal:323884400bcb0ae13f66dc59e8d0c32c369b9d930005cf5a8d5e6191042dd8d8:1989-08-30:Blau-Wei%C3%9F%2090%20Berlin:SC%20J%C3%BClich:away",
+      "date": "1989-08-30",
+      "season": "1989-90",
+      "competition": {
+        "name": "DFB-Pokal",
+        "type": "cup",
+        "country": "Germany"
+      },
+      "stage": "",
+      "opponent": {
+        "name": "Blau-Weiß 90 Berlin",
+        "slug": "blau-wei-90-berlin"
+      },
+      "venue": "away",
+      "score": {
+        "for": 0,
+        "against": 1
+      },
+      "result": "L",
+      "sources": [
+        {
+          "provider": "DFB Datencenter",
+          "url": "https://datencenter.dfb.de/datencenter/dfb-pokal/1989-1990/1-runde/blau-weiss-90-berlin-sc-juelich-560743",
+          "retrievedAt": "2026-08-05T18:51:16.899Z",
+          "rawArtifact": "data/teams/history/normalized/dfb-pokal-1785956491062.json"
+        }
+      ]
+    },
+    {
+      "id": "dfb-pokal:a4ed906c58d52e1068ceff2bcbd83a8d0750dbb4c8dd97ba56e7c4749cd80658:1991-07-27:SC%20J%C3%BClich:Hertha%20BSC:home",
+      "date": "1991-07-27",
+      "season": "1991-92",
+      "competition": {
+        "name": "DFB-Pokal",
+        "type": "cup",
+        "country": "Germany"
+      },
+      "stage": "",
+      "opponent": {
+        "name": "Hertha BSC",
+        "slug": "hertha-bsc"
+      },
+      "venue": "home",
+      "score": {
+        "for": 2,
+        "against": 1
+      },
+      "result": "W",
+      "sources": [
+        {
+          "provider": "DFB Datencenter",
+          "url": "https://datencenter.dfb.de/datencenter/dfb-pokal/1991-1992/1-runde/sc-juelich-hertha-bsc-560573",
+          "retrievedAt": "2026-08-05T18:51:26.641Z",
+          "rawArtifact": "data/teams/history/normalized/dfb-pokal-1785956491062.json"
+        }
+      ]
+    },
+    {
+      "id": "dfb-pokal:a4ed906c58d52e1068ceff2bcbd83a8d0750dbb4c8dd97ba56e7c4749cd80658:1991-08-18:Arminia%20Hannover:SC%20J%C3%BClich:away",
+      "date": "1991-08-18",
+      "season": "1991-92",
+      "competition": {
+        "name": "DFB-Pokal",
+        "type": "cup",
+        "country": "Germany"
+      },
+      "stage": "",
+      "opponent": {
+        "name": "Arminia Hannover",
+        "slug": "arminia-hannover"
+      },
+      "venue": "away",
+      "score": {
+        "for": 5,
+        "against": 1
+      },
+      "result": "W",
+      "sources": [
+        {
+          "provider": "DFB Datencenter",
+          "url": "https://datencenter.dfb.de/datencenter/dfb-pokal/1991-1992/2-runde/arminia-hannover-sc-juelich-560623",
+          "retrievedAt": "2026-08-05T18:51:26.641Z",
+          "rawArtifact": "data/teams/history/normalized/dfb-pokal-1785956491062.json"
+        }
+      ]
+    },
+    {
+      "id": "dfb-pokal:a4ed906c58d52e1068ceff2bcbd83a8d0750dbb4c8dd97ba56e7c4749cd80658:1991-09-04:SC%20J%C3%BClich:Borussia%20M%C3%B6nchengladbach:home",
+      "date": "1991-09-04",
+      "season": "1991-92",
+      "competition": {
+        "name": "DFB-Pokal",
+        "type": "cup",
+        "country": "Germany"
+      },
+      "stage": "",
+      "opponent": {
+        "name": "Borussia Mönchengladbach",
+        "slug": "borussia-monchengladbach"
+      },
+      "venue": "home",
+      "score": {
+        "for": 0,
+        "against": 1
+      },
+      "result": "L",
+      "sources": [
+        {
+          "provider": "DFB Datencenter",
+          "url": "https://datencenter.dfb.de/datencenter/dfb-pokal/1991-1992/3-runde/sc-juelich-borussia-moenchengladbach-560637",
+          "retrievedAt": "2026-08-05T18:51:26.641Z",
+          "rawArtifact": "data/teams/history/normalized/dfb-pokal-1785956491062.json"
+        }
+      ]
+    },
+    {
+      "id": "dfb-pokal:91bff6de20749f3a2147d35317ff91a715d3b4638c2d5e9e24b3fc21eff18455:1992-08-19:SC%20J%C3%BClich:SV%20Werder%20Bremen:home",
+      "date": "1992-08-19",
+      "season": "1992-93",
+      "competition": {
+        "name": "DFB-Pokal",
+        "type": "cup",
+        "country": "Germany"
+      },
+      "stage": "",
+      "opponent": {
+        "name": "SV Werder Bremen",
+        "slug": "sv-werder-bremen"
+      },
+      "venue": "home",
+      "score": {
+        "for": 1,
+        "against": 5
+      },
+      "result": "L",
+      "sources": [
+        {
+          "provider": "DFB Datencenter",
+          "url": "https://datencenter.dfb.de/datencenter/dfb-pokal/1992-1993/1-runde/sc-juelich-sv-werder-bremen-560502",
+          "retrievedAt": "2026-08-05T18:51:30.951Z",
+          "rawArtifact": "data/teams/history/normalized/dfb-pokal-1785956491062.json"
+        }
+      ]
+    }
+  ],
+  "seasonStandings": [],
+  "competitionStandings": [
+    {
+      "season": "1989-90",
+      "competition": {
+        "name": "DFB-Pokal",
+        "type": "cup",
+        "country": "Germany"
+      },
+      "format": "knockout-progress",
+      "matches": 2,
+      "wins": 0,
+      "draws": 1,
+      "losses": 1,
+      "furthestStage": "recorded participation",
+      "latestMatch": "1989-08-30",
+      "basis": "derived from source-attributed recorded matches"
+    },
+    {
+      "season": "1991-92",
+      "competition": {
+        "name": "DFB-Pokal",
+        "type": "cup",
+        "country": "Germany"
+      },
+      "format": "knockout-progress",
+      "matches": 3,
+      "wins": 2,
+      "draws": 0,
+      "losses": 1,
+      "furthestStage": "recorded participation",
+      "latestMatch": "1991-09-04",
+      "basis": "derived from source-attributed recorded matches"
+    },
+    {
+      "season": "1992-93",
+      "competition": {
+        "name": "DFB-Pokal",
+        "type": "cup",
+        "country": "Germany"
+      },
+      "format": "knockout-progress",
+      "matches": 1,
+      "wins": 0,
+      "draws": 0,
+      "losses": 1,
+      "furthestStage": "recorded participation",
+      "latestMatch": "1992-08-19",
+      "basis": "derived from source-attributed recorded matches"
+    }
+  ],
+  "updatedAt": "2026-08-05T19:20:47.842Z"
+}

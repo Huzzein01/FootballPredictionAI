@@ -1,0 +1,444 @@
+{
+  "contract": "football-team-history-v1",
+  "team": {
+    "name": "Bremer SV",
+    "slug": "bremer-sv",
+    "primaryLeague": "DFB-Pokal",
+    "aliases": []
+  },
+  "requestedCoverage": {
+    "fromYear": 1985,
+    "to": "present",
+    "includes": [
+      "all competitions",
+      "opponents",
+      "scorelines",
+      "league standings",
+      "competition standings"
+    ]
+  },
+  "sourcePlan": [
+    {
+      "rank": 1,
+      "provider": "Official club archive",
+      "url": "",
+      "scope": "club history, competition participation and match reports",
+      "lookupKey": "Bremer SV",
+      "review": "Verify the club-owned archive URL before collection."
+    },
+    {
+      "rank": 2,
+      "provider": "Official domestic competition / association",
+      "url": "",
+      "scope": "official league fixtures, final tables and cup records",
+      "lookupKey": "DFB-Pokal"
+    },
+    {
+      "rank": 3,
+      "provider": "UEFA",
+      "url": "https://www.uefa.com/",
+      "scope": "official European competition appearances, fixtures and standings",
+      "lookupKey": "Bremer SV"
+    },
+    {
+      "rank": 4,
+      "provider": "RSSSF",
+      "url": "https://www.rsssf.org/",
+      "scope": "historic competitions, tables and cross-checking",
+      "lookupKey": "Bremer SV"
+    },
+    {
+      "rank": 5,
+      "provider": "worldfootball.net",
+      "url": "https://www.worldfootball.net/",
+      "scope": "club match archive and competition participation cross-check",
+      "lookupKey": "Bremer SV"
+    }
+  ],
+  "coverage": {
+    "earliestMatch": "1985-08-24",
+    "latestMatch": "2016-08-21",
+    "seasonsWithMatches": [
+      "1985-86",
+      "1986-87",
+      "1991-92",
+      "2014-15",
+      "2015-16",
+      "2016-17"
+    ],
+    "missingSeasons": [
+      "1987-88",
+      "1988-89",
+      "1989-90",
+      "1990-91",
+      "1992-93",
+      "1993-94",
+      "1994-95",
+      "1995-96",
+      "1996-97",
+      "1997-98",
+      "1998-99",
+      "1999-00",
+      "2000-01",
+      "2001-02",
+      "2002-03",
+      "2003-04",
+      "2004-05",
+      "2005-06",
+      "2006-07",
+      "2007-08",
+      "2008-09",
+      "2009-10",
+      "2010-11",
+      "2011-12",
+      "2012-13",
+      "2013-14",
+      "2017-18",
+      "2018-19",
+      "2019-20",
+      "2020-21",
+      "2021-22",
+      "2022-23",
+      "2023-24",
+      "2024-25",
+      "2025-26",
+      "2026-27"
+    ],
+    "competitionScopeVerified": false,
+    "status": "partial"
+  },
+  "matches": [
+    {
+      "id": "dfb-pokal:8832d00036dc261d20dd1068886911d325aec008d46689af7575f06a0b1a7675:1985-08-24:Bremer%20SV:MSV%20Duisburg:home",
+      "date": "1985-08-24",
+      "season": "1985-86",
+      "competition": {
+        "name": "DFB-Pokal",
+        "type": "cup",
+        "country": "Germany"
+      },
+      "stage": "",
+      "opponent": {
+        "name": "MSV Duisburg",
+        "slug": "msv-duisburg"
+      },
+      "venue": "home",
+      "score": {
+        "for": 1,
+        "against": 3
+      },
+      "result": "L",
+      "sources": [
+        {
+          "provider": "DFB Datencenter",
+          "url": "https://datencenter.dfb.de/datencenter/dfb-pokal/1985-1986/1-runde/bremer-sv-msv-duisburg-561027",
+          "retrievedAt": "2026-08-05T18:51:01.061Z",
+          "rawArtifact": "data/teams/history/normalized/dfb-pokal-1785956491062.json"
+        }
+      ]
+    },
+    {
+      "id": "dfb-pokal:75c8574084d0be3b3b397c01a95b143c146c204211192167bec77e0128172482:1986-08-31:Bremer%20SV:Kasseler%20Sportverein%20Hessen:home",
+      "date": "1986-08-31",
+      "season": "1986-87",
+      "competition": {
+        "name": "DFB-Pokal",
+        "type": "cup",
+        "country": "Germany"
+      },
+      "stage": "",
+      "opponent": {
+        "name": "Kasseler Sportverein Hessen",
+        "slug": "kasseler-sportverein-hessen"
+      },
+      "venue": "home",
+      "score": {
+        "for": 2,
+        "against": 2
+      },
+      "result": "D",
+      "sources": [
+        {
+          "provider": "DFB Datencenter",
+          "url": "https://datencenter.dfb.de/datencenter/dfb-pokal/1986-1987/1-runde/bremer-sv-hessen-kassel-560961",
+          "retrievedAt": "2026-08-05T18:51:05.044Z",
+          "rawArtifact": "data/teams/history/normalized/dfb-pokal-1785956491062.json"
+        }
+      ]
+    },
+    {
+      "id": "dfb-pokal:75c8574084d0be3b3b397c01a95b143c146c204211192167bec77e0128172482:1986-09-10:Kasseler%20Sportverein%20Hessen:Bremer%20SV:away",
+      "date": "1986-09-10",
+      "season": "1986-87",
+      "competition": {
+        "name": "DFB-Pokal",
+        "type": "cup",
+        "country": "Germany"
+      },
+      "stage": "",
+      "opponent": {
+        "name": "Kasseler Sportverein Hessen",
+        "slug": "kasseler-sportverein-hessen"
+      },
+      "venue": "away",
+      "score": {
+        "for": 5,
+        "against": 4
+      },
+      "result": "W",
+      "sources": [
+        {
+          "provider": "DFB Datencenter",
+          "url": "https://datencenter.dfb.de/datencenter/dfb-pokal/1986-1987/1-runde/hessen-kassel-bremer-sv-560967",
+          "retrievedAt": "2026-08-05T18:51:05.044Z",
+          "rawArtifact": "data/teams/history/normalized/dfb-pokal-1785956491062.json"
+        }
+      ]
+    },
+    {
+      "id": "dfb-pokal:75c8574084d0be3b3b397c01a95b143c146c204211192167bec77e0128172482:1986-10-25:Bremer%20SV:FC%20St.%20Pauli:home",
+      "date": "1986-10-25",
+      "season": "1986-87",
+      "competition": {
+        "name": "DFB-Pokal",
+        "type": "cup",
+        "country": "Germany"
+      },
+      "stage": "",
+      "opponent": {
+        "name": "FC St. Pauli",
+        "slug": "fc-st-pauli"
+      },
+      "venue": "home",
+      "score": {
+        "for": 0,
+        "against": 3
+      },
+      "result": "L",
+      "sources": [
+        {
+          "provider": "DFB Datencenter",
+          "url": "https://datencenter.dfb.de/datencenter/dfb-pokal/1986-1987/2-runde/bremer-sv-fc-st-pauli-560981",
+          "retrievedAt": "2026-08-05T18:51:05.044Z",
+          "rawArtifact": "data/teams/history/normalized/dfb-pokal-1785956491062.json"
+        }
+      ]
+    },
+    {
+      "id": "dfb-pokal:a4ed906c58d52e1068ceff2bcbd83a8d0750dbb4c8dd97ba56e7c4749cd80658:1991-07-28:Bremer%20SV:Fortuna%20K%C3%B6ln:home",
+      "date": "1991-07-28",
+      "season": "1991-92",
+      "competition": {
+        "name": "DFB-Pokal",
+        "type": "cup",
+        "country": "Germany"
+      },
+      "stage": "",
+      "opponent": {
+        "name": "Fortuna Köln",
+        "slug": "fortuna-koln"
+      },
+      "venue": "home",
+      "score": {
+        "for": 0,
+        "against": 7
+      },
+      "result": "L",
+      "sources": [
+        {
+          "provider": "DFB Datencenter",
+          "url": "https://datencenter.dfb.de/datencenter/dfb-pokal/1991-1992/1-runde/bremer-sv-fortuna-koeln-560588",
+          "retrievedAt": "2026-08-05T18:51:26.641Z",
+          "rawArtifact": "data/teams/history/normalized/dfb-pokal-1785956491062.json"
+        }
+      ]
+    },
+    {
+      "id": "dfb-pokal:1eb1c57fc8c3e63a7717a8ab3ee4e4c9b6cde310238fb8afc59890f98aa3b86d:2014-08-16:Bremer%20SV:Eintracht%20Braunschweig:home",
+      "date": "2014-08-16",
+      "season": "2014-15",
+      "competition": {
+        "name": "DFB-Pokal",
+        "type": "cup",
+        "country": "Germany"
+      },
+      "stage": "",
+      "opponent": {
+        "name": "Eintracht Braunschweig",
+        "slug": "eintracht-braunschweig"
+      },
+      "venue": "home",
+      "score": {
+        "for": 0,
+        "against": 1
+      },
+      "result": "L",
+      "sources": [
+        {
+          "provider": "DFB Datencenter",
+          "url": "https://datencenter.dfb.de/datencenter/dfb-pokal/2014-2015/1-runde/bremer-sv-eintracht-braunschweig-2210395",
+          "retrievedAt": "2026-08-05T18:52:38.562Z",
+          "rawArtifact": "data/teams/history/normalized/dfb-pokal-1785956491062.json"
+        }
+      ]
+    },
+    {
+      "id": "dfb-pokal:bee17929bd56d53e350d7e1f34aba85dea8f8fe15ed77dc7d9a830ee3b3a455e:2015-08-08:Bremer%20SV:Eintracht%20Frankfurt:home",
+      "date": "2015-08-08",
+      "season": "2015-16",
+      "competition": {
+        "name": "DFB-Pokal",
+        "type": "cup",
+        "country": "Germany"
+      },
+      "stage": "",
+      "opponent": {
+        "name": "Eintracht Frankfurt",
+        "slug": "eintracht-frankfurt"
+      },
+      "venue": "home",
+      "score": {
+        "for": 0,
+        "against": 3
+      },
+      "result": "L",
+      "sources": [
+        {
+          "provider": "DFB Datencenter",
+          "url": "https://datencenter.dfb.de/datencenter/dfb-pokal/2015-2016/1-runde/bremer-sv-eintracht-frankfurt-2218708",
+          "retrievedAt": "2026-08-05T18:52:38.627Z",
+          "rawArtifact": "data/teams/history/normalized/dfb-pokal-1785956491062.json"
+        }
+      ]
+    },
+    {
+      "id": "dfb-pokal:039f7c0f6f9708d2295c8abcaa3cf8090dde82ec22d6e4797a8d6e7e0d00d6ea:2016-08-21:Bremer%20SV:SV%20Darmstadt%2098:home",
+      "date": "2016-08-21",
+      "season": "2016-17",
+      "competition": {
+        "name": "DFB-Pokal",
+        "type": "cup",
+        "country": "Germany"
+      },
+      "stage": "",
+      "opponent": {
+        "name": "Darmstadt",
+        "slug": "darmstadt"
+      },
+      "venue": "home",
+      "score": {
+        "for": 0,
+        "against": 7
+      },
+      "result": "L",
+      "sources": [
+        {
+          "provider": "DFB Datencenter",
+          "url": "https://datencenter.dfb.de/datencenter/dfb-pokal/2016-2017/1-runde/bremer-sv-sv-darmstadt-98-2235784",
+          "retrievedAt": "2026-08-05T18:52:38.703Z",
+          "rawArtifact": "data/teams/history/normalized/dfb-pokal-1785956491062.json"
+        }
+      ]
+    }
+  ],
+  "seasonStandings": [],
+  "competitionStandings": [
+    {
+      "season": "1985-86",
+      "competition": {
+        "name": "DFB-Pokal",
+        "type": "cup",
+        "country": "Germany"
+      },
+      "format": "knockout-progress",
+      "matches": 1,
+      "wins": 0,
+      "draws": 0,
+      "losses": 1,
+      "furthestStage": "recorded participation",
+      "latestMatch": "1985-08-24",
+      "basis": "derived from source-attributed recorded matches"
+    },
+    {
+      "season": "1986-87",
+      "competition": {
+        "name": "DFB-Pokal",
+        "type": "cup",
+        "country": "Germany"
+      },
+      "format": "knockout-progress",
+      "matches": 3,
+      "wins": 1,
+      "draws": 1,
+      "losses": 1,
+      "furthestStage": "recorded participation",
+      "latestMatch": "1986-10-25",
+      "basis": "derived from source-attributed recorded matches"
+    },
+    {
+      "season": "1991-92",
+      "competition": {
+        "name": "DFB-Pokal",
+        "type": "cup",
+        "country": "Germany"
+      },
+      "format": "knockout-progress",
+      "matches": 1,
+      "wins": 0,
+      "draws": 0,
+      "losses": 1,
+      "furthestStage": "recorded participation",
+      "latestMatch": "1991-07-28",
+      "basis": "derived from source-attributed recorded matches"
+    },
+    {
+      "season": "2014-15",
+      "competition": {
+        "name": "DFB-Pokal",
+        "type": "cup",
+        "country": "Germany"
+      },
+      "format": "knockout-progress",
+      "matches": 1,
+      "wins": 0,
+      "draws": 0,
+      "losses": 1,
+      "furthestStage": "recorded participation",
+      "latestMatch": "2014-08-16",
+      "basis": "derived from source-attributed recorded matches"
+    },
+    {
+      "season": "2015-16",
+      "competition": {
+        "name": "DFB-Pokal",
+        "type": "cup",
+        "country": "Germany"
+      },
+      "format": "knockout-progress",
+      "matches": 1,
+      "wins": 0,
+      "draws": 0,
+      "losses": 1,
+      "furthestStage": "recorded participation",
+      "latestMatch": "2015-08-08",
+      "basis": "derived from source-attributed recorded matches"
+    },
+    {
+      "season": "2016-17",
+      "competition": {
+        "name": "DFB-Pokal",
+        "type": "cup",
+        "country": "Germany"
+      },
+      "format": "knockout-progress",
+      "matches": 1,
+      "wins": 0,
+      "draws": 0,
+      "losses": 1,
+      "furthestStage": "recorded participation",
+      "latestMatch": "2016-08-21",
+      "basis": "derived from source-attributed recorded matches"
+    }
+  ],
+  "updatedAt": "2026-08-05T19:20:33.718Z"
+}

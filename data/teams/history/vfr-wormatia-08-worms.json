@@ -1,0 +1,296 @@
+{
+  "contract": "football-team-history-v1",
+  "team": {
+    "name": "VfR Wormatia 08 Worms",
+    "slug": "vfr-wormatia-08-worms",
+    "primaryLeague": "DFB-Pokal",
+    "aliases": []
+  },
+  "requestedCoverage": {
+    "fromYear": 1985,
+    "to": "present",
+    "includes": [
+      "all competitions",
+      "opponents",
+      "scorelines",
+      "league standings",
+      "competition standings"
+    ]
+  },
+  "sourcePlan": [
+    {
+      "rank": 1,
+      "provider": "Official club archive",
+      "url": "",
+      "scope": "club history, competition participation and match reports",
+      "lookupKey": "VfR Wormatia 08 Worms",
+      "review": "Verify the club-owned archive URL before collection."
+    },
+    {
+      "rank": 2,
+      "provider": "Official domestic competition / association",
+      "url": "",
+      "scope": "official league fixtures, final tables and cup records",
+      "lookupKey": "DFB-Pokal"
+    },
+    {
+      "rank": 3,
+      "provider": "UEFA",
+      "url": "https://www.uefa.com/",
+      "scope": "official European competition appearances, fixtures and standings",
+      "lookupKey": "VfR Wormatia 08 Worms"
+    },
+    {
+      "rank": 4,
+      "provider": "RSSSF",
+      "url": "https://www.rsssf.org/",
+      "scope": "historic competitions, tables and cross-checking",
+      "lookupKey": "VfR Wormatia 08 Worms"
+    },
+    {
+      "rank": 5,
+      "provider": "worldfootball.net",
+      "url": "https://www.worldfootball.net/",
+      "scope": "club match archive and competition participation cross-check",
+      "lookupKey": "VfR Wormatia 08 Worms"
+    }
+  ],
+  "coverage": {
+    "earliestMatch": "1988-08-07",
+    "latestMatch": "2009-08-02",
+    "seasonsWithMatches": [
+      "1988-89",
+      "1992-93",
+      "2007-08",
+      "2009-10"
+    ],
+    "missingSeasons": [
+      "1985-86",
+      "1986-87",
+      "1987-88",
+      "1989-90",
+      "1990-91",
+      "1991-92",
+      "1993-94",
+      "1994-95",
+      "1995-96",
+      "1996-97",
+      "1997-98",
+      "1998-99",
+      "1999-00",
+      "2000-01",
+      "2001-02",
+      "2002-03",
+      "2003-04",
+      "2004-05",
+      "2005-06",
+      "2006-07",
+      "2008-09",
+      "2010-11",
+      "2011-12",
+      "2012-13",
+      "2013-14",
+      "2014-15",
+      "2015-16",
+      "2016-17",
+      "2017-18",
+      "2018-19",
+      "2019-20",
+      "2020-21",
+      "2021-22",
+      "2022-23",
+      "2023-24",
+      "2024-25",
+      "2025-26",
+      "2026-27"
+    ],
+    "competitionScopeVerified": false,
+    "status": "partial"
+  },
+  "matches": [
+    {
+      "id": "dfb-pokal:432b81e73251b9682469e11189cd5a60916d20be6a49bcbd34e43c3a45bba97e:1988-08-07:VfR%20Wormatia%2008%20Worms:1.%20FC%20Saarbr%C3%BCcken:home",
+      "date": "1988-08-07",
+      "season": "1988-89",
+      "competition": {
+        "name": "DFB-Pokal",
+        "type": "cup",
+        "country": "Germany"
+      },
+      "stage": "",
+      "opponent": {
+        "name": "1. FC Saarbrücken",
+        "slug": "1-fc-saarbrucken"
+      },
+      "venue": "home",
+      "score": {
+        "for": 1,
+        "against": 3
+      },
+      "result": "L",
+      "sources": [
+        {
+          "provider": "DFB Datencenter",
+          "url": "https://datencenter.dfb.de/datencenter/dfb-pokal/1988-1989/1-runde/vfr-wormatia-worms-1-fc-saarbruecken-560820",
+          "retrievedAt": "2026-08-05T18:51:13.248Z",
+          "rawArtifact": "data/teams/history/normalized/dfb-pokal-1785956491062.json"
+        }
+      ]
+    },
+    {
+      "id": "dfb-pokal:91bff6de20749f3a2147d35317ff91a715d3b4638c2d5e9e24b3fc21eff18455:1992-09-12:VfR%20Wormatia%2008%20Worms:Fortuna%20D%C3%BCsseldorf:home",
+      "date": "1992-09-12",
+      "season": "1992-93",
+      "competition": {
+        "name": "DFB-Pokal",
+        "type": "cup",
+        "country": "Germany"
+      },
+      "stage": "",
+      "opponent": {
+        "name": "Fortuna Düsseldorf",
+        "slug": "fortuna-dusseldorf"
+      },
+      "venue": "home",
+      "score": {
+        "for": 2,
+        "against": 4
+      },
+      "result": "L",
+      "sources": [
+        {
+          "provider": "DFB Datencenter",
+          "url": "https://datencenter.dfb.de/datencenter/dfb-pokal/1992-1993/2-runde/vfr-wormatia-worms-fortuna-duesseldorf-560517",
+          "retrievedAt": "2026-08-05T18:51:30.951Z",
+          "rawArtifact": "data/teams/history/normalized/dfb-pokal-1785956491062.json"
+        }
+      ]
+    },
+    {
+      "id": "dfb-pokal:6965e5e45d7b6200a35c78b396e58286bd2e60bb91b42fec1788e75d80916331:2007-08-05:VfR%20Wormatia%2008%20Worms:1.%20FSV%20Mainz%2005:home",
+      "date": "2007-08-05",
+      "season": "2007-08",
+      "competition": {
+        "name": "DFB-Pokal",
+        "type": "cup",
+        "country": "Germany"
+      },
+      "stage": "",
+      "opponent": {
+        "name": "1. FSV Mainz 05",
+        "slug": "1-fsv-mainz-05"
+      },
+      "venue": "home",
+      "score": {
+        "for": 1,
+        "against": 6
+      },
+      "result": "L",
+      "sources": [
+        {
+          "provider": "DFB Datencenter",
+          "url": "https://datencenter.dfb.de/datencenter/dfb-pokal/2007-2008/1-runde/vfr-wormatia-worms-1-fsv-mainz-05-559558",
+          "retrievedAt": "2026-08-05T18:52:38.118Z",
+          "rawArtifact": "data/teams/history/normalized/dfb-pokal-1785956491062.json"
+        }
+      ]
+    },
+    {
+      "id": "dfb-pokal:1edf3cf97a3e0c7b40d3427d58ee2c72af58c8fbc46b3d9ae61bbaaa7654a839:2009-08-02:VfR%20Wormatia%2008%20Worms:SpVgg%20Greuther%20F%C3%BCrth:home",
+      "date": "2009-08-02",
+      "season": "2009-10",
+      "competition": {
+        "name": "DFB-Pokal",
+        "type": "cup",
+        "country": "Germany"
+      },
+      "stage": "",
+      "opponent": {
+        "name": "SpVgg Greuther Fürth",
+        "slug": "spvgg-greuther-furth"
+      },
+      "venue": "home",
+      "score": {
+        "for": 0,
+        "against": 1
+      },
+      "result": "L",
+      "sources": [
+        {
+          "provider": "DFB Datencenter",
+          "url": "https://datencenter.dfb.de/datencenter/dfb-pokal/2009-2010/1-runde/vfr-wormatia-worms-spvgg-greuther-fuerth-80626",
+          "retrievedAt": "2026-08-05T18:52:38.245Z",
+          "rawArtifact": "data/teams/history/normalized/dfb-pokal-1785956491062.json"
+        }
+      ]
+    }
+  ],
+  "seasonStandings": [],
+  "competitionStandings": [
+    {
+      "season": "1988-89",
+      "competition": {
+        "name": "DFB-Pokal",
+        "type": "cup",
+        "country": "Germany"
+      },
+      "format": "knockout-progress",
+      "matches": 1,
+      "wins": 0,
+      "draws": 0,
+      "losses": 1,
+      "furthestStage": "recorded participation",
+      "latestMatch": "1988-08-07",
+      "basis": "derived from source-attributed recorded matches"
+    },
+    {
+      "season": "1992-93",
+      "competition": {
+        "name": "DFB-Pokal",
+        "type": "cup",
+        "country": "Germany"
+      },
+      "format": "knockout-progress",
+      "matches": 1,
+      "wins": 0,
+      "draws": 0,
+      "losses": 1,
+      "furthestStage": "recorded participation",
+      "latestMatch": "1992-09-12",
+      "basis": "derived from source-attributed recorded matches"
+    },
+    {
+      "season": "2007-08",
+      "competition": {
+        "name": "DFB-Pokal",
+        "type": "cup",
+        "country": "Germany"
+      },
+      "format": "knockout-progress",
+      "matches": 1,
+      "wins": 0,
+      "draws": 0,
+      "losses": 1,
+      "furthestStage": "recorded participation",
+      "latestMatch": "2007-08-05",
+      "basis": "derived from source-attributed recorded matches"
+    },
+    {
+      "season": "2009-10",
+      "competition": {
+        "name": "DFB-Pokal",
+        "type": "cup",
+        "country": "Germany"
+      },
+      "format": "knockout-progress",
+      "matches": 1,
+      "wins": 0,
+      "draws": 0,
+      "losses": 1,
+      "furthestStage": "recorded participation",
+      "latestMatch": "2009-08-02",
+      "basis": "derived from source-attributed recorded matches"
+    }
+  ],
+  "updatedAt": "2026-08-05T19:20:51.209Z"
+}

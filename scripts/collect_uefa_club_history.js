@@ -5,6 +5,7 @@
 const fs = require("fs");
 const path = require("path");
 const crypto = require("crypto");
+const { writeFileRetrying } = require("../src/runtimePaths");
 
 const competitions = {
   1: "UEFA Champions League / European Cup",
@@ -32,8 +33,7 @@ async function fetchSeason(competitionId, seasonYear) {
   const body = JSON.stringify(matches);
   const sha256 = crypto.createHash("sha256").update(body).digest("hex");
   const file = path.join("data", "teams", "history", "raw", "uefa", `${sha256}.json`);
-  fs.mkdirSync(path.dirname(file), { recursive: true });
-  fs.writeFileSync(file, body + "\n");
+  writeFileRetrying(file, body + "\n");
   return { competitionId, competition: competitions[competitionId], seasonYear, urls, captured: true, retrievedAt: new Date().toISOString(), sha256, file, matchCount: matches.length };
 }
 
@@ -42,7 +42,7 @@ async function main() {
   const prior = fs.existsSync(manifestPath) ? JSON.parse(fs.readFileSync(manifestPath, "utf8")) : { rows: [] };
   const keyed = new Map((prior.rows || []).map((row) => [`${row.competitionId}:${row.seasonYear}`, row]));
   const rows = [];
-  const save = () => fs.writeFileSync(manifestPath, JSON.stringify({ contract: "football-history-raw-manifest-v1", provider: "UEFA official match API", generatedAt: new Date().toISOString(), fromYear: Math.min(from, ...(keyed.values().map((row) => row.seasonYear))), toYear: Math.max(to, ...(keyed.values().map((row) => row.seasonYear))), rows: [...keyed.values()].sort((a, b) => a.seasonYear - b.seasonYear || a.competitionId - b.competitionId) }, null, 2) + "\n");
+  const save = () => writeFileRetrying(manifestPath, JSON.stringify({ contract: "football-history-raw-manifest-v1", provider: "UEFA official match API", generatedAt: new Date().toISOString(), fromYear: Math.min(from, ...(keyed.values().map((row) => row.seasonYear))), toYear: Math.max(to, ...(keyed.values().map((row) => row.seasonYear))), rows: [...keyed.values()].sort((a, b) => a.seasonYear - b.seasonYear || a.competitionId - b.competitionId) }, null, 2) + "\n");
   for (let seasonYear = from; seasonYear <= to; seasonYear += 1) for (const competitionId of selected) {
     const row = await fetchSeason(competitionId, seasonYear);
     rows.push(row); keyed.set(`${row.competitionId}:${row.seasonYear}`, row); save();
