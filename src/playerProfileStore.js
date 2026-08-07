@@ -2496,6 +2496,28 @@ const PLAYER_PROFILES = [
     photoSourceName: "Wikipedia / Wikimedia Commons",
     photoSourceUrl: "https://en.wikipedia.org/wiki/Breel_Embolo",
   },
+  {
+    id: "andrew-omobamidele",
+    player: "Andrew Omobamidele",
+    team: "Strasbourg",
+    league: "Ligue 1",
+    role: "Defender",
+    position: "CB",
+    photoUrl: "https://upload.wikimedia.org/wikipedia/commons/6/6f/Andrew_Omobamidele_2019.jpg",
+    photoSourceName: "Wikipedia / Wikimedia Commons",
+    photoSourceUrl: "https://en.wikipedia.org/wiki/Andrew_Omobamidele",
+  },
+  {
+    id: "sebastian-nanasi",
+    player: "Sebastian Nanasi",
+    team: "Strasbourg",
+    league: "Ligue 1",
+    role: "Attacker",
+    position: "RW",
+    photoUrl: "https://upload.wikimedia.org/wikipedia/commons/8/8d/Nanasi_asse_rcsa_2425.jpg",
+    photoSourceName: "Wikipedia / Wikimedia Commons",
+    photoSourceUrl: "https://en.wikipedia.org/wiki/Sebastian_Nanasi",
+  },
 ];
 
 const SUPPLEMENTAL_PROFILE_ROWS = [
