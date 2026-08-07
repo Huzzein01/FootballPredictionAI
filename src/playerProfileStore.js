@@ -2386,6 +2386,28 @@ const PLAYER_PROFILES = [
     photoSourceName: "Wikipedia / Wikimedia Commons",
     photoSourceUrl: "https://en.wikipedia.org/wiki/Moussa_Niakhaté",
   },
+  {
+    id: "benjamin-andre",
+    player: "Benjamin André",
+    team: "Lille",
+    league: "Ligue 1",
+    role: "Midfielder",
+    position: "CM",
+    photoUrl: "https://upload.wikimedia.org/wikipedia/commons/7/76/Benjamin_andre_asse_losc_2425_%28cropped%29.jpg",
+    photoSourceName: "Wikipedia / Wikimedia Commons",
+    photoSourceUrl: "https://en.wikipedia.org/wiki/Benjamin_André",
+  },
+  {
+    id: "ayyoub-bouaddi",
+    player: "Ayyoub Bouaddi",
+    team: "Lille",
+    league: "Ligue 1",
+    role: "Midfielder",
+    position: "CM",
+    photoUrl: "https://upload.wikimedia.org/wikipedia/commons/e/e8/Ayyoub_Bouaddi_Morocco_v_Norway_7_June_2026-71_%28cropped%29.jpg",
+    photoSourceName: "Wikipedia / Wikimedia Commons",
+    photoSourceUrl: "https://en.wikipedia.org/wiki/Ayyoub_Bouaddi",
+  },
 ];
 
 const SUPPLEMENTAL_PROFILE_ROWS = [
