@@ -1682,6 +1682,28 @@ const PLAYER_PROFILES = [
     photoSourceName: "Wikipedia / Wikimedia Commons",
     photoSourceUrl: "https://en.wikipedia.org/wiki/Juanmi_(footballer,_born_1993)",
   },
+  {
+    id: "marko-dmitrovic",
+    player: "Marko Dmitrović",
+    team: "Espanyol",
+    league: "La Liga",
+    role: "Goalkeeper",
+    position: "GK",
+    photoUrl: "https://upload.wikimedia.org/wikipedia/commons/3/36/CSC_0047_%2835151419544%29_%28cropped%29.jpg",
+    photoSourceName: "Wikipedia / Wikimedia Commons",
+    photoSourceUrl: "https://en.wikipedia.org/wiki/Marko_Dmitrović",
+  },
+  {
+    id: "kike-garcia",
+    player: "Kike García",
+    team: "Espanyol",
+    league: "La Liga",
+    role: "Attacker",
+    position: "ST",
+    photoUrl: "https://upload.wikimedia.org/wikipedia/commons/c/c6/Club_Atl%C3%A9tico_Osasuna_%28temp_22-23%29_Kike_Garc%C3%ADa%2C_foto_2.jpg",
+    photoSourceName: "Wikipedia / Wikimedia Commons",
+    photoSourceUrl: "https://en.wikipedia.org/wiki/Enrique_García_Martínez",
+  },
 ];
 
 const SUPPLEMENTAL_PROFILE_ROWS = [
