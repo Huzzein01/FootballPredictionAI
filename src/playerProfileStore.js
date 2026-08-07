@@ -2298,6 +2298,28 @@ const PLAYER_PROFILES = [
     photoSourceName: "Wikipedia / Wikimedia Commons",
     photoSourceUrl: "https://en.wikipedia.org/wiki/Daniel_Heuer_Fernandes",
   },
+  {
+    id: "budu-zivzivadze",
+    player: "Budu Zivzivadze",
+    team: "1. FC Heidenheim",
+    league: "Bundesliga",
+    role: "Attacker",
+    position: "ST",
+    photoUrl: "https://upload.wikimedia.org/wikipedia/commons/0/00/Budu_Zivzivadze_2024.png",
+    photoSourceName: "Wikipedia / Wikimedia Commons",
+    photoSourceUrl: "https://en.wikipedia.org/wiki/Budu_Zivzivadze",
+  },
+  {
+    id: "marnon-busch",
+    player: "Marnon Busch",
+    team: "1. FC Heidenheim",
+    league: "Bundesliga",
+    role: "Defender",
+    position: "RB",
+    photoUrl: "https://upload.wikimedia.org/wikipedia/commons/3/35/Busch%2C_Marnon_Heidenheim_17-18_WP.jpg",
+    photoSourceName: "Wikipedia / Wikimedia Commons",
+    photoSourceUrl: "https://en.wikipedia.org/wiki/Marnon_Busch",
+  },
 ];
 
 const SUPPLEMENTAL_PROFILE_ROWS = [
