@@ -1176,6 +1176,28 @@ const PLAYER_PROFILES = [
     photoSourceName: "Wikipedia / Wikimedia Commons",
     photoSourceUrl: "https://en.wikipedia.org/wiki/Yankuba_Minteh",
   },
+  {
+    id: "bernd-leno",
+    player: "Bernd Leno",
+    team: "Fulham",
+    league: "EPL",
+    role: "Goalkeeper",
+    position: "GK",
+    photoUrl: "https://upload.wikimedia.org/wikipedia/commons/2/29/Bernd_Leno_24052026_%282%29.jpg",
+    photoSourceName: "Wikipedia / Wikimedia Commons",
+    photoSourceUrl: "https://en.wikipedia.org/wiki/Bernd_Leno",
+  },
+  {
+    id: "tom-cairney",
+    player: "Tom Cairney",
+    team: "Fulham",
+    league: "EPL",
+    role: "Midfielder",
+    position: "CM",
+    photoUrl: "https://upload.wikimedia.org/wikipedia/commons/9/93/Tom_Cairney_20042025_%283%29.jpg",
+    photoSourceName: "Wikipedia / Wikimedia Commons",
+    photoSourceUrl: "https://en.wikipedia.org/wiki/Tom_Cairney",
+  },
 ];
 
 const SUPPLEMENTAL_PROFILE_ROWS = [
