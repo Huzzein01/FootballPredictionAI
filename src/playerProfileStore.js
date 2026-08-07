@@ -1979,6 +1979,28 @@ const PLAYER_PROFILES = [
     photoSourceName: "Wikipedia / Wikimedia Commons",
     photoSourceUrl: "https://en.wikipedia.org/wiki/Angelo_Stiller",
   },
+  {
+    id: "franck-honorat",
+    player: "Franck Honorat",
+    team: "Borussia Mönchengladbach",
+    league: "Bundesliga",
+    role: "Attacker",
+    position: "LW",
+    photoUrl: "https://upload.wikimedia.org/wikipedia/commons/e/ea/RC_Lens_-_Clermont_Foot_63_%2804-05-2019%29_55.jpg",
+    photoSourceName: "Wikipedia / Wikimedia Commons",
+    photoSourceUrl: "https://en.wikipedia.org/wiki/Franck_Honorat",
+  },
+  {
+    id: "kevin-stoger",
+    player: "Kevin Stöger",
+    team: "Borussia Mönchengladbach",
+    league: "Bundesliga",
+    role: "Midfielder",
+    position: "CM",
+    photoUrl: "https://upload.wikimedia.org/wikipedia/commons/5/56/Kevin-St%C3%B6ger-08-2019.jpg",
+    photoSourceName: "Wikipedia / Wikimedia Commons",
+    photoSourceUrl: "https://en.wikipedia.org/wiki/Kevin_Stöger",
+  },
 ];
 
 const SUPPLEMENTAL_PROFILE_ROWS = [
