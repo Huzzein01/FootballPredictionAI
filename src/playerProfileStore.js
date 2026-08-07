@@ -2705,6 +2705,28 @@ const PLAYER_PROFILES = [
     photoSourceName: "Wikipedia / Wikimedia Commons",
     photoSourceUrl: "https://en.wikipedia.org/wiki/Mostafa_Mohamed_(footballer)",
   },
+  {
+    id: "elisha-owusu",
+    player: "Elisha Owusu",
+    team: "Auxerre",
+    league: "Ligue 1",
+    role: "Midfielder",
+    position: "CDM",
+    photoUrl: "https://upload.wikimedia.org/wikipedia/commons/2/2f/Lens_-_Sochaux_%2815-09-2018%29_175_%28cropped%29.jpg",
+    photoSourceName: "Wikipedia / Wikimedia Commons",
+    photoSourceUrl: "https://en.wikipedia.org/wiki/Elisha_Owusu",
+  },
+  {
+    id: "paul-nardi",
+    player: "Paul Nardi",
+    team: "Auxerre",
+    league: "Ligue 1",
+    role: "Goalkeeper",
+    position: "GK",
+    photoUrl: "https://upload.wikimedia.org/wikipedia/commons/8/8b/Paul_Nardi_02082025_%281%29.jpg",
+    photoSourceName: "Wikipedia / Wikimedia Commons",
+    photoSourceUrl: "https://en.wikipedia.org/wiki/Paul_Nardi",
+  },
 ];
 
 const SUPPLEMENTAL_PROFILE_ROWS = [
