@@ -1704,6 +1704,28 @@ const PLAYER_PROFILES = [
     photoSourceName: "Wikipedia / Wikimedia Commons",
     photoSourceUrl: "https://en.wikipedia.org/wiki/Enrique_García_Martínez",
   },
+  {
+    id: "ante-budimir",
+    player: "Ante Budimir",
+    team: "Osasuna",
+    league: "La Liga",
+    role: "Attacker",
+    position: "ST",
+    photoUrl: "https://upload.wikimedia.org/wikipedia/commons/8/81/Ante_Budimir_Croatia_v_Portugal_2_July_2026-034.jpg",
+    photoSourceName: "Wikipedia / Wikimedia Commons",
+    photoSourceUrl: "https://en.wikipedia.org/wiki/Ante_Budimir",
+  },
+  {
+    id: "raul-moro",
+    player: "Raúl Moro",
+    team: "Osasuna",
+    league: "La Liga",
+    role: "Attacker",
+    position: "LW",
+    photoUrl: "https://upload.wikimedia.org/wikipedia/commons/e/e0/Ra%C3%BAl_Moro_en_la_tienda_Movistar.jpg",
+    photoSourceName: "Wikipedia / Wikimedia Commons",
+    photoSourceUrl: "https://en.wikipedia.org/wiki/Raúl_Moro",
+  },
 ];
 
 const SUPPLEMENTAL_PROFILE_ROWS = [
