@@ -2243,6 +2243,28 @@ const PLAYER_PROFILES = [
     photoSourceName: "Wikipedia / Wikimedia Commons",
     photoSourceUrl: "https://en.wikipedia.org/wiki/Josip_Juranović",
   },
+  {
+    id: "connor-metcalfe",
+    player: "Connor Metcalfe",
+    team: "FC St. Pauli",
+    league: "Bundesliga",
+    role: "Midfielder",
+    position: "CM",
+    photoUrl: "https://upload.wikimedia.org/wikipedia/commons/c/c4/Connor_Metcalfe_Australia_v_USA_19_June_2026-97_%28cropped%29.jpg",
+    photoSourceName: "Wikipedia / Wikimedia Commons",
+    photoSourceUrl: "https://en.wikipedia.org/wiki/Connor_Metcalfe",
+  },
+  {
+    id: "scott-banks",
+    player: "Scott Banks",
+    team: "FC St. Pauli",
+    league: "Bundesliga",
+    role: "Attacker",
+    position: "RW",
+    photoUrl: "https://upload.wikimedia.org/wikipedia/commons/4/44/Scott_Banks_2022.jpg",
+    photoSourceName: "Wikipedia / Wikimedia Commons",
+    photoSourceUrl: "https://en.wikipedia.org/wiki/Scott_Banks",
+  },
 ];
 
 const SUPPLEMENTAL_PROFILE_ROWS = [
