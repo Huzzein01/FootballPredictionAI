@@ -1231,6 +1231,28 @@ const PLAYER_PROFILES = [
     photoSourceName: "Wikipedia / Wikimedia Commons",
     photoSourceUrl: "https://en.wikipedia.org/wiki/James_Tarkowski",
   },
+  {
+    id: "morgan-gibbs-white",
+    player: "Morgan Gibbs-White",
+    team: "Nottingham Forest",
+    league: "EPL",
+    role: "Midfielder",
+    position: "AM",
+    photoUrl: "https://upload.wikimedia.org/wikipedia/commons/6/61/Morgan_Gibbs-White_-_Nottingham_Forest_-_2025.jpg",
+    photoSourceName: "Wikipedia / Wikimedia Commons",
+    photoSourceUrl: "https://en.wikipedia.org/wiki/Morgan_Gibbs-White",
+  },
+  {
+    id: "matz-sels",
+    player: "Matz Sels",
+    team: "Nottingham Forest",
+    league: "EPL",
+    role: "Goalkeeper",
+    position: "GK",
+    photoUrl: "https://upload.wikimedia.org/wikipedia/commons/3/31/Matz_Sels_USMNT_v_Belgium_Mar_28_2026-12_%28cropped%29.jpg",
+    photoSourceName: "Wikipedia / Wikimedia Commons",
+    photoSourceUrl: "https://en.wikipedia.org/wiki/Matz_Sels",
+  },
 ];
 
 const SUPPLEMENTAL_PROFILE_ROWS = [
