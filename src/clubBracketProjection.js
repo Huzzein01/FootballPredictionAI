@@ -540,35 +540,46 @@ function buildBracketTree(stageMatches, comp) {
 
   const champion = finalResults[0]?.winner;
 
+  const bracket = {
+    r16: r16Results.length ? {
+      label:    "Round of 16",
+      subtitle: "16 teams enter · 8 advance",
+      matches:  r16Results.map(toSlimMatch),
+      advancers: advancers(r16Results),
+    } : undefined,
+    qf: qfResults.length ? {
+      label:    "Quarterfinals",
+      subtitle: "8 teams · 4 advance",
+      matches:  qfResults.map(toSlimMatch),
+      advancers: advancers(qfResults),
+    } : undefined,
+    sf: sfResults.length ? {
+      label:    "Semifinals",
+      subtitle: "4 teams · 2 finalists",
+      matches:  sfResults.map(toSlimMatch),
+      advancers: advancers(sfResults),
+    } : undefined,
+    final: finalResults.length ? {
+      label:    "Final",
+      subtitle: "2 finalists · 1 champion",
+      matches:  finalResults.map(toSlimMatch),
+      advancers: champion ? [{ team: champion, flag: null }] : [],
+    } : undefined,
+  };
+
+  // `rounds` is the same data as `bracket`, flattened into an ordered array so
+  // the front end can render however many rounds actually exist (a bracket
+  // that starts at a different stage, or gains/loses a round) without the
+  // renderer needing to know the round keys ahead of time.
+  const rounds = ["r16", "qf", "sf", "final"]
+    .filter((key) => bracket[key])
+    .map((key) => ({ id: key, ...bracket[key] }));
+
   return {
     generatedAt:  new Date().toISOString(),
     competition:  { label: comp.label, season: comp.season },
-    bracket: {
-      r16: r16Results.length ? {
-        label:    "Round of 16",
-        subtitle: "16 teams enter · 8 advance",
-        matches:  r16Results.map(toSlimMatch),
-        advancers: advancers(r16Results),
-      } : undefined,
-      qf: qfResults.length ? {
-        label:    "Quarterfinals",
-        subtitle: "8 teams · 4 advance",
-        matches:  qfResults.map(toSlimMatch),
-        advancers: advancers(qfResults),
-      } : undefined,
-      sf: sfResults.length ? {
-        label:    "Semifinals",
-        subtitle: "4 teams · 2 finalists",
-        matches:  sfResults.map(toSlimMatch),
-        advancers: advancers(sfResults),
-      } : undefined,
-      final: finalResults.length ? {
-        label:    "Final",
-        subtitle: "2 finalists · 1 champion",
-        matches:  finalResults.map(toSlimMatch),
-        advancers: champion ? [{ team: champion, flag: null }] : [],
-      } : undefined,
-    },
+    bracket,
+    rounds,
     champion:   champion ? { team: champion, flag: null } : null,
     championLabel: comp.championLabel,
     disclaimer: r16Results.some(r => r.source === "projected")

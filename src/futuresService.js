@@ -6,6 +6,7 @@ const { listPlayerProfiles } = require("./playerProfileStore");
 const { listTeamProfiles } = require("./teamProfileStore");
 const { loadMatches, normalizeTeamName } = require("./footballData");
 const { aggregatePlayers, loadPlayerRows } = require("./playerStats");
+const { lookupMatchOdds } = require("./oddsApiService");
 
 const CLUB_LEAGUES = ["EPL", "La Liga", "Bundesliga", "Ligue 1", "Serie A"];
 const HISTORICAL_SEASONS = ["2020-21", "2021-22", "2022-23", "2023-24", "2024-25", "2025-26"];
@@ -45,6 +46,19 @@ const CUP_ROUNDS = {
   "coupe-de-france": ["Round of 32", "Round of 16", "Quarter-Finals", "Semi-Finals", "Final"],
   "coppa-italia": ["Round of 16", "Quarter-Finals", "Semi-Finals", "Final"],
 };
+
+// Standings projection formula ("Weighted Recency-Adjusted Rating"):
+//   1. For each of the last 6 seasons, compute PPG, GF/match, GA/match, GD/match.
+//   2. Weight season i by (1 + 0.25*i) so recent seasons count more (season
+//      weights range 1.0 -> 2.25 across the 2020-21..2025-26 window).
+//   3. rating = Σ(weight * (PPG*38 + GD*10 + GF*5 - GA*4 + top-4 bonus)) / Σ(weight)
+//   4. Promoted teams use the same formula against their last two second-tier
+//      seasons, compressed by ~0.6-0.68x (fewer points/goals translate up a tier).
+//   5. The weighted PPG/GF/GA are then projected across a full season's match
+//      count (38, or 34 for Bundesliga) to produce Played, Wins, Draws, Losses,
+//      Points, GF, GA, and GD for every team, then sorted into a final table.
+const STANDINGS_METHODOLOGY =
+  "Weighted Recency-Adjusted Rating (WRAR): multi-season PPG, goal-difference/match, and goals-for/match are weighted by recency (weight = 1 + 0.25 x seasons-ago) and blended into a composite rating. The rating implies a season PPG/GF/GA baseline that is projected across the full match calendar (38 games, 34 for Bundesliga) to produce Played, Won, Drawn, Lost, GF, GA, GD, and Points for every team. Promoted teams use the same formula scaled from their last two second-tier seasons.";
 
 const NEXT_SEASON_RULES = {
   EPL: { relegatedCount: 3, promotedCount: 3, secondTierCode: "eng.2", secondTierName: "Championship" },
@@ -206,6 +220,54 @@ const TEAM_ASSIST_CANDIDATES = {
   Atalanta: "Ademola Lookman",
 };
 
+const TEAM_GOALKEEPER_CANDIDATES = {
+  EPL: {
+    Arsenal: "David Raya", "Man City": "Ederson", "Man United": "Altay Bayindir",
+    "Aston Villa": "Emiliano Martinez", Liverpool: "Alisson", Bournemouth: "Djordje Petrovic",
+    Brighton: "Bart Verbruggen", Chelsea: "Robert Sanchez", Brentford: "Caoimhin Kelleher",
+    Sunderland: "Robin Roefs", "Newcastle United": "Nick Pope", Everton: "Jordan Pickford",
+    Fulham: "Bernd Leno", "Leeds United": "Lucas Perri", "Crystal Palace": "Dean Henderson",
+    "Nott'm Forest": "Matz Sels", Tottenham: "Guglielmo Vicario", "West Ham United": "Alphonse Areola",
+    Burnley: "Max Weiss", "Wolverhampton Wanderers": "Jose Sa", "Coventry City": "Ben Wilson",
+    "Ipswich Town": "Alex Palmer", Millwall: "Liam Roberts",
+  },
+  "La Liga": {
+    Barcelona: "Joan Garcia", "Real Madrid": "Thibaut Courtois", Villarreal: "Luiz Junior",
+    "Ath Madrid": "Jan Oblak", Betis: "Adrian", "Celta Vigo": "Vicente Guaita", Getafe: "David Soria",
+    "Rayo Vallecano": "Augusto Batalla", Valencia: "Giorgi Mamardashvili", "Real Sociedad": "Alex Remiro",
+    Espanyol: "Fernando Pacheco", "Ath Bilbao": "Unai Simon", "Alavés": "Antonio Sivera",
+    Sevilla: "Alfonso Herrero", Osasuna: "Sergio Herrera", Elche: "Matthieu Dreyer",
+    Levante: "Andres Fernandez", Girona: "Paulo Gazzaniga", Mallorca: "Leo Roman",
+    Oviedo: "Aron Escandell", "Racing Santander": "Jokin Ezkieta", "Deportivo La Coruña": "Ivan Villar",
+    "Almería": "Fernando Martinez",
+  },
+  Bundesliga: {
+    "Bayern Munich": "Manuel Neuer", "Borussia Dortmund": "Gregor Kobel", "RB Leipzig": "Peter Gulacsi",
+    "VfB Stuttgart": "Alexander Nubel", "TSG Hoffenheim": "Oliver Baumann", "Bayer Leverkusen": "Mark Flekken",
+    "SC Freiburg": "Noah Atubolu", "Eintracht Frankfurt": "Kevin Trapp", "FC Augsburg": "Nediljko Labrovic",
+    Mainz: "Robin Zentner", "1. FC Union Berlin": "Frederik Ronnow", "Borussia Mönchengladbach": "Moritz Nicolas",
+    "Hamburg SV": "Daniel Heuer Fernandes", "FC Koln": "Marvin Schwabe", "Werder Bremen": "Michael Zetterer",
+    "VfL Wolfsburg": "Kamil Grabara", "1. FC Heidenheim 1846": "Kevin Muller", "St. Pauli": "Nikola Vasilj",
+    "Schalke 04": "Justin Heekeren", "SV 07 Elversberg": "Nicolas Kristof",
+  },
+  "Ligue 1": {
+    "Paris SG": "Gianluigi Donnarumma", Lens: "Brice Samba", Lille: "Berke Ozer", Lyon: "Remy Descamps",
+    Marseille: "Geronimo Rulli", "Stade Rennais": "Brice Samba", "AS Monaco": "Radoslaw Majecki",
+    Strasbourg: "Kevin Trussart", Lorient: "Yannis Clementia", Toulouse: "Guillaume Restes",
+    "Paris FC": "Obed Nkambadio", Brest: "Marco Bizot", Angers: "Yahia Fofana",
+    "Le Havre AC": "Arthur Desmas", "AJ Auxerre": "Donovan Leon", Nice: "Marcin Bulka",
+    Nantes: "Anthony Lopes", Metz: "Koffi Kouao", Troyes: "Mateusz Kudla", "Le Mans": "Simon Bertrand",
+  },
+  "Serie A": {
+    "Inter Milan": "Yann Sommer", Napoli: "Alex Meret", "AS Roma": "Mile Svilar", "AC Milan": "Mike Maignan",
+    Como: "Pepe Reina", Juventus: "Michele Di Gregorio", Atalanta: "Marco Carnesecchi", Bologna: "Lukasz Skorupski",
+    Lazio: "Ivan Provedel", Udinese: "Razvan Sava", Sassuolo: "Stefano Turati", Torino: "Franco Israel",
+    Parma: "Zion Suzuki", Genoa: "Nicola Leali", Fiorentina: "David De Gea", Cagliari: "Elia Caprile",
+    Lecce: "Wladimiro Falcone", Cremonese: "Marco Silvestri", "Hellas Verona": "Lorenzo Montipo",
+    Pisa: "Adrian Semper", Venezia: "Jesse Joronen", Frosinone: "Cerofolini Marco", Monza: "Stefano Turati",
+  },
+};
+
 const CHAMPIONS_LEAGUE_QUALIFIED = [
   { team: "Arsenal", league: "EPL", status: "League phase qualified", source: "BBC/UEFA qualification tracker" },
   { team: "Man City", league: "EPL", status: "League phase qualified", source: "BBC/UEFA qualification tracker" },
@@ -245,20 +307,22 @@ const FUTURES_SOURCES = {
   },
 };
 
+// Ranges are sized so each competition's futures pool reaches 16 teams —
+// enough for the bracket to open at Round of 16 like Champions League.
 const EUROPE_PROFILE_RANGES = {
   "Europa League": {
-    EPL: [6, 7],
-    "La Liga": [6, 7],
-    Bundesliga: [5, 6],
-    "Ligue 1": [4, 5],
-    "Serie A": [5, 6],
+    EPL: [6, 7, 8, 9],
+    "La Liga": [6, 7, 8],
+    Bundesliga: [5, 6, 7],
+    "Ligue 1": [4, 5, 6],
+    "Serie A": [5, 6, 7],
   },
   "Conference League": {
-    EPL: [8],
-    "La Liga": [8],
-    Bundesliga: [7],
-    "Ligue 1": [6],
-    "Serie A": [7],
+    EPL: [10, 11, 12, 13],
+    "La Liga": [9, 10, 11],
+    Bundesliga: [8, 9, 10],
+    "Ligue 1": [7, 8, 9],
+    "Serie A": [9, 10, 11],
   },
 };
 
@@ -713,17 +777,22 @@ function scorerPicksForLeague(leagueName, profiles) {
     })
     .filter((candidate) => candidate.goals > 0 || candidate.goalsPer90 > 0)
     .sort((a, b) => b.goals - a.goals || b.goalsPer90 - a.goalsPer90)
-    .slice(0, 10);
+    .slice(0, 15);
   const shares = marketShares(candidates, 2);
   return candidates
-    .map((candidate, index, list) => ({
-      rank: index + 1,
-      label: candidate.player,
-      detail: `${candidate.team}: projected ${projectedPlayerOutput({ ...candidate, value: candidate.goals, rate: candidate.goalsPer90, rating: candidate.goals * 2 + candidate.goalsPer90 * 9 }, "goals", leagueName, null)} goals for the next comparable league season from a ${round(candidate.goalsPer90, 2)} goals/90 baseline.`,
-      confidence: shares[index],
-      note: `Market share is normalized to 100% across these ${list.length} scorer candidates. Improve this market with match-by-match minutes, shots, SOT, transfers, and fixture difficulty.`,
-      source: { name: "Player profile baselines and manual training", url: "" },
-    }));
+    .map((candidate, index, list) => {
+      const projected = projectedPlayerOutput({ ...candidate, value: candidate.goals, rate: candidate.goalsPer90, rating: candidate.goals * 2 + candidate.goalsPer90 * 9 }, "goals", leagueName, null);
+      return {
+        rank: index + 1,
+        label: candidate.player,
+        projected,
+        unit: "goals",
+        detail: `${candidate.team}: projected ${projected} goals for the next comparable league season from a ${round(candidate.goalsPer90, 2)} goals/90 baseline.`,
+        confidence: shares[index],
+        note: `Market share is normalized to 100% across these ${list.length} scorer candidates. Improve this market with match-by-match minutes, shots, SOT, transfers, and fixture difficulty.`,
+        source: { name: "Player profile baselines and manual training", url: "" },
+      };
+    });
 }
 
 function emptyTeamTrend(team, league) {
@@ -985,6 +1054,68 @@ function playerProfileCandidates(league, profiles, metric = "goals") {
     .filter((candidate) => candidate.value > 0 || candidate.rate > 0);
 }
 
+// Clean-sheet projection: p(clean sheet in a match) is modeled as the Poisson
+// probability of conceding zero goals, e^(-goalsAgainstPerMatch), scaled by the
+// primary goalkeeper's expected share of starts across the season.
+function projectedCleanSheets(gaPerMatch, league, promoted = false) {
+  const matches = leagueMatchCount(league);
+  const pClean = Math.exp(-clamp(gaPerMatch, 0.3, 3.5));
+  const startShare = promoted ? 0.8 : 0.88;
+  return Math.round(clamp(matches * pClean * startShare, 2, 24));
+}
+
+function cleanSheetWatchlist(league, trends) {
+  const candidates = trends
+    .map((trend) => {
+      const team = normalizeTeamName(trend.team);
+      const keeper = TEAM_GOALKEEPER_CANDIDATES[league]?.[team] || `${team} No.1 goalkeeper`;
+      const gaPerMatch = numeric(trend.goalsAgainstPerMatch) || 1.3;
+      const projected = projectedCleanSheets(gaPerMatch, league, trend.promoted);
+      return { player: keeper, team, gaPerMatch, projected, rating: projected };
+    })
+    .sort((a, b) => b.projected - a.projected || a.player.localeCompare(b.player))
+    .slice(0, 15);
+  const shares = marketShares(candidates, 1.5);
+  return candidates.map((candidate, index, list) => ({
+    rank: index + 1,
+    market: "Projected clean sheet leader",
+    label: candidate.player,
+    projected: candidate.projected,
+    unit: "clean sheets",
+    detail: `${candidate.team}: projected ${candidate.projected} clean sheets in ${league} 2026-27 from a ${round(candidate.gaPerMatch, 2)} goals-against/match baseline.`,
+    confidence: shares[index],
+    note: `Market share is normalized to 100% across these ${list.length} clean-sheet candidates. Formula: projected clean sheets ≈ matches × e^(-goals-against per match) × keeper start-share. Recalculate after squad, injury, and fixture-difficulty data are imported.`,
+    source: { name: "Historical team defensive trend and goalkeeper candidate baseline", url: "" },
+  }));
+}
+
+function cleanSheetWatchlistFromStandings(league, standings) {
+  const matches = leagueMatchCount(league);
+  const candidates = (standings || [])
+    .map((row) => {
+      const team = normalizeTeamName(row.team);
+      const played = numeric(row.played) || matches;
+      const gaPerMatch = played ? numeric(row.goalsAgainst) / played : 1.3;
+      const keeper = TEAM_GOALKEEPER_CANDIDATES[league]?.[team] || `${team} No.1 goalkeeper`;
+      const projected = projectedCleanSheets(gaPerMatch, league);
+      return { player: keeper, team, gaPerMatch, projected, rating: projected };
+    })
+    .sort((a, b) => b.projected - a.projected || a.player.localeCompare(b.player))
+    .slice(0, 15);
+  const shares = marketShares(candidates, 1.5);
+  return candidates.map((candidate, index, list) => ({
+    rank: index + 1,
+    market: "Projected clean sheet leader",
+    label: candidate.player,
+    projected: candidate.projected,
+    unit: "clean sheets",
+    detail: `${candidate.team}: projected ${candidate.projected} clean sheets for the next comparable ${league} season from a ${round(candidate.gaPerMatch, 2)} goals-against/match baseline.`,
+    confidence: shares[index],
+    note: `Market share is normalized to 100% across these ${list.length} clean-sheet candidates. Formula: projected clean sheets ≈ matches × e^(-goals-against per match) × keeper start-share.`,
+    source: { name: "Current-season defensive record and goalkeeper candidate baseline", url: "" },
+  }));
+}
+
 function teamScorerWatchlist(league, trends, profiles) {
   const profileByTeam = new Map();
   for (const candidate of playerProfileCandidates(league, profiles, "goals")) {
@@ -1021,7 +1152,7 @@ function topMarketWatchlist(league, trends, profiles, metric) {
     sourceName: "Player profile baseline",
   }));
   const fallbackCandidates = trends
-    .slice(0, 10)
+    .slice(0, 20)
     .map((trend) => {
       const team = normalizeTeamName(trend.team);
       const scorer = (TEAM_SCORER_CANDIDATES[league]?.[team] || [])[0];
@@ -1047,20 +1178,25 @@ function topMarketWatchlist(league, trends, profiles, metric) {
       seen.add(key);
       return true;
     })
-    .slice(0, 8);
+    .slice(0, 15);
   const shares = marketShares(candidates);
   return candidates
-    .map((candidate, index, list) => ({
-      rank: index + 1,
-      market: metric === "assists" ? "Projected top assist market" : "Projected league top scorer market",
-      label: candidate.player,
-      detail: `${candidate.team}: projected ${projectedPlayerOutput(candidate, metric, league, trendsByTeam.get(normalizeTeamName(candidate.team)))} ${metric} for ${league} 2026-27${candidate.rate ? ` from a ${round(candidate.rate, 2)} per-90 baseline` : " from team scoring trend and role baseline"}.`,
-      confidence: shares[index],
-      note: metric === "assists"
-        ? `Market share is normalized to 100% across these ${list.length} assist candidates. Recalculate after transfers, minutes, set pieces, and fixture difficulty are imported.`
-        : `Market share is normalized to 100% across these ${list.length} scorer candidates. Recalculate after transfers, penalties, minutes, and fixture difficulty are imported.`,
-      source: { name: candidate.sourceName, url: "" },
-    }));
+    .map((candidate, index, list) => {
+      const projected = projectedPlayerOutput(candidate, metric, league, trendsByTeam.get(normalizeTeamName(candidate.team)));
+      return {
+        rank: index + 1,
+        market: metric === "assists" ? "Projected top assist market" : "Projected league top scorer market",
+        label: candidate.player,
+        projected,
+        unit: metric,
+        detail: `${candidate.team}: projected ${projected} ${metric} for ${league} 2026-27${candidate.rate ? ` from a ${round(candidate.rate, 2)} per-90 baseline` : " from team scoring trend and role baseline"}.`,
+        confidence: shares[index],
+        note: metric === "assists"
+          ? `Market share is normalized to 100% across these ${list.length} assist candidates. Recalculate after transfers, minutes, set pieces, and fixture difficulty are imported.`
+          : `Market share is normalized to 100% across these ${list.length} scorer candidates. Recalculate after transfers, penalties, minutes, and fixture difficulty are imported.`,
+        source: { name: candidate.sourceName, url: "" },
+      };
+    });
 }
 
 function leagueWinnerPicksFromTrends(league, tableName, trends) {
@@ -1342,23 +1478,28 @@ function europeanPlayerWatchlist(competition, teams, profiles, metric) {
       seen.add(key);
       return true;
     })
-    .slice(0, 10);
+    .slice(0, 15);
   const shares = marketShares(candidates);
   return candidates
-    .map((candidate, index, list) => ({
-      rank: index + 1,
-      market: metric === "assists" ? `${competition} top assist prediction` : `${competition} top scorer prediction`,
-      label: candidate.player,
-      detail: `${candidate.team}: projected ${projectedEuropeanOutput(candidate, metric, teamsByName.get(normalizeTeamName(candidate.team)))} ${metric} in ${competition} 2026-27${candidate.rate ? ` from a ${round(candidate.rate, 2)} per-90 baseline` : " from team European strength and role baseline"}; ${candidate.prior || "European futures profile"}.`,
-      confidence: shares[index],
-      note: `Market share is normalized to 100% across these ${list.length} ${metric === "assists" ? "assist" : "scorer"} candidates. Team European strength uses imported UEFA result files; draw difficulty, minutes, injuries, penalties, and squad lists will sharpen this later.`,
-      source: { name: candidate.sourceName, url: "" },
-    }));
+    .map((candidate, index, list) => {
+      const projected = projectedEuropeanOutput(candidate, metric, teamsByName.get(normalizeTeamName(candidate.team)));
+      return {
+        rank: index + 1,
+        market: metric === "assists" ? `${competition} top assist prediction` : `${competition} top scorer prediction`,
+        label: candidate.player,
+        projected,
+        unit: metric,
+        detail: `${candidate.team}: projected ${projected} ${metric} in ${competition} 2026-27${candidate.rate ? ` from a ${round(candidate.rate, 2)} per-90 baseline` : " from team European strength and role baseline"}; ${candidate.prior || "European futures profile"}.`,
+        confidence: shares[index],
+        note: `Market share is normalized to 100% across these ${list.length} ${metric === "assists" ? "assist" : "scorer"} candidates. Team European strength uses imported UEFA result files; draw difficulty, minutes, injuries, penalties, and squad lists will sharpen this later.`,
+        source: { name: candidate.sourceName, url: "" },
+      };
+    });
 }
 
-function europeanCompetitionSection(competition, teamRows, allLeagueTrends, profiles) {
+function rankedEuropeanTeams(competition, teamRows, allLeagueTrends) {
   const lookup = trendLookup(allLeagueTrends);
-  const teams = teamRows
+  return teamRows
     .map((team) => {
       const normalized = normalizeTeamName(team.team);
       const trend = lookup.get(`${team.league}|${normalized}`) || lookup.get(normalized);
@@ -1376,6 +1517,10 @@ function europeanCompetitionSection(competition, teamRows, allLeagueTrends, prof
       };
     })
     .sort((a, b) => b.rating - a.rating || numeric(a.rank) - numeric(b.rank) || a.team.localeCompare(b.team));
+}
+
+function europeanCompetitionSection(competition, teamRows, allLeagueTrends, profiles) {
+  const teams = rankedEuropeanTeams(competition, teamRows, allLeagueTrends);
   return {
     id: `${competition.toLowerCase().replace(/[^a-z0-9]+/g, "-")}-futures`,
     title: `${competition} Futures`,
@@ -1394,10 +1539,10 @@ function championsLeagueProfileSections(allLeagueTrends) {
   return europeanCompetitionSection("Champions League", CHAMPIONS_LEAGUE_QUALIFIED, allLeagueTrends, listPlayerProfiles().profiles || []);
 }
 
-async function projectedEuropeanProfileSection(competition, allLeagueTrends = []) {
+async function europeanProfileTeamRows(competition, allLeagueTrends = []) {
   const ranges = EUROPE_PROFILE_RANGES[competition];
-  const trendLookup = new Map();
-  for (const trend of allLeagueTrends.flat()) trendLookup.set(`${trend.league}|${normalizeTeamName(trend.team)}`, trend);
+  const trendLookupMap = new Map();
+  for (const trend of allLeagueTrends.flat()) trendLookupMap.set(`${trend.league}|${normalizeTeamName(trend.team)}`, trend);
   const teams = [];
   for (const league of CLUB_LEAGUES) {
     const table = await currentTopLeagueTable(league);
@@ -1405,7 +1550,7 @@ async function projectedEuropeanProfileSection(competition, allLeagueTrends = []
       const row = table[rank - 1];
       if (!row) continue;
       const team = normalizeTeamName(row.team);
-      const trend = trendLookup.get(`${league}|${team}`);
+      const trend = trendLookupMap.get(`${league}|${team}`);
       teams.push({
         team,
         league,
@@ -1416,7 +1561,148 @@ async function projectedEuropeanProfileSection(competition, allLeagueTrends = []
       });
     }
   }
+  return teams;
+}
+
+async function projectedEuropeanProfileSection(competition, allLeagueTrends = []) {
+  const teams = await europeanProfileTeamRows(competition, allLeagueTrends);
   return europeanCompetitionSection(competition, teams, allLeagueTrends, listPlayerProfiles().profiles || []);
+}
+
+// Simulated 2026-27 knockout projection for a UEFA club competition, built
+// from each club's rating (five-season weighted form — see
+// STANDINGS_METHODOLOGY — plus UEFA history). Distinct from the real,
+// completed-season bracket parsed by clubBracketProjection.js — that one
+// shows what already happened; this one is a forward-looking futures market.
+function impliedProbsFromOdds(odds) {
+  const inv = (value) => {
+    const n = Number(value);
+    return Number.isFinite(n) && n > 1 ? 1 / n : null;
+  };
+  const home = inv(odds?.homeOdds);
+  const away = inv(odds?.awayOdds);
+  const draw = inv(odds?.drawOdds) || 0;
+  if (home == null || away == null) return null;
+  const total = home + draw + away;
+  if (!total) return null;
+  return { homePct: (home / total) * 100, awayPct: (away / total) * 100, drawPct: (draw / total) * 100 };
+}
+
+// Best-effort: a hypothetical future round has no scheduled fixture, so a
+// public odds market almost never exists for it yet. When one does show up
+// (e.g. the draw has since been made and this cache is regenerated), fold it
+// in — market price carries more weight than the form-only rating once it's
+// actually available.
+async function simulateFuturesTie(teamA, teamB, competition) {
+  const diff = numeric(teamA.rating) - numeric(teamB.rating);
+  let aPct = Math.round(clamp(50 + diff * 1.1, 8, 92));
+  let oddsApplied = false;
+  try {
+    const lookup = await lookupMatchOdds({ homeTeam: teamA.team, awayTeam: teamB.team, context: "club", league: competition });
+    const market = lookup?.found ? impliedProbsFromOdds(lookup.odds) : null;
+    if (market) {
+      const drawSplit = market.drawPct / 2;
+      const marketAPct = market.homePct + drawSplit;
+      aPct = Math.round(aPct * 0.35 + marketAPct * 0.65);
+      oddsApplied = true;
+    }
+  } catch (_) { /* odds lookup is best-effort only */ }
+  const bPct = 100 - aPct;
+  return { winner: aPct >= bPct ? teamA : teamB, aPct, bPct, oddsApplied };
+}
+
+// Standard tournament seed order (e.g. for 8: 1v8, 4v5, 2v7, 3v6 as adjacent
+// bracket slots) so that top seeds can only meet in later rounds AND adjacent
+// matches in the display always merge into the next round's next match —
+// which is what lets the bracket be drawn with simple, correctly-aligned
+// connector lines instead of needing a seed-aware layout.
+const BRACKET_SEED_ORDER = {
+  2: [1, 2],
+  4: [1, 4, 2, 3],
+  8: [1, 8, 4, 5, 2, 7, 3, 6],
+  16: [1, 16, 8, 9, 4, 13, 5, 12, 2, 15, 7, 10, 3, 14, 6, 11],
+};
+
+async function projectFuturesKnockoutBracket(competition, teamsRanked) {
+  const sizeOptions = [16, 8, 4, 2];
+  const size = sizeOptions.find((option) => teamsRanked.length >= option) || 2;
+  const roundKeysBySize = { 16: ["r16", "qf", "sf", "final"], 8: ["qf", "sf", "final"], 4: ["sf", "final"], 2: ["final"] };
+  const roundLabels = { r16: "Round of 16", qf: "Quarterfinals", sf: "Semifinals", final: "Final" };
+  const roundKeys = roundKeysBySize[size] || [];
+  const seeded = [...teamsRanked].sort((a, b) => numeric(b.rating) - numeric(a.rating)).slice(0, size);
+  const seedOrder = BRACKET_SEED_ORDER[size] || seeded.map((_, index) => index + 1);
+  let field = seedOrder.map((seed) => seeded[seed - 1]);
+  const bracket = {};
+  let oddsApplied = false;
+  for (const key of roundKeys) {
+    if (field.length < 2) break;
+    const n = field.length;
+    const pairs = [];
+    for (let i = 0; i < n / 2; i++) pairs.push([field[i * 2], field[i * 2 + 1]]);
+    const results = await Promise.all(pairs.map(async ([a, b]) => ({ a, b, ...(await simulateFuturesTie(a, b, competition)) })));
+    if (results.some((r) => r.oddsApplied)) oddsApplied = true;
+    bracket[key] = {
+      label: roundLabels[key],
+      subtitle: `${n} clubs · path to the ${competition} final`,
+      matches: results.map((r) => ({
+        home: { team: r.a.team, flag: null },
+        away: { team: r.b.team, flag: null },
+        winner: r.winner.team,
+        homeWinPct: r.aPct,
+        awayWinPct: r.bPct,
+        source: r.oddsApplied ? "odds-adjusted" : "projected",
+        score: null,
+      })),
+      advancers: results.map((r) => ({ team: r.winner.team, flag: null })),
+    };
+    field = results.map((r) => r.winner);
+  }
+  const rounds = roundKeys.filter((key) => bracket[key]).map((key) => ({ id: key, ...bracket[key] }));
+  const champion = field[0] ? { team: field[0].team } : null;
+  return {
+    generatedAt: new Date().toISOString(),
+    competition: { label: competition, season: "2026-27" },
+    bracket,
+    rounds,
+    champion,
+    championLabel: `${competition} Champion — 2026-27 Forecast`,
+    disclaimer: `${competition} 2026-27 path to the final, built from five seasons of club form and UEFA history.${oddsApplied ? " Live market odds were folded in wherever a price is already posted." : " Market odds will be blended in automatically as soon as a price is posted for a tie."}`,
+  };
+}
+
+// Real Champions League berth count per domestic league (matches the CL
+// zone thresholds already used by tableZone()). Used to derive next
+// season's futures-bracket field directly from each league's previous
+// (2025-26) final standings, rather than a hand-maintained qualifier list.
+const CHAMPIONS_LEAGUE_BERTHS = { EPL: 4, "La Liga": 4, Bundesliga: 4, "Ligue 1": 3, "Serie A": 4 };
+
+async function standingsQualifiedChampionsLeagueTeams() {
+  const rows = [];
+  for (const league of CLUB_LEAGUES) {
+    const table = await currentTopLeagueTable(league);
+    const berths = CHAMPIONS_LEAGUE_BERTHS[league] || 4;
+    for (let rank = 1; rank <= berths; rank++) {
+      const row = table[rank - 1];
+      if (!row) continue;
+      rows.push({
+        team: normalizeTeamName(row.team),
+        league,
+        rank,
+        status: `${league} previous-season rank #${rank}`,
+      });
+    }
+  }
+  return rows;
+}
+
+async function futuresKnockoutBracket(competition) {
+  if (!["Champions League", "Europa League", "Conference League"].includes(competition)) {
+    throw new Error(`Unknown futures bracket competition: ${competition}`);
+  }
+  const allTrends = await Promise.all(CLUB_LEAGUES.map((leagueName) => leagueTrends(leagueName)));
+  const teamRows = competition === "Champions League" ? await standingsQualifiedChampionsLeagueTeams() : await europeanProfileTeamRows(competition, allTrends);
+  const teams = rankedEuropeanTeams(competition, teamRows, allTrends);
+  return projectFuturesKnockoutBracket(competition, teams);
 }
 
 async function nextSeasonClubFutures({ league = "All" } = {}) {
@@ -1435,12 +1721,14 @@ async function nextSeasonClubFutures({ league = "All" } = {}) {
         title: `${leagueName} — 2026-27 Season Projection`,
         subtitle: `Projected final standings based on ${HISTORICAL_SEASONS[0]}–${HISTORICAL_SEASONS[HISTORICAL_SEASONS.length - 1]} form trends. Re-runs after transfers and preseason data are imported.`,
         type: "league-table",
+        methodology: STANDINGS_METHODOLOGY,
         projectedTable: projectedLeagueTable(leagueName, trends),
         picks: [
           ...leagueWinnerPicksFromTrends(leagueName, leagueName, trends),
           ...promotedTeamBaselinePicks(leagueName, trends),
           ...topMarketWatchlist(leagueName, trends, playerProfiles, "goals"),
           ...topMarketWatchlist(leagueName, trends, playerProfiles, "assists"),
+          ...cleanSheetWatchlist(leagueName, trends),
           ...teamScorerWatchlist(leagueName, trends, playerProfiles),
         ],
       });
@@ -1502,6 +1790,7 @@ async function clubFutures({ season = "2025-26", league = "All" } = {}) {
       title: `${tableLeague.name || leagueName} — ${season} Live Table`,
       subtitle: `${trainedTeams} manually trained team profile${trainedTeams === 1 ? "" : "s"} layered in. Current standings as of latest ESPN refresh.`,
       type: "league-table",
+      methodology: STANDINGS_METHODOLOGY,
       projectedTable: (tableLeague.standings || []).map((row, index) => ({
         rank: index + 1,
         team: normalizeTeamName(row.team),
@@ -1519,6 +1808,7 @@ async function clubFutures({ season = "2025-26", league = "All" } = {}) {
       picks: [
         ...(leagueWinner ? [{ ...leagueWinner, market: "League winner / next-season baseline" }] : []),
         ...scorerPicks.map((pick) => ({ ...pick, market: "Top scorer watchlist" })),
+        ...cleanSheetWatchlistFromStandings(leagueName, tableLeague.standings || []),
       ],
     });
     if (league !== "All") {
@@ -1755,4 +2045,5 @@ async function futuresPredictions({ context = "club", season, league } = {}) {
 
 module.exports = {
   futuresPredictions,
+  futuresKnockoutBracket,
 };

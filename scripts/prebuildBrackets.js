@@ -18,9 +18,11 @@ const path = require("path");
 const BRACKETS_DIR = path.join(__dirname, "..", "data", "cached", "brackets");
 const FUTURES_DIR  = path.join(__dirname, "..", "data", "cached", "futures");
 const CUPS_DIR     = path.join(__dirname, "..", "data", "cached", "cups");
+const FUTURES_BRACKETS_DIR = path.join(__dirname, "..", "data", "cached", "futures-bracket");
 fs.mkdirSync(BRACKETS_DIR, { recursive: true });
 fs.mkdirSync(FUTURES_DIR,  { recursive: true });
 fs.mkdirSync(CUPS_DIR,     { recursive: true });
+fs.mkdirSync(FUTURES_BRACKETS_DIR, { recursive: true });
 
 let errors = 0;
 
@@ -69,9 +71,9 @@ try {
 // We pre-generate futures for the most common request combinations.
 // These are served by the server cache-first, recomputed on local dev.
 async function buildFutures() {
-  let futuresPredictions;
+  let futuresPredictions, futuresKnockoutBracket;
   try {
-    ({ futuresPredictions } = require("../src/futuresService"));
+    ({ futuresPredictions, futuresKnockoutBracket } = require("../src/futuresService"));
   } catch (err) {
     fail("futuresService load", err);
     return;
@@ -98,6 +100,20 @@ async function buildFutures() {
         save(path.join(FUTURES_DIR, `${key}.json`), data);
       } catch (err) { fail(key, err); }
     }
+  }
+
+  // 2026-27 futures brackets (genuine coming-season projection, distinct
+  // from the real completed-season bracket in BRACKETS_DIR)
+  for (const [compId, compLabel] of [
+    ["champions-league", "Champions League"],
+    ["europa-league", "Europa League"],
+    ["conference-league", "Conference League"],
+  ]) {
+    try {
+      console.log(`Generating futures-bracket ${compId}…`);
+      const data = await futuresKnockoutBracket(compLabel);
+      save(path.join(FUTURES_BRACKETS_DIR, `${compId}.json`), data);
+    } catch (err) { fail(`futures-bracket ${compId}`, err); }
   }
 }
 

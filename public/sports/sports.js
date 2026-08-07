@@ -5,6 +5,7 @@ const FEATURES = ["Predictions", "Teams Profile", "Futures", "Player Profiles", 
 const CONTENT = {
   baseball: { name: "Baseball", league: "MLB", icon: "MLB", season: "2026", historicalSeason: "2025", description: "Pitcher-aware baseball analysis, organized separately from football and basketball." },
   basketball: { name: "Basketball", league: "NBA", icon: "NBA", season: "2026", historicalSeason: "2025", description: "Availability, rest, pace, and matchup analysis organized for NBA fixtures." },
+  "american-football": { name: "American Football", league: "NFL", icon: "NFL", season: "2025", historicalSeason: "2024", description: "Skeletal structure for a future NFL model — schedule import is live; features and training are not built yet." },
 };
 const data = CONTENT[SPORT];
 const escapeHtml = (value) => String(value ?? "").replace(/[&<>"']/g, (char) => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" }[char]));

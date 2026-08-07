@@ -11,7 +11,7 @@ const { internationalFixturePredictions, internationalGroupTables, international
 const { projectTournament } = require("./tournamentProjection");
 const { projectClubBracket } = require("./clubBracketProjection");
 const { archivedLeagueTables, refreshLiveLeagueContext } = require("./leagueTableService");
-const { futuresPredictions } = require("./futuresService");
+const { futuresPredictions, futuresKnockoutBracket } = require("./futuresService");
 const { resetPlayerStatsCache } = require("./playerStats");
 const { loadMatches, normalizeTeamName } = require("./footballData");
 const { refreshMissingOdds } = require("./oddsRepairService");
@@ -35,6 +35,7 @@ const { createPrediction: createBaseballPrediction, settlePrediction: settleBase
 const { forecastBoard: baseballForecastBoard } = require("./baseballModel/forecastService");
 const { ingestSchedulePayload } = require("./baseballModel/featureStore");
 const { collectPregameFeatures } = require("./baseballModel/pregameCollectors");
+const { buildForecastBoard: americanFootballForecastBoard } = require("./americanFootballModel/forecastService");
 
 const PORT = Number(process.env.PORT || 4173);
 const PUBLIC_DIR = path.join(process.cwd(), "public");
@@ -588,7 +589,7 @@ async function handleApi(req, res, pathname) {
   const baseballSettlement = pathname.match(/^\/api\/baseball\/predictions\/(.+)\/settlement$/);
   if (req.method === "POST" && baseballSettlement) return sendJson(res, 200, settleBaseballPrediction(decodeURIComponent(baseballSettlement[1]), await readBody(req)));
 
-  const multiSportMatch = pathname.match(/^\/api\/sports\/(baseball|basketball)\/season$/);
+  const multiSportMatch = pathname.match(/^\/api\/sports\/(baseball|basketball|american-football)\/season$/);
   if (req.method === "GET" && multiSportMatch) {
     const url = new URL(req.url, `http://${req.headers.host}`);
     const sport = multiSportMatch[1];
@@ -599,6 +600,10 @@ async function handleApi(req, res, pathname) {
     } catch (error) {
       return sendJson(res, 502, { error: error.message, sport, season });
     }
+  }
+
+  if (req.method === "GET" && pathname === "/api/american-football/status") {
+    return sendJson(res, 200, americanFootballForecastBoard());
   }
 
   if (req.method === "GET" && pathname === "/api/sports/baseball/predictions") {
@@ -1195,6 +1200,9 @@ async function handleApi(req, res, pathname) {
   }
 
   // ── Club competition knockout brackets ──────────────────────────────────
+  // This shows the real, already-completed/in-progress season's bracket
+  // (parsed from actual UEFA result files) — historical/current context,
+  // not a coming-season prediction.
   const clubBracketMatch = pathname.match(/^\/api\/bracket\/(champions-league|europa-league|conference-league)$/);
   if (req.method === "GET" && clubBracketMatch) {
     const compId = clubBracketMatch[1];
@@ -1209,6 +1217,29 @@ async function handleApi(req, res, pathname) {
     try {
       const bracket = projectClubBracket(compId);
       return sendJson(res, 200, bracket);
+    } catch (e) {
+      return sendJson(res, 500, { error: e.message });
+    }
+  }
+
+  // ── Club competition FUTURES bracket ────────────────────────────────────
+  // A genuine 2026-27 projection simulated from the current rating pool —
+  // no draw or fixtures exist yet for next season, unlike /api/bracket above.
+  const futuresBracketMatch = pathname.match(/^\/api\/futures-bracket\/(champions-league|europa-league|conference-league)$/);
+  if (req.method === "GET" && futuresBracketMatch) {
+    const compId = futuresBracketMatch[1];
+    // Building this from scratch recomputes 2020-21..2025-26 trends for all
+    // five leagues (including live second-tier ESPN lookups) — cache-first,
+    // same pattern as /api/bracket and /api/cup-bracket, so it's instant.
+    const cachedPath = path.join(process.cwd(), "data", "cached", "futures-bracket", `${compId}.json`);
+    if (fs.existsSync(cachedPath)) {
+      try {
+        return sendJson(res, 200, JSON.parse(fs.readFileSync(cachedPath, "utf8")));
+      } catch (_) { /* fall through to live computation */ }
+    }
+    const compLabel = { "champions-league": "Champions League", "europa-league": "Europa League", "conference-league": "Conference League" }[compId];
+    try {
+      return sendJson(res, 200, await futuresKnockoutBracket(compLabel));
     } catch (e) {
       return sendJson(res, 500, { error: e.message });
     }
@@ -1357,6 +1388,7 @@ const server = http.createServer(async (req, res) => {
     if (url.pathname === "/classic" || url.pathname === "/classic/") requested = "index.html";
     if (url.pathname === "/baseball" || url.pathname === "/baseball/") requested = "baseball/index.html";
     if (url.pathname === "/basketball" || url.pathname === "/basketball/") requested = "basketball/index.html";
+    if (url.pathname === "/american-football" || url.pathname === "/american-football/") requested = "american-football/index.html";
     const filePath = path.resolve(PUBLIC_DIR, requested);
     if (!filePath.startsWith(PUBLIC_DIR) || !fs.existsSync(filePath)) {
       res.writeHead(404, { "Content-Type": "text/plain" });

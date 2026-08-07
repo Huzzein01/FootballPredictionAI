@@ -307,6 +307,51 @@ function projectTournament() {
     };
   }
 
+  const bracket = {
+    r16: {
+      label:    "Round of 16",
+      subtitle: "32 qualifiers enter · 16 advance",
+      matches:  r16Results.map(toSlimMatch),
+      advancers: advancers(r16Results).map(s => ({ team: s.team, flag: s.flagUrl })),
+    },
+    qf: {
+      label:    "Quarterfinals",
+      subtitle: "16 teams · 8 advance",
+      matches:  qfResults.map(toSlimMatch),
+      advancers: advancers(qfResults).map(s => ({ team: s.team, flag: s.flagUrl })),
+    },
+    sf: {
+      label:    "Semifinals",
+      subtitle: "8 teams · 4 advance",
+      matches:  sfResults.map(toSlimMatch),
+      advancers: advancers(sfResults).map(s => ({ team: s.team, flag: s.flagUrl })),
+    },
+    finalFour: {
+      label:    "Final Four",
+      subtitle: "4 teams · 2 finalists",
+      matches:  ffResults.map(toSlimMatch),
+      advancers: advancers(ffResults).map(s => ({ team: s.team, flag: s.flagUrl })),
+    },
+    thirdPlace: {
+      label:    "Third-Place Play-off",
+      subtitle: "Semifinal losers · bronze medal match",
+      matches:  thirdPlaceResults.map(toSlimMatch),
+      advancers: [{ team: thirdPlaceResults[0].winner.team, flag: thirdPlaceResults[0].winner.flagUrl }],
+    },
+    final: {
+      label:    "Final",
+      subtitle: "2 finalists · 1 champion",
+      matches:  finalResults.map(toSlimMatch),
+      advancers: [ { team: champion.team, flag: champion.flagUrl } ],
+    },
+  };
+
+  // Ordered, flattened view of the same rounds so the renderer can lay out
+  // however many stages exist without hardcoding round keys.
+  const rounds = ["r16", "qf", "sf", "finalFour", "thirdPlace", "final"]
+    .filter((key) => bracket[key])
+    .map((key) => ({ id: key, ...bracket[key] }));
+
   return {
     generatedAt: new Date().toISOString(),
     groupStandings,
@@ -314,46 +359,10 @@ function projectTournament() {
       auto:   auto.map(s => ({ team: s.team, flag: s.flagUrl, rank: s.rank, group: s.group })),
       thirds: thirds.map(s => ({ team: s.team, flag: s.flagUrl, group: s.group })),
     },
-    bracket: {
-      r16: {
-        label:    "Round of 16",
-        subtitle: "32 qualifiers enter · 16 advance",
-        matches:  r16Results.map(toSlimMatch),
-        advancers: advancers(r16Results).map(s => ({ team: s.team, flag: s.flagUrl })),
-      },
-      qf: {
-        label:    "Quarterfinals",
-        subtitle: "16 teams · 8 advance",
-        matches:  qfResults.map(toSlimMatch),
-        advancers: advancers(qfResults).map(s => ({ team: s.team, flag: s.flagUrl })),
-      },
-      sf: {
-        label:    "Semifinals",
-        subtitle: "8 teams · 4 advance",
-        matches:  sfResults.map(toSlimMatch),
-        advancers: advancers(sfResults).map(s => ({ team: s.team, flag: s.flagUrl })),
-      },
-      finalFour: {
-        label:    "Final Four",
-        subtitle: "4 teams · 2 finalists",
-        matches:  ffResults.map(toSlimMatch),
-        advancers: advancers(ffResults).map(s => ({ team: s.team, flag: s.flagUrl })),
-      },
-      thirdPlace: {
-        label:    "Third-Place Play-off",
-        subtitle: "Semifinal losers · bronze medal match",
-        matches:  thirdPlaceResults.map(toSlimMatch),
-        advancers: [{ team: thirdPlaceResults[0].winner.team, flag: thirdPlaceResults[0].winner.flagUrl }],
-      },
-      final: {
-        label:    "Final",
-        subtitle: "2 finalists · 1 champion",
-        matches:  finalResults.map(toSlimMatch),
-        advancers: [ { team: champion.team, flag: champion.flagUrl } ],
-      },
-    },
+    bracket,
+    rounds,
     champion: { team: champion.team, flag: champion.flagUrl },
-    disclaimer: "Model-only projection. No live odds, injury data, or real-time fixtures applied to knockout stage.",
+    disclaimer: "Knockout-stage forecast built from group form and squad strength. Live odds, injuries, and fixture news will sharpen this as the tournament progresses.",
   };
 }
 
