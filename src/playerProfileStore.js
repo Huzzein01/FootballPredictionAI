@@ -1561,6 +1561,28 @@ const PLAYER_PROFILES = [
     photoSourceName: "Wikipedia / Wikimedia Commons",
     photoSourceUrl: "https://en.wikipedia.org/wiki/Álex_Remiro",
   },
+  {
+    id: "ivan-balliu",
+    player: "Iván Balliu",
+    team: "Rayo Vallecano",
+    league: "La Liga",
+    role: "Defender",
+    position: "RB",
+    photoUrl: "https://upload.wikimedia.org/wikipedia/commons/d/de/RC_Lens_-_FC_Metz_%2809-02-2019%29_77_%28Balliu%29.jpg",
+    photoSourceName: "Wikipedia / Wikimedia Commons",
+    photoSourceUrl: "https://en.wikipedia.org/wiki/Ivan_Balliu",
+  },
+  {
+    id: "pathe-ciss",
+    player: "Pathé Ciss",
+    team: "Rayo Vallecano",
+    league: "La Liga",
+    role: "Midfielder",
+    position: "CM",
+    photoUrl: "https://upload.wikimedia.org/wikipedia/commons/d/d1/Path%C3%A9_Ciss_France_v_Senegal_16_June_2026-484_%28cropped%29.jpg",
+    photoSourceName: "Wikipedia / Wikimedia Commons",
+    photoSourceUrl: "https://en.wikipedia.org/wiki/Pathé_Ciss",
+  },
 ];
 
 const SUPPLEMENTAL_PROFILE_ROWS = [
