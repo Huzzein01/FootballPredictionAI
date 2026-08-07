@@ -2441,6 +2441,28 @@ const PLAYER_PROFILES = [
     photoSourceName: "Wikipedia / Wikimedia Commons",
     photoSourceUrl: "https://en.wikipedia.org/wiki/Thorgan_Hazard",
   },
+  {
+    id: "jonathan-clauss",
+    player: "Jonathan Clauss",
+    team: "Nice",
+    league: "Ligue 1",
+    role: "Defender",
+    position: "RB",
+    photoUrl: "https://upload.wikimedia.org/wikipedia/commons/6/60/Clauss_asse_ogcn_2425.png",
+    photoSourceName: "Wikipedia / Wikimedia Commons",
+    photoSourceUrl: "https://en.wikipedia.org/wiki/Jonathan_Clauss",
+  },
+  {
+    id: "terem-moffi",
+    player: "Terem Moffi",
+    team: "Nice",
+    league: "Ligue 1",
+    role: "Attacker",
+    position: "ST",
+    photoUrl: "https://upload.wikimedia.org/wikipedia/commons/0/0d/Terem_Moffi.jpg",
+    photoSourceName: "Wikipedia / Wikimedia Commons",
+    photoSourceUrl: "https://en.wikipedia.org/wiki/Terem_Moffi",
+  },
 ];
 
 const SUPPLEMENTAL_PROFILE_ROWS = [
