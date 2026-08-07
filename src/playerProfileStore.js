@@ -2166,6 +2166,28 @@ const PLAYER_PROFILES = [
     photoSourceName: "Wikipedia / Wikimedia Commons",
     photoSourceUrl: "https://en.wikipedia.org/wiki/Lucas_Höler",
   },
+  {
+    id: "oliver-baumann",
+    player: "Oliver Baumann",
+    team: "TSG Hoffenheim",
+    league: "Bundesliga",
+    role: "Goalkeeper",
+    position: "GK",
+    photoUrl: "https://upload.wikimedia.org/wikipedia/commons/f/f2/Oliver_Baumann_Ecuador_v_Germany_25_June_2026-066.jpg",
+    photoSourceName: "Wikipedia / Wikimedia Commons",
+    photoSourceUrl: "https://en.wikipedia.org/wiki/Oliver_Baumann",
+  },
+  {
+    id: "andrej-kramaric",
+    player: "Andrej Kramarić",
+    team: "TSG Hoffenheim",
+    league: "Bundesliga",
+    role: "Attacker",
+    position: "ST",
+    photoUrl: "https://upload.wikimedia.org/wikipedia/commons/7/73/Andrej_Kramaric_Croatia_v_Portugal_2_July_2026-014.jpg",
+    photoSourceName: "Wikipedia / Wikimedia Commons",
+    photoSourceUrl: "https://en.wikipedia.org/wiki/Andrej_Kramarić",
+  },
 ];
 
 const SUPPLEMENTAL_PROFILE_ROWS = [
