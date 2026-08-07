@@ -1132,6 +1132,28 @@ const PLAYER_PROFILES = [
     photoSourceName: "Wikipedia / Wikimedia Commons",
     photoSourceUrl: "https://en.wikipedia.org/wiki/Gianluca_Mancini",
   },
+  {
+    id: "jose-gaya",
+    player: "Jose Gaya",
+    team: "Valencia",
+    league: "La Liga",
+    role: "Defender",
+    position: "LB",
+    photoUrl: "https://upload.wikimedia.org/wikipedia/commons/6/6c/Real_Valladolid-Valencia_CF%2C_2019-05-18_%2831%29_%28better_cropped%29.jpg",
+    photoSourceName: "Wikipedia / Wikimedia Commons",
+    photoSourceUrl: "https://en.wikipedia.org/wiki/Jos%C3%A9_Gay%C3%A0",
+  },
+  {
+    id: "willi-orban",
+    player: "Willi Orban",
+    team: "RB Leipzig",
+    league: "Bundesliga",
+    role: "Defender",
+    position: "CB",
+    photoUrl: "https://upload.wikimedia.org/wikipedia/commons/b/b5/Orbanirl.jpg",
+    photoSourceName: "Wikipedia / Wikimedia Commons",
+    photoSourceUrl: "https://en.wikipedia.org/wiki/Willi_Orban",
+  },
 ];
 
 const SUPPLEMENTAL_PROFILE_ROWS = [
