@@ -1759,6 +1759,28 @@ const PLAYER_PROFILES = [
     photoSourceName: "Wikipedia / Wikimedia Commons",
     photoSourceUrl: "https://en.wikipedia.org/wiki/Samú_Costa",
   },
+  {
+    id: "toni-martinez",
+    player: "Toni Martínez",
+    team: "Deportivo Alavés",
+    league: "La Liga",
+    role: "Attacker",
+    position: "ST",
+    photoUrl: "https://upload.wikimedia.org/wikipedia/commons/7/7a/Toni_Martinez_2015_SBS_Cup_%28cropped%29.jpg",
+    photoSourceName: "Wikipedia / Wikimedia Commons",
+    photoSourceUrl: "https://en.wikipedia.org/wiki/Toni_Martínez",
+  },
+  {
+    id: "jonny-otto",
+    player: "Jonny",
+    team: "Deportivo Alavés",
+    league: "La Liga",
+    role: "Defender",
+    position: "LB",
+    photoUrl: "https://upload.wikimedia.org/wikipedia/commons/b/bc/Partido_Galicia_-_Panam%C3%A1_en_Bala%C3%ADdos_22_%28cropped%29.jpg",
+    photoSourceName: "Wikipedia / Wikimedia Commons",
+    photoSourceUrl: "https://en.wikipedia.org/wiki/Jonny_(footballer,_born_1994)",
+  },
 ];
 
 const SUPPLEMENTAL_PROFILE_ROWS = [
