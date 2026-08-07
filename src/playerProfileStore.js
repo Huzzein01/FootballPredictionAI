@@ -2551,6 +2551,28 @@ const PLAYER_PROFILES = [
     photoSourceName: "Wikipedia / Wikimedia Commons",
     photoSourceUrl: "https://en.wikipedia.org/wiki/Yann_Gboho",
   },
+  {
+    id: "nampalys-mendy",
+    player: "Nampalys Mendy",
+    team: "Metz",
+    league: "Ligue 1",
+    role: "Midfielder",
+    position: "CDM",
+    photoUrl: "https://upload.wikimedia.org/wikipedia/commons/d/d8/Nampalys_Mendy_ASSE_RCL_2324.jpg",
+    photoSourceName: "Wikipedia / Wikimedia Commons",
+    photoSourceUrl: "https://en.wikipedia.org/wiki/Nampalys_Mendy",
+  },
+  {
+    id: "bouna-sarr",
+    player: "Bouna Sarr",
+    team: "Metz",
+    league: "Ligue 1",
+    role: "Defender",
+    position: "RB",
+    photoUrl: "https://upload.wikimedia.org/wikipedia/commons/5/5e/BounaSarr.jpg",
+    photoSourceName: "Wikipedia / Wikimedia Commons",
+    photoSourceUrl: "https://en.wikipedia.org/wiki/Bouna_Sarr",
+  },
 ];
 
 const SUPPLEMENTAL_PROFILE_ROWS = [
