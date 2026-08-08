@@ -3134,6 +3134,28 @@ const PLAYER_PROFILES = [
     photoSourceName: "Wikipedia / Wikimedia Commons",
     photoSourceUrl: "https://en.wikipedia.org/wiki/Federico_Baschirotto",
   },
+  {
+    id: "simone-scuffet",
+    player: "Simone Scuffet",
+    team: "Pisa",
+    league: "Serie A",
+    role: "Goalkeeper",
+    position: "GK",
+    photoUrl: "https://upload.wikimedia.org/wikipedia/commons/5/53/Simone_Scuffet_-_CFR_Cluj_-_Lazio_0-0_%2852708030789%29_%28cropped%29.png",
+    photoSourceName: "Wikipedia / Wikimedia Commons",
+    photoSourceUrl: "https://en.wikipedia.org/wiki/Simone_Scuffet",
+  },
+  {
+    id: "matteo-tramoni",
+    player: "Mattéo Tramoni",
+    team: "Pisa",
+    league: "Serie A",
+    role: "Midfielder",
+    position: "CAM",
+    photoUrl: "https://upload.wikimedia.org/wikipedia/commons/6/6e/RC_Lens_-_AC_Ajaccio_%2822-12-2018%29_65.jpg",
+    photoSourceName: "Wikipedia / Wikimedia Commons",
+    photoSourceUrl: "https://en.wikipedia.org/wiki/Mattéo_Tramoni",
+  },
 ];
 
 const SUPPLEMENTAL_PROFILE_ROWS = [
