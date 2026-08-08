@@ -3002,6 +3002,17 @@ const PLAYER_PROFILES = [
     photoSourceName: "Wikipedia / Wikimedia Commons",
     photoSourceUrl: "https://en.wikipedia.org/wiki/Gabriele_Zappa",
   },
+  {
+    id: "jesper-karlstrom",
+    player: "Jesper Karlström",
+    team: "Udinese",
+    league: "Serie A",
+    role: "Midfielder",
+    position: "CDM",
+    photoUrl: "https://upload.wikimedia.org/wikipedia/commons/a/a7/Jesper_Karlstr%C3%B6m_%28Djurg%C3%A5rden%2C_2020%2C_cropped%29.jpg",
+    photoSourceName: "Wikipedia / Wikimedia Commons",
+    photoSourceUrl: "https://en.wikipedia.org/wiki/Jesper_Karlström",
+  },
 ];
 
 const SUPPLEMENTAL_PROFILE_ROWS = [
