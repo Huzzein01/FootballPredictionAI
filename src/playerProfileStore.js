@@ -3057,6 +3057,17 @@ const PLAYER_PROFILES = [
     photoSourceName: "Wikipedia / Wikimedia Commons",
     photoSourceUrl: "https://en.wikipedia.org/wiki/Roberto_Gagliardini",
   },
+  {
+    id: "zion-suzuki",
+    player: "Zion Suzuki",
+    team: "Parma",
+    league: "Serie A",
+    role: "Goalkeeper",
+    position: "GK",
+    photoUrl: "https://upload.wikimedia.org/wikipedia/commons/7/7b/ZION_SUZUKI_-_JPN_vs_THA_-_Friendly_Match_-_2024.01.01.jpg",
+    photoSourceName: "Wikipedia / Wikimedia Commons",
+    photoSourceUrl: "https://en.wikipedia.org/wiki/Zion_Suzuki",
+  },
 ];
 
 const SUPPLEMENTAL_PROFILE_ROWS = [
