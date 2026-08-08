@@ -2947,6 +2947,28 @@ const PLAYER_PROFILES = [
     photoSourceName: "Wikipedia / Wikimedia Commons",
     photoSourceUrl: "https://en.wikipedia.org/wiki/Nikola_Vlašić",
   },
+  {
+    id: "johan-vasquez",
+    player: "Johan Vásquez",
+    team: "Genoa",
+    league: "Serie A",
+    role: "Defender",
+    position: "CB",
+    photoUrl: "https://upload.wikimedia.org/wikipedia/commons/0/0c/Johan_V%C3%A1squez.png",
+    photoSourceName: "Wikipedia / Wikimedia Commons",
+    photoSourceUrl: "https://en.wikipedia.org/wiki/Johan_Vásquez_(footballer,_born_1998)",
+  },
+  {
+    id: "aaron-martin",
+    player: "Aarón Martín",
+    team: "Genoa",
+    league: "Serie A",
+    role: "Defender",
+    position: "LB",
+    photoUrl: "https://upload.wikimedia.org/wikipedia/commons/2/20/A%C3%A1ron_-_Espanyol_-_WMES_%28cropped%29.jpg",
+    photoSourceName: "Wikipedia / Wikimedia Commons",
+    photoSourceUrl: "https://en.wikipedia.org/wiki/Aarón_Martín_(footballer,_born_1997)",
+  },
 ];
 
 const SUPPLEMENTAL_PROFILE_ROWS = [
