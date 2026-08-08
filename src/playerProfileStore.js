@@ -3013,6 +3013,28 @@ const PLAYER_PROFILES = [
     photoSourceName: "Wikipedia / Wikimedia Commons",
     photoSourceUrl: "https://en.wikipedia.org/wiki/Jesper_Karlström",
   },
+  {
+    id: "nemanja-matic",
+    player: "Nemanja Matić",
+    team: "Sassuolo",
+    league: "Serie A",
+    role: "Midfielder",
+    position: "CDM",
+    photoUrl: "https://upload.wikimedia.org/wikipedia/commons/8/86/Nemanja_Mati%C4%87_2018_%28cropped%29.jpg",
+    photoSourceName: "Wikipedia / Wikimedia Commons",
+    photoSourceUrl: "https://en.wikipedia.org/wiki/Nemanja_Matić",
+  },
+  {
+    id: "domenico-berardi",
+    player: "Domenico Berardi",
+    team: "Sassuolo",
+    league: "Serie A",
+    role: "Attacker",
+    position: "RW",
+    photoUrl: "https://upload.wikimedia.org/wikipedia/commons/c/c8/Domenico_Berardi%2C_Palazzo_Chigi%2C_2021.jpg",
+    photoSourceName: "Wikipedia / Wikimedia Commons",
+    photoSourceUrl: "https://en.wikipedia.org/wiki/Domenico_Berardi",
+  },
 ];
 
 const SUPPLEMENTAL_PROFILE_ROWS = [
