@@ -3035,6 +3035,28 @@ const PLAYER_PROFILES = [
     photoSourceName: "Wikipedia / Wikimedia Commons",
     photoSourceUrl: "https://en.wikipedia.org/wiki/Domenico_Berardi",
   },
+  {
+    id: "suat-serdar",
+    player: "Suat Serdar",
+    team: "Hellas Verona",
+    league: "Serie A",
+    role: "Midfielder",
+    position: "CM",
+    photoUrl: "https://upload.wikimedia.org/wikipedia/commons/4/4e/Suat_Serdar.jpg",
+    photoSourceName: "Wikipedia / Wikimedia Commons",
+    photoSourceUrl: "https://en.wikipedia.org/wiki/Suat_Serdar",
+  },
+  {
+    id: "roberto-gagliardini",
+    player: "Roberto Gagliardini",
+    team: "Hellas Verona",
+    league: "Serie A",
+    role: "Midfielder",
+    position: "CM",
+    photoUrl: "https://upload.wikimedia.org/wikipedia/commons/3/30/Roberto_Gagliardini_01.JPG",
+    photoSourceName: "Wikipedia / Wikimedia Commons",
+    photoSourceUrl: "https://en.wikipedia.org/wiki/Roberto_Gagliardini",
+  },
 ];
 
 const SUPPLEMENTAL_PROFILE_ROWS = [
