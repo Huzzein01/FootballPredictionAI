@@ -2727,6 +2727,28 @@ const PLAYER_PROFILES = [
     photoSourceName: "Wikipedia / Wikimedia Commons",
     photoSourceUrl: "https://en.wikipedia.org/wiki/Paul_Nardi",
   },
+  {
+    id: "mbwana-samatta",
+    player: "Mbwana Samatta",
+    team: "Le Havre",
+    league: "Ligue 1",
+    role: "Attacker",
+    position: "ST",
+    photoUrl: "https://upload.wikimedia.org/wikipedia/commons/b/b2/FC_Salzburg_gegen_KRC_Genk_%28UEFA_Championsleague_17._September_2019%29_11_%28cropped%29.jpg",
+    photoSourceName: "Wikipedia / Wikimedia Commons",
+    photoSourceUrl: "https://en.wikipedia.org/wiki/Mbwana_Samatta",
+  },
+  {
+    id: "amir-richardson",
+    player: "Amir Richardson",
+    team: "Le Havre",
+    league: "Ligue 1",
+    role: "Midfielder",
+    position: "CM",
+    photoUrl: "https://upload.wikimedia.org/wikipedia/commons/a/aa/AmirRichardson.jpg",
+    photoSourceName: "Wikipedia / Wikimedia Commons",
+    photoSourceUrl: "https://en.wikipedia.org/wiki/Amir_Richardson",
+  },
 ];
 
 const SUPPLEMENTAL_PROFILE_ROWS = [
