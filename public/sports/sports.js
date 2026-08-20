@@ -1,7 +1,7 @@
 "use strict";
 
 const SPORT = document.body.dataset.sport;
-const FEATURES = ["Predictions", "Parlays", "Teams Profile", "Futures", "Player Profiles", "Tables", "Fixtures", "Model Training"];
+const FEATURES = ["Predictions", "Parlays", "Parlay Ledger", "Teams Profile", "Futures", "Player Profiles", "Tables", "Fixtures", "Model Training"];
 const CONTENT = {
   baseball: { name: "Baseball", league: "MLB", icon: "MLB", season: "2026", historicalSeason: "2025", description: "Pitcher-aware baseball analysis, organized separately from football and basketball.", scoreLabel: "runs", scoreKey: "expectedRuns" },
   basketball: { name: "Basketball", league: "NBA", icon: "NBA", season: "2026", historicalSeason: "2025", description: "Availability, rest, pace, and matchup analysis organized for NBA fixtures.", scoreLabel: "points", scoreKey: "expectedPoints" },
@@ -9,7 +9,7 @@ const CONTENT = {
 };
 const data = CONTENT[SPORT];
 const escapeHtml = (value) => String(value ?? "").replace(/[&<>"']/g, (char) => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" }[char]));
-const state = { feature: "Predictions", current: null, historical: null, monitoring: null, predictions: null, allPredictions: null, standingsSource: null, playerLeaders: null, riskMode: "balanced" };
+const state = { feature: "Predictions", current: null, historical: null, monitoring: null, predictions: null, allPredictions: null, standingsSource: null, playerLeaders: null, riskMode: "balanced", builtParlays: [], parlayLedger: null, trackStatus: "" };
 const RISK_MODES = {
   safe: { legsPerParlay: 2, minProbability: 0.6, label: "Safe · 2-leg" },
   balanced: { legsPerParlay: 3, minProbability: 0.55, label: "Balanced · 3-leg" },
@@ -38,7 +38,33 @@ function featureNav() {
   nav.innerHTML = FEATURES.map((feature) => `<button class="feature-tab${feature === state.feature ? " active" : ""}" data-feature="${feature}">${feature}</button>`).join("");
   nav.querySelectorAll("button").forEach((button) => button.addEventListener("click", () => { state.feature = button.dataset.feature; featureNav(); renderFeature(); }));
 }
+async function trackParlay(index) {
+  const parlay = state.builtParlays[index];
+  if (!parlay) return;
+  state.trackStatus = "Tracking parlay...";
+  renderFeature();
+  try {
+    const body = {
+      parlays: [{
+        riskMode: state.riskMode,
+        combinedOdds: parlay.combinedOdds,
+        combinedProbability: parlay.combinedProbability,
+        legs: parlay.legs.map((leg) => ({ date: leg.date, matchup: leg.matchup, pick: leg.pick, probability: leg.probability, decimalOdds: leg.decimalOdds, oddsSource: leg.oddsSource })),
+      }],
+    };
+    const response = await fetch(`/api/sports/${SPORT}/parlay/track`, { method: "POST", headers: { "content-type": "application/json" }, body: JSON.stringify(body) });
+    const result = await response.json();
+    if (!response.ok) throw new Error(result.error || `Request failed (${response.status})`);
+    state.trackStatus = result.saved > 0 ? "Parlay tracked — see the Parlay Ledger tab." : "This parlay is already tracked.";
+    state.parlayLedger = await api(`/api/sports/${SPORT}/parlay-ledger`).catch(() => state.parlayLedger);
+  } catch (error) {
+    state.trackStatus = `Could not track parlay: ${error.message}`;
+  }
+  renderFeature();
+}
 document.querySelector("#cards").addEventListener("click", (event) => {
+  const trackButton = event.target.closest("[data-track-parlay]");
+  if (trackButton) { trackParlay(Number(trackButton.dataset.trackParlay)); return; }
   const button = event.target.closest("[data-risk-mode]");
   if (!button) return;
   state.riskMode = button.dataset.riskMode;
@@ -207,14 +233,32 @@ function renderParlays() {
   const modeButtons = Object.entries(RISK_MODES).map(([key, mode]) => `<button data-risk-mode="${key}" class="feature-tab${key === modeKey ? " active" : ""}" style="margin:0.3em 0.4em 0 0">${escapeHtml(mode.label)}</button>`).join("");
   const intro = `<article class="card wide"><span class="tag">Model-generated combos</span><h2>${data.league} parlay builder</h2><p>Legs are chosen from the current ${data.league} predictions by win probability. Combined odds multiply each leg's decimal price — a real market line when one is posted, otherwise the model's own fair (no-vig) odds, always labeled per leg. This is a model output, not a guaranteed outcome or betting advice; variance compounds quickly with each added leg.</p><div>${modeButtons}</div></article>`;
   const parlays = buildParlays(predictions, modeKey);
+  state.builtParlays = parlays;
+  const trackStatus = state.trackStatus ? `<p class="source">${escapeHtml(state.trackStatus)}</p>` : "";
   if (!parlays.length) {
-    return `${intro}${message("No parlays available", `Not enough ${data.league} picks currently clear the ${escapeHtml(RISK_MODES[modeKey].label)} confidence threshold to build a full parlay.`)}`;
+    return `${intro}${trackStatus}${message("No parlays available", `Not enough ${data.league} picks currently clear the ${escapeHtml(RISK_MODES[modeKey].label)} confidence threshold to build a full parlay.`)}`;
   }
   const cards = parlays.map((parlay, index) => {
     const legRows = parlay.legs.map((leg) => `<div><span>${escapeHtml(leg.date)} ${escapeHtml(leg.matchup)}</span><b>${escapeHtml(leg.pick)}</b><em>${compactPct(leg.probability)} | ${leg.decimalOdds.toFixed(2)}x ${leg.oddsSource === "market" ? "(market)" : "(model)"}</em></div>`).join("");
-    return `<article class="forecast-card"><span class="tag">Parlay ${index + 1} — ${parlay.legs.length} legs</span><div class="fixture-list">${legRows}</div><div class="stats">${stat("Combined odds", `${parlay.combinedOdds.toFixed(2)}x`)}${stat("Combined probability", compactPct(parlay.combinedProbability))}${stat("Odds basis", parlay.anyMarketOdds ? "mixed market" : "model-implied")}</div></article>`;
+    return `<article class="forecast-card"><span class="tag">Parlay ${index + 1} — ${parlay.legs.length} legs</span><div class="fixture-list">${legRows}</div><div class="stats">${stat("Combined odds", `${parlay.combinedOdds.toFixed(2)}x`)}${stat("Combined probability", compactPct(parlay.combinedProbability))}${stat("Odds basis", parlay.anyMarketOdds ? "mixed market" : "model-implied")}</div><button data-track-parlay="${index}" style="margin-top:0.6em">Track this parlay</button></article>`;
   }).join("");
-  return `${intro}<section class="forecast-grid">${cards}</section>`;
+  return `${intro}${trackStatus}<section class="forecast-grid">${cards}</section>`;
+}
+function parlayStatusBadge(status) {
+  return { HIT: "hit", MISS: "missed", VOID: "void", PENDING: "pending" }[status] || "pending";
+}
+function renderParlayLedger() {
+  const ledger = state.parlayLedger;
+  const summary = ledger?.summary || {};
+  const trackStatus = state.trackStatus ? `<p class="source">${escapeHtml(state.trackStatus)}</p>` : "";
+  const summaryCard = `<article class="card wide"><span class="tag">Tracked tickets</span><h2>${data.league} parlay ledger</h2><div class="stats">${stat("Total tracked", summary.total ?? 0)}${stat("Pending", summary.pending ?? 0)}${stat("Hit", summary.wins ?? 0)}${stat("Missed", summary.losses ?? 0)}${stat("Ticket hit rate", compactPct(summary.ticketHitRate))}${stat("Leg hit rate", compactPct(summary.legHitRate))}</div><p>Tracked from the Parlays tab. Legs settle automatically once their game finishes — no manual grading needed. This is a record of what the model would have picked, not real money staked.</p></article>`;
+  const tickets = ledger?.parlays || [];
+  if (!tickets.length) return `${summaryCard}${trackStatus}${message("No parlays tracked yet", "Open the Parlays tab and click \"Track this parlay\" on any combo to add it here.")}`;
+  const cards = tickets.map((ticket) => {
+    const legRows = (ticket.legs || []).map((leg) => `<div><span>${escapeHtml(leg.date)} ${escapeHtml(leg.matchup)}</span><b>${escapeHtml(leg.pick)}</b><em>${leg.status}</em></div>`).join("");
+    return `<article class="forecast-card"><span class="tag status-${parlayStatusBadge(ticket.status)}">${ticket.status}</span><h2>${ticket.legCount}-leg parlay</h2><div class="fixture-list">${legRows}</div><div class="stats">${stat("Combined odds", ticket.combinedOdds ? `${ticket.combinedOdds.toFixed(2)}x` : "-")}${stat("Combined probability", compactPct(ticket.combinedProbability))}${stat("Tracked", new Date(ticket.createdAt).toLocaleDateString())}</div></article>`;
+  }).join("");
+  return `${summaryCard}${trackStatus}<section class="forecast-grid">${cards}</section>`;
 }
 function renderFeature() {
   const host = document.querySelector("#cards");
@@ -226,6 +270,8 @@ function renderFeature() {
     host.innerHTML = renderScoreboardPredictions();
   } else if (state.feature === "Parlays") {
     host.innerHTML = renderParlays();
+  } else if (state.feature === "Parlay Ledger") {
+    host.innerHTML = renderParlayLedger();
   } else if (state.feature === "Fixtures") {
     host.innerHTML = scheduleRows(current);
   } else if (state.feature === "Model Training") {
@@ -273,6 +319,7 @@ async function loadData() {
     // clear a parlay's win-probability threshold even when higher-confidence
     // games exist further out.
     state.allPredictions = await api(`${predictionsPath}?season=${encodeURIComponent(data.season)}&limit=0`).catch(() => predictions);
+    state.parlayLedger = await api(`/api/sports/${SPORT}/parlay-ledger`).catch(() => null);
     // Standings/team-rating context needs settled games. In the offseason
     // gap (e.g. NBA/NFL in August, current-season predictions carry zero
     // completed games) fall back to the last completed season purely for

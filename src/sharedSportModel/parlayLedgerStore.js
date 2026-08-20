@@ -1,0 +1,158 @@
+"use strict";
+
+// Persistent parlay tracker for baseball/basketball/American football,
+// mirroring src/parlayBacktestStore.js's ticket/leg/status shape (kept as a
+// separate store rather than reusing that module directly, so tracking
+// parlays for these sports can never affect football's own ledger). One
+// shared file, legs carry a `sport` field, and every read helper accepts an
+// optional sport filter so each sport's page only sees its own tickets.
+const { mutableDataPath, readJsonWithFallback, writeJson } = require("../runtimePaths");
+
+const STORE_PATH = mutableDataPath("multi_sport_parlay_backtests.json");
+
+function readStore() {
+  return readJsonWithFallback(STORE_PATH, null, { parlays: [] });
+}
+
+function writeStore(store) {
+  writeJson(STORE_PATH, store);
+}
+
+function makeId(prefix) {
+  return `${prefix}_${Date.now()}_${Math.random().toString(16).slice(2, 8)}`;
+}
+
+function legKey(leg) {
+  return [leg.sport, leg.date, leg.matchup, leg.pick].join("|").toLowerCase();
+}
+
+function signature(parlay) {
+  return (parlay.legs || []).map(legKey).sort().join("||");
+}
+
+function ticketStatus(legs) {
+  if (legs.some((leg) => leg.status === "MISS")) return "MISS";
+  const active = legs.filter((leg) => leg.status !== "VOID");
+  if (legs.length && !active.length) return "VOID";
+  if (active.some((leg) => leg.status === "PENDING")) return "PENDING";
+  if (active.length && active.every((leg) => leg.status === "HIT")) return "HIT";
+  return "PENDING";
+}
+
+function decorateParlay(parlay) {
+  const legs = (parlay.legs || []).map((leg, index) => ({
+    id: makeId(`leg${index + 1}`),
+    status: "PENDING",
+    settledAt: "",
+    ...leg,
+  }));
+  return {
+    id: makeId("parlay"),
+    createdAt: new Date().toISOString(),
+    sport: parlay.sport,
+    riskMode: parlay.riskMode || "",
+    legCount: legs.length,
+    combinedOdds: Number.isFinite(Number(parlay.combinedOdds)) ? Number(parlay.combinedOdds) : null,
+    combinedProbability: Number.isFinite(Number(parlay.combinedProbability)) ? Number(parlay.combinedProbability) : null,
+    status: ticketStatus(legs),
+    settledAt: "",
+    legs,
+  };
+}
+
+function saveParlaysIfMissing(parlays) {
+  const store = readStore();
+  const existing = new Set(store.parlays.map(signature));
+  const saved = [];
+  for (const parlay of parlays || []) {
+    const sig = signature(parlay);
+    if (!sig || existing.has(sig)) continue;
+    const entry = decorateParlay(parlay);
+    store.parlays.unshift(entry);
+    existing.add(sig);
+    saved.push(entry);
+  }
+  writeStore(store);
+  return saved;
+}
+
+function listParlays(sport) {
+  const all = readStore().parlays;
+  return sport ? all.filter((parlay) => parlay.sport === sport) : all;
+}
+
+function updateLeg(parlayId, legId, status) {
+  const store = readStore();
+  const parlay = store.parlays.find((item) => item.id === parlayId);
+  if (!parlay) return null;
+  const leg = parlay.legs.find((item) => item.id === legId);
+  if (!leg) return null;
+  const normalized = ["HIT", "MISS", "VOID"].includes(status) ? status : "PENDING";
+  leg.status = normalized;
+  leg.settledAt = normalized === "PENDING" ? "" : new Date().toISOString();
+  parlay.status = ticketStatus(parlay.legs);
+  parlay.settledAt = parlay.status === "PENDING" ? "" : new Date().toISOString();
+  writeStore(store);
+  return { parlay };
+}
+
+function summary(sport) {
+  const parlays = listParlays(sport);
+  const settled = parlays.filter((parlay) => parlay.status !== "PENDING");
+  const wins = parlays.filter((parlay) => parlay.status === "HIT").length;
+  const losses = parlays.filter((parlay) => parlay.status === "MISS").length;
+  const voids = parlays.filter((parlay) => parlay.status === "VOID").length;
+  const legs = parlays.flatMap((parlay) => parlay.legs);
+  const settledLegs = legs.filter((leg) => ["HIT", "MISS"].includes(leg.status));
+  const hitLegs = legs.filter((leg) => leg.status === "HIT").length;
+  const decidedTickets = wins + losses;
+  return {
+    total: parlays.length,
+    pending: parlays.length - settled.length,
+    settled: settled.length,
+    wins,
+    losses,
+    voids,
+    legTotal: legs.length,
+    legPending: legs.filter((leg) => leg.status === "PENDING").length,
+    legHitRate: settledLegs.length ? hitLegs / settledLegs.length : 0,
+    ticketHitRate: decidedTickets ? wins / decidedTickets : 0,
+  };
+}
+
+// Settles any PENDING legs whose game has since finished, using the same
+// sport's season games array (date, homeTeam, awayTeam, homeScore,
+// awayScore, completed — the shape multiSportDataService already returns).
+// Matched by sport+date+matchup+pick, the same key legs are saved under.
+function autoSettleFromResults(sport, games) {
+  const store = readStore();
+  const winnerByKey = new Map();
+  for (const game of games || []) {
+    if (!game.completed || !Number.isFinite(Number(game.homeScore)) || !Number.isFinite(Number(game.awayScore))) continue;
+    const matchup = `${game.awayTeam} @ ${game.homeTeam}`;
+    const winner = Number(game.homeScore) > Number(game.awayScore) ? game.homeTeam : game.awayTeam;
+    winnerByKey.set([sport, game.date, matchup].join("|").toLowerCase(), winner);
+  }
+  let settledCount = 0;
+  for (const parlay of store.parlays) {
+    if (parlay.sport !== sport) continue;
+    let changed = false;
+    for (const leg of parlay.legs) {
+      if (leg.status !== "PENDING") continue;
+      const winner = winnerByKey.get([sport, leg.date, leg.matchup].join("|").toLowerCase());
+      if (!winner) continue;
+      leg.status = winner === leg.pick ? "HIT" : "MISS";
+      leg.settledAt = new Date().toISOString();
+      settledCount += 1;
+      changed = true;
+    }
+    if (changed) {
+      parlay.status = ticketStatus(parlay.legs);
+      parlay.settledAt = parlay.status === "PENDING" ? "" : new Date().toISOString();
+    }
+  }
+  if (settledCount) writeStore(store);
+  return settledCount;
+}
+
+module.exports = { saveParlaysIfMissing, listParlays, updateLeg, summary, autoSettleFromResults, STORE_PATH };

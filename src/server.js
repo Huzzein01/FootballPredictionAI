@@ -36,6 +36,7 @@ const { createPrediction: createBaseballPrediction, settlePrediction: settleBase
 const { forecastBoard: baseballForecastBoard } = require("./baseballModel/forecastService");
 const { readOrRefreshPlayerLeaders } = require("./baseballModel/playerLeaders");
 const { readOrRefreshPlayerLeaders: readOrRefreshEspnPlayerLeaders } = require("./sharedSportModel/espnPlayerLeaders");
+const parlayLedgerStore = require("./sharedSportModel/parlayLedgerStore");
 const { ingestSchedulePayload } = require("./baseballModel/featureStore");
 const { collectPregameFeatures } = require("./baseballModel/pregameCollectors");
 const { forecastBoard: americanFootballForecastBoard } = require("./americanFootballModel/forecastService");
@@ -643,6 +644,7 @@ async function handleApi(req, res, pathname) {
         oddsEvents = oddsEventsFromGames(currentSeason.games || []);
       }
       const board = baseballForecastBoard(currentSeason, { oddsEvents, limit, marketWeight });
+      try { parlayLedgerStore.autoSettleFromResults("baseball", currentSeason.games || []); } catch (e) { console.warn("Parlay auto-settle error:", e.message); }
       return sendJson(res, 200, { ...board, odds: { ...odds, events: undefined } });
     } catch (error) {
       return sendJson(res, 502, { error: error.message, sport: "baseball", season });
@@ -668,6 +670,7 @@ async function handleApi(req, res, pathname) {
       const oddsEvents = oddsEventsFromGames(currentSeason.games || []);
       const forecast = sport === "basketball" ? basketballForecastBoard : americanFootballForecastBoard;
       const board = forecast(currentSeason, { oddsEvents, limit, marketWeight });
+      try { parlayLedgerStore.autoSettleFromResults(sport, currentSeason.games || []); } catch (e) { console.warn("Parlay auto-settle error:", e.message); }
       return sendJson(res, 200, board);
     } catch (error) {
       return sendJson(res, 502, { error: error.message, sport, season });
@@ -694,6 +697,21 @@ async function handleApi(req, res, pathname) {
     } catch (error) {
       return sendJson(res, 502, { error: error.message, sport });
     }
+  }
+
+  const parlayTrackMatch = pathname.match(/^\/api\/sports\/(baseball|basketball|american-football)\/parlay\/track$/);
+  if (req.method === "POST" && parlayTrackMatch) {
+    const sport = parlayTrackMatch[1];
+    const body = await readBody(req);
+    const parlays = (Array.isArray(body.parlays) ? body.parlays : []).map((parlay) => ({ ...parlay, sport }));
+    const saved = parlayLedgerStore.saveParlaysIfMissing(parlays);
+    return sendJson(res, 200, { saved: saved.length, summary: parlayLedgerStore.summary(sport) });
+  }
+
+  const parlayLedgerMatch = pathname.match(/^\/api\/sports\/(baseball|basketball|american-football)\/parlay-ledger$/);
+  if (req.method === "GET" && parlayLedgerMatch) {
+    const sport = parlayLedgerMatch[1];
+    return sendJson(res, 200, { parlays: parlayLedgerStore.listParlays(sport), summary: parlayLedgerStore.summary(sport) });
   }
 
   if (req.method === "GET" && pathname === "/api/training-status") {
