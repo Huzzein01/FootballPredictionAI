@@ -21,6 +21,7 @@ const { syncClubPlayerStats } = require("./clubPlayerStatsSync");
 const { listTeamResults, getTeamResults } = require("./teamResultsStore");
 const { listTeamTraining, getTeamTraining, appendTeamNote, updateTeamTrainingProfiles } = require("./teamTrainingStore");
 const { refreshTheOddsApi, lookupMatchOdds, refreshBaseballOddsApi } = require("./oddsApiService");
+const { refreshEspnOddsAllSeasons } = require("./espnOddsService");
 const { runFixtureBridge, bridgeState } = require("./espnFixtureBridge");
 const { apiFootballStatus } = require("./liveData");
 const { readOrRefreshSportSeason } = require("./multiSportDataService");
@@ -188,6 +189,7 @@ function triggerLiveFixtureRefresh(reason = "background", { force = false } = {}
         // Merge newly-published WC knockout fixtures from ESPN into the fixture file.
         try { await runFixtureBridge(); } catch (e) { console.warn("Fixture bridge error:", e.message); }
         await refreshTheOddsApi({ includeClub: true, includeInternational: true, daysForward: 420 });
+        try { await refreshEspnOddsAllSeasons(); } catch (e) { console.warn("ESPN odds fallback error:", e.message); }
         await refreshMissingOdds();
         await refreshLiveLeagueContext();
         await persistKnownStores(["backtests", "liveEspnFixtures", "liveEspnResults", "liveOdds", "liveLeagueContext"]);
@@ -865,8 +867,10 @@ async function handleApi(req, res, pathname) {
 
   if (req.method === "POST" && pathname === "/api/odds/refresh") {
     const snapshot = await refreshTheOddsApi({ force: true, includeClub: true, includeInternational: true, daysForward: 420 });
+    let espnFallback = null;
+    try { espnFallback = await refreshEspnOddsAllSeasons({ daysForward: 60 }); } catch (e) { console.warn("ESPN odds fallback error:", e.message); }
     await persistKnownStores(["liveOdds"]);
-    return sendJson(res, 200, snapshot);
+    return sendJson(res, 200, { ...snapshot, espnFallback });
   }
 
   // ── Per-team ESPN results & continuous training corpus ─────────────────────
@@ -1290,6 +1294,7 @@ async function handleApi(req, res, pathname) {
     const context = url.searchParams.get("context") === "international" ? "international" : "club";
     if (context !== "international") {
       await refreshTheOddsApi({ includeClub: true, includeInternational: false });
+      try { await refreshEspnOddsAllSeasons(); } catch (e) { console.warn("ESPN odds fallback error:", e.message); }
       await refreshMissingOdds();
       await refreshLiveLeagueContext();
     } else {
