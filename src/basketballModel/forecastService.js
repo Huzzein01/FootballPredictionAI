@@ -2,10 +2,10 @@
 
 const fs = require("fs");
 const path = require("path");
-const { predictAmericanFootballGame } = require("./pipeline");
+const { predictBasketballGame } = require("./pipeline");
 
-const FORECAST_MODEL_PATH = path.join(process.cwd(), "model", "american_football_forecast_model.json");
-const LEAGUE_FALLBACK_PPG = 22.5;
+const FORECAST_MODEL_PATH = path.join(process.cwd(), "model", "basketball_forecast_model.json");
+const LEAGUE_FALLBACK_PPG = 112;
 
 function average(values, fallback) {
   const nums = values.filter((value) => Number.isFinite(value));
@@ -32,7 +32,7 @@ function linearModel(serialized) {
 
 function loadForecastModel(modelPath = FORECAST_MODEL_PATH) {
   const raw = JSON.parse(fs.readFileSync(modelPath, "utf8"));
-  return { ...raw, featureVersion: raw.featureVersion || "american-football-pregame-features-v1", homeModel: linearModel(raw.homeModel), awayModel: linearModel(raw.awayModel) };
+  return { ...raw, featureVersion: raw.featureVersion || "basketball-pregame-features-v1", homeModel: linearModel(raw.homeModel), awayModel: linearModel(raw.awayModel) };
 }
 
 function normalizeName(value) {
@@ -85,18 +85,18 @@ function defenseRating(record, leaguePpg) {
 }
 
 function restDays(record, kickoff) {
-  if (!record?.lastPlayedAt || !kickoff) return 7;
-  return Math.max(0, Math.min(21, Math.round((kickoff - record.lastPlayedAt) / 86_400_000)));
+  if (!record?.lastPlayedAt || !kickoff) return 2;
+  return Math.max(0, Math.min(10, Math.round((kickoff - record.lastPlayedAt) / 86_400_000)));
 }
 
 function snapshotForGame(game, state, now = new Date()) {
   const kickoff = gameTime(game);
-  const capturedAt = Math.min(now.getTime(), kickoff - 60 * 60 * 1000);
+  const capturedAt = Math.min(now.getTime(), kickoff - 30 * 60 * 1000);
   const home = teamRecord(state, game.homeTeam);
   const away = teamRecord(state, game.awayTeam);
   return {
     gameId: game.id || `${game.awayTeam}@${game.homeTeam}:${game.date}`,
-    kickoffUtc: kickoff ? new Date(kickoff).toISOString() : `${game.date}T18:00:00Z`,
+    kickoffUtc: kickoff ? new Date(kickoff).toISOString() : `${game.date}T23:00:00Z`,
     capturedAt: new Date(capturedAt).toISOString(),
     homeTeam: game.homeTeam, awayTeam: game.awayTeam,
     home: { offenseRating: offenseRating(home, state.leaguePpg), defenseRating: defenseRating(home, state.leaguePpg), restDays: restDays(home, kickoff) },
@@ -144,7 +144,7 @@ function forecastBoard(seasonData, { oddsEvents = [], limit = 30, marketWeight =
     if (!startsAt || startsAt <= now.getTime()) continue;
     const oddsEvent = oddsByGame.get(oddsKey(game.homeTeam, game.awayTeam, game.date));
     const odds = oddsEvent?.odds ? { homeDecimal: oddsEvent.odds.homeDecimal || oddsEvent.odds.homeOdds, awayDecimal: oddsEvent.odds.awayDecimal || oddsEvent.odds.awayOdds, source: oddsEvent.provider || "ESPN" } : null;
-    const rawPrediction = predictAmericanFootballGame(model, snapshotForGame(game, state, now), odds ? { odds, marketCalibration: { validated: true, weight: marketWeight } } : {});
+    const rawPrediction = predictBasketballGame(model, snapshotForGame(game, state, now), odds ? { odds, marketCalibration: { validated: true, weight: marketWeight } } : {});
     const prediction = summarizePrediction(rawPrediction, oddsEvent);
     const homePick = prediction.probabilities.homeWin >= 0.5;
     allPredictions.push({ gameId: game.id, date: game.date, kickoffUtc: game.kickoffUtc, status: game.status, completed: false, venue: game.venue || "", homeTeam: game.homeTeam, awayTeam: game.awayTeam, actual: null, prediction, pick: { team: homePick ? game.homeTeam : game.awayTeam, side: homePick ? "home" : "away", probability: homePick ? prediction.probabilities.homeWin : prediction.probabilities.awayWin }, oddsAvailable: Boolean(oddsEvent) });
@@ -152,8 +152,8 @@ function forecastBoard(seasonData, { oddsEvents = [], limit = 30, marketWeight =
   const returned = limit > 0 ? allPredictions.slice(0, limit) : allPredictions;
   const avg = (values) => average(values.filter(Number.isFinite), null);
   return {
-    contract: "american-football-public-forecast-board-v1", generatedAt: new Date().toISOString(),
-    model: { selectedVariant: "results-only-ratings", trainedAt: model.trainedAt, validationMae: model.selection || null, artifact: "model/american_football_forecast_model.json" },
+    contract: "basketball-public-forecast-board-v1", generatedAt: new Date().toISOString(),
+    model: { selectedVariant: "results-only-ratings", trainedAt: model.trainedAt, validationMae: model.selection || null, artifact: "model/basketball_forecast_model.json" },
     predictions: returned, leaders: buildLeaders(allPredictions, state),
     summary: { games: games.length, totalPredictions: allPredictions.length, predictions: returned.length, completedGames: state.completed.length, scheduledGames: allPredictions.length, gamesWithOdds: allPredictions.filter((game) => game.oddsAvailable).length, marketWeight, averageProjectedTotalPoints: avg(allPredictions.map((game) => game.prediction.expectedPoints.total)), averageHomeWinProbability: avg(allPredictions.map((game) => game.prediction.probabilities.homeWin)), leaguePointsPerTeamGame: state.leaguePpg },
   };

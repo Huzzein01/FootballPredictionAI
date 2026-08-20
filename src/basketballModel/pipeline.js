@@ -12,7 +12,9 @@ function variance(values, fallback) { if (values.length < 2) return fallback; co
 function covariance(left, right) { const leftMean = mean(left), rightMean = mean(right); return left.reduce((sum, value, index) => sum + (value - leftMean) * (right[index] - rightMean), 0) / Math.max(1, left.length); }
 function seedFor(model, snapshot) { let hash = 2166136261; const input = `${model.version}:${model.featureVersion}:${snapshot.gameId}:${snapshot.capturedAt}`; for (let index = 0; index < input.length; index += 1) { hash ^= input.charCodeAt(index); hash = Math.imul(hash, 16777619); } return hash >>> 0; }
 
-// Local chronological CV keyed on kickoffUtc, matching basketballModel/pipeline.js.
+// Local chronological CV keyed on kickoffUtc — baseballModel/regression.js's
+// chooseAlpha hardcodes firstPitchUtc, so basketball/football need their own
+// thin copy rather than forcing a shared field name across sports.
 function chronologicalFolds(rows, folds = 4) {
   const ordered = [...rows].sort((a, b) => Date.parse(a.snapshot.kickoffUtc) - Date.parse(b.snapshot.kickoffUtc));
   const start = Math.max(8, Math.floor(ordered.length / (folds + 1)));
@@ -44,7 +46,7 @@ function chooseAlpha(rows, target, candidates = [0, 0.1, 1, 5, 20]) {
   return scored.sort((a, b) => a.validationMae - b.validationMae)[0];
 }
 
-function trainAmericanFootballModel(rows) {
+function trainBasketballModel(rows) {
   rows.forEach(assertTrainingRow);
   const homeSelection = chooseAlpha(rows, "homeScore");
   const awaySelection = chooseAlpha(rows, "awayScore");
@@ -52,14 +54,14 @@ function trainAmericanFootballModel(rows) {
   const awayModel = fitRidge(rows.map((row) => vector(row.snapshot)), rows.map((row) => Number(row.awayScore)), awaySelection.alpha);
   const homeResiduals = rows.map((row) => Number(row.homeScore) - homeModel.predict(vector(row.snapshot)));
   const awayResiduals = rows.map((row) => Number(row.awayScore) - awayModel.predict(vector(row.snapshot)));
-  return { version: 1, featureVersion: "american-football-pregame-features-v1", sport: "americanFootball", featureNames: FEATURE_NAMES, trainedAt: new Date().toISOString(), selection: { home: homeSelection, away: awaySelection }, homeModel, awayModel, residualVariance: { home: variance(homeResiduals, 60), away: variance(awayResiduals, 60) }, residualCovariance: covariance(homeResiduals, awayResiduals) };
+  return { version: 1, featureVersion: "basketball-pregame-features-v1", sport: "basketball", featureNames: FEATURE_NAMES, trainedAt: new Date().toISOString(), selection: { home: homeSelection, away: awaySelection }, homeModel, awayModel, residualVariance: { home: variance(homeResiduals, 100), away: variance(awayResiduals, 100) }, residualCovariance: covariance(homeResiduals, awayResiduals) };
 }
 
-function predictAmericanFootballGame(model, snapshot, { odds, marketCalibration } = {}) {
+function predictBasketballGame(model, snapshot, { odds, marketCalibration } = {}) {
   assertPregameSnapshot(snapshot);
   const features = vector(snapshot);
-  const homePoints = Math.max(3, model.homeModel.predict(features));
-  const awayPoints = Math.max(3, model.awayModel.predict(features));
+  const homePoints = Math.max(60, model.homeModel.predict(features));
+  const awayPoints = Math.max(60, model.awayModel.predict(features));
   const sharedVariance = Math.max(0, Math.min(0.75, Number(model.residualCovariance || 0) / Math.max(1, homePoints * awayPoints)));
   const seed = seedFor(model, snapshot);
   const simulation = simulateGame({ homeRuns: homePoints, awayRuns: awayPoints, homeVariance: model.residualVariance.home, awayVariance: model.residualVariance.away, sharedVariance, seed });
@@ -67,7 +69,7 @@ function predictAmericanFootballGame(model, snapshot, { odds, marketCalibration 
   const market = noVigMoneyline(odds);
   const canBlend = Boolean(market && marketCalibration?.validated && Number.isFinite(marketCalibration.weight));
   const blendedProbability = canBlend ? modelOnlyProbability * (1 - marketCalibration.weight) + market.homeProbability * marketCalibration.weight : modelOnlyProbability;
-  return { predictionVersion: "american-football-score-distribution-v1", modelVersion: model.version, featureVersion: model.featureVersion, predictionSeed: seed, homeTeam: snapshot.homeTeam, awayTeam: snapshot.awayTeam, expectedPoints: { home: homePoints, away: awayPoints }, model: simulation, probabilities: { modelOnlyHomeWin: modelOnlyProbability, marketHomeWin: market?.homeProbability ?? null, blendedHomeWin: blendedProbability, marketBlendApplied: canBlend }, calibrated: { ...simulation, homeWinProbability: blendedProbability }, market: market ? { ...market, source: odds?.source || "unattributed" } : null, oddsUsed: Boolean(market) };
+  return { predictionVersion: "basketball-score-distribution-v1", modelVersion: model.version, featureVersion: model.featureVersion, predictionSeed: seed, homeTeam: snapshot.homeTeam, awayTeam: snapshot.awayTeam, expectedPoints: { home: homePoints, away: awayPoints }, model: simulation, probabilities: { modelOnlyHomeWin: modelOnlyProbability, marketHomeWin: market?.homeProbability ?? null, blendedHomeWin: blendedProbability, marketBlendApplied: canBlend }, calibrated: { ...simulation, homeWinProbability: blendedProbability }, market: market ? { ...market, source: odds?.source || "unattributed" } : null, oddsUsed: Boolean(market) };
 }
 
-module.exports = { trainAmericanFootballModel, predictAmericanFootballGame };
+module.exports = { trainBasketballModel, predictBasketballGame };
