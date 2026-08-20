@@ -618,11 +618,16 @@ async function handleApi(req, res, pathname) {
     const marketWeight = Math.max(0, Math.min(1, Number(url.searchParams.get("marketWeight") || 0.2)));
     const oddsDays = Math.max(1, Math.min(60, Number(url.searchParams.get("oddsDays") || 14)));
     try {
-      const currentSeason = await readOrRefreshSportSeason("baseball", season, { refresh });
+      let currentSeason = await readOrRefreshSportSeason("baseball", season, { refresh });
       const odds = await refreshBaseballOddsApi({ force: refreshOdds, daysForward: oddsDays });
       let oddsEvents = odds.events || [];
       if (!oddsEvents.length) {
         try { await refreshMoneylineOdds("baseball", { daysForward: oddsDays }); } catch (e) { console.warn("ESPN moneyline fallback error:", e.message); }
+        // refreshMoneylineOdds just wrote fresh odds onto the on-disk season
+        // cache file — currentSeason above is the in-memory copy fetched
+        // BEFORE that write, so it still has no odds. Re-read from disk
+        // (no network refetch — refresh: false) to pick up what was just written.
+        currentSeason = await readOrRefreshSportSeason("baseball", season, { refresh: false });
         oddsEvents = oddsEventsFromGames(currentSeason.games || []);
       }
       const board = baseballForecastBoard(currentSeason, { oddsEvents, limit, marketWeight });
@@ -641,9 +646,12 @@ async function handleApi(req, res, pathname) {
     const limit = Math.max(0, Number(url.searchParams.get("limit") || 30));
     const marketWeight = Math.max(0, Math.min(1, Number(url.searchParams.get("marketWeight") || 0.2)));
     try {
-      const currentSeason = await readOrRefreshSportSeason(sport, season, { refresh });
+      let currentSeason = await readOrRefreshSportSeason(sport, season, { refresh });
       if (refreshOdds) {
         try { await refreshMoneylineOdds(sport, { daysForward: 45 }); } catch (e) { console.warn("ESPN moneyline fallback error:", e.message); }
+        // Same as the baseball route above: re-read from disk (no network
+        // refetch) to pick up the odds refreshMoneylineOdds just wrote.
+        currentSeason = await readOrRefreshSportSeason(sport, season, { refresh: false });
       }
       const oddsEvents = oddsEventsFromGames(currentSeason.games || []);
       const forecast = sport === "basketball" ? basketballForecastBoard : americanFootballForecastBoard;
