@@ -307,22 +307,28 @@ const FUTURES_SOURCES = {
   },
 };
 
-// Ranges are sized so each competition's futures pool reaches 16 teams —
-// enough for the bracket to open at Round of 16 like Champions League.
+// Ranks that actually earn a European qualification slot per league, mirrored
+// exactly from tableZone()'s zone thresholds below — a rank outside these
+// ranges did not qualify for anything and must never appear in a European
+// futures pool (e.g. a 10th-place EPL finish gets no European football).
+// EL/Conference pools are consequently small (real leagues send only 1-2
+// teams to each), so those brackets realistically open at Quarterfinals/
+// Semifinals rather than Round of 16 — only Champions League's larger,
+// standings-derived pool supports a genuine Round of 16.
 const EUROPE_PROFILE_RANGES = {
   "Europa League": {
-    EPL: [6, 7, 8, 9],
-    "La Liga": [6, 7, 8],
-    Bundesliga: [5, 6, 7],
-    "Ligue 1": [4, 5, 6],
-    "Serie A": [5, 6, 7],
+    EPL: [5, 6],
+    "La Liga": [5, 6],
+    Bundesliga: [5, 6],
+    "Ligue 1": [4, 5],
+    "Serie A": [5, 6],
   },
   "Conference League": {
-    EPL: [10, 11, 12, 13],
-    "La Liga": [9, 10, 11],
-    Bundesliga: [8, 9, 10],
-    "Ligue 1": [7, 8, 9],
-    "Serie A": [9, 10, 11],
+    EPL: [7],
+    "La Liga": [7],
+    Bundesliga: [7],
+    "Ligue 1": [6],
+    "Serie A": [7],
   },
 };
 
