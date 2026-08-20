@@ -135,17 +135,26 @@ function leaderboardCard(category) {
   return `<article class="card"><span class="tag">${escapeHtml(category.label)}</span><div class="fixture-list">${rows}</div></article>`;
 }
 function renderPlayerProfiles() {
-  if (SPORT !== "baseball") {
-    return message("Player profiles", "Starter availability, minutes, lineup, and injury profiles will be linked after the schedule baseline has been validated.");
-  }
   const board = state.playerLeaders;
-  if (!board?.hitting?.length && !board?.pitching?.length) {
-    return message("Player leaders unavailable", "MLB player leaderboards did not load. This pulls directly from the MLB Stats API's public leaders endpoint.");
+  const sourceName = SPORT === "baseball" ? "MLB Stats API" : "ESPN public leaders API";
+  const disclaimer = SPORT === "baseball"
+    ? "no pitch-by-pitch or box-score ingestion pipeline exists yet to build individual player projections."
+    : "no play-by-play or box-score ingestion pipeline exists yet to build individual player projections.";
+  if (SPORT === "baseball") {
+    if (!board?.hitting?.length && !board?.pitching?.length) {
+      return message("Player leaders unavailable", "MLB player leaderboards did not load. This pulls directly from the MLB Stats API's public leaders endpoint.");
+    }
+    const intro = `<article class="card wide"><span class="tag">${escapeHtml(sourceName)}</span><h2>${escapeHtml(board.season)} season leaders</h2><p class="source">${escapeHtml(board.source?.name || sourceName)} - updated ${board.fetchedAt ? new Date(board.fetchedAt).toLocaleString() : "recently"}. These are league leaderboards, not per-player model ratings — ${disclaimer}</p></article>`;
+    const hitting = (board.hitting || []).map(leaderboardCard).join("");
+    const pitching = (board.pitching || []).map(leaderboardCard).join("");
+    return `${intro}<h3 style="margin:1.2em 0 0.4em">Hitting</h3><section class="forecast-grid">${hitting}</section><h3 style="margin:1.2em 0 0.4em">Pitching</h3><section class="forecast-grid">${pitching}</section>`;
   }
-  const intro = `<article class="card wide"><span class="tag">MLB Stats API</span><h2>${escapeHtml(board.season)} season leaders</h2><p class="source">${escapeHtml(board.source?.name || "MLB Stats API")} - updated ${board.fetchedAt ? new Date(board.fetchedAt).toLocaleString() : "recently"}. These are league leaderboards, not per-player model ratings — no pitch-by-pitch or box-score ingestion pipeline exists yet to build individual player projections.</p></article>`;
-  const hitting = (board.hitting || []).map(leaderboardCard).join("");
-  const pitching = (board.pitching || []).map(leaderboardCard).join("");
-  return `${intro}<h3 style="margin:1.2em 0 0.4em">Hitting</h3><section class="forecast-grid">${hitting}</section><h3 style="margin:1.2em 0 0.4em">Pitching</h3><section class="forecast-grid">${pitching}</section>`;
+  if (!board?.categories?.length) {
+    return message("Player leaders unavailable", `${data.league} player leaderboards did not load. This pulls directly from ESPN's public leaders API.`);
+  }
+  const intro = `<article class="card wide"><span class="tag">${escapeHtml(sourceName)}</span><h2>${escapeHtml(board.season || data.league)} season leaders</h2><p class="source">${escapeHtml(board.source?.name || sourceName)} - updated ${board.fetchedAt ? new Date(board.fetchedAt).toLocaleString() : "recently"}. These are league leaderboards, not per-player model ratings — ${disclaimer}</p></article>`;
+  const cards = (board.categories || []).map(leaderboardCard).join("");
+  return `${intro}<section class="forecast-grid">${cards}</section>`;
 }
 function renderFeature() {
   const host = document.querySelector("#cards");
@@ -189,7 +198,7 @@ async function loadData() {
       api(`/api/sports/${SPORT}/season?season=${encodeURIComponent(data.historicalSeason)}&refresh=1`),
       SPORT === "baseball" ? api("/api/baseball/monitoring") : Promise.resolve(null),
       api(`${predictionsPath}?season=${encodeURIComponent(data.season)}&refresh=1&limit=30&refreshOdds=1`).catch(() => null),
-      SPORT === "baseball" ? api(`/api/sports/baseball/player-leaders?season=${encodeURIComponent(data.season)}`).catch(() => null) : Promise.resolve(null),
+      api(`/api/sports/${SPORT}/player-leaders${SPORT === "baseball" ? `?season=${encodeURIComponent(data.season)}` : ""}`).catch(() => null),
     ]);
     state.current = current;
     state.historical = historical;

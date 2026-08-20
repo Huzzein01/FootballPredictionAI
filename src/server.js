@@ -35,6 +35,7 @@ const { chooseFootballContext, clubSeasonFor } = require("./footballContext");
 const { createPrediction: createBaseballPrediction, settlePrediction: settleBaseballPrediction, monitoring: baseballMonitoring } = require("./baseballModel/productionService");
 const { forecastBoard: baseballForecastBoard } = require("./baseballModel/forecastService");
 const { readOrRefreshPlayerLeaders } = require("./baseballModel/playerLeaders");
+const { readOrRefreshPlayerLeaders: readOrRefreshEspnPlayerLeaders } = require("./sharedSportModel/espnPlayerLeaders");
 const { ingestSchedulePayload } = require("./baseballModel/featureStore");
 const { collectPregameFeatures } = require("./baseballModel/pregameCollectors");
 const { forecastBoard: americanFootballForecastBoard } = require("./americanFootballModel/forecastService");
@@ -661,6 +662,17 @@ async function handleApi(req, res, pathname) {
       return sendJson(res, 200, await readOrRefreshPlayerLeaders(season, { refresh }));
     } catch (error) {
       return sendJson(res, 502, { error: error.message, sport: "baseball", season });
+    }
+  }
+
+  if (req.method === "GET" && (pathname === "/api/sports/basketball/player-leaders" || pathname === "/api/sports/american-football/player-leaders")) {
+    const sport = pathname.includes("basketball") ? "basketball" : "american-football";
+    const url = new URL(req.url, `http://${req.headers.host}`);
+    const refresh = url.searchParams.get("refresh") === "1";
+    try {
+      return sendJson(res, 200, await readOrRefreshEspnPlayerLeaders(sport, { refresh }));
+    } catch (error) {
+      return sendJson(res, 502, { error: error.message, sport });
     }
   }
 
