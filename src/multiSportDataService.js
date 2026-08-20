@@ -43,25 +43,32 @@ async function fetchMlbSeason(season) {
   const response = await fetch(sourceUrl, { headers: { "user-agent": USER_AGENT } });
   if (!response.ok) throw new Error(`MLB schedule request failed: ${response.status}`);
   const payload = await response.json();
-  const games = (payload.dates || []).flatMap((day) => (day.games || []).map((game) => {
-    const status = game.status?.detailedState || "Scheduled";
-    const completed = Boolean(game.status?.abstractGameState === "Final" || game.status?.codedGameState === "F");
-    return {
-      id: `mlb:${game.gamePk}`,
-      sport: "baseball",
-      league: "MLB",
-      season: year,
-      date: day.date || toIsoDate(game.gameDate),
-      kickoffUtc: game.gameDate || "",
-      homeTeam: game.teams?.home?.team?.name || "",
-      awayTeam: game.teams?.away?.team?.name || "",
-      homeScore: Number.isFinite(game.teams?.home?.score) ? game.teams.home.score : null,
-      awayScore: Number.isFinite(game.teams?.away?.score) ? game.teams.away.score : null,
-      completed,
-      status,
-      venue: game.venue?.name || "",
-    };
-  })).filter((game) => game.homeTeam && game.awayTeam && game.date);
+  // gameType "R" is MLB's own regular-season marker. Without this filter the
+  // schedule endpoint also returns spring training, the All-Star Game, the
+  // World Baseball Classic, and exhibition games against non-MLB opponents
+  // (e.g. "United States", minor-league affiliates), which pollute standings
+  // built from this data with teams that aren't part of the MLB season.
+  const games = (payload.dates || []).flatMap((day) => (day.games || [])
+    .filter((game) => game.gameType === "R")
+    .map((game) => {
+      const status = game.status?.detailedState || "Scheduled";
+      const completed = Boolean(game.status?.abstractGameState === "Final" || game.status?.codedGameState === "F");
+      return {
+        id: `mlb:${game.gamePk}`,
+        sport: "baseball",
+        league: "MLB",
+        season: year,
+        date: day.date || toIsoDate(game.gameDate),
+        kickoffUtc: game.gameDate || "",
+        homeTeam: game.teams?.home?.team?.name || "",
+        awayTeam: game.teams?.away?.team?.name || "",
+        homeScore: Number.isFinite(game.teams?.home?.score) ? game.teams.home.score : null,
+        awayScore: Number.isFinite(game.teams?.away?.score) ? game.teams.away.score : null,
+        completed,
+        status,
+        venue: game.venue?.name || "",
+      };
+    })).filter((game) => game.homeTeam && game.awayTeam && game.date);
   return summarize("baseball", "MLB", year, games, sourceUrl);
 }
 

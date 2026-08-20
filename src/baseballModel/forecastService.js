@@ -80,7 +80,7 @@ function initialTeamStats(games) {
 }
 
 function teamRecord(state, team) {
-  if (!state.teams.has(team)) state.teams.set(team, { games: 0, runsFor: 0, runsAgainst: 0, lastPlayedAt: null });
+  if (!state.teams.has(team)) state.teams.set(team, { games: 0, wins: 0, losses: 0, runsFor: 0, runsAgainst: 0, lastPlayedAt: null, lastFive: [] });
   return state.teams.get(team);
 }
 
@@ -89,8 +89,12 @@ function updateTeamState(state, game) {
   const home = teamRecord(state, game.homeTeam);
   const away = teamRecord(state, game.awayTeam);
   const playedAt = gameTime(game);
+  const homeWon = Number(game.homeScore) > Number(game.awayScore);
   home.games += 1; home.runsFor += Number(game.homeScore); home.runsAgainst += Number(game.awayScore); home.lastPlayedAt = playedAt || home.lastPlayedAt;
   away.games += 1; away.runsFor += Number(game.awayScore); away.runsAgainst += Number(game.homeScore); away.lastPlayedAt = playedAt || away.lastPlayedAt;
+  if (homeWon) { home.wins += 1; away.losses += 1; } else { away.wins += 1; home.losses += 1; }
+  home.lastFive.push(homeWon ? "W" : "L"); if (home.lastFive.length > 5) home.lastFive.shift();
+  away.lastFive.push(homeWon ? "L" : "W"); if (away.lastFive.length > 5) away.lastFive.shift();
 }
 
 function offenseRating(record, leagueRunsPerTeamGame) {
@@ -188,11 +192,50 @@ function buildLeaders(predictions, state) {
   };
 }
 
-function forecastBoard(seasonData, { oddsEvents = [], limit = 30, marketWeight = 0.2, now = new Date() } = {}) {
+// Current record straight from completed games, plus a season-end win-total
+// projection built by summing each team's win probability across every
+// remaining scheduled game — matches the basketballModel/americanFootballModel
+// standings+projection pattern.
+function buildStandingsAndProjections(allPredictions, state) {
+  const remainingWinProb = new Map();
+  const remainingGames = new Map();
+  for (const item of allPredictions) {
+    const homeWin = item.prediction.probabilities.homeWin;
+    remainingWinProb.set(item.homeTeam, (remainingWinProb.get(item.homeTeam) || 0) + homeWin);
+    remainingWinProb.set(item.awayTeam, (remainingWinProb.get(item.awayTeam) || 0) + (1 - homeWin));
+    remainingGames.set(item.homeTeam, (remainingGames.get(item.homeTeam) || 0) + 1);
+    remainingGames.set(item.awayTeam, (remainingGames.get(item.awayTeam) || 0) + 1);
+  }
+  const standings = [...state.teams.entries()].map(([team, record]) => ({
+    team, wins: record.wins, losses: record.losses, gamesPlayed: record.games,
+    winPct: record.games ? record.wins / record.games : 0,
+    runsForPerGame: record.games ? record.runsFor / record.games : null,
+    runsAgainstPerGame: record.games ? record.runsAgainst / record.games : null,
+    runDiffPerGame: record.games ? (record.runsFor - record.runsAgainst) / record.games : null,
+    offenseRating: offenseRating(record, state.leagueRunsPerTeamGame),
+    defenseRating: preventionRating(record, state.leagueRunsPerTeamGame),
+    lastFive: record.lastFive.join(""),
+  })).sort((a, b) => b.winPct - a.winPct || b.runDiffPerGame - a.runDiffPerGame);
+  const projections = standings.map((row) => {
+    const remaining = remainingGames.get(row.team) || 0;
+    const additionalWins = remainingWinProb.get(row.team) || 0;
+    const projectedGames = row.gamesPlayed + remaining;
+    const projectedWins = row.wins + additionalWins;
+    return {
+      team: row.team, currentRecord: `${row.wins}-${row.losses}`, gamesRemaining: remaining,
+      projectedWins, projectedLosses: projectedGames - projectedWins,
+      projectedWinPct: projectedGames ? projectedWins / projectedGames : row.winPct,
+    };
+  }).sort((a, b) => b.projectedWinPct - a.projectedWinPct);
+  return { standings, projections };
+}
+
+function forecastBoard(seasonData, { oddsEvents = [], limit = 30, marketWeight = 0.2, now = new Date(), maxLookaheadDays = 200 } = {}) {
   const model = loadForecastModel();
   const games = (seasonData?.games || []).slice().sort((a, b) => gameTime(a) - gameTime(b));
   const state = initialTeamStats(games);
   const oddsByGame = indexOddsEvents(oddsEvents);
+  const lookaheadCutoff = now.getTime() + maxLookaheadDays * 86_400_000;
   const allPredictions = [];
   for (const game of games) {
     const startsAt = gameTime(game);
@@ -200,7 +243,7 @@ function forecastBoard(seasonData, { oddsEvents = [], limit = 30, marketWeight =
       updateTeamState(state, game);
       continue;
     }
-    if (!startsAt || startsAt <= now.getTime()) continue;
+    if (!startsAt || startsAt <= now.getTime() || startsAt > lookaheadCutoff) continue;
     const oddsEvent = oddsByGame.get(oddsKey(game.homeTeam, game.awayTeam, game.date));
     const odds = oddsEvent?.odds ? {
       homeDecimal: oddsEvent.odds.homeDecimal || oddsEvent.odds.homeOdds,
@@ -210,7 +253,9 @@ function forecastBoard(seasonData, { oddsEvents = [], limit = 30, marketWeight =
     const rawPrediction = predictBaseballGame(model, snapshotForGame(game, state, now), odds ? {
       odds,
       marketCalibration: { validated: true, weight: marketWeight },
-    } : {});
+      simulations: 2000,
+      trackDistribution: false,
+    } : { simulations: 2000, trackDistribution: false });
     const prediction = summarizePrediction(rawPrediction, oddsEvent);
     const homePick = prediction.probabilities.homeWin >= 0.5;
     allPredictions.push({
@@ -230,6 +275,7 @@ function forecastBoard(seasonData, { oddsEvents = [], limit = 30, marketWeight =
   }
   const returned = limit > 0 ? allPredictions.slice(0, limit) : allPredictions;
   const avg = (values) => average(values.filter(Number.isFinite), null);
+  const { standings, projections } = buildStandingsAndProjections(allPredictions, state);
   return {
     contract: "baseball-public-forecast-board-v1",
     generatedAt: new Date().toISOString(),
@@ -241,6 +287,8 @@ function forecastBoard(seasonData, { oddsEvents = [], limit = 30, marketWeight =
     },
     predictions: returned,
     leaders: buildLeaders(allPredictions, state),
+    standings,
+    projections,
     summary: {
       games: games.length,
       totalPredictions: allPredictions.length,

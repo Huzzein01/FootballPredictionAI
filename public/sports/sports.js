@@ -9,7 +9,7 @@ const CONTENT = {
 };
 const data = CONTENT[SPORT];
 const escapeHtml = (value) => String(value ?? "").replace(/[&<>"']/g, (char) => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" }[char]));
-const state = { feature: "Predictions", current: null, historical: null, monitoring: null, predictions: null, standingsSource: null };
+const state = { feature: "Predictions", current: null, historical: null, monitoring: null, predictions: null, standingsSource: null, playerLeaders: null };
 
 document.title = `Sportsbooks Analyst - ${data.name}`;
 const sharedMark = "/brand/prediction-weave.svg";
@@ -89,17 +89,22 @@ function ratingBadge(rating) {
 }
 function standingsTable(standings, { withRatings = false } = {}) {
   if (!standings?.length) return message("Standings unavailable", `Standings build from completed ${data.league} results once the current season schedule has settled games.`);
-  const rows = standings.map((row, index) => `<tr>
+  const rows = standings.map((row, index) => {
+    const forPerGame = row.pointsForPerGame ?? row.runsForPerGame;
+    const againstPerGame = row.pointsAgainstPerGame ?? row.runsAgainstPerGame;
+    const diffPerGame = row.pointDiffPerGame ?? row.runDiffPerGame;
+    return `<tr>
       <td>${index + 1}</td>
       <td>${escapeHtml(row.team)}</td>
       <td>${row.wins}-${row.losses}</td>
       <td>${compactPct(row.winPct)}</td>
-      <td>${runs(row.pointsForPerGame)}</td>
-      <td>${runs(row.pointsAgainstPerGame)}</td>
-      <td>${row.pointDiffPerGame > 0 ? "+" : ""}${runs(row.pointDiffPerGame)}</td>
+      <td>${runs(forPerGame)}</td>
+      <td>${runs(againstPerGame)}</td>
+      <td>${diffPerGame > 0 ? "+" : ""}${runs(diffPerGame)}</td>
       ${withRatings ? `<td>${ratingBadge(row.offenseRating)}</td><td>${ratingBadge(row.defenseRating)}</td>` : ""}
       <td>${escapeHtml(row.lastFive || "-")}</td>
-    </tr>`).join("");
+    </tr>`;
+  }).join("");
   return `<article class="card wide"><h2>${data.league} standings</h2><p class="source">Built from completed current-season results; ${data.scoreLabel} shown per game.</p><div class="fixture-list" style="overflow-x:auto"><table style="width:100%;border-collapse:collapse;font-size:0.9em">
     <thead><tr>
       <th style="text-align:left">#</th><th style="text-align:left">Team</th><th>Record</th><th>Win%</th><th>${escapeHtml(data.scoreLabel)} For</th><th>${escapeHtml(data.scoreLabel)} Against</th><th>Diff</th>
@@ -124,6 +129,24 @@ function futuresProjection(projections) {
     <tbody>${rows}</tbody>
   </table></div></article>`;
 }
+function leaderboardCard(category) {
+  if (!category?.leaders?.length) return "";
+  const rows = category.leaders.map((entry) => `<div><span>${escapeHtml(entry.player)} <em style="opacity:0.7">${escapeHtml(entry.team)}</em></span><b>${escapeHtml(entry.value)}</b></div>`).join("");
+  return `<article class="card"><span class="tag">${escapeHtml(category.label)}</span><div class="fixture-list">${rows}</div></article>`;
+}
+function renderPlayerProfiles() {
+  if (SPORT !== "baseball") {
+    return message("Player profiles", "Starter availability, minutes, lineup, and injury profiles will be linked after the schedule baseline has been validated.");
+  }
+  const board = state.playerLeaders;
+  if (!board?.hitting?.length && !board?.pitching?.length) {
+    return message("Player leaders unavailable", "MLB player leaderboards did not load. This pulls directly from the MLB Stats API's public leaders endpoint.");
+  }
+  const intro = `<article class="card wide"><span class="tag">MLB Stats API</span><h2>${escapeHtml(board.season)} season leaders</h2><p class="source">${escapeHtml(board.source?.name || "MLB Stats API")} - updated ${board.fetchedAt ? new Date(board.fetchedAt).toLocaleString() : "recently"}. These are league leaderboards, not per-player model ratings — no pitch-by-pitch or box-score ingestion pipeline exists yet to build individual player projections.</p></article>`;
+  const hitting = (board.hitting || []).map(leaderboardCard).join("");
+  const pitching = (board.pitching || []).map(leaderboardCard).join("");
+  return `${intro}<h3 style="margin:1.2em 0 0.4em">Hitting</h3><section class="forecast-grid">${hitting}</section><h3 style="margin:1.2em 0 0.4em">Pitching</h3><section class="forecast-grid">${pitching}</section>`;
+}
 function renderFeature() {
   const host = document.querySelector("#cards");
   const current = state.current;
@@ -145,22 +168,15 @@ function renderFeature() {
     const validation = board?.model?.validationMae;
     host.innerHTML = `<article class="card wide"><span class="tag">${board ? "Ridge regression trained" : "Awaiting training"}</span><h2>${data.league} model readiness</h2><div class="stats">${stat("Completed historical games", historicalSummary.completedGames ?? "-")}${stat("Teams represented", historicalSummary.teams ?? "-")}${stat("Trained at", trainedAt)}${stat("Validation MAE", validation ? `${runs(validation.home?.validationMae)} / ${runs(validation.away?.validationMae)}` : "-")}</div><p>The ${data.league} model is a ridge-regression score predictor trained on results-only offense/defense ratings reconstructed chronologically from completed games (run <code>scripts/train_${SPORT === "basketball" ? "basketball" : "american_football"}_model.js</code> to retrain from newly imported history). Predictions feed the shared Monte Carlo simulator used across every sport in this workspace.</p></article>`;
   } else if (state.feature === "Teams Profile") {
-    const board = state.predictions;
     const standingsBoard = state.standingsSource;
     const overview = `<article class="card wide"><h2>${data.league} team workspace</h2><div class="stats">${stat("Teams found", summary.teams ?? "-")}${stat("Scheduled games", summary.scheduledGames ?? "-")}${stat("Completed games", historicalSummary.completedGames ?? "-")}</div><p>Team profiles use the imported schedule and current-season results as their baseline. Each sport remains isolated to prevent cross-sport model leakage.</p></article>`;
-    host.innerHTML = SPORT === "baseball"
-      ? `${overview}<article class="card wide"><span class="tag">Top projected offenses</span><h2>Model-rated scoring leaders</h2><div class="fixture-list">${leaderRows(board?.leaders?.projectedOffenses || [], "runs per game") || "<div><span>Pending</span><b>-</b><em>ratings</em></div>"}</div></article>`
-      : `${overview}${standingsTable(standingsBoard?.standings, { withRatings: true })}`;
+    host.innerHTML = `${overview}${standingsTable(standingsBoard?.standings, { withRatings: true })}`;
   } else if (state.feature === "Tables") {
-    host.innerHTML = SPORT === "baseball"
-      ? message(`${data.league} tables`, `${summary.teams ?? "No"} teams and ${summary.games ?? "no"} games are available from the current schedule feed. Standings calculations activate when a season has completed results.`)
-      : standingsTable(state.standingsSource?.standings);
+    host.innerHTML = standingsTable(state.standingsSource?.standings);
   } else if (state.feature === "Player Profiles") {
-    host.innerHTML = message("Player profiles", SPORT === "baseball" ? "Pitcher, batter, bullpen, and lineup profiles will be linked after the schedule baseline has been validated." : "Starter availability, minutes, lineup, and injury profiles will be linked after the schedule baseline has been validated.");
+    host.innerHTML = renderPlayerProfiles();
   } else {
-    host.innerHTML = SPORT === "baseball"
-      ? message("Futures", `Futures will combine ${data.league} season outlooks, schedule strength, team profiles, and market context once the sport-specific model has been trained.`)
-      : futuresProjection(state.predictions?.projections?.length ? state.predictions.projections : state.standingsSource?.projections);
+    host.innerHTML = futuresProjection(state.predictions?.projections?.length ? state.predictions.projections : state.standingsSource?.projections);
   }
 }
 async function loadData() {
@@ -168,23 +184,25 @@ async function loadData() {
   status.textContent = "Importing public schedules and completed historical results...";
   try {
     const predictionsPath = `/api/sports/${SPORT}/predictions`;
-    const [current, historical, monitoring, predictions] = await Promise.all([
+    const [current, historical, monitoring, predictions, playerLeaders] = await Promise.all([
       api(`/api/sports/${SPORT}/season?season=${encodeURIComponent(data.season)}&refresh=1`),
       api(`/api/sports/${SPORT}/season?season=${encodeURIComponent(data.historicalSeason)}&refresh=1`),
       SPORT === "baseball" ? api("/api/baseball/monitoring") : Promise.resolve(null),
       api(`${predictionsPath}?season=${encodeURIComponent(data.season)}&refresh=1&limit=30&refreshOdds=1`).catch(() => null),
+      SPORT === "baseball" ? api(`/api/sports/baseball/player-leaders?season=${encodeURIComponent(data.season)}`).catch(() => null) : Promise.resolve(null),
     ]);
     state.current = current;
     state.historical = historical;
     state.monitoring = monitoring;
     state.predictions = predictions || null;
+    state.playerLeaders = playerLeaders || null;
     // Standings/team-rating context needs settled games. In the offseason
     // gap (e.g. NBA/NFL in August, current-season predictions carry zero
     // completed games) fall back to the last completed season purely for
     // Tables/Teams Profile/Futures, while Predictions keeps showing the
     // actual upcoming current-season schedule above.
     state.standingsSource = predictions;
-    if (SPORT !== "baseball" && !(predictions?.summary?.completedGames > 0)) {
+    if (!(predictions?.summary?.completedGames > 0)) {
       state.standingsSource = await api(`${predictionsPath}?season=${encodeURIComponent(data.historicalSeason)}&limit=0`).catch(() => predictions);
     }
     status.textContent = predictions

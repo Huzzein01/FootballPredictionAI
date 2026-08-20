@@ -22,14 +22,14 @@ function trainBaseballModel(rows) {
   return { version: 2, featureVersion: "baseball-pregame-features-v1", sport: "baseball", featureNames: FEATURE_NAMES, trainedAt: new Date().toISOString(), selection: { home: homeSelection, away: awaySelection }, homeModel, awayModel, residualVariance: { home: variance(homeResiduals, 4), away: variance(awayResiduals, 4) }, residualCovariance: covariance(homeResiduals, awayResiduals) };
 }
 
-function predictBaseballGame(model, snapshot, { odds, marketCalibration } = {}) {
+function predictBaseballGame(model, snapshot, { odds, marketCalibration, simulations = 20000, trackDistribution = true } = {}) {
   assertPregameSnapshot(snapshot);
   const features = vector(snapshot);
   const homeRuns = Math.max(0.1, model.homeModel.predict(features));
   const awayRuns = Math.max(0.1, model.awayModel.predict(features));
   const sharedVariance = Math.max(0, Math.min(0.75, Number(model.residualCovariance || 0) / Math.max(0.1, homeRuns * awayRuns)));
   const seed = seedFor(model, snapshot);
-  const simulation = simulateGame({ homeRuns, awayRuns, homeVariance: model.residualVariance.home, awayVariance: model.residualVariance.away, sharedVariance, seed });
+  const simulation = simulateGame({ homeRuns, awayRuns, homeVariance: model.residualVariance.home, awayVariance: model.residualVariance.away, sharedVariance, seed, simulations, trackDistribution });
   const modelOnlyProbability = applyCalibration(simulation.homeWinProbability, marketCalibration);
   const market = noVigMoneyline(odds);
   const canBlend = Boolean(market && marketCalibration?.validated && Number.isFinite(marketCalibration.weight));
