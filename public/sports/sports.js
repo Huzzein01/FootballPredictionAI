@@ -1,7 +1,7 @@
 "use strict";
 
 const SPORT = document.body.dataset.sport;
-const FEATURES = ["Predictions", "Teams Profile", "Futures", "Player Profiles", "Tables", "Fixtures", "Model Training"];
+const FEATURES = ["Predictions", "Parlays", "Teams Profile", "Futures", "Player Profiles", "Tables", "Fixtures", "Model Training"];
 const CONTENT = {
   baseball: { name: "Baseball", league: "MLB", icon: "MLB", season: "2026", historicalSeason: "2025", description: "Pitcher-aware baseball analysis, organized separately from football and basketball.", scoreLabel: "runs", scoreKey: "expectedRuns" },
   basketball: { name: "Basketball", league: "NBA", icon: "NBA", season: "2026", historicalSeason: "2025", description: "Availability, rest, pace, and matchup analysis organized for NBA fixtures.", scoreLabel: "points", scoreKey: "expectedPoints" },
@@ -9,7 +9,12 @@ const CONTENT = {
 };
 const data = CONTENT[SPORT];
 const escapeHtml = (value) => String(value ?? "").replace(/[&<>"']/g, (char) => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" }[char]));
-const state = { feature: "Predictions", current: null, historical: null, monitoring: null, predictions: null, standingsSource: null, playerLeaders: null };
+const state = { feature: "Predictions", current: null, historical: null, monitoring: null, predictions: null, allPredictions: null, standingsSource: null, playerLeaders: null, riskMode: "balanced" };
+const RISK_MODES = {
+  safe: { legsPerParlay: 2, minProbability: 0.6, label: "Safe · 2-leg" },
+  balanced: { legsPerParlay: 3, minProbability: 0.55, label: "Balanced · 3-leg" },
+  value: { legsPerParlay: 4, minProbability: 0.52, label: "Value · 4-leg" },
+};
 
 document.title = `Sportsbooks Analyst - ${data.name}`;
 const sharedMark = "/brand/prediction-weave.svg";
@@ -33,6 +38,12 @@ function featureNav() {
   nav.innerHTML = FEATURES.map((feature) => `<button class="feature-tab${feature === state.feature ? " active" : ""}" data-feature="${feature}">${feature}</button>`).join("");
   nav.querySelectorAll("button").forEach((button) => button.addEventListener("click", () => { state.feature = button.dataset.feature; featureNav(); renderFeature(); }));
 }
+document.querySelector("#cards").addEventListener("click", (event) => {
+  const button = event.target.closest("[data-risk-mode]");
+  if (!button) return;
+  state.riskMode = button.dataset.riskMode;
+  renderFeature();
+});
 function stat(label, value) { return `<div class="stat"><b>${escapeHtml(value)}</b><span>${escapeHtml(label)}</span></div>`; }
 function message(title, text) { return `<article class="card wide"><h2>${escapeHtml(title)}</h2><p>${escapeHtml(text)}</p></article>`; }
 function runs(value) { const parsed = Number(value); return Number.isFinite(parsed) ? parsed.toFixed(2) : "-"; }
@@ -156,6 +167,55 @@ function renderPlayerProfiles() {
   const cards = (board.categories || []).map(leaderboardCard).join("");
   return `${intro}<section class="forecast-grid">${cards}</section>`;
 }
+function legDecimalOdds(game) {
+  const odds = game.prediction?.odds;
+  const side = game.pick?.side;
+  const marketDecimal = side === "home" ? Number(odds?.homeOdds) : Number(odds?.awayOdds);
+  if (Number.isFinite(marketDecimal) && marketDecimal > 1) return { decimal: marketDecimal, source: "market" };
+  const probability = Math.max(0.01, Math.min(0.99, Number(game.pick?.probability) || 0.5));
+  return { decimal: 1 / probability, source: "model" };
+}
+// Builds simple straight parlays from the same predictions already shown
+// under Predictions — no separate backend call. Legs are picked purely by
+// win probability (highest first) and grouped into non-overlapping chunks
+// of legsPerParlay games; combined price multiplies each leg's real market
+// decimal odds where available, or the model's own fair (no-vig) odds
+// otherwise, with each leg labeled which one it used.
+function buildParlays(predictions, modeKey) {
+  const mode = RISK_MODES[modeKey] || RISK_MODES.balanced;
+  const candidates = (predictions || [])
+    .filter((game) => Number(game.pick?.probability) >= mode.minProbability)
+    .sort((a, b) => b.pick.probability - a.pick.probability);
+  const parlays = [];
+  for (let i = 0; i + mode.legsPerParlay <= candidates.length && parlays.length < 5; i += mode.legsPerParlay) {
+    const legs = candidates.slice(i, i + mode.legsPerParlay);
+    let combinedProbability = 1, combinedOdds = 1, anyMarket = false;
+    const legDetails = legs.map((game) => {
+      const { decimal, source } = legDecimalOdds(game);
+      combinedProbability *= game.pick.probability;
+      combinedOdds *= decimal;
+      if (source === "market") anyMarket = true;
+      return { matchup: `${game.awayTeam} @ ${game.homeTeam}`, date: game.date, pick: game.pick.team, probability: game.pick.probability, decimalOdds: decimal, oddsSource: source };
+    });
+    parlays.push({ legs: legDetails, combinedProbability, combinedOdds, anyMarketOdds: anyMarket });
+  }
+  return parlays;
+}
+function renderParlays() {
+  const predictions = state.allPredictions?.predictions || state.predictions?.predictions || [];
+  const modeKey = RISK_MODES[state.riskMode] ? state.riskMode : "balanced";
+  const modeButtons = Object.entries(RISK_MODES).map(([key, mode]) => `<button data-risk-mode="${key}" class="feature-tab${key === modeKey ? " active" : ""}" style="margin:0.3em 0.4em 0 0">${escapeHtml(mode.label)}</button>`).join("");
+  const intro = `<article class="card wide"><span class="tag">Model-generated combos</span><h2>${data.league} parlay builder</h2><p>Legs are chosen from the current ${data.league} predictions by win probability. Combined odds multiply each leg's decimal price — a real market line when one is posted, otherwise the model's own fair (no-vig) odds, always labeled per leg. This is a model output, not a guaranteed outcome or betting advice; variance compounds quickly with each added leg.</p><div>${modeButtons}</div></article>`;
+  const parlays = buildParlays(predictions, modeKey);
+  if (!parlays.length) {
+    return `${intro}${message("No parlays available", `Not enough ${data.league} picks currently clear the ${escapeHtml(RISK_MODES[modeKey].label)} confidence threshold to build a full parlay.`)}`;
+  }
+  const cards = parlays.map((parlay, index) => {
+    const legRows = parlay.legs.map((leg) => `<div><span>${escapeHtml(leg.date)} ${escapeHtml(leg.matchup)}</span><b>${escapeHtml(leg.pick)}</b><em>${compactPct(leg.probability)} | ${leg.decimalOdds.toFixed(2)}x ${leg.oddsSource === "market" ? "(market)" : "(model)"}</em></div>`).join("");
+    return `<article class="forecast-card"><span class="tag">Parlay ${index + 1} — ${parlay.legs.length} legs</span><div class="fixture-list">${legRows}</div><div class="stats">${stat("Combined odds", `${parlay.combinedOdds.toFixed(2)}x`)}${stat("Combined probability", compactPct(parlay.combinedProbability))}${stat("Odds basis", parlay.anyMarketOdds ? "mixed market" : "model-implied")}</div></article>`;
+  }).join("");
+  return `${intro}<section class="forecast-grid">${cards}</section>`;
+}
 function renderFeature() {
   const host = document.querySelector("#cards");
   const current = state.current;
@@ -164,6 +224,8 @@ function renderFeature() {
   const historicalSummary = history?.summary || {};
   if (state.feature === "Predictions") {
     host.innerHTML = renderScoreboardPredictions();
+  } else if (state.feature === "Parlays") {
+    host.innerHTML = renderParlays();
   } else if (state.feature === "Fixtures") {
     host.innerHTML = scheduleRows(current);
   } else if (state.feature === "Model Training") {
@@ -205,6 +267,12 @@ async function loadData() {
     state.monitoring = monitoring;
     state.predictions = predictions || null;
     state.playerLeaders = playerLeaders || null;
+    // Parlay legs are picked by confidence, not chronological order, so they
+    // need the full upcoming board — the Predictions tab above only fetches
+    // the nearest-date limit=30 slice, which frequently has no games that
+    // clear a parlay's win-probability threshold even when higher-confidence
+    // games exist further out.
+    state.allPredictions = await api(`${predictionsPath}?season=${encodeURIComponent(data.season)}&limit=0`).catch(() => predictions);
     // Standings/team-rating context needs settled games. In the offseason
     // gap (e.g. NBA/NFL in August, current-season predictions carry zero
     // completed games) fall back to the last completed season purely for
