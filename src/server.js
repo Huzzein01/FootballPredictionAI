@@ -195,6 +195,18 @@ function triggerLiveFixtureRefresh(reason = "background", { force = false } = {}
         await refreshTheOddsApi({ includeClub: true, includeInternational: true, daysForward: 420 });
         try { await refreshEspnOddsAllSeasons(); } catch (e) { console.warn("ESPN odds fallback error:", e.message); }
         await refreshMissingOdds();
+        // Populate baseball/basketball/american-football season caches so the
+        // ESPN moneyline fallback below has games to attach odds to even
+        // before anyone has visited those sport pages (which is what
+        // triggers the on-demand refresh: 1 fetch otherwise). Cache-only
+        // reads once a file exists, so this is cheap after the first run.
+        try {
+          await Promise.all([
+            readOrRefreshSportSeason("baseball", String(new Date().getUTCFullYear())),
+            readOrRefreshSportSeason("basketball", "2026"),
+            readOrRefreshSportSeason("american-football", "2026"),
+          ]);
+        } catch (e) { console.warn("Multi-sport season sync error:", e.message); }
         try { await refreshAllMoneylineOdds({ daysForward: 45 }); } catch (e) { console.warn("Multi-sport ESPN odds fallback error:", e.message); }
         await refreshLiveLeagueContext();
         await persistKnownStores(["backtests", "liveEspnFixtures", "liveEspnResults", "liveOdds", "liveLeagueContext"]);
