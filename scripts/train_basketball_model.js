@@ -9,6 +9,7 @@ const fs = require("fs");
 const path = require("path");
 const { reconstructTrainingRows } = require("../src/basketballModel/historicalDataset");
 const { trainBasketballModel } = require("../src/basketballModel/pipeline");
+const { validateCandidate } = require("../src/sharedSportModel/modelValidator");
 
 const output = process.argv[2] || path.join(process.cwd(), "model", "basketball_forecast_model.json");
 const cacheDir = path.join(process.cwd(), "data", "multi_sport");
@@ -20,6 +21,11 @@ const rows = reconstructTrainingRows(games);
 if (rows.length < 50) throw new Error(`Only ${rows.length} completed NBA games available — need more history to train`);
 
 const model = trainBasketballModel(rows);
+const verdict = validateCandidate(model, output);
+if (!verdict.promote) {
+  console.log(JSON.stringify({ promoted: false, output, rows: rows.length, ...verdict }, null, 2));
+  process.exit(0);
+}
 fs.mkdirSync(path.dirname(output), { recursive: true });
 fs.writeFileSync(output, JSON.stringify(model, null, 2) + "\n");
-console.log(JSON.stringify({ output, rows: rows.length, selection: model.selection, trainedAt: model.trainedAt }, null, 2));
+console.log(JSON.stringify({ promoted: true, output, rows: rows.length, selection: model.selection, trainedAt: model.trainedAt, ...verdict }, null, 2));

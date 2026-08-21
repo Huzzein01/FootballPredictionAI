@@ -37,6 +37,7 @@ const { forecastBoard: baseballForecastBoard } = require("./baseballModel/foreca
 const { readOrRefreshPlayerLeaders, refreshPlayerLeaders: refreshBaseballPlayerLeaders } = require("./baseballModel/playerLeaders");
 const { readOrRefreshPlayerLeaders: readOrRefreshEspnPlayerLeaders, refreshPlayerLeaders: refreshEspnPlayerLeaders } = require("./sharedSportModel/espnPlayerLeaders");
 const parlayLedgerStore = require("./sharedSportModel/parlayLedgerStore");
+const { retrain: retrainSportModel, retrainAll: retrainAllSportModels, readStatus: readSportTrainingStatus } = require("./sharedSportModel/continuousTraining");
 const { ingestSchedulePayload } = require("./baseballModel/featureStore");
 const { collectPregameFeatures } = require("./baseballModel/pregameCollectors");
 const { forecastBoard: americanFootballForecastBoard } = require("./americanFootballModel/forecastService");
@@ -159,6 +160,12 @@ function isHostedPrivateApiPath(req, pathname) {
   // applied to the baseball/basketball/american-football parlay ledger.
   if (/^\/api\/sports\/(baseball|basketball|american-football)\/parlay-ledger$/.test(pathname)) return true;
   if (/^\/api\/sports\/(baseball|basketball|american-football)\/parlay\/track$/.test(pathname)) return true;
+  // Same as /api/training-status above — a manual retrain trigger spawns a
+  // CPU/network-heavy child process, and its status readout is the same
+  // kind of internal training detail, so both are hidden the same way on
+  // the hosted tester version.
+  if (/^\/api\/sports\/(baseball|basketball|american-football)\/retrain$/.test(pathname)) return true;
+  if (/^\/api\/sports\/(baseball|basketball|american-football)\/training-status$/.test(pathname)) return true;
   return false;
 }
 
@@ -166,6 +173,9 @@ const LIVE_FIXTURE_REFRESH_TTL_MS = 5 * 60 * 1000;
 let liveFixtureRefreshPromise = null;
 let liveFixtureRefreshStartedAt = 0;
 let liveFixtureRefreshCompletedAt = 0;
+
+const MULTI_SPORT_RETRAIN_INTERVAL_MS = 6 * 60 * 60 * 1000;
+let lastMultiSportRetrainAt = 0;
 
 function triggerLiveFixtureRefresh(reason = "background", { force = false } = {}) {
   const now = Date.now();
@@ -224,6 +234,15 @@ function triggerLiveFixtureRefresh(reason = "background", { force = false } = {}
             refreshEspnPlayerLeaders("american-football"),
           ]);
         } catch (e) { console.warn("Player leaders sync error:", e.message); }
+        // Retraining is CPU/network heavy (spawns a child process per sport
+        // that re-fetches recent history and re-fits ridge regression), so
+        // it runs far less often than everything else in this loop — once
+        // per MULTI_SPORT_RETRAIN_INTERVAL_MS, gated by an in-memory
+        // timestamp rather than every 5-minute tick.
+        if (Date.now() - lastMultiSportRetrainAt >= MULTI_SPORT_RETRAIN_INTERVAL_MS) {
+          lastMultiSportRetrainAt = Date.now();
+          try { await retrainAllSportModels("scheduled-sync-loop"); } catch (e) { console.warn("Multi-sport retrain error:", e.message); }
+        }
         await refreshLiveLeagueContext();
         await persistKnownStores(["backtests", "liveEspnFixtures", "liveEspnResults", "liveOdds", "liveLeagueContext"]);
         liveFixtureRefreshCompletedAt = Date.now();
@@ -727,6 +746,16 @@ async function handleApi(req, res, pathname) {
   if (req.method === "GET" && parlayLedgerMatch) {
     const sport = parlayLedgerMatch[1];
     return sendJson(res, 200, { parlays: parlayLedgerStore.listParlays(sport), summary: parlayLedgerStore.summary(sport) });
+  }
+
+  const sportTrainingStatusMatch = pathname.match(/^\/api\/sports\/(baseball|basketball|american-football)\/training-status$/);
+  if (req.method === "GET" && sportTrainingStatusMatch) {
+    return sendJson(res, 200, readSportTrainingStatus(sportTrainingStatusMatch[1]));
+  }
+
+  const sportRetrainMatch = pathname.match(/^\/api\/sports\/(baseball|basketball|american-football)\/retrain$/);
+  if (req.method === "POST" && sportRetrainMatch) {
+    return sendJson(res, 200, await retrainSportModel(sportRetrainMatch[1], "manual-trigger"));
   }
 
   if (req.method === "GET" && pathname === "/api/training-status") {

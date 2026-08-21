@@ -9,7 +9,7 @@ const CONTENT = {
 };
 const data = CONTENT[SPORT];
 const escapeHtml = (value) => String(value ?? "").replace(/[&<>"']/g, (char) => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" }[char]));
-const state = { feature: "Predictions", current: null, historical: null, monitoring: null, predictions: null, allPredictions: null, standingsSource: null, playerLeaders: null, riskMode: "balanced", builtParlays: [], parlayLedger: null, trackStatus: "" };
+const state = { feature: "Predictions", current: null, historical: null, monitoring: null, predictions: null, allPredictions: null, standingsSource: null, playerLeaders: null, riskMode: "balanced", builtParlays: [], parlayLedger: null, trackStatus: "", trainingStatus: null };
 const RISK_MODES = {
   safe: { legsPerParlay: 2, minProbability: 0.6, label: "Safe · 2-leg" },
   balanced: { legsPerParlay: 3, minProbability: 0.55, label: "Balanced · 3-leg" },
@@ -276,14 +276,20 @@ function renderFeature() {
     host.innerHTML = scheduleRows(current);
   } else if (state.feature === "Model Training") {
     const board = state.predictions;
+    let readinessCard;
     if (SPORT === "baseball") {
       const monitor = state.monitoring || {};
-      host.innerHTML = `<article class="card wide"><span class="tag">Pregame safeguards active</span><h2>MLB model readiness</h2><div class="stats">${stat("Recorded predictions", monitor.recordedPredictions ?? "-")}${stat("Settled predictions", monitor.settledPredictions ?? "-")}${stat("Latest snapshot", monitor.latestSnapshotAt ? new Date(monitor.latestSnapshotAt).toLocaleString() : "Unavailable")}</div><p>Predictions require timestamped pregame inputs. The public forecast board uses only schedule and pre-first-pitch context; outputs are model projections, not guaranteed bets or financial advice.</p></article>`;
-      return;
+      readinessCard = `<article class="card wide"><span class="tag">Pregame safeguards active</span><h2>MLB model readiness</h2><div class="stats">${stat("Recorded predictions", monitor.recordedPredictions ?? "-")}${stat("Settled predictions", monitor.settledPredictions ?? "-")}${stat("Latest snapshot", monitor.latestSnapshotAt ? new Date(monitor.latestSnapshotAt).toLocaleString() : "Unavailable")}</div><p>Predictions require timestamped pregame inputs. The public forecast board uses only schedule and pre-first-pitch context; outputs are model projections, not guaranteed bets or financial advice.</p></article>`;
+    } else {
+      const trainedAt = board?.model?.trainedAt ? new Date(board.model.trainedAt).toLocaleString() : "Not yet trained";
+      const validation = board?.model?.validationMae;
+      readinessCard = `<article class="card wide"><span class="tag">${board ? "Ridge regression trained" : "Awaiting training"}</span><h2>${data.league} model readiness</h2><div class="stats">${stat("Completed historical games", historicalSummary.completedGames ?? "-")}${stat("Teams represented", historicalSummary.teams ?? "-")}${stat("Trained at", trainedAt)}${stat("Validation MAE", validation ? `${runs(validation.home?.validationMae)} / ${runs(validation.away?.validationMae)}` : "-")}</div><p>The ${data.league} model is a ridge-regression score predictor trained on results-only offense/defense ratings reconstructed chronologically from completed games (run <code>scripts/train_${SPORT === "basketball" ? "basketball" : "american_football"}_model.js</code> to retrain from newly imported history). Predictions feed the shared Monte Carlo simulator used across every sport in this workspace.</p></article>`;
     }
-    const trainedAt = board?.model?.trainedAt ? new Date(board.model.trainedAt).toLocaleString() : "Not yet trained";
-    const validation = board?.model?.validationMae;
-    host.innerHTML = `<article class="card wide"><span class="tag">${board ? "Ridge regression trained" : "Awaiting training"}</span><h2>${data.league} model readiness</h2><div class="stats">${stat("Completed historical games", historicalSummary.completedGames ?? "-")}${stat("Teams represented", historicalSummary.teams ?? "-")}${stat("Trained at", trainedAt)}${stat("Validation MAE", validation ? `${runs(validation.home?.validationMae)} / ${runs(validation.away?.validationMae)}` : "-")}</div><p>The ${data.league} model is a ridge-regression score predictor trained on results-only offense/defense ratings reconstructed chronologically from completed games (run <code>scripts/train_${SPORT === "basketball" ? "basketball" : "american_football"}_model.js</code> to retrain from newly imported history). Predictions feed the shared Monte Carlo simulator used across every sport in this workspace.</p></article>`;
+    const training = state.trainingStatus;
+    const retrainCard = training
+      ? `<article class="card wide"><span class="tag status-${(training.status || "idle").toLowerCase()}">${training.status || "IDLE"}</span><h2>Automated retraining</h2><div class="stats">${stat("Last reason", training.reason || "-")}${stat("Last run", training.updatedAt ? new Date(training.updatedAt).toLocaleString() : "Never")}${stat("Promoted", training.promoted == null ? "-" : training.promoted ? "Yes" : "No")}${stat("Candidate / live MAE", Number.isFinite(training.candidateMae) ? `${runs(training.candidateMae)} / ${runs(training.liveMae)}` : "-")}</div><p>The background sync loop retrains this model automatically every 6 hours from freshly completed games. A retrained candidate only replaces the live model if its validation error isn't meaningfully worse — a bad automated retrain can't silently degrade production predictions.</p></article>`
+      : "";
+    host.innerHTML = `${readinessCard}${retrainCard}`;
   } else if (state.feature === "Teams Profile") {
     const standingsBoard = state.standingsSource;
     const overview = `<article class="card wide"><h2>${data.league} team workspace</h2><div class="stats">${stat("Teams found", summary.teams ?? "-")}${stat("Scheduled games", summary.scheduledGames ?? "-")}${stat("Completed games", historicalSummary.completedGames ?? "-")}</div><p>Team profiles use the imported schedule and current-season results as their baseline. Each sport remains isolated to prevent cross-sport model leakage.</p></article>`;
@@ -320,6 +326,7 @@ async function loadData() {
     // games exist further out.
     state.allPredictions = await api(`${predictionsPath}?season=${encodeURIComponent(data.season)}&limit=0`).catch(() => predictions);
     state.parlayLedger = await api(`/api/sports/${SPORT}/parlay-ledger`).catch(() => null);
+    state.trainingStatus = await api(`/api/sports/${SPORT}/training-status`).catch(() => null);
     // Standings/team-rating context needs settled games. In the offseason
     // gap (e.g. NBA/NFL in August, current-season predictions carry zero
     // completed games) fall back to the last completed season purely for
