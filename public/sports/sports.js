@@ -9,7 +9,7 @@ const CONTENT = {
 };
 const data = CONTENT[SPORT];
 const escapeHtml = (value) => String(value ?? "").replace(/[&<>"']/g, (char) => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" }[char]));
-const state = { feature: "Predictions", current: null, historical: null, monitoring: null, predictions: null, allPredictions: null, standingsSource: null, playerLeaders: null, riskMode: "balanced", builtParlays: [], parlayLedger: null, trackStatus: "", trainingStatus: null };
+const state = { feature: "Predictions", current: null, historical: null, monitoring: null, predictions: null, allPredictions: null, standingsSource: null, playerLeaders: null, riskMode: "balanced", builtParlays: [], parlayLedger: null, trackStatus: "", trainingStatus: null, predictionAccuracy: null };
 const RISK_MODES = {
   safe: { legsPerParlay: 2, minProbability: 0.6, label: "Safe · 2-leg" },
   balanced: { legsPerParlay: 3, minProbability: 0.55, label: "Balanced · 3-leg" },
@@ -289,7 +289,11 @@ function renderFeature() {
     const retrainCard = training
       ? `<article class="card wide"><span class="tag status-${(training.status || "idle").toLowerCase()}">${training.status || "IDLE"}</span><h2>Automated retraining</h2><div class="stats">${stat("Last reason", training.reason || "-")}${stat("Last run", training.updatedAt ? new Date(training.updatedAt).toLocaleString() : "Never")}${stat("Promoted", training.promoted == null ? "-" : training.promoted ? "Yes" : "No")}${stat("Candidate / live MAE", Number.isFinite(training.candidateMae) ? `${runs(training.candidateMae)} / ${runs(training.liveMae)}` : "-")}</div><p>The background sync loop retrains this model automatically every 6 hours from freshly completed games. A retrained candidate only replaces the live model if its validation error isn't meaningfully worse — a bad automated retrain can't silently degrade production predictions.</p></article>`
       : "";
-    host.innerHTML = `${readinessCard}${retrainCard}`;
+    const accuracy = state.predictionAccuracy;
+    const accuracyCard = accuracy
+      ? `<article class="card wide"><span class="tag">Real settled outcomes</span><h2>Live prediction accuracy</h2><div class="stats">${stat("Recorded", accuracy.totalRecorded ?? 0)}${stat("Settled", accuracy.settled ?? 0)}${stat("Pick accuracy", compactPct(accuracy.accuracy))}${stat("Log loss / Brier", accuracy.logLoss != null ? `${runs(accuracy.logLoss)} / ${runs(accuracy.brier)}` : "-")}</div><p>Every prediction the model generates is recorded once (the first time it's shown, never overwritten) and automatically graded once that game finishes — this is what the model has actually gotten right or wrong in production, not a backtest.</p></article>`
+      : "";
+    host.innerHTML = `${readinessCard}${retrainCard}${accuracyCard}`;
   } else if (state.feature === "Teams Profile") {
     const standingsBoard = state.standingsSource;
     const overview = `<article class="card wide"><h2>${data.league} team workspace</h2><div class="stats">${stat("Teams found", summary.teams ?? "-")}${stat("Scheduled games", summary.scheduledGames ?? "-")}${stat("Completed games", historicalSummary.completedGames ?? "-")}</div><p>Team profiles use the imported schedule and current-season results as their baseline. Each sport remains isolated to prevent cross-sport model leakage.</p></article>`;
@@ -327,6 +331,7 @@ async function loadData() {
     state.allPredictions = await api(`${predictionsPath}?season=${encodeURIComponent(data.season)}&limit=0`).catch(() => predictions);
     state.parlayLedger = await api(`/api/sports/${SPORT}/parlay-ledger`).catch(() => null);
     state.trainingStatus = await api(`/api/sports/${SPORT}/training-status`).catch(() => null);
+    state.predictionAccuracy = await api(`/api/sports/${SPORT}/prediction-accuracy`).catch(() => null);
     // Standings/team-rating context needs settled games. In the offseason
     // gap (e.g. NBA/NFL in August, current-season predictions carry zero
     // completed games) fall back to the last completed season purely for

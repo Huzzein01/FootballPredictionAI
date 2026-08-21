@@ -37,6 +37,7 @@ const { forecastBoard: baseballForecastBoard } = require("./baseballModel/foreca
 const { readOrRefreshPlayerLeaders, refreshPlayerLeaders: refreshBaseballPlayerLeaders } = require("./baseballModel/playerLeaders");
 const { readOrRefreshPlayerLeaders: readOrRefreshEspnPlayerLeaders, refreshPlayerLeaders: refreshEspnPlayerLeaders } = require("./sharedSportModel/espnPlayerLeaders");
 const parlayLedgerStore = require("./sharedSportModel/parlayLedgerStore");
+const predictionAccuracyStore = require("./sharedSportModel/predictionAccuracyStore");
 const { retrain: retrainSportModel, retrainAll: retrainAllSportModels, readStatus: readSportTrainingStatus } = require("./sharedSportModel/continuousTraining");
 const { ingestSchedulePayload } = require("./baseballModel/featureStore");
 const { collectPregameFeatures } = require("./baseballModel/pregameCollectors");
@@ -679,6 +680,10 @@ async function handleApi(req, res, pathname) {
       }
       const board = baseballForecastBoard(currentSeason, { oddsEvents, limit, marketWeight });
       try { parlayLedgerStore.autoSettleFromResults("baseball", currentSeason.games || []); } catch (e) { console.warn("Parlay auto-settle error:", e.message); }
+      try {
+        predictionAccuracyStore.recordPredictions("baseball", board.predictions || []);
+        predictionAccuracyStore.settleFromResults("baseball", currentSeason.games || []);
+      } catch (e) { console.warn("Prediction accuracy tracking error:", e.message); }
       return sendJson(res, 200, { ...board, odds: { ...odds, events: undefined } });
     } catch (error) {
       return sendJson(res, 502, { error: error.message, sport: "baseball", season });
@@ -705,6 +710,10 @@ async function handleApi(req, res, pathname) {
       const forecast = sport === "basketball" ? basketballForecastBoard : americanFootballForecastBoard;
       const board = forecast(currentSeason, { oddsEvents, limit, marketWeight });
       try { parlayLedgerStore.autoSettleFromResults(sport, currentSeason.games || []); } catch (e) { console.warn("Parlay auto-settle error:", e.message); }
+      try {
+        predictionAccuracyStore.recordPredictions(sport, board.predictions || []);
+        predictionAccuracyStore.settleFromResults(sport, currentSeason.games || []);
+      } catch (e) { console.warn("Prediction accuracy tracking error:", e.message); }
       return sendJson(res, 200, board);
     } catch (error) {
       return sendJson(res, 502, { error: error.message, sport, season });
@@ -756,6 +765,14 @@ async function handleApi(req, res, pathname) {
   const sportRetrainMatch = pathname.match(/^\/api\/sports\/(baseball|basketball|american-football)\/retrain$/);
   if (req.method === "POST" && sportRetrainMatch) {
     return sendJson(res, 200, await retrainSportModel(sportRetrainMatch[1], "manual-trigger"));
+  }
+
+  // Deliberately not gated in hosted-public-mode, unlike training-status —
+  // this is proof-of-accuracy for the model, the same category as
+  // /api/international/training-accuracy, which is public too.
+  const sportAccuracyMatch = pathname.match(/^\/api\/sports\/(baseball|basketball|american-football)\/prediction-accuracy$/);
+  if (req.method === "GET" && sportAccuracyMatch) {
+    return sendJson(res, 200, predictionAccuracyStore.summary(sportAccuracyMatch[1]));
   }
 
   if (req.method === "GET" && pathname === "/api/training-status") {
