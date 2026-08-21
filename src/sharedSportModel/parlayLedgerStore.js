@@ -6,9 +6,17 @@
 // parlays for these sports can never affect football's own ledger). One
 // shared file, legs carry a `sport` field, and every read helper accepts an
 // optional sport filter so each sport's page only sees its own tickets.
+const path = require("path");
 const { mutableDataPath, readJsonWithFallback, writeJson } = require("../runtimePaths");
 
 const STORE_PATH = mutableDataPath("multi_sport_parlay_backtests.json");
+// Every exported function takes an optional trailing `root` directory,
+// matching the test-isolation convention baseballModel/productionService.js
+// etc. already use (fs.mkdtempSync + a root param) — without this, tests
+// would have no way to avoid writing into the real data/ directory.
+function storePathFor(root) {
+  return root ? path.join(root, "multi_sport_parlay_backtests.json") : STORE_PATH;
+}
 // This store is reachable from an unauthenticated POST route (gated behind
 // isHostedPrivateApiPath in hosted-public-mode, but open to anyone in local/
 // self-hosted mode), so cap request and total-store size defensively rather
@@ -45,12 +53,12 @@ function sanitizeParlay(parlay) {
   };
 }
 
-function readStore() {
-  return readJsonWithFallback(STORE_PATH, null, { parlays: [] });
+function readStore(root) {
+  return readJsonWithFallback(storePathFor(root), null, { parlays: [] });
 }
 
-function writeStore(store) {
-  writeJson(STORE_PATH, store);
+function writeStore(store, root) {
+  writeJson(storePathFor(root), store);
 }
 
 function makeId(prefix) {
@@ -95,8 +103,8 @@ function decorateParlay(parlay) {
   };
 }
 
-function saveParlaysIfMissing(parlays) {
-  const store = readStore();
+function saveParlaysIfMissing(parlays, root) {
+  const store = readStore(root);
   const existing = new Set(store.parlays.map(signature));
   const saved = [];
   const incoming = (Array.isArray(parlays) ? parlays : []).slice(0, MAX_PARLAYS_PER_REQUEST);
@@ -111,17 +119,17 @@ function saveParlaysIfMissing(parlays) {
     saved.push(entry);
   }
   store.parlays = store.parlays.slice(0, MAX_STORED_PARLAYS);
-  writeStore(store);
+  writeStore(store, root);
   return saved;
 }
 
-function listParlays(sport) {
-  const all = readStore().parlays;
+function listParlays(sport, root) {
+  const all = readStore(root).parlays;
   return sport ? all.filter((parlay) => parlay.sport === sport) : all;
 }
 
-function updateLeg(parlayId, legId, status) {
-  const store = readStore();
+function updateLeg(parlayId, legId, status, root) {
+  const store = readStore(root);
   const parlay = store.parlays.find((item) => item.id === parlayId);
   if (!parlay) return null;
   const leg = parlay.legs.find((item) => item.id === legId);
@@ -131,12 +139,12 @@ function updateLeg(parlayId, legId, status) {
   leg.settledAt = normalized === "PENDING" ? "" : new Date().toISOString();
   parlay.status = ticketStatus(parlay.legs);
   parlay.settledAt = parlay.status === "PENDING" ? "" : new Date().toISOString();
-  writeStore(store);
+  writeStore(store, root);
   return { parlay };
 }
 
-function summary(sport) {
-  const parlays = listParlays(sport);
+function summary(sport, root) {
+  const parlays = listParlays(sport, root);
   const settled = parlays.filter((parlay) => parlay.status !== "PENDING");
   const wins = parlays.filter((parlay) => parlay.status === "HIT").length;
   const losses = parlays.filter((parlay) => parlay.status === "MISS").length;
@@ -163,8 +171,8 @@ function summary(sport) {
 // sport's season games array (date, homeTeam, awayTeam, homeScore,
 // awayScore, completed — the shape multiSportDataService already returns).
 // Matched by sport+date+matchup+pick, the same key legs are saved under.
-function autoSettleFromResults(sport, games) {
-  const store = readStore();
+function autoSettleFromResults(sport, games, root) {
+  const store = readStore(root);
   const winnerByKey = new Map();
   for (const game of games || []) {
     if (!game.completed || !Number.isFinite(Number(game.homeScore)) || !Number.isFinite(Number(game.awayScore))) continue;
@@ -190,7 +198,7 @@ function autoSettleFromResults(sport, games) {
       parlay.settledAt = parlay.status === "PENDING" ? "" : new Date().toISOString();
     }
   }
-  if (settledCount) writeStore(store);
+  if (settledCount) writeStore(store, root);
   return settledCount;
 }
 
