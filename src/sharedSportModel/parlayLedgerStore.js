@@ -9,6 +9,41 @@
 const { mutableDataPath, readJsonWithFallback, writeJson } = require("../runtimePaths");
 
 const STORE_PATH = mutableDataPath("multi_sport_parlay_backtests.json");
+// This store is reachable from an unauthenticated POST route (gated behind
+// isHostedPrivateApiPath in hosted-public-mode, but open to anyone in local/
+// self-hosted mode), so cap request and total-store size defensively rather
+// than trust the frontend's own shape.
+const MAX_PARLAYS_PER_REQUEST = 10;
+const MAX_LEGS_PER_PARLAY = 8;
+const MAX_STRING_LENGTH = 200;
+const MAX_STORED_PARLAYS = 500;
+
+function clampString(value, max = MAX_STRING_LENGTH) {
+  return String(value ?? "").slice(0, max);
+}
+
+function sanitizeLeg(leg) {
+  return {
+    sport: clampString(leg?.sport, 40),
+    date: clampString(leg?.date, 20),
+    matchup: clampString(leg?.matchup, 120),
+    pick: clampString(leg?.pick, 80),
+    probability: Number.isFinite(Number(leg?.probability)) ? Math.max(0, Math.min(1, Number(leg.probability))) : null,
+    decimalOdds: Number.isFinite(Number(leg?.decimalOdds)) && Number(leg.decimalOdds) > 1 ? Number(leg.decimalOdds) : null,
+    oddsSource: clampString(leg?.oddsSource, 20),
+  };
+}
+
+function sanitizeParlay(parlay) {
+  const legs = (Array.isArray(parlay?.legs) ? parlay.legs : []).slice(0, MAX_LEGS_PER_PARLAY).map(sanitizeLeg);
+  return {
+    sport: clampString(parlay?.sport, 40),
+    riskMode: clampString(parlay?.riskMode, 20),
+    combinedOdds: Number.isFinite(Number(parlay?.combinedOdds)) ? Number(parlay.combinedOdds) : null,
+    combinedProbability: Number.isFinite(Number(parlay?.combinedProbability)) ? Math.max(0, Math.min(1, Number(parlay.combinedProbability))) : null,
+    legs,
+  };
+}
 
 function readStore() {
   return readJsonWithFallback(STORE_PATH, null, { parlays: [] });
@@ -64,7 +99,10 @@ function saveParlaysIfMissing(parlays) {
   const store = readStore();
   const existing = new Set(store.parlays.map(signature));
   const saved = [];
-  for (const parlay of parlays || []) {
+  const incoming = (Array.isArray(parlays) ? parlays : []).slice(0, MAX_PARLAYS_PER_REQUEST);
+  for (const raw of incoming) {
+    const parlay = sanitizeParlay(raw);
+    if (!parlay.legs.length) continue;
     const sig = signature(parlay);
     if (!sig || existing.has(sig)) continue;
     const entry = decorateParlay(parlay);
@@ -72,6 +110,7 @@ function saveParlaysIfMissing(parlays) {
     existing.add(sig);
     saved.push(entry);
   }
+  store.parlays = store.parlays.slice(0, MAX_STORED_PARLAYS);
   writeStore(store);
   return saved;
 }

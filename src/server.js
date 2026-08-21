@@ -155,6 +155,10 @@ function isHostedPrivateApiPath(req, pathname) {
   if (pathname === "/api/fixtures/bulk") return true;
   if (/^\/api\/player-profiles\/[^/]+\/stats/.test(pathname)) return true;
   if (/^\/api\/team-profiles\/[^/]+\/stats/.test(pathname)) return true;
+  // Same treatment as /api/parlay-backtests and /api/parlay/backtest above,
+  // applied to the baseball/basketball/american-football parlay ledger.
+  if (/^\/api\/sports\/(baseball|basketball|american-football)\/parlay-ledger$/.test(pathname)) return true;
+  if (/^\/api\/sports\/(baseball|basketball|american-football)\/parlay\/track$/.test(pathname)) return true;
   return false;
 }
 
