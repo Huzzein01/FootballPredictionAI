@@ -34,8 +34,8 @@ const { projectDomesticCup, CUP_CONFIG } = require("./domesticCupProjection");
 const { chooseFootballContext, clubSeasonFor } = require("./footballContext");
 const { createPrediction: createBaseballPrediction, settlePrediction: settleBaseballPrediction, monitoring: baseballMonitoring } = require("./baseballModel/productionService");
 const { forecastBoard: baseballForecastBoard } = require("./baseballModel/forecastService");
-const { readOrRefreshPlayerLeaders } = require("./baseballModel/playerLeaders");
-const { readOrRefreshPlayerLeaders: readOrRefreshEspnPlayerLeaders } = require("./sharedSportModel/espnPlayerLeaders");
+const { readOrRefreshPlayerLeaders, refreshPlayerLeaders: refreshBaseballPlayerLeaders } = require("./baseballModel/playerLeaders");
+const { readOrRefreshPlayerLeaders: readOrRefreshEspnPlayerLeaders, refreshPlayerLeaders: refreshEspnPlayerLeaders } = require("./sharedSportModel/espnPlayerLeaders");
 const parlayLedgerStore = require("./sharedSportModel/parlayLedgerStore");
 const { ingestSchedulePayload } = require("./baseballModel/featureStore");
 const { collectPregameFeatures } = require("./baseballModel/pregameCollectors");
@@ -209,6 +209,17 @@ function triggerLiveFixtureRefresh(reason = "background", { force = false } = {}
           ]);
         } catch (e) { console.warn("Multi-sport season sync error:", e.message); }
         try { await refreshAllMoneylineOdds({ daysForward: 45 }); } catch (e) { console.warn("Multi-sport ESPN odds fallback error:", e.message); }
+        // Player leaderboards are cache-or-refresh (readOrRefreshPlayerLeaders
+        // returns the cached file forever once one exists, since the frontend
+        // never requests refresh=1 itself) — without a periodic refresh here
+        // they'd freeze at whatever the very first fetch happened to show.
+        try {
+          await Promise.all([
+            refreshBaseballPlayerLeaders(String(new Date().getUTCFullYear())),
+            refreshEspnPlayerLeaders("basketball"),
+            refreshEspnPlayerLeaders("american-football"),
+          ]);
+        } catch (e) { console.warn("Player leaders sync error:", e.message); }
         await refreshLiveLeagueContext();
         await persistKnownStores(["backtests", "liveEspnFixtures", "liveEspnResults", "liveOdds", "liveLeagueContext"]);
         liveFixtureRefreshCompletedAt = Date.now();
