@@ -311,13 +311,32 @@ function hideFromUpcomingPredicate() {
   return (fx) => exact.has(exactKey(fx.homeTeam, fx.awayTeam, fx.date)) || pairs.has(pairKey(fx.homeTeam, fx.awayTeam));
 }
 
+// Days between a fixture's plain "YYYY-MM-DD" date and today (both compared
+// at UTC midnight, since the fixture CSV carries no kickoff time — see
+// predictionService.js's predictMatch, which only forwards `date`). A
+// same-day or yesterday's fixture returns 0 or 1 and is left alone, since
+// it may legitimately still be settling; 2+ means it's unambiguously in
+// the past regardless of which timezone the actual kickoff was in.
+function daysBeforeToday(dateStr) {
+  const fixtureDate = Date.parse(`${dateStr}T00:00:00Z`);
+  if (!Number.isFinite(fixtureDate)) return 0;
+  const todayUtc = Date.parse(`${new Date().toISOString().slice(0, 10)}T00:00:00Z`);
+  return Math.floor((todayUtc - fixtureDate) / 86_400_000);
+}
+
 function remainingFixturePredictions(season = "2025-26") {
   const playedKeys = parlayBacktests.playedFixtureKeys();
   const verifiedResults = verifiedPlayedResultMap();
   const settledPredictions = settledPredictionMap();
   return fixturePredictionBoard({ season }).filter((prediction) => {
     const key = parlayBacktests.fixtureSignatureFromFixture(prediction);
-    return !playedKeys.has(key) && !verifiedResults.has(key) && !settledPredictions.has(key);
+    if (playedKeys.has(key) || verifiedResults.has(key) || settledPredictions.has(key)) return false;
+    // Safety net: even when ESPN's result-settlement pipeline hasn't
+    // matched this specific fixture yet (a team-name mismatch, a missed
+    // sync cycle, etc.), a fixture more than a day old has certainly been
+    // played — don't let it linger on the Upcoming board indefinitely.
+    if (daysBeforeToday(prediction.date) >= 2) return false;
+    return true;
   });
 }
 
