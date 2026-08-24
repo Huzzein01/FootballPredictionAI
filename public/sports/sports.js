@@ -306,9 +306,9 @@ function renderFeature() {
     host.innerHTML = futuresProjection(state.predictions?.projections?.length ? state.predictions.projections : state.standingsSource?.projections);
   }
 }
-async function loadData() {
+async function loadData({ background = false } = {}) {
   const status = document.querySelector("#dataStatus");
-  status.textContent = "Importing public schedules and completed historical results...";
+  if (!background) status.textContent = "Importing public schedules and completed historical results...";
   try {
     const predictionsPath = `/api/sports/${SPORT}/predictions`;
     const [current, historical, monitoring, predictions, playerLeaders] = await Promise.all([
@@ -353,3 +353,14 @@ async function loadData() {
 featureNav();
 renderFeature();
 loadData();
+
+// forecastBoard() on the server already excludes any game once it's
+// completed, but that only takes effect on the NEXT request — a tab left
+// open across a game finishing would otherwise keep showing that game's
+// pregame prediction indefinitely, since loadData() only ran once at page
+// load. Poll on the same ~3-minute cadence football's own board already
+// uses to prune played fixtures, skipping while the tab is hidden.
+window.setInterval(() => {
+  if (document.visibilityState === "hidden") return;
+  loadData({ background: true });
+}, 3 * 60 * 1000);
