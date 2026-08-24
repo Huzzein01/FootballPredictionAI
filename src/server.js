@@ -314,9 +314,11 @@ function hideFromUpcomingPredicate() {
 // Days between a fixture's plain "YYYY-MM-DD" date and today (both compared
 // at UTC midnight, since the fixture CSV carries no kickoff time — see
 // predictionService.js's predictMatch, which only forwards `date`). A
-// same-day or yesterday's fixture returns 0 or 1 and is left alone, since
-// it may legitimately still be settling; 2+ means it's unambiguously in
-// the past regardless of which timezone the actual kickoff was in.
+// same-day fixture returns 0 and is left alone, since it may still be
+// scheduled for later today; 1+ means the calendar day it was played on
+// has already fully ended, and a match only runs a couple of hours, so it
+// is unambiguously over — there is no legitimate case for a "yesterday"
+// fixture to still be pending.
 function daysBeforeToday(dateStr) {
   const fixtureDate = Date.parse(`${dateStr}T00:00:00Z`);
   if (!Number.isFinite(fixtureDate)) return 0;
@@ -333,9 +335,9 @@ function remainingFixturePredictions(season = "2025-26") {
     if (playedKeys.has(key) || verifiedResults.has(key) || settledPredictions.has(key)) return false;
     // Safety net: even when ESPN's result-settlement pipeline hasn't
     // matched this specific fixture yet (a team-name mismatch, a missed
-    // sync cycle, etc.), a fixture more than a day old has certainly been
-    // played — don't let it linger on the Upcoming board indefinitely.
-    if (daysBeforeToday(prediction.date) >= 2) return false;
+    // sync cycle, etc.), a fixture from a prior calendar day has certainly
+    // been played — don't let it linger on the Upcoming board.
+    if (daysBeforeToday(prediction.date) >= 1) return false;
     return true;
   });
 }
