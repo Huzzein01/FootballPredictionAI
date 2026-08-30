@@ -239,10 +239,17 @@ function triggerLiveFixtureRefresh(reason = "background", { force = false } = {}
         // that re-fetches recent history and re-fits ridge regression), so
         // it runs far less often than everything else in this loop — once
         // per MULTI_SPORT_RETRAIN_INTERVAL_MS, gated by an in-memory
-        // timestamp rather than every 5-minute tick.
+        // timestamp rather than every 5-minute tick. Deliberately NOT
+        // awaited: this whole IIFE holds liveFixtureRefreshPromise open
+        // until it resolves, and awaiting a multi-minute retrain here would
+        // block every other odds/fixture refresh in this chain — and the
+        // NEXT scheduled tick, since triggerLiveFixtureRefresh no-ops while
+        // a refresh is already running — for as long as retraining takes.
+        // Firing it off lets odds fetching and training run concurrently
+        // instead of odds work queuing up behind training.
         if (Date.now() - lastMultiSportRetrainAt >= MULTI_SPORT_RETRAIN_INTERVAL_MS) {
           lastMultiSportRetrainAt = Date.now();
-          try { await retrainAllSportModels("scheduled-sync-loop"); } catch (e) { console.warn("Multi-sport retrain error:", e.message); }
+          retrainAllSportModels("scheduled-sync-loop").catch((e) => console.warn("Multi-sport retrain error:", e.message));
         }
         await refreshLiveLeagueContext();
         await persistKnownStores(["backtests", "liveEspnFixtures", "liveEspnResults", "liveOdds", "liveLeagueContext"]);
