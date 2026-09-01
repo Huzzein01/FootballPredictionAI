@@ -20,6 +20,7 @@ const { refreshWorldCupResults, syncWorldCupPlayerStats, readWorldCupResults } =
 const { syncClubPlayerStats } = require("./clubPlayerStatsSync");
 const { listTeamResults, getTeamResults } = require("./teamResultsStore");
 const { listTeamTraining, getTeamTraining, appendTeamNote, updateTeamTrainingProfiles } = require("./teamTrainingStore");
+const { searchClubs, buildClubDossier } = require("./clubDossier");
 const { refreshTheOddsApi, lookupMatchOdds, refreshBaseballOddsApi } = require("./oddsApiService");
 const { refreshEspnOddsAllSeasons } = require("./espnOddsService");
 const { runFixtureBridge, bridgeState } = require("./espnFixtureBridge");
@@ -178,6 +179,9 @@ let liveFixtureRefreshCompletedAt = 0;
 const MULTI_SPORT_RETRAIN_INTERVAL_MS = 6 * 60 * 60 * 1000;
 let lastMultiSportRetrainAt = 0;
 
+const FOOTBALL_RETRAIN_INTERVAL_MS = 6 * 60 * 60 * 1000;
+let lastFootballRetrainAt = 0;
+
 function triggerLiveFixtureRefresh(reason = "background", { force = false } = {}) {
   const now = Date.now();
   if (liveFixtureRefreshPromise) {
@@ -195,6 +199,22 @@ function triggerLiveFixtureRefresh(reason = "background", { force = false } = {}
         if (resultSnapshot.settled > 0) {
           await refreshLiveLeagueContext();
           scheduleRetrain(`espn-auto-fixture-results:${reason}`);
+        }
+        // The per-team results/training files (data/teams/results,
+        // data/teams/training) get kept current continuously — that's the
+        // whole point of tracking each team's own file — but train_model.js
+        // was previously only ever retrained by scheduleRetrain() calls tied
+        // to narrower events (a backtest settling, a player-profile edit,
+        // a manual /api/teams/train hit). If that chain stalls — confirmed:
+        // the backtest ledger hadn't settled a new result since mid-July —
+        // the model just stops updating even though fresh per-team results
+        // keep arriving underneath it. Retrain periodically off the wall
+        // clock instead, so newly completed matchdays always reach the
+        // model within a bounded window regardless of what else is or isn't
+        // triggering it.
+        if (Date.now() - lastFootballRetrainAt >= FOOTBALL_RETRAIN_INTERVAL_MS) {
+          lastFootballRetrainAt = Date.now();
+          scheduleRetrain("scheduled-team-data-refresh");
         }
         // World Cup live sync: results → auto-settled tracked predictions →
         // training summary rebuild → retrain; then live player stat sync.
@@ -1182,6 +1202,22 @@ async function handleApi(req, res, pathname) {
     const context = url.searchParams.get("context") === "international" ? "international" : "club";
     const tableData = context === "international" ? null : await archivedLeagueTables(season);
     return sendJson(res, 200, listTeamProfiles(season, tableData, context));
+  }
+
+  if (req.method === "GET" && pathname === "/api/clubs/search") {
+    const url = new URL(req.url, `http://${req.headers.host}`);
+    const query = url.searchParams.get("q") || "";
+    return sendJson(res, 200, { query, results: searchClubs(query) });
+  }
+
+  if (req.method === "GET" && pathname === "/api/clubs/dossier") {
+    const url = new URL(req.url, `http://${req.headers.host}`);
+    const team = url.searchParams.get("team") || "";
+    const season = url.searchParams.get("season") || "2026-27";
+    if (!team) return sendJson(res, 400, { error: "A team name is required (?team=)" });
+    const dossier = buildClubDossier(team, { season });
+    if (!dossier) return sendJson(res, 404, { error: `No data found for "${team}"` });
+    return sendJson(res, 200, dossier);
   }
 
   if (req.method === "GET" && pathname === "/api/international/status") {

@@ -51,6 +51,7 @@ const SECTIONS = [
   { id: "parlays", label: "Parlays" },
   { id: "slip", label: "Daily Slip", intl: true },
   { id: "teams", label: "Team Profiles" },
+  { id: "clubsearch", label: "Club Search" },
   { id: "players", label: "Player Profiles" },
   { id: "futures", label: "Futures" },
   { id: "tables", label: "Tables" },
@@ -462,7 +463,7 @@ function renderSection() {
     return;
   }
   const map = { predictions: renderPredictions, live: renderLive, parlays: renderParlays, slip: renderSlip,
-    teams: renderTeams, players: renderPlayers, futures: renderFutures, tables: renderTables,
+    teams: renderTeams, clubsearch: renderClubSearch, players: renderPlayers, futures: renderFutures, tables: renderTables,
     results: renderResults, training: renderTraining, fixtures: renderFixtures, single: renderSingle };
   (map[STATE.section] || renderPredictions)(token).catch((e) => {
     if (token !== STATE.renderToken) return; // a newer render has already taken over
@@ -680,6 +681,111 @@ async function renderTeams() {
     grid.appendChild(c);
   });
   stage.appendChild(grid);
+}
+
+/* ── Club Search ──────────────────────────────────────────────────────────
+   Search any tracked club, then see its upcoming predictions, a real
+   match-history compilation, and a data-driven form summary — built only
+   from what our own results/training data actually shows. No fabricated
+   club history (founding year, honours, stadium) is presented; we don't
+   have a verified source for that across hundreds of clubs, and inventing
+   it would just be misinformation. */
+function clubResultChip(result) {
+  return `<span class="fc ${esc(result)}">${esc(result || "?")}</span>`;
+}
+function clubMatchRow(match) {
+  const oppLabel = match.homeAway === "home" ? `vs ${match.opponent}` : `@ ${match.opponent}`;
+  return `<div class="club-match-row">
+    <span class="club-match-date">${esc(match.date)}</span>
+    <span class="club-match-opp">${esc(oppLabel)}</span>
+    <span class="club-match-score">${num(match.goalsFor)}-${num(match.goalsAgainst)}</span>
+    ${clubResultChip(match.result)}
+  </div>`;
+}
+function clubPredictionCard(p) {
+  const pickLabel = p.prediction === "H" ? p.homeTeam : p.prediction === "A" ? p.awayTeam : "Draw";
+  return `<article class="card">
+    <div class="card-top"><span>${esc(p.league)} · ${esc(p.date)}</span><span class="pill pick">${esc(pickLabel)} · ${num(p.confidence).toFixed(1)}%</span></div>
+    <div class="match">
+      <div class="team">${clubCrest(p.homeTeam, p.homeLogoUrl, p.league)}<span class="tn">${esc(p.homeTeam)}</span></div>
+      <div class="vs">vs</div>
+      <div class="team">${clubCrest(p.awayTeam, p.awayLogoUrl, p.league)}<span class="tn">${esc(p.awayTeam)}</span></div>
+    </div>
+    <div class="proj">Projected score <b>${esc(p.projectedScore || "-")}</b></div>
+  </article>`;
+}
+async function renderClubDossier(stage, team, season) {
+  stage.innerHTML = `<div class="loading"><div class="spinner"></div><span>Loading ${esc(team)}…</span></div>`;
+  let dossier;
+  try {
+    dossier = await api(`/api/clubs/dossier?team=${encodeURIComponent(team)}&season=${encodeURIComponent(season)}`);
+  } catch (e) {
+    stage.innerHTML = `<div class="empty">Couldn't load ${esc(team)}: ${esc(e.message)}</div>`;
+    return;
+  }
+  const form = dossier.form || {};
+  stage.innerHTML = "";
+  const backBtn = el("button", "btn-ghost", "← New search");
+  backBtn.addEventListener("click", () => renderClubSearch());
+  stage.appendChild(backBtn);
+  stage.appendChild(headEl(dossier.team, `${esc(dossier.league)} · ${dossier.matchHistory.totalTracked} tracked matches`));
+  const summaryCard = el("article", "card");
+  summaryCard.innerHTML = `<div class="card-top"><span>Form summary — real data, not club history</span></div>
+    <p class="club-summary">${esc(dossier.summary)}</p>
+    <div class="pstats">
+      <div class="pstat"><b>${num(form.wins)}-${num(form.draws)}-${num(form.losses)}</b><span>W-D-L</span></div>
+      <div class="pstat"><b>${num(form.pointsPerGame).toFixed(2)}</b><span>PPG</span></div>
+      <div class="pstat"><b>${num(form.goalsForPerGame).toFixed(2)}</b><span>GF/g</span></div>
+      <div class="pstat"><b>${num(form.goalsAgainstPerGame).toFixed(2)}</b><span>GA/g</span></div>
+      <div class="pstat"><b>${Math.round(num(form.cleanSheetRate) * 100)}%</b><span>clean sheet</span></div>
+      <div class="pstat"><b>${dossier.strengthIndex != null ? num(dossier.strengthIndex).toFixed(1) : "-"}</b><span>strength idx</span></div>
+    </div>`;
+  stage.appendChild(summaryCard);
+
+  const upcoming = dossier.predictions.upcoming || [];
+  if (upcoming.length) {
+    stage.appendChild(headEl("Upcoming predictions", `${upcoming.length} fixture${upcoming.length === 1 ? "" : "s"} involving ${esc(dossier.team)}`));
+    const grid = el("div", "grid");
+    grid.innerHTML = upcoming.map(clubPredictionCard).join("");
+    stage.appendChild(grid);
+  }
+
+  const recent = dossier.matchHistory.recent || [];
+  const historyCard = el("article", "card");
+  historyCard.innerHTML = `<div class="card-top"><span>Match history compilation</span><span>${recent.length} most recent of ${dossier.matchHistory.totalTracked} tracked</span></div>
+    <div class="club-match-list">${recent.map(clubMatchRow).join("") || "<div class=\"empty\">No tracked match history yet.</div>"}</div>`;
+  stage.appendChild(historyCard);
+}
+async function renderClubSearch() {
+  const stage = $("#stage"); stage.innerHTML = "";
+  stage.appendChild(headEl("Club Search", "search any tracked club for predictions, real match history, and a data-driven form summary"));
+  const searchWrap = el("div", "club-search-wrap");
+  searchWrap.innerHTML = `<input type="search" id="clubSearchInput" placeholder="Search a club, e.g. Arsenal, Real Madrid, Bayern Munich…" autocomplete="off">`;
+  stage.appendChild(searchWrap);
+  const resultsHost = el("div", "grid");
+  stage.appendChild(resultsHost);
+  const input = $("#clubSearchInput", stage);
+  let debounceTimer = null;
+  const runSearch = async (query) => {
+    if (!query.trim()) { resultsHost.innerHTML = ""; return; }
+    let data;
+    try { data = await api(`/api/clubs/search?q=${encodeURIComponent(query)}`); }
+    catch (e) { resultsHost.innerHTML = `<div class="empty">Search failed: ${esc(e.message)}</div>`; return; }
+    const results = data.results || [];
+    if (!results.length) { resultsHost.innerHTML = `<div class="empty">No tracked club matches "${esc(query)}".</div>`; return; }
+    resultsHost.innerHTML = results.map((r) => `<article class="card club-result" data-team="${esc(r.team)}">
+        <div class="pcard">${clubCrest(r.team, "", r.league)}<div class="pmeta"><b>${esc(r.team)}</b><span>${esc(r.league)} · ${r.matchCount} matches tracked</span></div></div>
+      </article>`).join("");
+    resultsHost.querySelectorAll(".club-result").forEach((card) => {
+      card.style.cursor = "pointer";
+      card.addEventListener("click", () => renderClubDossier(stage, card.dataset.team, seasonFor()));
+    });
+  };
+  input.addEventListener("input", () => {
+    window.clearTimeout(debounceTimer);
+    debounceTimer = window.setTimeout(() => runSearch(input.value), 250);
+  });
+  input.focus();
 }
 
 /* ── Player Profiles ─────────────────────────────────────────────────────── */
