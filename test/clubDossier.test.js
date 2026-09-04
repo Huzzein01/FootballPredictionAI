@@ -11,8 +11,14 @@ test("searchClubs finds real tracked teams by substring, ranking prefix matches 
   assert.ok(results[0].team.toLowerCase().startsWith("arsen"));
 });
 
-test("searchClubs returns nothing for an empty or unmatched query", () => {
-  assert.deepEqual(searchClubs(""), []);
+test("searchClubs auto-prefills the most-tracked clubs for an empty query, and returns nothing for an unmatched one", () => {
+  const prefilled = searchClubs("");
+  assert.ok(prefilled.length > 0, "an empty query should auto-prefill results, not come back empty");
+  // Sorted by matchCount descending — each entry's matchCount should never
+  // exceed the one before it.
+  for (let i = 1; i < prefilled.length; i += 1) {
+    assert.ok(prefilled[i - 1].matchCount >= prefilled[i].matchCount);
+  }
   assert.deepEqual(searchClubs("zzzzzznotarealclub"), []);
 });
 

@@ -30,11 +30,19 @@ function normalizeForSearch(value) {
 
 // Substring match against every tracked team name, ranked by whether the
 // query matches at the start of the name (more relevant) before falling
-// back to alphabetical order.
+// back to alphabetical order. An empty query auto-prefills with the most
+// well-tracked clubs (highest match count is a reasonable proxy for "a
+// major club we have plenty of history on") instead of coming back empty,
+// so the search page never opens to a blank state.
 function searchClubs(query, limit = 12) {
   const needle = normalizeForSearch(query).trim();
-  if (!needle) return [];
   const { teams } = listTeamResults();
+  if (!needle) {
+    return [...teams]
+      .sort((a, b) => b.matchCount - a.matchCount || a.team.localeCompare(b.team))
+      .slice(0, limit)
+      .map((entry) => ({ team: entry.team, slug: entry.slug, league: entry.league, matchCount: entry.matchCount }));
+  }
   return teams
     .filter((entry) => normalizeForSearch(entry.team).includes(needle))
     .sort((a, b) => {

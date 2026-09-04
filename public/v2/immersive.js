@@ -760,18 +760,33 @@ async function renderClubSearch() {
   const stage = $("#stage"); stage.innerHTML = "";
   stage.appendChild(headEl("Club Search", "search any tracked club for predictions, real match history, and a data-driven form summary"));
   const searchWrap = el("div", "club-search-wrap");
-  searchWrap.innerHTML = `<input type="search" id="clubSearchInput" placeholder="Search a club, e.g. Arsenal, Real Madrid, Bayern Munich…" autocomplete="off">`;
+  searchWrap.innerHTML = `<input type="search" id="clubSearchInput" list="clubSuggestions" placeholder="Search a club, e.g. Arsenal, Real Madrid, Bayern Munich…" autocomplete="off"><datalist id="clubSuggestions"></datalist>`;
   stage.appendChild(searchWrap);
+  const resultsLabel = el("div", "club-results-label");
+  stage.appendChild(resultsLabel);
   const resultsHost = el("div", "grid");
   stage.appendChild(resultsHost);
   const input = $("#clubSearchInput", stage);
+  const datalist = $("#clubSuggestions", stage);
   let debounceTimer = null;
+  let requestToken = 0;
   const runSearch = async (query) => {
-    if (!query.trim()) { resultsHost.innerHTML = ""; return; }
+    const token = ++requestToken;
     let data;
     try { data = await api(`/api/clubs/search?q=${encodeURIComponent(query)}`); }
-    catch (e) { resultsHost.innerHTML = `<div class="empty">Search failed: ${esc(e.message)}</div>`; return; }
+    catch (e) {
+      if (token !== requestToken) return;
+      resultsHost.innerHTML = `<div class="empty">Search failed: ${esc(e.message)}</div>`;
+      return;
+    }
+    if (token !== requestToken) return; // a newer keystroke already started its own search
     const results = data.results || [];
+    // Auto-prefill: the browser's native suggestion dropdown is fed the
+    // same matches shown below, so picking one from either place works.
+    datalist.innerHTML = results.map((r) => `<option value="${esc(r.team)}">`).join("");
+    resultsLabel.textContent = query.trim()
+      ? `${results.length} match${results.length === 1 ? "" : "es"} for "${query.trim()}"`
+      : `${results.length} most-tracked clubs — start typing to search all ${results.length ? "of them" : "tracked clubs"}`;
     if (!results.length) { resultsHost.innerHTML = `<div class="empty">No tracked club matches "${esc(query)}".</div>`; return; }
     resultsHost.innerHTML = results.map((r) => `<article class="card club-result" data-team="${esc(r.team)}">
         <div class="pcard">${clubCrest(r.team, "", r.league)}<div class="pmeta"><b>${esc(r.team)}</b><span>${esc(r.league)} · ${r.matchCount} matches tracked</span></div></div>
@@ -783,8 +798,11 @@ async function renderClubSearch() {
   };
   input.addEventListener("input", () => {
     window.clearTimeout(debounceTimer);
-    debounceTimer = window.setTimeout(() => runSearch(input.value), 250);
+    debounceTimer = window.setTimeout(() => runSearch(input.value), 200);
   });
+  // Auto-prefill on open: show the most-tracked clubs immediately rather
+  // than an empty page, so there's always something to click.
+  runSearch("");
   input.focus();
 }
 
