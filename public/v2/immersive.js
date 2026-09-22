@@ -52,6 +52,7 @@ const SECTIONS = [
   { id: "slip", label: "Daily Slip", intl: true },
   { id: "teams", label: "Team Profiles" },
   { id: "clubsearch", label: "Club Search" },
+  { id: "nationsleague", label: "Nations League", intl: true },
   { id: "players", label: "Player Profiles" },
   { id: "futures", label: "Futures" },
   { id: "tables", label: "Tables" },
@@ -463,7 +464,7 @@ function renderSection() {
     return;
   }
   const map = { predictions: renderPredictions, live: renderLive, parlays: renderParlays, slip: renderSlip,
-    teams: renderTeams, clubsearch: renderClubSearch, players: renderPlayers, futures: renderFutures, tables: renderTables,
+    teams: renderTeams, clubsearch: renderClubSearch, nationsleague: renderNationsLeague, players: renderPlayers, futures: renderFutures, tables: renderTables,
     results: renderResults, training: renderTraining, fixtures: renderFixtures, single: renderSingle };
   (map[STATE.section] || renderPredictions)(token).catch((e) => {
     if (token !== STATE.renderToken) return; // a newer render has already taken over
@@ -804,6 +805,67 @@ async function renderClubSearch() {
   // than an empty page, so there's always something to click.
   runSearch("");
   input.focus();
+}
+
+/* ── Nations League ──────────────────────────────────────────────────────── */
+function nationsLeagueCard(p) {
+  const pickLabel = p.prediction === "H" ? `${p.homeTeam} win` : p.prediction === "A" ? `${p.awayTeam} win` : "Draw";
+  const pr = p.probabilities || {};
+  const h = Math.round(pr.homeWinPct ?? 0), d = Math.round(pr.drawPct ?? 0), a = Math.round(pr.awayWinPct ?? 0);
+  const o = p.odds || {};
+  const card = el("article", "card");
+  card.dataset.pick = p.prediction || "";
+  if (num(p.confidence) >= 55) card.classList.add("high-conf");
+  card.innerHTML = `
+    <div class="card-top"><span>${esc(p.phase === "playoff" ? "Promotion/Relegation" : p.phase === "finals" ? "Finals" : "Group Stage")} · ${esc(formatKickoff(p.date, p.kickoffUtc))}</span><span class="pill ${p.prediction === "D" ? "draw" : "pick"}">${esc(pickLabel)} · ${esc(String(p.confidence ?? ""))}%</span></div>
+    <div class="match"><div class="team">${flag(p.homeLogoUrl, p.homeTeam)}<span class="tn">${esc(p.homeTeam)}</span></div><div class="vs">vs</div><div class="team">${flag(p.awayLogoUrl, p.awayTeam)}<span class="tn">${esc(p.awayTeam)}</span></div></div>
+    <div class="conf-bar"><i class="conf-h" style="width:${h}%"></i><i class="conf-d" style="width:${d}%"></i><i class="conf-a" style="width:${a}%"></i></div>
+    <div class="conf-legend"><span>H ${h}%</span><span>D ${d}%</span><span>A ${a}%</span></div>
+    <div class="proj">Projected score <b>${esc(p.projectedScore || "—")}</b></div>
+    <div class="odds-row">${oddChip("1", o.homeOdds, p.prediction === "H")}${oddChip("X", o.drawOdds, p.prediction === "D")}${oddChip("2", o.awayOdds, p.prediction === "A")}</div>
+    <div class="proj" style="opacity:.75">${esc(p.oddsSource || "")}</div>`;
+  return card;
+}
+async function renderNationsLeague() {
+  const stage = $("#stage"); stage.innerHTML = "";
+  let status, data, groupData;
+  try {
+    [status, data, groupData] = await Promise.all([
+      api("/api/nations-league/status"),
+      api("/api/nations-league/fixture-predictions"),
+      api("/api/nations-league/group-tables"),
+    ]);
+  } catch (e) {
+    stage.innerHTML = `<div class="empty">Couldn't load Nations League data: ${esc(e.message)}</div>`;
+    return;
+  }
+  const preds = [...(data.predictions || [])].sort((a, b) => (a.date || "").localeCompare(b.date || ""));
+  stage.appendChild(headEl("UEFA Nations League 2026-27", `${status.teamCount} teams · ${status.groupCount} groups · ${data.summary?.total ?? preds.length} upcoming fixtures · ${data.summary?.withOdds ?? 0} with live sportsbook lines`));
+
+  if (!preds.length) {
+    stage.appendChild(el("div", "empty", "No upcoming Nations League fixtures right now."));
+  } else {
+    const grid = el("div", "grid"); preds.slice(0, 60).forEach((p) => grid.appendChild(nationsLeagueCard(p)));
+    stage.appendChild(grid);
+  }
+
+  const groups = (groupData.groups || []).filter((g) => g.standings?.length);
+  if (groups.length) {
+    stage.appendChild(headEl("Group Standings", `${groups.length} groups · structurally detected from the round-robin schedule`));
+    const groupsGrid = el("div", "grid");
+    groups.forEach((g) => {
+      const card = el("article", "card");
+      const rows = g.standings.map((row) => `<div class="club-match-row">
+          <span class="club-match-date">${row.rank}.</span>
+          <span class="club-match-opp">${esc(row.team)}</span>
+          <span class="club-match-score">${row.wins}-${row.draws}-${row.losses}</span>
+          <span class="fc">${row.points} pts</span>
+        </div>`).join("");
+      card.innerHTML = `<div class="card-top"><span>${esc(g.group)}</span><span>${g.appliedResults} played</span></div>${rows}`;
+      groupsGrid.appendChild(card);
+    });
+    stage.appendChild(groupsGrid);
+  }
 }
 
 /* ── Player Profiles ─────────────────────────────────────────────────────── */

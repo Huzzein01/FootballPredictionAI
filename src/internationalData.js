@@ -679,4 +679,19 @@ module.exports = {
   matchdayLabel,
   normalizeIntlTeam,
   readFriendlyTraining,
+  // Below: exported so other international competitions (e.g. the UEFA
+  // Nations League module) can reuse the same rating engine — team-strength
+  // prior blended with live FIFA ranking points, recent-form adjustment,
+  // and the tunable logistic/draw model — without duplicating or forking
+  // this file's tuned constants. Every one of these is pure/read-only with
+  // respect to World Cup state, so reusing them elsewhere cannot affect WC
+  // predictions.
+  ratingFor,
+  friendlyFormAdjustment,
+  readFriendlyResults,
+  readFifaRankings,
+  clamp,
+  logistic,
+  projectedScore,
+  TEAM_RATINGS,
 };

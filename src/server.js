@@ -17,6 +17,8 @@ const { loadMatches, normalizeTeamName } = require("./footballData");
 const { refreshMissingOdds } = require("./oddsRepairService");
 const { readResultsSnapshot, readFixturesSnapshot, refreshEspnFixtures, refreshEspnResults, enrichPredictionsWithLiveStatus, refreshInternationalFriendlyResults, readFriendlyResultsSnapshot } = require("./espnFixtureService");
 const { refreshWorldCupResults, syncWorldCupPlayerStats, readWorldCupResults } = require("./worldCupSync");
+const { refreshNationsLeagueFixtures, syncNationsLeagueTeamStats } = require("./uefaNationsLeagueSync");
+const { nationsLeagueFixturePredictions, nationsLeagueGroupTables, nationsLeagueStatus } = require("./nationsLeagueData");
 const { syncClubPlayerStats } = require("./clubPlayerStatsSync");
 const { listTeamResults, getTeamResults } = require("./teamResultsStore");
 const { listTeamTraining, getTeamTraining, appendTeamNote, updateTeamTrainingProfiles } = require("./teamTrainingStore");
@@ -224,6 +226,17 @@ function triggerLiveFixtureRefresh(reason = "background", { force = false } = {}
           await refreshInternationalFriendlyResults();
         } catch (error) {
           console.warn("World Cup sync failed:", error.message);
+        }
+        // UEFA Nations League: fixtures + embedded odds refresh (self-
+        // contained store, never touches World Cup state), then the same
+        // team-match-stats harvest World Cup uses for its "recent form"
+        // signal, off the SAME shared store — so it also improves as
+        // Nations League games are played.
+        try {
+          await refreshNationsLeagueFixtures();
+          await syncNationsLeagueTeamStats();
+        } catch (error) {
+          console.warn("UEFA Nations League sync failed:", error.message);
         }
         await refreshEspnFixtures({ daysBack: 14, daysForward: 180 });
         // Merge newly-published WC knockout fixtures from ESPN into the fixture file.
@@ -1320,6 +1333,33 @@ async function handleApi(req, res, pathname) {
         completedMatches: wcSnapshot?.completedCount || 0,
       },
     });
+  }
+
+  if (req.method === "GET" && pathname === "/api/nations-league/status") {
+    return sendJson(res, 200, nationsLeagueStatus());
+  }
+
+  if (req.method === "GET" && pathname === "/api/nations-league/fixture-predictions") {
+    try { await refreshNationsLeagueFixtures(); } catch (e) { console.warn("Nations League fixture sync error:", e.message); }
+    const today = new Date().toISOString().slice(0, 10);
+    const allPredictions = nationsLeagueFixturePredictions();
+    // Same date-based safety net proven for club football's Upcoming board —
+    // never trust "completed" alone to keep played fixtures off the list.
+    const predictions = allPredictions.filter((p) => !p.completed && p.date >= today);
+    return sendJson(res, 200, {
+      predictions,
+      summary: {
+        total: predictions.length,
+        played: allPredictions.filter((p) => p.completed).length,
+        withOdds: predictions.filter((p) => p.oddsType === "sportsbook").length,
+        modelOnly: predictions.filter((p) => p.oddsType !== "sportsbook").length,
+      },
+    });
+  }
+
+  if (req.method === "GET" && pathname === "/api/nations-league/group-tables") {
+    try { await refreshNationsLeagueFixtures(); } catch (e) { console.warn("Nations League fixture sync error:", e.message); }
+    return sendJson(res, 200, { groups: nationsLeagueGroupTables() });
   }
 
   if (req.method === "GET" && pathname === "/api/international/training-accuracy") {
